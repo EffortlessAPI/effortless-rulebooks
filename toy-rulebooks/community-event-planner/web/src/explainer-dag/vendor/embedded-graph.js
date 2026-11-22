@@ -923,7 +923,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -1599,6 +1614,10746 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "Venues": "venue",
+      "Speakers": "speaker",
+      "Events": "event",
+      "Assignments": "assignment",
+      "Attendees": "attendee",
+      "RSVPs": "RSV p"
+    }
+  },
+  "ar": {
+    "fields": {
+      "Venues.Name": {
+        "table": "Venues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «venue» يطابق حقل «venue ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue ID"
+      },
+      "Speakers.Name": {
+        "table": "Speakers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «speaker» يطابق حقل «speaker ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ID"
+      },
+      "Speakers.AssignmentCount": {
+        "table": "Speakers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "حقل «assignment count» في سجل «speaker» هو عدد سجلات «assignments» المرتبطة بسجل «speaker».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «assignments» التي يتحقق فيها أنّ حقل «speaker ref» يساوي speaker ID"
+      },
+      "Speakers.IsOverbooked": {
+        "table": "Speakers",
+        "field": "IsOverbooked",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «speaker» على أنه «overbooked» إذا تحقق أنّ حقل «assignment count» أكبر من 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AssignmentCount",
+            "label": "assignment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment count أكبر من 3"
+      },
+      "Events.Name": {
+        "table": "Events",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «event» يطابق حقل «event ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "Events.VenueName": {
+        "table": "Events",
+        "field": "VenueName",
+        "kind": "lookup",
+        "rule": "حقل «venue name» في سجل «event» هو حقل «venue».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue"
+      },
+      "Events.VenueCapacity": {
+        "table": "Events",
+        "field": "VenueCapacity",
+        "kind": "lookup",
+        "rule": "حقل «venue capacity» في سجل «event» مأخوذ من السجل المرتبط به عبر حقل «venue».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "Capacity",
+            "label": "capacity"
+          },
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          },
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «capacity» من السجل المرتبط عبر «venue»"
+      },
+      "Events.EventEnd": {
+        "table": "Events",
+        "field": "EventEnd",
+        "kind": "formula",
+        "rule": "حقل «event end» في سجل «event» يطابق حقل «event date» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date"
+      },
+      "Events.TotalSpeakersAssigned": {
+        "table": "Events",
+        "field": "TotalSpeakersAssigned",
+        "kind": "rollup",
+        "rule": "حقل «total speakers assigned» في سجل «event» هو عدد سجلات «assignments» المرتبطة بسجل «event».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «assignments» التي يتحقق فيها أنّ حقل «event ref» يساوي event ID"
+      },
+      "Events.HasSpeakers": {
+        "table": "Events",
+        "field": "HasSpeakers",
+        "kind": "formula",
+        "rule": "يُعدّ سجل «event» حائزًا على «speakers» إذا تحقق أنّ حقل «total speakers assigned» أكبر من 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSpeakersAssigned",
+            "label": "total speakers assigned"
+          }
+        ],
+        "structure": null,
+        "plain": "Total speakers assigned أكبر من 0"
+      },
+      "Events.BookedCapacity": {
+        "table": "Events",
+        "field": "BookedCapacity",
+        "kind": "rollup",
+        "rule": "حقل «booked capacity» في سجل «event» هو عدد سجلات «RSV ps» المرتبطة بسجل «event» التي يساوي فيها حقل «status» «confirmed».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          },
+          {
+            "table": "RSVPs",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «RSV ps» التي يتحقق فيها أنّ حقل «event ref» يساوي event ID وحقل «status» يساوي \"confirmed\""
+      },
+      "Events.AvailableCapacity": {
+        "table": "Events",
+        "field": "AvailableCapacity",
+        "kind": "formula",
+        "rule": "حقل «available capacity» في سجل «event» يُحسب على النحو الآتي: حقل «venue capacity» ناقص حقل «booked capacity».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueCapacity",
+            "label": "venue capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue capacity ناقص booked capacity"
+      },
+      "Events.AtCapacity": {
+        "table": "Events",
+        "field": "AtCapacity",
+        "kind": "formula",
+        "rule": "يوسم سجل «event» بعلامة «at capacity» إذا تحقق أنّ حقل «available capacity» لا يزيد على 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity لا يزيد على 0"
+      },
+      "Events.VenueConflictCount": {
+        "table": "Events",
+        "field": "VenueConflictCount",
+        "kind": "rollup",
+        "rule": "حقل «venue conflict count» في سجل «event» هو عدد سجلات «events» المرتبطة بسجل «event».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «events» التي يتحقق فيها أنّ حقل «venue» يساوي venue"
+      },
+      "Events.HasVenueConflict": {
+        "table": "Events",
+        "field": "HasVenueConflict",
+        "kind": "formula",
+        "rule": "يُعدّ سجل «event» حائزًا على «venue conflict» إذا تحقق أنّ حقل «venue conflict count» أكبر من 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueConflictCount",
+            "label": "venue conflict count"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue conflict count أكبر من 1"
+      },
+      "Events.EventStatus": {
+        "table": "Events",
+        "field": "EventStatus",
+        "kind": "formula",
+        "rule": "حقل «event status» في سجل «event» يتحدد وفق ترتيب الأولوية الآتي:\n1. «ready»، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «speakers» مفعّلة، وعلامة «at capacity» غير مفعّلة، وعلامة «venue conflict» غير مفعّلة؛\n2. «issues»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasSpeakers",
+            "label": "has speakers"
+          },
+          {
+            "table": "Events",
+            "field": "AtCapacity",
+            "label": "at capacity"
+          },
+          {
+            "table": "Events",
+            "field": "HasVenueConflict",
+            "label": "has venue conflict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «event status» في سجل «event» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«ready»",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "علامة «speakers» مفعّلة"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "علامة «at capacity» غير مفعّلة"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "علامة «venue conflict» غير مفعّلة"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "«issues»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ has speakers، والشرط (at capacity) غير متحقق، والشرط (has venue conflict) غير متحقق فالناتج \"ready\"، وإلا فالناتج \"issues\""
+      },
+      "Events.RegistrationDeadline": {
+        "table": "Events",
+        "field": "RegistrationDeadline",
+        "kind": "formula",
+        "rule": "حقل «registration deadline» في سجل «event» يُحسب على النحو الآتي: حقل «event date» ناقص حقل «registration close days before event».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Events",
+            "field": "RegistrationCloseDaysBeforeEvent",
+            "label": "registration close days before event"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date ناقص registration close days before event"
+      },
+      "Events.IsRegistrationOpen": {
+        "table": "Events",
+        "field": "IsRegistrationOpen",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «event» على أنه «registration open» إذا تحقق أنّ حقل «registration deadline» أكبر من التاريخ والوقت الحاليان.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "RegistrationDeadline",
+            "label": "registration deadline"
+          }
+        ],
+        "structure": null,
+        "plain": "Registration deadline أكبر من الآن"
+      },
+      "Events.CapacityHeadroom": {
+        "table": "Events",
+        "field": "CapacityHeadroom",
+        "kind": "formula",
+        "rule": "حقل «capacity headroom» في سجل «event» يُحسب على النحو الآتي: حقل «available capacity» ناقص حقل «booked capacity».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity ناقص booked capacity"
+      },
+      "Events.HasHeadroomForOverbooking": {
+        "table": "Events",
+        "field": "HasHeadroomForOverbooking",
+        "kind": "formula",
+        "rule": "يُعدّ سجل «event» حائزًا على «headroom for overbooking» إذا تحقق أنّ حقل «capacity headroom» لا يقل عن حقل «booked capacity» مضروبًا في 0.2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CapacityHeadroom",
+            "label": "capacity headroom"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Capacity headroom لا يقل عن (booked capacity ضرب 0.2)"
+      },
+      "Events.RecommendedOverbookingFactor": {
+        "table": "Events",
+        "field": "RecommendedOverbookingFactor",
+        "kind": "formula",
+        "rule": "حقل «recommended overbooking factor» في سجل «event» يتحدد وفق ترتيب الأولوية الآتي:\n1. 1.2، إذا تحقق أنّ علامة «headroom for overbooking» مفعّلة؛\n2. 1.0، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasHeadroomForOverbooking",
+            "label": "has headroom for overbooking"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «recommended overbooking factor» في سجل «event» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "1.2",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «headroom for overbooking» مفعّلة"
+              }
+            },
+            {
+              "value": "1.0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ has headroom for overbooking فالناتج 1.2، وإلا فالناتج 1.0"
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «assignment» يطابق حقل «assignment ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "Assignments.EventName": {
+        "table": "Assignments",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "حقل «event name» في سجل «assignment» هو حقل «event ref».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "Assignments.SpeakerName": {
+        "table": "Assignments",
+        "field": "SpeakerName",
+        "kind": "lookup",
+        "rule": "حقل «speaker name» في سجل «assignment» هو حقل «speaker ref».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ref"
+      },
+      "Assignments.EventDate": {
+        "table": "Assignments",
+        "field": "EventDate",
+        "kind": "lookup",
+        "rule": "حقل «event date» في سجل «assignment» مأخوذ من السجل المرتبط به عبر حقل «event ref».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «event date» من السجل المرتبط عبر «event ref»"
+      },
+      "Assignments.SpeakerAvailStart": {
+        "table": "Assignments",
+        "field": "SpeakerAvailStart",
+        "kind": "lookup",
+        "rule": "حقل «speaker avail start» في سجل «assignment» يأخذ قيمة حقل «availability start» من السجل المرتبط به عبر حقل «speaker ref».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityStart",
+            "label": "availability start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «availability start» من السجل المرتبط عبر «speaker ref»"
+      },
+      "Assignments.SpeakerAvailEnd": {
+        "table": "Assignments",
+        "field": "SpeakerAvailEnd",
+        "kind": "lookup",
+        "rule": "حقل «speaker avail end» في سجل «assignment» يأخذ قيمة حقل «availability end» من السجل المرتبط به عبر حقل «speaker ref».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityEnd",
+            "label": "availability end"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «availability end» من السجل المرتبط عبر «speaker ref»"
+      },
+      "Assignments.IsAvailable": {
+        "table": "Assignments",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «assignment» على أنه «available» إذا تحقق أنّ جميع الشروط الآتية متحققة: حقل «event date» لا يقل عن حقل «speaker avail start» وحقل «event date» لا يزيد على حقل «speaker avail end».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailStart",
+            "label": "speaker avail start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailEnd",
+            "label": "speaker avail end"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُصنّف سجل «assignment» على أنه «available» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "حقل «event date» لا يقل عن حقل «speaker avail start»"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "حقل «event date» لا يزيد على حقل «speaker avail end»"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Event date لا يقل عن speaker avail start وevent date لا يزيد على speaker avail end"
+      },
+      "Attendees.Name": {
+        "table": "Attendees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «attendee» يطابق حقل «attendee ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Attendees",
+            "field": "AttendeeId",
+            "label": "attendee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ID"
+      },
+      "RSVPs.Name": {
+        "table": "RSVPs",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «RSV p» يطابق حقل «RSVP ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "RSVPId",
+            "label": "RSVP ID"
+          }
+        ],
+        "structure": null,
+        "plain": "RSVP ID"
+      },
+      "RSVPs.EventName": {
+        "table": "RSVPs",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "حقل «event name» في سجل «RSV p» هو حقل «event ref».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "RSVPs.AttendeeName": {
+        "table": "RSVPs",
+        "field": "AttendeeName",
+        "kind": "lookup",
+        "rule": "حقل «attendee name» في سجل «RSV p» هو حقل «attendee ref».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "AttendeeRef",
+            "label": "attendee ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ref"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Venues": [
+        "في كل سجل «venue»، **يجب أن** تُحدّد قيمة حقل «capacity»."
+      ],
+      "Events": [
+        "**يجب أن** يشير كل سجل «event» إلى سجل «venue» واحد فقط.",
+        "في كل سجل «event»، **يجب أن** تُحدّد قيمة حقل «event date»، وحقل «duration minutes»، وحقل «registration close days before event»."
+      ],
+      "Assignments": [
+        "**يجب أن** يشير كل سجل «assignment» إلى سجل «event» واحد فقط عبر حقل «event ref».",
+        "**يجب أن** يشير كل سجل «assignment» إلى سجل «speaker» واحد فقط عبر حقل «speaker ref»."
+      ],
+      "RSVPs": [
+        "**يجب أن** يشير كل سجل «RSV p» إلى سجل «event» واحد فقط عبر حقل «event ref».",
+        "**يجب أن** يشير كل سجل «RSV p» إلى سجل «attendee» واحد فقط عبر حقل «attendee ref».",
+        "في كل سجل «RSV p»، **يجب أن** تُحدّد قيمة حقل «status»."
+      ]
+    },
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Venues": "venue",
+      "Speakers": "speaker",
+      "Events": "event",
+      "Assignments": "assignment",
+      "Attendees": "attendee",
+      "RSVPs": "RSV p"
+    }
+  },
+  "de": {
+    "fields": {
+      "Venues.Name": {
+        "table": "Venues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Venue: Name entspricht Venue ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue ID"
+      },
+      "Speakers.Name": {
+        "table": "Speakers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Speaker: Name entspricht Speaker ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ID"
+      },
+      "Speakers.AssignmentCount": {
+        "table": "Speakers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "Ein Speaker: Assignment Count ist die Anzahl der mit dem Speaker verbundenen Assignments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Assignments, deren Speaker Ref ist Speaker ID"
+      },
+      "Speakers.IsOverbooked": {
+        "table": "Speakers",
+        "field": "IsOverbooked",
+        "kind": "formula",
+        "rule": "Ein Speaker gilt als overbooked, wenn der Assignment Count größer ist als 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AssignmentCount",
+            "label": "assignment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment Count größer als 3 ist"
+      },
+      "Events.Name": {
+        "table": "Events",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Event: Name entspricht Event ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "Events.VenueName": {
+        "table": "Events",
+        "field": "VenueName",
+        "kind": "lookup",
+        "rule": "Ein Event: Venue Name ist die Venue.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue"
+      },
+      "Events.VenueCapacity": {
+        "table": "Events",
+        "field": "VenueCapacity",
+        "kind": "lookup",
+        "rule": "Ein Event: Venue Capacity — aus dem zugehörigen Venue übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "Capacity",
+            "label": "capacity"
+          },
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          },
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Capacity des verknüpften Venue"
+      },
+      "Events.EventEnd": {
+        "table": "Events",
+        "field": "EventEnd",
+        "kind": "formula",
+        "rule": "Ein Event: Event End entspricht Event Date.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          }
+        ],
+        "structure": null,
+        "plain": "Event Date"
+      },
+      "Events.TotalSpeakersAssigned": {
+        "table": "Events",
+        "field": "TotalSpeakersAssigned",
+        "kind": "rollup",
+        "rule": "Ein Event: Total Speakers Assigned ist die Anzahl der mit dem Event verbundenen Assignments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Assignments, deren Event Ref ist Event ID"
+      },
+      "Events.HasSpeakers": {
+        "table": "Events",
+        "field": "HasSpeakers",
+        "kind": "formula",
+        "rule": "Ein Event gilt als über einen Speakers verfügend, wenn der Total Speakers Assigned größer ist als 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSpeakersAssigned",
+            "label": "total speakers assigned"
+          }
+        ],
+        "structure": null,
+        "plain": "Total Speakers Assigned größer als 0 ist"
+      },
+      "Events.BookedCapacity": {
+        "table": "Events",
+        "field": "BookedCapacity",
+        "kind": "rollup",
+        "rule": "Ein Event: Booked Capacity ist die Anzahl der RSV Ps des Event, die Status von „confirmed“ haben.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          },
+          {
+            "table": "RSVPs",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der RSV Ps, deren Event Ref ist Event ID und Status ist \"confirmed\""
+      },
+      "Events.AvailableCapacity": {
+        "table": "Events",
+        "field": "AvailableCapacity",
+        "kind": "formula",
+        "rule": "Ein Event: Available Capacity wird berechnet als der Venue Capacity minus der Booked Capacity.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueCapacity",
+            "label": "venue capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue Capacity minus Booked Capacity"
+      },
+      "Events.AtCapacity": {
+        "table": "Events",
+        "field": "AtCapacity",
+        "kind": "formula",
+        "rule": "Ein Event ist markiert als At Capacity, wenn der Available Capacity höchstens 0 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available Capacity höchstens 0 ist"
+      },
+      "Events.VenueConflictCount": {
+        "table": "Events",
+        "field": "VenueConflictCount",
+        "kind": "rollup",
+        "rule": "Ein Event: Venue Conflict Count ist die Anzahl der mit dem Event verbundenen Events.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Events, deren Venue ist Venue"
+      },
+      "Events.HasVenueConflict": {
+        "table": "Events",
+        "field": "HasVenueConflict",
+        "kind": "formula",
+        "rule": "Ein Event gilt als über einen Venue Conflict verfügend, wenn der Venue Conflict Count größer ist als 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueConflictCount",
+            "label": "venue conflict count"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue Conflict Count größer als 1 ist"
+      },
+      "Events.EventStatus": {
+        "table": "Events",
+        "field": "EventStatus",
+        "kind": "formula",
+        "rule": "Das Feld „Event Status“ des Event wird nach folgender Priorität bestimmt:\n1. „ready“, wenn alles Folgende gilt: das Kennzeichen „Has Speakers“ gesetzt ist; das Kennzeichen „At Capacity“ nicht gesetzt ist; und das Kennzeichen „Has Venue Conflict“ nicht gesetzt ist;\n2. andernfalls „issues“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasSpeakers",
+            "label": "has speakers"
+          },
+          {
+            "table": "Events",
+            "field": "AtCapacity",
+            "label": "at capacity"
+          },
+          {
+            "table": "Events",
+            "field": "HasVenueConflict",
+            "label": "has venue conflict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Event Status“ des Event wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„ready“",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "das Kennzeichen „Has Speakers“ gesetzt ist"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "das Kennzeichen „At Capacity“ nicht gesetzt ist"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "das Kennzeichen „Has Venue Conflict“ nicht gesetzt ist"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "„issues“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Has Speakers, nicht At Capacity, und nicht Has Venue Conflict, dann \"ready\", andernfalls \"issues\""
+      },
+      "Events.RegistrationDeadline": {
+        "table": "Events",
+        "field": "RegistrationDeadline",
+        "kind": "formula",
+        "rule": "Ein Event: Registration Deadline wird berechnet als die Event Date minus der Registration Close Days Before Event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Events",
+            "field": "RegistrationCloseDaysBeforeEvent",
+            "label": "registration close days before event"
+          }
+        ],
+        "structure": null,
+        "plain": "Event Date minus Registration Close Days Before Event"
+      },
+      "Events.IsRegistrationOpen": {
+        "table": "Events",
+        "field": "IsRegistrationOpen",
+        "kind": "formula",
+        "rule": "Ein Event gilt als registration open, wenn die Registration Deadline größer ist als das aktuelle Datum und die aktuelle Uhrzeit.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "RegistrationDeadline",
+            "label": "registration deadline"
+          }
+        ],
+        "structure": null,
+        "plain": "Registration Deadline größer als jetzt ist"
+      },
+      "Events.CapacityHeadroom": {
+        "table": "Events",
+        "field": "CapacityHeadroom",
+        "kind": "formula",
+        "rule": "Ein Event: Capacity Headroom wird berechnet als der Available Capacity minus der Booked Capacity.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available Capacity minus Booked Capacity"
+      },
+      "Events.HasHeadroomForOverbooking": {
+        "table": "Events",
+        "field": "HasHeadroomForOverbooking",
+        "kind": "formula",
+        "rule": "Ein Event gilt als über headroom for overbooking verfügend, wenn der Capacity Headroom mindestens der Booked Capacity mal 0.2 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CapacityHeadroom",
+            "label": "capacity headroom"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Capacity Headroom mindestens (Booked Capacity mal 0.2) ist"
+      },
+      "Events.RecommendedOverbookingFactor": {
+        "table": "Events",
+        "field": "RecommendedOverbookingFactor",
+        "kind": "formula",
+        "rule": "Das Feld „Recommended Overbooking Factor“ des Event wird nach folgender Priorität bestimmt:\n1. 1.2, wenn das Kennzeichen „Has Headroom for Overbooking“ gesetzt ist;\n2. andernfalls 1.0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasHeadroomForOverbooking",
+            "label": "has headroom for overbooking"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Recommended Overbooking Factor“ des Event wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "1.2",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Has Headroom for Overbooking“ gesetzt ist"
+              }
+            },
+            {
+              "value": "1.0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Has Headroom for Overbooking, dann 1.2, andernfalls 1.0"
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Assignment: Name entspricht Assignment ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "Assignments.EventName": {
+        "table": "Assignments",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Ein Assignment: Event Name ist der Event Ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event Ref"
+      },
+      "Assignments.SpeakerName": {
+        "table": "Assignments",
+        "field": "SpeakerName",
+        "kind": "lookup",
+        "rule": "Ein Assignment: Speaker Name ist der Speaker Ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker Ref"
+      },
+      "Assignments.EventDate": {
+        "table": "Assignments",
+        "field": "EventDate",
+        "kind": "lookup",
+        "rule": "Ein Assignment: Event Date — aus dem zugehörigen Event Ref übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Event Date des verknüpften Event Ref"
+      },
+      "Assignments.SpeakerAvailStart": {
+        "table": "Assignments",
+        "field": "SpeakerAvailStart",
+        "kind": "lookup",
+        "rule": "Ein Assignment: Speaker Avail Start ist der Availability Start des zugehörigen Speaker Ref des Assignment.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityStart",
+            "label": "availability start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Availability Start des verknüpften Speaker Ref"
+      },
+      "Assignments.SpeakerAvailEnd": {
+        "table": "Assignments",
+        "field": "SpeakerAvailEnd",
+        "kind": "lookup",
+        "rule": "Ein Assignment: Speaker Avail End ist der Availability End des zugehörigen Speaker Ref des Assignment.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityEnd",
+            "label": "availability end"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Availability End des verknüpften Speaker Ref"
+      },
+      "Assignments.IsAvailable": {
+        "table": "Assignments",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "Ein Assignment gilt als eine Available, wenn alles Folgende gilt: die Event Date mindestens der Speaker Avail Start ist und die Event Date höchstens der Speaker Avail End ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailStart",
+            "label": "speaker avail start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailEnd",
+            "label": "speaker avail end"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Ein Assignment gilt als eine Available, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "die Event Date mindestens der Speaker Avail Start ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "die Event Date höchstens der Speaker Avail End ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Event Date mindestens Speaker Avail Start ist und Event Date höchstens Speaker Avail End ist"
+      },
+      "Attendees.Name": {
+        "table": "Attendees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Attendee: Name entspricht Attendee ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Attendees",
+            "field": "AttendeeId",
+            "label": "attendee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ID"
+      },
+      "RSVPs.Name": {
+        "table": "RSVPs",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein RSV P: Name entspricht RSVP ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "RSVPId",
+            "label": "RSVP ID"
+          }
+        ],
+        "structure": null,
+        "plain": "RSVP ID"
+      },
+      "RSVPs.EventName": {
+        "table": "RSVPs",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Ein RSV P: Event Name ist der Event Ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event Ref"
+      },
+      "RSVPs.AttendeeName": {
+        "table": "RSVPs",
+        "field": "AttendeeName",
+        "kind": "lookup",
+        "rule": "Ein RSV P: Attendee Name ist der Attendee Ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "AttendeeRef",
+            "label": "attendee ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee Ref"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Venues": [
+        "Eine Venue **muss** ein Capacity haben."
+      ],
+      "Events": [
+        "Ein Event **muss** auf genau einen Venue verweisen.",
+        "Ein Event **muss** eine Event Date; ein Duration Minutes; und ein Registration Close Days Before Event haben."
+      ],
+      "Assignments": [
+        "Ein Assignment **muss** auf genau einen Event als seinen Event Ref verweisen.",
+        "Ein Assignment **muss** auf genau einen Speaker als seinen Speaker Ref verweisen."
+      ],
+      "RSVPs": [
+        "Ein RSV P **muss** auf genau einen Event als seinen Event Ref verweisen.",
+        "Ein RSV P **muss** auf genau einen Attendee als seinen Attendee Ref verweisen.",
+        "Ein RSV P **muss** ein Status haben."
+      ]
+    },
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Venues": "Venue",
+      "Speakers": "Speaker",
+      "Events": "Event",
+      "Assignments": "Assignment",
+      "Attendees": "Attendee",
+      "RSVPs": "RSV P"
+    }
+  },
+  "es": {
+    "fields": {
+      "Venues.Name": {
+        "table": "Venues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un venue: name es igual a venue ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue ID"
+      },
+      "Speakers.Name": {
+        "table": "Speakers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un speaker: name es igual a speaker ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ID"
+      },
+      "Speakers.AssignmentCount": {
+        "table": "Speakers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "Un speaker: assignment count es el número de assignments relacionados con el speaker.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de assignments cuyo speaker ref es speaker ID"
+      },
+      "Speakers.IsOverbooked": {
+        "table": "Speakers",
+        "field": "IsOverbooked",
+        "kind": "formula",
+        "rule": "Un speaker se considera overbooked si el assignment count es mayor que 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AssignmentCount",
+            "label": "assignment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment count es mayor que 3"
+      },
+      "Events.Name": {
+        "table": "Events",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un event: name es igual a event ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "Events.VenueName": {
+        "table": "Events",
+        "field": "VenueName",
+        "kind": "lookup",
+        "rule": "Un event: venue name es el venue.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue"
+      },
+      "Events.VenueCapacity": {
+        "table": "Events",
+        "field": "VenueCapacity",
+        "kind": "lookup",
+        "rule": "Un event: venue capacity — tomado del venue vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "Capacity",
+            "label": "capacity"
+          },
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          },
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El capacity del venue vinculado"
+      },
+      "Events.EventEnd": {
+        "table": "Events",
+        "field": "EventEnd",
+        "kind": "formula",
+        "rule": "Un event: event end es igual a event date.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date"
+      },
+      "Events.TotalSpeakersAssigned": {
+        "table": "Events",
+        "field": "TotalSpeakersAssigned",
+        "kind": "rollup",
+        "rule": "Un event: total speakers assigned es el número de assignments relacionados con el event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de assignments cuyo event ref es event ID"
+      },
+      "Events.HasSpeakers": {
+        "table": "Events",
+        "field": "HasSpeakers",
+        "kind": "formula",
+        "rule": "Un event se considera que tiene un speakers si el total speakers assigned es mayor que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSpeakersAssigned",
+            "label": "total speakers assigned"
+          }
+        ],
+        "structure": null,
+        "plain": "Total speakers assigned es mayor que 0"
+      },
+      "Events.BookedCapacity": {
+        "table": "Events",
+        "field": "BookedCapacity",
+        "kind": "rollup",
+        "rule": "Un event: booked capacity es el número de RSV ps del event que tienen un status de «confirmed».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          },
+          {
+            "table": "RSVPs",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de RSV ps cuyo event ref es event ID y status es \"confirmed\""
+      },
+      "Events.AvailableCapacity": {
+        "table": "Events",
+        "field": "AvailableCapacity",
+        "kind": "formula",
+        "rule": "Un event: available capacity se calcula como el venue capacity menos el booked capacity.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueCapacity",
+            "label": "venue capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue capacity menos booked capacity"
+      },
+      "Events.AtCapacity": {
+        "table": "Events",
+        "field": "AtCapacity",
+        "kind": "formula",
+        "rule": "Un event está marcado como at capacity si el available capacity es como máximo 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity es como máximo 0"
+      },
+      "Events.VenueConflictCount": {
+        "table": "Events",
+        "field": "VenueConflictCount",
+        "kind": "rollup",
+        "rule": "Un event: venue conflict count es el número de events relacionados con el event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de events cuyo venue es venue"
+      },
+      "Events.HasVenueConflict": {
+        "table": "Events",
+        "field": "HasVenueConflict",
+        "kind": "formula",
+        "rule": "Un event se considera que tiene un venue conflict si el venue conflict count es mayor que 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueConflictCount",
+            "label": "venue conflict count"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue conflict count es mayor que 1"
+      },
+      "Events.EventStatus": {
+        "table": "Events",
+        "field": "EventStatus",
+        "kind": "formula",
+        "rule": "El campo «event status» del event se determina según la siguiente prioridad:\n1. «ready», si se cumple todo lo siguiente: el indicador «speakers» está activado; el indicador «at capacity» no está activado; y el indicador «venue conflict» no está activado;\n2. en todos los demás casos, «issues».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasSpeakers",
+            "label": "has speakers"
+          },
+          {
+            "table": "Events",
+            "field": "AtCapacity",
+            "label": "at capacity"
+          },
+          {
+            "table": "Events",
+            "field": "HasVenueConflict",
+            "label": "has venue conflict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «event status» del event se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«ready»",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "el indicador «speakers» está activado"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "el indicador «at capacity» no está activado"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "el indicador «venue conflict» no está activado"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "«issues»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si has speakers, no at capacity, y no has venue conflict, entonces \"ready\", de lo contrario \"issues\""
+      },
+      "Events.RegistrationDeadline": {
+        "table": "Events",
+        "field": "RegistrationDeadline",
+        "kind": "formula",
+        "rule": "Un event: registration deadline se calcula como el event date menos el registration close days before event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Events",
+            "field": "RegistrationCloseDaysBeforeEvent",
+            "label": "registration close days before event"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date menos registration close days before event"
+      },
+      "Events.IsRegistrationOpen": {
+        "table": "Events",
+        "field": "IsRegistrationOpen",
+        "kind": "formula",
+        "rule": "Un event se considera registration open si el registration deadline es mayor que la fecha y hora actuales.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "RegistrationDeadline",
+            "label": "registration deadline"
+          }
+        ],
+        "structure": null,
+        "plain": "Registration deadline es mayor que ahora"
+      },
+      "Events.CapacityHeadroom": {
+        "table": "Events",
+        "field": "CapacityHeadroom",
+        "kind": "formula",
+        "rule": "Un event: capacity headroom se calcula como el available capacity menos el booked capacity.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity menos booked capacity"
+      },
+      "Events.HasHeadroomForOverbooking": {
+        "table": "Events",
+        "field": "HasHeadroomForOverbooking",
+        "kind": "formula",
+        "rule": "Un event se considera que tiene un headroom for overbooking si el capacity headroom es al menos el booked capacity por 0.2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CapacityHeadroom",
+            "label": "capacity headroom"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Capacity headroom es al menos (booked capacity por 0.2)"
+      },
+      "Events.RecommendedOverbookingFactor": {
+        "table": "Events",
+        "field": "RecommendedOverbookingFactor",
+        "kind": "formula",
+        "rule": "El campo «recommended overbooking factor» del event se determina según la siguiente prioridad:\n1. 1.2, si el indicador «headroom for overbooking» está activado;\n2. en todos los demás casos, 1.0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasHeadroomForOverbooking",
+            "label": "has headroom for overbooking"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «recommended overbooking factor» del event se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "1.2",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «headroom for overbooking» está activado"
+              }
+            },
+            {
+              "value": "1.0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si has headroom for overbooking, entonces 1.2, de lo contrario 1.0"
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un assignment: name es igual a assignment ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "Assignments.EventName": {
+        "table": "Assignments",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Un assignment: event name es el event ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "Assignments.SpeakerName": {
+        "table": "Assignments",
+        "field": "SpeakerName",
+        "kind": "lookup",
+        "rule": "Un assignment: speaker name es el speaker ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ref"
+      },
+      "Assignments.EventDate": {
+        "table": "Assignments",
+        "field": "EventDate",
+        "kind": "lookup",
+        "rule": "Un assignment: event date — tomado del event ref vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El event date del event ref vinculado"
+      },
+      "Assignments.SpeakerAvailStart": {
+        "table": "Assignments",
+        "field": "SpeakerAvailStart",
+        "kind": "lookup",
+        "rule": "Un assignment: speaker avail start es el availability start del speaker ref vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityStart",
+            "label": "availability start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El availability start del speaker ref vinculado"
+      },
+      "Assignments.SpeakerAvailEnd": {
+        "table": "Assignments",
+        "field": "SpeakerAvailEnd",
+        "kind": "lookup",
+        "rule": "Un assignment: speaker avail end es el availability end del speaker ref vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityEnd",
+            "label": "availability end"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El availability end del speaker ref vinculado"
+      },
+      "Assignments.IsAvailable": {
+        "table": "Assignments",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "Un assignment se considera available si se cumple todo lo siguiente: el event date es al menos el speaker avail start y el event date es como máximo el speaker avail end.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailStart",
+            "label": "speaker avail start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailEnd",
+            "label": "speaker avail end"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un assignment se considera available si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el event date es al menos el speaker avail start"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el event date es como máximo el speaker avail end"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Event date es al menos speaker avail start y event date es como máximo speaker avail end"
+      },
+      "Attendees.Name": {
+        "table": "Attendees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un attendee: name es igual a attendee ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Attendees",
+            "field": "AttendeeId",
+            "label": "attendee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ID"
+      },
+      "RSVPs.Name": {
+        "table": "RSVPs",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un RSV p: name es igual a RSVP ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "RSVPId",
+            "label": "RSVP ID"
+          }
+        ],
+        "structure": null,
+        "plain": "RSVP ID"
+      },
+      "RSVPs.EventName": {
+        "table": "RSVPs",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Un RSV p: event name es el event ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "RSVPs.AttendeeName": {
+        "table": "RSVPs",
+        "field": "AttendeeName",
+        "kind": "lookup",
+        "rule": "Un RSV p: attendee name es el attendee ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "AttendeeRef",
+            "label": "attendee ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ref"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Venues": [
+        "Un venue **debe** tener un capacity."
+      ],
+      "Events": [
+        "Un event **debe** referenciar exactamente un venue.",
+        "Un event **debe** tener un event date; un duration minutes; y un registration close days before event."
+      ],
+      "Assignments": [
+        "Un assignment **debe** referenciar exactamente un event como su event ref.",
+        "Un assignment **debe** referenciar exactamente un speaker como su speaker ref."
+      ],
+      "RSVPs": [
+        "Un RSV p **debe** referenciar exactamente un event como su event ref.",
+        "Un RSV p **debe** referenciar exactamente un attendee como su attendee ref.",
+        "Un RSV p **debe** tener un status."
+      ]
+    },
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Venues": "venue",
+      "Speakers": "speaker",
+      "Events": "event",
+      "Assignments": "assignment",
+      "Attendees": "attendee",
+      "RSVPs": "RSV p"
+    }
+  },
+  "fr": {
+    "fields": {
+      "Venues.Name": {
+        "table": "Venues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un venue : name est identique à venue ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue ID"
+      },
+      "Speakers.Name": {
+        "table": "Speakers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un speaker : name est identique à speaker ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ID"
+      },
+      "Speakers.AssignmentCount": {
+        "table": "Speakers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "Un speaker : assignment count est le nombre de assignments liés à le speaker.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des assignments dont speaker ref est speaker ID"
+      },
+      "Speakers.IsOverbooked": {
+        "table": "Speakers",
+        "field": "IsOverbooked",
+        "kind": "formula",
+        "rule": "Un speaker est considéré comme overbooked si l'assignment count est supérieur à 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AssignmentCount",
+            "label": "assignment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment count est supérieur à 3"
+      },
+      "Events.Name": {
+        "table": "Events",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un event : name est identique à event ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "Events.VenueName": {
+        "table": "Events",
+        "field": "VenueName",
+        "kind": "lookup",
+        "rule": "Un event : venue name est le venue.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue"
+      },
+      "Events.VenueCapacity": {
+        "table": "Events",
+        "field": "VenueCapacity",
+        "kind": "lookup",
+        "rule": "Un event : venue capacity — repris du venue lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "Capacity",
+            "label": "capacity"
+          },
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          },
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le capacity du venue lié"
+      },
+      "Events.EventEnd": {
+        "table": "Events",
+        "field": "EventEnd",
+        "kind": "formula",
+        "rule": "Un event : event end est identique à event date.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date"
+      },
+      "Events.TotalSpeakersAssigned": {
+        "table": "Events",
+        "field": "TotalSpeakersAssigned",
+        "kind": "rollup",
+        "rule": "Un event : total speakers assigned est le nombre de assignments liés à l'event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des assignments dont event ref est event ID"
+      },
+      "Events.HasSpeakers": {
+        "table": "Events",
+        "field": "HasSpeakers",
+        "kind": "formula",
+        "rule": "Un event est considéré comme disposant de un speakers si le total speakers assigned est supérieur à 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSpeakersAssigned",
+            "label": "total speakers assigned"
+          }
+        ],
+        "structure": null,
+        "plain": "Total speakers assigned est supérieur à 0"
+      },
+      "Events.BookedCapacity": {
+        "table": "Events",
+        "field": "BookedCapacity",
+        "kind": "rollup",
+        "rule": "Un event : booked capacity est le nombre de RSV ps de l'event qui ont un status de « confirmed ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          },
+          {
+            "table": "RSVPs",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des RSV ps dont event ref est event ID et status est \"confirmed\""
+      },
+      "Events.AvailableCapacity": {
+        "table": "Events",
+        "field": "AvailableCapacity",
+        "kind": "formula",
+        "rule": "Un event : available capacity est calculé comme le venue capacity moins le booked capacity.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueCapacity",
+            "label": "venue capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue capacity moins booked capacity"
+      },
+      "Events.AtCapacity": {
+        "table": "Events",
+        "field": "AtCapacity",
+        "kind": "formula",
+        "rule": "Un event est marqué comme at capacity si l'available capacity est au plus 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity est au plus 0"
+      },
+      "Events.VenueConflictCount": {
+        "table": "Events",
+        "field": "VenueConflictCount",
+        "kind": "rollup",
+        "rule": "Un event : venue conflict count est le nombre de events liés à l'event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des events dont venue est venue"
+      },
+      "Events.HasVenueConflict": {
+        "table": "Events",
+        "field": "HasVenueConflict",
+        "kind": "formula",
+        "rule": "Un event est considéré comme disposant de un venue conflict si le venue conflict count est supérieur à 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueConflictCount",
+            "label": "venue conflict count"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue conflict count est supérieur à 1"
+      },
+      "Events.EventStatus": {
+        "table": "Events",
+        "field": "EventStatus",
+        "kind": "formula",
+        "rule": "Le champ « event status » de l'event est déterminé selon la priorité suivante :\n1. « ready », si tout ce qui suit est vrai : l'indicateur « speakers » est activé; l'indicateur « at capacity » n'est pas activé; et l'indicateur « venue conflict » n'est pas activé ;\n2. dans tous les autres cas, « issues ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasSpeakers",
+            "label": "has speakers"
+          },
+          {
+            "table": "Events",
+            "field": "AtCapacity",
+            "label": "at capacity"
+          },
+          {
+            "table": "Events",
+            "field": "HasVenueConflict",
+            "label": "has venue conflict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « event status » de l'event est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« ready »",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "l'indicateur « speakers » est activé"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "l'indicateur « at capacity » n'est pas activé"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "l'indicateur « venue conflict » n'est pas activé"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "« issues »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si has speakers, non at capacity, et non has venue conflict, alors \"ready\", sinon \"issues\""
+      },
+      "Events.RegistrationDeadline": {
+        "table": "Events",
+        "field": "RegistrationDeadline",
+        "kind": "formula",
+        "rule": "Un event : registration deadline est calculé comme l'event date moins le registration close days before event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Events",
+            "field": "RegistrationCloseDaysBeforeEvent",
+            "label": "registration close days before event"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date moins registration close days before event"
+      },
+      "Events.IsRegistrationOpen": {
+        "table": "Events",
+        "field": "IsRegistrationOpen",
+        "kind": "formula",
+        "rule": "Un event est considéré comme registration open si le registration deadline est supérieur à la date et l'heure actuelles.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "RegistrationDeadline",
+            "label": "registration deadline"
+          }
+        ],
+        "structure": null,
+        "plain": "Registration deadline est supérieur à maintenant"
+      },
+      "Events.CapacityHeadroom": {
+        "table": "Events",
+        "field": "CapacityHeadroom",
+        "kind": "formula",
+        "rule": "Un event : capacity headroom est calculé comme l'available capacity moins le booked capacity.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity moins booked capacity"
+      },
+      "Events.HasHeadroomForOverbooking": {
+        "table": "Events",
+        "field": "HasHeadroomForOverbooking",
+        "kind": "formula",
+        "rule": "Un event est considéré comme disposant de un headroom for overbooking si le capacity headroom est au moins le booked capacity multiplié par 0.2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CapacityHeadroom",
+            "label": "capacity headroom"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Capacity headroom est au moins (booked capacity fois 0.2)"
+      },
+      "Events.RecommendedOverbookingFactor": {
+        "table": "Events",
+        "field": "RecommendedOverbookingFactor",
+        "kind": "formula",
+        "rule": "Le champ « recommended overbooking factor » de l'event est déterminé selon la priorité suivante :\n1. 1.2, si l'indicateur « headroom for overbooking » est activé ;\n2. dans tous les autres cas, 1.0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasHeadroomForOverbooking",
+            "label": "has headroom for overbooking"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « recommended overbooking factor » de l'event est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "1.2",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « headroom for overbooking » est activé"
+              }
+            },
+            {
+              "value": "1.0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si has headroom for overbooking, alors 1.2, sinon 1.0"
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un assignment : name est identique à assignment ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "Assignments.EventName": {
+        "table": "Assignments",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Un assignment : event name est l'event ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "Assignments.SpeakerName": {
+        "table": "Assignments",
+        "field": "SpeakerName",
+        "kind": "lookup",
+        "rule": "Un assignment : speaker name est le speaker ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ref"
+      },
+      "Assignments.EventDate": {
+        "table": "Assignments",
+        "field": "EventDate",
+        "kind": "lookup",
+        "rule": "Un assignment : event date — repris du event ref lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le event date du event ref lié"
+      },
+      "Assignments.SpeakerAvailStart": {
+        "table": "Assignments",
+        "field": "SpeakerAvailStart",
+        "kind": "lookup",
+        "rule": "Un assignment : speaker avail start est le availability start du speaker ref lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityStart",
+            "label": "availability start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le availability start du speaker ref lié"
+      },
+      "Assignments.SpeakerAvailEnd": {
+        "table": "Assignments",
+        "field": "SpeakerAvailEnd",
+        "kind": "lookup",
+        "rule": "Un assignment : speaker avail end est le availability end du speaker ref lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityEnd",
+            "label": "availability end"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le availability end du speaker ref lié"
+      },
+      "Assignments.IsAvailable": {
+        "table": "Assignments",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "Un assignment est considéré comme available si tout ce qui suit est vrai : l'event date est au moins le speaker avail start et l'event date est au plus le speaker avail end.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailStart",
+            "label": "speaker avail start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailEnd",
+            "label": "speaker avail end"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un assignment est considéré comme available si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'event date est au moins le speaker avail start"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'event date est au plus le speaker avail end"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Event date est au moins speaker avail start et event date est au plus speaker avail end"
+      },
+      "Attendees.Name": {
+        "table": "Attendees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un attendee : name est identique à attendee ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Attendees",
+            "field": "AttendeeId",
+            "label": "attendee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ID"
+      },
+      "RSVPs.Name": {
+        "table": "RSVPs",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un RSV p : name est identique à RSVP ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "RSVPId",
+            "label": "RSVP ID"
+          }
+        ],
+        "structure": null,
+        "plain": "RSVP ID"
+      },
+      "RSVPs.EventName": {
+        "table": "RSVPs",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Un RSV p : event name est l'event ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "RSVPs.AttendeeName": {
+        "table": "RSVPs",
+        "field": "AttendeeName",
+        "kind": "lookup",
+        "rule": "Un RSV p : attendee name est l'attendee ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "AttendeeRef",
+            "label": "attendee ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ref"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Venues": [
+        "Un venue **doit** avoir un capacity."
+      ],
+      "Events": [
+        "Un event **doit** référencer exactement un venue.",
+        "Un event **doit** avoir un event date; un duration minutes; et un registration close days before event."
+      ],
+      "Assignments": [
+        "Un assignment **doit** référencer exactement un event comme son event ref.",
+        "Un assignment **doit** référencer exactement un speaker comme son speaker ref."
+      ],
+      "RSVPs": [
+        "Un RSV p **doit** référencer exactement un event comme son event ref.",
+        "Un RSV p **doit** référencer exactement un attendee comme son attendee ref.",
+        "Un RSV p **doit** avoir un status."
+      ]
+    },
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Venues": "venue",
+      "Speakers": "speaker",
+      "Events": "event",
+      "Assignments": "assignment",
+      "Attendees": "attendee",
+      "RSVPs": "RSV p"
+    }
+  },
+  "hi": {
+    "fields": {
+      "Venues.Name": {
+        "table": "Venues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "venue का “name” उसके “venue ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue ID"
+      },
+      "Speakers.Name": {
+        "table": "Speakers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "speaker का “name” उसके “speaker ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ID"
+      },
+      "Speakers.AssignmentCount": {
+        "table": "Speakers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "speaker का “assignment count” speaker से संबंधित “assignments” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “assignments” की संख्या, जिनका speaker ref speaker ID है"
+      },
+      "Speakers.IsOverbooked": {
+        "table": "Speakers",
+        "field": "IsOverbooked",
+        "kind": "formula",
+        "rule": "यदि assignment count 3 से अधिक है, तो speaker “overbooked” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AssignmentCount",
+            "label": "assignment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment count 3 से अधिक है"
+      },
+      "Events.Name": {
+        "table": "Events",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "event का “name” उसके “event ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "Events.VenueName": {
+        "table": "Events",
+        "field": "VenueName",
+        "kind": "lookup",
+        "rule": "event का “venue name” venue है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue"
+      },
+      "Events.VenueCapacity": {
+        "table": "Events",
+        "field": "VenueCapacity",
+        "kind": "lookup",
+        "rule": "event का “venue capacity” — लिंक किए गए “venue” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "Capacity",
+            "label": "capacity"
+          },
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          },
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “venue” का capacity"
+      },
+      "Events.EventEnd": {
+        "table": "Events",
+        "field": "EventEnd",
+        "kind": "formula",
+        "rule": "event का “event end” उसके “event date” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date"
+      },
+      "Events.TotalSpeakersAssigned": {
+        "table": "Events",
+        "field": "TotalSpeakersAssigned",
+        "kind": "rollup",
+        "rule": "event का “total speakers assigned” event से संबंधित “assignments” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “assignments” की संख्या, जिनका event ref event ID है"
+      },
+      "Events.HasSpeakers": {
+        "table": "Events",
+        "field": "HasSpeakers",
+        "kind": "formula",
+        "rule": "यदि total speakers assigned 0 से अधिक है, तो event “speakers” रखने वाला माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSpeakersAssigned",
+            "label": "total speakers assigned"
+          }
+        ],
+        "structure": null,
+        "plain": "Total speakers assigned 0 से अधिक है"
+      },
+      "Events.BookedCapacity": {
+        "table": "Events",
+        "field": "BookedCapacity",
+        "kind": "rollup",
+        "rule": "event का “booked capacity” event के उन “RSV ps” की संख्या, जो “status” का मान “confirmed” रखते हैं है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          },
+          {
+            "table": "RSVPs",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “RSV ps” की संख्या, जिनका event ref event ID है और status \"confirmed\" है"
+      },
+      "Events.AvailableCapacity": {
+        "table": "Events",
+        "field": "AvailableCapacity",
+        "kind": "formula",
+        "rule": "event का “available capacity” venue capacity घटा booked capacity के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueCapacity",
+            "label": "venue capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue capacity घटा booked capacity"
+      },
+      "Events.AtCapacity": {
+        "table": "Events",
+        "field": "AtCapacity",
+        "kind": "formula",
+        "rule": "यदि available capacity अधिक से अधिक 0 है, तो event “at capacity” के रूप में दर्ज किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity अधिक से अधिक 0 है"
+      },
+      "Events.VenueConflictCount": {
+        "table": "Events",
+        "field": "VenueConflictCount",
+        "kind": "rollup",
+        "rule": "event का “venue conflict count” event से संबंधित “events” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “events” की संख्या, जिनका venue venue है"
+      },
+      "Events.HasVenueConflict": {
+        "table": "Events",
+        "field": "HasVenueConflict",
+        "kind": "formula",
+        "rule": "यदि venue conflict count 1 से अधिक है, तो event “venue conflict” रखने वाला माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueConflictCount",
+            "label": "venue conflict count"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue conflict count 1 से अधिक है"
+      },
+      "Events.EventStatus": {
+        "table": "Events",
+        "field": "EventStatus",
+        "kind": "formula",
+        "rule": "Event का “event status” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “ready”, यदि निम्नलिखित सभी सही हैं: “speakers” ध्वज लगा हुआ है, “at capacity” ध्वज लगा हुआ नहीं है और “venue conflict” ध्वज लगा हुआ नहीं है;\n2. अन्य सभी स्थितियों में, “issues”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasSpeakers",
+            "label": "has speakers"
+          },
+          {
+            "table": "Events",
+            "field": "AtCapacity",
+            "label": "at capacity"
+          },
+          {
+            "table": "Events",
+            "field": "HasVenueConflict",
+            "label": "has venue conflict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Event का “event status” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“ready”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "“speakers” ध्वज लगा हुआ है"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "“at capacity” ध्वज लगा हुआ नहीं है"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "“venue conflict” ध्वज लगा हुआ नहीं है"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“issues”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि has speakers, at capacity नहीं और has venue conflict नहीं, तो \"ready\", अन्यथा \"issues\""
+      },
+      "Events.RegistrationDeadline": {
+        "table": "Events",
+        "field": "RegistrationDeadline",
+        "kind": "formula",
+        "rule": "event का “registration deadline” event date घटा registration close days before event के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Events",
+            "field": "RegistrationCloseDaysBeforeEvent",
+            "label": "registration close days before event"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date घटा registration close days before event"
+      },
+      "Events.IsRegistrationOpen": {
+        "table": "Events",
+        "field": "IsRegistrationOpen",
+        "kind": "formula",
+        "rule": "यदि registration deadline वर्तमान तारीख और समय से अधिक है, तो event “registration open” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "RegistrationDeadline",
+            "label": "registration deadline"
+          }
+        ],
+        "structure": null,
+        "plain": "Registration deadline अभी से अधिक है"
+      },
+      "Events.CapacityHeadroom": {
+        "table": "Events",
+        "field": "CapacityHeadroom",
+        "kind": "formula",
+        "rule": "event का “capacity headroom” available capacity घटा booked capacity के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity घटा booked capacity"
+      },
+      "Events.HasHeadroomForOverbooking": {
+        "table": "Events",
+        "field": "HasHeadroomForOverbooking",
+        "kind": "formula",
+        "rule": "यदि capacity headroom कम से कम booked capacity गुणा 0.2 है, तो event “headroom for overbooking” रखने वाला माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CapacityHeadroom",
+            "label": "capacity headroom"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Capacity headroom कम से कम (booked capacity गुणा 0.2) है"
+      },
+      "Events.RecommendedOverbookingFactor": {
+        "table": "Events",
+        "field": "RecommendedOverbookingFactor",
+        "kind": "formula",
+        "rule": "Event का “recommended overbooking factor” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. 1.2, यदि “headroom for overbooking” ध्वज लगा हुआ है;\n2. अन्य सभी स्थितियों में, 1.0।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasHeadroomForOverbooking",
+            "label": "has headroom for overbooking"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Event का “recommended overbooking factor” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "1.2",
+              "when": {
+                "kind": "leaf",
+                "text": "“headroom for overbooking” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "1.0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि has headroom for overbooking, तो 1.2, अन्यथा 1.0"
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "assignment का “name” उसके “assignment ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "Assignments.EventName": {
+        "table": "Assignments",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "assignment का “event name” event ref है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "Assignments.SpeakerName": {
+        "table": "Assignments",
+        "field": "SpeakerName",
+        "kind": "lookup",
+        "rule": "assignment का “speaker name” speaker ref है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ref"
+      },
+      "Assignments.EventDate": {
+        "table": "Assignments",
+        "field": "EventDate",
+        "kind": "lookup",
+        "rule": "assignment का “event date” — लिंक किए गए “event ref” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “event ref” का event date"
+      },
+      "Assignments.SpeakerAvailStart": {
+        "table": "Assignments",
+        "field": "SpeakerAvailStart",
+        "kind": "lookup",
+        "rule": "assignment का “speaker avail start” लिंक किए गए “speaker ref” का “availability start” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityStart",
+            "label": "availability start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “speaker ref” का availability start"
+      },
+      "Assignments.SpeakerAvailEnd": {
+        "table": "Assignments",
+        "field": "SpeakerAvailEnd",
+        "kind": "lookup",
+        "rule": "assignment का “speaker avail end” लिंक किए गए “speaker ref” का “availability end” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityEnd",
+            "label": "availability end"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “speaker ref” का availability end"
+      },
+      "Assignments.IsAvailable": {
+        "table": "Assignments",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: event date कम से कम speaker avail start है और event date अधिक से अधिक speaker avail end है, तो assignment “available” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailStart",
+            "label": "speaker avail start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailEnd",
+            "label": "speaker avail end"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "assignment “available” माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "event date कम से कम speaker avail start है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "event date अधिक से अधिक speaker avail end है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Event date कम से कम speaker avail start है और event date अधिक से अधिक speaker avail end है"
+      },
+      "Attendees.Name": {
+        "table": "Attendees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "attendee का “name” उसके “attendee ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Attendees",
+            "field": "AttendeeId",
+            "label": "attendee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ID"
+      },
+      "RSVPs.Name": {
+        "table": "RSVPs",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "RSV p का “name” उसके “RSVP ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "RSVPId",
+            "label": "RSVP ID"
+          }
+        ],
+        "structure": null,
+        "plain": "RSVP ID"
+      },
+      "RSVPs.EventName": {
+        "table": "RSVPs",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "RSV p का “event name” event ref है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "RSVPs.AttendeeName": {
+        "table": "RSVPs",
+        "field": "AttendeeName",
+        "kind": "lookup",
+        "rule": "RSV p का “attendee name” attendee ref है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "AttendeeRef",
+            "label": "attendee ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ref"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Venues": [
+        "venue को capacity रखना **अनिवार्य** है।"
+      ],
+      "Events": [
+        "event को ठीक एक “venue” का संदर्भ देना **अनिवार्य** है।",
+        "event को event date, duration minutes और registration close days before event रखना **अनिवार्य** है।"
+      ],
+      "Assignments": [
+        "assignment को अपने “event ref” के रूप में ठीक एक “event” का संदर्भ देना **अनिवार्य** है।",
+        "assignment को अपने “speaker ref” के रूप में ठीक एक “speaker” का संदर्भ देना **अनिवार्य** है।"
+      ],
+      "RSVPs": [
+        "RSV p को अपने “event ref” के रूप में ठीक एक “event” का संदर्भ देना **अनिवार्य** है।",
+        "RSV p को अपने “attendee ref” के रूप में ठीक एक “attendee” का संदर्भ देना **अनिवार्य** है।",
+        "RSV p को status रखना **अनिवार्य** है।"
+      ]
+    },
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "Venues": "venue",
+      "Speakers": "speaker",
+      "Events": "event",
+      "Assignments": "assignment",
+      "Attendees": "attendee",
+      "RSVPs": "RSV p"
+    }
+  },
+  "id": {
+    "fields": {
+      "Venues.Name": {
+        "table": "Venues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap venue, name sama dengan venue ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue ID"
+      },
+      "Speakers.Name": {
+        "table": "Speakers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap speaker, name sama dengan speaker ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ID"
+      },
+      "Speakers.AssignmentCount": {
+        "table": "Speakers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap speaker, assignment count adalah jumlah assignments yang terkait dengan speaker tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah assignments dengan syarat speaker ref adalah speaker ID"
+      },
+      "Speakers.IsOverbooked": {
+        "table": "Speakers",
+        "field": "IsOverbooked",
+        "kind": "formula",
+        "rule": "Setiap speaker dianggap “overbooked” jika assignment count lebih dari 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AssignmentCount",
+            "label": "assignment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment count lebih dari 3"
+      },
+      "Events.Name": {
+        "table": "Events",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap event, name sama dengan event ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "Events.VenueName": {
+        "table": "Events",
+        "field": "VenueName",
+        "kind": "lookup",
+        "rule": "Untuk setiap event, venue name adalah venue.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue"
+      },
+      "Events.VenueCapacity": {
+        "table": "Events",
+        "field": "VenueCapacity",
+        "kind": "lookup",
+        "rule": "Untuk setiap event, venue capacity diambil dari venue yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "Capacity",
+            "label": "capacity"
+          },
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          },
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Capacity dari venue yang tertaut"
+      },
+      "Events.EventEnd": {
+        "table": "Events",
+        "field": "EventEnd",
+        "kind": "formula",
+        "rule": "Untuk setiap event, event end sama dengan event date.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date"
+      },
+      "Events.TotalSpeakersAssigned": {
+        "table": "Events",
+        "field": "TotalSpeakersAssigned",
+        "kind": "rollup",
+        "rule": "Untuk setiap event, total speakers assigned adalah jumlah assignments yang terkait dengan event tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah assignments dengan syarat event ref adalah event ID"
+      },
+      "Events.HasSpeakers": {
+        "table": "Events",
+        "field": "HasSpeakers",
+        "kind": "formula",
+        "rule": "Setiap event dianggap memiliki “speakers” jika total speakers assigned lebih dari 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSpeakersAssigned",
+            "label": "total speakers assigned"
+          }
+        ],
+        "structure": null,
+        "plain": "Total speakers assigned lebih dari 0"
+      },
+      "Events.BookedCapacity": {
+        "table": "Events",
+        "field": "BookedCapacity",
+        "kind": "rollup",
+        "rule": "Untuk setiap event, booked capacity adalah jumlah RSV ps dari event tersebut yang memiliki status bernilai “confirmed”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          },
+          {
+            "table": "RSVPs",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah RSV ps dengan syarat event ref adalah event ID dan status adalah \"confirmed\""
+      },
+      "Events.AvailableCapacity": {
+        "table": "Events",
+        "field": "AvailableCapacity",
+        "kind": "formula",
+        "rule": "Untuk setiap event, available capacity dihitung sebagai venue capacity dikurangi booked capacity.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueCapacity",
+            "label": "venue capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue capacity dikurangi booked capacity"
+      },
+      "Events.AtCapacity": {
+        "table": "Events",
+        "field": "AtCapacity",
+        "kind": "formula",
+        "rule": "Setiap event ditandai sebagai “at capacity” jika available capacity tidak lebih dari 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity tidak lebih dari 0"
+      },
+      "Events.VenueConflictCount": {
+        "table": "Events",
+        "field": "VenueConflictCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap event, venue conflict count adalah jumlah events yang terkait dengan event tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah events dengan syarat venue adalah venue"
+      },
+      "Events.HasVenueConflict": {
+        "table": "Events",
+        "field": "HasVenueConflict",
+        "kind": "formula",
+        "rule": "Setiap event dianggap memiliki “venue conflict” jika venue conflict count lebih dari 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueConflictCount",
+            "label": "venue conflict count"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue conflict count lebih dari 1"
+      },
+      "Events.EventStatus": {
+        "table": "Events",
+        "field": "EventStatus",
+        "kind": "formula",
+        "rule": "Untuk setiap event, event status ditentukan menurut urutan prioritas berikut:\n1. “ready”, jika semua kondisi berikut terpenuhi: penanda “speakers” aktif, penanda “at capacity” tidak aktif, dan penanda “venue conflict” tidak aktif;\n2. dalam semua kasus lainnya, “issues”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasSpeakers",
+            "label": "has speakers"
+          },
+          {
+            "table": "Events",
+            "field": "AtCapacity",
+            "label": "at capacity"
+          },
+          {
+            "table": "Events",
+            "field": "HasVenueConflict",
+            "label": "has venue conflict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap event, event status ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“ready”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "penanda “speakers” aktif"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "penanda “at capacity” tidak aktif"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "penanda “venue conflict” tidak aktif"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“issues”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika has speakers, tidak benar bahwa at capacity, dan tidak benar bahwa has venue conflict maka \"ready\", selain itu \"issues\""
+      },
+      "Events.RegistrationDeadline": {
+        "table": "Events",
+        "field": "RegistrationDeadline",
+        "kind": "formula",
+        "rule": "Untuk setiap event, registration deadline dihitung sebagai event date dikurangi registration close days before event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Events",
+            "field": "RegistrationCloseDaysBeforeEvent",
+            "label": "registration close days before event"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date dikurangi registration close days before event"
+      },
+      "Events.IsRegistrationOpen": {
+        "table": "Events",
+        "field": "IsRegistrationOpen",
+        "kind": "formula",
+        "rule": "Setiap event dianggap “registration open” jika registration deadline lebih dari tanggal dan waktu saat ini.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "RegistrationDeadline",
+            "label": "registration deadline"
+          }
+        ],
+        "structure": null,
+        "plain": "Registration deadline lebih dari saat ini"
+      },
+      "Events.CapacityHeadroom": {
+        "table": "Events",
+        "field": "CapacityHeadroom",
+        "kind": "formula",
+        "rule": "Untuk setiap event, capacity headroom dihitung sebagai available capacity dikurangi booked capacity.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity dikurangi booked capacity"
+      },
+      "Events.HasHeadroomForOverbooking": {
+        "table": "Events",
+        "field": "HasHeadroomForOverbooking",
+        "kind": "formula",
+        "rule": "Setiap event dianggap memiliki “headroom for overbooking” jika capacity headroom tidak kurang dari booked capacity dikali 0.2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CapacityHeadroom",
+            "label": "capacity headroom"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Capacity headroom tidak kurang dari (booked capacity dikali 0.2)"
+      },
+      "Events.RecommendedOverbookingFactor": {
+        "table": "Events",
+        "field": "RecommendedOverbookingFactor",
+        "kind": "formula",
+        "rule": "Untuk setiap event, recommended overbooking factor ditentukan menurut urutan prioritas berikut:\n1. 1.2, jika penanda “headroom for overbooking” aktif;\n2. dalam semua kasus lainnya, 1.0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasHeadroomForOverbooking",
+            "label": "has headroom for overbooking"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap event, recommended overbooking factor ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "1.2",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “headroom for overbooking” aktif"
+              }
+            },
+            {
+              "value": "1.0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika has headroom for overbooking maka 1.2, selain itu 1.0"
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap assignment, name sama dengan assignment ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "Assignments.EventName": {
+        "table": "Assignments",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Untuk setiap assignment, event name adalah event ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "Assignments.SpeakerName": {
+        "table": "Assignments",
+        "field": "SpeakerName",
+        "kind": "lookup",
+        "rule": "Untuk setiap assignment, speaker name adalah speaker ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ref"
+      },
+      "Assignments.EventDate": {
+        "table": "Assignments",
+        "field": "EventDate",
+        "kind": "lookup",
+        "rule": "Untuk setiap assignment, event date diambil dari event ref yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date dari event ref yang tertaut"
+      },
+      "Assignments.SpeakerAvailStart": {
+        "table": "Assignments",
+        "field": "SpeakerAvailStart",
+        "kind": "lookup",
+        "rule": "Untuk setiap assignment, speaker avail start adalah availability start dari speaker ref yang tertaut pada assignment tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityStart",
+            "label": "availability start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Availability start dari speaker ref yang tertaut"
+      },
+      "Assignments.SpeakerAvailEnd": {
+        "table": "Assignments",
+        "field": "SpeakerAvailEnd",
+        "kind": "lookup",
+        "rule": "Untuk setiap assignment, speaker avail end adalah availability end dari speaker ref yang tertaut pada assignment tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityEnd",
+            "label": "availability end"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Availability end dari speaker ref yang tertaut"
+      },
+      "Assignments.IsAvailable": {
+        "table": "Assignments",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "Setiap assignment dianggap “available” jika semua kondisi berikut terpenuhi: event date tidak kurang dari speaker avail start dan event date tidak lebih dari speaker avail end.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailStart",
+            "label": "speaker avail start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailEnd",
+            "label": "speaker avail end"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap assignment dianggap “available” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "event date tidak kurang dari speaker avail start"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "event date tidak lebih dari speaker avail end"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Event date tidak kurang dari speaker avail start dan event date tidak lebih dari speaker avail end"
+      },
+      "Attendees.Name": {
+        "table": "Attendees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap attendee, name sama dengan attendee ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Attendees",
+            "field": "AttendeeId",
+            "label": "attendee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ID"
+      },
+      "RSVPs.Name": {
+        "table": "RSVPs",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap RSV p, name sama dengan RSVP ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "RSVPId",
+            "label": "RSVP ID"
+          }
+        ],
+        "structure": null,
+        "plain": "RSVP ID"
+      },
+      "RSVPs.EventName": {
+        "table": "RSVPs",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Untuk setiap RSV p, event name adalah event ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "RSVPs.AttendeeName": {
+        "table": "RSVPs",
+        "field": "AttendeeName",
+        "kind": "lookup",
+        "rule": "Untuk setiap RSV p, attendee name adalah attendee ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "AttendeeRef",
+            "label": "attendee ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ref"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Venues": [
+        "Setiap venue **harus** memiliki capacity."
+      ],
+      "Events": [
+        "Setiap event **harus** merujuk pada tepat satu venue.",
+        "Setiap event **harus** memiliki event date, duration minutes, dan registration close days before event."
+      ],
+      "Assignments": [
+        "Setiap assignment **harus** merujuk pada tepat satu event sebagai event ref.",
+        "Setiap assignment **harus** merujuk pada tepat satu speaker sebagai speaker ref."
+      ],
+      "RSVPs": [
+        "Setiap RSV p **harus** merujuk pada tepat satu event sebagai event ref.",
+        "Setiap RSV p **harus** merujuk pada tepat satu attendee sebagai attendee ref.",
+        "Setiap RSV p **harus** memiliki status."
+      ]
+    },
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Venues": "venue",
+      "Speakers": "speaker",
+      "Events": "event",
+      "Assignments": "assignment",
+      "Attendees": "attendee",
+      "RSVPs": "RSV p"
+    }
+  },
+  "it": {
+    "fields": {
+      "Venues.Name": {
+        "table": "Venues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un venue: name è uguale a venue ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue ID"
+      },
+      "Speakers.Name": {
+        "table": "Speakers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un speaker: name è uguale a speaker ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ID"
+      },
+      "Speakers.AssignmentCount": {
+        "table": "Speakers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "Un speaker: assignment count è il numero di assignments collegati a il speaker.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei assignments il cui speaker ref è speaker ID"
+      },
+      "Speakers.IsOverbooked": {
+        "table": "Speakers",
+        "field": "IsOverbooked",
+        "kind": "formula",
+        "rule": "Un speaker è considerato overbooked se l'assignment count è maggiore di 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AssignmentCount",
+            "label": "assignment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment count è maggiore di 3"
+      },
+      "Events.Name": {
+        "table": "Events",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un event: name è uguale a event ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "Events.VenueName": {
+        "table": "Events",
+        "field": "VenueName",
+        "kind": "lookup",
+        "rule": "Un event: venue name è il venue.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue"
+      },
+      "Events.VenueCapacity": {
+        "table": "Events",
+        "field": "VenueCapacity",
+        "kind": "lookup",
+        "rule": "Un event: venue capacity — ripreso dal venue collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "Capacity",
+            "label": "capacity"
+          },
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          },
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il capacity del venue collegato"
+      },
+      "Events.EventEnd": {
+        "table": "Events",
+        "field": "EventEnd",
+        "kind": "formula",
+        "rule": "Un event: event end è uguale a event date.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date"
+      },
+      "Events.TotalSpeakersAssigned": {
+        "table": "Events",
+        "field": "TotalSpeakersAssigned",
+        "kind": "rollup",
+        "rule": "Un event: total speakers assigned è il numero di assignments collegati a l'event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei assignments il cui event ref è event ID"
+      },
+      "Events.HasSpeakers": {
+        "table": "Events",
+        "field": "HasSpeakers",
+        "kind": "formula",
+        "rule": "Un event è considerato come dotato di un speakers se il total speakers assigned è maggiore di 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSpeakersAssigned",
+            "label": "total speakers assigned"
+          }
+        ],
+        "structure": null,
+        "plain": "Total speakers assigned è maggiore di 0"
+      },
+      "Events.BookedCapacity": {
+        "table": "Events",
+        "field": "BookedCapacity",
+        "kind": "rollup",
+        "rule": "Un event: booked capacity è il numero di RSV ps dell'event che hanno un status pari a «confirmed».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          },
+          {
+            "table": "RSVPs",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei RSV ps il cui event ref è event ID e status è \"confirmed\""
+      },
+      "Events.AvailableCapacity": {
+        "table": "Events",
+        "field": "AvailableCapacity",
+        "kind": "formula",
+        "rule": "Un event: available capacity è calcolato come il venue capacity meno il booked capacity.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueCapacity",
+            "label": "venue capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue capacity meno booked capacity"
+      },
+      "Events.AtCapacity": {
+        "table": "Events",
+        "field": "AtCapacity",
+        "kind": "formula",
+        "rule": "Un event è contrassegnato come at capacity se l'available capacity è al massimo 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity è al massimo 0"
+      },
+      "Events.VenueConflictCount": {
+        "table": "Events",
+        "field": "VenueConflictCount",
+        "kind": "rollup",
+        "rule": "Un event: venue conflict count è il numero di events collegati a l'event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei events il cui venue è venue"
+      },
+      "Events.HasVenueConflict": {
+        "table": "Events",
+        "field": "HasVenueConflict",
+        "kind": "formula",
+        "rule": "Un event è considerato come dotato di un venue conflict se il venue conflict count è maggiore di 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueConflictCount",
+            "label": "venue conflict count"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue conflict count è maggiore di 1"
+      },
+      "Events.EventStatus": {
+        "table": "Events",
+        "field": "EventStatus",
+        "kind": "formula",
+        "rule": "Il campo “event status” dell'event è determinato secondo la seguente priorità:\n1. «ready», se vale tutto quanto segue: l'indicatore “speakers” è attivo; l'indicatore “at capacity” non è attivo; e l'indicatore “venue conflict” non è attivo;\n2. in tutti gli altri casi, «issues».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasSpeakers",
+            "label": "has speakers"
+          },
+          {
+            "table": "Events",
+            "field": "AtCapacity",
+            "label": "at capacity"
+          },
+          {
+            "table": "Events",
+            "field": "HasVenueConflict",
+            "label": "has venue conflict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “event status” dell'event è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«ready»",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "l'indicatore “speakers” è attivo"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "l'indicatore “at capacity” non è attivo"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "l'indicatore “venue conflict” non è attivo"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "«issues»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se has speakers, non at capacity, e non has venue conflict, allora \"ready\", altrimenti \"issues\""
+      },
+      "Events.RegistrationDeadline": {
+        "table": "Events",
+        "field": "RegistrationDeadline",
+        "kind": "formula",
+        "rule": "Un event: registration deadline è calcolato come l'event date meno il registration close days before event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Events",
+            "field": "RegistrationCloseDaysBeforeEvent",
+            "label": "registration close days before event"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date meno registration close days before event"
+      },
+      "Events.IsRegistrationOpen": {
+        "table": "Events",
+        "field": "IsRegistrationOpen",
+        "kind": "formula",
+        "rule": "Un event è considerato registration open se il registration deadline è maggiore di la data e l'ora correnti.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "RegistrationDeadline",
+            "label": "registration deadline"
+          }
+        ],
+        "structure": null,
+        "plain": "Registration deadline è maggiore di adesso"
+      },
+      "Events.CapacityHeadroom": {
+        "table": "Events",
+        "field": "CapacityHeadroom",
+        "kind": "formula",
+        "rule": "Un event: capacity headroom è calcolato come l'available capacity meno il booked capacity.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity meno booked capacity"
+      },
+      "Events.HasHeadroomForOverbooking": {
+        "table": "Events",
+        "field": "HasHeadroomForOverbooking",
+        "kind": "formula",
+        "rule": "Un event è considerato come dotato di un headroom for overbooking se il capacity headroom è almeno il booked capacity per 0.2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CapacityHeadroom",
+            "label": "capacity headroom"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Capacity headroom è almeno (booked capacity per 0.2)"
+      },
+      "Events.RecommendedOverbookingFactor": {
+        "table": "Events",
+        "field": "RecommendedOverbookingFactor",
+        "kind": "formula",
+        "rule": "Il campo “recommended overbooking factor” dell'event è determinato secondo la seguente priorità:\n1. 1.2, se l'indicatore “headroom for overbooking” è attivo;\n2. in tutti gli altri casi, 1.0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasHeadroomForOverbooking",
+            "label": "has headroom for overbooking"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “recommended overbooking factor” dell'event è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "1.2",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “headroom for overbooking” è attivo"
+              }
+            },
+            {
+              "value": "1.0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se has headroom for overbooking, allora 1.2, altrimenti 1.0"
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un assignment: name è uguale a assignment ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "Assignments.EventName": {
+        "table": "Assignments",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Un assignment: event name è l'event ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "Assignments.SpeakerName": {
+        "table": "Assignments",
+        "field": "SpeakerName",
+        "kind": "lookup",
+        "rule": "Un assignment: speaker name è il speaker ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ref"
+      },
+      "Assignments.EventDate": {
+        "table": "Assignments",
+        "field": "EventDate",
+        "kind": "lookup",
+        "rule": "Un assignment: event date — ripreso dal event ref collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il event date del event ref collegato"
+      },
+      "Assignments.SpeakerAvailStart": {
+        "table": "Assignments",
+        "field": "SpeakerAvailStart",
+        "kind": "lookup",
+        "rule": "Un assignment: speaker avail start è il availability start del speaker ref collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityStart",
+            "label": "availability start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il availability start del speaker ref collegato"
+      },
+      "Assignments.SpeakerAvailEnd": {
+        "table": "Assignments",
+        "field": "SpeakerAvailEnd",
+        "kind": "lookup",
+        "rule": "Un assignment: speaker avail end è il availability end del speaker ref collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityEnd",
+            "label": "availability end"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il availability end del speaker ref collegato"
+      },
+      "Assignments.IsAvailable": {
+        "table": "Assignments",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "Un assignment è considerato available se vale tutto quanto segue: l'event date è almeno il speaker avail start e l'event date è al massimo il speaker avail end.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailStart",
+            "label": "speaker avail start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailEnd",
+            "label": "speaker avail end"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un assignment è considerato available se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'event date è almeno il speaker avail start"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'event date è al massimo il speaker avail end"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Event date è almeno speaker avail start e event date è al massimo speaker avail end"
+      },
+      "Attendees.Name": {
+        "table": "Attendees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un attendee: name è uguale a attendee ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Attendees",
+            "field": "AttendeeId",
+            "label": "attendee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ID"
+      },
+      "RSVPs.Name": {
+        "table": "RSVPs",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un RSV p: name è uguale a RSVP ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "RSVPId",
+            "label": "RSVP ID"
+          }
+        ],
+        "structure": null,
+        "plain": "RSVP ID"
+      },
+      "RSVPs.EventName": {
+        "table": "RSVPs",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Un RSV p: event name è l'event ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "RSVPs.AttendeeName": {
+        "table": "RSVPs",
+        "field": "AttendeeName",
+        "kind": "lookup",
+        "rule": "Un RSV p: attendee name è l'attendee ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "AttendeeRef",
+            "label": "attendee ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ref"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Venues": [
+        "Un venue **deve** avere un capacity."
+      ],
+      "Events": [
+        "Un event **deve** referenziare esattamente un venue.",
+        "Un event **deve** avere un event date; un duration minutes; e un registration close days before event."
+      ],
+      "Assignments": [
+        "Un assignment **deve** referenziare esattamente un event come suo event ref.",
+        "Un assignment **deve** referenziare esattamente un speaker come suo speaker ref."
+      ],
+      "RSVPs": [
+        "Un RSV p **deve** referenziare esattamente un event come suo event ref.",
+        "Un RSV p **deve** referenziare esattamente un attendee come suo attendee ref.",
+        "Un RSV p **deve** avere un status."
+      ]
+    },
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Venues": "venue",
+      "Speakers": "speaker",
+      "Events": "event",
+      "Assignments": "assignment",
+      "Attendees": "attendee",
+      "RSVPs": "RSV p"
+    }
+  },
+  "ja": {
+    "fields": {
+      "Venues.Name": {
+        "table": "Venues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "venueの「name」は venue ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue ID"
+      },
+      "Speakers.Name": {
+        "table": "Speakers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "speakerの「name」は speaker ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ID"
+      },
+      "Speakers.AssignmentCount": {
+        "table": "Speakers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "speakerの「assignment count」は speakerに関連する「assignments」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ref が speaker ID である「assignments」の件数"
+      },
+      "Speakers.IsOverbooked": {
+        "table": "Speakers",
+        "field": "IsOverbooked",
+        "kind": "formula",
+        "rule": "assignment count が 3 より大きい場合、speakerは「Overbooked」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AssignmentCount",
+            "label": "assignment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment count が 3 より大きい"
+      },
+      "Events.Name": {
+        "table": "Events",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "eventの「name」は event ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "Events.VenueName": {
+        "table": "Events",
+        "field": "VenueName",
+        "kind": "lookup",
+        "rule": "eventの「venue name」は venue です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue"
+      },
+      "Events.VenueCapacity": {
+        "table": "Events",
+        "field": "VenueCapacity",
+        "kind": "lookup",
+        "rule": "eventの「venue capacity」— リンクされた「venue」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "Capacity",
+            "label": "capacity"
+          },
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          },
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「venue」の capacity"
+      },
+      "Events.EventEnd": {
+        "table": "Events",
+        "field": "EventEnd",
+        "kind": "formula",
+        "rule": "eventの「event end」は event date と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date"
+      },
+      "Events.TotalSpeakersAssigned": {
+        "table": "Events",
+        "field": "TotalSpeakersAssigned",
+        "kind": "rollup",
+        "rule": "eventの「total speakers assigned」は eventに関連する「assignments」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref が event ID である「assignments」の件数"
+      },
+      "Events.HasSpeakers": {
+        "table": "Events",
+        "field": "HasSpeakers",
+        "kind": "formula",
+        "rule": "total speakers assigned が 0 より大きい場合、eventは「Speakers」を持つと見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSpeakersAssigned",
+            "label": "total speakers assigned"
+          }
+        ],
+        "structure": null,
+        "plain": "Total speakers assigned が 0 より大きい"
+      },
+      "Events.BookedCapacity": {
+        "table": "Events",
+        "field": "BookedCapacity",
+        "kind": "rollup",
+        "rule": "eventの「booked capacity」は eventの「RSV ps」のうち、「status」が 「confirmed」 であるものの件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          },
+          {
+            "table": "RSVPs",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref が event IDおよびstatus が \"confirmed\" である「RSV ps」の件数"
+      },
+      "Events.AvailableCapacity": {
+        "table": "Events",
+        "field": "AvailableCapacity",
+        "kind": "formula",
+        "rule": "eventの「available capacity」は venue capacity ひく booked capacity として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueCapacity",
+            "label": "venue capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue capacity ひく booked capacity"
+      },
+      "Events.AtCapacity": {
+        "table": "Events",
+        "field": "AtCapacity",
+        "kind": "formula",
+        "rule": "available capacity が 0 以下である場合、eventは「At Capacity」と記録されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity が 0 以下"
+      },
+      "Events.VenueConflictCount": {
+        "table": "Events",
+        "field": "VenueConflictCount",
+        "kind": "rollup",
+        "rule": "eventの「venue conflict count」は eventに関連する「events」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue が venue である「events」の件数"
+      },
+      "Events.HasVenueConflict": {
+        "table": "Events",
+        "field": "HasVenueConflict",
+        "kind": "formula",
+        "rule": "venue conflict count が 1 より大きい場合、eventは「Venue Conflict」を持つと見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueConflictCount",
+            "label": "venue conflict count"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue conflict count が 1 より大きい"
+      },
+      "Events.EventStatus": {
+        "table": "Events",
+        "field": "EventStatus",
+        "kind": "formula",
+        "rule": "Eventの「event status」は、次の優先順位で決まります:\n1. 次のすべてが成り立つ: フラグ「speakers」が設定されている、フラグ「at capacity」が設定されていない、およびフラグ「venue conflict」が設定されていない場合は 「ready」;\n2. それ以外の場合は 「issues」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasSpeakers",
+            "label": "has speakers"
+          },
+          {
+            "table": "Events",
+            "field": "AtCapacity",
+            "label": "at capacity"
+          },
+          {
+            "table": "Events",
+            "field": "HasVenueConflict",
+            "label": "has venue conflict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Eventの「event status」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「ready」",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "フラグ「speakers」が設定されている"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "フラグ「at capacity」が設定されていない"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "フラグ「venue conflict」が設定されていない"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "「issues」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Has speakers、at capacity でない、およびhas venue conflict でないなら \"ready\"、そうでなければ \"issues\""
+      },
+      "Events.RegistrationDeadline": {
+        "table": "Events",
+        "field": "RegistrationDeadline",
+        "kind": "formula",
+        "rule": "eventの「registration deadline」は event date ひく registration close days before event として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Events",
+            "field": "RegistrationCloseDaysBeforeEvent",
+            "label": "registration close days before event"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date ひく registration close days before event"
+      },
+      "Events.IsRegistrationOpen": {
+        "table": "Events",
+        "field": "IsRegistrationOpen",
+        "kind": "formula",
+        "rule": "registration deadline が 現在の日時 より大きい場合、eventは「Registration Open」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "RegistrationDeadline",
+            "label": "registration deadline"
+          }
+        ],
+        "structure": null,
+        "plain": "Registration deadline が 現在 より大きい"
+      },
+      "Events.CapacityHeadroom": {
+        "table": "Events",
+        "field": "CapacityHeadroom",
+        "kind": "formula",
+        "rule": "eventの「capacity headroom」は available capacity ひく booked capacity として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity ひく booked capacity"
+      },
+      "Events.HasHeadroomForOverbooking": {
+        "table": "Events",
+        "field": "HasHeadroomForOverbooking",
+        "kind": "formula",
+        "rule": "capacity headroom が booked capacity かける 0.2 以上である場合、eventは「Headroom for Overbooking」を持つと見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CapacityHeadroom",
+            "label": "capacity headroom"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Capacity headroom が (booked capacity かける 0.2) 以上"
+      },
+      "Events.RecommendedOverbookingFactor": {
+        "table": "Events",
+        "field": "RecommendedOverbookingFactor",
+        "kind": "formula",
+        "rule": "Eventの「recommended overbooking factor」は、次の優先順位で決まります:\n1. フラグ「headroom for overbooking」が設定されている場合は 1.2;\n2. それ以外の場合は 1.0。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasHeadroomForOverbooking",
+            "label": "has headroom for overbooking"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Eventの「recommended overbooking factor」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "1.2",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「headroom for overbooking」が設定されている"
+              }
+            },
+            {
+              "value": "1.0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Has headroom for overbookingなら 1.2、そうでなければ 1.0"
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "assignmentの「name」は assignment ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "Assignments.EventName": {
+        "table": "Assignments",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "assignmentの「event name」は event ref です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "Assignments.SpeakerName": {
+        "table": "Assignments",
+        "field": "SpeakerName",
+        "kind": "lookup",
+        "rule": "assignmentの「speaker name」は speaker ref です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ref"
+      },
+      "Assignments.EventDate": {
+        "table": "Assignments",
+        "field": "EventDate",
+        "kind": "lookup",
+        "rule": "assignmentの「event date」— リンクされた「event ref」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「event ref」の event date"
+      },
+      "Assignments.SpeakerAvailStart": {
+        "table": "Assignments",
+        "field": "SpeakerAvailStart",
+        "kind": "lookup",
+        "rule": "assignmentの「speaker avail start」は、リンクされた「speaker ref」の「availability start」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityStart",
+            "label": "availability start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「speaker ref」の availability start"
+      },
+      "Assignments.SpeakerAvailEnd": {
+        "table": "Assignments",
+        "field": "SpeakerAvailEnd",
+        "kind": "lookup",
+        "rule": "assignmentの「speaker avail end」は、リンクされた「speaker ref」の「availability end」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityEnd",
+            "label": "availability end"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「speaker ref」の availability end"
+      },
+      "Assignments.IsAvailable": {
+        "table": "Assignments",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: event date が speaker avail start 以上であるおよびevent date が speaker avail end 以下である場合、assignmentは「Available」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailStart",
+            "label": "speaker avail start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailEnd",
+            "label": "speaker avail end"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、assignmentは「Available」と見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "event date が speaker avail start 以上である"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "event date が speaker avail end 以下である"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Event date が speaker avail start 以上およびevent date が speaker avail end 以下"
+      },
+      "Attendees.Name": {
+        "table": "Attendees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "attendeeの「name」は attendee ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Attendees",
+            "field": "AttendeeId",
+            "label": "attendee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ID"
+      },
+      "RSVPs.Name": {
+        "table": "RSVPs",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "RSV pの「name」は RSVP ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "RSVPId",
+            "label": "RSVP ID"
+          }
+        ],
+        "structure": null,
+        "plain": "RSVP ID"
+      },
+      "RSVPs.EventName": {
+        "table": "RSVPs",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "RSV pの「event name」は event ref です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "RSVPs.AttendeeName": {
+        "table": "RSVPs",
+        "field": "AttendeeName",
+        "kind": "lookup",
+        "rule": "RSV pの「attendee name」は attendee ref です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "AttendeeRef",
+            "label": "attendee ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ref"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Venues": [
+        "venueは capacity を持た**なければなりません**。"
+      ],
+      "Events": [
+        "eventは「venue」をちょうど 1 件参照し**なければなりません**。",
+        "eventは event date、duration minutes、およびregistration close days before event を持た**なければなりません**。"
+      ],
+      "Assignments": [
+        "assignmentは、event refとして「event」をちょうど 1 件参照し**なければなりません**。",
+        "assignmentは、speaker refとして「speaker」をちょうど 1 件参照し**なければなりません**。"
+      ],
+      "RSVPs": [
+        "RSV pは、event refとして「event」をちょうど 1 件参照し**なければなりません**。",
+        "RSV pは、attendee refとして「attendee」をちょうど 1 件参照し**なければなりません**。",
+        "RSV pは status を持た**なければなりません**。"
+      ]
+    },
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "Venues": "venue",
+      "Speakers": "speaker",
+      "Events": "event",
+      "Assignments": "assignment",
+      "Attendees": "attendee",
+      "RSVPs": "RSV p"
+    }
+  },
+  "ko": {
+    "fields": {
+      "Venues.Name": {
+        "table": "Venues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘venue’ 레코드의 ‘name’ 값은 같은 레코드의 ‘venue ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue ID"
+      },
+      "Speakers.Name": {
+        "table": "Speakers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘speaker’ 레코드의 ‘name’ 값은 같은 레코드의 ‘speaker ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ID"
+      },
+      "Speakers.AssignmentCount": {
+        "table": "Speakers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "‘speaker’ 레코드의 ‘assignment count’ 값은 해당 ‘speaker’ 레코드에 연결된 ‘assignments’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(speaker ref 값이 speaker ID임)에 맞는 assignments 레코드의 개수"
+      },
+      "Speakers.IsOverbooked": {
+        "table": "Speakers",
+        "field": "IsOverbooked",
+        "kind": "formula",
+        "rule": "‘assignment count’ 값이 3보다 큰 경우, ‘speaker’ 레코드는 ‘overbooked’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AssignmentCount",
+            "label": "assignment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment count 값이 3보다 큼"
+      },
+      "Events.Name": {
+        "table": "Events",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘event’ 레코드의 ‘name’ 값은 같은 레코드의 ‘event ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "Events.VenueName": {
+        "table": "Events",
+        "field": "VenueName",
+        "kind": "lookup",
+        "rule": "‘event’ 레코드의 ‘venue name’ 값은 ‘venue’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue"
+      },
+      "Events.VenueCapacity": {
+        "table": "Events",
+        "field": "VenueCapacity",
+        "kind": "lookup",
+        "rule": "‘event’ 레코드의 ‘venue capacity’ 값은 연결된 ‘venue’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "Capacity",
+            "label": "capacity"
+          },
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          },
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 venue 레코드의 capacity"
+      },
+      "Events.EventEnd": {
+        "table": "Events",
+        "field": "EventEnd",
+        "kind": "formula",
+        "rule": "‘event’ 레코드의 ‘event end’ 값은 같은 레코드의 ‘event date’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date"
+      },
+      "Events.TotalSpeakersAssigned": {
+        "table": "Events",
+        "field": "TotalSpeakersAssigned",
+        "kind": "rollup",
+        "rule": "‘event’ 레코드의 ‘total speakers assigned’ 값은 해당 ‘event’ 레코드에 연결된 ‘assignments’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(event ref 값이 event ID임)에 맞는 assignments 레코드의 개수"
+      },
+      "Events.HasSpeakers": {
+        "table": "Events",
+        "field": "HasSpeakers",
+        "kind": "formula",
+        "rule": "‘total speakers assigned’ 값이 0보다 큰 경우, ‘event’ 레코드는 ‘speakers’ 항목이 있는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSpeakersAssigned",
+            "label": "total speakers assigned"
+          }
+        ],
+        "structure": null,
+        "plain": "Total speakers assigned 값이 0보다 큼"
+      },
+      "Events.BookedCapacity": {
+        "table": "Events",
+        "field": "BookedCapacity",
+        "kind": "rollup",
+        "rule": "‘event’ 레코드의 ‘booked capacity’ 값은 해당 ‘event’ 레코드에 연결된 ‘RSV ps’ 레코드 중 ‘status’ 값이 “confirmed”인 것의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          },
+          {
+            "table": "RSVPs",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(event ref 값이 event ID임 및 status 값이 \"confirmed\"임)에 맞는 RSV ps 레코드의 개수"
+      },
+      "Events.AvailableCapacity": {
+        "table": "Events",
+        "field": "AvailableCapacity",
+        "kind": "formula",
+        "rule": "‘event’ 레코드의 ‘available capacity’ 값은 다음과 같이 계산됩니다: ‘venue capacity’ 빼기 ‘booked capacity’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueCapacity",
+            "label": "venue capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue capacity 빼기 booked capacity"
+      },
+      "Events.AtCapacity": {
+        "table": "Events",
+        "field": "AtCapacity",
+        "kind": "formula",
+        "rule": "‘available capacity’ 값이 0 이하인 경우, ‘event’ 레코드는 ‘at capacity’에 해당하는 것으로 표시됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity 값이 0 이하임"
+      },
+      "Events.VenueConflictCount": {
+        "table": "Events",
+        "field": "VenueConflictCount",
+        "kind": "rollup",
+        "rule": "‘event’ 레코드의 ‘venue conflict count’ 값은 해당 ‘event’ 레코드에 연결된 ‘events’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(venue 값이 venue임)에 맞는 events 레코드의 개수"
+      },
+      "Events.HasVenueConflict": {
+        "table": "Events",
+        "field": "HasVenueConflict",
+        "kind": "formula",
+        "rule": "‘venue conflict count’ 값이 1보다 큰 경우, ‘event’ 레코드는 ‘venue conflict’ 항목이 있는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueConflictCount",
+            "label": "venue conflict count"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue conflict count 값이 1보다 큼"
+      },
+      "Events.EventStatus": {
+        "table": "Events",
+        "field": "EventStatus",
+        "kind": "formula",
+        "rule": "‘event’ 레코드의 ‘event status’ 값은 다음 우선순위에 따라 결정됩니다:\n1. 다음 모두에 해당하는 경우(‘speakers’ 플래그가 설정된 경우, ‘at capacity’ 플래그가 설정되지 않은 경우 및 ‘venue conflict’ 플래그가 설정되지 않은 경우): “ready”\n2. 그 밖의 경우: “issues”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasSpeakers",
+            "label": "has speakers"
+          },
+          {
+            "table": "Events",
+            "field": "AtCapacity",
+            "label": "at capacity"
+          },
+          {
+            "table": "Events",
+            "field": "HasVenueConflict",
+            "label": "has venue conflict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘event’ 레코드의 ‘event status’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“ready”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "‘speakers’ 플래그가 설정된 경우"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "‘at capacity’ 플래그가 설정되지 않은 경우"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "‘venue conflict’ 플래그가 설정되지 않은 경우"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“issues”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(has speakers, 조건(at capacity)이 성립하지 않음 및 조건(has venue conflict)이 성립하지 않음)이 성립하면 \"ready\", 그렇지 않으면 \"issues\""
+      },
+      "Events.RegistrationDeadline": {
+        "table": "Events",
+        "field": "RegistrationDeadline",
+        "kind": "formula",
+        "rule": "‘event’ 레코드의 ‘registration deadline’ 값은 다음과 같이 계산됩니다: ‘event date’ 빼기 ‘registration close days before event’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Events",
+            "field": "RegistrationCloseDaysBeforeEvent",
+            "label": "registration close days before event"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date 빼기 registration close days before event"
+      },
+      "Events.IsRegistrationOpen": {
+        "table": "Events",
+        "field": "IsRegistrationOpen",
+        "kind": "formula",
+        "rule": "‘registration deadline’ 값이 현재 날짜 및 시각보다 큰 경우, ‘event’ 레코드는 ‘registration open’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "RegistrationDeadline",
+            "label": "registration deadline"
+          }
+        ],
+        "structure": null,
+        "plain": "Registration deadline 값이 현재 시각보다 큼"
+      },
+      "Events.CapacityHeadroom": {
+        "table": "Events",
+        "field": "CapacityHeadroom",
+        "kind": "formula",
+        "rule": "‘event’ 레코드의 ‘capacity headroom’ 값은 다음과 같이 계산됩니다: ‘available capacity’ 빼기 ‘booked capacity’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity 빼기 booked capacity"
+      },
+      "Events.HasHeadroomForOverbooking": {
+        "table": "Events",
+        "field": "HasHeadroomForOverbooking",
+        "kind": "formula",
+        "rule": "‘capacity headroom’ 값이 ‘booked capacity’ 곱하기 0.2 이상인 경우, ‘event’ 레코드는 ‘headroom for overbooking’ 항목이 있는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CapacityHeadroom",
+            "label": "capacity headroom"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Capacity headroom 값이 (booked capacity 곱하기 0.2) 이상임"
+      },
+      "Events.RecommendedOverbookingFactor": {
+        "table": "Events",
+        "field": "RecommendedOverbookingFactor",
+        "kind": "formula",
+        "rule": "‘event’ 레코드의 ‘recommended overbooking factor’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘headroom for overbooking’ 플래그가 설정된 경우: 1.2\n2. 그 밖의 경우: 1.0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasHeadroomForOverbooking",
+            "label": "has headroom for overbooking"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘event’ 레코드의 ‘recommended overbooking factor’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "1.2",
+              "when": {
+                "kind": "leaf",
+                "text": "‘headroom for overbooking’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "1.0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(has headroom for overbooking)이 성립하면 1.2, 그렇지 않으면 1.0"
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘assignment’ 레코드의 ‘name’ 값은 같은 레코드의 ‘assignment ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "Assignments.EventName": {
+        "table": "Assignments",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "‘assignment’ 레코드의 ‘event name’ 값은 ‘event ref’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "Assignments.SpeakerName": {
+        "table": "Assignments",
+        "field": "SpeakerName",
+        "kind": "lookup",
+        "rule": "‘assignment’ 레코드의 ‘speaker name’ 값은 ‘speaker ref’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ref"
+      },
+      "Assignments.EventDate": {
+        "table": "Assignments",
+        "field": "EventDate",
+        "kind": "lookup",
+        "rule": "‘assignment’ 레코드의 ‘event date’ 값은 연결된 ‘event ref’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 event ref 레코드의 event date"
+      },
+      "Assignments.SpeakerAvailStart": {
+        "table": "Assignments",
+        "field": "SpeakerAvailStart",
+        "kind": "lookup",
+        "rule": "‘assignment’ 레코드의 ‘speaker avail start’ 값은 연결된 ‘speaker ref’ 레코드의 ‘availability start’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityStart",
+            "label": "availability start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 speaker ref 레코드의 availability start"
+      },
+      "Assignments.SpeakerAvailEnd": {
+        "table": "Assignments",
+        "field": "SpeakerAvailEnd",
+        "kind": "lookup",
+        "rule": "‘assignment’ 레코드의 ‘speaker avail end’ 값은 연결된 ‘speaker ref’ 레코드의 ‘availability end’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityEnd",
+            "label": "availability end"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 speaker ref 레코드의 availability end"
+      },
+      "Assignments.IsAvailable": {
+        "table": "Assignments",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘event date’ 값이 ‘speaker avail start’ 이상인 경우 및 ‘event date’ 값이 ‘speaker avail end’ 이하인 경우), ‘assignment’ 레코드는 ‘available’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailStart",
+            "label": "speaker avail start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailEnd",
+            "label": "speaker avail end"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘assignment’ 레코드는 ‘available’에 해당하는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘event date’ 값이 ‘speaker avail start’ 이상인 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘event date’ 값이 ‘speaker avail end’ 이하인 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Event date 값이 speaker avail start 이상임 및 event date 값이 speaker avail end 이하임"
+      },
+      "Attendees.Name": {
+        "table": "Attendees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘attendee’ 레코드의 ‘name’ 값은 같은 레코드의 ‘attendee ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Attendees",
+            "field": "AttendeeId",
+            "label": "attendee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ID"
+      },
+      "RSVPs.Name": {
+        "table": "RSVPs",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘RSV p’ 레코드의 ‘name’ 값은 같은 레코드의 ‘RSVP ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "RSVPId",
+            "label": "RSVP ID"
+          }
+        ],
+        "structure": null,
+        "plain": "RSVP ID"
+      },
+      "RSVPs.EventName": {
+        "table": "RSVPs",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "‘RSV p’ 레코드의 ‘event name’ 값은 ‘event ref’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "RSVPs.AttendeeName": {
+        "table": "RSVPs",
+        "field": "AttendeeName",
+        "kind": "lookup",
+        "rule": "‘RSV p’ 레코드의 ‘attendee name’ 값은 ‘attendee ref’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "AttendeeRef",
+            "label": "attendee ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ref"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Venues": [
+        "‘venue’ 레코드는 ‘capacity’ 값을 포함**해야 합니다**."
+      ],
+      "Events": [
+        "‘event’ 레코드는 ‘venue’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘event’ 레코드는 ‘event date’, ‘duration minutes’ 및 ‘registration close days before event’ 값을 포함**해야 합니다**."
+      ],
+      "Assignments": [
+        "‘assignment’ 레코드는 ‘event ref’ 필드를 통해 ‘event’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘assignment’ 레코드는 ‘speaker ref’ 필드를 통해 ‘speaker’ 레코드를 정확히 하나 참조**해야 합니다**."
+      ],
+      "RSVPs": [
+        "‘RSV p’ 레코드는 ‘event ref’ 필드를 통해 ‘event’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘RSV p’ 레코드는 ‘attendee ref’ 필드를 통해 ‘attendee’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘RSV p’ 레코드는 ‘status’ 값을 포함**해야 합니다**."
+      ]
+    },
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Venues": "venue",
+      "Speakers": "speaker",
+      "Events": "event",
+      "Assignments": "assignment",
+      "Attendees": "attendee",
+      "RSVPs": "RSV p"
+    }
+  },
+  "nl": {
+    "fields": {
+      "Venues.Name": {
+        "table": "Venues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een venue: name is gelijk aan venue ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue ID"
+      },
+      "Speakers.Name": {
+        "table": "Speakers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een speaker: name is gelijk aan speaker ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ID"
+      },
+      "Speakers.AssignmentCount": {
+        "table": "Speakers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "Een speaker: assignment count is het aantal assignments dat is gekoppeld aan de speaker.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal assignments waarvan speaker ref is speaker ID"
+      },
+      "Speakers.IsOverbooked": {
+        "table": "Speakers",
+        "field": "IsOverbooked",
+        "kind": "formula",
+        "rule": "Een speaker geldt als overbooked als de assignment count groter is dan 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AssignmentCount",
+            "label": "assignment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment count is groter dan 3"
+      },
+      "Events.Name": {
+        "table": "Events",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een event: name is gelijk aan event ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "Events.VenueName": {
+        "table": "Events",
+        "field": "VenueName",
+        "kind": "lookup",
+        "rule": "Een event: venue name is de venue.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue"
+      },
+      "Events.VenueCapacity": {
+        "table": "Events",
+        "field": "VenueCapacity",
+        "kind": "lookup",
+        "rule": "Een event: venue capacity — overgenomen van de gekoppelde venue.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "Capacity",
+            "label": "capacity"
+          },
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          },
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De capacity van de gekoppelde venue"
+      },
+      "Events.EventEnd": {
+        "table": "Events",
+        "field": "EventEnd",
+        "kind": "formula",
+        "rule": "Een event: event end is gelijk aan event date.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date"
+      },
+      "Events.TotalSpeakersAssigned": {
+        "table": "Events",
+        "field": "TotalSpeakersAssigned",
+        "kind": "rollup",
+        "rule": "Een event: total speakers assigned is het aantal assignments dat is gekoppeld aan de event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal assignments waarvan event ref is event ID"
+      },
+      "Events.HasSpeakers": {
+        "table": "Events",
+        "field": "HasSpeakers",
+        "kind": "formula",
+        "rule": "Een event geldt als beschikkend over een speakers als de total speakers assigned groter is dan 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSpeakersAssigned",
+            "label": "total speakers assigned"
+          }
+        ],
+        "structure": null,
+        "plain": "Total speakers assigned is groter dan 0"
+      },
+      "Events.BookedCapacity": {
+        "table": "Events",
+        "field": "BookedCapacity",
+        "kind": "rollup",
+        "rule": "Een event: booked capacity is het aantal RSV ps van de event dat een status van ‘confirmed’ hebben.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          },
+          {
+            "table": "RSVPs",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal RSV ps waarvan event ref is event ID en status is \"confirmed\""
+      },
+      "Events.AvailableCapacity": {
+        "table": "Events",
+        "field": "AvailableCapacity",
+        "kind": "formula",
+        "rule": "Een event: available capacity wordt berekend als de venue capacity min de booked capacity.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueCapacity",
+            "label": "venue capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue capacity min booked capacity"
+      },
+      "Events.AtCapacity": {
+        "table": "Events",
+        "field": "AtCapacity",
+        "kind": "formula",
+        "rule": "Een event is gemarkeerd als at capacity als de available capacity ten hoogste 0 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity is ten hoogste 0"
+      },
+      "Events.VenueConflictCount": {
+        "table": "Events",
+        "field": "VenueConflictCount",
+        "kind": "rollup",
+        "rule": "Een event: venue conflict count is het aantal events dat is gekoppeld aan de event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal events waarvan venue is venue"
+      },
+      "Events.HasVenueConflict": {
+        "table": "Events",
+        "field": "HasVenueConflict",
+        "kind": "formula",
+        "rule": "Een event geldt als beschikkend over een venue conflict als de venue conflict count groter is dan 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueConflictCount",
+            "label": "venue conflict count"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue conflict count is groter dan 1"
+      },
+      "Events.EventStatus": {
+        "table": "Events",
+        "field": "EventStatus",
+        "kind": "formula",
+        "rule": "Het veld ‘event status’ van de event wordt bepaald volgens de volgende prioriteit:\n1. ‘ready’, als al het volgende geldt: de vlag ‘speakers’ is gezet; de vlag ‘at capacity’ niet is gezet; en de vlag ‘venue conflict’ niet is gezet;\n2. in alle andere gevallen ‘issues’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasSpeakers",
+            "label": "has speakers"
+          },
+          {
+            "table": "Events",
+            "field": "AtCapacity",
+            "label": "at capacity"
+          },
+          {
+            "table": "Events",
+            "field": "HasVenueConflict",
+            "label": "has venue conflict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘event status’ van de event wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘ready’",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "de vlag ‘speakers’ is gezet"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "de vlag ‘at capacity’ niet is gezet"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "de vlag ‘venue conflict’ niet is gezet"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "‘issues’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als has speakers, niet at capacity, en niet has venue conflict, dan \"ready\", anders \"issues\""
+      },
+      "Events.RegistrationDeadline": {
+        "table": "Events",
+        "field": "RegistrationDeadline",
+        "kind": "formula",
+        "rule": "Een event: registration deadline wordt berekend als de event date min de registration close days before event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Events",
+            "field": "RegistrationCloseDaysBeforeEvent",
+            "label": "registration close days before event"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date min registration close days before event"
+      },
+      "Events.IsRegistrationOpen": {
+        "table": "Events",
+        "field": "IsRegistrationOpen",
+        "kind": "formula",
+        "rule": "Een event geldt als registration open als de registration deadline groter is dan de huidige datum en tijd.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "RegistrationDeadline",
+            "label": "registration deadline"
+          }
+        ],
+        "structure": null,
+        "plain": "Registration deadline is groter dan nu"
+      },
+      "Events.CapacityHeadroom": {
+        "table": "Events",
+        "field": "CapacityHeadroom",
+        "kind": "formula",
+        "rule": "Een event: capacity headroom wordt berekend als de available capacity min de booked capacity.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity min booked capacity"
+      },
+      "Events.HasHeadroomForOverbooking": {
+        "table": "Events",
+        "field": "HasHeadroomForOverbooking",
+        "kind": "formula",
+        "rule": "Een event geldt als beschikkend over een headroom for overbooking als de capacity headroom ten minste de booked capacity maal 0.2 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CapacityHeadroom",
+            "label": "capacity headroom"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Capacity headroom is ten minste (booked capacity maal 0.2)"
+      },
+      "Events.RecommendedOverbookingFactor": {
+        "table": "Events",
+        "field": "RecommendedOverbookingFactor",
+        "kind": "formula",
+        "rule": "Het veld ‘recommended overbooking factor’ van de event wordt bepaald volgens de volgende prioriteit:\n1. 1.2, als de vlag ‘headroom for overbooking’ is gezet;\n2. in alle andere gevallen 1.0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasHeadroomForOverbooking",
+            "label": "has headroom for overbooking"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘recommended overbooking factor’ van de event wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "1.2",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘headroom for overbooking’ is gezet"
+              }
+            },
+            {
+              "value": "1.0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als has headroom for overbooking, dan 1.2, anders 1.0"
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een assignment: name is gelijk aan assignment ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "Assignments.EventName": {
+        "table": "Assignments",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Een assignment: event name is de event ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "Assignments.SpeakerName": {
+        "table": "Assignments",
+        "field": "SpeakerName",
+        "kind": "lookup",
+        "rule": "Een assignment: speaker name is de speaker ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ref"
+      },
+      "Assignments.EventDate": {
+        "table": "Assignments",
+        "field": "EventDate",
+        "kind": "lookup",
+        "rule": "Een assignment: event date — overgenomen van de gekoppelde event ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De event date van de gekoppelde event ref"
+      },
+      "Assignments.SpeakerAvailStart": {
+        "table": "Assignments",
+        "field": "SpeakerAvailStart",
+        "kind": "lookup",
+        "rule": "Een assignment: speaker avail start is de availability start van de gekoppelde speaker ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityStart",
+            "label": "availability start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De availability start van de gekoppelde speaker ref"
+      },
+      "Assignments.SpeakerAvailEnd": {
+        "table": "Assignments",
+        "field": "SpeakerAvailEnd",
+        "kind": "lookup",
+        "rule": "Een assignment: speaker avail end is de availability end van de gekoppelde speaker ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityEnd",
+            "label": "availability end"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De availability end van de gekoppelde speaker ref"
+      },
+      "Assignments.IsAvailable": {
+        "table": "Assignments",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "Een assignment geldt als available als al het volgende geldt: de event date ten minste de speaker avail start is en de event date ten hoogste de speaker avail end is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailStart",
+            "label": "speaker avail start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailEnd",
+            "label": "speaker avail end"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een assignment geldt als available als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de event date ten minste de speaker avail start is"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de event date ten hoogste de speaker avail end is"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Event date is ten minste speaker avail start en event date is ten hoogste speaker avail end"
+      },
+      "Attendees.Name": {
+        "table": "Attendees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een attendee: name is gelijk aan attendee ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Attendees",
+            "field": "AttendeeId",
+            "label": "attendee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ID"
+      },
+      "RSVPs.Name": {
+        "table": "RSVPs",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een RSV p: name is gelijk aan RSVP ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "RSVPId",
+            "label": "RSVP ID"
+          }
+        ],
+        "structure": null,
+        "plain": "RSVP ID"
+      },
+      "RSVPs.EventName": {
+        "table": "RSVPs",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Een RSV p: event name is de event ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "RSVPs.AttendeeName": {
+        "table": "RSVPs",
+        "field": "AttendeeName",
+        "kind": "lookup",
+        "rule": "Een RSV p: attendee name is de attendee ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "AttendeeRef",
+            "label": "attendee ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ref"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Venues": [
+        "Een venue **moet** een capacity hebben."
+      ],
+      "Events": [
+        "Een event **moet** naar precies één venue verwijzen.",
+        "Een event **moet** een event date; een duration minutes; en een registration close days before event hebben."
+      ],
+      "Assignments": [
+        "Een assignment **moet** naar precies één event verwijzen als zijn event ref.",
+        "Een assignment **moet** naar precies één speaker verwijzen als zijn speaker ref."
+      ],
+      "RSVPs": [
+        "Een RSV p **moet** naar precies één event verwijzen als zijn event ref.",
+        "Een RSV p **moet** naar precies één attendee verwijzen als zijn attendee ref.",
+        "Een RSV p **moet** een status hebben."
+      ]
+    },
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Venues": "venue",
+      "Speakers": "speaker",
+      "Events": "event",
+      "Assignments": "assignment",
+      "Attendees": "attendee",
+      "RSVPs": "RSV p"
+    }
+  },
+  "pt": {
+    "fields": {
+      "Venues.Name": {
+        "table": "Venues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um venue: name é igual a venue ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue ID"
+      },
+      "Speakers.Name": {
+        "table": "Speakers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um speaker: name é igual a speaker ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ID"
+      },
+      "Speakers.AssignmentCount": {
+        "table": "Speakers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "Um speaker: assignment count é o número de assignments relacionados a o speaker.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de assignments cujo speaker ref é speaker ID"
+      },
+      "Speakers.IsOverbooked": {
+        "table": "Speakers",
+        "field": "IsOverbooked",
+        "kind": "formula",
+        "rule": "Um speaker é considerado overbooked se o assignment count é maior que 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AssignmentCount",
+            "label": "assignment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment count é maior que 3"
+      },
+      "Events.Name": {
+        "table": "Events",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um event: name é igual a event ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "Events.VenueName": {
+        "table": "Events",
+        "field": "VenueName",
+        "kind": "lookup",
+        "rule": "Um event: venue name é o venue.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue"
+      },
+      "Events.VenueCapacity": {
+        "table": "Events",
+        "field": "VenueCapacity",
+        "kind": "lookup",
+        "rule": "Um event: venue capacity — obtido do venue vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "Capacity",
+            "label": "capacity"
+          },
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          },
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O capacity do venue vinculado"
+      },
+      "Events.EventEnd": {
+        "table": "Events",
+        "field": "EventEnd",
+        "kind": "formula",
+        "rule": "Um event: event end é igual a event date.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date"
+      },
+      "Events.TotalSpeakersAssigned": {
+        "table": "Events",
+        "field": "TotalSpeakersAssigned",
+        "kind": "rollup",
+        "rule": "Um event: total speakers assigned é o número de assignments relacionados a o event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de assignments cujo event ref é event ID"
+      },
+      "Events.HasSpeakers": {
+        "table": "Events",
+        "field": "HasSpeakers",
+        "kind": "formula",
+        "rule": "Um event é considerado como tendo um speakers se o total speakers assigned é maior que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSpeakersAssigned",
+            "label": "total speakers assigned"
+          }
+        ],
+        "structure": null,
+        "plain": "Total speakers assigned é maior que 0"
+      },
+      "Events.BookedCapacity": {
+        "table": "Events",
+        "field": "BookedCapacity",
+        "kind": "rollup",
+        "rule": "Um event: booked capacity é o número de RSV ps do event que têm um status de “confirmed”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          },
+          {
+            "table": "RSVPs",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de RSV ps cujo event ref é event ID e status é \"confirmed\""
+      },
+      "Events.AvailableCapacity": {
+        "table": "Events",
+        "field": "AvailableCapacity",
+        "kind": "formula",
+        "rule": "Um event: available capacity é calculado como o venue capacity menos o booked capacity.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueCapacity",
+            "label": "venue capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue capacity menos booked capacity"
+      },
+      "Events.AtCapacity": {
+        "table": "Events",
+        "field": "AtCapacity",
+        "kind": "formula",
+        "rule": "Um event está marcado como at capacity se o available capacity é no máximo 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity é no máximo 0"
+      },
+      "Events.VenueConflictCount": {
+        "table": "Events",
+        "field": "VenueConflictCount",
+        "kind": "rollup",
+        "rule": "Um event: venue conflict count é o número de events relacionados a o event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de events cujo venue é venue"
+      },
+      "Events.HasVenueConflict": {
+        "table": "Events",
+        "field": "HasVenueConflict",
+        "kind": "formula",
+        "rule": "Um event é considerado como tendo um venue conflict se o venue conflict count é maior que 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueConflictCount",
+            "label": "venue conflict count"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue conflict count é maior que 1"
+      },
+      "Events.EventStatus": {
+        "table": "Events",
+        "field": "EventStatus",
+        "kind": "formula",
+        "rule": "O campo “event status” do event é determinado pela seguinte prioridade:\n1. “ready”, se tudo o que segue é verdadeiro: o indicador “speakers” está ativado; o indicador “at capacity” não está ativado; e o indicador “venue conflict” não está ativado;\n2. em todos os outros casos, “issues”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasSpeakers",
+            "label": "has speakers"
+          },
+          {
+            "table": "Events",
+            "field": "AtCapacity",
+            "label": "at capacity"
+          },
+          {
+            "table": "Events",
+            "field": "HasVenueConflict",
+            "label": "has venue conflict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “event status” do event é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“ready”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "o indicador “speakers” está ativado"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "o indicador “at capacity” não está ativado"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "o indicador “venue conflict” não está ativado"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“issues”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se has speakers, não at capacity, e não has venue conflict, então \"ready\", caso contrário \"issues\""
+      },
+      "Events.RegistrationDeadline": {
+        "table": "Events",
+        "field": "RegistrationDeadline",
+        "kind": "formula",
+        "rule": "Um event: registration deadline é calculado como o event date menos o registration close days before event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Events",
+            "field": "RegistrationCloseDaysBeforeEvent",
+            "label": "registration close days before event"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date menos registration close days before event"
+      },
+      "Events.IsRegistrationOpen": {
+        "table": "Events",
+        "field": "IsRegistrationOpen",
+        "kind": "formula",
+        "rule": "Um event é considerado registration open se o registration deadline é maior que a data e hora atuais.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "RegistrationDeadline",
+            "label": "registration deadline"
+          }
+        ],
+        "structure": null,
+        "plain": "Registration deadline é maior que agora"
+      },
+      "Events.CapacityHeadroom": {
+        "table": "Events",
+        "field": "CapacityHeadroom",
+        "kind": "formula",
+        "rule": "Um event: capacity headroom é calculado como o available capacity menos o booked capacity.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity menos booked capacity"
+      },
+      "Events.HasHeadroomForOverbooking": {
+        "table": "Events",
+        "field": "HasHeadroomForOverbooking",
+        "kind": "formula",
+        "rule": "Um event é considerado como tendo um headroom for overbooking se o capacity headroom é pelo menos o booked capacity vezes 0.2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CapacityHeadroom",
+            "label": "capacity headroom"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Capacity headroom é pelo menos (booked capacity vezes 0.2)"
+      },
+      "Events.RecommendedOverbookingFactor": {
+        "table": "Events",
+        "field": "RecommendedOverbookingFactor",
+        "kind": "formula",
+        "rule": "O campo “recommended overbooking factor” do event é determinado pela seguinte prioridade:\n1. 1.2, se o indicador “headroom for overbooking” está ativado;\n2. em todos os outros casos, 1.0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasHeadroomForOverbooking",
+            "label": "has headroom for overbooking"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “recommended overbooking factor” do event é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "1.2",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “headroom for overbooking” está ativado"
+              }
+            },
+            {
+              "value": "1.0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se has headroom for overbooking, então 1.2, caso contrário 1.0"
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um assignment: name é igual a assignment ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "Assignments.EventName": {
+        "table": "Assignments",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Um assignment: event name é o event ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "Assignments.SpeakerName": {
+        "table": "Assignments",
+        "field": "SpeakerName",
+        "kind": "lookup",
+        "rule": "Um assignment: speaker name é o speaker ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ref"
+      },
+      "Assignments.EventDate": {
+        "table": "Assignments",
+        "field": "EventDate",
+        "kind": "lookup",
+        "rule": "Um assignment: event date — obtido do event ref vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O event date do event ref vinculado"
+      },
+      "Assignments.SpeakerAvailStart": {
+        "table": "Assignments",
+        "field": "SpeakerAvailStart",
+        "kind": "lookup",
+        "rule": "Um assignment: speaker avail start é o availability start do speaker ref vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityStart",
+            "label": "availability start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O availability start do speaker ref vinculado"
+      },
+      "Assignments.SpeakerAvailEnd": {
+        "table": "Assignments",
+        "field": "SpeakerAvailEnd",
+        "kind": "lookup",
+        "rule": "Um assignment: speaker avail end é o availability end do speaker ref vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityEnd",
+            "label": "availability end"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O availability end do speaker ref vinculado"
+      },
+      "Assignments.IsAvailable": {
+        "table": "Assignments",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "Um assignment é considerado available se tudo o que segue é verdadeiro: o event date é pelo menos o speaker avail start e o event date é no máximo o speaker avail end.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailStart",
+            "label": "speaker avail start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailEnd",
+            "label": "speaker avail end"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um assignment é considerado available se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o event date é pelo menos o speaker avail start"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o event date é no máximo o speaker avail end"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Event date é pelo menos speaker avail start e event date é no máximo speaker avail end"
+      },
+      "Attendees.Name": {
+        "table": "Attendees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um attendee: name é igual a attendee ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Attendees",
+            "field": "AttendeeId",
+            "label": "attendee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ID"
+      },
+      "RSVPs.Name": {
+        "table": "RSVPs",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um RSV p: name é igual a RSVP ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "RSVPId",
+            "label": "RSVP ID"
+          }
+        ],
+        "structure": null,
+        "plain": "RSVP ID"
+      },
+      "RSVPs.EventName": {
+        "table": "RSVPs",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Um RSV p: event name é o event ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "RSVPs.AttendeeName": {
+        "table": "RSVPs",
+        "field": "AttendeeName",
+        "kind": "lookup",
+        "rule": "Um RSV p: attendee name é o attendee ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "AttendeeRef",
+            "label": "attendee ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ref"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Venues": [
+        "Um venue **deve** ter um capacity."
+      ],
+      "Events": [
+        "Um event **deve** referenciar exatamente um venue.",
+        "Um event **deve** ter um event date; um duration minutes; e um registration close days before event."
+      ],
+      "Assignments": [
+        "Um assignment **deve** referenciar exatamente um event como seu event ref.",
+        "Um assignment **deve** referenciar exatamente um speaker como seu speaker ref."
+      ],
+      "RSVPs": [
+        "Um RSV p **deve** referenciar exatamente um event como seu event ref.",
+        "Um RSV p **deve** referenciar exatamente um attendee como seu attendee ref.",
+        "Um RSV p **deve** ter um status."
+      ]
+    },
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Venues": "venue",
+      "Speakers": "speaker",
+      "Events": "event",
+      "Assignments": "assignment",
+      "Attendees": "attendee",
+      "RSVPs": "RSV p"
+    }
+  },
+  "ru": {
+    "fields": {
+      "Venues.Name": {
+        "table": "Venues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Venue: «name» совпадает с venue ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue ID"
+      },
+      "Speakers.Name": {
+        "table": "Speakers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Speaker: «name» совпадает с speaker ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ID"
+      },
+      "Speakers.AssignmentCount": {
+        "table": "Speakers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "Speaker: «assignment count» — это число записей «assignments», связанных с speaker.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «assignments», у которых speaker ref равно speaker ID"
+      },
+      "Speakers.IsOverbooked": {
+        "table": "Speakers",
+        "field": "IsOverbooked",
+        "kind": "formula",
+        "rule": "Speaker считается «overbooked», если assignment count больше 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AssignmentCount",
+            "label": "assignment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment count больше 3"
+      },
+      "Events.Name": {
+        "table": "Events",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Event: «name» совпадает с event ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "Events.VenueName": {
+        "table": "Events",
+        "field": "VenueName",
+        "kind": "lookup",
+        "rule": "Event: «venue name» — это venue.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue"
+      },
+      "Events.VenueCapacity": {
+        "table": "Events",
+        "field": "VenueCapacity",
+        "kind": "lookup",
+        "rule": "Event: «venue capacity» — берётся из связанного «venue».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "Capacity",
+            "label": "capacity"
+          },
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          },
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Capacity связанного «venue»"
+      },
+      "Events.EventEnd": {
+        "table": "Events",
+        "field": "EventEnd",
+        "kind": "formula",
+        "rule": "Event: «event end» совпадает с event date.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date"
+      },
+      "Events.TotalSpeakersAssigned": {
+        "table": "Events",
+        "field": "TotalSpeakersAssigned",
+        "kind": "rollup",
+        "rule": "Event: «total speakers assigned» — это число записей «assignments», связанных с event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «assignments», у которых event ref равно event ID"
+      },
+      "Events.HasSpeakers": {
+        "table": "Events",
+        "field": "HasSpeakers",
+        "kind": "formula",
+        "rule": "Event считается имеющим «speakers», если total speakers assigned больше 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSpeakersAssigned",
+            "label": "total speakers assigned"
+          }
+        ],
+        "structure": null,
+        "plain": "Total speakers assigned больше 0"
+      },
+      "Events.BookedCapacity": {
+        "table": "Events",
+        "field": "BookedCapacity",
+        "kind": "rollup",
+        "rule": "Event: «booked capacity» — это число записей «RSV ps» (event), которые имеют «status», равный «confirmed».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          },
+          {
+            "table": "RSVPs",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «RSV ps», у которых event ref равно event ID и status равно \"confirmed\""
+      },
+      "Events.AvailableCapacity": {
+        "table": "Events",
+        "field": "AvailableCapacity",
+        "kind": "formula",
+        "rule": "Event: «available capacity» вычисляется как venue capacity минус booked capacity.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueCapacity",
+            "label": "venue capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue capacity минус booked capacity"
+      },
+      "Events.AtCapacity": {
+        "table": "Events",
+        "field": "AtCapacity",
+        "kind": "formula",
+        "rule": "Event помечается как «at capacity», если available capacity не больше 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity не больше 0"
+      },
+      "Events.VenueConflictCount": {
+        "table": "Events",
+        "field": "VenueConflictCount",
+        "kind": "rollup",
+        "rule": "Event: «venue conflict count» — это число записей «events», связанных с event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «events», у которых venue равно venue"
+      },
+      "Events.HasVenueConflict": {
+        "table": "Events",
+        "field": "HasVenueConflict",
+        "kind": "formula",
+        "rule": "Event считается имеющим «venue conflict», если venue conflict count больше 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueConflictCount",
+            "label": "venue conflict count"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue conflict count больше 1"
+      },
+      "Events.EventStatus": {
+        "table": "Events",
+        "field": "EventStatus",
+        "kind": "formula",
+        "rule": "Поле «event status» (Event) определяется по следующему приоритету:\n1. «ready», если выполняется всё следующее: признак «speakers» установлен; признак «at capacity» не установлен; и признак «venue conflict» не установлен;\n2. во всех остальных случаях — «issues».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasSpeakers",
+            "label": "has speakers"
+          },
+          {
+            "table": "Events",
+            "field": "AtCapacity",
+            "label": "at capacity"
+          },
+          {
+            "table": "Events",
+            "field": "HasVenueConflict",
+            "label": "has venue conflict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «event status» (Event) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«ready»",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "признак «speakers» установлен"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "признак «at capacity» не установлен"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "признак «venue conflict» не установлен"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "«issues»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если has speakers, не at capacity, и не has venue conflict, то \"ready\", иначе \"issues\""
+      },
+      "Events.RegistrationDeadline": {
+        "table": "Events",
+        "field": "RegistrationDeadline",
+        "kind": "formula",
+        "rule": "Event: «registration deadline» вычисляется как event date минус registration close days before event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Events",
+            "field": "RegistrationCloseDaysBeforeEvent",
+            "label": "registration close days before event"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date минус registration close days before event"
+      },
+      "Events.IsRegistrationOpen": {
+        "table": "Events",
+        "field": "IsRegistrationOpen",
+        "kind": "formula",
+        "rule": "Event считается «registration open», если registration deadline больше текущие дата и время.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "RegistrationDeadline",
+            "label": "registration deadline"
+          }
+        ],
+        "structure": null,
+        "plain": "Registration deadline больше сейчас"
+      },
+      "Events.CapacityHeadroom": {
+        "table": "Events",
+        "field": "CapacityHeadroom",
+        "kind": "formula",
+        "rule": "Event: «capacity headroom» вычисляется как available capacity минус booked capacity.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity минус booked capacity"
+      },
+      "Events.HasHeadroomForOverbooking": {
+        "table": "Events",
+        "field": "HasHeadroomForOverbooking",
+        "kind": "formula",
+        "rule": "Event считается имеющим «headroom for overbooking», если capacity headroom не меньше booked capacity умножить на 0.2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CapacityHeadroom",
+            "label": "capacity headroom"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Capacity headroom не меньше (booked capacity умножить на 0.2)"
+      },
+      "Events.RecommendedOverbookingFactor": {
+        "table": "Events",
+        "field": "RecommendedOverbookingFactor",
+        "kind": "formula",
+        "rule": "Поле «recommended overbooking factor» (Event) определяется по следующему приоритету:\n1. 1.2, если признак «headroom for overbooking» установлен;\n2. во всех остальных случаях — 1.0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasHeadroomForOverbooking",
+            "label": "has headroom for overbooking"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «recommended overbooking factor» (Event) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "1.2",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «headroom for overbooking» установлен"
+              }
+            },
+            {
+              "value": "1.0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если has headroom for overbooking, то 1.2, иначе 1.0"
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Assignment: «name» совпадает с assignment ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "Assignments.EventName": {
+        "table": "Assignments",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Assignment: «event name» — это event ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "Assignments.SpeakerName": {
+        "table": "Assignments",
+        "field": "SpeakerName",
+        "kind": "lookup",
+        "rule": "Assignment: «speaker name» — это speaker ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ref"
+      },
+      "Assignments.EventDate": {
+        "table": "Assignments",
+        "field": "EventDate",
+        "kind": "lookup",
+        "rule": "Assignment: «event date» — берётся из связанного «event ref».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date связанного «event ref»"
+      },
+      "Assignments.SpeakerAvailStart": {
+        "table": "Assignments",
+        "field": "SpeakerAvailStart",
+        "kind": "lookup",
+        "rule": "Assignment: «speaker avail start» — это «availability start» связанного «speaker ref».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityStart",
+            "label": "availability start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Availability start связанного «speaker ref»"
+      },
+      "Assignments.SpeakerAvailEnd": {
+        "table": "Assignments",
+        "field": "SpeakerAvailEnd",
+        "kind": "lookup",
+        "rule": "Assignment: «speaker avail end» — это «availability end» связанного «speaker ref».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityEnd",
+            "label": "availability end"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Availability end связанного «speaker ref»"
+      },
+      "Assignments.IsAvailable": {
+        "table": "Assignments",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "Assignment считается «available», если выполняется всё следующее: event date не меньше speaker avail start и event date не больше speaker avail end.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailStart",
+            "label": "speaker avail start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailEnd",
+            "label": "speaker avail end"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Assignment считается «available», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "event date не меньше speaker avail start"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "event date не больше speaker avail end"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Event date не меньше speaker avail start и event date не больше speaker avail end"
+      },
+      "Attendees.Name": {
+        "table": "Attendees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Attendee: «name» совпадает с attendee ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Attendees",
+            "field": "AttendeeId",
+            "label": "attendee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ID"
+      },
+      "RSVPs.Name": {
+        "table": "RSVPs",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "RSV p: «name» совпадает с RSVP ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "RSVPId",
+            "label": "RSVP ID"
+          }
+        ],
+        "structure": null,
+        "plain": "RSVP ID"
+      },
+      "RSVPs.EventName": {
+        "table": "RSVPs",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "RSV p: «event name» — это event ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "RSVPs.AttendeeName": {
+        "table": "RSVPs",
+        "field": "AttendeeName",
+        "kind": "lookup",
+        "rule": "RSV p: «attendee name» — это attendee ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "AttendeeRef",
+            "label": "attendee ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ref"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Venues": [
+        "Venue **обязан** иметь capacity."
+      ],
+      "Events": [
+        "Event **обязан** ссылаться ровно на один «venue».",
+        "Event **обязан** иметь event date; duration minutes; и registration close days before event."
+      ],
+      "Assignments": [
+        "Assignment **обязан** ссылаться ровно на один «event» в роли «event ref».",
+        "Assignment **обязан** ссылаться ровно на один «speaker» в роли «speaker ref»."
+      ],
+      "RSVPs": [
+        "RSV p **обязан** ссылаться ровно на один «event» в роли «event ref».",
+        "RSV p **обязан** ссылаться ровно на один «attendee» в роли «attendee ref».",
+        "RSV p **обязан** иметь status."
+      ]
+    },
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Venues": "venue",
+      "Speakers": "speaker",
+      "Events": "event",
+      "Assignments": "assignment",
+      "Attendees": "attendee",
+      "RSVPs": "RSV p"
+    }
+  },
+  "tr": {
+    "fields": {
+      "Venues.Name": {
+        "table": "Venues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“venue” kaydının “name” alanı, “venue ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue ID"
+      },
+      "Speakers.Name": {
+        "table": "Speakers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“speaker” kaydının “name” alanı, “speaker ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ID"
+      },
+      "Speakers.AssignmentCount": {
+        "table": "Speakers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "“speaker” kaydının “assignment count” alanı, “speaker” kaydıyla ilişkili “assignments” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ref değeri speaker ID olan assignments kayıtlarının sayısı"
+      },
+      "Speakers.IsOverbooked": {
+        "table": "Speakers",
+        "field": "IsOverbooked",
+        "kind": "formula",
+        "rule": "“speaker” kaydı, “assignment count” alanı 3 değerinden büyük ise “overbooked” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AssignmentCount",
+            "label": "assignment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment count, 3 değerinden büyük"
+      },
+      "Events.Name": {
+        "table": "Events",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“event” kaydının “name” alanı, “event ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "Events.VenueName": {
+        "table": "Events",
+        "field": "VenueName",
+        "kind": "lookup",
+        "rule": "“event” kaydının “venue name” alanı, “venue” alanı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue"
+      },
+      "Events.VenueCapacity": {
+        "table": "Events",
+        "field": "VenueCapacity",
+        "kind": "lookup",
+        "rule": "“event” kaydının “venue capacity” alanı, “venue” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "Capacity",
+            "label": "capacity"
+          },
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          },
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı venue kaydının capacity değeri"
+      },
+      "Events.EventEnd": {
+        "table": "Events",
+        "field": "EventEnd",
+        "kind": "formula",
+        "rule": "“event” kaydının “event end” alanı, “event date” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date"
+      },
+      "Events.TotalSpeakersAssigned": {
+        "table": "Events",
+        "field": "TotalSpeakersAssigned",
+        "kind": "rollup",
+        "rule": "“event” kaydının “total speakers assigned” alanı, “event” kaydıyla ilişkili “assignments” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref değeri event ID olan assignments kayıtlarının sayısı"
+      },
+      "Events.HasSpeakers": {
+        "table": "Events",
+        "field": "HasSpeakers",
+        "kind": "formula",
+        "rule": "“event” kaydı, “total speakers assigned” alanı 0 değerinden büyük ise “speakers” sahibi sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSpeakersAssigned",
+            "label": "total speakers assigned"
+          }
+        ],
+        "structure": null,
+        "plain": "Total speakers assigned, 0 değerinden büyük"
+      },
+      "Events.BookedCapacity": {
+        "table": "Events",
+        "field": "BookedCapacity",
+        "kind": "rollup",
+        "rule": "“event” kaydının “booked capacity” alanı, “event” kaydıyla ilişkili, “status” alanı “confirmed” olan “RSV ps” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          },
+          {
+            "table": "RSVPs",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref değeri event ID ve status değeri \"confirmed\" olan RSV ps kayıtlarının sayısı"
+      },
+      "Events.AvailableCapacity": {
+        "table": "Events",
+        "field": "AvailableCapacity",
+        "kind": "formula",
+        "rule": "“event” kaydının “available capacity” alanı, “venue capacity” alanı eksi “booked capacity” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueCapacity",
+            "label": "venue capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue capacity eksi booked capacity"
+      },
+      "Events.AtCapacity": {
+        "table": "Events",
+        "field": "AtCapacity",
+        "kind": "formula",
+        "rule": "“event” kaydı, “available capacity” alanı en çok 0 değerinde ise “at capacity” olarak işaretlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity, en çok 0 değerinde"
+      },
+      "Events.VenueConflictCount": {
+        "table": "Events",
+        "field": "VenueConflictCount",
+        "kind": "rollup",
+        "rule": "“event” kaydının “venue conflict count” alanı, “event” kaydıyla ilişkili “events” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue değeri venue olan events kayıtlarının sayısı"
+      },
+      "Events.HasVenueConflict": {
+        "table": "Events",
+        "field": "HasVenueConflict",
+        "kind": "formula",
+        "rule": "“event” kaydı, “venue conflict count” alanı 1 değerinden büyük ise “venue conflict” sahibi sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueConflictCount",
+            "label": "venue conflict count"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue conflict count, 1 değerinden büyük"
+      },
+      "Events.EventStatus": {
+        "table": "Events",
+        "field": "EventStatus",
+        "kind": "formula",
+        "rule": "“event” kaydının “event status” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “speakers” bayrağı etkin, “at capacity” bayrağı etkin değil ve “venue conflict” bayrağı etkin değil ise “ready”;\n2. diğer tüm durumlarda “issues”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasSpeakers",
+            "label": "has speakers"
+          },
+          {
+            "table": "Events",
+            "field": "AtCapacity",
+            "label": "at capacity"
+          },
+          {
+            "table": "Events",
+            "field": "HasVenueConflict",
+            "label": "has venue conflict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“event” kaydının “event status” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“ready”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "“speakers” bayrağı etkin"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "“at capacity” bayrağı etkin değil"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "“venue conflict” bayrağı etkin değil"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“issues”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Has speakers, (at capacity) koşulu sağlanmıyor ve (has venue conflict) koşulu sağlanmıyor ise \"ready\", aksi takdirde \"issues\""
+      },
+      "Events.RegistrationDeadline": {
+        "table": "Events",
+        "field": "RegistrationDeadline",
+        "kind": "formula",
+        "rule": "“event” kaydının “registration deadline” alanı, “event date” alanı eksi “registration close days before event” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Events",
+            "field": "RegistrationCloseDaysBeforeEvent",
+            "label": "registration close days before event"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date eksi registration close days before event"
+      },
+      "Events.IsRegistrationOpen": {
+        "table": "Events",
+        "field": "IsRegistrationOpen",
+        "kind": "formula",
+        "rule": "“event” kaydı, “registration deadline” alanı geçerli tarih ve saat değerinden büyük ise “registration open” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "RegistrationDeadline",
+            "label": "registration deadline"
+          }
+        ],
+        "structure": null,
+        "plain": "Registration deadline, şimdi değerinden büyük"
+      },
+      "Events.CapacityHeadroom": {
+        "table": "Events",
+        "field": "CapacityHeadroom",
+        "kind": "formula",
+        "rule": "“event” kaydının “capacity headroom” alanı, “available capacity” alanı eksi “booked capacity” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity eksi booked capacity"
+      },
+      "Events.HasHeadroomForOverbooking": {
+        "table": "Events",
+        "field": "HasHeadroomForOverbooking",
+        "kind": "formula",
+        "rule": "“event” kaydı, “capacity headroom” alanı en az “booked capacity” alanı çarpı 0.2 değerinde ise “headroom for overbooking” sahibi sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CapacityHeadroom",
+            "label": "capacity headroom"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Capacity headroom, en az (booked capacity çarpı 0.2) değerinde"
+      },
+      "Events.RecommendedOverbookingFactor": {
+        "table": "Events",
+        "field": "RecommendedOverbookingFactor",
+        "kind": "formula",
+        "rule": "“event” kaydının “recommended overbooking factor” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “headroom for overbooking” bayrağı etkin ise 1.2;\n2. diğer tüm durumlarda 1.0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasHeadroomForOverbooking",
+            "label": "has headroom for overbooking"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“event” kaydının “recommended overbooking factor” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "1.2",
+              "when": {
+                "kind": "leaf",
+                "text": "“headroom for overbooking” bayrağı etkin"
+              }
+            },
+            {
+              "value": "1.0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Has headroom for overbooking ise 1.2, aksi takdirde 1.0"
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“assignment” kaydının “name” alanı, “assignment ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "Assignments.EventName": {
+        "table": "Assignments",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "“assignment” kaydının “event name” alanı, “event ref” alanı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "Assignments.SpeakerName": {
+        "table": "Assignments",
+        "field": "SpeakerName",
+        "kind": "lookup",
+        "rule": "“assignment” kaydının “speaker name” alanı, “speaker ref” alanı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ref"
+      },
+      "Assignments.EventDate": {
+        "table": "Assignments",
+        "field": "EventDate",
+        "kind": "lookup",
+        "rule": "“assignment” kaydının “event date” alanı, “event ref” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı event ref kaydının event date değeri"
+      },
+      "Assignments.SpeakerAvailStart": {
+        "table": "Assignments",
+        "field": "SpeakerAvailStart",
+        "kind": "lookup",
+        "rule": "“assignment” kaydının “speaker avail start” alanı, “speaker ref” alanı üzerinden bağlı kaydın “availability start” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityStart",
+            "label": "availability start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı speaker ref kaydının availability start değeri"
+      },
+      "Assignments.SpeakerAvailEnd": {
+        "table": "Assignments",
+        "field": "SpeakerAvailEnd",
+        "kind": "lookup",
+        "rule": "“assignment” kaydının “speaker avail end” alanı, “speaker ref” alanı üzerinden bağlı kaydın “availability end” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityEnd",
+            "label": "availability end"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı speaker ref kaydının availability end değeri"
+      },
+      "Assignments.IsAvailable": {
+        "table": "Assignments",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "“assignment” kaydı, “event date” alanı en az “speaker avail start” alanı değerinde ve “event date” alanı en çok “speaker avail end” alanı değerinde ise “available” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailStart",
+            "label": "speaker avail start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailEnd",
+            "label": "speaker avail end"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“assignment” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “available” sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“event date” alanı en az “speaker avail start” alanı değerinde"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“event date” alanı en çok “speaker avail end” alanı değerinde"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Event date, en az speaker avail start değerinde ve event date, en çok speaker avail end değerinde"
+      },
+      "Attendees.Name": {
+        "table": "Attendees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“attendee” kaydının “name” alanı, “attendee ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Attendees",
+            "field": "AttendeeId",
+            "label": "attendee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ID"
+      },
+      "RSVPs.Name": {
+        "table": "RSVPs",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“RSV p” kaydının “name” alanı, “RSVP ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "RSVPId",
+            "label": "RSVP ID"
+          }
+        ],
+        "structure": null,
+        "plain": "RSVP ID"
+      },
+      "RSVPs.EventName": {
+        "table": "RSVPs",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "“RSV p” kaydının “event name” alanı, “event ref” alanı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "RSVPs.AttendeeName": {
+        "table": "RSVPs",
+        "field": "AttendeeName",
+        "kind": "lookup",
+        "rule": "“RSV p” kaydının “attendee name” alanı, “attendee ref” alanı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "AttendeeRef",
+            "label": "attendee ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ref"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Venues": [
+        "“venue” kaydı, “capacity” alanı dolu olmak **zorundadır**."
+      ],
+      "Events": [
+        "“event” kaydı, tam olarak bir “venue” kaydına referans vermek **zorundadır**.",
+        "“event” kaydı, “event date” alanı, “duration minutes” alanı ve “registration close days before event” alanı dolu olmak **zorundadır**."
+      ],
+      "Assignments": [
+        "“assignment” kaydı, “event ref” alanı aracılığıyla tam olarak bir “event” kaydına referans vermek **zorundadır**.",
+        "“assignment” kaydı, “speaker ref” alanı aracılığıyla tam olarak bir “speaker” kaydına referans vermek **zorundadır**."
+      ],
+      "RSVPs": [
+        "“RSV p” kaydı, “event ref” alanı aracılığıyla tam olarak bir “event” kaydına referans vermek **zorundadır**.",
+        "“RSV p” kaydı, “attendee ref” alanı aracılığıyla tam olarak bir “attendee” kaydına referans vermek **zorundadır**.",
+        "“RSV p” kaydı, “status” alanı dolu olmak **zorundadır**."
+      ]
+    },
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Venues": "venue",
+      "Speakers": "speaker",
+      "Events": "event",
+      "Assignments": "assignment",
+      "Attendees": "attendee",
+      "RSVPs": "RSV p"
+    }
+  },
+  "vi": {
+    "fields": {
+      "Venues.Name": {
+        "table": "Venues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi venue có cùng giá trị với trường “venue ID” của chính venue đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue ID"
+      },
+      "Speakers.Name": {
+        "table": "Speakers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi speaker có cùng giá trị với trường “speaker ID” của chính speaker đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ID"
+      },
+      "Speakers.AssignmentCount": {
+        "table": "Speakers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "Trường “assignment count” của mỗi speaker là số lượng assignments liên quan đến speaker đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng assignments có speaker ref là speaker ID"
+      },
+      "Speakers.IsOverbooked": {
+        "table": "Speakers",
+        "field": "IsOverbooked",
+        "kind": "formula",
+        "rule": "Mỗi speaker được coi là “overbooked” nếu assignment count lớn hơn 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AssignmentCount",
+            "label": "assignment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment count lớn hơn 3"
+      },
+      "Events.Name": {
+        "table": "Events",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi event có cùng giá trị với trường “event ID” của chính event đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "Events.VenueName": {
+        "table": "Events",
+        "field": "VenueName",
+        "kind": "lookup",
+        "rule": "Trường “venue name” của mỗi event là venue.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue"
+      },
+      "Events.VenueCapacity": {
+        "table": "Events",
+        "field": "VenueCapacity",
+        "kind": "lookup",
+        "rule": "Trường “venue capacity” của mỗi event được lấy từ bản ghi liên kết qua trường “venue”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "Capacity",
+            "label": "capacity"
+          },
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          },
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Capacity của bản ghi liên kết qua venue"
+      },
+      "Events.EventEnd": {
+        "table": "Events",
+        "field": "EventEnd",
+        "kind": "formula",
+        "rule": "Trường “event end” của mỗi event có cùng giá trị với trường “event date” của chính event đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date"
+      },
+      "Events.TotalSpeakersAssigned": {
+        "table": "Events",
+        "field": "TotalSpeakersAssigned",
+        "kind": "rollup",
+        "rule": "Trường “total speakers assigned” của mỗi event là số lượng assignments liên quan đến event đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng assignments có event ref là event ID"
+      },
+      "Events.HasSpeakers": {
+        "table": "Events",
+        "field": "HasSpeakers",
+        "kind": "formula",
+        "rule": "Mỗi event được coi là có “speakers” nếu total speakers assigned lớn hơn 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSpeakersAssigned",
+            "label": "total speakers assigned"
+          }
+        ],
+        "structure": null,
+        "plain": "Total speakers assigned lớn hơn 0"
+      },
+      "Events.BookedCapacity": {
+        "table": "Events",
+        "field": "BookedCapacity",
+        "kind": "rollup",
+        "rule": "Trường “booked capacity” của mỗi event là số lượng RSV ps liên quan đến event đó, chỉ tính các bản ghi có trường “status” là “confirmed”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          },
+          {
+            "table": "RSVPs",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng RSV ps có event ref là event ID và status là \"confirmed\""
+      },
+      "Events.AvailableCapacity": {
+        "table": "Events",
+        "field": "AvailableCapacity",
+        "kind": "formula",
+        "rule": "Trường “available capacity” của mỗi event được tính bằng venue capacity trừ booked capacity.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueCapacity",
+            "label": "venue capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue capacity trừ booked capacity"
+      },
+      "Events.AtCapacity": {
+        "table": "Events",
+        "field": "AtCapacity",
+        "kind": "formula",
+        "rule": "Mỗi event được đánh dấu là “at capacity” nếu available capacity không lớn hơn 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity không lớn hơn 0"
+      },
+      "Events.VenueConflictCount": {
+        "table": "Events",
+        "field": "VenueConflictCount",
+        "kind": "rollup",
+        "rule": "Trường “venue conflict count” của mỗi event là số lượng events liên quan đến event đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng events có venue là venue"
+      },
+      "Events.HasVenueConflict": {
+        "table": "Events",
+        "field": "HasVenueConflict",
+        "kind": "formula",
+        "rule": "Mỗi event được coi là có “venue conflict” nếu venue conflict count lớn hơn 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueConflictCount",
+            "label": "venue conflict count"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue conflict count lớn hơn 1"
+      },
+      "Events.EventStatus": {
+        "table": "Events",
+        "field": "EventStatus",
+        "kind": "formula",
+        "rule": "Trường “event status” của mỗi event được xác định theo thứ tự ưu tiên sau:\n1. “ready”, nếu tất cả các điều kiện sau đều đúng: cờ “speakers” được bật, cờ “at capacity” không được bật và cờ “venue conflict” không được bật;\n2. trong mọi trường hợp còn lại, “issues”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasSpeakers",
+            "label": "has speakers"
+          },
+          {
+            "table": "Events",
+            "field": "AtCapacity",
+            "label": "at capacity"
+          },
+          {
+            "table": "Events",
+            "field": "HasVenueConflict",
+            "label": "has venue conflict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “event status” của mỗi event được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“ready”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "cờ “speakers” được bật"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "cờ “at capacity” không được bật"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "cờ “venue conflict” không được bật"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“issues”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu has speakers, không phải at capacity và không phải has venue conflict thì \"ready\", nếu không thì \"issues\""
+      },
+      "Events.RegistrationDeadline": {
+        "table": "Events",
+        "field": "RegistrationDeadline",
+        "kind": "formula",
+        "rule": "Trường “registration deadline” của mỗi event được tính bằng event date trừ registration close days before event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Events",
+            "field": "RegistrationCloseDaysBeforeEvent",
+            "label": "registration close days before event"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date trừ registration close days before event"
+      },
+      "Events.IsRegistrationOpen": {
+        "table": "Events",
+        "field": "IsRegistrationOpen",
+        "kind": "formula",
+        "rule": "Mỗi event được coi là “registration open” nếu registration deadline lớn hơn ngày giờ hiện tại.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "RegistrationDeadline",
+            "label": "registration deadline"
+          }
+        ],
+        "structure": null,
+        "plain": "Registration deadline lớn hơn thời điểm hiện tại"
+      },
+      "Events.CapacityHeadroom": {
+        "table": "Events",
+        "field": "CapacityHeadroom",
+        "kind": "formula",
+        "rule": "Trường “capacity headroom” của mỗi event được tính bằng available capacity trừ booked capacity.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity trừ booked capacity"
+      },
+      "Events.HasHeadroomForOverbooking": {
+        "table": "Events",
+        "field": "HasHeadroomForOverbooking",
+        "kind": "formula",
+        "rule": "Mỗi event được coi là có “headroom for overbooking” nếu capacity headroom không nhỏ hơn booked capacity nhân 0.2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CapacityHeadroom",
+            "label": "capacity headroom"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Capacity headroom không nhỏ hơn (booked capacity nhân 0.2)"
+      },
+      "Events.RecommendedOverbookingFactor": {
+        "table": "Events",
+        "field": "RecommendedOverbookingFactor",
+        "kind": "formula",
+        "rule": "Trường “recommended overbooking factor” của mỗi event được xác định theo thứ tự ưu tiên sau:\n1. 1.2, nếu cờ “headroom for overbooking” được bật;\n2. trong mọi trường hợp còn lại, 1.0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasHeadroomForOverbooking",
+            "label": "has headroom for overbooking"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “recommended overbooking factor” của mỗi event được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "1.2",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “headroom for overbooking” được bật"
+              }
+            },
+            {
+              "value": "1.0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu has headroom for overbooking thì 1.2, nếu không thì 1.0"
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi assignment có cùng giá trị với trường “assignment ID” của chính assignment đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "Assignments.EventName": {
+        "table": "Assignments",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Trường “event name” của mỗi assignment là event ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "Assignments.SpeakerName": {
+        "table": "Assignments",
+        "field": "SpeakerName",
+        "kind": "lookup",
+        "rule": "Trường “speaker name” của mỗi assignment là speaker ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ref"
+      },
+      "Assignments.EventDate": {
+        "table": "Assignments",
+        "field": "EventDate",
+        "kind": "lookup",
+        "rule": "Trường “event date” của mỗi assignment được lấy từ bản ghi liên kết qua trường “event ref”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date của bản ghi liên kết qua event ref"
+      },
+      "Assignments.SpeakerAvailStart": {
+        "table": "Assignments",
+        "field": "SpeakerAvailStart",
+        "kind": "lookup",
+        "rule": "Trường “speaker avail start” của mỗi assignment là trường “availability start” của bản ghi liên kết qua trường “speaker ref”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityStart",
+            "label": "availability start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Availability start của bản ghi liên kết qua speaker ref"
+      },
+      "Assignments.SpeakerAvailEnd": {
+        "table": "Assignments",
+        "field": "SpeakerAvailEnd",
+        "kind": "lookup",
+        "rule": "Trường “speaker avail end” của mỗi assignment là trường “availability end” của bản ghi liên kết qua trường “speaker ref”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityEnd",
+            "label": "availability end"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Availability end của bản ghi liên kết qua speaker ref"
+      },
+      "Assignments.IsAvailable": {
+        "table": "Assignments",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "Mỗi assignment được coi là “available” nếu tất cả các điều kiện sau đều đúng: event date không nhỏ hơn speaker avail start và event date không lớn hơn speaker avail end.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailStart",
+            "label": "speaker avail start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailEnd",
+            "label": "speaker avail end"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi assignment được coi là “available” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "event date không nhỏ hơn speaker avail start"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "event date không lớn hơn speaker avail end"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Event date không nhỏ hơn speaker avail start và event date không lớn hơn speaker avail end"
+      },
+      "Attendees.Name": {
+        "table": "Attendees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi attendee có cùng giá trị với trường “attendee ID” của chính attendee đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Attendees",
+            "field": "AttendeeId",
+            "label": "attendee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ID"
+      },
+      "RSVPs.Name": {
+        "table": "RSVPs",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi RSV p có cùng giá trị với trường “RSVP ID” của chính RSV p đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "RSVPId",
+            "label": "RSVP ID"
+          }
+        ],
+        "structure": null,
+        "plain": "RSVP ID"
+      },
+      "RSVPs.EventName": {
+        "table": "RSVPs",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Trường “event name” của mỗi RSV p là event ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "RSVPs.AttendeeName": {
+        "table": "RSVPs",
+        "field": "AttendeeName",
+        "kind": "lookup",
+        "rule": "Trường “attendee name” của mỗi RSV p là attendee ref.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "AttendeeRef",
+            "label": "attendee ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ref"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Venues": [
+        "Mỗi venue **phải** có capacity."
+      ],
+      "Events": [
+        "Mỗi event **phải** tham chiếu đến đúng một venue.",
+        "Mỗi event **phải** có event date, duration minutes và registration close days before event."
+      ],
+      "Assignments": [
+        "Mỗi assignment **phải** tham chiếu đến đúng một event với vai trò event ref.",
+        "Mỗi assignment **phải** tham chiếu đến đúng một speaker với vai trò speaker ref."
+      ],
+      "RSVPs": [
+        "Mỗi RSV p **phải** tham chiếu đến đúng một event với vai trò event ref.",
+        "Mỗi RSV p **phải** tham chiếu đến đúng một attendee với vai trò attendee ref.",
+        "Mỗi RSV p **phải** có status."
+      ]
+    },
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Venues": "venue",
+      "Speakers": "speaker",
+      "Events": "event",
+      "Assignments": "assignment",
+      "Attendees": "attendee",
+      "RSVPs": "RSV p"
+    }
+  },
+  "zh": {
+    "fields": {
+      "Venues.Name": {
+        "table": "Venues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "venue的“name”与 venue ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue ID"
+      },
+      "Speakers.Name": {
+        "table": "Speakers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "speaker的“name”与 speaker ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ID"
+      },
+      "Speakers.AssignmentCount": {
+        "table": "Speakers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "speaker的“assignment count”为 与speaker相关的“assignments”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ref为speaker ID的“assignments”的数量"
+      },
+      "Speakers.IsOverbooked": {
+        "table": "Speakers",
+        "field": "IsOverbooked",
+        "kind": "formula",
+        "rule": "当assignment count大于3时,speaker被视为“Overbooked”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AssignmentCount",
+            "label": "assignment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment count大于3"
+      },
+      "Events.Name": {
+        "table": "Events",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "event的“name”与 event ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "Events.VenueName": {
+        "table": "Events",
+        "field": "VenueName",
+        "kind": "lookup",
+        "rule": "event的“venue name”为 venue。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue"
+      },
+      "Events.VenueCapacity": {
+        "table": "Events",
+        "field": "VenueCapacity",
+        "kind": "lookup",
+        "rule": "event的“venue capacity”——取自所关联的“venue”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Venues",
+            "field": "Capacity",
+            "label": "capacity"
+          },
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          },
+          {
+            "table": "Venues",
+            "field": "VenueId",
+            "label": "venue ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“venue”的capacity"
+      },
+      "Events.EventEnd": {
+        "table": "Events",
+        "field": "EventEnd",
+        "kind": "formula",
+        "rule": "event的“event end”与 event date 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date"
+      },
+      "Events.TotalSpeakersAssigned": {
+        "table": "Events",
+        "field": "TotalSpeakersAssigned",
+        "kind": "rollup",
+        "rule": "event的“total speakers assigned”为 与event相关的“assignments”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref为event ID的“assignments”的数量"
+      },
+      "Events.HasSpeakers": {
+        "table": "Events",
+        "field": "HasSpeakers",
+        "kind": "formula",
+        "rule": "当total speakers assigned大于0时,event被视为具有“Speakers”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSpeakersAssigned",
+            "label": "total speakers assigned"
+          }
+        ],
+        "structure": null,
+        "plain": "Total speakers assigned大于0"
+      },
+      "Events.BookedCapacity": {
+        "table": "Events",
+        "field": "BookedCapacity",
+        "kind": "rollup",
+        "rule": "event的“booked capacity”为 event的“RSV ps”中“status”为 “confirmed”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          },
+          {
+            "table": "RSVPs",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref为event ID且status为\"confirmed\"的“RSV ps”的数量"
+      },
+      "Events.AvailableCapacity": {
+        "table": "Events",
+        "field": "AvailableCapacity",
+        "kind": "formula",
+        "rule": "event的“available capacity”按 venue capacity减booked capacity 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueCapacity",
+            "label": "venue capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue capacity减booked capacity"
+      },
+      "Events.AtCapacity": {
+        "table": "Events",
+        "field": "AtCapacity",
+        "kind": "formula",
+        "rule": "当available capacity不大于0时,event被标记为“At Capacity”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity不大于0"
+      },
+      "Events.VenueConflictCount": {
+        "table": "Events",
+        "field": "VenueConflictCount",
+        "kind": "rollup",
+        "rule": "event的“venue conflict count”为 与event相关的“events”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Venue",
+            "label": "venue"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue为venue的“events”的数量"
+      },
+      "Events.HasVenueConflict": {
+        "table": "Events",
+        "field": "HasVenueConflict",
+        "kind": "formula",
+        "rule": "当venue conflict count大于1时,event被视为具有“Venue Conflict”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "VenueConflictCount",
+            "label": "venue conflict count"
+          }
+        ],
+        "structure": null,
+        "plain": "Venue conflict count大于1"
+      },
+      "Events.EventStatus": {
+        "table": "Events",
+        "field": "EventStatus",
+        "kind": "formula",
+        "rule": "Event的“event status”按以下优先级确定:\n1. 当以下全部成立:标志“speakers”已设置、标志“at capacity”未设置,且标志“venue conflict”未设置时,取 “ready”;\n2. 其余情况取 “issues”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasSpeakers",
+            "label": "has speakers"
+          },
+          {
+            "table": "Events",
+            "field": "AtCapacity",
+            "label": "at capacity"
+          },
+          {
+            "table": "Events",
+            "field": "HasVenueConflict",
+            "label": "has venue conflict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Event的“event status”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“ready”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "标志“speakers”已设置"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "标志“at capacity”未设置"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "标志“venue conflict”未设置"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“issues”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若has speakers、并非at capacity,且并非has venue conflict,则\"ready\",否则\"issues\""
+      },
+      "Events.RegistrationDeadline": {
+        "table": "Events",
+        "field": "RegistrationDeadline",
+        "kind": "formula",
+        "rule": "event的“registration deadline”按 event date减registration close days before event 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Events",
+            "field": "RegistrationCloseDaysBeforeEvent",
+            "label": "registration close days before event"
+          }
+        ],
+        "structure": null,
+        "plain": "Event date减registration close days before event"
+      },
+      "Events.IsRegistrationOpen": {
+        "table": "Events",
+        "field": "IsRegistrationOpen",
+        "kind": "formula",
+        "rule": "当registration deadline大于当前日期和时间时,event被视为“Registration Open”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "RegistrationDeadline",
+            "label": "registration deadline"
+          }
+        ],
+        "structure": null,
+        "plain": "Registration deadline大于现在"
+      },
+      "Events.CapacityHeadroom": {
+        "table": "Events",
+        "field": "CapacityHeadroom",
+        "kind": "formula",
+        "rule": "event的“capacity headroom”按 available capacity减booked capacity 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "AvailableCapacity",
+            "label": "available capacity"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Available capacity减booked capacity"
+      },
+      "Events.HasHeadroomForOverbooking": {
+        "table": "Events",
+        "field": "HasHeadroomForOverbooking",
+        "kind": "formula",
+        "rule": "当capacity headroom不小于booked capacity乘0.2时,event被视为具有“Headroom for Overbooking”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CapacityHeadroom",
+            "label": "capacity headroom"
+          },
+          {
+            "table": "Events",
+            "field": "BookedCapacity",
+            "label": "booked capacity"
+          }
+        ],
+        "structure": null,
+        "plain": "Capacity headroom不小于(booked capacity乘0.2)"
+      },
+      "Events.RecommendedOverbookingFactor": {
+        "table": "Events",
+        "field": "RecommendedOverbookingFactor",
+        "kind": "formula",
+        "rule": "Event的“recommended overbooking factor”按以下优先级确定:\n1. 当标志“headroom for overbooking”已设置时,取 1.2;\n2. 其余情况取 1.0。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "HasHeadroomForOverbooking",
+            "label": "has headroom for overbooking"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Event的“recommended overbooking factor”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "1.2",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“headroom for overbooking”已设置"
+              }
+            },
+            {
+              "value": "1.0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若has headroom for overbooking,则1.2,否则1.0"
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "assignment的“name”与 assignment ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "Assignments.EventName": {
+        "table": "Assignments",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "assignment的“event name”为 event ref。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "Assignments.SpeakerName": {
+        "table": "Assignments",
+        "field": "SpeakerName",
+        "kind": "lookup",
+        "rule": "assignment的“speaker name”为 speaker ref。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker ref"
+      },
+      "Assignments.EventDate": {
+        "table": "Assignments",
+        "field": "EventDate",
+        "kind": "lookup",
+        "rule": "assignment的“event date”——取自所关联的“event ref”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "EventRef",
+            "label": "event ref"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“event ref”的event date"
+      },
+      "Assignments.SpeakerAvailStart": {
+        "table": "Assignments",
+        "field": "SpeakerAvailStart",
+        "kind": "lookup",
+        "rule": "assignment的“speaker avail start”是所关联的“speaker ref”的“availability start”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityStart",
+            "label": "availability start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“speaker ref”的availability start"
+      },
+      "Assignments.SpeakerAvailEnd": {
+        "table": "Assignments",
+        "field": "SpeakerAvailEnd",
+        "kind": "lookup",
+        "rule": "assignment的“speaker avail end”是所关联的“speaker ref”的“availability end”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Speakers",
+            "field": "AvailabilityEnd",
+            "label": "availability end"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerRef",
+            "label": "speaker ref"
+          },
+          {
+            "table": "Speakers",
+            "field": "SpeakerId",
+            "label": "speaker ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“speaker ref”的availability end"
+      },
+      "Assignments.IsAvailable": {
+        "table": "Assignments",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "当以下全部成立:event date不小于speaker avail start且event date不大于speaker avail end时,assignment被视为“Available”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "EventDate",
+            "label": "event date"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailStart",
+            "label": "speaker avail start"
+          },
+          {
+            "table": "Assignments",
+            "field": "SpeakerAvailEnd",
+            "label": "speaker avail end"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,assignment被视为“Available”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "event date不小于speaker avail start"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "event date不大于speaker avail end"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Event date不小于speaker avail start且event date不大于speaker avail end"
+      },
+      "Attendees.Name": {
+        "table": "Attendees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "attendee的“name”与 attendee ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Attendees",
+            "field": "AttendeeId",
+            "label": "attendee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ID"
+      },
+      "RSVPs.Name": {
+        "table": "RSVPs",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "RSV p的“name”与 RSVP ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "RSVPId",
+            "label": "RSVP ID"
+          }
+        ],
+        "structure": null,
+        "plain": "RSVP ID"
+      },
+      "RSVPs.EventName": {
+        "table": "RSVPs",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "RSV p的“event name”为 event ref。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "EventRef",
+            "label": "event ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ref"
+      },
+      "RSVPs.AttendeeName": {
+        "table": "RSVPs",
+        "field": "AttendeeName",
+        "kind": "lookup",
+        "rule": "RSV p的“attendee name”为 attendee ref。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RSVPs",
+            "field": "AttendeeRef",
+            "label": "attendee ref"
+          }
+        ],
+        "structure": null,
+        "plain": "Attendee ref"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Venues": [
+        "venue**必须**具有capacity。"
+      ],
+      "Events": [
+        "event**必须**恰好引用一个“venue”。",
+        "event**必须**具有event date、duration minutes,且registration close days before event。"
+      ],
+      "Assignments": [
+        "assignment**必须**恰好引用一个“event”作为其event ref。",
+        "assignment**必须**恰好引用一个“speaker”作为其speaker ref。"
+      ],
+      "RSVPs": [
+        "RSV p**必须**恰好引用一个“event”作为其event ref。",
+        "RSV p**必须**恰好引用一个“attendee”作为其attendee ref。",
+        "RSV p**必须**具有status。"
+      ]
+    },
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "Venues": "venue",

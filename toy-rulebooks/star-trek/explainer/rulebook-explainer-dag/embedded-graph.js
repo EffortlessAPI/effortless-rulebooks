@@ -14579,7 +14579,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -15199,6 +15214,9876 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "Series": "series",
+      "Seasons": "season",
+      "Episodes": "episode",
+      "CrewTypes": "crew type",
+      "People": "person",
+      "Movies": "movy",
+      "CrewAssignments": "crew assignment",
+      "Ratings": "rating",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "ar": {
+    "fields": {
+      "Series.Name": {
+        "table": "Series",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «series» يُحسب على النحو الآتي: حقل «series number»، ثم شرطة، ثم حقل «show code».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "SeriesNumber",
+            "label": "series number"
+          },
+          {
+            "table": "Series",
+            "field": "ShowCode",
+            "label": "show code"
+          }
+        ],
+        "structure": null,
+        "plain": "(series number يليه \"-\") يليه show code"
+      },
+      "Series.TotalSeasons": {
+        "table": "Series",
+        "field": "TotalSeasons",
+        "kind": "rollup",
+        "rule": "حقل «total seasons» في سجل «series» هو عدد سجلات «seasons» المرتبطة بسجل «series».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «seasons» التي يتحقق فيها أنّ حقل «series» يساوي serie ID"
+      },
+      "Series.TotalEpisodes": {
+        "table": "Series",
+        "field": "TotalEpisodes",
+        "kind": "rollup",
+        "rule": "حقل «total episodes» في سجل «series» هو مجموع قيم حقل «episode count» عبر سجلات «seasons» المرتبطة بسجل «series».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "EpisodeCount",
+            "label": "episode count"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «episode count» في جميع سجلات «seasons» التي يتحقق فيها أنّ حقل «series» يساوي serie ID"
+      },
+      "Series.IsLongRunning": {
+        "table": "Series",
+        "field": "IsLongRunning",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «series» على أنه «long running» إذا تحقق أنّ حقل «total episodes» أكبر من 50.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "TotalEpisodes",
+            "label": "total episodes"
+          }
+        ],
+        "structure": null,
+        "plain": "Total episodes أكبر من 50"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "rollup",
+        "rule": "حقل «rating» في سجل «series» هو مجموع قيم حقل «rating» عبر سجلات «ratings» المرتبطة بسجل «series».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Rating",
+            "label": "rating"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «rating» في جميع سجلات «ratings» التي يتحقق فيها أنّ حقل «series» يساوي serie ID"
+      },
+      "Series.IsGood": {
+        "table": "Series",
+        "field": "IsGood",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «series» على أنه «good» إذا تحقق أنّ حقل «rating» لا يقل عن 4.5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Rating",
+            "label": "rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Rating لا يقل عن 4.5"
+      },
+      "Seasons.Name": {
+        "table": "Seasons",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «season» يُحسب على النحو الآتي: حقل «series»، ثم «-Season-»، ثم حقل «season number».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          }
+        ],
+        "structure": null,
+        "plain": "(series يليه \"-Season-\") يليه season number"
+      },
+      "Seasons.ShowTitle": {
+        "table": "Seasons",
+        "field": "ShowTitle",
+        "kind": "lookup",
+        "rule": "حقل «show title» في سجل «season» مأخوذ من السجل المرتبط به عبر حقل «series».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «title» من السجل المرتبط عبر «series»"
+      },
+      "Seasons.ShowDescription": {
+        "table": "Seasons",
+        "field": "ShowDescription",
+        "kind": "lookup",
+        "rule": "حقل «show description» في سجل «season» مأخوذ من السجل المرتبط به عبر حقل «series».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «description» من السجل المرتبط عبر «series»"
+      },
+      "Seasons.ShowNetwork": {
+        "table": "Seasons",
+        "field": "ShowNetwork",
+        "kind": "lookup",
+        "rule": "حقل «show network» في سجل «season» مأخوذ من السجل المرتبط به عبر حقل «series».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Network",
+            "label": "network"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «network» من السجل المرتبط عبر «series»"
+      },
+      "Seasons.EpisodeCount": {
+        "table": "Seasons",
+        "field": "EpisodeCount",
+        "kind": "rollup",
+        "rule": "حقل «episode count» في سجل «season» هو عدد سجلات «episodes» المرتبطة بسجل «season».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «episodes» التي يتحقق فيها أنّ حقل «season» يساوي season ID"
+      },
+      "Episodes.Name": {
+        "table": "Episodes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «episode» يُحسب على النحو الآتي: حقل «season»، ثم «-Episode-»، ثم «0»، ثم حقل «episode number».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeNumber",
+            "label": "episode number"
+          }
+        ],
+        "structure": null,
+        "plain": "((season يليه \"-Episode-\") يليه إذا تحقق أنّ episode number أقل من 10 فالناتج \"0\"، وإلا فالناتج \"\") يليه episode number"
+      },
+      "Episodes.SeasonNumber": {
+        "table": "Episodes",
+        "field": "SeasonNumber",
+        "kind": "lookup",
+        "rule": "حقل «season number» في سجل «episode» مأخوذ من السجل المرتبط به عبر حقل «season».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «season number» من السجل المرتبط عبر «season»"
+      },
+      "Episodes.SeasonTitle": {
+        "table": "Episodes",
+        "field": "SeasonTitle",
+        "kind": "lookup",
+        "rule": "حقل «season title» في سجل «episode» مأخوذ من السجل المرتبط به عبر حقل «season».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «title» من السجل المرتبط عبر «season»"
+      },
+      "Episodes.SeasonDescription": {
+        "table": "Episodes",
+        "field": "SeasonDescription",
+        "kind": "lookup",
+        "rule": "حقل «season description» في سجل «episode» مأخوذ من السجل المرتبط به عبر حقل «season».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «description» من السجل المرتبط عبر «season»"
+      },
+      "Movies.Name": {
+        "table": "Movies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «movy» يُحسب على النحو الآتي: حقل «movie number»، ثم شرطة، ثم حقل «title».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "MovieNumber",
+            "label": "movie number"
+          },
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(movie number يليه \"-\") يليه title"
+      },
+      "Movies.CrewCount": {
+        "table": "Movies",
+        "field": "CrewCount",
+        "kind": "rollup",
+        "rule": "حقل «crew count» في سجل «movy» هو عدد سجلات «crew assignments» المرتبطة بسجل «movy».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «crew assignments» التي يتحقق فيها أنّ حقل «movie» يساوي movie ID"
+      },
+      "CrewAssignments.Name": {
+        "table": "CrewAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «crew assignment» يُحسب على النحو الآتي: حقل «person name»، ثم شرطة، ثم حقل «crew type name»، ثم شرطة، ثم حقل «movie title».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "PersonName",
+            "label": "person name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewTypeName",
+            "label": "crew type name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "MovieTitle",
+            "label": "movie title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((person name يليه \"-\") يليه crew type name) يليه \"-\") يليه movie title"
+      },
+      "CrewAssignments.PersonName": {
+        "table": "CrewAssignments",
+        "field": "PersonName",
+        "kind": "lookup",
+        "rule": "حقل «person name» في سجل «crew assignment» مأخوذ من السجل المرتبط به عبر حقل «person».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "People",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Person",
+            "label": "person"
+          },
+          {
+            "table": "People",
+            "field": "PersonId",
+            "label": "person ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «person»"
+      },
+      "CrewAssignments.MovieTitle": {
+        "table": "CrewAssignments",
+        "field": "MovieTitle",
+        "kind": "lookup",
+        "rule": "حقل «movie title» في سجل «crew assignment» مأخوذ من السجل المرتبط به عبر حقل «movie».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «title» من السجل المرتبط عبر «movie»"
+      },
+      "CrewAssignments.CrewTypeName": {
+        "table": "CrewAssignments",
+        "field": "CrewTypeName",
+        "kind": "lookup",
+        "rule": "حقل «crew type name» في سجل «crew assignment» مأخوذ من السجل المرتبط به عبر حقل «crew type».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewType",
+            "label": "crew type"
+          },
+          {
+            "table": "CrewTypes",
+            "field": "CrewTypeId",
+            "label": "crew type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «crew type»"
+      },
+      "Ratings.Name": {
+        "table": "Ratings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «rating» يُحسب على النحو الآتي: حقل «display name»، ثم شرطة، ثم حقل «users name».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Ratings",
+            "field": "UsersName",
+            "label": "users name"
+          }
+        ],
+        "structure": null,
+        "plain": "(display name يليه \"-\") يليه users name"
+      },
+      "Ratings.DisplayName": {
+        "table": "Ratings",
+        "field": "DisplayName",
+        "kind": "formula",
+        "rule": "حقل «display name» في سجل «rating» يتحدد وفق ترتيب الأولوية الآتي:\n1. «Episode: »، ثم حقل «episode name»، إذا تحقق أنّ حقل «series» فارغ؛\n2. «Series: »، ثم حقل «series name»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Ratings",
+            "field": "EpisodeName",
+            "label": "episode name"
+          },
+          {
+            "table": "Ratings",
+            "field": "SeriesName",
+            "label": "series name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «display name» في سجل «rating» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«Episode: »، ثم حقل «episode name»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «series» فارغ"
+              }
+            },
+            {
+              "value": "«Series: »، ثم حقل «series name»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ series يساوي blank() فالناتج (\"Episode: \" يليه episode name)، وإلا فالناتج (\"Series: \" يليه series name)"
+      },
+      "Ratings.SeriesName": {
+        "table": "Ratings",
+        "field": "SeriesName",
+        "kind": "lookup",
+        "rule": "حقل «series name» في سجل «rating» مأخوذ من السجل المرتبط به عبر حقل «series».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «series»"
+      },
+      "Ratings.EpisodeName": {
+        "table": "Ratings",
+        "field": "EpisodeName",
+        "kind": "lookup",
+        "rule": "حقل «episode name» في سجل «rating» مأخوذ من السجل المرتبط به عبر حقل «episode».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «episode»"
+      },
+      "Ratings.EpisodeSeasonTitle": {
+        "table": "Ratings",
+        "field": "EpisodeSeasonTitle",
+        "kind": "lookup",
+        "rule": "حقل «episode season title» في سجل «rating» مأخوذ من السجل المرتبط به عبر حقل «episode».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "SeasonTitle",
+            "label": "season title"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «season title» من السجل المرتبط عبر «episode»"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Series": "series",
+      "Seasons": "season",
+      "Episodes": "episode",
+      "CrewTypes": "crew type",
+      "People": "person",
+      "Movies": "movy",
+      "CrewAssignments": "crew assignment",
+      "Ratings": "rating",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "de": {
+    "fields": {
+      "Series.Name": {
+        "table": "Series",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Series: Name wird berechnet als der Series Number, gefolgt von ein Bindestrich, gefolgt von die Show Code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "SeriesNumber",
+            "label": "series number"
+          },
+          {
+            "table": "Series",
+            "field": "ShowCode",
+            "label": "show code"
+          }
+        ],
+        "structure": null,
+        "plain": "(Series Number verbunden mit \"-\") verbunden mit Show Code"
+      },
+      "Series.TotalSeasons": {
+        "table": "Series",
+        "field": "TotalSeasons",
+        "kind": "rollup",
+        "rule": "Ein Series: Total Seasons ist die Anzahl der mit dem Series verbundenen Seasons.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Seasons, deren Series ist Serie ID"
+      },
+      "Series.TotalEpisodes": {
+        "table": "Series",
+        "field": "TotalEpisodes",
+        "kind": "rollup",
+        "rule": "Ein Series: Total Episodes ist die Gesamtsumme von Episode Count über die mit dem Series verbundenen Seasons.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "EpisodeCount",
+            "label": "episode count"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Episode Count über alle Seasons, deren Series ist Serie ID"
+      },
+      "Series.IsLongRunning": {
+        "table": "Series",
+        "field": "IsLongRunning",
+        "kind": "formula",
+        "rule": "Ein Series gilt als long running, wenn der Total Episodes größer ist als 50.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "TotalEpisodes",
+            "label": "total episodes"
+          }
+        ],
+        "structure": null,
+        "plain": "Total Episodes größer als 50 ist"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "rollup",
+        "rule": "Ein Series: Rating ist die Gesamtsumme von Rating über die mit dem Series verbundenen Ratings.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Rating",
+            "label": "rating"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Rating über alle Ratings, deren Series ist Serie ID"
+      },
+      "Series.IsGood": {
+        "table": "Series",
+        "field": "IsGood",
+        "kind": "formula",
+        "rule": "Ein Series gilt als ein Good, wenn der Rating mindestens 4.5 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Rating",
+            "label": "rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Rating mindestens 4.5 ist"
+      },
+      "Seasons.Name": {
+        "table": "Seasons",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Season: Name wird berechnet als der Series, gefolgt von „-Season-“, gefolgt von der Season Number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          }
+        ],
+        "structure": null,
+        "plain": "(Series verbunden mit \"-Season-\") verbunden mit Season Number"
+      },
+      "Seasons.ShowTitle": {
+        "table": "Seasons",
+        "field": "ShowTitle",
+        "kind": "lookup",
+        "rule": "Ein Season: Show Title — aus dem zugehörigen Series übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Title des verknüpften Series"
+      },
+      "Seasons.ShowDescription": {
+        "table": "Seasons",
+        "field": "ShowDescription",
+        "kind": "lookup",
+        "rule": "Ein Season: Show Description — aus dem zugehörigen Series übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Description des verknüpften Series"
+      },
+      "Seasons.ShowNetwork": {
+        "table": "Seasons",
+        "field": "ShowNetwork",
+        "kind": "lookup",
+        "rule": "Ein Season: Show Network — aus dem zugehörigen Series übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Network",
+            "label": "network"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Network des verknüpften Series"
+      },
+      "Seasons.EpisodeCount": {
+        "table": "Seasons",
+        "field": "EpisodeCount",
+        "kind": "rollup",
+        "rule": "Ein Season: Episode Count ist die Anzahl der mit dem Season verbundenen Episodes.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Episodes, deren Season ist Season ID"
+      },
+      "Episodes.Name": {
+        "table": "Episodes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Episode: Name wird berechnet als der Season, gefolgt von „-Episode-“, gefolgt von „0“, gefolgt von der Episode Number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeNumber",
+            "label": "episode number"
+          }
+        ],
+        "structure": null,
+        "plain": "((Season verbunden mit \"-Episode-\") verbunden mit wenn Episode Number kleiner als 10 ist, dann \"0\", andernfalls \"\") verbunden mit Episode Number"
+      },
+      "Episodes.SeasonNumber": {
+        "table": "Episodes",
+        "field": "SeasonNumber",
+        "kind": "lookup",
+        "rule": "Eine Episode: Season Number — aus dem zugehörigen Season übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Season Number des verknüpften Season"
+      },
+      "Episodes.SeasonTitle": {
+        "table": "Episodes",
+        "field": "SeasonTitle",
+        "kind": "lookup",
+        "rule": "Eine Episode: Season Title — aus dem zugehörigen Season übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Title des verknüpften Season"
+      },
+      "Episodes.SeasonDescription": {
+        "table": "Episodes",
+        "field": "SeasonDescription",
+        "kind": "lookup",
+        "rule": "Eine Episode: Season Description — aus dem zugehörigen Season übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Description des verknüpften Season"
+      },
+      "Movies.Name": {
+        "table": "Movies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Movy: Name wird berechnet als der Movie Number, gefolgt von ein Bindestrich, gefolgt von die Title.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "MovieNumber",
+            "label": "movie number"
+          },
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(Movie Number verbunden mit \"-\") verbunden mit Title"
+      },
+      "Movies.CrewCount": {
+        "table": "Movies",
+        "field": "CrewCount",
+        "kind": "rollup",
+        "rule": "Ein Movy: Crew Count ist die Anzahl der mit dem Movy verbundenen Crew Assignments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Crew Assignments, deren Movie ist Movie ID"
+      },
+      "CrewAssignments.Name": {
+        "table": "CrewAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Crew Assignment: Name wird berechnet als die Person Name, gefolgt von ein Bindestrich, gefolgt von die Crew Type Name, gefolgt von ein Bindestrich, gefolgt von die Movie Title.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "PersonName",
+            "label": "person name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewTypeName",
+            "label": "crew type name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "MovieTitle",
+            "label": "movie title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((Person Name verbunden mit \"-\") verbunden mit Crew Type Name) verbunden mit \"-\") verbunden mit Movie Title"
+      },
+      "CrewAssignments.PersonName": {
+        "table": "CrewAssignments",
+        "field": "PersonName",
+        "kind": "lookup",
+        "rule": "Ein Crew Assignment: Person Name — aus dem zugehörigen Person übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "People",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Person",
+            "label": "person"
+          },
+          {
+            "table": "People",
+            "field": "PersonId",
+            "label": "person ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Person"
+      },
+      "CrewAssignments.MovieTitle": {
+        "table": "CrewAssignments",
+        "field": "MovieTitle",
+        "kind": "lookup",
+        "rule": "Ein Crew Assignment: Movie Title — aus dem zugehörigen Movie übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Title des verknüpften Movie"
+      },
+      "CrewAssignments.CrewTypeName": {
+        "table": "CrewAssignments",
+        "field": "CrewTypeName",
+        "kind": "lookup",
+        "rule": "Ein Crew Assignment: Crew Type Name — aus dem zugehörigen Crew Type übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewType",
+            "label": "crew type"
+          },
+          {
+            "table": "CrewTypes",
+            "field": "CrewTypeId",
+            "label": "crew type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Crew Type"
+      },
+      "Ratings.Name": {
+        "table": "Ratings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Rating: Name wird berechnet als die Display Name, gefolgt von ein Bindestrich, gefolgt von die Users Name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Ratings",
+            "field": "UsersName",
+            "label": "users name"
+          }
+        ],
+        "structure": null,
+        "plain": "(Display Name verbunden mit \"-\") verbunden mit Users Name"
+      },
+      "Ratings.DisplayName": {
+        "table": "Ratings",
+        "field": "DisplayName",
+        "kind": "formula",
+        "rule": "Das Feld „Display Name“ des Rating wird nach folgender Priorität bestimmt:\n1. „Episode: “, gefolgt von die Episode Name, wenn der Series leer ist;\n2. andernfalls „Series: “, gefolgt von die Series Name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Ratings",
+            "field": "EpisodeName",
+            "label": "episode name"
+          },
+          {
+            "table": "Ratings",
+            "field": "SeriesName",
+            "label": "series name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Display Name“ des Rating wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„Episode: “, gefolgt von die Episode Name",
+              "when": {
+                "kind": "leaf",
+                "text": "der Series leer ist"
+              }
+            },
+            {
+              "value": "„Series: “, gefolgt von die Series Name",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Series gleich blank() ist, dann (\"Episode: \" verbunden mit Episode Name), andernfalls (\"Series: \" verbunden mit Series Name)"
+      },
+      "Ratings.SeriesName": {
+        "table": "Ratings",
+        "field": "SeriesName",
+        "kind": "lookup",
+        "rule": "Ein Rating: Series Name — aus dem zugehörigen Series übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Series"
+      },
+      "Ratings.EpisodeName": {
+        "table": "Ratings",
+        "field": "EpisodeName",
+        "kind": "lookup",
+        "rule": "Ein Rating: Episode Name — aus dem zugehörigen Episode übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Episode"
+      },
+      "Ratings.EpisodeSeasonTitle": {
+        "table": "Ratings",
+        "field": "EpisodeSeasonTitle",
+        "kind": "lookup",
+        "rule": "Ein Rating: Episode Season Title — aus dem zugehörigen Episode übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "SeasonTitle",
+            "label": "season title"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Season Title des verknüpften Episode"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Series": "Series",
+      "Seasons": "Season",
+      "Episodes": "Episode",
+      "CrewTypes": "Crew Type",
+      "People": "Person",
+      "Movies": "Movy",
+      "CrewAssignments": "Crew Assignment",
+      "Ratings": "Rating",
+      "ERBVersions": "ERB Version",
+      "ERBCustomizations": "ERB Customization"
+    }
+  },
+  "es": {
+    "fields": {
+      "Series.Name": {
+        "table": "Series",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un series: name se calcula como el series number, seguido de un guion, seguido de el show code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "SeriesNumber",
+            "label": "series number"
+          },
+          {
+            "table": "Series",
+            "field": "ShowCode",
+            "label": "show code"
+          }
+        ],
+        "structure": null,
+        "plain": "(series number unido con \"-\") unido con show code"
+      },
+      "Series.TotalSeasons": {
+        "table": "Series",
+        "field": "TotalSeasons",
+        "kind": "rollup",
+        "rule": "Un series: total seasons es el número de seasons relacionados con el series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de seasons cuyo series es serie ID"
+      },
+      "Series.TotalEpisodes": {
+        "table": "Series",
+        "field": "TotalEpisodes",
+        "kind": "rollup",
+        "rule": "Un series: total episodes es el total de episode count entre los seasons relacionados con el series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "EpisodeCount",
+            "label": "episode count"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de episode count entre todos los seasons cuyo series es serie ID"
+      },
+      "Series.IsLongRunning": {
+        "table": "Series",
+        "field": "IsLongRunning",
+        "kind": "formula",
+        "rule": "Un series se considera long running si el total episodes es mayor que 50.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "TotalEpisodes",
+            "label": "total episodes"
+          }
+        ],
+        "structure": null,
+        "plain": "Total episodes es mayor que 50"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "rollup",
+        "rule": "Un series: rating es el total de rating entre los ratings relacionados con el series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Rating",
+            "label": "rating"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de rating entre todos los ratings cuyo series es serie ID"
+      },
+      "Series.IsGood": {
+        "table": "Series",
+        "field": "IsGood",
+        "kind": "formula",
+        "rule": "Un series se considera un good si el rating es al menos 4.5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Rating",
+            "label": "rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Rating es al menos 4.5"
+      },
+      "Seasons.Name": {
+        "table": "Seasons",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un season: name se calcula como el series, seguido de «-Season-», seguido de el season number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          }
+        ],
+        "structure": null,
+        "plain": "(series unido con \"-Season-\") unido con season number"
+      },
+      "Seasons.ShowTitle": {
+        "table": "Seasons",
+        "field": "ShowTitle",
+        "kind": "lookup",
+        "rule": "Un season: show title — tomado del series vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El title del series vinculado"
+      },
+      "Seasons.ShowDescription": {
+        "table": "Seasons",
+        "field": "ShowDescription",
+        "kind": "lookup",
+        "rule": "Un season: show description — tomado del series vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El description del series vinculado"
+      },
+      "Seasons.ShowNetwork": {
+        "table": "Seasons",
+        "field": "ShowNetwork",
+        "kind": "lookup",
+        "rule": "Un season: show network — tomado del series vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Network",
+            "label": "network"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El network del series vinculado"
+      },
+      "Seasons.EpisodeCount": {
+        "table": "Seasons",
+        "field": "EpisodeCount",
+        "kind": "rollup",
+        "rule": "Un season: episode count es el número de episodes relacionados con el season.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de episodes cuyo season es season ID"
+      },
+      "Episodes.Name": {
+        "table": "Episodes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un episode: name se calcula como el season, seguido de «-Episode-», seguido de «0», seguido de el episode number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeNumber",
+            "label": "episode number"
+          }
+        ],
+        "structure": null,
+        "plain": "((season unido con \"-Episode-\") unido con si episode number es menor que 10, entonces \"0\", de lo contrario \"\") unido con episode number"
+      },
+      "Episodes.SeasonNumber": {
+        "table": "Episodes",
+        "field": "SeasonNumber",
+        "kind": "lookup",
+        "rule": "Un episode: season number — tomado del season vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El season number del season vinculado"
+      },
+      "Episodes.SeasonTitle": {
+        "table": "Episodes",
+        "field": "SeasonTitle",
+        "kind": "lookup",
+        "rule": "Un episode: season title — tomado del season vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El title del season vinculado"
+      },
+      "Episodes.SeasonDescription": {
+        "table": "Episodes",
+        "field": "SeasonDescription",
+        "kind": "lookup",
+        "rule": "Un episode: season description — tomado del season vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El description del season vinculado"
+      },
+      "Movies.Name": {
+        "table": "Movies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un movy: name se calcula como el movie number, seguido de un guion, seguido de el title.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "MovieNumber",
+            "label": "movie number"
+          },
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(movie number unido con \"-\") unido con title"
+      },
+      "Movies.CrewCount": {
+        "table": "Movies",
+        "field": "CrewCount",
+        "kind": "rollup",
+        "rule": "Un movy: crew count es el número de crew assignments relacionados con el movy.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de crew assignments cuyo movie es movie ID"
+      },
+      "CrewAssignments.Name": {
+        "table": "CrewAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un crew assignment: name se calcula como el person name, seguido de un guion, seguido de el crew type name, seguido de un guion, seguido de el movie title.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "PersonName",
+            "label": "person name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewTypeName",
+            "label": "crew type name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "MovieTitle",
+            "label": "movie title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((person name unido con \"-\") unido con crew type name) unido con \"-\") unido con movie title"
+      },
+      "CrewAssignments.PersonName": {
+        "table": "CrewAssignments",
+        "field": "PersonName",
+        "kind": "lookup",
+        "rule": "Un crew assignment: person name — tomado del person vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "People",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Person",
+            "label": "person"
+          },
+          {
+            "table": "People",
+            "field": "PersonId",
+            "label": "person ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del person vinculado"
+      },
+      "CrewAssignments.MovieTitle": {
+        "table": "CrewAssignments",
+        "field": "MovieTitle",
+        "kind": "lookup",
+        "rule": "Un crew assignment: movie title — tomado del movie vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El title del movie vinculado"
+      },
+      "CrewAssignments.CrewTypeName": {
+        "table": "CrewAssignments",
+        "field": "CrewTypeName",
+        "kind": "lookup",
+        "rule": "Un crew assignment: crew type name — tomado del crew type vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewType",
+            "label": "crew type"
+          },
+          {
+            "table": "CrewTypes",
+            "field": "CrewTypeId",
+            "label": "crew type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del crew type vinculado"
+      },
+      "Ratings.Name": {
+        "table": "Ratings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un rating: name se calcula como el display name, seguido de un guion, seguido de el users name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Ratings",
+            "field": "UsersName",
+            "label": "users name"
+          }
+        ],
+        "structure": null,
+        "plain": "(display name unido con \"-\") unido con users name"
+      },
+      "Ratings.DisplayName": {
+        "table": "Ratings",
+        "field": "DisplayName",
+        "kind": "formula",
+        "rule": "El campo «display name» del rating se determina según la siguiente prioridad:\n1. «Episode: », seguido de el episode name, si el series está vacío;\n2. en todos los demás casos, «Series: », seguido de el series name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Ratings",
+            "field": "EpisodeName",
+            "label": "episode name"
+          },
+          {
+            "table": "Ratings",
+            "field": "SeriesName",
+            "label": "series name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «display name» del rating se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«Episode: », seguido de el episode name",
+              "when": {
+                "kind": "leaf",
+                "text": "el series está vacío"
+              }
+            },
+            {
+              "value": "«Series: », seguido de el series name",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si series es igual a blank(), entonces (\"Episode: \" unido con episode name), de lo contrario (\"Series: \" unido con series name)"
+      },
+      "Ratings.SeriesName": {
+        "table": "Ratings",
+        "field": "SeriesName",
+        "kind": "lookup",
+        "rule": "Un rating: series name — tomado del series vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del series vinculado"
+      },
+      "Ratings.EpisodeName": {
+        "table": "Ratings",
+        "field": "EpisodeName",
+        "kind": "lookup",
+        "rule": "Un rating: episode name — tomado del episode vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del episode vinculado"
+      },
+      "Ratings.EpisodeSeasonTitle": {
+        "table": "Ratings",
+        "field": "EpisodeSeasonTitle",
+        "kind": "lookup",
+        "rule": "Un rating: episode season title — tomado del episode vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "SeasonTitle",
+            "label": "season title"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El season title del episode vinculado"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Series": "series",
+      "Seasons": "season",
+      "Episodes": "episode",
+      "CrewTypes": "crew type",
+      "People": "person",
+      "Movies": "movy",
+      "CrewAssignments": "crew assignment",
+      "Ratings": "rating",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "fr": {
+    "fields": {
+      "Series.Name": {
+        "table": "Series",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un series : name est calculé comme le series number, suivi de un trait d'union, suivi de le show code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "SeriesNumber",
+            "label": "series number"
+          },
+          {
+            "table": "Series",
+            "field": "ShowCode",
+            "label": "show code"
+          }
+        ],
+        "structure": null,
+        "plain": "(series number joint à \"-\") joint à show code"
+      },
+      "Series.TotalSeasons": {
+        "table": "Series",
+        "field": "TotalSeasons",
+        "kind": "rollup",
+        "rule": "Un series : total seasons est le nombre de seasons liés à le series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des seasons dont series est serie ID"
+      },
+      "Series.TotalEpisodes": {
+        "table": "Series",
+        "field": "TotalEpisodes",
+        "kind": "rollup",
+        "rule": "Un series : total episodes est le total de episode count sur les seasons liés à le series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "EpisodeCount",
+            "label": "episode count"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de episode count sur tous les seasons dont series est serie ID"
+      },
+      "Series.IsLongRunning": {
+        "table": "Series",
+        "field": "IsLongRunning",
+        "kind": "formula",
+        "rule": "Un series est considéré comme long running si le total episodes est supérieur à 50.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "TotalEpisodes",
+            "label": "total episodes"
+          }
+        ],
+        "structure": null,
+        "plain": "Total episodes est supérieur à 50"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "rollup",
+        "rule": "Un series : rating est le total de rating sur les ratings liés à le series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Rating",
+            "label": "rating"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de rating sur tous les ratings dont series est serie ID"
+      },
+      "Series.IsGood": {
+        "table": "Series",
+        "field": "IsGood",
+        "kind": "formula",
+        "rule": "Un series est considéré comme un good si le rating est au moins 4.5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Rating",
+            "label": "rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Rating est au moins 4.5"
+      },
+      "Seasons.Name": {
+        "table": "Seasons",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un season : name est calculé comme le series, suivi de « -Season- », suivi de le season number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          }
+        ],
+        "structure": null,
+        "plain": "(series joint à \"-Season-\") joint à season number"
+      },
+      "Seasons.ShowTitle": {
+        "table": "Seasons",
+        "field": "ShowTitle",
+        "kind": "lookup",
+        "rule": "Un season : show title — repris du series lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le title du series lié"
+      },
+      "Seasons.ShowDescription": {
+        "table": "Seasons",
+        "field": "ShowDescription",
+        "kind": "lookup",
+        "rule": "Un season : show description — repris du series lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le description du series lié"
+      },
+      "Seasons.ShowNetwork": {
+        "table": "Seasons",
+        "field": "ShowNetwork",
+        "kind": "lookup",
+        "rule": "Un season : show network — repris du series lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Network",
+            "label": "network"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le network du series lié"
+      },
+      "Seasons.EpisodeCount": {
+        "table": "Seasons",
+        "field": "EpisodeCount",
+        "kind": "rollup",
+        "rule": "Un season : episode count est le nombre de episodes liés à le season.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des episodes dont season est season ID"
+      },
+      "Episodes.Name": {
+        "table": "Episodes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un episode : name est calculé comme le season, suivi de « -Episode- », suivi de « 0 », suivi de l'episode number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeNumber",
+            "label": "episode number"
+          }
+        ],
+        "structure": null,
+        "plain": "((season joint à \"-Episode-\") joint à si episode number est inférieur à 10, alors \"0\", sinon \"\") joint à episode number"
+      },
+      "Episodes.SeasonNumber": {
+        "table": "Episodes",
+        "field": "SeasonNumber",
+        "kind": "lookup",
+        "rule": "Un episode : season number — repris du season lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le season number du season lié"
+      },
+      "Episodes.SeasonTitle": {
+        "table": "Episodes",
+        "field": "SeasonTitle",
+        "kind": "lookup",
+        "rule": "Un episode : season title — repris du season lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le title du season lié"
+      },
+      "Episodes.SeasonDescription": {
+        "table": "Episodes",
+        "field": "SeasonDescription",
+        "kind": "lookup",
+        "rule": "Un episode : season description — repris du season lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le description du season lié"
+      },
+      "Movies.Name": {
+        "table": "Movies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un movy : name est calculé comme le movie number, suivi de un trait d'union, suivi de le title.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "MovieNumber",
+            "label": "movie number"
+          },
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(movie number joint à \"-\") joint à title"
+      },
+      "Movies.CrewCount": {
+        "table": "Movies",
+        "field": "CrewCount",
+        "kind": "rollup",
+        "rule": "Un movy : crew count est le nombre de crew assignments liés à le movy.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des crew assignments dont movie est movie ID"
+      },
+      "CrewAssignments.Name": {
+        "table": "CrewAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un crew assignment : name est calculé comme le person name, suivi de un trait d'union, suivi de le crew type name, suivi de un trait d'union, suivi de le movie title.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "PersonName",
+            "label": "person name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewTypeName",
+            "label": "crew type name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "MovieTitle",
+            "label": "movie title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((person name joint à \"-\") joint à crew type name) joint à \"-\") joint à movie title"
+      },
+      "CrewAssignments.PersonName": {
+        "table": "CrewAssignments",
+        "field": "PersonName",
+        "kind": "lookup",
+        "rule": "Un crew assignment : person name — repris du person lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "People",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Person",
+            "label": "person"
+          },
+          {
+            "table": "People",
+            "field": "PersonId",
+            "label": "person ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du person lié"
+      },
+      "CrewAssignments.MovieTitle": {
+        "table": "CrewAssignments",
+        "field": "MovieTitle",
+        "kind": "lookup",
+        "rule": "Un crew assignment : movie title — repris du movie lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le title du movie lié"
+      },
+      "CrewAssignments.CrewTypeName": {
+        "table": "CrewAssignments",
+        "field": "CrewTypeName",
+        "kind": "lookup",
+        "rule": "Un crew assignment : crew type name — repris du crew type lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewType",
+            "label": "crew type"
+          },
+          {
+            "table": "CrewTypes",
+            "field": "CrewTypeId",
+            "label": "crew type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du crew type lié"
+      },
+      "Ratings.Name": {
+        "table": "Ratings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un rating : name est calculé comme le display name, suivi de un trait d'union, suivi de l'users name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Ratings",
+            "field": "UsersName",
+            "label": "users name"
+          }
+        ],
+        "structure": null,
+        "plain": "(display name joint à \"-\") joint à users name"
+      },
+      "Ratings.DisplayName": {
+        "table": "Ratings",
+        "field": "DisplayName",
+        "kind": "formula",
+        "rule": "Le champ « display name » du rating est déterminé selon la priorité suivante :\n1. « Episode: », suivi de l'episode name, si le series est vide ;\n2. dans tous les autres cas, « Series: », suivi de le series name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Ratings",
+            "field": "EpisodeName",
+            "label": "episode name"
+          },
+          {
+            "table": "Ratings",
+            "field": "SeriesName",
+            "label": "series name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « display name » du rating est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« Episode: », suivi de l'episode name",
+              "when": {
+                "kind": "leaf",
+                "text": "le series est vide"
+              }
+            },
+            {
+              "value": "« Series: », suivi de le series name",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si series est égal à blank(), alors (\"Episode: \" joint à episode name), sinon (\"Series: \" joint à series name)"
+      },
+      "Ratings.SeriesName": {
+        "table": "Ratings",
+        "field": "SeriesName",
+        "kind": "lookup",
+        "rule": "Un rating : series name — repris du series lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du series lié"
+      },
+      "Ratings.EpisodeName": {
+        "table": "Ratings",
+        "field": "EpisodeName",
+        "kind": "lookup",
+        "rule": "Un rating : episode name — repris du episode lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du episode lié"
+      },
+      "Ratings.EpisodeSeasonTitle": {
+        "table": "Ratings",
+        "field": "EpisodeSeasonTitle",
+        "kind": "lookup",
+        "rule": "Un rating : episode season title — repris du episode lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "SeasonTitle",
+            "label": "season title"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le season title du episode lié"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Series": "series",
+      "Seasons": "season",
+      "Episodes": "episode",
+      "CrewTypes": "crew type",
+      "People": "person",
+      "Movies": "movy",
+      "CrewAssignments": "crew assignment",
+      "Ratings": "rating",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "hi": {
+    "fields": {
+      "Series.Name": {
+        "table": "Series",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "series का “name” series number, उसके बाद एक योजक चिह्न, उसके बाद show code के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "SeriesNumber",
+            "label": "series number"
+          },
+          {
+            "table": "Series",
+            "field": "ShowCode",
+            "label": "show code"
+          }
+        ],
+        "structure": null,
+        "plain": "(series number \"-\" से जुड़ा हुआ) show code से जुड़ा हुआ"
+      },
+      "Series.TotalSeasons": {
+        "table": "Series",
+        "field": "TotalSeasons",
+        "kind": "rollup",
+        "rule": "series का “total seasons” series से संबंधित “seasons” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “seasons” की संख्या, जिनका series serie ID है"
+      },
+      "Series.TotalEpisodes": {
+        "table": "Series",
+        "field": "TotalEpisodes",
+        "kind": "rollup",
+        "rule": "series का “total episodes” series से संबंधित “seasons” पर कुल “episode count” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "EpisodeCount",
+            "label": "episode count"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “seasons” पर योग episode count, जिनका series serie ID है"
+      },
+      "Series.IsLongRunning": {
+        "table": "Series",
+        "field": "IsLongRunning",
+        "kind": "formula",
+        "rule": "यदि total episodes 50 से अधिक है, तो series “long running” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "TotalEpisodes",
+            "label": "total episodes"
+          }
+        ],
+        "structure": null,
+        "plain": "Total episodes 50 से अधिक है"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "rollup",
+        "rule": "series का “rating” series से संबंधित “ratings” पर कुल “rating” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Rating",
+            "label": "rating"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “ratings” पर योग rating, जिनका series serie ID है"
+      },
+      "Series.IsGood": {
+        "table": "Series",
+        "field": "IsGood",
+        "kind": "formula",
+        "rule": "यदि rating कम से कम 4.5 है, तो series “good” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Rating",
+            "label": "rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Rating कम से कम 4.5 है"
+      },
+      "Seasons.Name": {
+        "table": "Seasons",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "season का “name” series, उसके बाद “-Season-”, उसके बाद season number के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          }
+        ],
+        "structure": null,
+        "plain": "(series \"-Season-\" से जुड़ा हुआ) season number से जुड़ा हुआ"
+      },
+      "Seasons.ShowTitle": {
+        "table": "Seasons",
+        "field": "ShowTitle",
+        "kind": "lookup",
+        "rule": "season का “show title” — लिंक किए गए “series” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “series” का title"
+      },
+      "Seasons.ShowDescription": {
+        "table": "Seasons",
+        "field": "ShowDescription",
+        "kind": "lookup",
+        "rule": "season का “show description” — लिंक किए गए “series” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “series” का description"
+      },
+      "Seasons.ShowNetwork": {
+        "table": "Seasons",
+        "field": "ShowNetwork",
+        "kind": "lookup",
+        "rule": "season का “show network” — लिंक किए गए “series” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Network",
+            "label": "network"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “series” का network"
+      },
+      "Seasons.EpisodeCount": {
+        "table": "Seasons",
+        "field": "EpisodeCount",
+        "kind": "rollup",
+        "rule": "season का “episode count” season से संबंधित “episodes” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “episodes” की संख्या, जिनका season season ID है"
+      },
+      "Episodes.Name": {
+        "table": "Episodes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "episode का “name” season, उसके बाद “-Episode-”, उसके बाद “0”, उसके बाद episode number के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeNumber",
+            "label": "episode number"
+          }
+        ],
+        "structure": null,
+        "plain": "((season \"-Episode-\" से जुड़ा हुआ) यदि episode number 10 से कम है, तो \"0\", अन्यथा \"\" से जुड़ा हुआ) episode number से जुड़ा हुआ"
+      },
+      "Episodes.SeasonNumber": {
+        "table": "Episodes",
+        "field": "SeasonNumber",
+        "kind": "lookup",
+        "rule": "episode का “season number” — लिंक किए गए “season” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “season” का season number"
+      },
+      "Episodes.SeasonTitle": {
+        "table": "Episodes",
+        "field": "SeasonTitle",
+        "kind": "lookup",
+        "rule": "episode का “season title” — लिंक किए गए “season” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “season” का title"
+      },
+      "Episodes.SeasonDescription": {
+        "table": "Episodes",
+        "field": "SeasonDescription",
+        "kind": "lookup",
+        "rule": "episode का “season description” — लिंक किए गए “season” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “season” का description"
+      },
+      "Movies.Name": {
+        "table": "Movies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "movy का “name” movie number, उसके बाद एक योजक चिह्न, उसके बाद title के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "MovieNumber",
+            "label": "movie number"
+          },
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(movie number \"-\" से जुड़ा हुआ) title से जुड़ा हुआ"
+      },
+      "Movies.CrewCount": {
+        "table": "Movies",
+        "field": "CrewCount",
+        "kind": "rollup",
+        "rule": "movy का “crew count” movy से संबंधित “crew assignments” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “crew assignments” की संख्या, जिनका movie movie ID है"
+      },
+      "CrewAssignments.Name": {
+        "table": "CrewAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "crew assignment का “name” person name, उसके बाद एक योजक चिह्न, उसके बाद crew type name, उसके बाद एक योजक चिह्न, उसके बाद movie title के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "PersonName",
+            "label": "person name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewTypeName",
+            "label": "crew type name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "MovieTitle",
+            "label": "movie title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((person name \"-\" से जुड़ा हुआ) crew type name से जुड़ा हुआ) \"-\" से जुड़ा हुआ) movie title से जुड़ा हुआ"
+      },
+      "CrewAssignments.PersonName": {
+        "table": "CrewAssignments",
+        "field": "PersonName",
+        "kind": "lookup",
+        "rule": "crew assignment का “person name” — लिंक किए गए “person” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "People",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Person",
+            "label": "person"
+          },
+          {
+            "table": "People",
+            "field": "PersonId",
+            "label": "person ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “person” का name"
+      },
+      "CrewAssignments.MovieTitle": {
+        "table": "CrewAssignments",
+        "field": "MovieTitle",
+        "kind": "lookup",
+        "rule": "crew assignment का “movie title” — लिंक किए गए “movie” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “movie” का title"
+      },
+      "CrewAssignments.CrewTypeName": {
+        "table": "CrewAssignments",
+        "field": "CrewTypeName",
+        "kind": "lookup",
+        "rule": "crew assignment का “crew type name” — लिंक किए गए “crew type” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewType",
+            "label": "crew type"
+          },
+          {
+            "table": "CrewTypes",
+            "field": "CrewTypeId",
+            "label": "crew type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “crew type” का name"
+      },
+      "Ratings.Name": {
+        "table": "Ratings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "rating का “name” display name, उसके बाद एक योजक चिह्न, उसके बाद users name के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Ratings",
+            "field": "UsersName",
+            "label": "users name"
+          }
+        ],
+        "structure": null,
+        "plain": "(display name \"-\" से जुड़ा हुआ) users name से जुड़ा हुआ"
+      },
+      "Ratings.DisplayName": {
+        "table": "Ratings",
+        "field": "DisplayName",
+        "kind": "formula",
+        "rule": "Rating का “display name” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “Episode: ”, उसके बाद episode name, यदि series खाली है;\n2. अन्य सभी स्थितियों में, “Series: ”, उसके बाद series name।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Ratings",
+            "field": "EpisodeName",
+            "label": "episode name"
+          },
+          {
+            "table": "Ratings",
+            "field": "SeriesName",
+            "label": "series name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Rating का “display name” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“Episode: ”, उसके बाद episode name",
+              "when": {
+                "kind": "leaf",
+                "text": "series खाली है"
+              }
+            },
+            {
+              "value": "“Series: ”, उसके बाद series name",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि series blank() के बराबर है, तो (\"Episode: \" episode name से जुड़ा हुआ), अन्यथा (\"Series: \" series name से जुड़ा हुआ)"
+      },
+      "Ratings.SeriesName": {
+        "table": "Ratings",
+        "field": "SeriesName",
+        "kind": "lookup",
+        "rule": "rating का “series name” — लिंक किए गए “series” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “series” का name"
+      },
+      "Ratings.EpisodeName": {
+        "table": "Ratings",
+        "field": "EpisodeName",
+        "kind": "lookup",
+        "rule": "rating का “episode name” — लिंक किए गए “episode” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “episode” का name"
+      },
+      "Ratings.EpisodeSeasonTitle": {
+        "table": "Ratings",
+        "field": "EpisodeSeasonTitle",
+        "kind": "lookup",
+        "rule": "rating का “episode season title” — लिंक किए गए “episode” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "SeasonTitle",
+            "label": "season title"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “episode” का season title"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "Series": "series",
+      "Seasons": "season",
+      "Episodes": "episode",
+      "CrewTypes": "crew type",
+      "People": "person",
+      "Movies": "movy",
+      "CrewAssignments": "crew assignment",
+      "Ratings": "rating",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "id": {
+    "fields": {
+      "Series.Name": {
+        "table": "Series",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap series, name dihitung sebagai series number, diikuti tanda hubung, diikuti show code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "SeriesNumber",
+            "label": "series number"
+          },
+          {
+            "table": "Series",
+            "field": "ShowCode",
+            "label": "show code"
+          }
+        ],
+        "structure": null,
+        "plain": "(series number digabung dengan \"-\") digabung dengan show code"
+      },
+      "Series.TotalSeasons": {
+        "table": "Series",
+        "field": "TotalSeasons",
+        "kind": "rollup",
+        "rule": "Untuk setiap series, total seasons adalah jumlah seasons yang terkait dengan series tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah seasons dengan syarat series adalah serie ID"
+      },
+      "Series.TotalEpisodes": {
+        "table": "Series",
+        "field": "TotalEpisodes",
+        "kind": "rollup",
+        "rule": "Untuk setiap series, total episodes adalah nilai total episode count pada seluruh seasons yang terkait dengan series tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "EpisodeCount",
+            "label": "episode count"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total episode count pada semua seasons dengan syarat series adalah serie ID"
+      },
+      "Series.IsLongRunning": {
+        "table": "Series",
+        "field": "IsLongRunning",
+        "kind": "formula",
+        "rule": "Setiap series dianggap “long running” jika total episodes lebih dari 50.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "TotalEpisodes",
+            "label": "total episodes"
+          }
+        ],
+        "structure": null,
+        "plain": "Total episodes lebih dari 50"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "rollup",
+        "rule": "Untuk setiap series, rating adalah nilai total rating pada seluruh ratings yang terkait dengan series tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Rating",
+            "label": "rating"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total rating pada semua ratings dengan syarat series adalah serie ID"
+      },
+      "Series.IsGood": {
+        "table": "Series",
+        "field": "IsGood",
+        "kind": "formula",
+        "rule": "Setiap series dianggap “good” jika rating tidak kurang dari 4.5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Rating",
+            "label": "rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Rating tidak kurang dari 4.5"
+      },
+      "Seasons.Name": {
+        "table": "Seasons",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap season, name dihitung sebagai series, diikuti “-Season-”, diikuti season number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          }
+        ],
+        "structure": null,
+        "plain": "(series digabung dengan \"-Season-\") digabung dengan season number"
+      },
+      "Seasons.ShowTitle": {
+        "table": "Seasons",
+        "field": "ShowTitle",
+        "kind": "lookup",
+        "rule": "Untuk setiap season, show title diambil dari series yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Title dari series yang tertaut"
+      },
+      "Seasons.ShowDescription": {
+        "table": "Seasons",
+        "field": "ShowDescription",
+        "kind": "lookup",
+        "rule": "Untuk setiap season, show description diambil dari series yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Description dari series yang tertaut"
+      },
+      "Seasons.ShowNetwork": {
+        "table": "Seasons",
+        "field": "ShowNetwork",
+        "kind": "lookup",
+        "rule": "Untuk setiap season, show network diambil dari series yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Network",
+            "label": "network"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Network dari series yang tertaut"
+      },
+      "Seasons.EpisodeCount": {
+        "table": "Seasons",
+        "field": "EpisodeCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap season, episode count adalah jumlah episodes yang terkait dengan season tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah episodes dengan syarat season adalah season ID"
+      },
+      "Episodes.Name": {
+        "table": "Episodes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap episode, name dihitung sebagai season, diikuti “-Episode-”, diikuti “0”, diikuti episode number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeNumber",
+            "label": "episode number"
+          }
+        ],
+        "structure": null,
+        "plain": "((season digabung dengan \"-Episode-\") digabung dengan jika episode number kurang dari 10 maka \"0\", selain itu \"\") digabung dengan episode number"
+      },
+      "Episodes.SeasonNumber": {
+        "table": "Episodes",
+        "field": "SeasonNumber",
+        "kind": "lookup",
+        "rule": "Untuk setiap episode, season number diambil dari season yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Season number dari season yang tertaut"
+      },
+      "Episodes.SeasonTitle": {
+        "table": "Episodes",
+        "field": "SeasonTitle",
+        "kind": "lookup",
+        "rule": "Untuk setiap episode, season title diambil dari season yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Title dari season yang tertaut"
+      },
+      "Episodes.SeasonDescription": {
+        "table": "Episodes",
+        "field": "SeasonDescription",
+        "kind": "lookup",
+        "rule": "Untuk setiap episode, season description diambil dari season yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Description dari season yang tertaut"
+      },
+      "Movies.Name": {
+        "table": "Movies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap movy, name dihitung sebagai movie number, diikuti tanda hubung, diikuti title.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "MovieNumber",
+            "label": "movie number"
+          },
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(movie number digabung dengan \"-\") digabung dengan title"
+      },
+      "Movies.CrewCount": {
+        "table": "Movies",
+        "field": "CrewCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap movy, crew count adalah jumlah crew assignments yang terkait dengan movy tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah crew assignments dengan syarat movie adalah movie ID"
+      },
+      "CrewAssignments.Name": {
+        "table": "CrewAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap crew assignment, name dihitung sebagai person name, diikuti tanda hubung, diikuti crew type name, diikuti tanda hubung, diikuti movie title.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "PersonName",
+            "label": "person name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewTypeName",
+            "label": "crew type name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "MovieTitle",
+            "label": "movie title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((person name digabung dengan \"-\") digabung dengan crew type name) digabung dengan \"-\") digabung dengan movie title"
+      },
+      "CrewAssignments.PersonName": {
+        "table": "CrewAssignments",
+        "field": "PersonName",
+        "kind": "lookup",
+        "rule": "Untuk setiap crew assignment, person name diambil dari person yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "People",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Person",
+            "label": "person"
+          },
+          {
+            "table": "People",
+            "field": "PersonId",
+            "label": "person ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari person yang tertaut"
+      },
+      "CrewAssignments.MovieTitle": {
+        "table": "CrewAssignments",
+        "field": "MovieTitle",
+        "kind": "lookup",
+        "rule": "Untuk setiap crew assignment, movie title diambil dari movie yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Title dari movie yang tertaut"
+      },
+      "CrewAssignments.CrewTypeName": {
+        "table": "CrewAssignments",
+        "field": "CrewTypeName",
+        "kind": "lookup",
+        "rule": "Untuk setiap crew assignment, crew type name diambil dari crew type yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewType",
+            "label": "crew type"
+          },
+          {
+            "table": "CrewTypes",
+            "field": "CrewTypeId",
+            "label": "crew type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari crew type yang tertaut"
+      },
+      "Ratings.Name": {
+        "table": "Ratings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap rating, name dihitung sebagai display name, diikuti tanda hubung, diikuti users name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Ratings",
+            "field": "UsersName",
+            "label": "users name"
+          }
+        ],
+        "structure": null,
+        "plain": "(display name digabung dengan \"-\") digabung dengan users name"
+      },
+      "Ratings.DisplayName": {
+        "table": "Ratings",
+        "field": "DisplayName",
+        "kind": "formula",
+        "rule": "Untuk setiap rating, display name ditentukan menurut urutan prioritas berikut:\n1. “Episode: ”, diikuti episode name, jika series kosong;\n2. dalam semua kasus lainnya, “Series: ”, diikuti series name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Ratings",
+            "field": "EpisodeName",
+            "label": "episode name"
+          },
+          {
+            "table": "Ratings",
+            "field": "SeriesName",
+            "label": "series name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap rating, display name ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“Episode: ”, diikuti episode name",
+              "when": {
+                "kind": "leaf",
+                "text": "series kosong"
+              }
+            },
+            {
+              "value": "“Series: ”, diikuti series name",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika series sama dengan blank() maka (\"Episode: \" digabung dengan episode name), selain itu (\"Series: \" digabung dengan series name)"
+      },
+      "Ratings.SeriesName": {
+        "table": "Ratings",
+        "field": "SeriesName",
+        "kind": "lookup",
+        "rule": "Untuk setiap rating, series name diambil dari series yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari series yang tertaut"
+      },
+      "Ratings.EpisodeName": {
+        "table": "Ratings",
+        "field": "EpisodeName",
+        "kind": "lookup",
+        "rule": "Untuk setiap rating, episode name diambil dari episode yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari episode yang tertaut"
+      },
+      "Ratings.EpisodeSeasonTitle": {
+        "table": "Ratings",
+        "field": "EpisodeSeasonTitle",
+        "kind": "lookup",
+        "rule": "Untuk setiap rating, episode season title diambil dari episode yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "SeasonTitle",
+            "label": "season title"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Season title dari episode yang tertaut"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Series": "series",
+      "Seasons": "season",
+      "Episodes": "episode",
+      "CrewTypes": "crew type",
+      "People": "person",
+      "Movies": "movy",
+      "CrewAssignments": "crew assignment",
+      "Ratings": "rating",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "it": {
+    "fields": {
+      "Series.Name": {
+        "table": "Series",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un series: name è calcolato come il series number, seguito da un trattino, seguito da il show code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "SeriesNumber",
+            "label": "series number"
+          },
+          {
+            "table": "Series",
+            "field": "ShowCode",
+            "label": "show code"
+          }
+        ],
+        "structure": null,
+        "plain": "(series number unito a \"-\") unito a show code"
+      },
+      "Series.TotalSeasons": {
+        "table": "Series",
+        "field": "TotalSeasons",
+        "kind": "rollup",
+        "rule": "Un series: total seasons è il numero di seasons collegati a il series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei seasons il cui series è serie ID"
+      },
+      "Series.TotalEpisodes": {
+        "table": "Series",
+        "field": "TotalEpisodes",
+        "kind": "rollup",
+        "rule": "Un series: total episodes è il totale di episode count tra i seasons collegati a il series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "EpisodeCount",
+            "label": "episode count"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di episode count su tutti i seasons il cui series è serie ID"
+      },
+      "Series.IsLongRunning": {
+        "table": "Series",
+        "field": "IsLongRunning",
+        "kind": "formula",
+        "rule": "Un series è considerato long running se il total episodes è maggiore di 50.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "TotalEpisodes",
+            "label": "total episodes"
+          }
+        ],
+        "structure": null,
+        "plain": "Total episodes è maggiore di 50"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "rollup",
+        "rule": "Un series: rating è il totale di rating tra i ratings collegati a il series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Rating",
+            "label": "rating"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di rating su tutti i ratings il cui series è serie ID"
+      },
+      "Series.IsGood": {
+        "table": "Series",
+        "field": "IsGood",
+        "kind": "formula",
+        "rule": "Un series è considerato un good se il rating è almeno 4.5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Rating",
+            "label": "rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Rating è almeno 4.5"
+      },
+      "Seasons.Name": {
+        "table": "Seasons",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un season: name è calcolato come il series, seguito da «-Season-», seguito da il season number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          }
+        ],
+        "structure": null,
+        "plain": "(series unito a \"-Season-\") unito a season number"
+      },
+      "Seasons.ShowTitle": {
+        "table": "Seasons",
+        "field": "ShowTitle",
+        "kind": "lookup",
+        "rule": "Un season: show title — ripreso dal series collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il title del series collegato"
+      },
+      "Seasons.ShowDescription": {
+        "table": "Seasons",
+        "field": "ShowDescription",
+        "kind": "lookup",
+        "rule": "Un season: show description — ripreso dal series collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il description del series collegato"
+      },
+      "Seasons.ShowNetwork": {
+        "table": "Seasons",
+        "field": "ShowNetwork",
+        "kind": "lookup",
+        "rule": "Un season: show network — ripreso dal series collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Network",
+            "label": "network"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il network del series collegato"
+      },
+      "Seasons.EpisodeCount": {
+        "table": "Seasons",
+        "field": "EpisodeCount",
+        "kind": "rollup",
+        "rule": "Un season: episode count è il numero di episodes collegati a il season.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei episodes il cui season è season ID"
+      },
+      "Episodes.Name": {
+        "table": "Episodes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un episode: name è calcolato come il season, seguito da «-Episode-», seguito da «0», seguito da l'episode number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeNumber",
+            "label": "episode number"
+          }
+        ],
+        "structure": null,
+        "plain": "((season unito a \"-Episode-\") unito a se episode number è minore di 10, allora \"0\", altrimenti \"\") unito a episode number"
+      },
+      "Episodes.SeasonNumber": {
+        "table": "Episodes",
+        "field": "SeasonNumber",
+        "kind": "lookup",
+        "rule": "Un episode: season number — ripreso dal season collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il season number del season collegato"
+      },
+      "Episodes.SeasonTitle": {
+        "table": "Episodes",
+        "field": "SeasonTitle",
+        "kind": "lookup",
+        "rule": "Un episode: season title — ripreso dal season collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il title del season collegato"
+      },
+      "Episodes.SeasonDescription": {
+        "table": "Episodes",
+        "field": "SeasonDescription",
+        "kind": "lookup",
+        "rule": "Un episode: season description — ripreso dal season collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il description del season collegato"
+      },
+      "Movies.Name": {
+        "table": "Movies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un movy: name è calcolato come il movie number, seguito da un trattino, seguito da il title.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "MovieNumber",
+            "label": "movie number"
+          },
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(movie number unito a \"-\") unito a title"
+      },
+      "Movies.CrewCount": {
+        "table": "Movies",
+        "field": "CrewCount",
+        "kind": "rollup",
+        "rule": "Un movy: crew count è il numero di crew assignments collegati a il movy.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei crew assignments il cui movie è movie ID"
+      },
+      "CrewAssignments.Name": {
+        "table": "CrewAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un crew assignment: name è calcolato come il person name, seguito da un trattino, seguito da il crew type name, seguito da un trattino, seguito da il movie title.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "PersonName",
+            "label": "person name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewTypeName",
+            "label": "crew type name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "MovieTitle",
+            "label": "movie title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((person name unito a \"-\") unito a crew type name) unito a \"-\") unito a movie title"
+      },
+      "CrewAssignments.PersonName": {
+        "table": "CrewAssignments",
+        "field": "PersonName",
+        "kind": "lookup",
+        "rule": "Un crew assignment: person name — ripreso dal person collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "People",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Person",
+            "label": "person"
+          },
+          {
+            "table": "People",
+            "field": "PersonId",
+            "label": "person ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del person collegato"
+      },
+      "CrewAssignments.MovieTitle": {
+        "table": "CrewAssignments",
+        "field": "MovieTitle",
+        "kind": "lookup",
+        "rule": "Un crew assignment: movie title — ripreso dal movie collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il title del movie collegato"
+      },
+      "CrewAssignments.CrewTypeName": {
+        "table": "CrewAssignments",
+        "field": "CrewTypeName",
+        "kind": "lookup",
+        "rule": "Un crew assignment: crew type name — ripreso dal crew type collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewType",
+            "label": "crew type"
+          },
+          {
+            "table": "CrewTypes",
+            "field": "CrewTypeId",
+            "label": "crew type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del crew type collegato"
+      },
+      "Ratings.Name": {
+        "table": "Ratings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un rating: name è calcolato come il display name, seguito da un trattino, seguito da l'users name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Ratings",
+            "field": "UsersName",
+            "label": "users name"
+          }
+        ],
+        "structure": null,
+        "plain": "(display name unito a \"-\") unito a users name"
+      },
+      "Ratings.DisplayName": {
+        "table": "Ratings",
+        "field": "DisplayName",
+        "kind": "formula",
+        "rule": "Il campo “display name” del rating è determinato secondo la seguente priorità:\n1. «Episode: », seguito da l'episode name, se il series è vuoto;\n2. in tutti gli altri casi, «Series: », seguito da il series name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Ratings",
+            "field": "EpisodeName",
+            "label": "episode name"
+          },
+          {
+            "table": "Ratings",
+            "field": "SeriesName",
+            "label": "series name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “display name” del rating è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«Episode: », seguito da l'episode name",
+              "when": {
+                "kind": "leaf",
+                "text": "il series è vuoto"
+              }
+            },
+            {
+              "value": "«Series: », seguito da il series name",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se series è uguale a blank(), allora (\"Episode: \" unito a episode name), altrimenti (\"Series: \" unito a series name)"
+      },
+      "Ratings.SeriesName": {
+        "table": "Ratings",
+        "field": "SeriesName",
+        "kind": "lookup",
+        "rule": "Un rating: series name — ripreso dal series collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del series collegato"
+      },
+      "Ratings.EpisodeName": {
+        "table": "Ratings",
+        "field": "EpisodeName",
+        "kind": "lookup",
+        "rule": "Un rating: episode name — ripreso dal episode collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del episode collegato"
+      },
+      "Ratings.EpisodeSeasonTitle": {
+        "table": "Ratings",
+        "field": "EpisodeSeasonTitle",
+        "kind": "lookup",
+        "rule": "Un rating: episode season title — ripreso dal episode collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "SeasonTitle",
+            "label": "season title"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il season title del episode collegato"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Series": "series",
+      "Seasons": "season",
+      "Episodes": "episode",
+      "CrewTypes": "crew type",
+      "People": "person",
+      "Movies": "movy",
+      "CrewAssignments": "crew assignment",
+      "Ratings": "rating",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "ja": {
+    "fields": {
+      "Series.Name": {
+        "table": "Series",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "seriesの「name」は series number、続いて ハイフン、続いて show code として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "SeriesNumber",
+            "label": "series number"
+          },
+          {
+            "table": "Series",
+            "field": "ShowCode",
+            "label": "show code"
+          }
+        ],
+        "structure": null,
+        "plain": "(series number と \"-\" を連結) と show code を連結"
+      },
+      "Series.TotalSeasons": {
+        "table": "Series",
+        "field": "TotalSeasons",
+        "kind": "rollup",
+        "rule": "seriesの「total seasons」は seriesに関連する「seasons」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Series が serie ID である「seasons」の件数"
+      },
+      "Series.TotalEpisodes": {
+        "table": "Series",
+        "field": "TotalEpisodes",
+        "kind": "rollup",
+        "rule": "seriesの「total episodes」は seriesに関連する「seasons」全体での「episode count」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "EpisodeCount",
+            "label": "episode count"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Series が serie ID であるすべての「seasons」にわたる episode count の合計"
+      },
+      "Series.IsLongRunning": {
+        "table": "Series",
+        "field": "IsLongRunning",
+        "kind": "formula",
+        "rule": "total episodes が 50 より大きい場合、seriesは「Long Running」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "TotalEpisodes",
+            "label": "total episodes"
+          }
+        ],
+        "structure": null,
+        "plain": "Total episodes が 50 より大きい"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "rollup",
+        "rule": "seriesの「rating」は seriesに関連する「ratings」全体での「rating」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Rating",
+            "label": "rating"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Series が serie ID であるすべての「ratings」にわたる rating の合計"
+      },
+      "Series.IsGood": {
+        "table": "Series",
+        "field": "IsGood",
+        "kind": "formula",
+        "rule": "rating が 4.5 以上である場合、seriesは「Good」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Rating",
+            "label": "rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Rating が 4.5 以上"
+      },
+      "Seasons.Name": {
+        "table": "Seasons",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "seasonの「name」は series、続いて 「-Season-」、続いて season number として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          }
+        ],
+        "structure": null,
+        "plain": "(series と \"-Season-\" を連結) と season number を連結"
+      },
+      "Seasons.ShowTitle": {
+        "table": "Seasons",
+        "field": "ShowTitle",
+        "kind": "lookup",
+        "rule": "seasonの「show title」— リンクされた「series」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「series」の title"
+      },
+      "Seasons.ShowDescription": {
+        "table": "Seasons",
+        "field": "ShowDescription",
+        "kind": "lookup",
+        "rule": "seasonの「show description」— リンクされた「series」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「series」の description"
+      },
+      "Seasons.ShowNetwork": {
+        "table": "Seasons",
+        "field": "ShowNetwork",
+        "kind": "lookup",
+        "rule": "seasonの「show network」— リンクされた「series」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Network",
+            "label": "network"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「series」の network"
+      },
+      "Seasons.EpisodeCount": {
+        "table": "Seasons",
+        "field": "EpisodeCount",
+        "kind": "rollup",
+        "rule": "seasonの「episode count」は seasonに関連する「episodes」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Season が season ID である「episodes」の件数"
+      },
+      "Episodes.Name": {
+        "table": "Episodes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "episodeの「name」は season、続いて 「-Episode-」、続いて 「0」、続いて episode number として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeNumber",
+            "label": "episode number"
+          }
+        ],
+        "structure": null,
+        "plain": "((season と \"-Episode-\" を連結) と episode number が 10 より小さいなら \"0\"、そうでなければ \"\" を連結) と episode number を連結"
+      },
+      "Episodes.SeasonNumber": {
+        "table": "Episodes",
+        "field": "SeasonNumber",
+        "kind": "lookup",
+        "rule": "episodeの「season number」— リンクされた「season」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「season」の season number"
+      },
+      "Episodes.SeasonTitle": {
+        "table": "Episodes",
+        "field": "SeasonTitle",
+        "kind": "lookup",
+        "rule": "episodeの「season title」— リンクされた「season」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「season」の title"
+      },
+      "Episodes.SeasonDescription": {
+        "table": "Episodes",
+        "field": "SeasonDescription",
+        "kind": "lookup",
+        "rule": "episodeの「season description」— リンクされた「season」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「season」の description"
+      },
+      "Movies.Name": {
+        "table": "Movies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "movyの「name」は movie number、続いて ハイフン、続いて title として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "MovieNumber",
+            "label": "movie number"
+          },
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(movie number と \"-\" を連結) と title を連結"
+      },
+      "Movies.CrewCount": {
+        "table": "Movies",
+        "field": "CrewCount",
+        "kind": "rollup",
+        "rule": "movyの「crew count」は movyに関連する「crew assignments」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Movie が movie ID である「crew assignments」の件数"
+      },
+      "CrewAssignments.Name": {
+        "table": "CrewAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "crew assignmentの「name」は person name、続いて ハイフン、続いて crew type name、続いて ハイフン、続いて movie title として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "PersonName",
+            "label": "person name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewTypeName",
+            "label": "crew type name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "MovieTitle",
+            "label": "movie title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((person name と \"-\" を連結) と crew type name を連結) と \"-\" を連結) と movie title を連結"
+      },
+      "CrewAssignments.PersonName": {
+        "table": "CrewAssignments",
+        "field": "PersonName",
+        "kind": "lookup",
+        "rule": "crew assignmentの「person name」— リンクされた「person」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "People",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Person",
+            "label": "person"
+          },
+          {
+            "table": "People",
+            "field": "PersonId",
+            "label": "person ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「person」の name"
+      },
+      "CrewAssignments.MovieTitle": {
+        "table": "CrewAssignments",
+        "field": "MovieTitle",
+        "kind": "lookup",
+        "rule": "crew assignmentの「movie title」— リンクされた「movie」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「movie」の title"
+      },
+      "CrewAssignments.CrewTypeName": {
+        "table": "CrewAssignments",
+        "field": "CrewTypeName",
+        "kind": "lookup",
+        "rule": "crew assignmentの「crew type name」— リンクされた「crew type」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewType",
+            "label": "crew type"
+          },
+          {
+            "table": "CrewTypes",
+            "field": "CrewTypeId",
+            "label": "crew type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「crew type」の name"
+      },
+      "Ratings.Name": {
+        "table": "Ratings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "ratingの「name」は display name、続いて ハイフン、続いて users name として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Ratings",
+            "field": "UsersName",
+            "label": "users name"
+          }
+        ],
+        "structure": null,
+        "plain": "(display name と \"-\" を連結) と users name を連結"
+      },
+      "Ratings.DisplayName": {
+        "table": "Ratings",
+        "field": "DisplayName",
+        "kind": "formula",
+        "rule": "Ratingの「display name」は、次の優先順位で決まります:\n1. series が空である場合は 「Episode: 」、続いて episode name;\n2. それ以外の場合は 「Series: 」、続いて series name。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Ratings",
+            "field": "EpisodeName",
+            "label": "episode name"
+          },
+          {
+            "table": "Ratings",
+            "field": "SeriesName",
+            "label": "series name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Ratingの「display name」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「Episode: 」、続いて episode name",
+              "when": {
+                "kind": "leaf",
+                "text": "series が空である"
+              }
+            },
+            {
+              "value": "「Series: 」、続いて series name",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Series が blank() と等しいなら (\"Episode: \" と episode name を連結)、そうでなければ (\"Series: \" と series name を連結)"
+      },
+      "Ratings.SeriesName": {
+        "table": "Ratings",
+        "field": "SeriesName",
+        "kind": "lookup",
+        "rule": "ratingの「series name」— リンクされた「series」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「series」の name"
+      },
+      "Ratings.EpisodeName": {
+        "table": "Ratings",
+        "field": "EpisodeName",
+        "kind": "lookup",
+        "rule": "ratingの「episode name」— リンクされた「episode」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「episode」の name"
+      },
+      "Ratings.EpisodeSeasonTitle": {
+        "table": "Ratings",
+        "field": "EpisodeSeasonTitle",
+        "kind": "lookup",
+        "rule": "ratingの「episode season title」— リンクされた「episode」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "SeasonTitle",
+            "label": "season title"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「episode」の season title"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "Series": "series",
+      "Seasons": "season",
+      "Episodes": "episode",
+      "CrewTypes": "crew type",
+      "People": "person",
+      "Movies": "movy",
+      "CrewAssignments": "crew assignment",
+      "Ratings": "rating",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "ko": {
+    "fields": {
+      "Series.Name": {
+        "table": "Series",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘series’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘series number’, 이어서 하이픈, 이어서 ‘show code’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "SeriesNumber",
+            "label": "series number"
+          },
+          {
+            "table": "Series",
+            "field": "ShowCode",
+            "label": "show code"
+          }
+        ],
+        "structure": null,
+        "plain": "(series number 뒤에 \"-\" 연결한 결과) 뒤에 show code 연결한 결과"
+      },
+      "Series.TotalSeasons": {
+        "table": "Series",
+        "field": "TotalSeasons",
+        "kind": "rollup",
+        "rule": "‘series’ 레코드의 ‘total seasons’ 값은 해당 ‘series’ 레코드에 연결된 ‘seasons’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(series 값이 serie ID임)에 맞는 seasons 레코드의 개수"
+      },
+      "Series.TotalEpisodes": {
+        "table": "Series",
+        "field": "TotalEpisodes",
+        "kind": "rollup",
+        "rule": "‘series’ 레코드의 ‘total episodes’ 값은 해당 ‘series’ 레코드에 연결된 모든 ‘seasons’ 레코드의 총 ‘episode count’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "EpisodeCount",
+            "label": "episode count"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(series 값이 serie ID임)에 맞는 모든 seasons 레코드의 episode count 합계"
+      },
+      "Series.IsLongRunning": {
+        "table": "Series",
+        "field": "IsLongRunning",
+        "kind": "formula",
+        "rule": "‘total episodes’ 값이 50보다 큰 경우, ‘series’ 레코드는 ‘long running’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "TotalEpisodes",
+            "label": "total episodes"
+          }
+        ],
+        "structure": null,
+        "plain": "Total episodes 값이 50보다 큼"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "rollup",
+        "rule": "‘series’ 레코드의 ‘rating’ 값은 해당 ‘series’ 레코드에 연결된 모든 ‘ratings’ 레코드의 총 ‘rating’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Rating",
+            "label": "rating"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(series 값이 serie ID임)에 맞는 모든 ratings 레코드의 rating 합계"
+      },
+      "Series.IsGood": {
+        "table": "Series",
+        "field": "IsGood",
+        "kind": "formula",
+        "rule": "‘rating’ 값이 4.5 이상인 경우, ‘series’ 레코드는 ‘good’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Rating",
+            "label": "rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Rating 값이 4.5 이상임"
+      },
+      "Seasons.Name": {
+        "table": "Seasons",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘season’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘series’, 이어서 “-Season-”, 이어서 ‘season number’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          }
+        ],
+        "structure": null,
+        "plain": "(series 뒤에 \"-Season-\" 연결한 결과) 뒤에 season number 연결한 결과"
+      },
+      "Seasons.ShowTitle": {
+        "table": "Seasons",
+        "field": "ShowTitle",
+        "kind": "lookup",
+        "rule": "‘season’ 레코드의 ‘show title’ 값은 연결된 ‘series’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 series 레코드의 title"
+      },
+      "Seasons.ShowDescription": {
+        "table": "Seasons",
+        "field": "ShowDescription",
+        "kind": "lookup",
+        "rule": "‘season’ 레코드의 ‘show description’ 값은 연결된 ‘series’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 series 레코드의 description"
+      },
+      "Seasons.ShowNetwork": {
+        "table": "Seasons",
+        "field": "ShowNetwork",
+        "kind": "lookup",
+        "rule": "‘season’ 레코드의 ‘show network’ 값은 연결된 ‘series’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Network",
+            "label": "network"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 series 레코드의 network"
+      },
+      "Seasons.EpisodeCount": {
+        "table": "Seasons",
+        "field": "EpisodeCount",
+        "kind": "rollup",
+        "rule": "‘season’ 레코드의 ‘episode count’ 값은 해당 ‘season’ 레코드에 연결된 ‘episodes’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(season 값이 season ID임)에 맞는 episodes 레코드의 개수"
+      },
+      "Episodes.Name": {
+        "table": "Episodes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘episode’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘season’, 이어서 “-Episode-”, 이어서 “0”, 이어서 ‘episode number’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeNumber",
+            "label": "episode number"
+          }
+        ],
+        "structure": null,
+        "plain": "((season 뒤에 \"-Episode-\" 연결한 결과) 뒤에 조건(episode number 값이 10보다 작음)이 성립하면 \"0\", 그렇지 않으면 \"\" 연결한 결과) 뒤에 episode number 연결한 결과"
+      },
+      "Episodes.SeasonNumber": {
+        "table": "Episodes",
+        "field": "SeasonNumber",
+        "kind": "lookup",
+        "rule": "‘episode’ 레코드의 ‘season number’ 값은 연결된 ‘season’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 season 레코드의 season number"
+      },
+      "Episodes.SeasonTitle": {
+        "table": "Episodes",
+        "field": "SeasonTitle",
+        "kind": "lookup",
+        "rule": "‘episode’ 레코드의 ‘season title’ 값은 연결된 ‘season’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 season 레코드의 title"
+      },
+      "Episodes.SeasonDescription": {
+        "table": "Episodes",
+        "field": "SeasonDescription",
+        "kind": "lookup",
+        "rule": "‘episode’ 레코드의 ‘season description’ 값은 연결된 ‘season’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 season 레코드의 description"
+      },
+      "Movies.Name": {
+        "table": "Movies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘movy’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘movie number’, 이어서 하이픈, 이어서 ‘title’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "MovieNumber",
+            "label": "movie number"
+          },
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(movie number 뒤에 \"-\" 연결한 결과) 뒤에 title 연결한 결과"
+      },
+      "Movies.CrewCount": {
+        "table": "Movies",
+        "field": "CrewCount",
+        "kind": "rollup",
+        "rule": "‘movy’ 레코드의 ‘crew count’ 값은 해당 ‘movy’ 레코드에 연결된 ‘crew assignments’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(movie 값이 movie ID임)에 맞는 crew assignments 레코드의 개수"
+      },
+      "CrewAssignments.Name": {
+        "table": "CrewAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘crew assignment’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘person name’, 이어서 하이픈, 이어서 ‘crew type name’, 이어서 하이픈, 이어서 ‘movie title’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "PersonName",
+            "label": "person name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewTypeName",
+            "label": "crew type name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "MovieTitle",
+            "label": "movie title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((person name 뒤에 \"-\" 연결한 결과) 뒤에 crew type name 연결한 결과) 뒤에 \"-\" 연결한 결과) 뒤에 movie title 연결한 결과"
+      },
+      "CrewAssignments.PersonName": {
+        "table": "CrewAssignments",
+        "field": "PersonName",
+        "kind": "lookup",
+        "rule": "‘crew assignment’ 레코드의 ‘person name’ 값은 연결된 ‘person’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "People",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Person",
+            "label": "person"
+          },
+          {
+            "table": "People",
+            "field": "PersonId",
+            "label": "person ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 person 레코드의 name"
+      },
+      "CrewAssignments.MovieTitle": {
+        "table": "CrewAssignments",
+        "field": "MovieTitle",
+        "kind": "lookup",
+        "rule": "‘crew assignment’ 레코드의 ‘movie title’ 값은 연결된 ‘movie’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 movie 레코드의 title"
+      },
+      "CrewAssignments.CrewTypeName": {
+        "table": "CrewAssignments",
+        "field": "CrewTypeName",
+        "kind": "lookup",
+        "rule": "‘crew assignment’ 레코드의 ‘crew type name’ 값은 연결된 ‘crew type’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewType",
+            "label": "crew type"
+          },
+          {
+            "table": "CrewTypes",
+            "field": "CrewTypeId",
+            "label": "crew type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 crew type 레코드의 name"
+      },
+      "Ratings.Name": {
+        "table": "Ratings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘rating’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘display name’, 이어서 하이픈, 이어서 ‘users name’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Ratings",
+            "field": "UsersName",
+            "label": "users name"
+          }
+        ],
+        "structure": null,
+        "plain": "(display name 뒤에 \"-\" 연결한 결과) 뒤에 users name 연결한 결과"
+      },
+      "Ratings.DisplayName": {
+        "table": "Ratings",
+        "field": "DisplayName",
+        "kind": "formula",
+        "rule": "‘rating’ 레코드의 ‘display name’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘series’ 값이 비어 있는 경우: “Episode: ”, 이어서 ‘episode name’\n2. 그 밖의 경우: “Series: ”, 이어서 ‘series name’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Ratings",
+            "field": "EpisodeName",
+            "label": "episode name"
+          },
+          {
+            "table": "Ratings",
+            "field": "SeriesName",
+            "label": "series name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘rating’ 레코드의 ‘display name’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“Episode: ”, 이어서 ‘episode name’",
+              "when": {
+                "kind": "leaf",
+                "text": "‘series’ 값이 비어 있는 경우"
+              }
+            },
+            {
+              "value": "“Series: ”, 이어서 ‘series name’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(series 값이 blank() 값과 같음)이 성립하면 (\"Episode: \" 뒤에 episode name 연결한 결과), 그렇지 않으면 (\"Series: \" 뒤에 series name 연결한 결과)"
+      },
+      "Ratings.SeriesName": {
+        "table": "Ratings",
+        "field": "SeriesName",
+        "kind": "lookup",
+        "rule": "‘rating’ 레코드의 ‘series name’ 값은 연결된 ‘series’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 series 레코드의 name"
+      },
+      "Ratings.EpisodeName": {
+        "table": "Ratings",
+        "field": "EpisodeName",
+        "kind": "lookup",
+        "rule": "‘rating’ 레코드의 ‘episode name’ 값은 연결된 ‘episode’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 episode 레코드의 name"
+      },
+      "Ratings.EpisodeSeasonTitle": {
+        "table": "Ratings",
+        "field": "EpisodeSeasonTitle",
+        "kind": "lookup",
+        "rule": "‘rating’ 레코드의 ‘episode season title’ 값은 연결된 ‘episode’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "SeasonTitle",
+            "label": "season title"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 episode 레코드의 season title"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Series": "series",
+      "Seasons": "season",
+      "Episodes": "episode",
+      "CrewTypes": "crew type",
+      "People": "person",
+      "Movies": "movy",
+      "CrewAssignments": "crew assignment",
+      "Ratings": "rating",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "nl": {
+    "fields": {
+      "Series.Name": {
+        "table": "Series",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een series: name wordt berekend als de series number, gevolgd door een koppelteken, gevolgd door de show code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "SeriesNumber",
+            "label": "series number"
+          },
+          {
+            "table": "Series",
+            "field": "ShowCode",
+            "label": "show code"
+          }
+        ],
+        "structure": null,
+        "plain": "(series number samengevoegd met \"-\") samengevoegd met show code"
+      },
+      "Series.TotalSeasons": {
+        "table": "Series",
+        "field": "TotalSeasons",
+        "kind": "rollup",
+        "rule": "Een series: total seasons is het aantal seasons dat is gekoppeld aan de series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal seasons waarvan series is serie ID"
+      },
+      "Series.TotalEpisodes": {
+        "table": "Series",
+        "field": "TotalEpisodes",
+        "kind": "rollup",
+        "rule": "Een series: total episodes is het totaal van episode count over de seasons gekoppeld aan de series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "EpisodeCount",
+            "label": "episode count"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van episode count over alle seasons waarvan series is serie ID"
+      },
+      "Series.IsLongRunning": {
+        "table": "Series",
+        "field": "IsLongRunning",
+        "kind": "formula",
+        "rule": "Een series geldt als long running als de total episodes groter is dan 50.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "TotalEpisodes",
+            "label": "total episodes"
+          }
+        ],
+        "structure": null,
+        "plain": "Total episodes is groter dan 50"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "rollup",
+        "rule": "Een series: rating is het totaal van rating over de ratings gekoppeld aan de series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Rating",
+            "label": "rating"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van rating over alle ratings waarvan series is serie ID"
+      },
+      "Series.IsGood": {
+        "table": "Series",
+        "field": "IsGood",
+        "kind": "formula",
+        "rule": "Een series geldt als een good als de rating ten minste 4.5 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Rating",
+            "label": "rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Rating is ten minste 4.5"
+      },
+      "Seasons.Name": {
+        "table": "Seasons",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een season: name wordt berekend als de series, gevolgd door ‘-Season-’, gevolgd door de season number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          }
+        ],
+        "structure": null,
+        "plain": "(series samengevoegd met \"-Season-\") samengevoegd met season number"
+      },
+      "Seasons.ShowTitle": {
+        "table": "Seasons",
+        "field": "ShowTitle",
+        "kind": "lookup",
+        "rule": "Een season: show title — overgenomen van de gekoppelde series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De title van de gekoppelde series"
+      },
+      "Seasons.ShowDescription": {
+        "table": "Seasons",
+        "field": "ShowDescription",
+        "kind": "lookup",
+        "rule": "Een season: show description — overgenomen van de gekoppelde series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De description van de gekoppelde series"
+      },
+      "Seasons.ShowNetwork": {
+        "table": "Seasons",
+        "field": "ShowNetwork",
+        "kind": "lookup",
+        "rule": "Een season: show network — overgenomen van de gekoppelde series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Network",
+            "label": "network"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De network van de gekoppelde series"
+      },
+      "Seasons.EpisodeCount": {
+        "table": "Seasons",
+        "field": "EpisodeCount",
+        "kind": "rollup",
+        "rule": "Een season: episode count is het aantal episodes dat is gekoppeld aan de season.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal episodes waarvan season is season ID"
+      },
+      "Episodes.Name": {
+        "table": "Episodes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een episode: name wordt berekend als de season, gevolgd door ‘-Episode-’, gevolgd door ‘0’, gevolgd door de episode number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeNumber",
+            "label": "episode number"
+          }
+        ],
+        "structure": null,
+        "plain": "((season samengevoegd met \"-Episode-\") samengevoegd met als episode number is kleiner dan 10, dan \"0\", anders \"\") samengevoegd met episode number"
+      },
+      "Episodes.SeasonNumber": {
+        "table": "Episodes",
+        "field": "SeasonNumber",
+        "kind": "lookup",
+        "rule": "Een episode: season number — overgenomen van de gekoppelde season.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De season number van de gekoppelde season"
+      },
+      "Episodes.SeasonTitle": {
+        "table": "Episodes",
+        "field": "SeasonTitle",
+        "kind": "lookup",
+        "rule": "Een episode: season title — overgenomen van de gekoppelde season.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De title van de gekoppelde season"
+      },
+      "Episodes.SeasonDescription": {
+        "table": "Episodes",
+        "field": "SeasonDescription",
+        "kind": "lookup",
+        "rule": "Een episode: season description — overgenomen van de gekoppelde season.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De description van de gekoppelde season"
+      },
+      "Movies.Name": {
+        "table": "Movies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een movy: name wordt berekend als de movie number, gevolgd door een koppelteken, gevolgd door de title.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "MovieNumber",
+            "label": "movie number"
+          },
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(movie number samengevoegd met \"-\") samengevoegd met title"
+      },
+      "Movies.CrewCount": {
+        "table": "Movies",
+        "field": "CrewCount",
+        "kind": "rollup",
+        "rule": "Een movy: crew count is het aantal crew assignments dat is gekoppeld aan de movy.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal crew assignments waarvan movie is movie ID"
+      },
+      "CrewAssignments.Name": {
+        "table": "CrewAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een crew assignment: name wordt berekend als de person name, gevolgd door een koppelteken, gevolgd door de crew type name, gevolgd door een koppelteken, gevolgd door de movie title.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "PersonName",
+            "label": "person name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewTypeName",
+            "label": "crew type name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "MovieTitle",
+            "label": "movie title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((person name samengevoegd met \"-\") samengevoegd met crew type name) samengevoegd met \"-\") samengevoegd met movie title"
+      },
+      "CrewAssignments.PersonName": {
+        "table": "CrewAssignments",
+        "field": "PersonName",
+        "kind": "lookup",
+        "rule": "Een crew assignment: person name — overgenomen van de gekoppelde person.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "People",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Person",
+            "label": "person"
+          },
+          {
+            "table": "People",
+            "field": "PersonId",
+            "label": "person ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde person"
+      },
+      "CrewAssignments.MovieTitle": {
+        "table": "CrewAssignments",
+        "field": "MovieTitle",
+        "kind": "lookup",
+        "rule": "Een crew assignment: movie title — overgenomen van de gekoppelde movie.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De title van de gekoppelde movie"
+      },
+      "CrewAssignments.CrewTypeName": {
+        "table": "CrewAssignments",
+        "field": "CrewTypeName",
+        "kind": "lookup",
+        "rule": "Een crew assignment: crew type name — overgenomen van de gekoppelde crew type.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewType",
+            "label": "crew type"
+          },
+          {
+            "table": "CrewTypes",
+            "field": "CrewTypeId",
+            "label": "crew type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde crew type"
+      },
+      "Ratings.Name": {
+        "table": "Ratings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een rating: name wordt berekend als de display name, gevolgd door een koppelteken, gevolgd door de users name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Ratings",
+            "field": "UsersName",
+            "label": "users name"
+          }
+        ],
+        "structure": null,
+        "plain": "(display name samengevoegd met \"-\") samengevoegd met users name"
+      },
+      "Ratings.DisplayName": {
+        "table": "Ratings",
+        "field": "DisplayName",
+        "kind": "formula",
+        "rule": "Het veld ‘display name’ van de rating wordt bepaald volgens de volgende prioriteit:\n1. ‘Episode: ’, gevolgd door de episode name, als de series leeg is;\n2. in alle andere gevallen ‘Series: ’, gevolgd door de series name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Ratings",
+            "field": "EpisodeName",
+            "label": "episode name"
+          },
+          {
+            "table": "Ratings",
+            "field": "SeriesName",
+            "label": "series name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘display name’ van de rating wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘Episode: ’, gevolgd door de episode name",
+              "when": {
+                "kind": "leaf",
+                "text": "de series leeg is"
+              }
+            },
+            {
+              "value": "‘Series: ’, gevolgd door de series name",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als series is gelijk aan blank(), dan (\"Episode: \" samengevoegd met episode name), anders (\"Series: \" samengevoegd met series name)"
+      },
+      "Ratings.SeriesName": {
+        "table": "Ratings",
+        "field": "SeriesName",
+        "kind": "lookup",
+        "rule": "Een rating: series name — overgenomen van de gekoppelde series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde series"
+      },
+      "Ratings.EpisodeName": {
+        "table": "Ratings",
+        "field": "EpisodeName",
+        "kind": "lookup",
+        "rule": "Een rating: episode name — overgenomen van de gekoppelde episode.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde episode"
+      },
+      "Ratings.EpisodeSeasonTitle": {
+        "table": "Ratings",
+        "field": "EpisodeSeasonTitle",
+        "kind": "lookup",
+        "rule": "Een rating: episode season title — overgenomen van de gekoppelde episode.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "SeasonTitle",
+            "label": "season title"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De season title van de gekoppelde episode"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Series": "series",
+      "Seasons": "season",
+      "Episodes": "episode",
+      "CrewTypes": "crew type",
+      "People": "person",
+      "Movies": "movy",
+      "CrewAssignments": "crew assignment",
+      "Ratings": "rating",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "pt": {
+    "fields": {
+      "Series.Name": {
+        "table": "Series",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um series: name é calculado como o series number, seguido de um hífen, seguido de o show code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "SeriesNumber",
+            "label": "series number"
+          },
+          {
+            "table": "Series",
+            "field": "ShowCode",
+            "label": "show code"
+          }
+        ],
+        "structure": null,
+        "plain": "(series number unido a \"-\") unido a show code"
+      },
+      "Series.TotalSeasons": {
+        "table": "Series",
+        "field": "TotalSeasons",
+        "kind": "rollup",
+        "rule": "Um series: total seasons é o número de seasons relacionados a o series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de seasons cujo series é serie ID"
+      },
+      "Series.TotalEpisodes": {
+        "table": "Series",
+        "field": "TotalEpisodes",
+        "kind": "rollup",
+        "rule": "Um series: total episodes é o total de episode count entre os seasons relacionados a o series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "EpisodeCount",
+            "label": "episode count"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de episode count entre todos os seasons cujo series é serie ID"
+      },
+      "Series.IsLongRunning": {
+        "table": "Series",
+        "field": "IsLongRunning",
+        "kind": "formula",
+        "rule": "Um series é considerado long running se o total episodes é maior que 50.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "TotalEpisodes",
+            "label": "total episodes"
+          }
+        ],
+        "structure": null,
+        "plain": "Total episodes é maior que 50"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "rollup",
+        "rule": "Um series: rating é o total de rating entre os ratings relacionados a o series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Rating",
+            "label": "rating"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de rating entre todos os ratings cujo series é serie ID"
+      },
+      "Series.IsGood": {
+        "table": "Series",
+        "field": "IsGood",
+        "kind": "formula",
+        "rule": "Um series é considerado um good se o rating é pelo menos 4.5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Rating",
+            "label": "rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Rating é pelo menos 4.5"
+      },
+      "Seasons.Name": {
+        "table": "Seasons",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um season: name é calculado como o series, seguido de “-Season-”, seguido de o season number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          }
+        ],
+        "structure": null,
+        "plain": "(series unido a \"-Season-\") unido a season number"
+      },
+      "Seasons.ShowTitle": {
+        "table": "Seasons",
+        "field": "ShowTitle",
+        "kind": "lookup",
+        "rule": "Um season: show title — obtido do series vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O title do series vinculado"
+      },
+      "Seasons.ShowDescription": {
+        "table": "Seasons",
+        "field": "ShowDescription",
+        "kind": "lookup",
+        "rule": "Um season: show description — obtido do series vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O description do series vinculado"
+      },
+      "Seasons.ShowNetwork": {
+        "table": "Seasons",
+        "field": "ShowNetwork",
+        "kind": "lookup",
+        "rule": "Um season: show network — obtido do series vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Network",
+            "label": "network"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O network do series vinculado"
+      },
+      "Seasons.EpisodeCount": {
+        "table": "Seasons",
+        "field": "EpisodeCount",
+        "kind": "rollup",
+        "rule": "Um season: episode count é o número de episodes relacionados a o season.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de episodes cujo season é season ID"
+      },
+      "Episodes.Name": {
+        "table": "Episodes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um episode: name é calculado como o season, seguido de “-Episode-”, seguido de “0”, seguido de o episode number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeNumber",
+            "label": "episode number"
+          }
+        ],
+        "structure": null,
+        "plain": "((season unido a \"-Episode-\") unido a se episode number é menor que 10, então \"0\", caso contrário \"\") unido a episode number"
+      },
+      "Episodes.SeasonNumber": {
+        "table": "Episodes",
+        "field": "SeasonNumber",
+        "kind": "lookup",
+        "rule": "Um episode: season number — obtido do season vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O season number do season vinculado"
+      },
+      "Episodes.SeasonTitle": {
+        "table": "Episodes",
+        "field": "SeasonTitle",
+        "kind": "lookup",
+        "rule": "Um episode: season title — obtido do season vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O title do season vinculado"
+      },
+      "Episodes.SeasonDescription": {
+        "table": "Episodes",
+        "field": "SeasonDescription",
+        "kind": "lookup",
+        "rule": "Um episode: season description — obtido do season vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O description do season vinculado"
+      },
+      "Movies.Name": {
+        "table": "Movies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um movy: name é calculado como o movie number, seguido de um hífen, seguido de o title.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "MovieNumber",
+            "label": "movie number"
+          },
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(movie number unido a \"-\") unido a title"
+      },
+      "Movies.CrewCount": {
+        "table": "Movies",
+        "field": "CrewCount",
+        "kind": "rollup",
+        "rule": "Um movy: crew count é o número de crew assignments relacionados a o movy.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de crew assignments cujo movie é movie ID"
+      },
+      "CrewAssignments.Name": {
+        "table": "CrewAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um crew assignment: name é calculado como o person name, seguido de um hífen, seguido de o crew type name, seguido de um hífen, seguido de o movie title.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "PersonName",
+            "label": "person name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewTypeName",
+            "label": "crew type name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "MovieTitle",
+            "label": "movie title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((person name unido a \"-\") unido a crew type name) unido a \"-\") unido a movie title"
+      },
+      "CrewAssignments.PersonName": {
+        "table": "CrewAssignments",
+        "field": "PersonName",
+        "kind": "lookup",
+        "rule": "Um crew assignment: person name — obtido do person vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "People",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Person",
+            "label": "person"
+          },
+          {
+            "table": "People",
+            "field": "PersonId",
+            "label": "person ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do person vinculado"
+      },
+      "CrewAssignments.MovieTitle": {
+        "table": "CrewAssignments",
+        "field": "MovieTitle",
+        "kind": "lookup",
+        "rule": "Um crew assignment: movie title — obtido do movie vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O title do movie vinculado"
+      },
+      "CrewAssignments.CrewTypeName": {
+        "table": "CrewAssignments",
+        "field": "CrewTypeName",
+        "kind": "lookup",
+        "rule": "Um crew assignment: crew type name — obtido do crew type vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewType",
+            "label": "crew type"
+          },
+          {
+            "table": "CrewTypes",
+            "field": "CrewTypeId",
+            "label": "crew type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do crew type vinculado"
+      },
+      "Ratings.Name": {
+        "table": "Ratings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um rating: name é calculado como o display name, seguido de um hífen, seguido de o users name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Ratings",
+            "field": "UsersName",
+            "label": "users name"
+          }
+        ],
+        "structure": null,
+        "plain": "(display name unido a \"-\") unido a users name"
+      },
+      "Ratings.DisplayName": {
+        "table": "Ratings",
+        "field": "DisplayName",
+        "kind": "formula",
+        "rule": "O campo “display name” do rating é determinado pela seguinte prioridade:\n1. “Episode: ”, seguido de o episode name, se o series está vazio;\n2. em todos os outros casos, “Series: ”, seguido de o series name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Ratings",
+            "field": "EpisodeName",
+            "label": "episode name"
+          },
+          {
+            "table": "Ratings",
+            "field": "SeriesName",
+            "label": "series name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “display name” do rating é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“Episode: ”, seguido de o episode name",
+              "when": {
+                "kind": "leaf",
+                "text": "o series está vazio"
+              }
+            },
+            {
+              "value": "“Series: ”, seguido de o series name",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se series é igual a blank(), então (\"Episode: \" unido a episode name), caso contrário (\"Series: \" unido a series name)"
+      },
+      "Ratings.SeriesName": {
+        "table": "Ratings",
+        "field": "SeriesName",
+        "kind": "lookup",
+        "rule": "Um rating: series name — obtido do series vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do series vinculado"
+      },
+      "Ratings.EpisodeName": {
+        "table": "Ratings",
+        "field": "EpisodeName",
+        "kind": "lookup",
+        "rule": "Um rating: episode name — obtido do episode vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do episode vinculado"
+      },
+      "Ratings.EpisodeSeasonTitle": {
+        "table": "Ratings",
+        "field": "EpisodeSeasonTitle",
+        "kind": "lookup",
+        "rule": "Um rating: episode season title — obtido do episode vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "SeasonTitle",
+            "label": "season title"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O season title do episode vinculado"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Series": "series",
+      "Seasons": "season",
+      "Episodes": "episode",
+      "CrewTypes": "crew type",
+      "People": "person",
+      "Movies": "movy",
+      "CrewAssignments": "crew assignment",
+      "Ratings": "rating",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "ru": {
+    "fields": {
+      "Series.Name": {
+        "table": "Series",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Series: «name» вычисляется как series number, затем дефис, затем show code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "SeriesNumber",
+            "label": "series number"
+          },
+          {
+            "table": "Series",
+            "field": "ShowCode",
+            "label": "show code"
+          }
+        ],
+        "structure": null,
+        "plain": "(series number соединено с \"-\") соединено с show code"
+      },
+      "Series.TotalSeasons": {
+        "table": "Series",
+        "field": "TotalSeasons",
+        "kind": "rollup",
+        "rule": "Series: «total seasons» — это число записей «seasons», связанных с series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «seasons», у которых series равно serie ID"
+      },
+      "Series.TotalEpisodes": {
+        "table": "Series",
+        "field": "TotalEpisodes",
+        "kind": "rollup",
+        "rule": "Series: «total episodes» — это сумма «episode count» по записям «seasons», связанным с series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "EpisodeCount",
+            "label": "episode count"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма episode count по всем «seasons», у которых series равно serie ID"
+      },
+      "Series.IsLongRunning": {
+        "table": "Series",
+        "field": "IsLongRunning",
+        "kind": "formula",
+        "rule": "Series считается «long running», если total episodes больше 50.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "TotalEpisodes",
+            "label": "total episodes"
+          }
+        ],
+        "structure": null,
+        "plain": "Total episodes больше 50"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "rollup",
+        "rule": "Series: «rating» — это сумма «rating» по записям «ratings», связанным с series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Rating",
+            "label": "rating"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма rating по всем «ratings», у которых series равно serie ID"
+      },
+      "Series.IsGood": {
+        "table": "Series",
+        "field": "IsGood",
+        "kind": "formula",
+        "rule": "Series считается «good», если rating не меньше 4.5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Rating",
+            "label": "rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Rating не меньше 4.5"
+      },
+      "Seasons.Name": {
+        "table": "Seasons",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Season: «name» вычисляется как series, затем «-Season-», затем season number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          }
+        ],
+        "structure": null,
+        "plain": "(series соединено с \"-Season-\") соединено с season number"
+      },
+      "Seasons.ShowTitle": {
+        "table": "Seasons",
+        "field": "ShowTitle",
+        "kind": "lookup",
+        "rule": "Season: «show title» — берётся из связанного «series».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Title связанного «series»"
+      },
+      "Seasons.ShowDescription": {
+        "table": "Seasons",
+        "field": "ShowDescription",
+        "kind": "lookup",
+        "rule": "Season: «show description» — берётся из связанного «series».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Description связанного «series»"
+      },
+      "Seasons.ShowNetwork": {
+        "table": "Seasons",
+        "field": "ShowNetwork",
+        "kind": "lookup",
+        "rule": "Season: «show network» — берётся из связанного «series».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Network",
+            "label": "network"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Network связанного «series»"
+      },
+      "Seasons.EpisodeCount": {
+        "table": "Seasons",
+        "field": "EpisodeCount",
+        "kind": "rollup",
+        "rule": "Season: «episode count» — это число записей «episodes», связанных с season.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «episodes», у которых season равно season ID"
+      },
+      "Episodes.Name": {
+        "table": "Episodes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Episode: «name» вычисляется как season, затем «-Episode-», затем «0», затем episode number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeNumber",
+            "label": "episode number"
+          }
+        ],
+        "structure": null,
+        "plain": "((season соединено с \"-Episode-\") соединено с если episode number меньше 10, то \"0\", иначе \"\") соединено с episode number"
+      },
+      "Episodes.SeasonNumber": {
+        "table": "Episodes",
+        "field": "SeasonNumber",
+        "kind": "lookup",
+        "rule": "Episode: «season number» — берётся из связанного «season».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Season number связанного «season»"
+      },
+      "Episodes.SeasonTitle": {
+        "table": "Episodes",
+        "field": "SeasonTitle",
+        "kind": "lookup",
+        "rule": "Episode: «season title» — берётся из связанного «season».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Title связанного «season»"
+      },
+      "Episodes.SeasonDescription": {
+        "table": "Episodes",
+        "field": "SeasonDescription",
+        "kind": "lookup",
+        "rule": "Episode: «season description» — берётся из связанного «season».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Description связанного «season»"
+      },
+      "Movies.Name": {
+        "table": "Movies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Movy: «name» вычисляется как movie number, затем дефис, затем title.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "MovieNumber",
+            "label": "movie number"
+          },
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(movie number соединено с \"-\") соединено с title"
+      },
+      "Movies.CrewCount": {
+        "table": "Movies",
+        "field": "CrewCount",
+        "kind": "rollup",
+        "rule": "Movy: «crew count» — это число записей «crew assignments», связанных с movy.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «crew assignments», у которых movie равно movie ID"
+      },
+      "CrewAssignments.Name": {
+        "table": "CrewAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Crew assignment: «name» вычисляется как person name, затем дефис, затем crew type name, затем дефис, затем movie title.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "PersonName",
+            "label": "person name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewTypeName",
+            "label": "crew type name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "MovieTitle",
+            "label": "movie title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((person name соединено с \"-\") соединено с crew type name) соединено с \"-\") соединено с movie title"
+      },
+      "CrewAssignments.PersonName": {
+        "table": "CrewAssignments",
+        "field": "PersonName",
+        "kind": "lookup",
+        "rule": "Crew assignment: «person name» — берётся из связанного «person».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "People",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Person",
+            "label": "person"
+          },
+          {
+            "table": "People",
+            "field": "PersonId",
+            "label": "person ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «person»"
+      },
+      "CrewAssignments.MovieTitle": {
+        "table": "CrewAssignments",
+        "field": "MovieTitle",
+        "kind": "lookup",
+        "rule": "Crew assignment: «movie title» — берётся из связанного «movie».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Title связанного «movie»"
+      },
+      "CrewAssignments.CrewTypeName": {
+        "table": "CrewAssignments",
+        "field": "CrewTypeName",
+        "kind": "lookup",
+        "rule": "Crew assignment: «crew type name» — берётся из связанного «crew type».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewType",
+            "label": "crew type"
+          },
+          {
+            "table": "CrewTypes",
+            "field": "CrewTypeId",
+            "label": "crew type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «crew type»"
+      },
+      "Ratings.Name": {
+        "table": "Ratings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Rating: «name» вычисляется как display name, затем дефис, затем users name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Ratings",
+            "field": "UsersName",
+            "label": "users name"
+          }
+        ],
+        "structure": null,
+        "plain": "(display name соединено с \"-\") соединено с users name"
+      },
+      "Ratings.DisplayName": {
+        "table": "Ratings",
+        "field": "DisplayName",
+        "kind": "formula",
+        "rule": "Поле «display name» (Rating) определяется по следующему приоритету:\n1. «Episode: », затем episode name, если series пусто;\n2. во всех остальных случаях — «Series: », затем series name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Ratings",
+            "field": "EpisodeName",
+            "label": "episode name"
+          },
+          {
+            "table": "Ratings",
+            "field": "SeriesName",
+            "label": "series name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «display name» (Rating) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«Episode: », затем episode name",
+              "when": {
+                "kind": "leaf",
+                "text": "series пусто"
+              }
+            },
+            {
+              "value": "«Series: », затем series name",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если series равно blank(), то (\"Episode: \" соединено с episode name), иначе (\"Series: \" соединено с series name)"
+      },
+      "Ratings.SeriesName": {
+        "table": "Ratings",
+        "field": "SeriesName",
+        "kind": "lookup",
+        "rule": "Rating: «series name» — берётся из связанного «series».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «series»"
+      },
+      "Ratings.EpisodeName": {
+        "table": "Ratings",
+        "field": "EpisodeName",
+        "kind": "lookup",
+        "rule": "Rating: «episode name» — берётся из связанного «episode».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «episode»"
+      },
+      "Ratings.EpisodeSeasonTitle": {
+        "table": "Ratings",
+        "field": "EpisodeSeasonTitle",
+        "kind": "lookup",
+        "rule": "Rating: «episode season title» — берётся из связанного «episode».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "SeasonTitle",
+            "label": "season title"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Season title связанного «episode»"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Series": "series",
+      "Seasons": "season",
+      "Episodes": "episode",
+      "CrewTypes": "crew type",
+      "People": "person",
+      "Movies": "movy",
+      "CrewAssignments": "crew assignment",
+      "Ratings": "rating",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "tr": {
+    "fields": {
+      "Series.Name": {
+        "table": "Series",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“series” kaydının “name” alanı, “series number” alanı, ardından bir kısa çizgi, ardından “show code” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "SeriesNumber",
+            "label": "series number"
+          },
+          {
+            "table": "Series",
+            "field": "ShowCode",
+            "label": "show code"
+          }
+        ],
+        "structure": null,
+        "plain": "(series number ile \"-\" birleşimi) ile show code birleşimi"
+      },
+      "Series.TotalSeasons": {
+        "table": "Series",
+        "field": "TotalSeasons",
+        "kind": "rollup",
+        "rule": "“series” kaydının “total seasons” alanı, “series” kaydıyla ilişkili “seasons” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Series değeri serie ID olan seasons kayıtlarının sayısı"
+      },
+      "Series.TotalEpisodes": {
+        "table": "Series",
+        "field": "TotalEpisodes",
+        "kind": "rollup",
+        "rule": "“series” kaydının “total episodes” alanı, “series” kaydıyla ilişkili “seasons” kayıtları üzerinden hesaplanan toplam “episode count” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "EpisodeCount",
+            "label": "episode count"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Series değeri serie ID olan tüm seasons kayıtlarındaki episode count değerlerinin toplamı"
+      },
+      "Series.IsLongRunning": {
+        "table": "Series",
+        "field": "IsLongRunning",
+        "kind": "formula",
+        "rule": "“series” kaydı, “total episodes” alanı 50 değerinden büyük ise “long running” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "TotalEpisodes",
+            "label": "total episodes"
+          }
+        ],
+        "structure": null,
+        "plain": "Total episodes, 50 değerinden büyük"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "rollup",
+        "rule": "“series” kaydının “rating” alanı, “series” kaydıyla ilişkili “ratings” kayıtları üzerinden hesaplanan toplam “rating” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Rating",
+            "label": "rating"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Series değeri serie ID olan tüm ratings kayıtlarındaki rating değerlerinin toplamı"
+      },
+      "Series.IsGood": {
+        "table": "Series",
+        "field": "IsGood",
+        "kind": "formula",
+        "rule": "“series” kaydı, “rating” alanı en az 4.5 değerinde ise “good” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Rating",
+            "label": "rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Rating, en az 4.5 değerinde"
+      },
+      "Seasons.Name": {
+        "table": "Seasons",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“season” kaydının “name” alanı, “series” alanı, ardından “-Season-”, ardından “season number” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          }
+        ],
+        "structure": null,
+        "plain": "(series ile \"-Season-\" birleşimi) ile season number birleşimi"
+      },
+      "Seasons.ShowTitle": {
+        "table": "Seasons",
+        "field": "ShowTitle",
+        "kind": "lookup",
+        "rule": "“season” kaydının “show title” alanı, “series” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı series kaydının title değeri"
+      },
+      "Seasons.ShowDescription": {
+        "table": "Seasons",
+        "field": "ShowDescription",
+        "kind": "lookup",
+        "rule": "“season” kaydının “show description” alanı, “series” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı series kaydının description değeri"
+      },
+      "Seasons.ShowNetwork": {
+        "table": "Seasons",
+        "field": "ShowNetwork",
+        "kind": "lookup",
+        "rule": "“season” kaydının “show network” alanı, “series” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Network",
+            "label": "network"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı series kaydının network değeri"
+      },
+      "Seasons.EpisodeCount": {
+        "table": "Seasons",
+        "field": "EpisodeCount",
+        "kind": "rollup",
+        "rule": "“season” kaydının “episode count” alanı, “season” kaydıyla ilişkili “episodes” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Season değeri season ID olan episodes kayıtlarının sayısı"
+      },
+      "Episodes.Name": {
+        "table": "Episodes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“episode” kaydının “name” alanı, “season” alanı, ardından “-Episode-”, ardından “0”, ardından “episode number” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeNumber",
+            "label": "episode number"
+          }
+        ],
+        "structure": null,
+        "plain": "((season ile \"-Episode-\" birleşimi) ile episode number, 10 değerinden küçük ise \"0\", aksi takdirde \"\" birleşimi) ile episode number birleşimi"
+      },
+      "Episodes.SeasonNumber": {
+        "table": "Episodes",
+        "field": "SeasonNumber",
+        "kind": "lookup",
+        "rule": "“episode” kaydının “season number” alanı, “season” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı season kaydının season number değeri"
+      },
+      "Episodes.SeasonTitle": {
+        "table": "Episodes",
+        "field": "SeasonTitle",
+        "kind": "lookup",
+        "rule": "“episode” kaydının “season title” alanı, “season” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı season kaydının title değeri"
+      },
+      "Episodes.SeasonDescription": {
+        "table": "Episodes",
+        "field": "SeasonDescription",
+        "kind": "lookup",
+        "rule": "“episode” kaydının “season description” alanı, “season” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı season kaydının description değeri"
+      },
+      "Movies.Name": {
+        "table": "Movies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“movy” kaydının “name” alanı, “movie number” alanı, ardından bir kısa çizgi, ardından “title” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "MovieNumber",
+            "label": "movie number"
+          },
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(movie number ile \"-\" birleşimi) ile title birleşimi"
+      },
+      "Movies.CrewCount": {
+        "table": "Movies",
+        "field": "CrewCount",
+        "kind": "rollup",
+        "rule": "“movy” kaydının “crew count” alanı, “movy” kaydıyla ilişkili “crew assignments” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Movie değeri movie ID olan crew assignments kayıtlarının sayısı"
+      },
+      "CrewAssignments.Name": {
+        "table": "CrewAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“crew assignment” kaydının “name” alanı, “person name” alanı, ardından bir kısa çizgi, ardından “crew type name” alanı, ardından bir kısa çizgi, ardından “movie title” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "PersonName",
+            "label": "person name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewTypeName",
+            "label": "crew type name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "MovieTitle",
+            "label": "movie title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((person name ile \"-\" birleşimi) ile crew type name birleşimi) ile \"-\" birleşimi) ile movie title birleşimi"
+      },
+      "CrewAssignments.PersonName": {
+        "table": "CrewAssignments",
+        "field": "PersonName",
+        "kind": "lookup",
+        "rule": "“crew assignment” kaydının “person name” alanı, “person” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "People",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Person",
+            "label": "person"
+          },
+          {
+            "table": "People",
+            "field": "PersonId",
+            "label": "person ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı person kaydının name değeri"
+      },
+      "CrewAssignments.MovieTitle": {
+        "table": "CrewAssignments",
+        "field": "MovieTitle",
+        "kind": "lookup",
+        "rule": "“crew assignment” kaydının “movie title” alanı, “movie” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı movie kaydının title değeri"
+      },
+      "CrewAssignments.CrewTypeName": {
+        "table": "CrewAssignments",
+        "field": "CrewTypeName",
+        "kind": "lookup",
+        "rule": "“crew assignment” kaydının “crew type name” alanı, “crew type” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewType",
+            "label": "crew type"
+          },
+          {
+            "table": "CrewTypes",
+            "field": "CrewTypeId",
+            "label": "crew type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı crew type kaydının name değeri"
+      },
+      "Ratings.Name": {
+        "table": "Ratings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“rating” kaydının “name” alanı, “display name” alanı, ardından bir kısa çizgi, ardından “users name” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Ratings",
+            "field": "UsersName",
+            "label": "users name"
+          }
+        ],
+        "structure": null,
+        "plain": "(display name ile \"-\" birleşimi) ile users name birleşimi"
+      },
+      "Ratings.DisplayName": {
+        "table": "Ratings",
+        "field": "DisplayName",
+        "kind": "formula",
+        "rule": "“rating” kaydının “display name” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “series” alanı boş ise “Episode: ”, ardından “episode name” alanı;\n2. diğer tüm durumlarda “Series: ”, ardından “series name” alanı.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Ratings",
+            "field": "EpisodeName",
+            "label": "episode name"
+          },
+          {
+            "table": "Ratings",
+            "field": "SeriesName",
+            "label": "series name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“rating” kaydının “display name” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“Episode: ”, ardından “episode name” alanı",
+              "when": {
+                "kind": "leaf",
+                "text": "“series” alanı boş"
+              }
+            },
+            {
+              "value": "“Series: ”, ardından “series name” alanı",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Series, blank() değerine eşit ise (\"Episode: \" ile episode name birleşimi), aksi takdirde (\"Series: \" ile series name birleşimi)"
+      },
+      "Ratings.SeriesName": {
+        "table": "Ratings",
+        "field": "SeriesName",
+        "kind": "lookup",
+        "rule": "“rating” kaydının “series name” alanı, “series” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı series kaydının name değeri"
+      },
+      "Ratings.EpisodeName": {
+        "table": "Ratings",
+        "field": "EpisodeName",
+        "kind": "lookup",
+        "rule": "“rating” kaydının “episode name” alanı, “episode” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı episode kaydının name değeri"
+      },
+      "Ratings.EpisodeSeasonTitle": {
+        "table": "Ratings",
+        "field": "EpisodeSeasonTitle",
+        "kind": "lookup",
+        "rule": "“rating” kaydının “episode season title” alanı, “episode” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "SeasonTitle",
+            "label": "season title"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı episode kaydının season title değeri"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Series": "series",
+      "Seasons": "season",
+      "Episodes": "episode",
+      "CrewTypes": "crew type",
+      "People": "person",
+      "Movies": "movy",
+      "CrewAssignments": "crew assignment",
+      "Ratings": "rating",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "vi": {
+    "fields": {
+      "Series.Name": {
+        "table": "Series",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi series được tính bằng series number, tiếp theo là dấu gạch nối, tiếp theo là show code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "SeriesNumber",
+            "label": "series number"
+          },
+          {
+            "table": "Series",
+            "field": "ShowCode",
+            "label": "show code"
+          }
+        ],
+        "structure": null,
+        "plain": "(series number nối với \"-\") nối với show code"
+      },
+      "Series.TotalSeasons": {
+        "table": "Series",
+        "field": "TotalSeasons",
+        "kind": "rollup",
+        "rule": "Trường “total seasons” của mỗi series là số lượng seasons liên quan đến series đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng seasons có series là serie ID"
+      },
+      "Series.TotalEpisodes": {
+        "table": "Series",
+        "field": "TotalEpisodes",
+        "kind": "rollup",
+        "rule": "Trường “total episodes” của mỗi series là giá trị tổng cộng của trường “episode count” trên các seasons liên quan đến series đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "EpisodeCount",
+            "label": "episode count"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng episode count trên tất cả seasons có series là serie ID"
+      },
+      "Series.IsLongRunning": {
+        "table": "Series",
+        "field": "IsLongRunning",
+        "kind": "formula",
+        "rule": "Mỗi series được coi là “long running” nếu total episodes lớn hơn 50.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "TotalEpisodes",
+            "label": "total episodes"
+          }
+        ],
+        "structure": null,
+        "plain": "Total episodes lớn hơn 50"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "rollup",
+        "rule": "Trường “rating” của mỗi series là giá trị tổng cộng của trường “rating” trên các ratings liên quan đến series đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Rating",
+            "label": "rating"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng rating trên tất cả ratings có series là serie ID"
+      },
+      "Series.IsGood": {
+        "table": "Series",
+        "field": "IsGood",
+        "kind": "formula",
+        "rule": "Mỗi series được coi là “good” nếu rating không nhỏ hơn 4.5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Rating",
+            "label": "rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Rating không nhỏ hơn 4.5"
+      },
+      "Seasons.Name": {
+        "table": "Seasons",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi season được tính bằng series, tiếp theo là “-Season-”, tiếp theo là season number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          }
+        ],
+        "structure": null,
+        "plain": "(series nối với \"-Season-\") nối với season number"
+      },
+      "Seasons.ShowTitle": {
+        "table": "Seasons",
+        "field": "ShowTitle",
+        "kind": "lookup",
+        "rule": "Trường “show title” của mỗi season được lấy từ bản ghi liên kết qua trường “series”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Title của bản ghi liên kết qua series"
+      },
+      "Seasons.ShowDescription": {
+        "table": "Seasons",
+        "field": "ShowDescription",
+        "kind": "lookup",
+        "rule": "Trường “show description” của mỗi season được lấy từ bản ghi liên kết qua trường “series”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Description của bản ghi liên kết qua series"
+      },
+      "Seasons.ShowNetwork": {
+        "table": "Seasons",
+        "field": "ShowNetwork",
+        "kind": "lookup",
+        "rule": "Trường “show network” của mỗi season được lấy từ bản ghi liên kết qua trường “series”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Network",
+            "label": "network"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Network của bản ghi liên kết qua series"
+      },
+      "Seasons.EpisodeCount": {
+        "table": "Seasons",
+        "field": "EpisodeCount",
+        "kind": "rollup",
+        "rule": "Trường “episode count” của mỗi season là số lượng episodes liên quan đến season đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng episodes có season là season ID"
+      },
+      "Episodes.Name": {
+        "table": "Episodes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi episode được tính bằng season, tiếp theo là “-Episode-”, tiếp theo là “0”, tiếp theo là episode number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeNumber",
+            "label": "episode number"
+          }
+        ],
+        "structure": null,
+        "plain": "((season nối với \"-Episode-\") nối với nếu episode number nhỏ hơn 10 thì \"0\", nếu không thì \"\") nối với episode number"
+      },
+      "Episodes.SeasonNumber": {
+        "table": "Episodes",
+        "field": "SeasonNumber",
+        "kind": "lookup",
+        "rule": "Trường “season number” của mỗi episode được lấy từ bản ghi liên kết qua trường “season”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Season number của bản ghi liên kết qua season"
+      },
+      "Episodes.SeasonTitle": {
+        "table": "Episodes",
+        "field": "SeasonTitle",
+        "kind": "lookup",
+        "rule": "Trường “season title” của mỗi episode được lấy từ bản ghi liên kết qua trường “season”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Title của bản ghi liên kết qua season"
+      },
+      "Episodes.SeasonDescription": {
+        "table": "Episodes",
+        "field": "SeasonDescription",
+        "kind": "lookup",
+        "rule": "Trường “season description” của mỗi episode được lấy từ bản ghi liên kết qua trường “season”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Description của bản ghi liên kết qua season"
+      },
+      "Movies.Name": {
+        "table": "Movies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi movy được tính bằng movie number, tiếp theo là dấu gạch nối, tiếp theo là title.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "MovieNumber",
+            "label": "movie number"
+          },
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(movie number nối với \"-\") nối với title"
+      },
+      "Movies.CrewCount": {
+        "table": "Movies",
+        "field": "CrewCount",
+        "kind": "rollup",
+        "rule": "Trường “crew count” của mỗi movy là số lượng crew assignments liên quan đến movy đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng crew assignments có movie là movie ID"
+      },
+      "CrewAssignments.Name": {
+        "table": "CrewAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi crew assignment được tính bằng person name, tiếp theo là dấu gạch nối, tiếp theo là crew type name, tiếp theo là dấu gạch nối, tiếp theo là movie title.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "PersonName",
+            "label": "person name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewTypeName",
+            "label": "crew type name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "MovieTitle",
+            "label": "movie title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((person name nối với \"-\") nối với crew type name) nối với \"-\") nối với movie title"
+      },
+      "CrewAssignments.PersonName": {
+        "table": "CrewAssignments",
+        "field": "PersonName",
+        "kind": "lookup",
+        "rule": "Trường “person name” của mỗi crew assignment được lấy từ bản ghi liên kết qua trường “person”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "People",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Person",
+            "label": "person"
+          },
+          {
+            "table": "People",
+            "field": "PersonId",
+            "label": "person ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua person"
+      },
+      "CrewAssignments.MovieTitle": {
+        "table": "CrewAssignments",
+        "field": "MovieTitle",
+        "kind": "lookup",
+        "rule": "Trường “movie title” của mỗi crew assignment được lấy từ bản ghi liên kết qua trường “movie”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Title của bản ghi liên kết qua movie"
+      },
+      "CrewAssignments.CrewTypeName": {
+        "table": "CrewAssignments",
+        "field": "CrewTypeName",
+        "kind": "lookup",
+        "rule": "Trường “crew type name” của mỗi crew assignment được lấy từ bản ghi liên kết qua trường “crew type”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewType",
+            "label": "crew type"
+          },
+          {
+            "table": "CrewTypes",
+            "field": "CrewTypeId",
+            "label": "crew type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua crew type"
+      },
+      "Ratings.Name": {
+        "table": "Ratings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi rating được tính bằng display name, tiếp theo là dấu gạch nối, tiếp theo là users name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Ratings",
+            "field": "UsersName",
+            "label": "users name"
+          }
+        ],
+        "structure": null,
+        "plain": "(display name nối với \"-\") nối với users name"
+      },
+      "Ratings.DisplayName": {
+        "table": "Ratings",
+        "field": "DisplayName",
+        "kind": "formula",
+        "rule": "Trường “display name” của mỗi rating được xác định theo thứ tự ưu tiên sau:\n1. “Episode: ”, tiếp theo là episode name, nếu series để trống;\n2. trong mọi trường hợp còn lại, “Series: ”, tiếp theo là series name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Ratings",
+            "field": "EpisodeName",
+            "label": "episode name"
+          },
+          {
+            "table": "Ratings",
+            "field": "SeriesName",
+            "label": "series name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “display name” của mỗi rating được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“Episode: ”, tiếp theo là episode name",
+              "when": {
+                "kind": "leaf",
+                "text": "series để trống"
+              }
+            },
+            {
+              "value": "“Series: ”, tiếp theo là series name",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu series bằng blank() thì (\"Episode: \" nối với episode name), nếu không thì (\"Series: \" nối với series name)"
+      },
+      "Ratings.SeriesName": {
+        "table": "Ratings",
+        "field": "SeriesName",
+        "kind": "lookup",
+        "rule": "Trường “series name” của mỗi rating được lấy từ bản ghi liên kết qua trường “series”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua series"
+      },
+      "Ratings.EpisodeName": {
+        "table": "Ratings",
+        "field": "EpisodeName",
+        "kind": "lookup",
+        "rule": "Trường “episode name” của mỗi rating được lấy từ bản ghi liên kết qua trường “episode”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua episode"
+      },
+      "Ratings.EpisodeSeasonTitle": {
+        "table": "Ratings",
+        "field": "EpisodeSeasonTitle",
+        "kind": "lookup",
+        "rule": "Trường “episode season title” của mỗi rating được lấy từ bản ghi liên kết qua trường “episode”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "SeasonTitle",
+            "label": "season title"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Season title của bản ghi liên kết qua episode"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Series": "series",
+      "Seasons": "season",
+      "Episodes": "episode",
+      "CrewTypes": "crew type",
+      "People": "person",
+      "Movies": "movy",
+      "CrewAssignments": "crew assignment",
+      "Ratings": "rating",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "zh": {
+    "fields": {
+      "Series.Name": {
+        "table": "Series",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "series的“name”按 series number,接着是一个连字符,接着是show code 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "SeriesNumber",
+            "label": "series number"
+          },
+          {
+            "table": "Series",
+            "field": "ShowCode",
+            "label": "show code"
+          }
+        ],
+        "structure": null,
+        "plain": "(series number与\"-\"拼接)与show code拼接"
+      },
+      "Series.TotalSeasons": {
+        "table": "Series",
+        "field": "TotalSeasons",
+        "kind": "rollup",
+        "rule": "series的“total seasons”为 与series相关的“seasons”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Series为serie ID的“seasons”的数量"
+      },
+      "Series.TotalEpisodes": {
+        "table": "Series",
+        "field": "TotalEpisodes",
+        "kind": "rollup",
+        "rule": "series的“total episodes”为 与series相关的所有“seasons”的“episode count”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "EpisodeCount",
+            "label": "episode count"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有series为serie ID的“seasons”的episode count的总和"
+      },
+      "Series.IsLongRunning": {
+        "table": "Series",
+        "field": "IsLongRunning",
+        "kind": "formula",
+        "rule": "当total episodes大于50时,series被视为“Long Running”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "TotalEpisodes",
+            "label": "total episodes"
+          }
+        ],
+        "structure": null,
+        "plain": "Total episodes大于50"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "rollup",
+        "rule": "series的“rating”为 与series相关的所有“ratings”的“rating”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Rating",
+            "label": "rating"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有series为serie ID的“ratings”的rating的总和"
+      },
+      "Series.IsGood": {
+        "table": "Series",
+        "field": "IsGood",
+        "kind": "formula",
+        "rule": "当rating不小于4.5时,series被视为“Good”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Rating",
+            "label": "rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Rating不小于4.5"
+      },
+      "Seasons.Name": {
+        "table": "Seasons",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "season的“name”按 series,接着是“-Season-”,接着是season number 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          }
+        ],
+        "structure": null,
+        "plain": "(series与\"-Season-\"拼接)与season number拼接"
+      },
+      "Seasons.ShowTitle": {
+        "table": "Seasons",
+        "field": "ShowTitle",
+        "kind": "lookup",
+        "rule": "season的“show title”——取自所关联的“series”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“series”的title"
+      },
+      "Seasons.ShowDescription": {
+        "table": "Seasons",
+        "field": "ShowDescription",
+        "kind": "lookup",
+        "rule": "season的“show description”——取自所关联的“series”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“series”的description"
+      },
+      "Seasons.ShowNetwork": {
+        "table": "Seasons",
+        "field": "ShowNetwork",
+        "kind": "lookup",
+        "rule": "season的“show network”——取自所关联的“series”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Network",
+            "label": "network"
+          },
+          {
+            "table": "Seasons",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“series”的network"
+      },
+      "Seasons.EpisodeCount": {
+        "table": "Seasons",
+        "field": "EpisodeCount",
+        "kind": "rollup",
+        "rule": "season的“episode count”为 与season相关的“episodes”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Season为season ID的“episodes”的数量"
+      },
+      "Episodes.Name": {
+        "table": "Episodes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "episode的“name”按 season,接着是“-Episode-”,接着是“0”,接着是episode number 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeNumber",
+            "label": "episode number"
+          }
+        ],
+        "structure": null,
+        "plain": "((season与\"-Episode-\"拼接)与若episode number小于10,则\"0\",否则\"\"拼接)与episode number拼接"
+      },
+      "Episodes.SeasonNumber": {
+        "table": "Episodes",
+        "field": "SeasonNumber",
+        "kind": "lookup",
+        "rule": "episode的“season number”——取自所关联的“season”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "SeasonNumber",
+            "label": "season number"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“season”的season number"
+      },
+      "Episodes.SeasonTitle": {
+        "table": "Episodes",
+        "field": "SeasonTitle",
+        "kind": "lookup",
+        "rule": "episode的“season title”——取自所关联的“season”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“season”的title"
+      },
+      "Episodes.SeasonDescription": {
+        "table": "Episodes",
+        "field": "SeasonDescription",
+        "kind": "lookup",
+        "rule": "episode的“season description”——取自所关联的“season”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Seasons",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Episodes",
+            "field": "Season",
+            "label": "season"
+          },
+          {
+            "table": "Seasons",
+            "field": "SeasonId",
+            "label": "season ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“season”的description"
+      },
+      "Movies.Name": {
+        "table": "Movies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "movy的“name”按 movie number,接着是一个连字符,接着是title 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "MovieNumber",
+            "label": "movie number"
+          },
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(movie number与\"-\"拼接)与title拼接"
+      },
+      "Movies.CrewCount": {
+        "table": "Movies",
+        "field": "CrewCount",
+        "kind": "rollup",
+        "rule": "movy的“crew count”为 与movy相关的“crew assignments”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Movie为movie ID的“crew assignments”的数量"
+      },
+      "CrewAssignments.Name": {
+        "table": "CrewAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "crew assignment的“name”按 person name,接着是一个连字符,接着是crew type name,接着是一个连字符,接着是movie title 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewAssignments",
+            "field": "PersonName",
+            "label": "person name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewTypeName",
+            "label": "crew type name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "MovieTitle",
+            "label": "movie title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((person name与\"-\"拼接)与crew type name拼接)与\"-\"拼接)与movie title拼接"
+      },
+      "CrewAssignments.PersonName": {
+        "table": "CrewAssignments",
+        "field": "PersonName",
+        "kind": "lookup",
+        "rule": "crew assignment的“person name”——取自所关联的“person”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "People",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Person",
+            "label": "person"
+          },
+          {
+            "table": "People",
+            "field": "PersonId",
+            "label": "person ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“person”的name"
+      },
+      "CrewAssignments.MovieTitle": {
+        "table": "CrewAssignments",
+        "field": "MovieTitle",
+        "kind": "lookup",
+        "rule": "crew assignment的“movie title”——取自所关联的“movie”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Movies",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "Movie",
+            "label": "movie"
+          },
+          {
+            "table": "Movies",
+            "field": "MovieId",
+            "label": "movie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“movie”的title"
+      },
+      "CrewAssignments.CrewTypeName": {
+        "table": "CrewAssignments",
+        "field": "CrewTypeName",
+        "kind": "lookup",
+        "rule": "crew assignment的“crew type name”——取自所关联的“crew type”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CrewTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "CrewAssignments",
+            "field": "CrewType",
+            "label": "crew type"
+          },
+          {
+            "table": "CrewTypes",
+            "field": "CrewTypeId",
+            "label": "crew type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“crew type”的name"
+      },
+      "Ratings.Name": {
+        "table": "Ratings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "rating的“name”按 display name,接着是一个连字符,接着是users name 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Ratings",
+            "field": "UsersName",
+            "label": "users name"
+          }
+        ],
+        "structure": null,
+        "plain": "(display name与\"-\"拼接)与users name拼接"
+      },
+      "Ratings.DisplayName": {
+        "table": "Ratings",
+        "field": "DisplayName",
+        "kind": "formula",
+        "rule": "Rating的“display name”按以下优先级确定:\n1. 当series为空时,取 “Episode: ”,接着是episode name;\n2. 其余情况取 “Series: ”,接着是series name。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Ratings",
+            "field": "EpisodeName",
+            "label": "episode name"
+          },
+          {
+            "table": "Ratings",
+            "field": "SeriesName",
+            "label": "series name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Rating的“display name”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“Episode: ”,接着是episode name",
+              "when": {
+                "kind": "leaf",
+                "text": "series为空"
+              }
+            },
+            {
+              "value": "“Series: ”,接着是series name",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若series等于blank(),则(\"Episode: \"与episode name拼接),否则(\"Series: \"与series name拼接)"
+      },
+      "Ratings.SeriesName": {
+        "table": "Ratings",
+        "field": "SeriesName",
+        "kind": "lookup",
+        "rule": "rating的“series name”——取自所关联的“series”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“series”的name"
+      },
+      "Ratings.EpisodeName": {
+        "table": "Ratings",
+        "field": "EpisodeName",
+        "kind": "lookup",
+        "rule": "rating的“episode name”——取自所关联的“episode”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“episode”的name"
+      },
+      "Ratings.EpisodeSeasonTitle": {
+        "table": "Ratings",
+        "field": "EpisodeSeasonTitle",
+        "kind": "lookup",
+        "rule": "rating的“episode season title”——取自所关联的“episode”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Episodes",
+            "field": "SeasonTitle",
+            "label": "season title"
+          },
+          {
+            "table": "Ratings",
+            "field": "Episode",
+            "label": "episode"
+          },
+          {
+            "table": "Episodes",
+            "field": "EpisodeId",
+            "label": "episode ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“episode”的season title"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "Series": "series",

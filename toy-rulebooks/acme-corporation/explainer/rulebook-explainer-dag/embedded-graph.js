@@ -627,7 +627,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -989,6 +1004,5751 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "Client": "client",
+      "Projects": "project",
+      "Employees": "employee",
+      "Roles": "role",
+      "TypesOfProject": "type of project"
+    }
+  },
+  "ar": {
+    "fields": {
+      "Client.FullName": {
+        "table": "Client",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "حقل «full name» في سجل «client» يُحسب على النحو الآتي: حقل «first name»، ثم مسافة، ثم حقل «last name».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Client",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Client",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name يليه \" \") يليه last name"
+      },
+      "Projects.ProjectTypeName": {
+        "table": "Projects",
+        "field": "ProjectTypeName",
+        "kind": "lookup",
+        "rule": "حقل «project type name» في سجل «project» مأخوذ من السجل المرتبط به عبر حقل «project type».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «project type»"
+      },
+      "Projects.ProjectTypeDescription": {
+        "table": "Projects",
+        "field": "ProjectTypeDescription",
+        "kind": "lookup",
+        "rule": "حقل «project type description» في سجل «project» مأخوذ من السجل المرتبط به عبر حقل «project type».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «description» من السجل المرتبط عبر «project type»"
+      },
+      "Projects.ProjectTypeRequiresManagerApproval": {
+        "table": "Projects",
+        "field": "ProjectTypeRequiresManagerApproval",
+        "kind": "lookup",
+        "rule": "حقل «project type requires manager approval» في سجل «project» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «project type» مطالَبًا بـ«manager approval».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "RequiresManagerApproval",
+            "label": "requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «requires manager approval» من السجل المرتبط عبر «project type»"
+      },
+      "Projects.IsApproved": {
+        "table": "Projects",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «project» على أنه «approved» إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: علامة «project type requires manager approval» غير مفعّلة أو علامة «approved by role is manager» مفعّلة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectTypeRequiresManagerApproval",
+            "label": "project type requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedByRoleIsManager",
+            "label": "approved by role is manager"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُصنّف سجل «project» على أنه «approved» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "علامة «project type requires manager approval» غير مفعّلة"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "علامة «approved by role is manager» مفعّلة"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "الشرط (project type requires manager approval) غير متحقق أو approved by role is manager"
+      },
+      "Projects.ApprovedByRoleIsManager": {
+        "table": "Projects",
+        "field": "ApprovedByRoleIsManager",
+        "kind": "lookup",
+        "rule": "حقل «approved by role is manager» في سجل «project» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «approved by» مصنّفًا على أنه «manager».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "RoleIsManager",
+            "label": "role is manager"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «role is manager» من السجل المرتبط عبر «approved by»"
+      },
+      "Projects.ApprovedByName": {
+        "table": "Projects",
+        "field": "ApprovedByName",
+        "kind": "lookup",
+        "rule": "حقل «approved by name» في سجل «project» مأخوذ من السجل المرتبط به عبر حقل «approved by».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «approved by»"
+      },
+      "Projects.ApprovedByEmailAddress": {
+        "table": "Projects",
+        "field": "ApprovedByEmailAddress",
+        "kind": "lookup",
+        "rule": "حقل «approved by email address» في سجل «project» مأخوذ من السجل المرتبط به عبر حقل «approved by».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "EmailAddress",
+            "label": "email address"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «email address» من السجل المرتبط عبر «approved by»"
+      },
+      "Projects.ApprovedByPhoneNumber": {
+        "table": "Projects",
+        "field": "ApprovedByPhoneNumber",
+        "kind": "lookup",
+        "rule": "حقل «approved by phone number» في سجل «project» مأخوذ من السجل المرتبط به عبر حقل «approved by».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "PhoneNumber",
+            "label": "phone number"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «phone number» من السجل المرتبط عبر «approved by»"
+      },
+      "Employees.RoleName": {
+        "table": "Employees",
+        "field": "RoleName",
+        "kind": "lookup",
+        "rule": "حقل «role name» في سجل «employee» مأخوذ من السجل المرتبط به عبر حقل «role».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «role»"
+      },
+      "Employees.RoleDescription": {
+        "table": "Employees",
+        "field": "RoleDescription",
+        "kind": "lookup",
+        "rule": "حقل «role description» في سجل «employee» مأخوذ من السجل المرتبط به عبر حقل «role».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «description» من السجل المرتبط عبر «role»"
+      },
+      "Employees.RoleIsManager": {
+        "table": "Employees",
+        "field": "RoleIsManager",
+        "kind": "lookup",
+        "rule": "حقل «role is manager» في سجل «employee» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «role» مصنّفًا على أنه «manager».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "IsManager",
+            "label": "is manager"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «is manager» من السجل المرتبط عبر «role»"
+      },
+      "Roles.CountOfEmployees": {
+        "table": "Roles",
+        "field": "CountOfEmployees",
+        "kind": "rollup",
+        "rule": "حقل «count of employees» في سجل «role» هو عدد سجلات «employees» المرتبطة بسجل «role».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «employees» التي يتحقق فيها أنّ حقل «role» يساوي role ID"
+      },
+      "TypesOfProject.CountOfProjects": {
+        "table": "TypesOfProject",
+        "field": "CountOfProjects",
+        "kind": "rollup",
+        "rule": "حقل «count of projects» في سجل «type of project» هو عدد سجلات «projects» المرتبطة بسجل «type of project».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «projects» التي يتحقق فيها أنّ حقل «project type» يساوي types of project ID"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Client": "client",
+      "Projects": "project",
+      "Employees": "employee",
+      "Roles": "role",
+      "TypesOfProject": "type of project"
+    }
+  },
+  "de": {
+    "fields": {
+      "Client.FullName": {
+        "table": "Client",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Ein Client: Full Name wird berechnet als die First Name, gefolgt von ein Leerzeichen, gefolgt von die Last Name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Client",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Client",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(First Name verbunden mit \" \") verbunden mit Last Name"
+      },
+      "Projects.ProjectTypeName": {
+        "table": "Projects",
+        "field": "ProjectTypeName",
+        "kind": "lookup",
+        "rule": "Ein Project: Project Type Name — aus dem zugehörigen Project Type übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Project Type"
+      },
+      "Projects.ProjectTypeDescription": {
+        "table": "Projects",
+        "field": "ProjectTypeDescription",
+        "kind": "lookup",
+        "rule": "Ein Project: Project Type Description — aus dem zugehörigen Project Type übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Description des verknüpften Project Type"
+      },
+      "Projects.ProjectTypeRequiresManagerApproval": {
+        "table": "Projects",
+        "field": "ProjectTypeRequiresManagerApproval",
+        "kind": "lookup",
+        "rule": "Ein Project: Project Type Requires Manager Approval ist wahr, wenn der zugehörige Project Type des Project erfordert einen Manager Approval.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "RequiresManagerApproval",
+            "label": "requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Requires Manager Approval des verknüpften Project Type"
+      },
+      "Projects.IsApproved": {
+        "table": "Projects",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Ein Project gilt als approved, wenn mindestens eines des Folgenden gilt: das Kennzeichen „Project Type Requires Manager Approval“ nicht gesetzt ist oder das Kennzeichen „Approved by Role is Manager“ gesetzt ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectTypeRequiresManagerApproval",
+            "label": "project type requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedByRoleIsManager",
+            "label": "approved by role is manager"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Ein Project gilt als approved, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Project Type Requires Manager Approval“ nicht gesetzt ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Approved by Role is Manager“ gesetzt ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Nicht Project Type Requires Manager Approval oder Approved by Role is Manager"
+      },
+      "Projects.ApprovedByRoleIsManager": {
+        "table": "Projects",
+        "field": "ApprovedByRoleIsManager",
+        "kind": "lookup",
+        "rule": "Ein Project: Approved by Role is Manager ist wahr, wenn der zugehörige Approved by des Project ist ein Manager.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "RoleIsManager",
+            "label": "role is manager"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Role is Manager des verknüpften Approved by"
+      },
+      "Projects.ApprovedByName": {
+        "table": "Projects",
+        "field": "ApprovedByName",
+        "kind": "lookup",
+        "rule": "Ein Project: Approved by Name — aus dem zugehörigen Approved by übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Approved by"
+      },
+      "Projects.ApprovedByEmailAddress": {
+        "table": "Projects",
+        "field": "ApprovedByEmailAddress",
+        "kind": "lookup",
+        "rule": "Ein Project: Approved by Email Address — aus dem zugehörigen Approved by übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "EmailAddress",
+            "label": "email address"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Email Address des verknüpften Approved by"
+      },
+      "Projects.ApprovedByPhoneNumber": {
+        "table": "Projects",
+        "field": "ApprovedByPhoneNumber",
+        "kind": "lookup",
+        "rule": "Ein Project: Approved by Phone Number — aus dem zugehörigen Approved by übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "PhoneNumber",
+            "label": "phone number"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Phone Number des verknüpften Approved by"
+      },
+      "Employees.RoleName": {
+        "table": "Employees",
+        "field": "RoleName",
+        "kind": "lookup",
+        "rule": "Eine Employee: Role Name — aus dem zugehörigen Role übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Role"
+      },
+      "Employees.RoleDescription": {
+        "table": "Employees",
+        "field": "RoleDescription",
+        "kind": "lookup",
+        "rule": "Eine Employee: Role Description — aus dem zugehörigen Role übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Description des verknüpften Role"
+      },
+      "Employees.RoleIsManager": {
+        "table": "Employees",
+        "field": "RoleIsManager",
+        "kind": "lookup",
+        "rule": "Eine Employee: Role is Manager ist wahr, wenn der zugehörige Role der Employee ist ein Manager.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "IsManager",
+            "label": "is manager"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Is Manager des verknüpften Role"
+      },
+      "Roles.CountOfEmployees": {
+        "table": "Roles",
+        "field": "CountOfEmployees",
+        "kind": "rollup",
+        "rule": "Eine Role: Count of Employees ist die Anzahl der mit der Role verbundenen Employees.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Employees, deren Role ist Role ID"
+      },
+      "TypesOfProject.CountOfProjects": {
+        "table": "TypesOfProject",
+        "field": "CountOfProjects",
+        "kind": "rollup",
+        "rule": "Ein Type of Project: Count of Projects ist die Anzahl der mit dem Type of Project verbundenen Projects.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Projects, deren Project Type ist Types of Project ID"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Client": "Client",
+      "Projects": "Project",
+      "Employees": "Employee",
+      "Roles": "Role",
+      "TypesOfProject": "Type of Project"
+    }
+  },
+  "es": {
+    "fields": {
+      "Client.FullName": {
+        "table": "Client",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Un client: full name se calcula como el first name, seguido de un espacio, seguido de el last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Client",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Client",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name unido con \" \") unido con last name"
+      },
+      "Projects.ProjectTypeName": {
+        "table": "Projects",
+        "field": "ProjectTypeName",
+        "kind": "lookup",
+        "rule": "Un project: project type name — tomado del project type vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del project type vinculado"
+      },
+      "Projects.ProjectTypeDescription": {
+        "table": "Projects",
+        "field": "ProjectTypeDescription",
+        "kind": "lookup",
+        "rule": "Un project: project type description — tomado del project type vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El description del project type vinculado"
+      },
+      "Projects.ProjectTypeRequiresManagerApproval": {
+        "table": "Projects",
+        "field": "ProjectTypeRequiresManagerApproval",
+        "kind": "lookup",
+        "rule": "Un project: project type requires manager approval es verdadero cuando el project type vinculado requiere manager approval.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "RequiresManagerApproval",
+            "label": "requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El requires manager approval del project type vinculado"
+      },
+      "Projects.IsApproved": {
+        "table": "Projects",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Un project se considera approved si se cumple al menos una de las siguientes: el indicador «project type requires manager approval» no está activado o el indicador «approved by role is manager» está activado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectTypeRequiresManagerApproval",
+            "label": "project type requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedByRoleIsManager",
+            "label": "approved by role is manager"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un project se considera approved si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «project type requires manager approval» no está activado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «approved by role is manager» está activado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "No project type requires manager approval o approved by role is manager"
+      },
+      "Projects.ApprovedByRoleIsManager": {
+        "table": "Projects",
+        "field": "ApprovedByRoleIsManager",
+        "kind": "lookup",
+        "rule": "Un project: approved by role is manager es verdadero cuando el approved by vinculado es un manager.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "RoleIsManager",
+            "label": "role is manager"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El role is manager del approved by vinculado"
+      },
+      "Projects.ApprovedByName": {
+        "table": "Projects",
+        "field": "ApprovedByName",
+        "kind": "lookup",
+        "rule": "Un project: approved by name — tomado del approved by vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del approved by vinculado"
+      },
+      "Projects.ApprovedByEmailAddress": {
+        "table": "Projects",
+        "field": "ApprovedByEmailAddress",
+        "kind": "lookup",
+        "rule": "Un project: approved by email address — tomado del approved by vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "EmailAddress",
+            "label": "email address"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El email address del approved by vinculado"
+      },
+      "Projects.ApprovedByPhoneNumber": {
+        "table": "Projects",
+        "field": "ApprovedByPhoneNumber",
+        "kind": "lookup",
+        "rule": "Un project: approved by phone number — tomado del approved by vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "PhoneNumber",
+            "label": "phone number"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El phone number del approved by vinculado"
+      },
+      "Employees.RoleName": {
+        "table": "Employees",
+        "field": "RoleName",
+        "kind": "lookup",
+        "rule": "Un employee: role name — tomado del role vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del role vinculado"
+      },
+      "Employees.RoleDescription": {
+        "table": "Employees",
+        "field": "RoleDescription",
+        "kind": "lookup",
+        "rule": "Un employee: role description — tomado del role vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El description del role vinculado"
+      },
+      "Employees.RoleIsManager": {
+        "table": "Employees",
+        "field": "RoleIsManager",
+        "kind": "lookup",
+        "rule": "Un employee: role is manager es verdadero cuando el role vinculado es un manager.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "IsManager",
+            "label": "is manager"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El is manager del role vinculado"
+      },
+      "Roles.CountOfEmployees": {
+        "table": "Roles",
+        "field": "CountOfEmployees",
+        "kind": "rollup",
+        "rule": "Un role: count of employees es el número de employees relacionados con el role.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de employees cuyo role es role ID"
+      },
+      "TypesOfProject.CountOfProjects": {
+        "table": "TypesOfProject",
+        "field": "CountOfProjects",
+        "kind": "rollup",
+        "rule": "Un type of project: count of projects es el número de projects relacionados con el type of project.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de projects cuyo project type es types of project ID"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Client": "client",
+      "Projects": "project",
+      "Employees": "employee",
+      "Roles": "role",
+      "TypesOfProject": "type of project"
+    }
+  },
+  "fr": {
+    "fields": {
+      "Client.FullName": {
+        "table": "Client",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Un client : full name est calculé comme le first name, suivi de une espace, suivi de le last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Client",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Client",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name joint à \" \") joint à last name"
+      },
+      "Projects.ProjectTypeName": {
+        "table": "Projects",
+        "field": "ProjectTypeName",
+        "kind": "lookup",
+        "rule": "Un project : project type name — repris du project type lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du project type lié"
+      },
+      "Projects.ProjectTypeDescription": {
+        "table": "Projects",
+        "field": "ProjectTypeDescription",
+        "kind": "lookup",
+        "rule": "Un project : project type description — repris du project type lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le description du project type lié"
+      },
+      "Projects.ProjectTypeRequiresManagerApproval": {
+        "table": "Projects",
+        "field": "ProjectTypeRequiresManagerApproval",
+        "kind": "lookup",
+        "rule": "Un project : project type requires manager approval est vrai lorsque le project type lié exige manager approval.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "RequiresManagerApproval",
+            "label": "requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le requires manager approval du project type lié"
+      },
+      "Projects.IsApproved": {
+        "table": "Projects",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Un project est considéré comme approved si au moins une des conditions suivantes est vraie : l'indicateur « project type requires manager approval » n'est pas activé ou l'indicateur « approved by role is manager » est activé.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectTypeRequiresManagerApproval",
+            "label": "project type requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedByRoleIsManager",
+            "label": "approved by role is manager"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un project est considéré comme approved si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « project type requires manager approval » n'est pas activé"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « approved by role is manager » est activé"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Non project type requires manager approval ou approved by role is manager"
+      },
+      "Projects.ApprovedByRoleIsManager": {
+        "table": "Projects",
+        "field": "ApprovedByRoleIsManager",
+        "kind": "lookup",
+        "rule": "Un project : approved by role is manager est vrai lorsque le approved by lié est un manager.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "RoleIsManager",
+            "label": "role is manager"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le role is manager du approved by lié"
+      },
+      "Projects.ApprovedByName": {
+        "table": "Projects",
+        "field": "ApprovedByName",
+        "kind": "lookup",
+        "rule": "Un project : approved by name — repris du approved by lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du approved by lié"
+      },
+      "Projects.ApprovedByEmailAddress": {
+        "table": "Projects",
+        "field": "ApprovedByEmailAddress",
+        "kind": "lookup",
+        "rule": "Un project : approved by email address — repris du approved by lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "EmailAddress",
+            "label": "email address"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le email address du approved by lié"
+      },
+      "Projects.ApprovedByPhoneNumber": {
+        "table": "Projects",
+        "field": "ApprovedByPhoneNumber",
+        "kind": "lookup",
+        "rule": "Un project : approved by phone number — repris du approved by lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "PhoneNumber",
+            "label": "phone number"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le phone number du approved by lié"
+      },
+      "Employees.RoleName": {
+        "table": "Employees",
+        "field": "RoleName",
+        "kind": "lookup",
+        "rule": "Un employee : role name — repris du role lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du role lié"
+      },
+      "Employees.RoleDescription": {
+        "table": "Employees",
+        "field": "RoleDescription",
+        "kind": "lookup",
+        "rule": "Un employee : role description — repris du role lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le description du role lié"
+      },
+      "Employees.RoleIsManager": {
+        "table": "Employees",
+        "field": "RoleIsManager",
+        "kind": "lookup",
+        "rule": "Un employee : role is manager est vrai lorsque le role lié est un manager.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "IsManager",
+            "label": "is manager"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le is manager du role lié"
+      },
+      "Roles.CountOfEmployees": {
+        "table": "Roles",
+        "field": "CountOfEmployees",
+        "kind": "rollup",
+        "rule": "Un role : count of employees est le nombre de employees liés à le role.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des employees dont role est role ID"
+      },
+      "TypesOfProject.CountOfProjects": {
+        "table": "TypesOfProject",
+        "field": "CountOfProjects",
+        "kind": "rollup",
+        "rule": "Un type of project : count of projects est le nombre de projects liés à le type of project.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des projects dont project type est types of project ID"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Client": "client",
+      "Projects": "project",
+      "Employees": "employee",
+      "Roles": "role",
+      "TypesOfProject": "type of project"
+    }
+  },
+  "hi": {
+    "fields": {
+      "Client.FullName": {
+        "table": "Client",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "client का “full name” first name, उसके बाद एक रिक्त स्थान, उसके बाद last name के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Client",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Client",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name \" \" से जुड़ा हुआ) last name से जुड़ा हुआ"
+      },
+      "Projects.ProjectTypeName": {
+        "table": "Projects",
+        "field": "ProjectTypeName",
+        "kind": "lookup",
+        "rule": "project का “project type name” — लिंक किए गए “project type” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “project type” का name"
+      },
+      "Projects.ProjectTypeDescription": {
+        "table": "Projects",
+        "field": "ProjectTypeDescription",
+        "kind": "lookup",
+        "rule": "project का “project type description” — लिंक किए गए “project type” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “project type” का description"
+      },
+      "Projects.ProjectTypeRequiresManagerApproval": {
+        "table": "Projects",
+        "field": "ProjectTypeRequiresManagerApproval",
+        "kind": "lookup",
+        "rule": "project का “project type requires manager approval” तब सत्य होता है, जब लिंक किए गए “project type” का “manager approval” की आवश्यकता रखता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "RequiresManagerApproval",
+            "label": "requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “project type” का requires manager approval"
+      },
+      "Projects.IsApproved": {
+        "table": "Projects",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित में से कम से कम एक सही है: “project type requires manager approval” ध्वज लगा हुआ नहीं है या “approved by role is manager” ध्वज लगा हुआ है, तो project “approved” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectTypeRequiresManagerApproval",
+            "label": "project type requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedByRoleIsManager",
+            "label": "approved by role is manager"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "project “approved” माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“project type requires manager approval” ध्वज लगा हुआ नहीं है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“approved by role is manager” ध्वज लगा हुआ है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Project type requires manager approval नहीं या approved by role is manager"
+      },
+      "Projects.ApprovedByRoleIsManager": {
+        "table": "Projects",
+        "field": "ApprovedByRoleIsManager",
+        "kind": "lookup",
+        "rule": "project का “approved by role is manager” तब सत्य होता है, जब लिंक किए गए “approved by” का “manager” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "RoleIsManager",
+            "label": "role is manager"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “approved by” का role is manager"
+      },
+      "Projects.ApprovedByName": {
+        "table": "Projects",
+        "field": "ApprovedByName",
+        "kind": "lookup",
+        "rule": "project का “approved by name” — लिंक किए गए “approved by” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “approved by” का name"
+      },
+      "Projects.ApprovedByEmailAddress": {
+        "table": "Projects",
+        "field": "ApprovedByEmailAddress",
+        "kind": "lookup",
+        "rule": "project का “approved by email address” — लिंक किए गए “approved by” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "EmailAddress",
+            "label": "email address"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “approved by” का email address"
+      },
+      "Projects.ApprovedByPhoneNumber": {
+        "table": "Projects",
+        "field": "ApprovedByPhoneNumber",
+        "kind": "lookup",
+        "rule": "project का “approved by phone number” — लिंक किए गए “approved by” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "PhoneNumber",
+            "label": "phone number"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “approved by” का phone number"
+      },
+      "Employees.RoleName": {
+        "table": "Employees",
+        "field": "RoleName",
+        "kind": "lookup",
+        "rule": "employee का “role name” — लिंक किए गए “role” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “role” का name"
+      },
+      "Employees.RoleDescription": {
+        "table": "Employees",
+        "field": "RoleDescription",
+        "kind": "lookup",
+        "rule": "employee का “role description” — लिंक किए गए “role” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “role” का description"
+      },
+      "Employees.RoleIsManager": {
+        "table": "Employees",
+        "field": "RoleIsManager",
+        "kind": "lookup",
+        "rule": "employee का “role is manager” तब सत्य होता है, जब लिंक किए गए “role” का “manager” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "IsManager",
+            "label": "is manager"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “role” का is manager"
+      },
+      "Roles.CountOfEmployees": {
+        "table": "Roles",
+        "field": "CountOfEmployees",
+        "kind": "rollup",
+        "rule": "role का “count of employees” role से संबंधित “employees” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “employees” की संख्या, जिनका role role ID है"
+      },
+      "TypesOfProject.CountOfProjects": {
+        "table": "TypesOfProject",
+        "field": "CountOfProjects",
+        "kind": "rollup",
+        "rule": "type of project का “count of projects” type of project से संबंधित “projects” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “projects” की संख्या, जिनका project type types of project ID है"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "Client": "client",
+      "Projects": "project",
+      "Employees": "employee",
+      "Roles": "role",
+      "TypesOfProject": "type of project"
+    }
+  },
+  "id": {
+    "fields": {
+      "Client.FullName": {
+        "table": "Client",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Untuk setiap client, full name dihitung sebagai first name, diikuti spasi, diikuti last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Client",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Client",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name digabung dengan \" \") digabung dengan last name"
+      },
+      "Projects.ProjectTypeName": {
+        "table": "Projects",
+        "field": "ProjectTypeName",
+        "kind": "lookup",
+        "rule": "Untuk setiap project, project type name diambil dari project type yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari project type yang tertaut"
+      },
+      "Projects.ProjectTypeDescription": {
+        "table": "Projects",
+        "field": "ProjectTypeDescription",
+        "kind": "lookup",
+        "rule": "Untuk setiap project, project type description diambil dari project type yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Description dari project type yang tertaut"
+      },
+      "Projects.ProjectTypeRequiresManagerApproval": {
+        "table": "Projects",
+        "field": "ProjectTypeRequiresManagerApproval",
+        "kind": "lookup",
+        "rule": "Untuk setiap project, project type requires manager approval bernilai benar jika project type yang tertaut pada project tersebut memerlukan “manager approval”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "RequiresManagerApproval",
+            "label": "requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Requires manager approval dari project type yang tertaut"
+      },
+      "Projects.IsApproved": {
+        "table": "Projects",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Setiap project dianggap “approved” jika paling sedikit satu dari kondisi berikut terpenuhi: penanda “project type requires manager approval” tidak aktif atau penanda “approved by role is manager” aktif.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectTypeRequiresManagerApproval",
+            "label": "project type requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedByRoleIsManager",
+            "label": "approved by role is manager"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap project dianggap “approved” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "penanda “project type requires manager approval” tidak aktif"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "penanda “approved by role is manager” aktif"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Tidak benar bahwa project type requires manager approval atau approved by role is manager"
+      },
+      "Projects.ApprovedByRoleIsManager": {
+        "table": "Projects",
+        "field": "ApprovedByRoleIsManager",
+        "kind": "lookup",
+        "rule": "Untuk setiap project, approved by role is manager bernilai benar jika approved by yang tertaut pada project tersebut tergolong “manager”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "RoleIsManager",
+            "label": "role is manager"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Role is manager dari approved by yang tertaut"
+      },
+      "Projects.ApprovedByName": {
+        "table": "Projects",
+        "field": "ApprovedByName",
+        "kind": "lookup",
+        "rule": "Untuk setiap project, approved by name diambil dari approved by yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari approved by yang tertaut"
+      },
+      "Projects.ApprovedByEmailAddress": {
+        "table": "Projects",
+        "field": "ApprovedByEmailAddress",
+        "kind": "lookup",
+        "rule": "Untuk setiap project, approved by email address diambil dari approved by yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "EmailAddress",
+            "label": "email address"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address dari approved by yang tertaut"
+      },
+      "Projects.ApprovedByPhoneNumber": {
+        "table": "Projects",
+        "field": "ApprovedByPhoneNumber",
+        "kind": "lookup",
+        "rule": "Untuk setiap project, approved by phone number diambil dari approved by yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "PhoneNumber",
+            "label": "phone number"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Phone number dari approved by yang tertaut"
+      },
+      "Employees.RoleName": {
+        "table": "Employees",
+        "field": "RoleName",
+        "kind": "lookup",
+        "rule": "Untuk setiap employee, role name diambil dari role yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari role yang tertaut"
+      },
+      "Employees.RoleDescription": {
+        "table": "Employees",
+        "field": "RoleDescription",
+        "kind": "lookup",
+        "rule": "Untuk setiap employee, role description diambil dari role yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Description dari role yang tertaut"
+      },
+      "Employees.RoleIsManager": {
+        "table": "Employees",
+        "field": "RoleIsManager",
+        "kind": "lookup",
+        "rule": "Untuk setiap employee, role is manager bernilai benar jika role yang tertaut pada employee tersebut tergolong “manager”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "IsManager",
+            "label": "is manager"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is manager dari role yang tertaut"
+      },
+      "Roles.CountOfEmployees": {
+        "table": "Roles",
+        "field": "CountOfEmployees",
+        "kind": "rollup",
+        "rule": "Untuk setiap role, count of employees adalah jumlah employees yang terkait dengan role tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah employees dengan syarat role adalah role ID"
+      },
+      "TypesOfProject.CountOfProjects": {
+        "table": "TypesOfProject",
+        "field": "CountOfProjects",
+        "kind": "rollup",
+        "rule": "Untuk setiap type of project, count of projects adalah jumlah projects yang terkait dengan type of project tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah projects dengan syarat project type adalah types of project ID"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Client": "client",
+      "Projects": "project",
+      "Employees": "employee",
+      "Roles": "role",
+      "TypesOfProject": "type of project"
+    }
+  },
+  "it": {
+    "fields": {
+      "Client.FullName": {
+        "table": "Client",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Un client: full name è calcolato come il first name, seguito da uno spazio, seguito da il last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Client",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Client",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name unito a \" \") unito a last name"
+      },
+      "Projects.ProjectTypeName": {
+        "table": "Projects",
+        "field": "ProjectTypeName",
+        "kind": "lookup",
+        "rule": "Un project: project type name — ripreso dal project type collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del project type collegato"
+      },
+      "Projects.ProjectTypeDescription": {
+        "table": "Projects",
+        "field": "ProjectTypeDescription",
+        "kind": "lookup",
+        "rule": "Un project: project type description — ripreso dal project type collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il description del project type collegato"
+      },
+      "Projects.ProjectTypeRequiresManagerApproval": {
+        "table": "Projects",
+        "field": "ProjectTypeRequiresManagerApproval",
+        "kind": "lookup",
+        "rule": "Un project: project type requires manager approval è vero quando il project type collegato richiede manager approval.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "RequiresManagerApproval",
+            "label": "requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il requires manager approval del project type collegato"
+      },
+      "Projects.IsApproved": {
+        "table": "Projects",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Un project è considerato approved se vale almeno una delle seguenti: l'indicatore “project type requires manager approval” non è attivo o l'indicatore “approved by role is manager” è attivo.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectTypeRequiresManagerApproval",
+            "label": "project type requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedByRoleIsManager",
+            "label": "approved by role is manager"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un project è considerato approved se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “project type requires manager approval” non è attivo"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “approved by role is manager” è attivo"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Non project type requires manager approval o approved by role is manager"
+      },
+      "Projects.ApprovedByRoleIsManager": {
+        "table": "Projects",
+        "field": "ApprovedByRoleIsManager",
+        "kind": "lookup",
+        "rule": "Un project: approved by role is manager è vero quando il approved by collegato è un manager.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "RoleIsManager",
+            "label": "role is manager"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il role is manager del approved by collegato"
+      },
+      "Projects.ApprovedByName": {
+        "table": "Projects",
+        "field": "ApprovedByName",
+        "kind": "lookup",
+        "rule": "Un project: approved by name — ripreso dal approved by collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del approved by collegato"
+      },
+      "Projects.ApprovedByEmailAddress": {
+        "table": "Projects",
+        "field": "ApprovedByEmailAddress",
+        "kind": "lookup",
+        "rule": "Un project: approved by email address — ripreso dal approved by collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "EmailAddress",
+            "label": "email address"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il email address del approved by collegato"
+      },
+      "Projects.ApprovedByPhoneNumber": {
+        "table": "Projects",
+        "field": "ApprovedByPhoneNumber",
+        "kind": "lookup",
+        "rule": "Un project: approved by phone number — ripreso dal approved by collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "PhoneNumber",
+            "label": "phone number"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il phone number del approved by collegato"
+      },
+      "Employees.RoleName": {
+        "table": "Employees",
+        "field": "RoleName",
+        "kind": "lookup",
+        "rule": "Un employee: role name — ripreso dal role collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del role collegato"
+      },
+      "Employees.RoleDescription": {
+        "table": "Employees",
+        "field": "RoleDescription",
+        "kind": "lookup",
+        "rule": "Un employee: role description — ripreso dal role collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il description del role collegato"
+      },
+      "Employees.RoleIsManager": {
+        "table": "Employees",
+        "field": "RoleIsManager",
+        "kind": "lookup",
+        "rule": "Un employee: role is manager è vero quando il role collegato è un manager.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "IsManager",
+            "label": "is manager"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il is manager del role collegato"
+      },
+      "Roles.CountOfEmployees": {
+        "table": "Roles",
+        "field": "CountOfEmployees",
+        "kind": "rollup",
+        "rule": "Un role: count of employees è il numero di employees collegati a il role.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei employees il cui role è role ID"
+      },
+      "TypesOfProject.CountOfProjects": {
+        "table": "TypesOfProject",
+        "field": "CountOfProjects",
+        "kind": "rollup",
+        "rule": "Un type of project: count of projects è il numero di projects collegati a il type of project.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei projects il cui project type è types of project ID"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Client": "client",
+      "Projects": "project",
+      "Employees": "employee",
+      "Roles": "role",
+      "TypesOfProject": "type of project"
+    }
+  },
+  "ja": {
+    "fields": {
+      "Client.FullName": {
+        "table": "Client",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "clientの「full name」は first name、続いて 空白 1 つ、続いて last name として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Client",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Client",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name と \" \" を連結) と last name を連結"
+      },
+      "Projects.ProjectTypeName": {
+        "table": "Projects",
+        "field": "ProjectTypeName",
+        "kind": "lookup",
+        "rule": "projectの「project type name」— リンクされた「project type」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「project type」の name"
+      },
+      "Projects.ProjectTypeDescription": {
+        "table": "Projects",
+        "field": "ProjectTypeDescription",
+        "kind": "lookup",
+        "rule": "projectの「project type description」— リンクされた「project type」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「project type」の description"
+      },
+      "Projects.ProjectTypeRequiresManagerApproval": {
+        "table": "Projects",
+        "field": "ProjectTypeRequiresManagerApproval",
+        "kind": "lookup",
+        "rule": "projectの「project type requires manager approval」は、リンクされた「project type」が「Manager Approval」を要するとき真になります。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "RequiresManagerApproval",
+            "label": "requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「project type」の requires manager approval"
+      },
+      "Projects.IsApproved": {
+        "table": "Projects",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "次のいずれかが成り立つ: フラグ「project type requires manager approval」が設定されていないまたはフラグ「approved by role is manager」が設定されている場合、projectは「Approved」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectTypeRequiresManagerApproval",
+            "label": "project type requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedByRoleIsManager",
+            "label": "approved by role is manager"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、projectは「Approved」と見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「project type requires manager approval」が設定されていない"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「approved by role is manager」が設定されている"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Project type requires manager approval でないまたはapproved by role is manager"
+      },
+      "Projects.ApprovedByRoleIsManager": {
+        "table": "Projects",
+        "field": "ApprovedByRoleIsManager",
+        "kind": "lookup",
+        "rule": "projectの「approved by role is manager」は、リンクされた「approved by」が「Manager」であるとき真になります。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "RoleIsManager",
+            "label": "role is manager"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「approved by」の role is manager"
+      },
+      "Projects.ApprovedByName": {
+        "table": "Projects",
+        "field": "ApprovedByName",
+        "kind": "lookup",
+        "rule": "projectの「approved by name」— リンクされた「approved by」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「approved by」の name"
+      },
+      "Projects.ApprovedByEmailAddress": {
+        "table": "Projects",
+        "field": "ApprovedByEmailAddress",
+        "kind": "lookup",
+        "rule": "projectの「approved by email address」— リンクされた「approved by」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "EmailAddress",
+            "label": "email address"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「approved by」の email address"
+      },
+      "Projects.ApprovedByPhoneNumber": {
+        "table": "Projects",
+        "field": "ApprovedByPhoneNumber",
+        "kind": "lookup",
+        "rule": "projectの「approved by phone number」— リンクされた「approved by」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "PhoneNumber",
+            "label": "phone number"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「approved by」の phone number"
+      },
+      "Employees.RoleName": {
+        "table": "Employees",
+        "field": "RoleName",
+        "kind": "lookup",
+        "rule": "employeeの「role name」— リンクされた「role」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「role」の name"
+      },
+      "Employees.RoleDescription": {
+        "table": "Employees",
+        "field": "RoleDescription",
+        "kind": "lookup",
+        "rule": "employeeの「role description」— リンクされた「role」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「role」の description"
+      },
+      "Employees.RoleIsManager": {
+        "table": "Employees",
+        "field": "RoleIsManager",
+        "kind": "lookup",
+        "rule": "employeeの「role is manager」は、リンクされた「role」が「Manager」であるとき真になります。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "IsManager",
+            "label": "is manager"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「role」の is manager"
+      },
+      "Roles.CountOfEmployees": {
+        "table": "Roles",
+        "field": "CountOfEmployees",
+        "kind": "rollup",
+        "rule": "roleの「count of employees」は roleに関連する「employees」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Role が role ID である「employees」の件数"
+      },
+      "TypesOfProject.CountOfProjects": {
+        "table": "TypesOfProject",
+        "field": "CountOfProjects",
+        "kind": "rollup",
+        "rule": "type of projectの「count of projects」は type of projectに関連する「projects」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Project type が types of project ID である「projects」の件数"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "Client": "client",
+      "Projects": "project",
+      "Employees": "employee",
+      "Roles": "role",
+      "TypesOfProject": "type of project"
+    }
+  },
+  "ko": {
+    "fields": {
+      "Client.FullName": {
+        "table": "Client",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "‘client’ 레코드의 ‘full name’ 값은 다음과 같이 계산됩니다: ‘first name’, 이어서 공백 한 칸, 이어서 ‘last name’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Client",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Client",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name 뒤에 \" \" 연결한 결과) 뒤에 last name 연결한 결과"
+      },
+      "Projects.ProjectTypeName": {
+        "table": "Projects",
+        "field": "ProjectTypeName",
+        "kind": "lookup",
+        "rule": "‘project’ 레코드의 ‘project type name’ 값은 연결된 ‘project type’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 project type 레코드의 name"
+      },
+      "Projects.ProjectTypeDescription": {
+        "table": "Projects",
+        "field": "ProjectTypeDescription",
+        "kind": "lookup",
+        "rule": "‘project’ 레코드의 ‘project type description’ 값은 연결된 ‘project type’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 project type 레코드의 description"
+      },
+      "Projects.ProjectTypeRequiresManagerApproval": {
+        "table": "Projects",
+        "field": "ProjectTypeRequiresManagerApproval",
+        "kind": "lookup",
+        "rule": "‘project’ 레코드의 ‘project type requires manager approval’ 값은 연결된 ‘project type’ 레코드가 ‘manager approval’ 항목이 필요한 경우에 참입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "RequiresManagerApproval",
+            "label": "requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 project type 레코드의 requires manager approval"
+      },
+      "Projects.IsApproved": {
+        "table": "Projects",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "다음 중 하나 이상에 해당하는 경우(‘project type requires manager approval’ 플래그가 설정되지 않은 경우 또는 ‘approved by role is manager’ 플래그가 설정된 경우), ‘project’ 레코드는 ‘approved’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectTypeRequiresManagerApproval",
+            "label": "project type requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedByRoleIsManager",
+            "label": "approved by role is manager"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘project’ 레코드는 ‘approved’에 해당하는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘project type requires manager approval’ 플래그가 설정되지 않은 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘approved by role is manager’ 플래그가 설정된 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "조건(project type requires manager approval)이 성립하지 않음 또는 approved by role is manager"
+      },
+      "Projects.ApprovedByRoleIsManager": {
+        "table": "Projects",
+        "field": "ApprovedByRoleIsManager",
+        "kind": "lookup",
+        "rule": "‘project’ 레코드의 ‘approved by role is manager’ 값은 연결된 ‘approved by’ 레코드가 ‘manager’에 해당하는 경우에 참입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "RoleIsManager",
+            "label": "role is manager"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 approved by 레코드의 role is manager"
+      },
+      "Projects.ApprovedByName": {
+        "table": "Projects",
+        "field": "ApprovedByName",
+        "kind": "lookup",
+        "rule": "‘project’ 레코드의 ‘approved by name’ 값은 연결된 ‘approved by’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 approved by 레코드의 name"
+      },
+      "Projects.ApprovedByEmailAddress": {
+        "table": "Projects",
+        "field": "ApprovedByEmailAddress",
+        "kind": "lookup",
+        "rule": "‘project’ 레코드의 ‘approved by email address’ 값은 연결된 ‘approved by’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "EmailAddress",
+            "label": "email address"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 approved by 레코드의 email address"
+      },
+      "Projects.ApprovedByPhoneNumber": {
+        "table": "Projects",
+        "field": "ApprovedByPhoneNumber",
+        "kind": "lookup",
+        "rule": "‘project’ 레코드의 ‘approved by phone number’ 값은 연결된 ‘approved by’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "PhoneNumber",
+            "label": "phone number"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 approved by 레코드의 phone number"
+      },
+      "Employees.RoleName": {
+        "table": "Employees",
+        "field": "RoleName",
+        "kind": "lookup",
+        "rule": "‘employee’ 레코드의 ‘role name’ 값은 연결된 ‘role’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 role 레코드의 name"
+      },
+      "Employees.RoleDescription": {
+        "table": "Employees",
+        "field": "RoleDescription",
+        "kind": "lookup",
+        "rule": "‘employee’ 레코드의 ‘role description’ 값은 연결된 ‘role’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 role 레코드의 description"
+      },
+      "Employees.RoleIsManager": {
+        "table": "Employees",
+        "field": "RoleIsManager",
+        "kind": "lookup",
+        "rule": "‘employee’ 레코드의 ‘role is manager’ 값은 연결된 ‘role’ 레코드가 ‘manager’에 해당하는 경우에 참입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "IsManager",
+            "label": "is manager"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 role 레코드의 is manager"
+      },
+      "Roles.CountOfEmployees": {
+        "table": "Roles",
+        "field": "CountOfEmployees",
+        "kind": "rollup",
+        "rule": "‘role’ 레코드의 ‘count of employees’ 값은 해당 ‘role’ 레코드에 연결된 ‘employees’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(role 값이 role ID임)에 맞는 employees 레코드의 개수"
+      },
+      "TypesOfProject.CountOfProjects": {
+        "table": "TypesOfProject",
+        "field": "CountOfProjects",
+        "kind": "rollup",
+        "rule": "‘type of project’ 레코드의 ‘count of projects’ 값은 해당 ‘type of project’ 레코드에 연결된 ‘projects’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(project type 값이 types of project ID임)에 맞는 projects 레코드의 개수"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Client": "client",
+      "Projects": "project",
+      "Employees": "employee",
+      "Roles": "role",
+      "TypesOfProject": "type of project"
+    }
+  },
+  "nl": {
+    "fields": {
+      "Client.FullName": {
+        "table": "Client",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Een client: full name wordt berekend als de first name, gevolgd door een spatie, gevolgd door de last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Client",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Client",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name samengevoegd met \" \") samengevoegd met last name"
+      },
+      "Projects.ProjectTypeName": {
+        "table": "Projects",
+        "field": "ProjectTypeName",
+        "kind": "lookup",
+        "rule": "Een project: project type name — overgenomen van de gekoppelde project type.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde project type"
+      },
+      "Projects.ProjectTypeDescription": {
+        "table": "Projects",
+        "field": "ProjectTypeDescription",
+        "kind": "lookup",
+        "rule": "Een project: project type description — overgenomen van de gekoppelde project type.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De description van de gekoppelde project type"
+      },
+      "Projects.ProjectTypeRequiresManagerApproval": {
+        "table": "Projects",
+        "field": "ProjectTypeRequiresManagerApproval",
+        "kind": "lookup",
+        "rule": "Een project: project type requires manager approval is waar wanneer de gekoppelde project type vereist manager approval.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "RequiresManagerApproval",
+            "label": "requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De requires manager approval van de gekoppelde project type"
+      },
+      "Projects.IsApproved": {
+        "table": "Projects",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Een project geldt als approved als ten minste één van het volgende geldt: de vlag ‘project type requires manager approval’ niet is gezet of de vlag ‘approved by role is manager’ is gezet.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectTypeRequiresManagerApproval",
+            "label": "project type requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedByRoleIsManager",
+            "label": "approved by role is manager"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een project geldt als approved als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘project type requires manager approval’ niet is gezet"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘approved by role is manager’ is gezet"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Niet project type requires manager approval of approved by role is manager"
+      },
+      "Projects.ApprovedByRoleIsManager": {
+        "table": "Projects",
+        "field": "ApprovedByRoleIsManager",
+        "kind": "lookup",
+        "rule": "Een project: approved by role is manager is waar wanneer de gekoppelde approved by is een manager.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "RoleIsManager",
+            "label": "role is manager"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De role is manager van de gekoppelde approved by"
+      },
+      "Projects.ApprovedByName": {
+        "table": "Projects",
+        "field": "ApprovedByName",
+        "kind": "lookup",
+        "rule": "Een project: approved by name — overgenomen van de gekoppelde approved by.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde approved by"
+      },
+      "Projects.ApprovedByEmailAddress": {
+        "table": "Projects",
+        "field": "ApprovedByEmailAddress",
+        "kind": "lookup",
+        "rule": "Een project: approved by email address — overgenomen van de gekoppelde approved by.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "EmailAddress",
+            "label": "email address"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De email address van de gekoppelde approved by"
+      },
+      "Projects.ApprovedByPhoneNumber": {
+        "table": "Projects",
+        "field": "ApprovedByPhoneNumber",
+        "kind": "lookup",
+        "rule": "Een project: approved by phone number — overgenomen van de gekoppelde approved by.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "PhoneNumber",
+            "label": "phone number"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De phone number van de gekoppelde approved by"
+      },
+      "Employees.RoleName": {
+        "table": "Employees",
+        "field": "RoleName",
+        "kind": "lookup",
+        "rule": "Een employee: role name — overgenomen van de gekoppelde role.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde role"
+      },
+      "Employees.RoleDescription": {
+        "table": "Employees",
+        "field": "RoleDescription",
+        "kind": "lookup",
+        "rule": "Een employee: role description — overgenomen van de gekoppelde role.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De description van de gekoppelde role"
+      },
+      "Employees.RoleIsManager": {
+        "table": "Employees",
+        "field": "RoleIsManager",
+        "kind": "lookup",
+        "rule": "Een employee: role is manager is waar wanneer de gekoppelde role is een manager.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "IsManager",
+            "label": "is manager"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De is manager van de gekoppelde role"
+      },
+      "Roles.CountOfEmployees": {
+        "table": "Roles",
+        "field": "CountOfEmployees",
+        "kind": "rollup",
+        "rule": "Een role: count of employees is het aantal employees dat is gekoppeld aan de role.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal employees waarvan role is role ID"
+      },
+      "TypesOfProject.CountOfProjects": {
+        "table": "TypesOfProject",
+        "field": "CountOfProjects",
+        "kind": "rollup",
+        "rule": "Een type of project: count of projects is het aantal projects dat is gekoppeld aan de type of project.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal projects waarvan project type is types of project ID"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Client": "client",
+      "Projects": "project",
+      "Employees": "employee",
+      "Roles": "role",
+      "TypesOfProject": "type of project"
+    }
+  },
+  "pt": {
+    "fields": {
+      "Client.FullName": {
+        "table": "Client",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Um client: full name é calculado como o first name, seguido de um espaço, seguido de o last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Client",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Client",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name unido a \" \") unido a last name"
+      },
+      "Projects.ProjectTypeName": {
+        "table": "Projects",
+        "field": "ProjectTypeName",
+        "kind": "lookup",
+        "rule": "Um project: project type name — obtido do project type vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do project type vinculado"
+      },
+      "Projects.ProjectTypeDescription": {
+        "table": "Projects",
+        "field": "ProjectTypeDescription",
+        "kind": "lookup",
+        "rule": "Um project: project type description — obtido do project type vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O description do project type vinculado"
+      },
+      "Projects.ProjectTypeRequiresManagerApproval": {
+        "table": "Projects",
+        "field": "ProjectTypeRequiresManagerApproval",
+        "kind": "lookup",
+        "rule": "Um project: project type requires manager approval é verdadeiro quando o project type vinculado exige manager approval.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "RequiresManagerApproval",
+            "label": "requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O requires manager approval do project type vinculado"
+      },
+      "Projects.IsApproved": {
+        "table": "Projects",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Um project é considerado approved se pelo menos uma das seguintes é verdadeira: o indicador “project type requires manager approval” não está ativado ou o indicador “approved by role is manager” está ativado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectTypeRequiresManagerApproval",
+            "label": "project type requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedByRoleIsManager",
+            "label": "approved by role is manager"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um project é considerado approved se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “project type requires manager approval” não está ativado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “approved by role is manager” está ativado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Não project type requires manager approval ou approved by role is manager"
+      },
+      "Projects.ApprovedByRoleIsManager": {
+        "table": "Projects",
+        "field": "ApprovedByRoleIsManager",
+        "kind": "lookup",
+        "rule": "Um project: approved by role is manager é verdadeiro quando o approved by vinculado é um manager.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "RoleIsManager",
+            "label": "role is manager"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O role is manager do approved by vinculado"
+      },
+      "Projects.ApprovedByName": {
+        "table": "Projects",
+        "field": "ApprovedByName",
+        "kind": "lookup",
+        "rule": "Um project: approved by name — obtido do approved by vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do approved by vinculado"
+      },
+      "Projects.ApprovedByEmailAddress": {
+        "table": "Projects",
+        "field": "ApprovedByEmailAddress",
+        "kind": "lookup",
+        "rule": "Um project: approved by email address — obtido do approved by vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "EmailAddress",
+            "label": "email address"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O email address do approved by vinculado"
+      },
+      "Projects.ApprovedByPhoneNumber": {
+        "table": "Projects",
+        "field": "ApprovedByPhoneNumber",
+        "kind": "lookup",
+        "rule": "Um project: approved by phone number — obtido do approved by vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "PhoneNumber",
+            "label": "phone number"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O phone number do approved by vinculado"
+      },
+      "Employees.RoleName": {
+        "table": "Employees",
+        "field": "RoleName",
+        "kind": "lookup",
+        "rule": "Um employee: role name — obtido do role vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do role vinculado"
+      },
+      "Employees.RoleDescription": {
+        "table": "Employees",
+        "field": "RoleDescription",
+        "kind": "lookup",
+        "rule": "Um employee: role description — obtido do role vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O description do role vinculado"
+      },
+      "Employees.RoleIsManager": {
+        "table": "Employees",
+        "field": "RoleIsManager",
+        "kind": "lookup",
+        "rule": "Um employee: role is manager é verdadeiro quando o role vinculado é um manager.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "IsManager",
+            "label": "is manager"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O is manager do role vinculado"
+      },
+      "Roles.CountOfEmployees": {
+        "table": "Roles",
+        "field": "CountOfEmployees",
+        "kind": "rollup",
+        "rule": "Um role: count of employees é o número de employees relacionados a o role.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de employees cujo role é role ID"
+      },
+      "TypesOfProject.CountOfProjects": {
+        "table": "TypesOfProject",
+        "field": "CountOfProjects",
+        "kind": "rollup",
+        "rule": "Um type of project: count of projects é o número de projects relacionados a o type of project.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de projects cujo project type é types of project ID"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Client": "client",
+      "Projects": "project",
+      "Employees": "employee",
+      "Roles": "role",
+      "TypesOfProject": "type of project"
+    }
+  },
+  "ru": {
+    "fields": {
+      "Client.FullName": {
+        "table": "Client",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Client: «full name» вычисляется как first name, затем пробел, затем last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Client",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Client",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name соединено с \" \") соединено с last name"
+      },
+      "Projects.ProjectTypeName": {
+        "table": "Projects",
+        "field": "ProjectTypeName",
+        "kind": "lookup",
+        "rule": "Project: «project type name» — берётся из связанного «project type».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «project type»"
+      },
+      "Projects.ProjectTypeDescription": {
+        "table": "Projects",
+        "field": "ProjectTypeDescription",
+        "kind": "lookup",
+        "rule": "Project: «project type description» — берётся из связанного «project type».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Description связанного «project type»"
+      },
+      "Projects.ProjectTypeRequiresManagerApproval": {
+        "table": "Projects",
+        "field": "ProjectTypeRequiresManagerApproval",
+        "kind": "lookup",
+        "rule": "Project: «project type requires manager approval» истинно, когда связанный «project type» требует «manager approval».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "RequiresManagerApproval",
+            "label": "requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Requires manager approval связанного «project type»"
+      },
+      "Projects.IsApproved": {
+        "table": "Projects",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Project считается «approved», если выполняется хотя бы одно из следующего: признак «project type requires manager approval» не установлен или признак «approved by role is manager» установлен.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectTypeRequiresManagerApproval",
+            "label": "project type requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedByRoleIsManager",
+            "label": "approved by role is manager"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Project считается «approved», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "признак «project type requires manager approval» не установлен"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "признак «approved by role is manager» установлен"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Не project type requires manager approval или approved by role is manager"
+      },
+      "Projects.ApprovedByRoleIsManager": {
+        "table": "Projects",
+        "field": "ApprovedByRoleIsManager",
+        "kind": "lookup",
+        "rule": "Project: «approved by role is manager» истинно, когда связанный «approved by» является «manager».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "RoleIsManager",
+            "label": "role is manager"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Role is manager связанного «approved by»"
+      },
+      "Projects.ApprovedByName": {
+        "table": "Projects",
+        "field": "ApprovedByName",
+        "kind": "lookup",
+        "rule": "Project: «approved by name» — берётся из связанного «approved by».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «approved by»"
+      },
+      "Projects.ApprovedByEmailAddress": {
+        "table": "Projects",
+        "field": "ApprovedByEmailAddress",
+        "kind": "lookup",
+        "rule": "Project: «approved by email address» — берётся из связанного «approved by».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "EmailAddress",
+            "label": "email address"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address связанного «approved by»"
+      },
+      "Projects.ApprovedByPhoneNumber": {
+        "table": "Projects",
+        "field": "ApprovedByPhoneNumber",
+        "kind": "lookup",
+        "rule": "Project: «approved by phone number» — берётся из связанного «approved by».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "PhoneNumber",
+            "label": "phone number"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Phone number связанного «approved by»"
+      },
+      "Employees.RoleName": {
+        "table": "Employees",
+        "field": "RoleName",
+        "kind": "lookup",
+        "rule": "Employee: «role name» — берётся из связанного «role».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «role»"
+      },
+      "Employees.RoleDescription": {
+        "table": "Employees",
+        "field": "RoleDescription",
+        "kind": "lookup",
+        "rule": "Employee: «role description» — берётся из связанного «role».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Description связанного «role»"
+      },
+      "Employees.RoleIsManager": {
+        "table": "Employees",
+        "field": "RoleIsManager",
+        "kind": "lookup",
+        "rule": "Employee: «role is manager» истинно, когда связанный «role» является «manager».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "IsManager",
+            "label": "is manager"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is manager связанного «role»"
+      },
+      "Roles.CountOfEmployees": {
+        "table": "Roles",
+        "field": "CountOfEmployees",
+        "kind": "rollup",
+        "rule": "Role: «count of employees» — это число записей «employees», связанных с role.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «employees», у которых role равно role ID"
+      },
+      "TypesOfProject.CountOfProjects": {
+        "table": "TypesOfProject",
+        "field": "CountOfProjects",
+        "kind": "rollup",
+        "rule": "Type of project: «count of projects» — это число записей «projects», связанных с type of project.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «projects», у которых project type равно types of project ID"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Client": "client",
+      "Projects": "project",
+      "Employees": "employee",
+      "Roles": "role",
+      "TypesOfProject": "type of project"
+    }
+  },
+  "tr": {
+    "fields": {
+      "Client.FullName": {
+        "table": "Client",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "“client” kaydının “full name” alanı, “first name” alanı, ardından bir boşluk, ardından “last name” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Client",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Client",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name ile \" \" birleşimi) ile last name birleşimi"
+      },
+      "Projects.ProjectTypeName": {
+        "table": "Projects",
+        "field": "ProjectTypeName",
+        "kind": "lookup",
+        "rule": "“project” kaydının “project type name” alanı, “project type” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı project type kaydının name değeri"
+      },
+      "Projects.ProjectTypeDescription": {
+        "table": "Projects",
+        "field": "ProjectTypeDescription",
+        "kind": "lookup",
+        "rule": "“project” kaydının “project type description” alanı, “project type” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı project type kaydının description değeri"
+      },
+      "Projects.ProjectTypeRequiresManagerApproval": {
+        "table": "Projects",
+        "field": "ProjectTypeRequiresManagerApproval",
+        "kind": "lookup",
+        "rule": "“project” kaydının “project type requires manager approval” alanı, “project type” alanı üzerinden bağlı kayıt “manager approval” zorunluluğuna tabi ise doğrudur.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "RequiresManagerApproval",
+            "label": "requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı project type kaydının requires manager approval değeri"
+      },
+      "Projects.IsApproved": {
+        "table": "Projects",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "“project” kaydı, “project type requires manager approval” bayrağı etkin değil veya “approved by role is manager” bayrağı etkin ise “approved” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectTypeRequiresManagerApproval",
+            "label": "project type requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedByRoleIsManager",
+            "label": "approved by role is manager"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“project” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “approved” sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“project type requires manager approval” bayrağı etkin değil"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“approved by role is manager” bayrağı etkin"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "(project type requires manager approval) koşulu sağlanmıyor veya approved by role is manager"
+      },
+      "Projects.ApprovedByRoleIsManager": {
+        "table": "Projects",
+        "field": "ApprovedByRoleIsManager",
+        "kind": "lookup",
+        "rule": "“project” kaydının “approved by role is manager” alanı, “approved by” alanı üzerinden bağlı kayıt “manager” ise doğrudur.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "RoleIsManager",
+            "label": "role is manager"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı approved by kaydının role is manager değeri"
+      },
+      "Projects.ApprovedByName": {
+        "table": "Projects",
+        "field": "ApprovedByName",
+        "kind": "lookup",
+        "rule": "“project” kaydının “approved by name” alanı, “approved by” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı approved by kaydının name değeri"
+      },
+      "Projects.ApprovedByEmailAddress": {
+        "table": "Projects",
+        "field": "ApprovedByEmailAddress",
+        "kind": "lookup",
+        "rule": "“project” kaydının “approved by email address” alanı, “approved by” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "EmailAddress",
+            "label": "email address"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı approved by kaydının email address değeri"
+      },
+      "Projects.ApprovedByPhoneNumber": {
+        "table": "Projects",
+        "field": "ApprovedByPhoneNumber",
+        "kind": "lookup",
+        "rule": "“project” kaydının “approved by phone number” alanı, “approved by” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "PhoneNumber",
+            "label": "phone number"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı approved by kaydının phone number değeri"
+      },
+      "Employees.RoleName": {
+        "table": "Employees",
+        "field": "RoleName",
+        "kind": "lookup",
+        "rule": "“employee” kaydının “role name” alanı, “role” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı role kaydının name değeri"
+      },
+      "Employees.RoleDescription": {
+        "table": "Employees",
+        "field": "RoleDescription",
+        "kind": "lookup",
+        "rule": "“employee” kaydının “role description” alanı, “role” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı role kaydının description değeri"
+      },
+      "Employees.RoleIsManager": {
+        "table": "Employees",
+        "field": "RoleIsManager",
+        "kind": "lookup",
+        "rule": "“employee” kaydının “role is manager” alanı, “role” alanı üzerinden bağlı kayıt “manager” ise doğrudur.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "IsManager",
+            "label": "is manager"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı role kaydının is manager değeri"
+      },
+      "Roles.CountOfEmployees": {
+        "table": "Roles",
+        "field": "CountOfEmployees",
+        "kind": "rollup",
+        "rule": "“role” kaydının “count of employees” alanı, “role” kaydıyla ilişkili “employees” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Role değeri role ID olan employees kayıtlarının sayısı"
+      },
+      "TypesOfProject.CountOfProjects": {
+        "table": "TypesOfProject",
+        "field": "CountOfProjects",
+        "kind": "rollup",
+        "rule": "“type of project” kaydının “count of projects” alanı, “type of project” kaydıyla ilişkili “projects” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Project type değeri types of project ID olan projects kayıtlarının sayısı"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Client": "client",
+      "Projects": "project",
+      "Employees": "employee",
+      "Roles": "role",
+      "TypesOfProject": "type of project"
+    }
+  },
+  "vi": {
+    "fields": {
+      "Client.FullName": {
+        "table": "Client",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Trường “full name” của mỗi client được tính bằng first name, tiếp theo là dấu cách, tiếp theo là last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Client",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Client",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name nối với \" \") nối với last name"
+      },
+      "Projects.ProjectTypeName": {
+        "table": "Projects",
+        "field": "ProjectTypeName",
+        "kind": "lookup",
+        "rule": "Trường “project type name” của mỗi project được lấy từ bản ghi liên kết qua trường “project type”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua project type"
+      },
+      "Projects.ProjectTypeDescription": {
+        "table": "Projects",
+        "field": "ProjectTypeDescription",
+        "kind": "lookup",
+        "rule": "Trường “project type description” của mỗi project được lấy từ bản ghi liên kết qua trường “project type”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Description của bản ghi liên kết qua project type"
+      },
+      "Projects.ProjectTypeRequiresManagerApproval": {
+        "table": "Projects",
+        "field": "ProjectTypeRequiresManagerApproval",
+        "kind": "lookup",
+        "rule": "Trường “project type requires manager approval” của mỗi project có giá trị đúng khi bản ghi liên kết qua trường “project type” cần “manager approval”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "RequiresManagerApproval",
+            "label": "requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Requires manager approval của bản ghi liên kết qua project type"
+      },
+      "Projects.IsApproved": {
+        "table": "Projects",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Mỗi project được coi là “approved” nếu ít nhất một trong các điều kiện sau đúng: cờ “project type requires manager approval” không được bật hoặc cờ “approved by role is manager” được bật.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectTypeRequiresManagerApproval",
+            "label": "project type requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedByRoleIsManager",
+            "label": "approved by role is manager"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi project được coi là “approved” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "cờ “project type requires manager approval” không được bật"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "cờ “approved by role is manager” được bật"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Không phải project type requires manager approval hoặc approved by role is manager"
+      },
+      "Projects.ApprovedByRoleIsManager": {
+        "table": "Projects",
+        "field": "ApprovedByRoleIsManager",
+        "kind": "lookup",
+        "rule": "Trường “approved by role is manager” của mỗi project có giá trị đúng khi bản ghi liên kết qua trường “approved by” là “manager”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "RoleIsManager",
+            "label": "role is manager"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Role is manager của bản ghi liên kết qua approved by"
+      },
+      "Projects.ApprovedByName": {
+        "table": "Projects",
+        "field": "ApprovedByName",
+        "kind": "lookup",
+        "rule": "Trường “approved by name” của mỗi project được lấy từ bản ghi liên kết qua trường “approved by”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua approved by"
+      },
+      "Projects.ApprovedByEmailAddress": {
+        "table": "Projects",
+        "field": "ApprovedByEmailAddress",
+        "kind": "lookup",
+        "rule": "Trường “approved by email address” của mỗi project được lấy từ bản ghi liên kết qua trường “approved by”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "EmailAddress",
+            "label": "email address"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address của bản ghi liên kết qua approved by"
+      },
+      "Projects.ApprovedByPhoneNumber": {
+        "table": "Projects",
+        "field": "ApprovedByPhoneNumber",
+        "kind": "lookup",
+        "rule": "Trường “approved by phone number” của mỗi project được lấy từ bản ghi liên kết qua trường “approved by”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "PhoneNumber",
+            "label": "phone number"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Phone number của bản ghi liên kết qua approved by"
+      },
+      "Employees.RoleName": {
+        "table": "Employees",
+        "field": "RoleName",
+        "kind": "lookup",
+        "rule": "Trường “role name” của mỗi employee được lấy từ bản ghi liên kết qua trường “role”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua role"
+      },
+      "Employees.RoleDescription": {
+        "table": "Employees",
+        "field": "RoleDescription",
+        "kind": "lookup",
+        "rule": "Trường “role description” của mỗi employee được lấy từ bản ghi liên kết qua trường “role”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Description của bản ghi liên kết qua role"
+      },
+      "Employees.RoleIsManager": {
+        "table": "Employees",
+        "field": "RoleIsManager",
+        "kind": "lookup",
+        "rule": "Trường “role is manager” của mỗi employee có giá trị đúng khi bản ghi liên kết qua trường “role” là “manager”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "IsManager",
+            "label": "is manager"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is manager của bản ghi liên kết qua role"
+      },
+      "Roles.CountOfEmployees": {
+        "table": "Roles",
+        "field": "CountOfEmployees",
+        "kind": "rollup",
+        "rule": "Trường “count of employees” của mỗi role là số lượng employees liên quan đến role đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng employees có role là role ID"
+      },
+      "TypesOfProject.CountOfProjects": {
+        "table": "TypesOfProject",
+        "field": "CountOfProjects",
+        "kind": "rollup",
+        "rule": "Trường “count of projects” của mỗi type of project là số lượng projects liên quan đến type of project đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng projects có project type là types of project ID"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Client": "client",
+      "Projects": "project",
+      "Employees": "employee",
+      "Roles": "role",
+      "TypesOfProject": "type of project"
+    }
+  },
+  "zh": {
+    "fields": {
+      "Client.FullName": {
+        "table": "Client",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "client的“full name”按 first name,接着是一个空格,接着是last name 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Client",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Client",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name与\" \"拼接)与last name拼接"
+      },
+      "Projects.ProjectTypeName": {
+        "table": "Projects",
+        "field": "ProjectTypeName",
+        "kind": "lookup",
+        "rule": "project的“project type name”——取自所关联的“project type”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“project type”的name"
+      },
+      "Projects.ProjectTypeDescription": {
+        "table": "Projects",
+        "field": "ProjectTypeDescription",
+        "kind": "lookup",
+        "rule": "project的“project type description”——取自所关联的“project type”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“project type”的description"
+      },
+      "Projects.ProjectTypeRequiresManagerApproval": {
+        "table": "Projects",
+        "field": "ProjectTypeRequiresManagerApproval",
+        "kind": "lookup",
+        "rule": "project的“project type requires manager approval”在所关联的“project type”需要“Manager Approval”时为真。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TypesOfProject",
+            "field": "RequiresManagerApproval",
+            "label": "requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“project type”的requires manager approval"
+      },
+      "Projects.IsApproved": {
+        "table": "Projects",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "当以下至少一项成立:标志“project type requires manager approval”未设置或标志“approved by role is manager”已设置时,project被视为“Approved”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectTypeRequiresManagerApproval",
+            "label": "project type requires manager approval"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedByRoleIsManager",
+            "label": "approved by role is manager"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,project被视为“Approved”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "标志“project type requires manager approval”未设置"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "标志“approved by role is manager”已设置"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "并非project type requires manager approval或approved by role is manager"
+      },
+      "Projects.ApprovedByRoleIsManager": {
+        "table": "Projects",
+        "field": "ApprovedByRoleIsManager",
+        "kind": "lookup",
+        "rule": "project的“approved by role is manager”在所关联的“approved by”是“Manager”时为真。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "RoleIsManager",
+            "label": "role is manager"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“approved by”的role is manager"
+      },
+      "Projects.ApprovedByName": {
+        "table": "Projects",
+        "field": "ApprovedByName",
+        "kind": "lookup",
+        "rule": "project的“approved by name”——取自所关联的“approved by”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“approved by”的name"
+      },
+      "Projects.ApprovedByEmailAddress": {
+        "table": "Projects",
+        "field": "ApprovedByEmailAddress",
+        "kind": "lookup",
+        "rule": "project的“approved by email address”——取自所关联的“approved by”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "EmailAddress",
+            "label": "email address"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“approved by”的email address"
+      },
+      "Projects.ApprovedByPhoneNumber": {
+        "table": "Projects",
+        "field": "ApprovedByPhoneNumber",
+        "kind": "lookup",
+        "rule": "project的“approved by phone number”——取自所关联的“approved by”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "PhoneNumber",
+            "label": "phone number"
+          },
+          {
+            "table": "Projects",
+            "field": "ApprovedBy",
+            "label": "approved by"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“approved by”的phone number"
+      },
+      "Employees.RoleName": {
+        "table": "Employees",
+        "field": "RoleName",
+        "kind": "lookup",
+        "rule": "employee的“role name”——取自所关联的“role”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“role”的name"
+      },
+      "Employees.RoleDescription": {
+        "table": "Employees",
+        "field": "RoleDescription",
+        "kind": "lookup",
+        "rule": "employee的“role description”——取自所关联的“role”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“role”的description"
+      },
+      "Employees.RoleIsManager": {
+        "table": "Employees",
+        "field": "RoleIsManager",
+        "kind": "lookup",
+        "rule": "employee的“role is manager”在所关联的“role”是“Manager”时为真。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Roles",
+            "field": "IsManager",
+            "label": "is manager"
+          },
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“role”的is manager"
+      },
+      "Roles.CountOfEmployees": {
+        "table": "Roles",
+        "field": "CountOfEmployees",
+        "kind": "rollup",
+        "rule": "role的“count of employees”为 与role相关的“employees”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Role",
+            "label": "role"
+          },
+          {
+            "table": "Roles",
+            "field": "RoleId",
+            "label": "role ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Role为role ID的“employees”的数量"
+      },
+      "TypesOfProject.CountOfProjects": {
+        "table": "TypesOfProject",
+        "field": "CountOfProjects",
+        "kind": "rollup",
+        "rule": "type of project的“count of projects”为 与type of project相关的“projects”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Projects",
+            "field": "ProjectType",
+            "label": "project type"
+          },
+          {
+            "table": "TypesOfProject",
+            "field": "TypesOfProjectId",
+            "label": "types of project ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Project type为types of project ID的“projects”的数量"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "Client": "client",

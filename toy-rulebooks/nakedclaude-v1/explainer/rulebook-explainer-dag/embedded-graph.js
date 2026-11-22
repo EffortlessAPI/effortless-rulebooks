@@ -203,7 +203,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -248,6 +263,741 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "ar": {
+    "fields": {
+      "Customers.IsApproved": {
+        "table": "Customers",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «customer» على أنه «approved» إذا تحقق أنّ حقل «current color» يساوي «Green».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CurrentColor",
+            "label": "current color"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «is approved» في سجل «customer» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "صحيح",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «current color» يساوي «Green»"
+              }
+            },
+            {
+              "value": "خطأ",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ current color هو \"Green\" فالناتج true()، وإلا فالناتج false()"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "de": {
+    "fields": {
+      "Customers.IsApproved": {
+        "table": "Customers",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Ein Customer gilt als approved, wenn der Current Color „Green“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CurrentColor",
+            "label": "current color"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Is Approved“ des Customer wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "wahr",
+              "when": {
+                "kind": "leaf",
+                "text": "der Current Color „Green“ ist"
+              }
+            },
+            {
+              "value": "falsch",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Current Color ist \"Green\", dann true(), andernfalls false()"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "Customer"
+    }
+  },
+  "es": {
+    "fields": {
+      "Customers.IsApproved": {
+        "table": "Customers",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Un customer se considera approved si el current color es «Green».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CurrentColor",
+            "label": "current color"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «is approved» del customer se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "verdadero",
+              "when": {
+                "kind": "leaf",
+                "text": "el current color es «Green»"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si current color es \"Green\", entonces true(), de lo contrario false()"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "fr": {
+    "fields": {
+      "Customers.IsApproved": {
+        "table": "Customers",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Un customer est considéré comme approved si le current color est « Green ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CurrentColor",
+            "label": "current color"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « is approved » du customer est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "vrai",
+              "when": {
+                "kind": "leaf",
+                "text": "le current color est « Green »"
+              }
+            },
+            {
+              "value": "faux",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si current color est \"Green\", alors true(), sinon false()"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "hi": {
+    "fields": {
+      "Customers.IsApproved": {
+        "table": "Customers",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "यदि current color “Green” है, तो customer “approved” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CurrentColor",
+            "label": "current color"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Customer का “is approved” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "सत्य",
+              "when": {
+                "kind": "leaf",
+                "text": "current color “Green” है"
+              }
+            },
+            {
+              "value": "असत्य",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि current color \"Green\" है, तो true(), अन्यथा false()"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "id": {
+    "fields": {
+      "Customers.IsApproved": {
+        "table": "Customers",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Setiap customer dianggap “approved” jika current color adalah “Green”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CurrentColor",
+            "label": "current color"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap customer, is approved ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "benar",
+              "when": {
+                "kind": "leaf",
+                "text": "current color adalah “Green”"
+              }
+            },
+            {
+              "value": "salah",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika current color adalah \"Green\" maka true(), selain itu false()"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "it": {
+    "fields": {
+      "Customers.IsApproved": {
+        "table": "Customers",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Un customer è considerato approved se il current color è «Green».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CurrentColor",
+            "label": "current color"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “is approved” del customer è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "vero",
+              "when": {
+                "kind": "leaf",
+                "text": "il current color è «Green»"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se current color è \"Green\", allora true(), altrimenti false()"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "ja": {
+    "fields": {
+      "Customers.IsApproved": {
+        "table": "Customers",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "current color が 「Green」 である場合、customerは「Approved」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CurrentColor",
+            "label": "current color"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Customerの「is approved」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "current color が 「Green」 である"
+              }
+            },
+            {
+              "value": "偽",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Current color は \"Green\"なら true()、そうでなければ false()"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "ko": {
+    "fields": {
+      "Customers.IsApproved": {
+        "table": "Customers",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "‘current color’ 값이 “Green”인 경우, ‘customer’ 레코드는 ‘approved’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CurrentColor",
+            "label": "current color"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘customer’ 레코드의 ‘is approved’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "참",
+              "when": {
+                "kind": "leaf",
+                "text": "‘current color’ 값이 “Green”인 경우"
+              }
+            },
+            {
+              "value": "거짓",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(current color 값이 \"Green\"임)이 성립하면 true(), 그렇지 않으면 false()"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "nl": {
+    "fields": {
+      "Customers.IsApproved": {
+        "table": "Customers",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Een customer geldt als approved als de current color ‘Green’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CurrentColor",
+            "label": "current color"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘is approved’ van de customer wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "waar",
+              "when": {
+                "kind": "leaf",
+                "text": "de current color ‘Green’ is"
+              }
+            },
+            {
+              "value": "onwaar",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als current color is \"Green\", dan true(), anders false()"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "pt": {
+    "fields": {
+      "Customers.IsApproved": {
+        "table": "Customers",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Um customer é considerado approved se o current color é “Green”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CurrentColor",
+            "label": "current color"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “is approved” do customer é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "verdadeiro",
+              "when": {
+                "kind": "leaf",
+                "text": "o current color é “Green”"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se current color é \"Green\", então true(), caso contrário false()"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "ru": {
+    "fields": {
+      "Customers.IsApproved": {
+        "table": "Customers",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Customer считается «approved», если current color равно «Green».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CurrentColor",
+            "label": "current color"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «is approved» (Customer) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "истина",
+              "when": {
+                "kind": "leaf",
+                "text": "current color равно «Green»"
+              }
+            },
+            {
+              "value": "ложь",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если current color равно \"Green\", то true(), иначе false()"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "tr": {
+    "fields": {
+      "Customers.IsApproved": {
+        "table": "Customers",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "“customer” kaydı, “current color” alanı “Green” değerine eşit ise “approved” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CurrentColor",
+            "label": "current color"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“customer” kaydının “is approved” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "doğru",
+              "when": {
+                "kind": "leaf",
+                "text": "“current color” alanı “Green” değerine eşit"
+              }
+            },
+            {
+              "value": "yanlış",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Current color, \"Green\" değerine eşit ise true(), aksi takdirde false()"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "vi": {
+    "fields": {
+      "Customers.IsApproved": {
+        "table": "Customers",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Mỗi customer được coi là “approved” nếu current color là “Green”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CurrentColor",
+            "label": "current color"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “is approved” của mỗi customer được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "đúng",
+              "when": {
+                "kind": "leaf",
+                "text": "current color là “Green”"
+              }
+            },
+            {
+              "value": "sai",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu current color là \"Green\" thì true(), nếu không thì false()"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "zh": {
+    "fields": {
+      "Customers.IsApproved": {
+        "table": "Customers",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "当current color为“Green”时,customer被视为“Approved”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CurrentColor",
+            "label": "current color"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Customer的“is approved”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "current color为“Green”"
+              }
+            },
+            {
+              "value": "假",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若current color为\"Green\",则true(),否则false()"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "Customers": "customer"

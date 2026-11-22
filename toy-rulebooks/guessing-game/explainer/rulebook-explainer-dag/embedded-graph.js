@@ -470,7 +470,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -635,6 +650,2721 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "形状": "形状",
+      "边": "边"
+    }
+  },
+  "ar": {
+    "fields": {
+      "形状.边的类型": {
+        "table": "形状",
+        "field": "边的类型",
+        "kind": "formula",
+        "rule": "حقل «边的类型» في سجل «形状» يُحسب على النحو الآتي: ما يقابل حقل «边的数量» من القيم الآتية: «空» عندما يساوي 0; «点» عندما يساوي 1; «线» عندما يساوي 2; «三角形» عندما يساوي 3; «正方形» عندما يساوي 4; وفيما عدا ذلك «--».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Switch(边的数量, 0, \"空\", 1, \"点\", 2, \"线\", 3, \"三角形\", 4, \"正方形\", \"--\")"
+      },
+      "形状.边标签": {
+        "table": "形状",
+        "field": "边标签",
+        "kind": "lookup",
+        "rule": "حقل «边标签» في سجل «形状» هو نص فارغ.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边长": {
+        "table": "形状",
+        "field": "边长",
+        "kind": "lookup",
+        "rule": "حقل «边长» في سجل «形状» هو نص فارغ.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边的数量": {
+        "table": "形状",
+        "field": "边的数量",
+        "kind": "rollup",
+        "rule": "حقل «边的数量» في سجل «形状» هو عدد سجلات «边» المرتبطة بسجل «形状».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "عدد سجلات «边» التي يتحقق فيها أنّ حقل «形状» يساوي 形状id"
+      },
+      "形状.边角": {
+        "table": "形状",
+        "field": "边角",
+        "kind": "lookup",
+        "rule": "حقل «边角» في سجل «形状» هو نص فارغ.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.角度总和": {
+        "table": "形状",
+        "field": "角度总和",
+        "kind": "rollup",
+        "rule": "حقل «角度总和» في سجل «形状» هو مجموع قيم حقل «角度» عبر سجلات «边» المرتبطة بسجل «形状».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "مجموع «角度» في جميع سجلات «边» التي يتحقق فيها أنّ حقل «形状» يساوي 形状id"
+      },
+      "形状.最大边长": {
+        "table": "形状",
+        "field": "最大边长",
+        "kind": "rollup",
+        "rule": "حقل «最大边长» في سجل «形状» هو مجموع قيم حقل «长度» عبر سجلات «边» المرتبطة بسجل «形状».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "مجموع «长度» في جميع سجلات «边» التي يتحقق فيها أنّ حقل «形状» يساوي 形状id"
+      },
+      "形状.非斜边角度总和": {
+        "table": "形状",
+        "field": "非斜边角度总和",
+        "kind": "rollup",
+        "rule": "حقل «非斜边角度总和» في سجل «形状» هو مجموع قيم حقل «长度平方» عبر سجلات «边» المرتبطة بسجل «形状».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "مجموع «长度平方» في جميع سجلات «边» التي يتحقق فيها أنّ حقل «形状» يساوي 形状id"
+      },
+      "形状.勾股定理成立": {
+        "table": "形状",
+        "field": "勾股定理成立",
+        "kind": "formula",
+        "rule": "حقل «勾股定理成立» في سجل «形状» يتحدد وفق ترتيب الأولوية الآتي:\n1. حقل «非斜边角度总和» يساوي حقل «最大边长» مضروبًا في حقل «最大边长»، إذا تحقق أنّ حقل «边的数量» يساوي 3؛\n2. قيمة فارغة، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «勾股定理成立» في سجل «形状» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "حقل «非斜边角度总和» يساوي حقل «最大边长» مضروبًا في حقل «最大边长»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «边的数量» يساوي 3"
+              }
+            },
+            {
+              "value": "قيمة فارغة",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ 边的数量 يساوي 3 فالناتج 非斜边角度总和 يساوي (最大边长 ضرب 最大边长)، وإلا فالناتج blank()"
+      },
+      "边.名称": {
+        "table": "边",
+        "field": "名称",
+        "kind": "formula",
+        "rule": "حقل «名称» في سجل «边» يُحسب على النحو الآتي: حقل «形状»، ثم شرطة، ثم حقل «标签».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "(形状 يليه \"-\") يليه 标签"
+      },
+      "边.形状的最大边长": {
+        "table": "边",
+        "field": "形状的最大边长",
+        "kind": "lookup",
+        "rule": "حقل «形状的最大边长» في سجل «边» مأخوذ من السجل المرتبط به عبر حقل «形状».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "حقل «最大边长» من السجل المرتبط عبر «形状»"
+      },
+      "边.边的数量": {
+        "table": "边",
+        "field": "边的数量",
+        "kind": "lookup",
+        "rule": "حقل «边的数量» في سجل «边» مأخوذ من السجل المرتبط به عبر حقل «形状».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "حقل «边的数量» من السجل المرتبط عبر «形状»"
+      },
+      "边.是否为斜边": {
+        "table": "边",
+        "field": "是否为斜边",
+        "kind": "formula",
+        "rule": "حقل «是否为斜边» في سجل «边» يُحسب على النحو الآتي: حقل «长度» يساوي حقل «形状的最大边长».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 يساوي 形状的最大边长"
+      },
+      "边.形状类型": {
+        "table": "边",
+        "field": "形状类型",
+        "kind": "lookup",
+        "rule": "حقل «形状类型» في سجل «边» يأخذ قيمة حقل «边的类型» من السجل المرتبط به عبر حقل «形状».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "حقل «边的类型» من السجل المرتبط عبر «形状»"
+      },
+      "边.长度平方": {
+        "table": "边",
+        "field": "长度平方",
+        "kind": "formula",
+        "rule": "حقل «长度平方» في سجل «边» يُحسب على النحو الآتي: حقل «长度» مضروبًا في حقل «长度».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 ضرب 长度"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "形状": "形状",
+      "边": "边"
+    }
+  },
+  "de": {
+    "fields": {
+      "形状.边的类型": {
+        "table": "形状",
+        "field": "边的类型",
+        "kind": "formula",
+        "rule": "Ein 形状: 边的类型 wird berechnet als der gegen der 边的数量 abgeglichene Wert: „空“, wenn er 0 ist; „点“, wenn er 1 ist; „线“, wenn er 2 ist; „三角形“, wenn er 3 ist; „正方形“, wenn er 4 ist; andernfalls „--“.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Switch(边的数量, 0, \"空\", 1, \"点\", 2, \"线\", 3, \"三角形\", 4, \"正方形\", \"--\")"
+      },
+      "形状.边标签": {
+        "table": "形状",
+        "field": "边标签",
+        "kind": "lookup",
+        "rule": "Ein 形状: 边标签 ist eine leere Zeichenkette.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边长": {
+        "table": "形状",
+        "field": "边长",
+        "kind": "lookup",
+        "rule": "Ein 形状: 边长 ist eine leere Zeichenkette.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边的数量": {
+        "table": "形状",
+        "field": "边的数量",
+        "kind": "rollup",
+        "rule": "Ein 形状: 边的数量 ist die Anzahl der mit dem 形状 verbundenen 边.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Anzahl der 边, deren 形状 ist 形状Id"
+      },
+      "形状.边角": {
+        "table": "形状",
+        "field": "边角",
+        "kind": "lookup",
+        "rule": "Ein 形状: 边角 ist eine leere Zeichenkette.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.角度总和": {
+        "table": "形状",
+        "field": "角度总和",
+        "kind": "rollup",
+        "rule": "Ein 形状: 角度总和 ist die Gesamtsumme von 角度 über die mit dem 形状 verbundenen 边.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Summe von 角度 über alle 边, deren 形状 ist 形状Id"
+      },
+      "形状.最大边长": {
+        "table": "形状",
+        "field": "最大边长",
+        "kind": "rollup",
+        "rule": "Ein 形状: 最大边长 ist die Gesamtsumme von 长度 über die mit dem 形状 verbundenen 边.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Summe von 长度 über alle 边, deren 形状 ist 形状Id"
+      },
+      "形状.非斜边角度总和": {
+        "table": "形状",
+        "field": "非斜边角度总和",
+        "kind": "rollup",
+        "rule": "Ein 形状: 非斜边角度总和 ist die Gesamtsumme von 长度平方 über die mit dem 形状 verbundenen 边.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Summe von 长度平方 über alle 边, deren 形状 ist 形状Id"
+      },
+      "形状.勾股定理成立": {
+        "table": "形状",
+        "field": "勾股定理成立",
+        "kind": "formula",
+        "rule": "Das Feld „勾股定理成立“ des 形状 wird nach folgender Priorität bestimmt:\n1. der 非斜边角度总和 der 最大边长 mal der 最大边长 ist, wenn der 边的数量 3 ist;\n2. andernfalls kein Wert.",
+        "mechanical": false,
+        "refs": [],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „勾股定理成立“ des 形状 wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "der 非斜边角度总和 der 最大边长 mal der 最大边长 ist",
+              "when": {
+                "kind": "leaf",
+                "text": "der 边的数量 3 ist"
+              }
+            },
+            {
+              "value": "kein Wert",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn 边的数量 gleich 3 ist, dann 非斜边角度总和 gleich (最大边长 mal 最大边长) ist, andernfalls blank()"
+      },
+      "边.名称": {
+        "table": "边",
+        "field": "名称",
+        "kind": "formula",
+        "rule": "Ein 边: 名称 wird berechnet als der 形状, gefolgt von ein Bindestrich, gefolgt von der 标签.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "(形状 verbunden mit \"-\") verbunden mit 标签"
+      },
+      "边.形状的最大边长": {
+        "table": "边",
+        "field": "形状的最大边长",
+        "kind": "lookup",
+        "rule": "Ein 边: 形状的最大边长 — aus dem zugehörigen 形状 übernommen.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Der 最大边长 des verknüpften 形状"
+      },
+      "边.边的数量": {
+        "table": "边",
+        "field": "边的数量",
+        "kind": "lookup",
+        "rule": "Ein 边: 边的数量 — aus dem zugehörigen 形状 übernommen.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Der 边的数量 des verknüpften 形状"
+      },
+      "边.是否为斜边": {
+        "table": "边",
+        "field": "是否为斜边",
+        "kind": "formula",
+        "rule": "Ein 边: 是否为斜边 wird berechnet als der 长度 der 形状的最大边长 ist.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 gleich 形状的最大边长 ist"
+      },
+      "边.形状类型": {
+        "table": "边",
+        "field": "形状类型",
+        "kind": "lookup",
+        "rule": "Ein 边: 形状类型 ist der 边的类型 des zugehörigen 形状 des 边.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Der 边的类型 des verknüpften 形状"
+      },
+      "边.长度平方": {
+        "table": "边",
+        "field": "长度平方",
+        "kind": "formula",
+        "rule": "Ein 边: 长度平方 wird berechnet als der 长度 mal der 长度.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 mal 长度"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "形状": "形状",
+      "边": "边"
+    }
+  },
+  "es": {
+    "fields": {
+      "形状.边的类型": {
+        "table": "形状",
+        "field": "边的类型",
+        "kind": "formula",
+        "rule": "Un 形状: 边的类型 se calcula como el valor comparado con el 边的数量: «空» cuando es 0; «点» cuando es 1; «线» cuando es 2; «三角形» cuando es 3; «正方形» cuando es 4; en caso contrario «--».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Switch(边的数量, 0, \"空\", 1, \"点\", 2, \"线\", 3, \"三角形\", 4, \"正方形\", \"--\")"
+      },
+      "形状.边标签": {
+        "table": "形状",
+        "field": "边标签",
+        "kind": "lookup",
+        "rule": "Un 形状: 边标签 es una cadena vacía.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边长": {
+        "table": "形状",
+        "field": "边长",
+        "kind": "lookup",
+        "rule": "Un 形状: 边长 es una cadena vacía.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边的数量": {
+        "table": "形状",
+        "field": "边的数量",
+        "kind": "rollup",
+        "rule": "Un 形状: 边的数量 es el número de 边 relacionados con el 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Recuento de 边 cuyo 形状 es 形状id"
+      },
+      "形状.边角": {
+        "table": "形状",
+        "field": "边角",
+        "kind": "lookup",
+        "rule": "Un 形状: 边角 es una cadena vacía.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.角度总和": {
+        "table": "形状",
+        "field": "角度总和",
+        "kind": "rollup",
+        "rule": "Un 形状: 角度总和 es el total de 角度 entre los 边 relacionados con el 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Suma de 角度 entre todos los 边 cuyo 形状 es 形状id"
+      },
+      "形状.最大边长": {
+        "table": "形状",
+        "field": "最大边长",
+        "kind": "rollup",
+        "rule": "Un 形状: 最大边长 es el total de 长度 entre los 边 relacionados con el 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Suma de 长度 entre todos los 边 cuyo 形状 es 形状id"
+      },
+      "形状.非斜边角度总和": {
+        "table": "形状",
+        "field": "非斜边角度总和",
+        "kind": "rollup",
+        "rule": "Un 形状: 非斜边角度总和 es el total de 长度平方 entre los 边 relacionados con el 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Suma de 长度平方 entre todos los 边 cuyo 形状 es 形状id"
+      },
+      "形状.勾股定理成立": {
+        "table": "形状",
+        "field": "勾股定理成立",
+        "kind": "formula",
+        "rule": "El campo «勾股定理成立» del 形状 se determina según la siguiente prioridad:\n1. el 非斜边角度总和 es el 最大边长 por el 最大边长, si el 边的数量 es 3;\n2. en todos los demás casos, ningún valor.",
+        "mechanical": false,
+        "refs": [],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «勾股定理成立» del 形状 se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "el 非斜边角度总和 es el 最大边长 por el 最大边长",
+              "when": {
+                "kind": "leaf",
+                "text": "el 边的数量 es 3"
+              }
+            },
+            {
+              "value": "ningún valor",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si 边的数量 es igual a 3, entonces 非斜边角度总和 es igual a (最大边长 por 最大边长), de lo contrario blank()"
+      },
+      "边.名称": {
+        "table": "边",
+        "field": "名称",
+        "kind": "formula",
+        "rule": "Un 边: 名称 se calcula como el 形状, seguido de un guion, seguido de el 标签.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "(形状 unido con \"-\") unido con 标签"
+      },
+      "边.形状的最大边长": {
+        "table": "边",
+        "field": "形状的最大边长",
+        "kind": "lookup",
+        "rule": "Un 边: 形状的最大边长 — tomado del 形状 vinculado.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "El 最大边长 del 形状 vinculado"
+      },
+      "边.边的数量": {
+        "table": "边",
+        "field": "边的数量",
+        "kind": "lookup",
+        "rule": "Un 边: 边的数量 — tomado del 形状 vinculado.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "El 边的数量 del 形状 vinculado"
+      },
+      "边.是否为斜边": {
+        "table": "边",
+        "field": "是否为斜边",
+        "kind": "formula",
+        "rule": "Un 边: 是否为斜边 se calcula como el 长度 es el 形状的最大边长.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 es igual a 形状的最大边长"
+      },
+      "边.形状类型": {
+        "table": "边",
+        "field": "形状类型",
+        "kind": "lookup",
+        "rule": "Un 边: 形状类型 es el 边的类型 del 形状 vinculado.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "El 边的类型 del 形状 vinculado"
+      },
+      "边.长度平方": {
+        "table": "边",
+        "field": "长度平方",
+        "kind": "formula",
+        "rule": "Un 边: 长度平方 se calcula como el 长度 por el 长度.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 por 长度"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "形状": "形状",
+      "边": "边"
+    }
+  },
+  "fr": {
+    "fields": {
+      "形状.边的类型": {
+        "table": "形状",
+        "field": "边的类型",
+        "kind": "formula",
+        "rule": "Un 形状 : 边的类型 est calculé comme la valeur comparée à le 边的数量 : « 空 » quand c'est 0; « 点 » quand c'est 1; « 线 » quand c'est 2; « 三角形 » quand c'est 3; « 正方形 » quand c'est 4; sinon « -- ».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Switch(边的数量, 0, \"空\", 1, \"点\", 2, \"线\", 3, \"三角形\", 4, \"正方形\", \"--\")"
+      },
+      "形状.边标签": {
+        "table": "形状",
+        "field": "边标签",
+        "kind": "lookup",
+        "rule": "Un 形状 : 边标签 est une chaîne vide.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边长": {
+        "table": "形状",
+        "field": "边长",
+        "kind": "lookup",
+        "rule": "Un 形状 : 边长 est une chaîne vide.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边的数量": {
+        "table": "形状",
+        "field": "边的数量",
+        "kind": "rollup",
+        "rule": "Un 形状 : 边的数量 est le nombre de 边 liés à le 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Décompte des 边 dont 形状 est 形状id"
+      },
+      "形状.边角": {
+        "table": "形状",
+        "field": "边角",
+        "kind": "lookup",
+        "rule": "Un 形状 : 边角 est une chaîne vide.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.角度总和": {
+        "table": "形状",
+        "field": "角度总和",
+        "kind": "rollup",
+        "rule": "Un 形状 : 角度总和 est le total de 角度 sur les 边 liés à le 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Somme de 角度 sur tous les 边 dont 形状 est 形状id"
+      },
+      "形状.最大边长": {
+        "table": "形状",
+        "field": "最大边长",
+        "kind": "rollup",
+        "rule": "Un 形状 : 最大边长 est le total de 长度 sur les 边 liés à le 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Somme de 长度 sur tous les 边 dont 形状 est 形状id"
+      },
+      "形状.非斜边角度总和": {
+        "table": "形状",
+        "field": "非斜边角度总和",
+        "kind": "rollup",
+        "rule": "Un 形状 : 非斜边角度总和 est le total de 长度平方 sur les 边 liés à le 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Somme de 长度平方 sur tous les 边 dont 形状 est 形状id"
+      },
+      "形状.勾股定理成立": {
+        "table": "形状",
+        "field": "勾股定理成立",
+        "kind": "formula",
+        "rule": "Le champ « 勾股定理成立 » du 形状 est déterminé selon la priorité suivante :\n1. le 非斜边角度总和 est le 最大边长 multiplié par le 最大边长, si le 边的数量 est 3 ;\n2. dans tous les autres cas, aucune valeur.",
+        "mechanical": false,
+        "refs": [],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « 勾股定理成立 » du 形状 est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "le 非斜边角度总和 est le 最大边长 multiplié par le 最大边长",
+              "when": {
+                "kind": "leaf",
+                "text": "le 边的数量 est 3"
+              }
+            },
+            {
+              "value": "aucune valeur",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si 边的数量 est égal à 3, alors 非斜边角度总和 est égal à (最大边长 fois 最大边长), sinon blank()"
+      },
+      "边.名称": {
+        "table": "边",
+        "field": "名称",
+        "kind": "formula",
+        "rule": "Un 边 : 名称 est calculé comme le 形状, suivi de un trait d'union, suivi de le 标签.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "(形状 joint à \"-\") joint à 标签"
+      },
+      "边.形状的最大边长": {
+        "table": "边",
+        "field": "形状的最大边长",
+        "kind": "lookup",
+        "rule": "Un 边 : 形状的最大边长 — repris du 形状 lié.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Le 最大边长 du 形状 lié"
+      },
+      "边.边的数量": {
+        "table": "边",
+        "field": "边的数量",
+        "kind": "lookup",
+        "rule": "Un 边 : 边的数量 — repris du 形状 lié.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Le 边的数量 du 形状 lié"
+      },
+      "边.是否为斜边": {
+        "table": "边",
+        "field": "是否为斜边",
+        "kind": "formula",
+        "rule": "Un 边 : 是否为斜边 est calculé comme le 长度 est le 形状的最大边长.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 est égal à 形状的最大边长"
+      },
+      "边.形状类型": {
+        "table": "边",
+        "field": "形状类型",
+        "kind": "lookup",
+        "rule": "Un 边 : 形状类型 est le 边的类型 du 形状 lié.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Le 边的类型 du 形状 lié"
+      },
+      "边.长度平方": {
+        "table": "边",
+        "field": "长度平方",
+        "kind": "formula",
+        "rule": "Un 边 : 长度平方 est calculé comme le 长度 multiplié par le 长度.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 fois 长度"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "形状": "形状",
+      "边": "边"
+    }
+  },
+  "hi": {
+    "fields": {
+      "形状.边的类型": {
+        "table": "形状",
+        "field": "边的类型",
+        "kind": "formula",
+        "rule": "形状 का “边的类型” 边的数量 से मिलान किया गया मान: “空”, जब वह 0 हो; “点”, जब वह 1 हो; “线”, जब वह 2 हो; “三角形”, जब वह 3 हो; “正方形”, जब वह 4 हो; अन्यथा “--” के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Switch(边的数量, 0, \"空\", 1, \"点\", 2, \"线\", 3, \"三角形\", 4, \"正方形\", \"--\")"
+      },
+      "形状.边标签": {
+        "table": "形状",
+        "field": "边标签",
+        "kind": "lookup",
+        "rule": "形状 का “边标签” एक खाली स्ट्रिंग है।",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边长": {
+        "table": "形状",
+        "field": "边长",
+        "kind": "lookup",
+        "rule": "形状 का “边长” एक खाली स्ट्रिंग है।",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边的数量": {
+        "table": "形状",
+        "field": "边的数量",
+        "kind": "rollup",
+        "rule": "形状 का “边的数量” 形状 से संबंधित “边” की संख्या है।",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "उन “边” की संख्या, जिनका 形状 形状id है"
+      },
+      "形状.边角": {
+        "table": "形状",
+        "field": "边角",
+        "kind": "lookup",
+        "rule": "形状 का “边角” एक खाली स्ट्रिंग है।",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.角度总和": {
+        "table": "形状",
+        "field": "角度总和",
+        "kind": "rollup",
+        "rule": "形状 का “角度总和” 形状 से संबंधित “边” पर कुल “角度” है।",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "उन सभी “边” पर योग 角度, जिनका 形状 形状id है"
+      },
+      "形状.最大边长": {
+        "table": "形状",
+        "field": "最大边长",
+        "kind": "rollup",
+        "rule": "形状 का “最大边长” 形状 से संबंधित “边” पर कुल “长度” है।",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "उन सभी “边” पर योग 长度, जिनका 形状 形状id है"
+      },
+      "形状.非斜边角度总和": {
+        "table": "形状",
+        "field": "非斜边角度总和",
+        "kind": "rollup",
+        "rule": "形状 का “非斜边角度总和” 形状 से संबंधित “边” पर कुल “长度平方” है।",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "उन सभी “边” पर योग 长度平方, जिनका 形状 形状id है"
+      },
+      "形状.勾股定理成立": {
+        "table": "形状",
+        "field": "勾股定理成立",
+        "kind": "formula",
+        "rule": "形状 का “勾股定理成立” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. 非斜边角度总和 最大边长 गुणा 最大边长 है, यदि 边的数量 3 है;\n2. अन्य सभी स्थितियों में, कोई मान नहीं।",
+        "mechanical": false,
+        "refs": [],
+        "structure": {
+          "kind": "priority",
+          "headline": "形状 का “勾股定理成立” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "非斜边角度总和 最大边长 गुणा 最大边长 है",
+              "when": {
+                "kind": "leaf",
+                "text": "边的数量 3 है"
+              }
+            },
+            {
+              "value": "कोई मान नहीं",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि 边的数量 3 के बराबर है, तो 非斜边角度总和 (最大边长 गुणा 最大边长) के बराबर है, अन्यथा blank()"
+      },
+      "边.名称": {
+        "table": "边",
+        "field": "名称",
+        "kind": "formula",
+        "rule": "边 का “名称” 形状, उसके बाद एक योजक चिह्न, उसके बाद 标签 के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "(形状 \"-\" से जुड़ा हुआ) 标签 से जुड़ा हुआ"
+      },
+      "边.形状的最大边长": {
+        "table": "边",
+        "field": "形状的最大边长",
+        "kind": "lookup",
+        "rule": "边 का “形状的最大边长” — लिंक किए गए “形状” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "लिंक किए गए “形状” का 最大边长"
+      },
+      "边.边的数量": {
+        "table": "边",
+        "field": "边的数量",
+        "kind": "lookup",
+        "rule": "边 का “边的数量” — लिंक किए गए “形状” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "लिंक किए गए “形状” का 边的数量"
+      },
+      "边.是否为斜边": {
+        "table": "边",
+        "field": "是否为斜边",
+        "kind": "formula",
+        "rule": "边 का “是否为斜边” 长度 形状的最大边长 है के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 形状的最大边长 के बराबर है"
+      },
+      "边.形状类型": {
+        "table": "边",
+        "field": "形状类型",
+        "kind": "lookup",
+        "rule": "边 का “形状类型” लिंक किए गए “形状” का “边的类型” है।",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "लिंक किए गए “形状” का 边的类型"
+      },
+      "边.长度平方": {
+        "table": "边",
+        "field": "长度平方",
+        "kind": "formula",
+        "rule": "边 का “长度平方” 长度 गुणा 长度 के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 गुणा 长度"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "形状": "形状",
+      "边": "边"
+    }
+  },
+  "id": {
+    "fields": {
+      "形状.边的类型": {
+        "table": "形状",
+        "field": "边的类型",
+        "kind": "formula",
+        "rule": "Untuk setiap 形状, 边的类型 dihitung sebagai nilai yang ditentukan berdasarkan 边的数量: “空” jika nilainya 0; “点” jika nilainya 1; “线” jika nilainya 2; “三角形” jika nilainya 3; “正方形” jika nilainya 4; selain itu “--”.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Switch(边的数量, 0, \"空\", 1, \"点\", 2, \"线\", 3, \"三角形\", 4, \"正方形\", \"--\")"
+      },
+      "形状.边标签": {
+        "table": "形状",
+        "field": "边标签",
+        "kind": "lookup",
+        "rule": "Untuk setiap 形状, 边标签 adalah teks kosong.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边长": {
+        "table": "形状",
+        "field": "边长",
+        "kind": "lookup",
+        "rule": "Untuk setiap 形状, 边长 adalah teks kosong.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边的数量": {
+        "table": "形状",
+        "field": "边的数量",
+        "kind": "rollup",
+        "rule": "Untuk setiap 形状, 边的数量 adalah jumlah 边 yang terkait dengan 形状 tersebut.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Jumlah 边 dengan syarat 形状 adalah 形状id"
+      },
+      "形状.边角": {
+        "table": "形状",
+        "field": "边角",
+        "kind": "lookup",
+        "rule": "Untuk setiap 形状, 边角 adalah teks kosong.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.角度总和": {
+        "table": "形状",
+        "field": "角度总和",
+        "kind": "rollup",
+        "rule": "Untuk setiap 形状, 角度总和 adalah nilai total 角度 pada seluruh 边 yang terkait dengan 形状 tersebut.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Total 角度 pada semua 边 dengan syarat 形状 adalah 形状id"
+      },
+      "形状.最大边长": {
+        "table": "形状",
+        "field": "最大边长",
+        "kind": "rollup",
+        "rule": "Untuk setiap 形状, 最大边长 adalah nilai total 长度 pada seluruh 边 yang terkait dengan 形状 tersebut.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Total 长度 pada semua 边 dengan syarat 形状 adalah 形状id"
+      },
+      "形状.非斜边角度总和": {
+        "table": "形状",
+        "field": "非斜边角度总和",
+        "kind": "rollup",
+        "rule": "Untuk setiap 形状, 非斜边角度总和 adalah nilai total 长度平方 pada seluruh 边 yang terkait dengan 形状 tersebut.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Total 长度平方 pada semua 边 dengan syarat 形状 adalah 形状id"
+      },
+      "形状.勾股定理成立": {
+        "table": "形状",
+        "field": "勾股定理成立",
+        "kind": "formula",
+        "rule": "Untuk setiap 形状, 勾股定理成立 ditentukan menurut urutan prioritas berikut:\n1. 非斜边角度总和 adalah 最大边长 dikali 最大边长, jika 边的数量 adalah 3;\n2. dalam semua kasus lainnya, nilai kosong.",
+        "mechanical": false,
+        "refs": [],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap 形状, 勾股定理成立 ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "非斜边角度总和 adalah 最大边长 dikali 最大边长",
+              "when": {
+                "kind": "leaf",
+                "text": "边的数量 adalah 3"
+              }
+            },
+            {
+              "value": "nilai kosong",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika 边的数量 sama dengan 3 maka 非斜边角度总和 sama dengan (最大边长 dikali 最大边长), selain itu blank()"
+      },
+      "边.名称": {
+        "table": "边",
+        "field": "名称",
+        "kind": "formula",
+        "rule": "Untuk setiap 边, 名称 dihitung sebagai 形状, diikuti tanda hubung, diikuti 标签.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "(形状 digabung dengan \"-\") digabung dengan 标签"
+      },
+      "边.形状的最大边长": {
+        "table": "边",
+        "field": "形状的最大边长",
+        "kind": "lookup",
+        "rule": "Untuk setiap 边, 形状的最大边长 diambil dari 形状 yang tertaut.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "最大边长 dari 形状 yang tertaut"
+      },
+      "边.边的数量": {
+        "table": "边",
+        "field": "边的数量",
+        "kind": "lookup",
+        "rule": "Untuk setiap 边, 边的数量 diambil dari 形状 yang tertaut.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "边的数量 dari 形状 yang tertaut"
+      },
+      "边.是否为斜边": {
+        "table": "边",
+        "field": "是否为斜边",
+        "kind": "formula",
+        "rule": "Untuk setiap 边, 是否为斜边 dihitung sebagai 长度 adalah 形状的最大边长.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 sama dengan 形状的最大边长"
+      },
+      "边.形状类型": {
+        "table": "边",
+        "field": "形状类型",
+        "kind": "lookup",
+        "rule": "Untuk setiap 边, 形状类型 adalah 边的类型 dari 形状 yang tertaut pada 边 tersebut.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "边的类型 dari 形状 yang tertaut"
+      },
+      "边.长度平方": {
+        "table": "边",
+        "field": "长度平方",
+        "kind": "formula",
+        "rule": "Untuk setiap 边, 长度平方 dihitung sebagai 长度 dikali 长度.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 dikali 长度"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "形状": "形状",
+      "边": "边"
+    }
+  },
+  "it": {
+    "fields": {
+      "形状.边的类型": {
+        "table": "形状",
+        "field": "边的类型",
+        "kind": "formula",
+        "rule": "Un 形状: 边的类型 è calcolato come il valore confrontato con il 边的数量: «空» quando è 0; «点» quando è 1; «线» quando è 2; «三角形» quando è 3; «正方形» quando è 4; altrimenti «--».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Switch(边的数量, 0, \"空\", 1, \"点\", 2, \"线\", 3, \"三角形\", 4, \"正方形\", \"--\")"
+      },
+      "形状.边标签": {
+        "table": "形状",
+        "field": "边标签",
+        "kind": "lookup",
+        "rule": "Un 形状: 边标签 è una stringa vuota.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边长": {
+        "table": "形状",
+        "field": "边长",
+        "kind": "lookup",
+        "rule": "Un 形状: 边长 è una stringa vuota.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边的数量": {
+        "table": "形状",
+        "field": "边的数量",
+        "kind": "rollup",
+        "rule": "Un 形状: 边的数量 è il numero di 边 collegati a il 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Conteggio dei 边 il cui 形状 è 形状id"
+      },
+      "形状.边角": {
+        "table": "形状",
+        "field": "边角",
+        "kind": "lookup",
+        "rule": "Un 形状: 边角 è una stringa vuota.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.角度总和": {
+        "table": "形状",
+        "field": "角度总和",
+        "kind": "rollup",
+        "rule": "Un 形状: 角度总和 è il totale di 角度 tra i 边 collegati a il 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Somma di 角度 su tutti i 边 il cui 形状 è 形状id"
+      },
+      "形状.最大边长": {
+        "table": "形状",
+        "field": "最大边长",
+        "kind": "rollup",
+        "rule": "Un 形状: 最大边长 è il totale di 长度 tra i 边 collegati a il 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Somma di 长度 su tutti i 边 il cui 形状 è 形状id"
+      },
+      "形状.非斜边角度总和": {
+        "table": "形状",
+        "field": "非斜边角度总和",
+        "kind": "rollup",
+        "rule": "Un 形状: 非斜边角度总和 è il totale di 长度平方 tra i 边 collegati a il 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Somma di 长度平方 su tutti i 边 il cui 形状 è 形状id"
+      },
+      "形状.勾股定理成立": {
+        "table": "形状",
+        "field": "勾股定理成立",
+        "kind": "formula",
+        "rule": "Il campo “勾股定理成立” del 形状 è determinato secondo la seguente priorità:\n1. il 非斜边角度总和 è il 最大边长 per il 最大边长, se il 边的数量 è 3;\n2. in tutti gli altri casi, nessun valore.",
+        "mechanical": false,
+        "refs": [],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “勾股定理成立” del 形状 è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "il 非斜边角度总和 è il 最大边长 per il 最大边长",
+              "when": {
+                "kind": "leaf",
+                "text": "il 边的数量 è 3"
+              }
+            },
+            {
+              "value": "nessun valore",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se 边的数量 è uguale a 3, allora 非斜边角度总和 è uguale a (最大边长 per 最大边长), altrimenti blank()"
+      },
+      "边.名称": {
+        "table": "边",
+        "field": "名称",
+        "kind": "formula",
+        "rule": "Un 边: 名称 è calcolato come il 形状, seguito da un trattino, seguito da il 标签.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "(形状 unito a \"-\") unito a 标签"
+      },
+      "边.形状的最大边长": {
+        "table": "边",
+        "field": "形状的最大边长",
+        "kind": "lookup",
+        "rule": "Un 边: 形状的最大边长 — ripreso dal 形状 collegato.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Il 最大边长 del 形状 collegato"
+      },
+      "边.边的数量": {
+        "table": "边",
+        "field": "边的数量",
+        "kind": "lookup",
+        "rule": "Un 边: 边的数量 — ripreso dal 形状 collegato.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Il 边的数量 del 形状 collegato"
+      },
+      "边.是否为斜边": {
+        "table": "边",
+        "field": "是否为斜边",
+        "kind": "formula",
+        "rule": "Un 边: 是否为斜边 è calcolato come il 长度 è il 形状的最大边长.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 è uguale a 形状的最大边长"
+      },
+      "边.形状类型": {
+        "table": "边",
+        "field": "形状类型",
+        "kind": "lookup",
+        "rule": "Un 边: 形状类型 è il 边的类型 del 形状 collegato.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Il 边的类型 del 形状 collegato"
+      },
+      "边.长度平方": {
+        "table": "边",
+        "field": "长度平方",
+        "kind": "formula",
+        "rule": "Un 边: 长度平方 è calcolato come il 长度 per il 长度.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 per 长度"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "形状": "形状",
+      "边": "边"
+    }
+  },
+  "ja": {
+    "fields": {
+      "形状.边的类型": {
+        "table": "形状",
+        "field": "边的类型",
+        "kind": "formula",
+        "rule": "形状の「边的类型」は 边的数量 と照合した値: 0 のときは 「空」; 1 のときは 「点」; 2 のときは 「线」; 3 のときは 「三角形」; 4 のときは 「正方形」; それ以外は 「--」 として計算されます。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Switch(边的数量, 0, \"空\", 1, \"点\", 2, \"线\", 3, \"三角形\", 4, \"正方形\", \"--\")"
+      },
+      "形状.边标签": {
+        "table": "形状",
+        "field": "边标签",
+        "kind": "lookup",
+        "rule": "形状の「边标签」は 空文字列 です。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边长": {
+        "table": "形状",
+        "field": "边长",
+        "kind": "lookup",
+        "rule": "形状の「边长」は 空文字列 です。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边的数量": {
+        "table": "形状",
+        "field": "边的数量",
+        "kind": "rollup",
+        "rule": "形状の「边的数量」は 形状に関連する「边」の件数 です。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "形状 が 形状id である「边」の件数"
+      },
+      "形状.边角": {
+        "table": "形状",
+        "field": "边角",
+        "kind": "lookup",
+        "rule": "形状の「边角」は 空文字列 です。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.角度总和": {
+        "table": "形状",
+        "field": "角度总和",
+        "kind": "rollup",
+        "rule": "形状の「角度总和」は 形状に関連する「边」全体での「角度」の合計 です。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "形状 が 形状id であるすべての「边」にわたる 角度 の合計"
+      },
+      "形状.最大边长": {
+        "table": "形状",
+        "field": "最大边长",
+        "kind": "rollup",
+        "rule": "形状の「最大边长」は 形状に関連する「边」全体での「长度」の合計 です。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "形状 が 形状id であるすべての「边」にわたる 长度 の合計"
+      },
+      "形状.非斜边角度总和": {
+        "table": "形状",
+        "field": "非斜边角度总和",
+        "kind": "rollup",
+        "rule": "形状の「非斜边角度总和」は 形状に関連する「边」全体での「长度平方」の合計 です。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "形状 が 形状id であるすべての「边」にわたる 长度平方 の合計"
+      },
+      "形状.勾股定理成立": {
+        "table": "形状",
+        "field": "勾股定理成立",
+        "kind": "formula",
+        "rule": "形状の「勾股定理成立」は、次の優先順位で決まります:\n1. 边的数量 が 3 である場合は 非斜边角度总和 が 最大边长 かける 最大边长 である;\n2. それ以外の場合は 値なし。",
+        "mechanical": false,
+        "refs": [],
+        "structure": {
+          "kind": "priority",
+          "headline": "形状の「勾股定理成立」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "非斜边角度总和 が 最大边长 かける 最大边长 である",
+              "when": {
+                "kind": "leaf",
+                "text": "边的数量 が 3 である"
+              }
+            },
+            {
+              "value": "値なし",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "边的数量 が 3 と等しいなら 非斜边角度总和 が (最大边长 かける 最大边长) と等しい、そうでなければ blank()"
+      },
+      "边.名称": {
+        "table": "边",
+        "field": "名称",
+        "kind": "formula",
+        "rule": "边の「名称」は 形状、続いて ハイフン、続いて 标签 として計算されます。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "(形状 と \"-\" を連結) と 标签 を連結"
+      },
+      "边.形状的最大边长": {
+        "table": "边",
+        "field": "形状的最大边长",
+        "kind": "lookup",
+        "rule": "边の「形状的最大边长」— リンクされた「形状」から取得されます。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "リンクされた「形状」の 最大边长"
+      },
+      "边.边的数量": {
+        "table": "边",
+        "field": "边的数量",
+        "kind": "lookup",
+        "rule": "边の「边的数量」— リンクされた「形状」から取得されます。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "リンクされた「形状」の 边的数量"
+      },
+      "边.是否为斜边": {
+        "table": "边",
+        "field": "是否为斜边",
+        "kind": "formula",
+        "rule": "边の「是否为斜边」は 长度 が 形状的最大边长 である として計算されます。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 が 形状的最大边长 と等しい"
+      },
+      "边.形状类型": {
+        "table": "边",
+        "field": "形状类型",
+        "kind": "lookup",
+        "rule": "边の「形状类型」は、リンクされた「形状」の「边的类型」です。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "リンクされた「形状」の 边的类型"
+      },
+      "边.长度平方": {
+        "table": "边",
+        "field": "长度平方",
+        "kind": "formula",
+        "rule": "边の「长度平方」は 长度 かける 长度 として計算されます。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 かける 长度"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "形状": "形状",
+      "边": "边"
+    }
+  },
+  "ko": {
+    "fields": {
+      "形状.边的类型": {
+        "table": "形状",
+        "field": "边的类型",
+        "kind": "formula",
+        "rule": "‘形状’ 레코드의 ‘边的类型’ 값은 다음과 같이 계산됩니다: ‘边的数量’ 값에 따라 정해지는 결과(0인 경우에는 “空”; 1인 경우에는 “点”; 2인 경우에는 “线”; 3인 경우에는 “三角形”; 4인 경우에는 “正方形”; 그 밖의 경우에는 “--”).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Switch(边的数量, 0, \"空\", 1, \"点\", 2, \"线\", 3, \"三角形\", 4, \"正方形\", \"--\")"
+      },
+      "形状.边标签": {
+        "table": "形状",
+        "field": "边标签",
+        "kind": "lookup",
+        "rule": "‘形状’ 레코드의 ‘边标签’ 값은 빈 문자열입니다.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边长": {
+        "table": "形状",
+        "field": "边长",
+        "kind": "lookup",
+        "rule": "‘形状’ 레코드의 ‘边长’ 값은 빈 문자열입니다.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边的数量": {
+        "table": "形状",
+        "field": "边的数量",
+        "kind": "rollup",
+        "rule": "‘形状’ 레코드의 ‘边的数量’ 값은 해당 ‘形状’ 레코드에 연결된 ‘边’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "조건(形状 값이 形状id임)에 맞는 边 레코드의 개수"
+      },
+      "形状.边角": {
+        "table": "形状",
+        "field": "边角",
+        "kind": "lookup",
+        "rule": "‘形状’ 레코드의 ‘边角’ 값은 빈 문자열입니다.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.角度总和": {
+        "table": "形状",
+        "field": "角度总和",
+        "kind": "rollup",
+        "rule": "‘形状’ 레코드의 ‘角度总和’ 값은 해당 ‘形状’ 레코드에 연결된 모든 ‘边’ 레코드의 총 ‘角度’입니다.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "조건(形状 값이 形状id임)에 맞는 모든 边 레코드의 角度 합계"
+      },
+      "形状.最大边长": {
+        "table": "形状",
+        "field": "最大边长",
+        "kind": "rollup",
+        "rule": "‘形状’ 레코드의 ‘最大边长’ 값은 해당 ‘形状’ 레코드에 연결된 모든 ‘边’ 레코드의 총 ‘长度’입니다.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "조건(形状 값이 形状id임)에 맞는 모든 边 레코드의 长度 합계"
+      },
+      "形状.非斜边角度总和": {
+        "table": "形状",
+        "field": "非斜边角度总和",
+        "kind": "rollup",
+        "rule": "‘形状’ 레코드의 ‘非斜边角度总和’ 값은 해당 ‘形状’ 레코드에 연결된 모든 ‘边’ 레코드의 총 ‘长度平方’입니다.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "조건(形状 값이 形状id임)에 맞는 모든 边 레코드의 长度平方 합계"
+      },
+      "形状.勾股定理成立": {
+        "table": "形状",
+        "field": "勾股定理成立",
+        "kind": "formula",
+        "rule": "‘形状’ 레코드의 ‘勾股定理成立’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘边的数量’ 값이 3인 경우: ‘非斜边角度总和’ 값이 ‘最大边长’ 곱하기 ‘最大边长’인 경우\n2. 그 밖의 경우: 값 없음.",
+        "mechanical": false,
+        "refs": [],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘形状’ 레코드의 ‘勾股定理成立’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "‘非斜边角度总和’ 값이 ‘最大边长’ 곱하기 ‘最大边长’인 경우",
+              "when": {
+                "kind": "leaf",
+                "text": "‘边的数量’ 값이 3인 경우"
+              }
+            },
+            {
+              "value": "값 없음",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(边的数量 값이 3 값과 같음)이 성립하면 非斜边角度总和 값이 (最大边长 곱하기 最大边长) 값과 같음, 그렇지 않으면 blank()"
+      },
+      "边.名称": {
+        "table": "边",
+        "field": "名称",
+        "kind": "formula",
+        "rule": "‘边’ 레코드의 ‘名称’ 값은 다음과 같이 계산됩니다: ‘形状’, 이어서 하이픈, 이어서 ‘标签’.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "(形状 뒤에 \"-\" 연결한 결과) 뒤에 标签 연결한 결과"
+      },
+      "边.形状的最大边长": {
+        "table": "边",
+        "field": "形状的最大边长",
+        "kind": "lookup",
+        "rule": "‘边’ 레코드의 ‘形状的最大边长’ 값은 연결된 ‘形状’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "연결된 形状 레코드의 最大边长"
+      },
+      "边.边的数量": {
+        "table": "边",
+        "field": "边的数量",
+        "kind": "lookup",
+        "rule": "‘边’ 레코드의 ‘边的数量’ 값은 연결된 ‘形状’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "연결된 形状 레코드의 边的数量"
+      },
+      "边.是否为斜边": {
+        "table": "边",
+        "field": "是否为斜边",
+        "kind": "formula",
+        "rule": "‘边’ 레코드의 ‘是否为斜边’ 값은 다음과 같이 계산됩니다: ‘长度’ 값이 ‘形状的最大边长’인 경우.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 값이 形状的最大边长 값과 같음"
+      },
+      "边.形状类型": {
+        "table": "边",
+        "field": "形状类型",
+        "kind": "lookup",
+        "rule": "‘边’ 레코드의 ‘形状类型’ 값은 연결된 ‘形状’ 레코드의 ‘边的类型’ 값입니다.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "연결된 形状 레코드의 边的类型"
+      },
+      "边.长度平方": {
+        "table": "边",
+        "field": "长度平方",
+        "kind": "formula",
+        "rule": "‘边’ 레코드의 ‘长度平方’ 값은 다음과 같이 계산됩니다: ‘长度’ 곱하기 ‘长度’.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 곱하기 长度"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "形状": "形状",
+      "边": "边"
+    }
+  },
+  "nl": {
+    "fields": {
+      "形状.边的类型": {
+        "table": "形状",
+        "field": "边的类型",
+        "kind": "formula",
+        "rule": "Een 形状: 边的类型 wordt berekend als de waarde vergeleken met de 边的数量: ‘空’ wanneer het 0 is; ‘点’ wanneer het 1 is; ‘线’ wanneer het 2 is; ‘三角形’ wanneer het 3 is; ‘正方形’ wanneer het 4 is; anders ‘--’.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Switch(边的数量, 0, \"空\", 1, \"点\", 2, \"线\", 3, \"三角形\", 4, \"正方形\", \"--\")"
+      },
+      "形状.边标签": {
+        "table": "形状",
+        "field": "边标签",
+        "kind": "lookup",
+        "rule": "Een 形状: 边标签 is een lege tekenreeks.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边长": {
+        "table": "形状",
+        "field": "边长",
+        "kind": "lookup",
+        "rule": "Een 形状: 边长 is een lege tekenreeks.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边的数量": {
+        "table": "形状",
+        "field": "边的数量",
+        "kind": "rollup",
+        "rule": "Een 形状: 边的数量 is het aantal 边 dat is gekoppeld aan de 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Aantal 边 waarvan 形状 is 形状id"
+      },
+      "形状.边角": {
+        "table": "形状",
+        "field": "边角",
+        "kind": "lookup",
+        "rule": "Een 形状: 边角 is een lege tekenreeks.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.角度总和": {
+        "table": "形状",
+        "field": "角度总和",
+        "kind": "rollup",
+        "rule": "Een 形状: 角度总和 is het totaal van 角度 over de 边 gekoppeld aan de 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Som van 角度 over alle 边 waarvan 形状 is 形状id"
+      },
+      "形状.最大边长": {
+        "table": "形状",
+        "field": "最大边长",
+        "kind": "rollup",
+        "rule": "Een 形状: 最大边长 is het totaal van 长度 over de 边 gekoppeld aan de 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Som van 长度 over alle 边 waarvan 形状 is 形状id"
+      },
+      "形状.非斜边角度总和": {
+        "table": "形状",
+        "field": "非斜边角度总和",
+        "kind": "rollup",
+        "rule": "Een 形状: 非斜边角度总和 is het totaal van 长度平方 over de 边 gekoppeld aan de 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Som van 长度平方 over alle 边 waarvan 形状 is 形状id"
+      },
+      "形状.勾股定理成立": {
+        "table": "形状",
+        "field": "勾股定理成立",
+        "kind": "formula",
+        "rule": "Het veld ‘勾股定理成立’ van de 形状 wordt bepaald volgens de volgende prioriteit:\n1. de 非斜边角度总和 de 最大边长 maal de 最大边长 is, als de 边的数量 3 is;\n2. in alle andere gevallen geen waarde.",
+        "mechanical": false,
+        "refs": [],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘勾股定理成立’ van de 形状 wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "de 非斜边角度总和 de 最大边长 maal de 最大边长 is",
+              "when": {
+                "kind": "leaf",
+                "text": "de 边的数量 3 is"
+              }
+            },
+            {
+              "value": "geen waarde",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als 边的数量 is gelijk aan 3, dan 非斜边角度总和 is gelijk aan (最大边长 maal 最大边长), anders blank()"
+      },
+      "边.名称": {
+        "table": "边",
+        "field": "名称",
+        "kind": "formula",
+        "rule": "Een 边: 名称 wordt berekend als de 形状, gevolgd door een koppelteken, gevolgd door de 标签.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "(形状 samengevoegd met \"-\") samengevoegd met 标签"
+      },
+      "边.形状的最大边长": {
+        "table": "边",
+        "field": "形状的最大边长",
+        "kind": "lookup",
+        "rule": "Een 边: 形状的最大边长 — overgenomen van de gekoppelde 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "De 最大边长 van de gekoppelde 形状"
+      },
+      "边.边的数量": {
+        "table": "边",
+        "field": "边的数量",
+        "kind": "lookup",
+        "rule": "Een 边: 边的数量 — overgenomen van de gekoppelde 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "De 边的数量 van de gekoppelde 形状"
+      },
+      "边.是否为斜边": {
+        "table": "边",
+        "field": "是否为斜边",
+        "kind": "formula",
+        "rule": "Een 边: 是否为斜边 wordt berekend als de 长度 de 形状的最大边长 is.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 is gelijk aan 形状的最大边长"
+      },
+      "边.形状类型": {
+        "table": "边",
+        "field": "形状类型",
+        "kind": "lookup",
+        "rule": "Een 边: 形状类型 is de 边的类型 van de gekoppelde 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "De 边的类型 van de gekoppelde 形状"
+      },
+      "边.长度平方": {
+        "table": "边",
+        "field": "长度平方",
+        "kind": "formula",
+        "rule": "Een 边: 长度平方 wordt berekend als de 长度 maal de 长度.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 maal 长度"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "形状": "形状",
+      "边": "边"
+    }
+  },
+  "pt": {
+    "fields": {
+      "形状.边的类型": {
+        "table": "形状",
+        "field": "边的类型",
+        "kind": "formula",
+        "rule": "Um 形状: 边的类型 é calculado como o valor comparado com o 边的数量: “空” quando é 0; “点” quando é 1; “线” quando é 2; “三角形” quando é 3; “正方形” quando é 4; caso contrário “--”.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Switch(边的数量, 0, \"空\", 1, \"点\", 2, \"线\", 3, \"三角形\", 4, \"正方形\", \"--\")"
+      },
+      "形状.边标签": {
+        "table": "形状",
+        "field": "边标签",
+        "kind": "lookup",
+        "rule": "Um 形状: 边标签 é uma cadeia vazia.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边长": {
+        "table": "形状",
+        "field": "边长",
+        "kind": "lookup",
+        "rule": "Um 形状: 边长 é uma cadeia vazia.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边的数量": {
+        "table": "形状",
+        "field": "边的数量",
+        "kind": "rollup",
+        "rule": "Um 形状: 边的数量 é o número de 边 relacionados a o 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Contagem de 边 cujo 形状 é 形状id"
+      },
+      "形状.边角": {
+        "table": "形状",
+        "field": "边角",
+        "kind": "lookup",
+        "rule": "Um 形状: 边角 é uma cadeia vazia.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.角度总和": {
+        "table": "形状",
+        "field": "角度总和",
+        "kind": "rollup",
+        "rule": "Um 形状: 角度总和 é o total de 角度 entre os 边 relacionados a o 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Soma de 角度 entre todos os 边 cujo 形状 é 形状id"
+      },
+      "形状.最大边长": {
+        "table": "形状",
+        "field": "最大边长",
+        "kind": "rollup",
+        "rule": "Um 形状: 最大边长 é o total de 长度 entre os 边 relacionados a o 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Soma de 长度 entre todos os 边 cujo 形状 é 形状id"
+      },
+      "形状.非斜边角度总和": {
+        "table": "形状",
+        "field": "非斜边角度总和",
+        "kind": "rollup",
+        "rule": "Um 形状: 非斜边角度总和 é o total de 长度平方 entre os 边 relacionados a o 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Soma de 长度平方 entre todos os 边 cujo 形状 é 形状id"
+      },
+      "形状.勾股定理成立": {
+        "table": "形状",
+        "field": "勾股定理成立",
+        "kind": "formula",
+        "rule": "O campo “勾股定理成立” do 形状 é determinado pela seguinte prioridade:\n1. o 非斜边角度总和 é o 最大边长 vezes o 最大边长, se o 边的数量 é 3;\n2. em todos os outros casos, nenhum valor.",
+        "mechanical": false,
+        "refs": [],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “勾股定理成立” do 形状 é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "o 非斜边角度总和 é o 最大边长 vezes o 最大边长",
+              "when": {
+                "kind": "leaf",
+                "text": "o 边的数量 é 3"
+              }
+            },
+            {
+              "value": "nenhum valor",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se 边的数量 é igual a 3, então 非斜边角度总和 é igual a (最大边长 vezes 最大边长), caso contrário blank()"
+      },
+      "边.名称": {
+        "table": "边",
+        "field": "名称",
+        "kind": "formula",
+        "rule": "Um 边: 名称 é calculado como o 形状, seguido de um hífen, seguido de o 标签.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "(形状 unido a \"-\") unido a 标签"
+      },
+      "边.形状的最大边长": {
+        "table": "边",
+        "field": "形状的最大边长",
+        "kind": "lookup",
+        "rule": "Um 边: 形状的最大边长 — obtido do 形状 vinculado.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "O 最大边长 do 形状 vinculado"
+      },
+      "边.边的数量": {
+        "table": "边",
+        "field": "边的数量",
+        "kind": "lookup",
+        "rule": "Um 边: 边的数量 — obtido do 形状 vinculado.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "O 边的数量 do 形状 vinculado"
+      },
+      "边.是否为斜边": {
+        "table": "边",
+        "field": "是否为斜边",
+        "kind": "formula",
+        "rule": "Um 边: 是否为斜边 é calculado como o 长度 é o 形状的最大边长.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 é igual a 形状的最大边长"
+      },
+      "边.形状类型": {
+        "table": "边",
+        "field": "形状类型",
+        "kind": "lookup",
+        "rule": "Um 边: 形状类型 é o 边的类型 do 形状 vinculado.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "O 边的类型 do 形状 vinculado"
+      },
+      "边.长度平方": {
+        "table": "边",
+        "field": "长度平方",
+        "kind": "formula",
+        "rule": "Um 边: 长度平方 é calculado como o 长度 vezes o 长度.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 vezes 长度"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "形状": "形状",
+      "边": "边"
+    }
+  },
+  "ru": {
+    "fields": {
+      "形状.边的类型": {
+        "table": "形状",
+        "field": "边的类型",
+        "kind": "formula",
+        "rule": "形状: «边的类型» вычисляется как значение, сопоставляемое с 边的数量: «空», когда оно равно 0; «点», когда оно равно 1; «线», когда оно равно 2; «三角形», когда оно равно 3; «正方形», когда оно равно 4; иначе «--».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Switch(边的数量, 0, \"空\", 1, \"点\", 2, \"线\", 3, \"三角形\", 4, \"正方形\", \"--\")"
+      },
+      "形状.边标签": {
+        "table": "形状",
+        "field": "边标签",
+        "kind": "lookup",
+        "rule": "形状: «边标签» — это пустая строка.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边长": {
+        "table": "形状",
+        "field": "边长",
+        "kind": "lookup",
+        "rule": "形状: «边长» — это пустая строка.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边的数量": {
+        "table": "形状",
+        "field": "边的数量",
+        "kind": "rollup",
+        "rule": "形状: «边的数量» — это число записей «边», связанных с 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Число «边», у которых 形状 равно 形状id"
+      },
+      "形状.边角": {
+        "table": "形状",
+        "field": "边角",
+        "kind": "lookup",
+        "rule": "形状: «边角» — это пустая строка.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.角度总和": {
+        "table": "形状",
+        "field": "角度总和",
+        "kind": "rollup",
+        "rule": "形状: «角度总和» — это сумма «角度» по записям «边», связанным с 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Сумма 角度 по всем «边», у которых 形状 равно 形状id"
+      },
+      "形状.最大边长": {
+        "table": "形状",
+        "field": "最大边长",
+        "kind": "rollup",
+        "rule": "形状: «最大边长» — это сумма «长度» по записям «边», связанным с 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Сумма 长度 по всем «边», у которых 形状 равно 形状id"
+      },
+      "形状.非斜边角度总和": {
+        "table": "形状",
+        "field": "非斜边角度总和",
+        "kind": "rollup",
+        "rule": "形状: «非斜边角度总和» — это сумма «长度平方» по записям «边», связанным с 形状.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Сумма 长度平方 по всем «边», у которых 形状 равно 形状id"
+      },
+      "形状.勾股定理成立": {
+        "table": "形状",
+        "field": "勾股定理成立",
+        "kind": "formula",
+        "rule": "Поле «勾股定理成立» (形状) определяется по следующему приоритету:\n1. 非斜边角度总和 равно 最大边长 умножить на 最大边长, если 边的数量 равно 3;\n2. во всех остальных случаях — нет значения.",
+        "mechanical": false,
+        "refs": [],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «勾股定理成立» (形状) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "非斜边角度总和 равно 最大边长 умножить на 最大边长",
+              "when": {
+                "kind": "leaf",
+                "text": "边的数量 равно 3"
+              }
+            },
+            {
+              "value": "нет значения",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если 边的数量 равно 3, то 非斜边角度总和 равно (最大边长 умножить на 最大边长), иначе blank()"
+      },
+      "边.名称": {
+        "table": "边",
+        "field": "名称",
+        "kind": "formula",
+        "rule": "边: «名称» вычисляется как 形状, затем дефис, затем 标签.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "(形状 соединено с \"-\") соединено с 标签"
+      },
+      "边.形状的最大边长": {
+        "table": "边",
+        "field": "形状的最大边长",
+        "kind": "lookup",
+        "rule": "边: «形状的最大边长» — берётся из связанного «形状».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "最大边长 связанного «形状»"
+      },
+      "边.边的数量": {
+        "table": "边",
+        "field": "边的数量",
+        "kind": "lookup",
+        "rule": "边: «边的数量» — берётся из связанного «形状».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "边的数量 связанного «形状»"
+      },
+      "边.是否为斜边": {
+        "table": "边",
+        "field": "是否为斜边",
+        "kind": "formula",
+        "rule": "边: «是否为斜边» вычисляется как 长度 равно 形状的最大边长.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 равно 形状的最大边长"
+      },
+      "边.形状类型": {
+        "table": "边",
+        "field": "形状类型",
+        "kind": "lookup",
+        "rule": "边: «形状类型» — это «边的类型» связанного «形状».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "边的类型 связанного «形状»"
+      },
+      "边.长度平方": {
+        "table": "边",
+        "field": "长度平方",
+        "kind": "formula",
+        "rule": "边: «长度平方» вычисляется как 长度 умножить на 长度.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 умножить на 长度"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "形状": "形状",
+      "边": "边"
+    }
+  },
+  "tr": {
+    "fields": {
+      "形状.边的类型": {
+        "table": "形状",
+        "field": "边的类型",
+        "kind": "formula",
+        "rule": "“形状” kaydının “边的类型” alanı, “边的数量” alanı değerine göre seçilen değer (0 ise “空”; 1 ise “点”; 2 ise “线”; 3 ise “三角形”; 4 ise “正方形”; diğer durumlarda “--”) olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Switch(边的数量, 0, \"空\", 1, \"点\", 2, \"线\", 3, \"三角形\", 4, \"正方形\", \"--\")"
+      },
+      "形状.边标签": {
+        "table": "形状",
+        "field": "边标签",
+        "kind": "lookup",
+        "rule": "“形状” kaydının “边标签” alanı, boş metin olarak belirlenir.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边长": {
+        "table": "形状",
+        "field": "边长",
+        "kind": "lookup",
+        "rule": "“形状” kaydının “边长” alanı, boş metin olarak belirlenir.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边的数量": {
+        "table": "形状",
+        "field": "边的数量",
+        "kind": "rollup",
+        "rule": "“形状” kaydının “边的数量” alanı, “形状” kaydıyla ilişkili “边” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "形状 değeri 形状id olan 边 kayıtlarının sayısı"
+      },
+      "形状.边角": {
+        "table": "形状",
+        "field": "边角",
+        "kind": "lookup",
+        "rule": "“形状” kaydının “边角” alanı, boş metin olarak belirlenir.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.角度总和": {
+        "table": "形状",
+        "field": "角度总和",
+        "kind": "rollup",
+        "rule": "“形状” kaydının “角度总和” alanı, “形状” kaydıyla ilişkili “边” kayıtları üzerinden hesaplanan toplam “角度” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "形状 değeri 形状id olan tüm 边 kayıtlarındaki 角度 değerlerinin toplamı"
+      },
+      "形状.最大边长": {
+        "table": "形状",
+        "field": "最大边长",
+        "kind": "rollup",
+        "rule": "“形状” kaydının “最大边长” alanı, “形状” kaydıyla ilişkili “边” kayıtları üzerinden hesaplanan toplam “长度” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "形状 değeri 形状id olan tüm 边 kayıtlarındaki 长度 değerlerinin toplamı"
+      },
+      "形状.非斜边角度总和": {
+        "table": "形状",
+        "field": "非斜边角度总和",
+        "kind": "rollup",
+        "rule": "“形状” kaydının “非斜边角度总和” alanı, “形状” kaydıyla ilişkili “边” kayıtları üzerinden hesaplanan toplam “长度平方” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "形状 değeri 形状id olan tüm 边 kayıtlarındaki 长度平方 değerlerinin toplamı"
+      },
+      "形状.勾股定理成立": {
+        "table": "形状",
+        "field": "勾股定理成立",
+        "kind": "formula",
+        "rule": "“形状” kaydının “勾股定理成立” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “边的数量” alanı 3 değerine eşit ise “非斜边角度总和” alanı “最大边长” alanı çarpı “最大边长” alanı değerine eşit;\n2. diğer tüm durumlarda boş değer.",
+        "mechanical": false,
+        "refs": [],
+        "structure": {
+          "kind": "priority",
+          "headline": "“形状” kaydının “勾股定理成立” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“非斜边角度总和” alanı “最大边长” alanı çarpı “最大边长” alanı değerine eşit",
+              "when": {
+                "kind": "leaf",
+                "text": "“边的数量” alanı 3 değerine eşit"
+              }
+            },
+            {
+              "value": "boş değer",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "边的数量, 3 değerine eşit ise 非斜边角度总和, (最大边长 çarpı 最大边长) değerine eşit, aksi takdirde blank()"
+      },
+      "边.名称": {
+        "table": "边",
+        "field": "名称",
+        "kind": "formula",
+        "rule": "“边” kaydının “名称” alanı, “形状” alanı, ardından bir kısa çizgi, ardından “标签” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "(形状 ile \"-\" birleşimi) ile 标签 birleşimi"
+      },
+      "边.形状的最大边长": {
+        "table": "边",
+        "field": "形状的最大边长",
+        "kind": "lookup",
+        "rule": "“边” kaydının “形状的最大边长” alanı, “形状” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Bağlı 形状 kaydının 最大边长 değeri"
+      },
+      "边.边的数量": {
+        "table": "边",
+        "field": "边的数量",
+        "kind": "lookup",
+        "rule": "“边” kaydının “边的数量” alanı, “形状” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Bağlı 形状 kaydının 边的数量 değeri"
+      },
+      "边.是否为斜边": {
+        "table": "边",
+        "field": "是否为斜边",
+        "kind": "formula",
+        "rule": "“边” kaydının “是否为斜边” alanı, “长度” alanı “形状的最大边长” alanı değerine eşit olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度, 形状的最大边长 değerine eşit"
+      },
+      "边.形状类型": {
+        "table": "边",
+        "field": "形状类型",
+        "kind": "lookup",
+        "rule": "“边” kaydının “形状类型” alanı, “形状” alanı üzerinden bağlı kaydın “边的类型” alanından alınır.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Bağlı 形状 kaydının 边的类型 değeri"
+      },
+      "边.长度平方": {
+        "table": "边",
+        "field": "长度平方",
+        "kind": "formula",
+        "rule": "“边” kaydının “长度平方” alanı, “长度” alanı çarpı “长度” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 çarpı 长度"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "形状": "形状",
+      "边": "边"
+    }
+  },
+  "vi": {
+    "fields": {
+      "形状.边的类型": {
+        "table": "形状",
+        "field": "边的类型",
+        "kind": "formula",
+        "rule": "Trường “边的类型” của mỗi 形状 được tính bằng giá trị được chọn theo 边的数量: “空” khi giá trị đó là 0; “点” khi giá trị đó là 1; “线” khi giá trị đó là 2; “三角形” khi giá trị đó là 3; “正方形” khi giá trị đó là 4; nếu không thì “--”.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Switch(边的数量, 0, \"空\", 1, \"点\", 2, \"线\", 3, \"三角形\", 4, \"正方形\", \"--\")"
+      },
+      "形状.边标签": {
+        "table": "形状",
+        "field": "边标签",
+        "kind": "lookup",
+        "rule": "Trường “边标签” của mỗi 形状 là chuỗi rỗng.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边长": {
+        "table": "形状",
+        "field": "边长",
+        "kind": "lookup",
+        "rule": "Trường “边长” của mỗi 形状 là chuỗi rỗng.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边的数量": {
+        "table": "形状",
+        "field": "边的数量",
+        "kind": "rollup",
+        "rule": "Trường “边的数量” của mỗi 形状 là số lượng 边 liên quan đến 形状 đó.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Số lượng 边 có 形状 là 形状id"
+      },
+      "形状.边角": {
+        "table": "形状",
+        "field": "边角",
+        "kind": "lookup",
+        "rule": "Trường “边角” của mỗi 形状 là chuỗi rỗng.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.角度总和": {
+        "table": "形状",
+        "field": "角度总和",
+        "kind": "rollup",
+        "rule": "Trường “角度总和” của mỗi 形状 là giá trị tổng cộng của trường “角度” trên các 边 liên quan đến 形状 đó.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Tổng 角度 trên tất cả 边 có 形状 là 形状id"
+      },
+      "形状.最大边长": {
+        "table": "形状",
+        "field": "最大边长",
+        "kind": "rollup",
+        "rule": "Trường “最大边长” của mỗi 形状 là giá trị tổng cộng của trường “长度” trên các 边 liên quan đến 形状 đó.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Tổng 长度 trên tất cả 边 có 形状 là 形状id"
+      },
+      "形状.非斜边角度总和": {
+        "table": "形状",
+        "field": "非斜边角度总和",
+        "kind": "rollup",
+        "rule": "Trường “非斜边角度总和” của mỗi 形状 là giá trị tổng cộng của trường “长度平方” trên các 边 liên quan đến 形状 đó.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Tổng 长度平方 trên tất cả 边 có 形状 là 形状id"
+      },
+      "形状.勾股定理成立": {
+        "table": "形状",
+        "field": "勾股定理成立",
+        "kind": "formula",
+        "rule": "Trường “勾股定理成立” của mỗi 形状 được xác định theo thứ tự ưu tiên sau:\n1. 非斜边角度总和 là 最大边长 nhân 最大边长, nếu 边的数量 là 3;\n2. trong mọi trường hợp còn lại, giá trị trống.",
+        "mechanical": false,
+        "refs": [],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “勾股定理成立” của mỗi 形状 được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "非斜边角度总和 là 最大边长 nhân 最大边长",
+              "when": {
+                "kind": "leaf",
+                "text": "边的数量 là 3"
+              }
+            },
+            {
+              "value": "giá trị trống",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu 边的数量 bằng 3 thì 非斜边角度总和 bằng (最大边长 nhân 最大边长), nếu không thì blank()"
+      },
+      "边.名称": {
+        "table": "边",
+        "field": "名称",
+        "kind": "formula",
+        "rule": "Trường “名称” của mỗi 边 được tính bằng 形状, tiếp theo là dấu gạch nối, tiếp theo là 标签.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "(形状 nối với \"-\") nối với 标签"
+      },
+      "边.形状的最大边长": {
+        "table": "边",
+        "field": "形状的最大边长",
+        "kind": "lookup",
+        "rule": "Trường “形状的最大边长” của mỗi 边 được lấy từ bản ghi liên kết qua trường “形状”.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "最大边长 của bản ghi liên kết qua 形状"
+      },
+      "边.边的数量": {
+        "table": "边",
+        "field": "边的数量",
+        "kind": "lookup",
+        "rule": "Trường “边的数量” của mỗi 边 được lấy từ bản ghi liên kết qua trường “形状”.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "边的数量 của bản ghi liên kết qua 形状"
+      },
+      "边.是否为斜边": {
+        "table": "边",
+        "field": "是否为斜边",
+        "kind": "formula",
+        "rule": "Trường “是否为斜边” của mỗi 边 được tính bằng 长度 là 形状的最大边长.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 bằng 形状的最大边长"
+      },
+      "边.形状类型": {
+        "table": "边",
+        "field": "形状类型",
+        "kind": "lookup",
+        "rule": "Trường “形状类型” của mỗi 边 là trường “边的类型” của bản ghi liên kết qua trường “形状”.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "边的类型 của bản ghi liên kết qua 形状"
+      },
+      "边.长度平方": {
+        "table": "边",
+        "field": "长度平方",
+        "kind": "formula",
+        "rule": "Trường “长度平方” của mỗi 边 được tính bằng 长度 nhân 长度.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度 nhân 长度"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "形状": "形状",
+      "边": "边"
+    }
+  },
+  "zh": {
+    "fields": {
+      "形状.边的类型": {
+        "table": "形状",
+        "field": "边的类型",
+        "kind": "formula",
+        "rule": "形状的“边的类型”按 与边的数量对照的值:为0时取“空”; 为1时取“点”; 为2时取“线”; 为3时取“三角形”; 为4时取“正方形”; 否则取“--” 计算。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "Switch(边的数量, 0, \"空\", 1, \"点\", 2, \"线\", 3, \"三角形\", 4, \"正方形\", \"--\")"
+      },
+      "形状.边标签": {
+        "table": "形状",
+        "field": "边标签",
+        "kind": "lookup",
+        "rule": "形状的“边标签”为 空字符串。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边长": {
+        "table": "形状",
+        "field": "边长",
+        "kind": "lookup",
+        "rule": "形状的“边长”为 空字符串。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.边的数量": {
+        "table": "形状",
+        "field": "边的数量",
+        "kind": "rollup",
+        "rule": "形状的“边的数量”为 与形状相关的“边”的数量。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "形状为形状id的“边”的数量"
+      },
+      "形状.边角": {
+        "table": "形状",
+        "field": "边角",
+        "kind": "lookup",
+        "rule": "形状的“边角”为 空字符串。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "形状.角度总和": {
+        "table": "形状",
+        "field": "角度总和",
+        "kind": "rollup",
+        "rule": "形状的“角度总和”为 与形状相关的所有“边”的“角度”的总和。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "所有形状为形状id的“边”的角度的总和"
+      },
+      "形状.最大边长": {
+        "table": "形状",
+        "field": "最大边长",
+        "kind": "rollup",
+        "rule": "形状的“最大边长”为 与形状相关的所有“边”的“长度”的总和。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "所有形状为形状id的“边”的长度的总和"
+      },
+      "形状.非斜边角度总和": {
+        "table": "形状",
+        "field": "非斜边角度总和",
+        "kind": "rollup",
+        "rule": "形状的“非斜边角度总和”为 与形状相关的所有“边”的“长度平方”的总和。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "所有形状为形状id的“边”的长度平方的总和"
+      },
+      "形状.勾股定理成立": {
+        "table": "形状",
+        "field": "勾股定理成立",
+        "kind": "formula",
+        "rule": "形状的“勾股定理成立”按以下优先级确定:\n1. 当边的数量为3时,取 非斜边角度总和为最大边长乘最大边长;\n2. 其余情况取 无值。",
+        "mechanical": false,
+        "refs": [],
+        "structure": {
+          "kind": "priority",
+          "headline": "形状的“勾股定理成立”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "非斜边角度总和为最大边长乘最大边长",
+              "when": {
+                "kind": "leaf",
+                "text": "边的数量为3"
+              }
+            },
+            {
+              "value": "无值",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若边的数量等于3,则非斜边角度总和等于(最大边长乘最大边长),否则blank()"
+      },
+      "边.名称": {
+        "table": "边",
+        "field": "名称",
+        "kind": "formula",
+        "rule": "边的“名称”按 形状,接着是一个连字符,接着是标签 计算。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "(形状与\"-\"拼接)与标签拼接"
+      },
+      "边.形状的最大边长": {
+        "table": "边",
+        "field": "形状的最大边长",
+        "kind": "lookup",
+        "rule": "边的“形状的最大边长”——取自所关联的“形状”。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "所关联的“形状”的最大边长"
+      },
+      "边.边的数量": {
+        "table": "边",
+        "field": "边的数量",
+        "kind": "lookup",
+        "rule": "边的“边的数量”——取自所关联的“形状”。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "所关联的“形状”的边的数量"
+      },
+      "边.是否为斜边": {
+        "table": "边",
+        "field": "是否为斜边",
+        "kind": "formula",
+        "rule": "边的“是否为斜边”按 长度为形状的最大边长 计算。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度等于形状的最大边长"
+      },
+      "边.形状类型": {
+        "table": "边",
+        "field": "形状类型",
+        "kind": "lookup",
+        "rule": "边的“形状类型”是所关联的“形状”的“边的类型”。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "所关联的“形状”的边的类型"
+      },
+      "边.长度平方": {
+        "table": "边",
+        "field": "长度平方",
+        "kind": "formula",
+        "rule": "边的“长度平方”按 长度乘长度 计算。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "长度乘长度"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "形状": "形状",

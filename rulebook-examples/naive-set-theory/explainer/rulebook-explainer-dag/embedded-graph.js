@@ -956,7 +956,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -1628,6 +1643,10596 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "TruthValues": "truth value",
+      "Connectives": "connective",
+      "TruthTableRows": "truth table row",
+      "SetRules": "set rule",
+      "Sets": "set",
+      "MembershipFacts": "membership fact",
+      "EvaluationSteps": "evaluation step"
+    }
+  },
+  "ar": {
+    "fields": {
+      "TruthValues.Name": {
+        "table": "TruthValues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «truth value» يطابق حقل «truth value ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Truth value ID"
+      },
+      "TruthValues.IsClassical": {
+        "table": "TruthValues",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «truth value» على أنه «classical» إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: «truth value ID» يساوي «true» أو «truth value ID» يساوي «false».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُصنّف سجل «truth value» على أنه «classical» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "«truth value ID» يساوي «true»"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "«truth value ID» يساوي «false»"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Truth value ID هو \"true\" أو truth value ID هو \"false\""
+      },
+      "TruthValues.IsUndefined": {
+        "table": "TruthValues",
+        "field": "IsUndefined",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «truth value» على أنه «undefined» إذا تحقق أنّ «truth value ID» يساوي «null».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «is undefined» في سجل «truth value» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "صحيح",
+              "when": {
+                "kind": "leaf",
+                "text": "«truth value ID» يساوي «null»"
+              }
+            },
+            {
+              "value": "خطأ",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ truth value ID هو \"null\" فالناتج true()، وإلا فالناتج false()"
+      },
+      "TruthValues.CountOfFacts": {
+        "table": "TruthValues",
+        "field": "CountOfFacts",
+        "kind": "rollup",
+        "rule": "حقل «count of facts» في سجل «truth value» هو عدد سجلات «membership facts» المرتبطة بسجل «truth value».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «membership facts» التي يتحقق فيها أنّ حقل «membership value» يساوي truth value ID"
+      },
+      "Connectives.Name": {
+        "table": "Connectives",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «connective» يطابق حقل «connective ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Connective ID"
+      },
+      "Connectives.CountOfTruthTableRows": {
+        "table": "Connectives",
+        "field": "CountOfTruthTableRows",
+        "kind": "rollup",
+        "rule": "حقل «count of truth table rows» في سجل «connective» هو عدد سجلات «truth table rows» المرتبطة بسجل «connective».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «truth table rows» التي يتحقق فيها أنّ حقل «connective» يساوي connective ID"
+      },
+      "TruthTableRows.OutputSymbol": {
+        "table": "TruthTableRows",
+        "field": "OutputSymbol",
+        "kind": "lookup",
+        "rule": "حقل «output symbol» في سجل «truth table row» مأخوذ من السجل المرتبط به عبر حقل «output».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «symbol» من السجل المرتبط عبر «output»"
+      },
+      "TruthTableRows.Name": {
+        "table": "TruthTableRows",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «truth table row» يُحسب على النحو الآتي: حقل «connective»، ثم «: »، ثم حقل «left input»، ثم « , »، ثم حقل «right input»، ثم « -> »، ثم حقل «output».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "LeftInput",
+            "label": "left input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "RightInput",
+            "label": "right input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          }
+        ],
+        "structure": null,
+        "plain": "((((connective يليه \": \") يليه left input) يليه إذا تحقق أنّ right input هو \"\" فالناتج \"\"، وإلا فالناتج (\" , \" يليه right input)) يليه \" -> \") يليه output"
+      },
+      "SetRules.Name": {
+        "table": "SetRules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «set rule» يُحسب على النحو الآتي: «R»، ثم حقل «rule number».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": null,
+        "plain": "\"R\" يليه rule number"
+      },
+      "SetRules.IsClassical": {
+        "table": "SetRules",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «set rule» على أنه «classical» إذا تحقق أنّ حقل «rule number» لا يزيد على 11.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «is classical» في سجل «set rule» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "صحيح",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «rule number» لا يزيد على 11"
+              }
+            },
+            {
+              "value": "خطأ",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ rule number لا يزيد على 11 فالناتج true()، وإلا فالناتج false()"
+      },
+      "SetRules.IsTheMissingRule": {
+        "table": "SetRules",
+        "field": "IsTheMissingRule",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «set rule» على أنه «the missing rule» إذا تحقق أنّ حقل «rule number» يساوي 12.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «is the missing rule» في سجل «set rule» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "صحيح",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «rule number» يساوي 12"
+              }
+            },
+            {
+              "value": "خطأ",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ rule number يساوي 12 فالناتج true()، وإلا فالناتج false()"
+      },
+      "Sets.Name": {
+        "table": "Sets",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «set» يطابق حقل «set ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Set ID"
+      },
+      "Sets.IsRussellSet": {
+        "table": "Sets",
+        "field": "IsRussellSet",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «set» على أنه «russell set» إذا تحقق أنّ «set ID» يساوي «russell-set».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «is russell set» في سجل «set» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "صحيح",
+              "when": {
+                "kind": "leaf",
+                "text": "«set ID» يساوي «russell-set»"
+              }
+            },
+            {
+              "value": "خطأ",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ set ID هو \"russell-set\" فالناتج true()، وإلا فالناتج false()"
+      },
+      "Sets.CountOfMemberships": {
+        "table": "Sets",
+        "field": "CountOfMemberships",
+        "kind": "rollup",
+        "rule": "حقل «count of memberships» في سجل «set» هو عدد سجلات «membership facts» المرتبطة بسجل «set».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «membership facts» التي يتحقق فيها أنّ حقل «container» يساوي set ID"
+      },
+      "Sets.CountOfNullMemberships": {
+        "table": "Sets",
+        "field": "CountOfNullMemberships",
+        "kind": "rollup",
+        "rule": "حقل «count of null memberships» في سجل «set» هو عدد سجلات «membership facts» المرتبطة بسجل «set» التي يساوي فيها حقل «membership value» «null».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «membership facts» التي يتحقق فيها أنّ حقل «container» يساوي set ID وحقل «membership value» يساوي \"null\""
+      },
+      "MembershipFacts.Name": {
+        "table": "MembershipFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «membership fact» يُحسب على النحو الآتي: حقل «element»، ثم « ∈ »، ثم حقل «container».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Element",
+            "label": "element"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          }
+        ],
+        "structure": null,
+        "plain": "(element يليه \" ∈ \") يليه container"
+      },
+      "MembershipFacts.ContainerLabel": {
+        "table": "MembershipFacts",
+        "field": "ContainerLabel",
+        "kind": "lookup",
+        "rule": "حقل «container label» في سجل «membership fact» مأخوذ من السجل المرتبط به عبر حقل «container».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «label» من السجل المرتبط عبر «container»"
+      },
+      "MembershipFacts.MembershipValueSymbol": {
+        "table": "MembershipFacts",
+        "field": "MembershipValueSymbol",
+        "kind": "lookup",
+        "rule": "حقل «membership value symbol» في سجل «membership fact» مأخوذ من السجل المرتبط به عبر حقل «membership value».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «symbol» من السجل المرتبط عبر «membership value»"
+      },
+      "MembershipFacts.IsBivalent": {
+        "table": "MembershipFacts",
+        "field": "IsBivalent",
+        "kind": "lookup",
+        "rule": "حقل «is bivalent» في سجل «membership fact» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «membership value» مصنّفًا على أنه «classical».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "IsClassical",
+            "label": "is classical"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «is classical» من السجل المرتبط عبر «membership value»"
+      },
+      "MembershipFacts.IsNull": {
+        "table": "MembershipFacts",
+        "field": "IsNull",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «membership fact» على أنه «null» إذا تحقق أنّ حقل «membership value» يساوي «null».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «is null» في سجل «membership fact» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "صحيح",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «membership value» يساوي «null»"
+              }
+            },
+            {
+              "value": "خطأ",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ membership value هو \"null\" فالناتج true()، وإلا فالناتج false()"
+      },
+      "MembershipFacts.IsGrounded": {
+        "table": "MembershipFacts",
+        "field": "IsGrounded",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «membership fact» على أنه «grounded» إذا تحقق أنّ الشرط الآتي غير متحقق: حقل «membership value» يساوي «null».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «is grounded» في سجل «membership fact» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "خطأ",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «membership value» يساوي «null»"
+              }
+            },
+            {
+              "value": "صحيح",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ membership value هو \"null\" فالناتج false()، وإلا فالناتج true()"
+      },
+      "MembershipFacts.CountOfEvaluationSteps": {
+        "table": "MembershipFacts",
+        "field": "CountOfEvaluationSteps",
+        "kind": "rollup",
+        "rule": "حقل «count of evaluation steps» في سجل «membership fact» هو عدد سجلات «evaluation steps» المرتبطة بسجل «membership fact».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "MembershipFact",
+            "label": "membership fact"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipFactId",
+            "label": "membership fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «evaluation steps» التي يتحقق فيها أنّ حقل «membership fact» يساوي membership fact ID"
+      },
+      "EvaluationSteps.Name": {
+        "table": "EvaluationSteps",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «evaluation step» يُحسب على النحو الآتي: «try »، ثم حقل «trial value».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          }
+        ],
+        "structure": null,
+        "plain": "\"try \" يليه trial value"
+      },
+      "EvaluationSteps.IsStable": {
+        "table": "EvaluationSteps",
+        "field": "IsStable",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «evaluation step» على أنه «stable» إذا تحقق أنّ حقل «trial value» يساوي حقل «resulting value».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «is stable» في سجل «evaluation step» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "صحيح",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «trial value» يساوي حقل «resulting value»"
+              }
+            },
+            {
+              "value": "خطأ",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ trial value يساوي resulting value فالناتج true()، وإلا فالناتج false()"
+      },
+      "EvaluationSteps.Outcome": {
+        "table": "EvaluationSteps",
+        "field": "Outcome",
+        "kind": "formula",
+        "rule": "حقل «outcome» في سجل «evaluation step» يتحدد وفق ترتيب الأولوية الآتي:\n1. «stable fixed point»، إذا تحقق أنّ حقل «trial value» يساوي حقل «resulting value»؛\n2. «contradiction»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «outcome» في سجل «evaluation step» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«stable fixed point»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «trial value» يساوي حقل «resulting value»"
+              }
+            },
+            {
+              "value": "«contradiction»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ trial value يساوي resulting value فالناتج \"stable fixed point\"، وإلا فالناتج \"contradiction\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "TruthValues": [
+        "في كل سجل «truth value»، **يجب أن** تُحدّد قيمة حقل «symbol»، وحقل «glyph»، وحقل «rank»."
+      ],
+      "Connectives": [
+        "في كل سجل «connective»، **يجب أن** تُحدّد قيمة حقل «symbol»، وحقل «arity»، وحقل «kleene rule»."
+      ],
+      "TruthTableRows": [
+        "**يجب أن** يشير كل سجل «truth table row» إلى سجل «connective» واحد فقط.",
+        "**يجب أن** يشير كل سجل «truth table row» إلى سجل «truth value» واحد فقط عبر حقل «left input».",
+        "**يجب أن** يشير كل سجل «truth table row» إلى سجل «truth value» واحد فقط عبر حقل «output»."
+      ],
+      "SetRules": [
+        "في كل سجل «set rule»، **يجب أن** تُحدّد قيمة حقل «rule number»، وحقل «title»، وحقل «statement»."
+      ],
+      "Sets": [
+        "في كل سجل «set»، **يجب أن** تُحدّد قيمة حقل «label» وحقل «condition expression»، وأن يُسجّل ما إذا كان مصنّفًا على أنه «self referential»."
+      ],
+      "MembershipFacts": [
+        "**يجب أن** يشير كل سجل «membership fact» إلى سجل «set» واحد فقط عبر حقل «element».",
+        "**يجب أن** يشير كل سجل «membership fact» إلى سجل «set» واحد فقط عبر حقل «container».",
+        "**يجب أن** يشير كل سجل «membership fact» إلى سجل «truth value» واحد فقط عبر حقل «membership value»."
+      ],
+      "EvaluationSteps": [
+        "**يجب أن** يشير كل سجل «evaluation step» إلى سجل «membership fact» واحد فقط.",
+        "**يجب أن** يشير كل سجل «evaluation step» إلى سجل «truth value» واحد فقط عبر حقل «trial value».",
+        "**يجب أن** يشير كل سجل «evaluation step» إلى سجل «truth value» واحد فقط عبر حقل «resulting value».",
+        "في كل سجل «evaluation step»، **يجب أن** تُحدّد قيمة حقل «step order»."
+      ]
+    },
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TruthValues": "truth value",
+      "Connectives": "connective",
+      "TruthTableRows": "truth table row",
+      "SetRules": "set rule",
+      "Sets": "set",
+      "MembershipFacts": "membership fact",
+      "EvaluationSteps": "evaluation step"
+    }
+  },
+  "de": {
+    "fields": {
+      "TruthValues.Name": {
+        "table": "TruthValues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Truth Value: Name entspricht Truth Value ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Truth Value ID"
+      },
+      "TruthValues.IsClassical": {
+        "table": "TruthValues",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "Eine Truth Value gilt als ein Classical, wenn mindestens eines des Folgenden gilt: der Truth Value ID „true“ ist oder der Truth Value ID „false“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Eine Truth Value gilt als ein Classical, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "der Truth Value ID „true“ ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "der Truth Value ID „false“ ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Truth Value ID ist \"true\" oder Truth Value ID ist \"false\""
+      },
+      "TruthValues.IsUndefined": {
+        "table": "TruthValues",
+        "field": "IsUndefined",
+        "kind": "formula",
+        "rule": "Eine Truth Value gilt als undefined, wenn der Truth Value ID „null“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Is Undefined“ der Truth Value wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "wahr",
+              "when": {
+                "kind": "leaf",
+                "text": "der Truth Value ID „null“ ist"
+              }
+            },
+            {
+              "value": "falsch",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Truth Value ID ist \"null\", dann true(), andernfalls false()"
+      },
+      "TruthValues.CountOfFacts": {
+        "table": "TruthValues",
+        "field": "CountOfFacts",
+        "kind": "rollup",
+        "rule": "Eine Truth Value: Count of Facts ist die Anzahl der mit der Truth Value verbundenen Membership Facts.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Membership Facts, deren Membership Value ist Truth Value ID"
+      },
+      "Connectives.Name": {
+        "table": "Connectives",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Connective: Name entspricht Connective ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Connective ID"
+      },
+      "Connectives.CountOfTruthTableRows": {
+        "table": "Connectives",
+        "field": "CountOfTruthTableRows",
+        "kind": "rollup",
+        "rule": "Eine Connective: Count of Truth Table Rows ist die Anzahl der mit der Connective verbundenen Truth Table Rows.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Truth Table Rows, deren Connective ist Connective ID"
+      },
+      "TruthTableRows.OutputSymbol": {
+        "table": "TruthTableRows",
+        "field": "OutputSymbol",
+        "kind": "lookup",
+        "rule": "Ein Truth Table Row: Output Symbol — aus dem zugehörigen Output übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Symbol des verknüpften Output"
+      },
+      "TruthTableRows.Name": {
+        "table": "TruthTableRows",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Truth Table Row: Name wird berechnet als die Connective, gefolgt von „: “, gefolgt von der Left Input, gefolgt von „ , “, gefolgt von der Right Input, gefolgt von „ -> “, gefolgt von der Output.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "LeftInput",
+            "label": "left input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "RightInput",
+            "label": "right input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          }
+        ],
+        "structure": null,
+        "plain": "((((Connective verbunden mit \": \") verbunden mit Left Input) verbunden mit wenn Right Input ist \"\", dann \"\", andernfalls (\" , \" verbunden mit Right Input)) verbunden mit \" -> \") verbunden mit Output"
+      },
+      "SetRules.Name": {
+        "table": "SetRules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Set Rule: Name wird berechnet als „R“, gefolgt von der Rule Number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": null,
+        "plain": "\"R\" verbunden mit Rule Number"
+      },
+      "SetRules.IsClassical": {
+        "table": "SetRules",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "Eine Set Rule gilt als ein Classical, wenn der Rule Number höchstens 11 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Is Classical“ der Set Rule wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "wahr",
+              "when": {
+                "kind": "leaf",
+                "text": "der Rule Number höchstens 11 ist"
+              }
+            },
+            {
+              "value": "falsch",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Rule Number höchstens 11 ist, dann true(), andernfalls false()"
+      },
+      "SetRules.IsTheMissingRule": {
+        "table": "SetRules",
+        "field": "IsTheMissingRule",
+        "kind": "formula",
+        "rule": "Eine Set Rule gilt als the missing rule, wenn der Rule Number 12 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Is the Missing Rule“ der Set Rule wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "wahr",
+              "when": {
+                "kind": "leaf",
+                "text": "der Rule Number 12 ist"
+              }
+            },
+            {
+              "value": "falsch",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Rule Number gleich 12 ist, dann true(), andernfalls false()"
+      },
+      "Sets.Name": {
+        "table": "Sets",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Set: Name entspricht Set ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Set ID"
+      },
+      "Sets.IsRussellSet": {
+        "table": "Sets",
+        "field": "IsRussellSet",
+        "kind": "formula",
+        "rule": "Ein Set gilt als ein Russell Set, wenn der Set ID „russell-set“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Is Russell Set“ des Set wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "wahr",
+              "when": {
+                "kind": "leaf",
+                "text": "der Set ID „russell-set“ ist"
+              }
+            },
+            {
+              "value": "falsch",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Set ID ist \"russell-set\", dann true(), andernfalls false()"
+      },
+      "Sets.CountOfMemberships": {
+        "table": "Sets",
+        "field": "CountOfMemberships",
+        "kind": "rollup",
+        "rule": "Ein Set: Count of Memberships ist die Anzahl der mit dem Set verbundenen Membership Facts.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Membership Facts, deren Container ist Set ID"
+      },
+      "Sets.CountOfNullMemberships": {
+        "table": "Sets",
+        "field": "CountOfNullMemberships",
+        "kind": "rollup",
+        "rule": "Ein Set: Count of Null Memberships ist die Anzahl der Membership Facts des Set, die Membership Value von „null“ haben.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Membership Facts, deren Container ist Set ID und Membership Value ist \"null\""
+      },
+      "MembershipFacts.Name": {
+        "table": "MembershipFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Membership Fact: Name wird berechnet als das Element, gefolgt von „ ∈ “, gefolgt von der Container.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Element",
+            "label": "element"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          }
+        ],
+        "structure": null,
+        "plain": "(Element verbunden mit \" ∈ \") verbunden mit Container"
+      },
+      "MembershipFacts.ContainerLabel": {
+        "table": "MembershipFacts",
+        "field": "ContainerLabel",
+        "kind": "lookup",
+        "rule": "Ein Membership Fact: Container Label — aus dem zugehörigen Container übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Label des verknüpften Container"
+      },
+      "MembershipFacts.MembershipValueSymbol": {
+        "table": "MembershipFacts",
+        "field": "MembershipValueSymbol",
+        "kind": "lookup",
+        "rule": "Ein Membership Fact: Membership Value Symbol — aus dem zugehörigen Membership Value übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Symbol des verknüpften Membership Value"
+      },
+      "MembershipFacts.IsBivalent": {
+        "table": "MembershipFacts",
+        "field": "IsBivalent",
+        "kind": "lookup",
+        "rule": "Ein Membership Fact: Is Bivalent ist wahr, wenn der zugehörige Membership Value des Membership Fact ist ein Classical.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "IsClassical",
+            "label": "is classical"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Is Classical des verknüpften Membership Value"
+      },
+      "MembershipFacts.IsNull": {
+        "table": "MembershipFacts",
+        "field": "IsNull",
+        "kind": "formula",
+        "rule": "Ein Membership Fact gilt als ein Null, wenn die Membership Value „null“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Is Null“ des Membership Fact wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "wahr",
+              "when": {
+                "kind": "leaf",
+                "text": "die Membership Value „null“ ist"
+              }
+            },
+            {
+              "value": "falsch",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Membership Value ist \"null\", dann true(), andernfalls false()"
+      },
+      "MembershipFacts.IsGrounded": {
+        "table": "MembershipFacts",
+        "field": "IsGrounded",
+        "kind": "formula",
+        "rule": "Ein Membership Fact gilt als grounded, wenn es nicht der Fall ist, dass die Membership Value „null“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Is Grounded“ des Membership Fact wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "falsch",
+              "when": {
+                "kind": "leaf",
+                "text": "die Membership Value „null“ ist"
+              }
+            },
+            {
+              "value": "wahr",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Membership Value ist \"null\", dann false(), andernfalls true()"
+      },
+      "MembershipFacts.CountOfEvaluationSteps": {
+        "table": "MembershipFacts",
+        "field": "CountOfEvaluationSteps",
+        "kind": "rollup",
+        "rule": "Ein Membership Fact: Count of Evaluation Steps ist die Anzahl der mit dem Membership Fact verbundenen Evaluation Steps.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "MembershipFact",
+            "label": "membership fact"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipFactId",
+            "label": "membership fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Evaluation Steps, deren Membership Fact ist Membership Fact ID"
+      },
+      "EvaluationSteps.Name": {
+        "table": "EvaluationSteps",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Evaluation Step: Name wird berechnet als „try “, gefolgt von die Trial Value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          }
+        ],
+        "structure": null,
+        "plain": "\"try \" verbunden mit Trial Value"
+      },
+      "EvaluationSteps.IsStable": {
+        "table": "EvaluationSteps",
+        "field": "IsStable",
+        "kind": "formula",
+        "rule": "Ein Evaluation Step gilt als eine Stable, wenn die Trial Value die Resulting Value ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Is Stable“ des Evaluation Step wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "wahr",
+              "when": {
+                "kind": "leaf",
+                "text": "die Trial Value die Resulting Value ist"
+              }
+            },
+            {
+              "value": "falsch",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Trial Value gleich Resulting Value ist, dann true(), andernfalls false()"
+      },
+      "EvaluationSteps.Outcome": {
+        "table": "EvaluationSteps",
+        "field": "Outcome",
+        "kind": "formula",
+        "rule": "Das Feld „Outcome“ des Evaluation Step wird nach folgender Priorität bestimmt:\n1. „stable fixed point“, wenn die Trial Value die Resulting Value ist;\n2. andernfalls „contradiction“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Outcome“ des Evaluation Step wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„stable fixed point“",
+              "when": {
+                "kind": "leaf",
+                "text": "die Trial Value die Resulting Value ist"
+              }
+            },
+            {
+              "value": "„contradiction“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Trial Value gleich Resulting Value ist, dann \"stable fixed point\", andernfalls \"contradiction\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "TruthValues": [
+        "Eine Truth Value **muss** ein Symbol; ein Glyph; und ein Rank haben."
+      ],
+      "Connectives": [
+        "Eine Connective **muss** ein Symbol; ein Arity; und eine Kleene Rule haben."
+      ],
+      "TruthTableRows": [
+        "Ein Truth Table Row **muss** auf genau einen Connective verweisen.",
+        "Ein Truth Table Row **muss** auf genau einen Truth Value als seinen Left Input verweisen.",
+        "Ein Truth Table Row **muss** auf genau einen Truth Value als seinen Output verweisen."
+      ],
+      "SetRules": [
+        "Eine Set Rule **muss** ein Rule Number; eine Title; und ein Statement haben."
+      ],
+      "Sets": [
+        "Ein Set **muss** ein Label und eine Condition Expression haben und erfassen, ob es ist ein Self Referential."
+      ],
+      "MembershipFacts": [
+        "Ein Membership Fact **muss** auf genau einen Set als seinen Element verweisen.",
+        "Ein Membership Fact **muss** auf genau einen Set als seinen Container verweisen.",
+        "Ein Membership Fact **muss** auf genau einen Truth Value als seinen Membership Value verweisen."
+      ],
+      "EvaluationSteps": [
+        "Ein Evaluation Step **muss** auf genau einen Membership Fact verweisen.",
+        "Ein Evaluation Step **muss** auf genau einen Truth Value als seinen Trial Value verweisen.",
+        "Ein Evaluation Step **muss** auf genau einen Truth Value als seinen Resulting Value verweisen.",
+        "Ein Evaluation Step **muss** ein Step Order haben."
+      ]
+    },
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TruthValues": "Truth Value",
+      "Connectives": "Connective",
+      "TruthTableRows": "Truth Table Row",
+      "SetRules": "Set Rule",
+      "Sets": "Set",
+      "MembershipFacts": "Membership Fact",
+      "EvaluationSteps": "Evaluation Step"
+    }
+  },
+  "es": {
+    "fields": {
+      "TruthValues.Name": {
+        "table": "TruthValues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un truth value: name es igual a truth value ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Truth value ID"
+      },
+      "TruthValues.IsClassical": {
+        "table": "TruthValues",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "Un truth value se considera classical si se cumple al menos una de las siguientes: el truth value ID es «true» o el truth value ID es «false».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un truth value se considera classical si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el truth value ID es «true»"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el truth value ID es «false»"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Truth value ID es \"true\" o truth value ID es \"false\""
+      },
+      "TruthValues.IsUndefined": {
+        "table": "TruthValues",
+        "field": "IsUndefined",
+        "kind": "formula",
+        "rule": "Un truth value se considera undefined si el truth value ID es «null».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «is undefined» del truth value se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "verdadero",
+              "when": {
+                "kind": "leaf",
+                "text": "el truth value ID es «null»"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si truth value ID es \"null\", entonces true(), de lo contrario false()"
+      },
+      "TruthValues.CountOfFacts": {
+        "table": "TruthValues",
+        "field": "CountOfFacts",
+        "kind": "rollup",
+        "rule": "Un truth value: count of facts es el número de membership facts relacionados con el truth value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de membership facts cuyo membership value es truth value ID"
+      },
+      "Connectives.Name": {
+        "table": "Connectives",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un connective: name es igual a connective ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Connective ID"
+      },
+      "Connectives.CountOfTruthTableRows": {
+        "table": "Connectives",
+        "field": "CountOfTruthTableRows",
+        "kind": "rollup",
+        "rule": "Un connective: count of truth table rows es el número de truth table rows relacionados con el connective.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de truth table rows cuyo connective es connective ID"
+      },
+      "TruthTableRows.OutputSymbol": {
+        "table": "TruthTableRows",
+        "field": "OutputSymbol",
+        "kind": "lookup",
+        "rule": "Un truth table row: output symbol — tomado del output vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El symbol del output vinculado"
+      },
+      "TruthTableRows.Name": {
+        "table": "TruthTableRows",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un truth table row: name se calcula como el connective, seguido de «: », seguido de el left input, seguido de « , », seguido de el right input, seguido de « -> », seguido de el output.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "LeftInput",
+            "label": "left input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "RightInput",
+            "label": "right input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          }
+        ],
+        "structure": null,
+        "plain": "((((connective unido con \": \") unido con left input) unido con si right input es \"\", entonces \"\", de lo contrario (\" , \" unido con right input)) unido con \" -> \") unido con output"
+      },
+      "SetRules.Name": {
+        "table": "SetRules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un set rule: name se calcula como «R», seguido de el rule number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": null,
+        "plain": "\"R\" unido con rule number"
+      },
+      "SetRules.IsClassical": {
+        "table": "SetRules",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "Un set rule se considera classical si el rule number es como máximo 11.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «is classical» del set rule se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "verdadero",
+              "when": {
+                "kind": "leaf",
+                "text": "el rule number es como máximo 11"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si rule number es como máximo 11, entonces true(), de lo contrario false()"
+      },
+      "SetRules.IsTheMissingRule": {
+        "table": "SetRules",
+        "field": "IsTheMissingRule",
+        "kind": "formula",
+        "rule": "Un set rule se considera the missing rule si el rule number es 12.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «is the missing rule» del set rule se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "verdadero",
+              "when": {
+                "kind": "leaf",
+                "text": "el rule number es 12"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si rule number es igual a 12, entonces true(), de lo contrario false()"
+      },
+      "Sets.Name": {
+        "table": "Sets",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un set: name es igual a set ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Set ID"
+      },
+      "Sets.IsRussellSet": {
+        "table": "Sets",
+        "field": "IsRussellSet",
+        "kind": "formula",
+        "rule": "Un set se considera un russell set si el set ID es «russell-set».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «is russell set» del set se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "verdadero",
+              "when": {
+                "kind": "leaf",
+                "text": "el set ID es «russell-set»"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si set ID es \"russell-set\", entonces true(), de lo contrario false()"
+      },
+      "Sets.CountOfMemberships": {
+        "table": "Sets",
+        "field": "CountOfMemberships",
+        "kind": "rollup",
+        "rule": "Un set: count of memberships es el número de membership facts relacionados con el set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de membership facts cuyo container es set ID"
+      },
+      "Sets.CountOfNullMemberships": {
+        "table": "Sets",
+        "field": "CountOfNullMemberships",
+        "kind": "rollup",
+        "rule": "Un set: count of null memberships es el número de membership facts del set que tienen un membership value de «null».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de membership facts cuyo container es set ID y membership value es \"null\""
+      },
+      "MembershipFacts.Name": {
+        "table": "MembershipFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un membership fact: name se calcula como el element, seguido de « ∈ », seguido de el container.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Element",
+            "label": "element"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          }
+        ],
+        "structure": null,
+        "plain": "(element unido con \" ∈ \") unido con container"
+      },
+      "MembershipFacts.ContainerLabel": {
+        "table": "MembershipFacts",
+        "field": "ContainerLabel",
+        "kind": "lookup",
+        "rule": "Un membership fact: container label — tomado del container vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El label del container vinculado"
+      },
+      "MembershipFacts.MembershipValueSymbol": {
+        "table": "MembershipFacts",
+        "field": "MembershipValueSymbol",
+        "kind": "lookup",
+        "rule": "Un membership fact: membership value symbol — tomado del membership value vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El symbol del membership value vinculado"
+      },
+      "MembershipFacts.IsBivalent": {
+        "table": "MembershipFacts",
+        "field": "IsBivalent",
+        "kind": "lookup",
+        "rule": "Un membership fact: is bivalent es verdadero cuando el membership value vinculado es classical.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "IsClassical",
+            "label": "is classical"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El is classical del membership value vinculado"
+      },
+      "MembershipFacts.IsNull": {
+        "table": "MembershipFacts",
+        "field": "IsNull",
+        "kind": "formula",
+        "rule": "Un membership fact se considera un null si el membership value es «null».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «is null» del membership fact se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "verdadero",
+              "when": {
+                "kind": "leaf",
+                "text": "el membership value es «null»"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si membership value es \"null\", entonces true(), de lo contrario false()"
+      },
+      "MembershipFacts.IsGrounded": {
+        "table": "MembershipFacts",
+        "field": "IsGrounded",
+        "kind": "formula",
+        "rule": "Un membership fact se considera grounded si no se da el caso de que el membership value es «null».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «is grounded» del membership fact se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "falso",
+              "when": {
+                "kind": "leaf",
+                "text": "el membership value es «null»"
+              }
+            },
+            {
+              "value": "verdadero",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si membership value es \"null\", entonces false(), de lo contrario true()"
+      },
+      "MembershipFacts.CountOfEvaluationSteps": {
+        "table": "MembershipFacts",
+        "field": "CountOfEvaluationSteps",
+        "kind": "rollup",
+        "rule": "Un membership fact: count of evaluation steps es el número de evaluation steps relacionados con el membership fact.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "MembershipFact",
+            "label": "membership fact"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipFactId",
+            "label": "membership fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de evaluation steps cuyo membership fact es membership fact ID"
+      },
+      "EvaluationSteps.Name": {
+        "table": "EvaluationSteps",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un evaluation step: name se calcula como «try », seguido de el trial value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          }
+        ],
+        "structure": null,
+        "plain": "\"try \" unido con trial value"
+      },
+      "EvaluationSteps.IsStable": {
+        "table": "EvaluationSteps",
+        "field": "IsStable",
+        "kind": "formula",
+        "rule": "Un evaluation step se considera stable si el trial value es el resulting value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «is stable» del evaluation step se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "verdadero",
+              "when": {
+                "kind": "leaf",
+                "text": "el trial value es el resulting value"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si trial value es igual a resulting value, entonces true(), de lo contrario false()"
+      },
+      "EvaluationSteps.Outcome": {
+        "table": "EvaluationSteps",
+        "field": "Outcome",
+        "kind": "formula",
+        "rule": "El campo «outcome» del evaluation step se determina según la siguiente prioridad:\n1. «stable fixed point», si el trial value es el resulting value;\n2. en todos los demás casos, «contradiction».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «outcome» del evaluation step se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«stable fixed point»",
+              "when": {
+                "kind": "leaf",
+                "text": "el trial value es el resulting value"
+              }
+            },
+            {
+              "value": "«contradiction»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si trial value es igual a resulting value, entonces \"stable fixed point\", de lo contrario \"contradiction\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "TruthValues": [
+        "Un truth value **debe** tener un symbol; un glyph; y un rank."
+      ],
+      "Connectives": [
+        "Un connective **debe** tener un symbol; un arity; y un kleene rule."
+      ],
+      "TruthTableRows": [
+        "Un truth table row **debe** referenciar exactamente un connective.",
+        "Un truth table row **debe** referenciar exactamente un truth value como su left input.",
+        "Un truth table row **debe** referenciar exactamente un truth value como su output."
+      ],
+      "SetRules": [
+        "Un set rule **debe** tener un rule number; un title; y un statement."
+      ],
+      "Sets": [
+        "Un set **debe** tener un label y un condition expression, y registrar si es self referential."
+      ],
+      "MembershipFacts": [
+        "Un membership fact **debe** referenciar exactamente un set como su element.",
+        "Un membership fact **debe** referenciar exactamente un set como su container.",
+        "Un membership fact **debe** referenciar exactamente un truth value como su membership value."
+      ],
+      "EvaluationSteps": [
+        "Un evaluation step **debe** referenciar exactamente un membership fact.",
+        "Un evaluation step **debe** referenciar exactamente un truth value como su trial value.",
+        "Un evaluation step **debe** referenciar exactamente un truth value como su resulting value.",
+        "Un evaluation step **debe** tener un step order."
+      ]
+    },
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TruthValues": "truth value",
+      "Connectives": "connective",
+      "TruthTableRows": "truth table row",
+      "SetRules": "set rule",
+      "Sets": "set",
+      "MembershipFacts": "membership fact",
+      "EvaluationSteps": "evaluation step"
+    }
+  },
+  "fr": {
+    "fields": {
+      "TruthValues.Name": {
+        "table": "TruthValues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un truth value : name est identique à truth value ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Truth value ID"
+      },
+      "TruthValues.IsClassical": {
+        "table": "TruthValues",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "Un truth value est considéré comme classical si au moins une des conditions suivantes est vraie : le truth value ID est « true » ou le truth value ID est « false ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un truth value est considéré comme classical si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "le truth value ID est « true »"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "le truth value ID est « false »"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Truth value ID est \"true\" ou truth value ID est \"false\""
+      },
+      "TruthValues.IsUndefined": {
+        "table": "TruthValues",
+        "field": "IsUndefined",
+        "kind": "formula",
+        "rule": "Un truth value est considéré comme undefined si le truth value ID est « null ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « is undefined » du truth value est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "vrai",
+              "when": {
+                "kind": "leaf",
+                "text": "le truth value ID est « null »"
+              }
+            },
+            {
+              "value": "faux",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si truth value ID est \"null\", alors true(), sinon false()"
+      },
+      "TruthValues.CountOfFacts": {
+        "table": "TruthValues",
+        "field": "CountOfFacts",
+        "kind": "rollup",
+        "rule": "Un truth value : count of facts est le nombre de membership facts liés à le truth value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des membership facts dont membership value est truth value ID"
+      },
+      "Connectives.Name": {
+        "table": "Connectives",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un connective : name est identique à connective ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Connective ID"
+      },
+      "Connectives.CountOfTruthTableRows": {
+        "table": "Connectives",
+        "field": "CountOfTruthTableRows",
+        "kind": "rollup",
+        "rule": "Un connective : count of truth table rows est le nombre de truth table rows liés à le connective.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des truth table rows dont connective est connective ID"
+      },
+      "TruthTableRows.OutputSymbol": {
+        "table": "TruthTableRows",
+        "field": "OutputSymbol",
+        "kind": "lookup",
+        "rule": "Un truth table row : output symbol — repris du output lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le symbol du output lié"
+      },
+      "TruthTableRows.Name": {
+        "table": "TruthTableRows",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un truth table row : name est calculé comme le connective, suivi de « : », suivi de le left input, suivi de « , », suivi de le right input, suivi de « -> », suivi de l'output.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "LeftInput",
+            "label": "left input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "RightInput",
+            "label": "right input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          }
+        ],
+        "structure": null,
+        "plain": "((((connective joint à \": \") joint à left input) joint à si right input est \"\", alors \"\", sinon (\" , \" joint à right input)) joint à \" -> \") joint à output"
+      },
+      "SetRules.Name": {
+        "table": "SetRules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un set rule : name est calculé comme « R », suivi de le rule number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": null,
+        "plain": "\"R\" joint à rule number"
+      },
+      "SetRules.IsClassical": {
+        "table": "SetRules",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "Un set rule est considéré comme classical si le rule number est au plus 11.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « is classical » du set rule est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "vrai",
+              "when": {
+                "kind": "leaf",
+                "text": "le rule number est au plus 11"
+              }
+            },
+            {
+              "value": "faux",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si rule number est au plus 11, alors true(), sinon false()"
+      },
+      "SetRules.IsTheMissingRule": {
+        "table": "SetRules",
+        "field": "IsTheMissingRule",
+        "kind": "formula",
+        "rule": "Un set rule est considéré comme the missing rule si le rule number est 12.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « is the missing rule » du set rule est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "vrai",
+              "when": {
+                "kind": "leaf",
+                "text": "le rule number est 12"
+              }
+            },
+            {
+              "value": "faux",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si rule number est égal à 12, alors true(), sinon false()"
+      },
+      "Sets.Name": {
+        "table": "Sets",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un set : name est identique à set ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Set ID"
+      },
+      "Sets.IsRussellSet": {
+        "table": "Sets",
+        "field": "IsRussellSet",
+        "kind": "formula",
+        "rule": "Un set est considéré comme un russell set si le set ID est « russell-set ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « is russell set » du set est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "vrai",
+              "when": {
+                "kind": "leaf",
+                "text": "le set ID est « russell-set »"
+              }
+            },
+            {
+              "value": "faux",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si set ID est \"russell-set\", alors true(), sinon false()"
+      },
+      "Sets.CountOfMemberships": {
+        "table": "Sets",
+        "field": "CountOfMemberships",
+        "kind": "rollup",
+        "rule": "Un set : count of memberships est le nombre de membership facts liés à le set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des membership facts dont container est set ID"
+      },
+      "Sets.CountOfNullMemberships": {
+        "table": "Sets",
+        "field": "CountOfNullMemberships",
+        "kind": "rollup",
+        "rule": "Un set : count of null memberships est le nombre de membership facts du set qui ont un membership value de « null ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des membership facts dont container est set ID et membership value est \"null\""
+      },
+      "MembershipFacts.Name": {
+        "table": "MembershipFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un membership fact : name est calculé comme l'element, suivi de « ∈ », suivi de le container.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Element",
+            "label": "element"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          }
+        ],
+        "structure": null,
+        "plain": "(element joint à \" ∈ \") joint à container"
+      },
+      "MembershipFacts.ContainerLabel": {
+        "table": "MembershipFacts",
+        "field": "ContainerLabel",
+        "kind": "lookup",
+        "rule": "Un membership fact : container label — repris du container lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le label du container lié"
+      },
+      "MembershipFacts.MembershipValueSymbol": {
+        "table": "MembershipFacts",
+        "field": "MembershipValueSymbol",
+        "kind": "lookup",
+        "rule": "Un membership fact : membership value symbol — repris du membership value lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le symbol du membership value lié"
+      },
+      "MembershipFacts.IsBivalent": {
+        "table": "MembershipFacts",
+        "field": "IsBivalent",
+        "kind": "lookup",
+        "rule": "Un membership fact : is bivalent est vrai lorsque le membership value lié est classical.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "IsClassical",
+            "label": "is classical"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le is classical du membership value lié"
+      },
+      "MembershipFacts.IsNull": {
+        "table": "MembershipFacts",
+        "field": "IsNull",
+        "kind": "formula",
+        "rule": "Un membership fact est considéré comme un null si le membership value est « null ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « is null » du membership fact est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "vrai",
+              "when": {
+                "kind": "leaf",
+                "text": "le membership value est « null »"
+              }
+            },
+            {
+              "value": "faux",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si membership value est \"null\", alors true(), sinon false()"
+      },
+      "MembershipFacts.IsGrounded": {
+        "table": "MembershipFacts",
+        "field": "IsGrounded",
+        "kind": "formula",
+        "rule": "Un membership fact est considéré comme grounded si il n'est pas vrai que le membership value est « null ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « is grounded » du membership fact est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "faux",
+              "when": {
+                "kind": "leaf",
+                "text": "le membership value est « null »"
+              }
+            },
+            {
+              "value": "vrai",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si membership value est \"null\", alors false(), sinon true()"
+      },
+      "MembershipFacts.CountOfEvaluationSteps": {
+        "table": "MembershipFacts",
+        "field": "CountOfEvaluationSteps",
+        "kind": "rollup",
+        "rule": "Un membership fact : count of evaluation steps est le nombre de evaluation steps liés à le membership fact.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "MembershipFact",
+            "label": "membership fact"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipFactId",
+            "label": "membership fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des evaluation steps dont membership fact est membership fact ID"
+      },
+      "EvaluationSteps.Name": {
+        "table": "EvaluationSteps",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un evaluation step : name est calculé comme « try », suivi de le trial value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          }
+        ],
+        "structure": null,
+        "plain": "\"try \" joint à trial value"
+      },
+      "EvaluationSteps.IsStable": {
+        "table": "EvaluationSteps",
+        "field": "IsStable",
+        "kind": "formula",
+        "rule": "Un evaluation step est considéré comme stable si le trial value est le resulting value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « is stable » de l'evaluation step est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "vrai",
+              "when": {
+                "kind": "leaf",
+                "text": "le trial value est le resulting value"
+              }
+            },
+            {
+              "value": "faux",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si trial value est égal à resulting value, alors true(), sinon false()"
+      },
+      "EvaluationSteps.Outcome": {
+        "table": "EvaluationSteps",
+        "field": "Outcome",
+        "kind": "formula",
+        "rule": "Le champ « outcome » de l'evaluation step est déterminé selon la priorité suivante :\n1. « stable fixed point », si le trial value est le resulting value ;\n2. dans tous les autres cas, « contradiction ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « outcome » de l'evaluation step est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« stable fixed point »",
+              "when": {
+                "kind": "leaf",
+                "text": "le trial value est le resulting value"
+              }
+            },
+            {
+              "value": "« contradiction »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si trial value est égal à resulting value, alors \"stable fixed point\", sinon \"contradiction\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "TruthValues": [
+        "Un truth value **doit** avoir un symbol; un glyph; et un rank."
+      ],
+      "Connectives": [
+        "Un connective **doit** avoir un symbol; un arity; et un kleene rule."
+      ],
+      "TruthTableRows": [
+        "Un truth table row **doit** référencer exactement un connective.",
+        "Un truth table row **doit** référencer exactement un truth value comme son left input.",
+        "Un truth table row **doit** référencer exactement un truth value comme son output."
+      ],
+      "SetRules": [
+        "Un set rule **doit** avoir un rule number; un title; et un statement."
+      ],
+      "Sets": [
+        "Un set **doit** avoir un label et une condition expression, et consigner si il est self referential."
+      ],
+      "MembershipFacts": [
+        "Un membership fact **doit** référencer exactement un set comme son element.",
+        "Un membership fact **doit** référencer exactement un set comme son container.",
+        "Un membership fact **doit** référencer exactement un truth value comme son membership value."
+      ],
+      "EvaluationSteps": [
+        "Un evaluation step **doit** référencer exactement un membership fact.",
+        "Un evaluation step **doit** référencer exactement un truth value comme son trial value.",
+        "Un evaluation step **doit** référencer exactement un truth value comme son resulting value.",
+        "Un evaluation step **doit** avoir un step order."
+      ]
+    },
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TruthValues": "truth value",
+      "Connectives": "connective",
+      "TruthTableRows": "truth table row",
+      "SetRules": "set rule",
+      "Sets": "set",
+      "MembershipFacts": "membership fact",
+      "EvaluationSteps": "evaluation step"
+    }
+  },
+  "hi": {
+    "fields": {
+      "TruthValues.Name": {
+        "table": "TruthValues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "truth value का “name” उसके “truth value ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Truth value ID"
+      },
+      "TruthValues.IsClassical": {
+        "table": "TruthValues",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित में से कम से कम एक सही है: truth value ID “true” है या truth value ID “false” है, तो truth value “classical” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "truth value “classical” माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "truth value ID “true” है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "truth value ID “false” है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Truth value ID \"true\" है या truth value ID \"false\" है"
+      },
+      "TruthValues.IsUndefined": {
+        "table": "TruthValues",
+        "field": "IsUndefined",
+        "kind": "formula",
+        "rule": "यदि truth value ID “null” है, तो truth value “undefined” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Truth value का “is undefined” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "सत्य",
+              "when": {
+                "kind": "leaf",
+                "text": "truth value ID “null” है"
+              }
+            },
+            {
+              "value": "असत्य",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि truth value ID \"null\" है, तो true(), अन्यथा false()"
+      },
+      "TruthValues.CountOfFacts": {
+        "table": "TruthValues",
+        "field": "CountOfFacts",
+        "kind": "rollup",
+        "rule": "truth value का “count of facts” truth value से संबंधित “membership facts” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “membership facts” की संख्या, जिनका membership value truth value ID है"
+      },
+      "Connectives.Name": {
+        "table": "Connectives",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "connective का “name” उसके “connective ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Connective ID"
+      },
+      "Connectives.CountOfTruthTableRows": {
+        "table": "Connectives",
+        "field": "CountOfTruthTableRows",
+        "kind": "rollup",
+        "rule": "connective का “count of truth table rows” connective से संबंधित “truth table rows” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “truth table rows” की संख्या, जिनका connective connective ID है"
+      },
+      "TruthTableRows.OutputSymbol": {
+        "table": "TruthTableRows",
+        "field": "OutputSymbol",
+        "kind": "lookup",
+        "rule": "truth table row का “output symbol” — लिंक किए गए “output” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “output” का symbol"
+      },
+      "TruthTableRows.Name": {
+        "table": "TruthTableRows",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "truth table row का “name” connective, उसके बाद “: ”, उसके बाद left input, उसके बाद “ , ”, उसके बाद right input, उसके बाद “ -> ”, उसके बाद output के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "LeftInput",
+            "label": "left input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "RightInput",
+            "label": "right input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          }
+        ],
+        "structure": null,
+        "plain": "((((connective \": \" से जुड़ा हुआ) left input से जुड़ा हुआ) यदि right input \"\" है, तो \"\", अन्यथा (\" , \" right input से जुड़ा हुआ) से जुड़ा हुआ) \" -> \" से जुड़ा हुआ) output से जुड़ा हुआ"
+      },
+      "SetRules.Name": {
+        "table": "SetRules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "set rule का “name” “R”, उसके बाद rule number के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": null,
+        "plain": "\"R\" rule number से जुड़ा हुआ"
+      },
+      "SetRules.IsClassical": {
+        "table": "SetRules",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "यदि rule number अधिक से अधिक 11 है, तो set rule “classical” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Set rule का “is classical” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "सत्य",
+              "when": {
+                "kind": "leaf",
+                "text": "rule number अधिक से अधिक 11 है"
+              }
+            },
+            {
+              "value": "असत्य",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि rule number अधिक से अधिक 11 है, तो true(), अन्यथा false()"
+      },
+      "SetRules.IsTheMissingRule": {
+        "table": "SetRules",
+        "field": "IsTheMissingRule",
+        "kind": "formula",
+        "rule": "यदि rule number 12 है, तो set rule “the missing rule” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Set rule का “is the missing rule” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "सत्य",
+              "when": {
+                "kind": "leaf",
+                "text": "rule number 12 है"
+              }
+            },
+            {
+              "value": "असत्य",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि rule number 12 के बराबर है, तो true(), अन्यथा false()"
+      },
+      "Sets.Name": {
+        "table": "Sets",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "set का “name” उसके “set ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Set ID"
+      },
+      "Sets.IsRussellSet": {
+        "table": "Sets",
+        "field": "IsRussellSet",
+        "kind": "formula",
+        "rule": "यदि set ID “russell-set” है, तो set “russell set” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Set का “is russell set” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "सत्य",
+              "when": {
+                "kind": "leaf",
+                "text": "set ID “russell-set” है"
+              }
+            },
+            {
+              "value": "असत्य",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि set ID \"russell-set\" है, तो true(), अन्यथा false()"
+      },
+      "Sets.CountOfMemberships": {
+        "table": "Sets",
+        "field": "CountOfMemberships",
+        "kind": "rollup",
+        "rule": "set का “count of memberships” set से संबंधित “membership facts” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “membership facts” की संख्या, जिनका container set ID है"
+      },
+      "Sets.CountOfNullMemberships": {
+        "table": "Sets",
+        "field": "CountOfNullMemberships",
+        "kind": "rollup",
+        "rule": "set का “count of null memberships” set के उन “membership facts” की संख्या, जो “membership value” का मान “null” रखते हैं है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “membership facts” की संख्या, जिनका container set ID है और membership value \"null\" है"
+      },
+      "MembershipFacts.Name": {
+        "table": "MembershipFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "membership fact का “name” element, उसके बाद “ ∈ ”, उसके बाद container के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Element",
+            "label": "element"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          }
+        ],
+        "structure": null,
+        "plain": "(element \" ∈ \" से जुड़ा हुआ) container से जुड़ा हुआ"
+      },
+      "MembershipFacts.ContainerLabel": {
+        "table": "MembershipFacts",
+        "field": "ContainerLabel",
+        "kind": "lookup",
+        "rule": "membership fact का “container label” — लिंक किए गए “container” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “container” का label"
+      },
+      "MembershipFacts.MembershipValueSymbol": {
+        "table": "MembershipFacts",
+        "field": "MembershipValueSymbol",
+        "kind": "lookup",
+        "rule": "membership fact का “membership value symbol” — लिंक किए गए “membership value” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “membership value” का symbol"
+      },
+      "MembershipFacts.IsBivalent": {
+        "table": "MembershipFacts",
+        "field": "IsBivalent",
+        "kind": "lookup",
+        "rule": "membership fact का “is bivalent” तब सत्य होता है, जब लिंक किए गए “membership value” का “classical” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "IsClassical",
+            "label": "is classical"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “membership value” का is classical"
+      },
+      "MembershipFacts.IsNull": {
+        "table": "MembershipFacts",
+        "field": "IsNull",
+        "kind": "formula",
+        "rule": "यदि membership value “null” है, तो membership fact “null” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Membership fact का “is null” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "सत्य",
+              "when": {
+                "kind": "leaf",
+                "text": "membership value “null” है"
+              }
+            },
+            {
+              "value": "असत्य",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि membership value \"null\" है, तो true(), अन्यथा false()"
+      },
+      "MembershipFacts.IsGrounded": {
+        "table": "MembershipFacts",
+        "field": "IsGrounded",
+        "kind": "formula",
+        "rule": "यदि ऐसा नहीं है कि membership value “null” है, तो membership fact “grounded” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Membership fact का “is grounded” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "असत्य",
+              "when": {
+                "kind": "leaf",
+                "text": "membership value “null” है"
+              }
+            },
+            {
+              "value": "सत्य",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि membership value \"null\" है, तो false(), अन्यथा true()"
+      },
+      "MembershipFacts.CountOfEvaluationSteps": {
+        "table": "MembershipFacts",
+        "field": "CountOfEvaluationSteps",
+        "kind": "rollup",
+        "rule": "membership fact का “count of evaluation steps” membership fact से संबंधित “evaluation steps” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "MembershipFact",
+            "label": "membership fact"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipFactId",
+            "label": "membership fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “evaluation steps” की संख्या, जिनका membership fact membership fact ID है"
+      },
+      "EvaluationSteps.Name": {
+        "table": "EvaluationSteps",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "evaluation step का “name” “try ”, उसके बाद trial value के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          }
+        ],
+        "structure": null,
+        "plain": "\"try \" trial value से जुड़ा हुआ"
+      },
+      "EvaluationSteps.IsStable": {
+        "table": "EvaluationSteps",
+        "field": "IsStable",
+        "kind": "formula",
+        "rule": "यदि trial value resulting value है, तो evaluation step “stable” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Evaluation step का “is stable” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "सत्य",
+              "when": {
+                "kind": "leaf",
+                "text": "trial value resulting value है"
+              }
+            },
+            {
+              "value": "असत्य",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि trial value resulting value के बराबर है, तो true(), अन्यथा false()"
+      },
+      "EvaluationSteps.Outcome": {
+        "table": "EvaluationSteps",
+        "field": "Outcome",
+        "kind": "formula",
+        "rule": "Evaluation step का “outcome” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “stable fixed point”, यदि trial value resulting value है;\n2. अन्य सभी स्थितियों में, “contradiction”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Evaluation step का “outcome” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“stable fixed point”",
+              "when": {
+                "kind": "leaf",
+                "text": "trial value resulting value है"
+              }
+            },
+            {
+              "value": "“contradiction”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि trial value resulting value के बराबर है, तो \"stable fixed point\", अन्यथा \"contradiction\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "TruthValues": [
+        "truth value को symbol, glyph और rank रखना **अनिवार्य** है।"
+      ],
+      "Connectives": [
+        "connective को symbol, arity और kleene rule रखना **अनिवार्य** है।"
+      ],
+      "TruthTableRows": [
+        "truth table row को ठीक एक “connective” का संदर्भ देना **अनिवार्य** है।",
+        "truth table row को अपने “left input” के रूप में ठीक एक “truth value” का संदर्भ देना **अनिवार्य** है।",
+        "truth table row को अपने “output” के रूप में ठीक एक “truth value” का संदर्भ देना **अनिवार्य** है।"
+      ],
+      "SetRules": [
+        "set rule को rule number, title और statement रखना **अनिवार्य** है।"
+      ],
+      "Sets": [
+        "set को label और condition expression रखना, तथा यह कि वह “self referential” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ],
+      "MembershipFacts": [
+        "membership fact को अपने “element” के रूप में ठीक एक “set” का संदर्भ देना **अनिवार्य** है।",
+        "membership fact को अपने “container” के रूप में ठीक एक “set” का संदर्भ देना **अनिवार्य** है।",
+        "membership fact को अपने “membership value” के रूप में ठीक एक “truth value” का संदर्भ देना **अनिवार्य** है।"
+      ],
+      "EvaluationSteps": [
+        "evaluation step को ठीक एक “membership fact” का संदर्भ देना **अनिवार्य** है।",
+        "evaluation step को अपने “trial value” के रूप में ठीक एक “truth value” का संदर्भ देना **अनिवार्य** है।",
+        "evaluation step को अपने “resulting value” के रूप में ठीक एक “truth value” का संदर्भ देना **अनिवार्य** है।",
+        "evaluation step को step order रखना **अनिवार्य** है।"
+      ]
+    },
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "TruthValues": "truth value",
+      "Connectives": "connective",
+      "TruthTableRows": "truth table row",
+      "SetRules": "set rule",
+      "Sets": "set",
+      "MembershipFacts": "membership fact",
+      "EvaluationSteps": "evaluation step"
+    }
+  },
+  "id": {
+    "fields": {
+      "TruthValues.Name": {
+        "table": "TruthValues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap truth value, name sama dengan truth value ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Truth value ID"
+      },
+      "TruthValues.IsClassical": {
+        "table": "TruthValues",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "Setiap truth value dianggap “classical” jika paling sedikit satu dari kondisi berikut terpenuhi: truth value ID adalah “true” atau truth value ID adalah “false”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap truth value dianggap “classical” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "truth value ID adalah “true”"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "truth value ID adalah “false”"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Truth value ID adalah \"true\" atau truth value ID adalah \"false\""
+      },
+      "TruthValues.IsUndefined": {
+        "table": "TruthValues",
+        "field": "IsUndefined",
+        "kind": "formula",
+        "rule": "Setiap truth value dianggap “undefined” jika truth value ID adalah “null”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap truth value, is undefined ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "benar",
+              "when": {
+                "kind": "leaf",
+                "text": "truth value ID adalah “null”"
+              }
+            },
+            {
+              "value": "salah",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika truth value ID adalah \"null\" maka true(), selain itu false()"
+      },
+      "TruthValues.CountOfFacts": {
+        "table": "TruthValues",
+        "field": "CountOfFacts",
+        "kind": "rollup",
+        "rule": "Untuk setiap truth value, count of facts adalah jumlah membership facts yang terkait dengan truth value tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah membership facts dengan syarat membership value adalah truth value ID"
+      },
+      "Connectives.Name": {
+        "table": "Connectives",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap connective, name sama dengan connective ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Connective ID"
+      },
+      "Connectives.CountOfTruthTableRows": {
+        "table": "Connectives",
+        "field": "CountOfTruthTableRows",
+        "kind": "rollup",
+        "rule": "Untuk setiap connective, count of truth table rows adalah jumlah truth table rows yang terkait dengan connective tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah truth table rows dengan syarat connective adalah connective ID"
+      },
+      "TruthTableRows.OutputSymbol": {
+        "table": "TruthTableRows",
+        "field": "OutputSymbol",
+        "kind": "lookup",
+        "rule": "Untuk setiap truth table row, output symbol diambil dari output yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symbol dari output yang tertaut"
+      },
+      "TruthTableRows.Name": {
+        "table": "TruthTableRows",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap truth table row, name dihitung sebagai connective, diikuti “: ”, diikuti left input, diikuti “ , ”, diikuti right input, diikuti “ -> ”, diikuti output.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "LeftInput",
+            "label": "left input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "RightInput",
+            "label": "right input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          }
+        ],
+        "structure": null,
+        "plain": "((((connective digabung dengan \": \") digabung dengan left input) digabung dengan jika right input adalah \"\" maka \"\", selain itu (\" , \" digabung dengan right input)) digabung dengan \" -> \") digabung dengan output"
+      },
+      "SetRules.Name": {
+        "table": "SetRules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap set rule, name dihitung sebagai “R”, diikuti rule number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": null,
+        "plain": "\"R\" digabung dengan rule number"
+      },
+      "SetRules.IsClassical": {
+        "table": "SetRules",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "Setiap set rule dianggap “classical” jika rule number tidak lebih dari 11.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap set rule, is classical ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "benar",
+              "when": {
+                "kind": "leaf",
+                "text": "rule number tidak lebih dari 11"
+              }
+            },
+            {
+              "value": "salah",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika rule number tidak lebih dari 11 maka true(), selain itu false()"
+      },
+      "SetRules.IsTheMissingRule": {
+        "table": "SetRules",
+        "field": "IsTheMissingRule",
+        "kind": "formula",
+        "rule": "Setiap set rule dianggap “the missing rule” jika rule number adalah 12.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap set rule, is the missing rule ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "benar",
+              "when": {
+                "kind": "leaf",
+                "text": "rule number adalah 12"
+              }
+            },
+            {
+              "value": "salah",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika rule number sama dengan 12 maka true(), selain itu false()"
+      },
+      "Sets.Name": {
+        "table": "Sets",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap set, name sama dengan set ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Set ID"
+      },
+      "Sets.IsRussellSet": {
+        "table": "Sets",
+        "field": "IsRussellSet",
+        "kind": "formula",
+        "rule": "Setiap set dianggap “russell set” jika set ID adalah “russell-set”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap set, is russell set ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "benar",
+              "when": {
+                "kind": "leaf",
+                "text": "set ID adalah “russell-set”"
+              }
+            },
+            {
+              "value": "salah",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika set ID adalah \"russell-set\" maka true(), selain itu false()"
+      },
+      "Sets.CountOfMemberships": {
+        "table": "Sets",
+        "field": "CountOfMemberships",
+        "kind": "rollup",
+        "rule": "Untuk setiap set, count of memberships adalah jumlah membership facts yang terkait dengan set tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah membership facts dengan syarat container adalah set ID"
+      },
+      "Sets.CountOfNullMemberships": {
+        "table": "Sets",
+        "field": "CountOfNullMemberships",
+        "kind": "rollup",
+        "rule": "Untuk setiap set, count of null memberships adalah jumlah membership facts dari set tersebut yang memiliki membership value bernilai “null”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah membership facts dengan syarat container adalah set ID dan membership value adalah \"null\""
+      },
+      "MembershipFacts.Name": {
+        "table": "MembershipFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap membership fact, name dihitung sebagai element, diikuti “ ∈ ”, diikuti container.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Element",
+            "label": "element"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          }
+        ],
+        "structure": null,
+        "plain": "(element digabung dengan \" ∈ \") digabung dengan container"
+      },
+      "MembershipFacts.ContainerLabel": {
+        "table": "MembershipFacts",
+        "field": "ContainerLabel",
+        "kind": "lookup",
+        "rule": "Untuk setiap membership fact, container label diambil dari container yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Label dari container yang tertaut"
+      },
+      "MembershipFacts.MembershipValueSymbol": {
+        "table": "MembershipFacts",
+        "field": "MembershipValueSymbol",
+        "kind": "lookup",
+        "rule": "Untuk setiap membership fact, membership value symbol diambil dari membership value yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symbol dari membership value yang tertaut"
+      },
+      "MembershipFacts.IsBivalent": {
+        "table": "MembershipFacts",
+        "field": "IsBivalent",
+        "kind": "lookup",
+        "rule": "Untuk setiap membership fact, is bivalent bernilai benar jika membership value yang tertaut pada membership fact tersebut tergolong “classical”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "IsClassical",
+            "label": "is classical"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is classical dari membership value yang tertaut"
+      },
+      "MembershipFacts.IsNull": {
+        "table": "MembershipFacts",
+        "field": "IsNull",
+        "kind": "formula",
+        "rule": "Setiap membership fact dianggap “null” jika membership value adalah “null”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap membership fact, is null ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "benar",
+              "when": {
+                "kind": "leaf",
+                "text": "membership value adalah “null”"
+              }
+            },
+            {
+              "value": "salah",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika membership value adalah \"null\" maka true(), selain itu false()"
+      },
+      "MembershipFacts.IsGrounded": {
+        "table": "MembershipFacts",
+        "field": "IsGrounded",
+        "kind": "formula",
+        "rule": "Setiap membership fact dianggap “grounded” jika tidak benar bahwa membership value adalah “null”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap membership fact, is grounded ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "salah",
+              "when": {
+                "kind": "leaf",
+                "text": "membership value adalah “null”"
+              }
+            },
+            {
+              "value": "benar",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika membership value adalah \"null\" maka false(), selain itu true()"
+      },
+      "MembershipFacts.CountOfEvaluationSteps": {
+        "table": "MembershipFacts",
+        "field": "CountOfEvaluationSteps",
+        "kind": "rollup",
+        "rule": "Untuk setiap membership fact, count of evaluation steps adalah jumlah evaluation steps yang terkait dengan membership fact tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "MembershipFact",
+            "label": "membership fact"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipFactId",
+            "label": "membership fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah evaluation steps dengan syarat membership fact adalah membership fact ID"
+      },
+      "EvaluationSteps.Name": {
+        "table": "EvaluationSteps",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap evaluation step, name dihitung sebagai “try ”, diikuti trial value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          }
+        ],
+        "structure": null,
+        "plain": "\"try \" digabung dengan trial value"
+      },
+      "EvaluationSteps.IsStable": {
+        "table": "EvaluationSteps",
+        "field": "IsStable",
+        "kind": "formula",
+        "rule": "Setiap evaluation step dianggap “stable” jika trial value adalah resulting value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap evaluation step, is stable ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "benar",
+              "when": {
+                "kind": "leaf",
+                "text": "trial value adalah resulting value"
+              }
+            },
+            {
+              "value": "salah",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika trial value sama dengan resulting value maka true(), selain itu false()"
+      },
+      "EvaluationSteps.Outcome": {
+        "table": "EvaluationSteps",
+        "field": "Outcome",
+        "kind": "formula",
+        "rule": "Untuk setiap evaluation step, outcome ditentukan menurut urutan prioritas berikut:\n1. “stable fixed point”, jika trial value adalah resulting value;\n2. dalam semua kasus lainnya, “contradiction”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap evaluation step, outcome ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“stable fixed point”",
+              "when": {
+                "kind": "leaf",
+                "text": "trial value adalah resulting value"
+              }
+            },
+            {
+              "value": "“contradiction”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika trial value sama dengan resulting value maka \"stable fixed point\", selain itu \"contradiction\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "TruthValues": [
+        "Setiap truth value **harus** memiliki symbol, glyph, dan rank."
+      ],
+      "Connectives": [
+        "Setiap connective **harus** memiliki symbol, arity, dan kleene rule."
+      ],
+      "TruthTableRows": [
+        "Setiap truth table row **harus** merujuk pada tepat satu connective.",
+        "Setiap truth table row **harus** merujuk pada tepat satu truth value sebagai left input.",
+        "Setiap truth table row **harus** merujuk pada tepat satu truth value sebagai output."
+      ],
+      "SetRules": [
+        "Setiap set rule **harus** memiliki rule number, title, dan statement."
+      ],
+      "Sets": [
+        "Setiap set **harus** memiliki label dan condition expression, serta menyatakan apakah tergolong “self referential”."
+      ],
+      "MembershipFacts": [
+        "Setiap membership fact **harus** merujuk pada tepat satu set sebagai element.",
+        "Setiap membership fact **harus** merujuk pada tepat satu set sebagai container.",
+        "Setiap membership fact **harus** merujuk pada tepat satu truth value sebagai membership value."
+      ],
+      "EvaluationSteps": [
+        "Setiap evaluation step **harus** merujuk pada tepat satu membership fact.",
+        "Setiap evaluation step **harus** merujuk pada tepat satu truth value sebagai trial value.",
+        "Setiap evaluation step **harus** merujuk pada tepat satu truth value sebagai resulting value.",
+        "Setiap evaluation step **harus** memiliki step order."
+      ]
+    },
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TruthValues": "truth value",
+      "Connectives": "connective",
+      "TruthTableRows": "truth table row",
+      "SetRules": "set rule",
+      "Sets": "set",
+      "MembershipFacts": "membership fact",
+      "EvaluationSteps": "evaluation step"
+    }
+  },
+  "it": {
+    "fields": {
+      "TruthValues.Name": {
+        "table": "TruthValues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un truth value: name è uguale a truth value ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Truth value ID"
+      },
+      "TruthValues.IsClassical": {
+        "table": "TruthValues",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "Un truth value è considerato classical se vale almeno una delle seguenti: il truth value ID è «true» o il truth value ID è «false».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un truth value è considerato classical se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "il truth value ID è «true»"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "il truth value ID è «false»"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Truth value ID è \"true\" o truth value ID è \"false\""
+      },
+      "TruthValues.IsUndefined": {
+        "table": "TruthValues",
+        "field": "IsUndefined",
+        "kind": "formula",
+        "rule": "Un truth value è considerato undefined se il truth value ID è «null».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “is undefined” del truth value è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "vero",
+              "when": {
+                "kind": "leaf",
+                "text": "il truth value ID è «null»"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se truth value ID è \"null\", allora true(), altrimenti false()"
+      },
+      "TruthValues.CountOfFacts": {
+        "table": "TruthValues",
+        "field": "CountOfFacts",
+        "kind": "rollup",
+        "rule": "Un truth value: count of facts è il numero di membership facts collegati a il truth value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei membership facts il cui membership value è truth value ID"
+      },
+      "Connectives.Name": {
+        "table": "Connectives",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un connective: name è uguale a connective ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Connective ID"
+      },
+      "Connectives.CountOfTruthTableRows": {
+        "table": "Connectives",
+        "field": "CountOfTruthTableRows",
+        "kind": "rollup",
+        "rule": "Un connective: count of truth table rows è il numero di truth table rows collegati a il connective.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei truth table rows il cui connective è connective ID"
+      },
+      "TruthTableRows.OutputSymbol": {
+        "table": "TruthTableRows",
+        "field": "OutputSymbol",
+        "kind": "lookup",
+        "rule": "Un truth table row: output symbol — ripreso dal output collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il symbol del output collegato"
+      },
+      "TruthTableRows.Name": {
+        "table": "TruthTableRows",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un truth table row: name è calcolato come il connective, seguito da «: », seguito da il left input, seguito da « , », seguito da il right input, seguito da « -> », seguito da l'output.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "LeftInput",
+            "label": "left input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "RightInput",
+            "label": "right input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          }
+        ],
+        "structure": null,
+        "plain": "((((connective unito a \": \") unito a left input) unito a se right input è \"\", allora \"\", altrimenti (\" , \" unito a right input)) unito a \" -> \") unito a output"
+      },
+      "SetRules.Name": {
+        "table": "SetRules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un set rule: name è calcolato come «R», seguito da il rule number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": null,
+        "plain": "\"R\" unito a rule number"
+      },
+      "SetRules.IsClassical": {
+        "table": "SetRules",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "Un set rule è considerato classical se il rule number è al massimo 11.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “is classical” del set rule è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "vero",
+              "when": {
+                "kind": "leaf",
+                "text": "il rule number è al massimo 11"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se rule number è al massimo 11, allora true(), altrimenti false()"
+      },
+      "SetRules.IsTheMissingRule": {
+        "table": "SetRules",
+        "field": "IsTheMissingRule",
+        "kind": "formula",
+        "rule": "Un set rule è considerato the missing rule se il rule number è 12.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “is the missing rule” del set rule è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "vero",
+              "when": {
+                "kind": "leaf",
+                "text": "il rule number è 12"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se rule number è uguale a 12, allora true(), altrimenti false()"
+      },
+      "Sets.Name": {
+        "table": "Sets",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un set: name è uguale a set ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Set ID"
+      },
+      "Sets.IsRussellSet": {
+        "table": "Sets",
+        "field": "IsRussellSet",
+        "kind": "formula",
+        "rule": "Un set è considerato un russell set se il set ID è «russell-set».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “is russell set” del set è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "vero",
+              "when": {
+                "kind": "leaf",
+                "text": "il set ID è «russell-set»"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se set ID è \"russell-set\", allora true(), altrimenti false()"
+      },
+      "Sets.CountOfMemberships": {
+        "table": "Sets",
+        "field": "CountOfMemberships",
+        "kind": "rollup",
+        "rule": "Un set: count of memberships è il numero di membership facts collegati a il set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei membership facts il cui container è set ID"
+      },
+      "Sets.CountOfNullMemberships": {
+        "table": "Sets",
+        "field": "CountOfNullMemberships",
+        "kind": "rollup",
+        "rule": "Un set: count of null memberships è il numero di membership facts del set che hanno un membership value pari a «null».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei membership facts il cui container è set ID e membership value è \"null\""
+      },
+      "MembershipFacts.Name": {
+        "table": "MembershipFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un membership fact: name è calcolato come l'element, seguito da « ∈ », seguito da il container.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Element",
+            "label": "element"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          }
+        ],
+        "structure": null,
+        "plain": "(element unito a \" ∈ \") unito a container"
+      },
+      "MembershipFacts.ContainerLabel": {
+        "table": "MembershipFacts",
+        "field": "ContainerLabel",
+        "kind": "lookup",
+        "rule": "Un membership fact: container label — ripreso dal container collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il label del container collegato"
+      },
+      "MembershipFacts.MembershipValueSymbol": {
+        "table": "MembershipFacts",
+        "field": "MembershipValueSymbol",
+        "kind": "lookup",
+        "rule": "Un membership fact: membership value symbol — ripreso dal membership value collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il symbol del membership value collegato"
+      },
+      "MembershipFacts.IsBivalent": {
+        "table": "MembershipFacts",
+        "field": "IsBivalent",
+        "kind": "lookup",
+        "rule": "Un membership fact: is bivalent è vero quando il membership value collegato è classical.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "IsClassical",
+            "label": "is classical"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il is classical del membership value collegato"
+      },
+      "MembershipFacts.IsNull": {
+        "table": "MembershipFacts",
+        "field": "IsNull",
+        "kind": "formula",
+        "rule": "Un membership fact è considerato un null se il membership value è «null».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “is null” del membership fact è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "vero",
+              "when": {
+                "kind": "leaf",
+                "text": "il membership value è «null»"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se membership value è \"null\", allora true(), altrimenti false()"
+      },
+      "MembershipFacts.IsGrounded": {
+        "table": "MembershipFacts",
+        "field": "IsGrounded",
+        "kind": "formula",
+        "rule": "Un membership fact è considerato grounded se non è il caso che il membership value è «null».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “is grounded” del membership fact è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "falso",
+              "when": {
+                "kind": "leaf",
+                "text": "il membership value è «null»"
+              }
+            },
+            {
+              "value": "vero",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se membership value è \"null\", allora false(), altrimenti true()"
+      },
+      "MembershipFacts.CountOfEvaluationSteps": {
+        "table": "MembershipFacts",
+        "field": "CountOfEvaluationSteps",
+        "kind": "rollup",
+        "rule": "Un membership fact: count of evaluation steps è il numero di evaluation steps collegati a il membership fact.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "MembershipFact",
+            "label": "membership fact"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipFactId",
+            "label": "membership fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei evaluation steps il cui membership fact è membership fact ID"
+      },
+      "EvaluationSteps.Name": {
+        "table": "EvaluationSteps",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un evaluation step: name è calcolato come «try », seguito da il trial value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          }
+        ],
+        "structure": null,
+        "plain": "\"try \" unito a trial value"
+      },
+      "EvaluationSteps.IsStable": {
+        "table": "EvaluationSteps",
+        "field": "IsStable",
+        "kind": "formula",
+        "rule": "Un evaluation step è considerato stable se il trial value è il resulting value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “is stable” dell'evaluation step è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "vero",
+              "when": {
+                "kind": "leaf",
+                "text": "il trial value è il resulting value"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se trial value è uguale a resulting value, allora true(), altrimenti false()"
+      },
+      "EvaluationSteps.Outcome": {
+        "table": "EvaluationSteps",
+        "field": "Outcome",
+        "kind": "formula",
+        "rule": "Il campo “outcome” dell'evaluation step è determinato secondo la seguente priorità:\n1. «stable fixed point», se il trial value è il resulting value;\n2. in tutti gli altri casi, «contradiction».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “outcome” dell'evaluation step è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«stable fixed point»",
+              "when": {
+                "kind": "leaf",
+                "text": "il trial value è il resulting value"
+              }
+            },
+            {
+              "value": "«contradiction»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se trial value è uguale a resulting value, allora \"stable fixed point\", altrimenti \"contradiction\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "TruthValues": [
+        "Un truth value **deve** avere un symbol; un glyph; e un rank."
+      ],
+      "Connectives": [
+        "Un connective **deve** avere un symbol; un arity; e un kleene rule."
+      ],
+      "TruthTableRows": [
+        "Un truth table row **deve** referenziare esattamente un connective.",
+        "Un truth table row **deve** referenziare esattamente un truth value come suo left input.",
+        "Un truth table row **deve** referenziare esattamente un truth value come suo output."
+      ],
+      "SetRules": [
+        "Un set rule **deve** avere un rule number; un title; e un statement."
+      ],
+      "Sets": [
+        "Un set **deve** avere un label e un condition expression, e registrare se è self referential."
+      ],
+      "MembershipFacts": [
+        "Un membership fact **deve** referenziare esattamente un set come suo element.",
+        "Un membership fact **deve** referenziare esattamente un set come suo container.",
+        "Un membership fact **deve** referenziare esattamente un truth value come suo membership value."
+      ],
+      "EvaluationSteps": [
+        "Un evaluation step **deve** referenziare esattamente un membership fact.",
+        "Un evaluation step **deve** referenziare esattamente un truth value come suo trial value.",
+        "Un evaluation step **deve** referenziare esattamente un truth value come suo resulting value.",
+        "Un evaluation step **deve** avere un step order."
+      ]
+    },
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TruthValues": "truth value",
+      "Connectives": "connective",
+      "TruthTableRows": "truth table row",
+      "SetRules": "set rule",
+      "Sets": "set",
+      "MembershipFacts": "membership fact",
+      "EvaluationSteps": "evaluation step"
+    }
+  },
+  "ja": {
+    "fields": {
+      "TruthValues.Name": {
+        "table": "TruthValues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "truth valueの「name」は truth value ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Truth value ID"
+      },
+      "TruthValues.IsClassical": {
+        "table": "TruthValues",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "次のいずれかが成り立つ: truth value ID が 「true」 であるまたはtruth value ID が 「false」 である場合、truth valueは「Classical」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、truth valueは「Classical」と見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "truth value ID が 「true」 である"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "truth value ID が 「false」 である"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Truth value ID は \"true\"またはtruth value ID は \"false\""
+      },
+      "TruthValues.IsUndefined": {
+        "table": "TruthValues",
+        "field": "IsUndefined",
+        "kind": "formula",
+        "rule": "truth value ID が 「null」 である場合、truth valueは「Undefined」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Truth valueの「is undefined」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "truth value ID が 「null」 である"
+              }
+            },
+            {
+              "value": "偽",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Truth value ID は \"null\"なら true()、そうでなければ false()"
+      },
+      "TruthValues.CountOfFacts": {
+        "table": "TruthValues",
+        "field": "CountOfFacts",
+        "kind": "rollup",
+        "rule": "truth valueの「count of facts」は truth valueに関連する「membership facts」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Membership value が truth value ID である「membership facts」の件数"
+      },
+      "Connectives.Name": {
+        "table": "Connectives",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "connectiveの「name」は connective ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Connective ID"
+      },
+      "Connectives.CountOfTruthTableRows": {
+        "table": "Connectives",
+        "field": "CountOfTruthTableRows",
+        "kind": "rollup",
+        "rule": "connectiveの「count of truth table rows」は connectiveに関連する「truth table rows」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Connective が connective ID である「truth table rows」の件数"
+      },
+      "TruthTableRows.OutputSymbol": {
+        "table": "TruthTableRows",
+        "field": "OutputSymbol",
+        "kind": "lookup",
+        "rule": "truth table rowの「output symbol」— リンクされた「output」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「output」の symbol"
+      },
+      "TruthTableRows.Name": {
+        "table": "TruthTableRows",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "truth table rowの「name」は connective、続いて 「: 」、続いて left input、続いて 「 , 」、続いて right input、続いて 「 -> 」、続いて output として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "LeftInput",
+            "label": "left input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "RightInput",
+            "label": "right input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          }
+        ],
+        "structure": null,
+        "plain": "((((connective と \": \" を連結) と left input を連結) と right input は \"\"なら \"\"、そうでなければ (\" , \" と right input を連結) を連結) と \" -> \" を連結) と output を連結"
+      },
+      "SetRules.Name": {
+        "table": "SetRules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "set ruleの「name」は 「R」、続いて rule number として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": null,
+        "plain": "\"R\" と rule number を連結"
+      },
+      "SetRules.IsClassical": {
+        "table": "SetRules",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "rule number が 11 以下である場合、set ruleは「Classical」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Set ruleの「is classical」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "rule number が 11 以下である"
+              }
+            },
+            {
+              "value": "偽",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Rule number が 11 以下なら true()、そうでなければ false()"
+      },
+      "SetRules.IsTheMissingRule": {
+        "table": "SetRules",
+        "field": "IsTheMissingRule",
+        "kind": "formula",
+        "rule": "rule number が 12 である場合、set ruleは「The Missing Rule」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Set ruleの「is the missing rule」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "rule number が 12 である"
+              }
+            },
+            {
+              "value": "偽",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Rule number が 12 と等しいなら true()、そうでなければ false()"
+      },
+      "Sets.Name": {
+        "table": "Sets",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "setの「name」は set ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Set ID"
+      },
+      "Sets.IsRussellSet": {
+        "table": "Sets",
+        "field": "IsRussellSet",
+        "kind": "formula",
+        "rule": "set ID が 「russell-set」 である場合、setは「Russell Set」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setの「is russell set」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "set ID が 「russell-set」 である"
+              }
+            },
+            {
+              "value": "偽",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Set ID は \"russell-set\"なら true()、そうでなければ false()"
+      },
+      "Sets.CountOfMemberships": {
+        "table": "Sets",
+        "field": "CountOfMemberships",
+        "kind": "rollup",
+        "rule": "setの「count of memberships」は setに関連する「membership facts」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Container が set ID である「membership facts」の件数"
+      },
+      "Sets.CountOfNullMemberships": {
+        "table": "Sets",
+        "field": "CountOfNullMemberships",
+        "kind": "rollup",
+        "rule": "setの「count of null memberships」は setの「membership facts」のうち、「membership value」が 「null」 であるものの件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": null,
+        "plain": "Container が set IDおよびmembership value が \"null\" である「membership facts」の件数"
+      },
+      "MembershipFacts.Name": {
+        "table": "MembershipFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "membership factの「name」は element、続いて 「 ∈ 」、続いて container として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Element",
+            "label": "element"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          }
+        ],
+        "structure": null,
+        "plain": "(element と \" ∈ \" を連結) と container を連結"
+      },
+      "MembershipFacts.ContainerLabel": {
+        "table": "MembershipFacts",
+        "field": "ContainerLabel",
+        "kind": "lookup",
+        "rule": "membership factの「container label」— リンクされた「container」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「container」の label"
+      },
+      "MembershipFacts.MembershipValueSymbol": {
+        "table": "MembershipFacts",
+        "field": "MembershipValueSymbol",
+        "kind": "lookup",
+        "rule": "membership factの「membership value symbol」— リンクされた「membership value」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「membership value」の symbol"
+      },
+      "MembershipFacts.IsBivalent": {
+        "table": "MembershipFacts",
+        "field": "IsBivalent",
+        "kind": "lookup",
+        "rule": "membership factの「is bivalent」は、リンクされた「membership value」が「Classical」であるとき真になります。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "IsClassical",
+            "label": "is classical"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「membership value」の is classical"
+      },
+      "MembershipFacts.IsNull": {
+        "table": "MembershipFacts",
+        "field": "IsNull",
+        "kind": "formula",
+        "rule": "membership value が 「null」 である場合、membership factは「Null」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Membership factの「is null」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "membership value が 「null」 である"
+              }
+            },
+            {
+              "value": "偽",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Membership value は \"null\"なら true()、そうでなければ false()"
+      },
+      "MembershipFacts.IsGrounded": {
+        "table": "MembershipFacts",
+        "field": "IsGrounded",
+        "kind": "formula",
+        "rule": "membership value が 「null」 であるということはない場合、membership factは「Grounded」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Membership factの「is grounded」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "偽",
+              "when": {
+                "kind": "leaf",
+                "text": "membership value が 「null」 である"
+              }
+            },
+            {
+              "value": "真",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Membership value は \"null\"なら false()、そうでなければ true()"
+      },
+      "MembershipFacts.CountOfEvaluationSteps": {
+        "table": "MembershipFacts",
+        "field": "CountOfEvaluationSteps",
+        "kind": "rollup",
+        "rule": "membership factの「count of evaluation steps」は membership factに関連する「evaluation steps」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "MembershipFact",
+            "label": "membership fact"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipFactId",
+            "label": "membership fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Membership fact が membership fact ID である「evaluation steps」の件数"
+      },
+      "EvaluationSteps.Name": {
+        "table": "EvaluationSteps",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "evaluation stepの「name」は 「try 」、続いて trial value として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          }
+        ],
+        "structure": null,
+        "plain": "\"try \" と trial value を連結"
+      },
+      "EvaluationSteps.IsStable": {
+        "table": "EvaluationSteps",
+        "field": "IsStable",
+        "kind": "formula",
+        "rule": "trial value が resulting value である場合、evaluation stepは「Stable」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Evaluation stepの「is stable」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "trial value が resulting value である"
+              }
+            },
+            {
+              "value": "偽",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Trial value が resulting value と等しいなら true()、そうでなければ false()"
+      },
+      "EvaluationSteps.Outcome": {
+        "table": "EvaluationSteps",
+        "field": "Outcome",
+        "kind": "formula",
+        "rule": "Evaluation stepの「outcome」は、次の優先順位で決まります:\n1. trial value が resulting value である場合は 「stable fixed point」;\n2. それ以外の場合は 「contradiction」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Evaluation stepの「outcome」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「stable fixed point」",
+              "when": {
+                "kind": "leaf",
+                "text": "trial value が resulting value である"
+              }
+            },
+            {
+              "value": "「contradiction」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Trial value が resulting value と等しいなら \"stable fixed point\"、そうでなければ \"contradiction\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "TruthValues": [
+        "truth valueは symbol、glyph、およびrank を持た**なければなりません**。"
+      ],
+      "Connectives": [
+        "connectiveは symbol、arity、およびkleene rule を持た**なければなりません**。"
+      ],
+      "TruthTableRows": [
+        "truth table rowは「connective」をちょうど 1 件参照し**なければなりません**。",
+        "truth table rowは、left inputとして「truth value」をちょうど 1 件参照し**なければなりません**。",
+        "truth table rowは、outputとして「truth value」をちょうど 1 件参照し**なければなりません**。"
+      ],
+      "SetRules": [
+        "set ruleは rule number、title、およびstatement を持た**なければなりません**。"
+      ],
+      "Sets": [
+        "setは labelおよびcondition expression を持た、かつ 「Self Referential」であるかどうかを記録し**なければなりません**。"
+      ],
+      "MembershipFacts": [
+        "membership factは、elementとして「set」をちょうど 1 件参照し**なければなりません**。",
+        "membership factは、containerとして「set」をちょうど 1 件参照し**なければなりません**。",
+        "membership factは、membership valueとして「truth value」をちょうど 1 件参照し**なければなりません**。"
+      ],
+      "EvaluationSteps": [
+        "evaluation stepは「membership fact」をちょうど 1 件参照し**なければなりません**。",
+        "evaluation stepは、trial valueとして「truth value」をちょうど 1 件参照し**なければなりません**。",
+        "evaluation stepは、resulting valueとして「truth value」をちょうど 1 件参照し**なければなりません**。",
+        "evaluation stepは step order を持た**なければなりません**。"
+      ]
+    },
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "TruthValues": "truth value",
+      "Connectives": "connective",
+      "TruthTableRows": "truth table row",
+      "SetRules": "set rule",
+      "Sets": "set",
+      "MembershipFacts": "membership fact",
+      "EvaluationSteps": "evaluation step"
+    }
+  },
+  "ko": {
+    "fields": {
+      "TruthValues.Name": {
+        "table": "TruthValues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘truth value’ 레코드의 ‘name’ 값은 같은 레코드의 ‘truth value ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Truth value ID"
+      },
+      "TruthValues.IsClassical": {
+        "table": "TruthValues",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "다음 중 하나 이상에 해당하는 경우(‘truth value ID’ 값이 “true”인 경우 또는 ‘truth value ID’ 값이 “false”인 경우), ‘truth value’ 레코드는 ‘classical’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘truth value’ 레코드는 ‘classical’에 해당하는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘truth value ID’ 값이 “true”인 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘truth value ID’ 값이 “false”인 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Truth value ID 값이 \"true\"임 또는 truth value ID 값이 \"false\"임"
+      },
+      "TruthValues.IsUndefined": {
+        "table": "TruthValues",
+        "field": "IsUndefined",
+        "kind": "formula",
+        "rule": "‘truth value ID’ 값이 “null”인 경우, ‘truth value’ 레코드는 ‘undefined’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘truth value’ 레코드의 ‘is undefined’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "참",
+              "when": {
+                "kind": "leaf",
+                "text": "‘truth value ID’ 값이 “null”인 경우"
+              }
+            },
+            {
+              "value": "거짓",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(truth value ID 값이 \"null\"임)이 성립하면 true(), 그렇지 않으면 false()"
+      },
+      "TruthValues.CountOfFacts": {
+        "table": "TruthValues",
+        "field": "CountOfFacts",
+        "kind": "rollup",
+        "rule": "‘truth value’ 레코드의 ‘count of facts’ 값은 해당 ‘truth value’ 레코드에 연결된 ‘membership facts’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(membership value 값이 truth value ID임)에 맞는 membership facts 레코드의 개수"
+      },
+      "Connectives.Name": {
+        "table": "Connectives",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘connective’ 레코드의 ‘name’ 값은 같은 레코드의 ‘connective ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Connective ID"
+      },
+      "Connectives.CountOfTruthTableRows": {
+        "table": "Connectives",
+        "field": "CountOfTruthTableRows",
+        "kind": "rollup",
+        "rule": "‘connective’ 레코드의 ‘count of truth table rows’ 값은 해당 ‘connective’ 레코드에 연결된 ‘truth table rows’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(connective 값이 connective ID임)에 맞는 truth table rows 레코드의 개수"
+      },
+      "TruthTableRows.OutputSymbol": {
+        "table": "TruthTableRows",
+        "field": "OutputSymbol",
+        "kind": "lookup",
+        "rule": "‘truth table row’ 레코드의 ‘output symbol’ 값은 연결된 ‘output’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 output 레코드의 symbol"
+      },
+      "TruthTableRows.Name": {
+        "table": "TruthTableRows",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘truth table row’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘connective’, 이어서 “: ”, 이어서 ‘left input’, 이어서 “ , ”, 이어서 ‘right input’, 이어서 “ -> ”, 이어서 ‘output’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "LeftInput",
+            "label": "left input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "RightInput",
+            "label": "right input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          }
+        ],
+        "structure": null,
+        "plain": "((((connective 뒤에 \": \" 연결한 결과) 뒤에 left input 연결한 결과) 뒤에 조건(right input 값이 \"\"임)이 성립하면 \"\", 그렇지 않으면 (\" , \" 뒤에 right input 연결한 결과) 연결한 결과) 뒤에 \" -> \" 연결한 결과) 뒤에 output 연결한 결과"
+      },
+      "SetRules.Name": {
+        "table": "SetRules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘set rule’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: “R”, 이어서 ‘rule number’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": null,
+        "plain": "\"R\" 뒤에 rule number 연결한 결과"
+      },
+      "SetRules.IsClassical": {
+        "table": "SetRules",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "‘rule number’ 값이 11 이하인 경우, ‘set rule’ 레코드는 ‘classical’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘set rule’ 레코드의 ‘is classical’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "참",
+              "when": {
+                "kind": "leaf",
+                "text": "‘rule number’ 값이 11 이하인 경우"
+              }
+            },
+            {
+              "value": "거짓",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(rule number 값이 11 이하임)이 성립하면 true(), 그렇지 않으면 false()"
+      },
+      "SetRules.IsTheMissingRule": {
+        "table": "SetRules",
+        "field": "IsTheMissingRule",
+        "kind": "formula",
+        "rule": "‘rule number’ 값이 12인 경우, ‘set rule’ 레코드는 ‘the missing rule’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘set rule’ 레코드의 ‘is the missing rule’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "참",
+              "when": {
+                "kind": "leaf",
+                "text": "‘rule number’ 값이 12인 경우"
+              }
+            },
+            {
+              "value": "거짓",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(rule number 값이 12 값과 같음)이 성립하면 true(), 그렇지 않으면 false()"
+      },
+      "Sets.Name": {
+        "table": "Sets",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘set’ 레코드의 ‘name’ 값은 같은 레코드의 ‘set ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Set ID"
+      },
+      "Sets.IsRussellSet": {
+        "table": "Sets",
+        "field": "IsRussellSet",
+        "kind": "formula",
+        "rule": "‘set ID’ 값이 “russell-set”인 경우, ‘set’ 레코드는 ‘russell set’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘set’ 레코드의 ‘is russell set’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "참",
+              "when": {
+                "kind": "leaf",
+                "text": "‘set ID’ 값이 “russell-set”인 경우"
+              }
+            },
+            {
+              "value": "거짓",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(set ID 값이 \"russell-set\"임)이 성립하면 true(), 그렇지 않으면 false()"
+      },
+      "Sets.CountOfMemberships": {
+        "table": "Sets",
+        "field": "CountOfMemberships",
+        "kind": "rollup",
+        "rule": "‘set’ 레코드의 ‘count of memberships’ 값은 해당 ‘set’ 레코드에 연결된 ‘membership facts’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(container 값이 set ID임)에 맞는 membership facts 레코드의 개수"
+      },
+      "Sets.CountOfNullMemberships": {
+        "table": "Sets",
+        "field": "CountOfNullMemberships",
+        "kind": "rollup",
+        "rule": "‘set’ 레코드의 ‘count of null memberships’ 값은 해당 ‘set’ 레코드에 연결된 ‘membership facts’ 레코드 중 ‘membership value’ 값이 “null”인 것의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(container 값이 set ID임 및 membership value 값이 \"null\"임)에 맞는 membership facts 레코드의 개수"
+      },
+      "MembershipFacts.Name": {
+        "table": "MembershipFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘membership fact’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘element’, 이어서 “ ∈ ”, 이어서 ‘container’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Element",
+            "label": "element"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          }
+        ],
+        "structure": null,
+        "plain": "(element 뒤에 \" ∈ \" 연결한 결과) 뒤에 container 연결한 결과"
+      },
+      "MembershipFacts.ContainerLabel": {
+        "table": "MembershipFacts",
+        "field": "ContainerLabel",
+        "kind": "lookup",
+        "rule": "‘membership fact’ 레코드의 ‘container label’ 값은 연결된 ‘container’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 container 레코드의 label"
+      },
+      "MembershipFacts.MembershipValueSymbol": {
+        "table": "MembershipFacts",
+        "field": "MembershipValueSymbol",
+        "kind": "lookup",
+        "rule": "‘membership fact’ 레코드의 ‘membership value symbol’ 값은 연결된 ‘membership value’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 membership value 레코드의 symbol"
+      },
+      "MembershipFacts.IsBivalent": {
+        "table": "MembershipFacts",
+        "field": "IsBivalent",
+        "kind": "lookup",
+        "rule": "‘membership fact’ 레코드의 ‘is bivalent’ 값은 연결된 ‘membership value’ 레코드가 ‘classical’에 해당하는 경우에 참입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "IsClassical",
+            "label": "is classical"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 membership value 레코드의 is classical"
+      },
+      "MembershipFacts.IsNull": {
+        "table": "MembershipFacts",
+        "field": "IsNull",
+        "kind": "formula",
+        "rule": "‘membership value’ 값이 “null”인 경우, ‘membership fact’ 레코드는 ‘null’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘membership fact’ 레코드의 ‘is null’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "참",
+              "when": {
+                "kind": "leaf",
+                "text": "‘membership value’ 값이 “null”인 경우"
+              }
+            },
+            {
+              "value": "거짓",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(membership value 값이 \"null\"임)이 성립하면 true(), 그렇지 않으면 false()"
+      },
+      "MembershipFacts.IsGrounded": {
+        "table": "MembershipFacts",
+        "field": "IsGrounded",
+        "kind": "formula",
+        "rule": "다음이 사실이 아닌 경우(‘membership value’ 값이 “null”인 경우), ‘membership fact’ 레코드는 ‘grounded’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘membership fact’ 레코드의 ‘is grounded’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "거짓",
+              "when": {
+                "kind": "leaf",
+                "text": "‘membership value’ 값이 “null”인 경우"
+              }
+            },
+            {
+              "value": "참",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(membership value 값이 \"null\"임)이 성립하면 false(), 그렇지 않으면 true()"
+      },
+      "MembershipFacts.CountOfEvaluationSteps": {
+        "table": "MembershipFacts",
+        "field": "CountOfEvaluationSteps",
+        "kind": "rollup",
+        "rule": "‘membership fact’ 레코드의 ‘count of evaluation steps’ 값은 해당 ‘membership fact’ 레코드에 연결된 ‘evaluation steps’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "MembershipFact",
+            "label": "membership fact"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipFactId",
+            "label": "membership fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(membership fact 값이 membership fact ID임)에 맞는 evaluation steps 레코드의 개수"
+      },
+      "EvaluationSteps.Name": {
+        "table": "EvaluationSteps",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘evaluation step’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: “try ”, 이어서 ‘trial value’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          }
+        ],
+        "structure": null,
+        "plain": "\"try \" 뒤에 trial value 연결한 결과"
+      },
+      "EvaluationSteps.IsStable": {
+        "table": "EvaluationSteps",
+        "field": "IsStable",
+        "kind": "formula",
+        "rule": "‘trial value’ 값이 ‘resulting value’인 경우, ‘evaluation step’ 레코드는 ‘stable’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘evaluation step’ 레코드의 ‘is stable’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "참",
+              "when": {
+                "kind": "leaf",
+                "text": "‘trial value’ 값이 ‘resulting value’인 경우"
+              }
+            },
+            {
+              "value": "거짓",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(trial value 값이 resulting value 값과 같음)이 성립하면 true(), 그렇지 않으면 false()"
+      },
+      "EvaluationSteps.Outcome": {
+        "table": "EvaluationSteps",
+        "field": "Outcome",
+        "kind": "formula",
+        "rule": "‘evaluation step’ 레코드의 ‘outcome’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘trial value’ 값이 ‘resulting value’인 경우: “stable fixed point”\n2. 그 밖의 경우: “contradiction”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘evaluation step’ 레코드의 ‘outcome’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“stable fixed point”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘trial value’ 값이 ‘resulting value’인 경우"
+              }
+            },
+            {
+              "value": "“contradiction”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(trial value 값이 resulting value 값과 같음)이 성립하면 \"stable fixed point\", 그렇지 않으면 \"contradiction\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "TruthValues": [
+        "‘truth value’ 레코드는 ‘symbol’, ‘glyph’ 및 ‘rank’ 값을 포함**해야 합니다**."
+      ],
+      "Connectives": [
+        "‘connective’ 레코드는 ‘symbol’, ‘arity’ 및 ‘kleene rule’ 값을 포함**해야 합니다**."
+      ],
+      "TruthTableRows": [
+        "‘truth table row’ 레코드는 ‘connective’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘truth table row’ 레코드는 ‘left input’ 필드를 통해 ‘truth value’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘truth table row’ 레코드는 ‘output’ 필드를 통해 ‘truth value’ 레코드를 정확히 하나 참조**해야 합니다**."
+      ],
+      "SetRules": [
+        "‘set rule’ 레코드는 ‘rule number’, ‘title’ 및 ‘statement’ 값을 포함**해야 합니다**."
+      ],
+      "Sets": [
+        "‘set’ 레코드는 ‘label’ 및 ‘condition expression’ 값을 포함하고, 해당 레코드가 ‘self referential’에 해당하는지 여부를 기록**해야 합니다**."
+      ],
+      "MembershipFacts": [
+        "‘membership fact’ 레코드는 ‘element’ 필드를 통해 ‘set’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘membership fact’ 레코드는 ‘container’ 필드를 통해 ‘set’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘membership fact’ 레코드는 ‘membership value’ 필드를 통해 ‘truth value’ 레코드를 정확히 하나 참조**해야 합니다**."
+      ],
+      "EvaluationSteps": [
+        "‘evaluation step’ 레코드는 ‘membership fact’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘evaluation step’ 레코드는 ‘trial value’ 필드를 통해 ‘truth value’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘evaluation step’ 레코드는 ‘resulting value’ 필드를 통해 ‘truth value’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘evaluation step’ 레코드는 ‘step order’ 값을 포함**해야 합니다**."
+      ]
+    },
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TruthValues": "truth value",
+      "Connectives": "connective",
+      "TruthTableRows": "truth table row",
+      "SetRules": "set rule",
+      "Sets": "set",
+      "MembershipFacts": "membership fact",
+      "EvaluationSteps": "evaluation step"
+    }
+  },
+  "nl": {
+    "fields": {
+      "TruthValues.Name": {
+        "table": "TruthValues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een truth value: name is gelijk aan truth value ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Truth value ID"
+      },
+      "TruthValues.IsClassical": {
+        "table": "TruthValues",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "Een truth value geldt als classical als ten minste één van het volgende geldt: de truth value ID ‘true’ is of de truth value ID ‘false’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een truth value geldt als classical als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de truth value ID ‘true’ is"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de truth value ID ‘false’ is"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Truth value ID is \"true\" of truth value ID is \"false\""
+      },
+      "TruthValues.IsUndefined": {
+        "table": "TruthValues",
+        "field": "IsUndefined",
+        "kind": "formula",
+        "rule": "Een truth value geldt als undefined als de truth value ID ‘null’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘is undefined’ van de truth value wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "waar",
+              "when": {
+                "kind": "leaf",
+                "text": "de truth value ID ‘null’ is"
+              }
+            },
+            {
+              "value": "onwaar",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als truth value ID is \"null\", dan true(), anders false()"
+      },
+      "TruthValues.CountOfFacts": {
+        "table": "TruthValues",
+        "field": "CountOfFacts",
+        "kind": "rollup",
+        "rule": "Een truth value: count of facts is het aantal membership facts dat is gekoppeld aan de truth value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal membership facts waarvan membership value is truth value ID"
+      },
+      "Connectives.Name": {
+        "table": "Connectives",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een connective: name is gelijk aan connective ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Connective ID"
+      },
+      "Connectives.CountOfTruthTableRows": {
+        "table": "Connectives",
+        "field": "CountOfTruthTableRows",
+        "kind": "rollup",
+        "rule": "Een connective: count of truth table rows is het aantal truth table rows dat is gekoppeld aan de connective.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal truth table rows waarvan connective is connective ID"
+      },
+      "TruthTableRows.OutputSymbol": {
+        "table": "TruthTableRows",
+        "field": "OutputSymbol",
+        "kind": "lookup",
+        "rule": "Een truth table row: output symbol — overgenomen van de gekoppelde output.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De symbol van de gekoppelde output"
+      },
+      "TruthTableRows.Name": {
+        "table": "TruthTableRows",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een truth table row: name wordt berekend als de connective, gevolgd door ‘: ’, gevolgd door de left input, gevolgd door ‘ , ’, gevolgd door de right input, gevolgd door ‘ -> ’, gevolgd door de output.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "LeftInput",
+            "label": "left input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "RightInput",
+            "label": "right input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          }
+        ],
+        "structure": null,
+        "plain": "((((connective samengevoegd met \": \") samengevoegd met left input) samengevoegd met als right input is \"\", dan \"\", anders (\" , \" samengevoegd met right input)) samengevoegd met \" -> \") samengevoegd met output"
+      },
+      "SetRules.Name": {
+        "table": "SetRules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een set rule: name wordt berekend als ‘R’, gevolgd door de rule number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": null,
+        "plain": "\"R\" samengevoegd met rule number"
+      },
+      "SetRules.IsClassical": {
+        "table": "SetRules",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "Een set rule geldt als classical als de rule number ten hoogste 11 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘is classical’ van de set rule wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "waar",
+              "when": {
+                "kind": "leaf",
+                "text": "de rule number ten hoogste 11 is"
+              }
+            },
+            {
+              "value": "onwaar",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als rule number is ten hoogste 11, dan true(), anders false()"
+      },
+      "SetRules.IsTheMissingRule": {
+        "table": "SetRules",
+        "field": "IsTheMissingRule",
+        "kind": "formula",
+        "rule": "Een set rule geldt als the missing rule als de rule number 12 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘is the missing rule’ van de set rule wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "waar",
+              "when": {
+                "kind": "leaf",
+                "text": "de rule number 12 is"
+              }
+            },
+            {
+              "value": "onwaar",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als rule number is gelijk aan 12, dan true(), anders false()"
+      },
+      "Sets.Name": {
+        "table": "Sets",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een set: name is gelijk aan set ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Set ID"
+      },
+      "Sets.IsRussellSet": {
+        "table": "Sets",
+        "field": "IsRussellSet",
+        "kind": "formula",
+        "rule": "Een set geldt als een russell set als de set ID ‘russell-set’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘is russell set’ van de set wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "waar",
+              "when": {
+                "kind": "leaf",
+                "text": "de set ID ‘russell-set’ is"
+              }
+            },
+            {
+              "value": "onwaar",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als set ID is \"russell-set\", dan true(), anders false()"
+      },
+      "Sets.CountOfMemberships": {
+        "table": "Sets",
+        "field": "CountOfMemberships",
+        "kind": "rollup",
+        "rule": "Een set: count of memberships is het aantal membership facts dat is gekoppeld aan de set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal membership facts waarvan container is set ID"
+      },
+      "Sets.CountOfNullMemberships": {
+        "table": "Sets",
+        "field": "CountOfNullMemberships",
+        "kind": "rollup",
+        "rule": "Een set: count of null memberships is het aantal membership facts van de set dat een membership value van ‘null’ hebben.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal membership facts waarvan container is set ID en membership value is \"null\""
+      },
+      "MembershipFacts.Name": {
+        "table": "MembershipFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een membership fact: name wordt berekend als het element, gevolgd door ‘ ∈ ’, gevolgd door de container.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Element",
+            "label": "element"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          }
+        ],
+        "structure": null,
+        "plain": "(element samengevoegd met \" ∈ \") samengevoegd met container"
+      },
+      "MembershipFacts.ContainerLabel": {
+        "table": "MembershipFacts",
+        "field": "ContainerLabel",
+        "kind": "lookup",
+        "rule": "Een membership fact: container label — overgenomen van de gekoppelde container.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De label van de gekoppelde container"
+      },
+      "MembershipFacts.MembershipValueSymbol": {
+        "table": "MembershipFacts",
+        "field": "MembershipValueSymbol",
+        "kind": "lookup",
+        "rule": "Een membership fact: membership value symbol — overgenomen van de gekoppelde membership value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De symbol van de gekoppelde membership value"
+      },
+      "MembershipFacts.IsBivalent": {
+        "table": "MembershipFacts",
+        "field": "IsBivalent",
+        "kind": "lookup",
+        "rule": "Een membership fact: is bivalent is waar wanneer de gekoppelde membership value is classical.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "IsClassical",
+            "label": "is classical"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De is classical van de gekoppelde membership value"
+      },
+      "MembershipFacts.IsNull": {
+        "table": "MembershipFacts",
+        "field": "IsNull",
+        "kind": "formula",
+        "rule": "Een membership fact geldt als een null als de membership value ‘null’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘is null’ van de membership fact wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "waar",
+              "when": {
+                "kind": "leaf",
+                "text": "de membership value ‘null’ is"
+              }
+            },
+            {
+              "value": "onwaar",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als membership value is \"null\", dan true(), anders false()"
+      },
+      "MembershipFacts.IsGrounded": {
+        "table": "MembershipFacts",
+        "field": "IsGrounded",
+        "kind": "formula",
+        "rule": "Een membership fact geldt als grounded als het niet het geval is dat de membership value ‘null’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘is grounded’ van de membership fact wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "onwaar",
+              "when": {
+                "kind": "leaf",
+                "text": "de membership value ‘null’ is"
+              }
+            },
+            {
+              "value": "waar",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als membership value is \"null\", dan false(), anders true()"
+      },
+      "MembershipFacts.CountOfEvaluationSteps": {
+        "table": "MembershipFacts",
+        "field": "CountOfEvaluationSteps",
+        "kind": "rollup",
+        "rule": "Een membership fact: count of evaluation steps is het aantal evaluation steps dat is gekoppeld aan de membership fact.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "MembershipFact",
+            "label": "membership fact"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipFactId",
+            "label": "membership fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal evaluation steps waarvan membership fact is membership fact ID"
+      },
+      "EvaluationSteps.Name": {
+        "table": "EvaluationSteps",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een evaluation step: name wordt berekend als ‘try ’, gevolgd door de trial value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          }
+        ],
+        "structure": null,
+        "plain": "\"try \" samengevoegd met trial value"
+      },
+      "EvaluationSteps.IsStable": {
+        "table": "EvaluationSteps",
+        "field": "IsStable",
+        "kind": "formula",
+        "rule": "Een evaluation step geldt als stable als de trial value de resulting value is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘is stable’ van de evaluation step wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "waar",
+              "when": {
+                "kind": "leaf",
+                "text": "de trial value de resulting value is"
+              }
+            },
+            {
+              "value": "onwaar",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als trial value is gelijk aan resulting value, dan true(), anders false()"
+      },
+      "EvaluationSteps.Outcome": {
+        "table": "EvaluationSteps",
+        "field": "Outcome",
+        "kind": "formula",
+        "rule": "Het veld ‘outcome’ van de evaluation step wordt bepaald volgens de volgende prioriteit:\n1. ‘stable fixed point’, als de trial value de resulting value is;\n2. in alle andere gevallen ‘contradiction’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘outcome’ van de evaluation step wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘stable fixed point’",
+              "when": {
+                "kind": "leaf",
+                "text": "de trial value de resulting value is"
+              }
+            },
+            {
+              "value": "‘contradiction’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als trial value is gelijk aan resulting value, dan \"stable fixed point\", anders \"contradiction\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "TruthValues": [
+        "Een truth value **moet** een symbol; een glyph; en een rank hebben."
+      ],
+      "Connectives": [
+        "Een connective **moet** een symbol; een arity; en een kleene rule hebben."
+      ],
+      "TruthTableRows": [
+        "Een truth table row **moet** naar precies één connective verwijzen.",
+        "Een truth table row **moet** naar precies één truth value verwijzen als zijn left input.",
+        "Een truth table row **moet** naar precies één truth value verwijzen als zijn output."
+      ],
+      "SetRules": [
+        "Een set rule **moet** een rule number; een title; en een statement hebben."
+      ],
+      "Sets": [
+        "Een set **moet** een label en een condition expression hebben, en vastleggen of het is self referential."
+      ],
+      "MembershipFacts": [
+        "Een membership fact **moet** naar precies één set verwijzen als zijn element.",
+        "Een membership fact **moet** naar precies één set verwijzen als zijn container.",
+        "Een membership fact **moet** naar precies één truth value verwijzen als zijn membership value."
+      ],
+      "EvaluationSteps": [
+        "Een evaluation step **moet** naar precies één membership fact verwijzen.",
+        "Een evaluation step **moet** naar precies één truth value verwijzen als zijn trial value.",
+        "Een evaluation step **moet** naar precies één truth value verwijzen als zijn resulting value.",
+        "Een evaluation step **moet** een step order hebben."
+      ]
+    },
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TruthValues": "truth value",
+      "Connectives": "connective",
+      "TruthTableRows": "truth table row",
+      "SetRules": "set rule",
+      "Sets": "set",
+      "MembershipFacts": "membership fact",
+      "EvaluationSteps": "evaluation step"
+    }
+  },
+  "pt": {
+    "fields": {
+      "TruthValues.Name": {
+        "table": "TruthValues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um truth value: name é igual a truth value ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Truth value ID"
+      },
+      "TruthValues.IsClassical": {
+        "table": "TruthValues",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "Um truth value é considerado classical se pelo menos uma das seguintes é verdadeira: o truth value ID é “true” ou o truth value ID é “false”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um truth value é considerado classical se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o truth value ID é “true”"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o truth value ID é “false”"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Truth value ID é \"true\" ou truth value ID é \"false\""
+      },
+      "TruthValues.IsUndefined": {
+        "table": "TruthValues",
+        "field": "IsUndefined",
+        "kind": "formula",
+        "rule": "Um truth value é considerado undefined se o truth value ID é “null”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “is undefined” do truth value é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "verdadeiro",
+              "when": {
+                "kind": "leaf",
+                "text": "o truth value ID é “null”"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se truth value ID é \"null\", então true(), caso contrário false()"
+      },
+      "TruthValues.CountOfFacts": {
+        "table": "TruthValues",
+        "field": "CountOfFacts",
+        "kind": "rollup",
+        "rule": "Um truth value: count of facts é o número de membership facts relacionados a o truth value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de membership facts cujo membership value é truth value ID"
+      },
+      "Connectives.Name": {
+        "table": "Connectives",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um connective: name é igual a connective ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Connective ID"
+      },
+      "Connectives.CountOfTruthTableRows": {
+        "table": "Connectives",
+        "field": "CountOfTruthTableRows",
+        "kind": "rollup",
+        "rule": "Um connective: count of truth table rows é o número de truth table rows relacionados a o connective.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de truth table rows cujo connective é connective ID"
+      },
+      "TruthTableRows.OutputSymbol": {
+        "table": "TruthTableRows",
+        "field": "OutputSymbol",
+        "kind": "lookup",
+        "rule": "Um truth table row: output symbol — obtido do output vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O symbol do output vinculado"
+      },
+      "TruthTableRows.Name": {
+        "table": "TruthTableRows",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um truth table row: name é calculado como o connective, seguido de “: ”, seguido de o left input, seguido de “ , ”, seguido de o right input, seguido de “ -> ”, seguido de o output.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "LeftInput",
+            "label": "left input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "RightInput",
+            "label": "right input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          }
+        ],
+        "structure": null,
+        "plain": "((((connective unido a \": \") unido a left input) unido a se right input é \"\", então \"\", caso contrário (\" , \" unido a right input)) unido a \" -> \") unido a output"
+      },
+      "SetRules.Name": {
+        "table": "SetRules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um set rule: name é calculado como “R”, seguido de o rule number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": null,
+        "plain": "\"R\" unido a rule number"
+      },
+      "SetRules.IsClassical": {
+        "table": "SetRules",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "Um set rule é considerado classical se o rule number é no máximo 11.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “is classical” do set rule é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "verdadeiro",
+              "when": {
+                "kind": "leaf",
+                "text": "o rule number é no máximo 11"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se rule number é no máximo 11, então true(), caso contrário false()"
+      },
+      "SetRules.IsTheMissingRule": {
+        "table": "SetRules",
+        "field": "IsTheMissingRule",
+        "kind": "formula",
+        "rule": "Um set rule é considerado the missing rule se o rule number é 12.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “is the missing rule” do set rule é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "verdadeiro",
+              "when": {
+                "kind": "leaf",
+                "text": "o rule number é 12"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se rule number é igual a 12, então true(), caso contrário false()"
+      },
+      "Sets.Name": {
+        "table": "Sets",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um set: name é igual a set ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Set ID"
+      },
+      "Sets.IsRussellSet": {
+        "table": "Sets",
+        "field": "IsRussellSet",
+        "kind": "formula",
+        "rule": "Um set é considerado um russell set se o set ID é “russell-set”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “is russell set” do set é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "verdadeiro",
+              "when": {
+                "kind": "leaf",
+                "text": "o set ID é “russell-set”"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se set ID é \"russell-set\", então true(), caso contrário false()"
+      },
+      "Sets.CountOfMemberships": {
+        "table": "Sets",
+        "field": "CountOfMemberships",
+        "kind": "rollup",
+        "rule": "Um set: count of memberships é o número de membership facts relacionados a o set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de membership facts cujo container é set ID"
+      },
+      "Sets.CountOfNullMemberships": {
+        "table": "Sets",
+        "field": "CountOfNullMemberships",
+        "kind": "rollup",
+        "rule": "Um set: count of null memberships é o número de membership facts do set que têm um membership value de “null”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de membership facts cujo container é set ID e membership value é \"null\""
+      },
+      "MembershipFacts.Name": {
+        "table": "MembershipFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um membership fact: name é calculado como o element, seguido de “ ∈ ”, seguido de o container.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Element",
+            "label": "element"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          }
+        ],
+        "structure": null,
+        "plain": "(element unido a \" ∈ \") unido a container"
+      },
+      "MembershipFacts.ContainerLabel": {
+        "table": "MembershipFacts",
+        "field": "ContainerLabel",
+        "kind": "lookup",
+        "rule": "Um membership fact: container label — obtido do container vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O label do container vinculado"
+      },
+      "MembershipFacts.MembershipValueSymbol": {
+        "table": "MembershipFacts",
+        "field": "MembershipValueSymbol",
+        "kind": "lookup",
+        "rule": "Um membership fact: membership value symbol — obtido do membership value vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O symbol do membership value vinculado"
+      },
+      "MembershipFacts.IsBivalent": {
+        "table": "MembershipFacts",
+        "field": "IsBivalent",
+        "kind": "lookup",
+        "rule": "Um membership fact: is bivalent é verdadeiro quando o membership value vinculado é classical.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "IsClassical",
+            "label": "is classical"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O is classical do membership value vinculado"
+      },
+      "MembershipFacts.IsNull": {
+        "table": "MembershipFacts",
+        "field": "IsNull",
+        "kind": "formula",
+        "rule": "Um membership fact é considerado um null se o membership value é “null”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “is null” do membership fact é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "verdadeiro",
+              "when": {
+                "kind": "leaf",
+                "text": "o membership value é “null”"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se membership value é \"null\", então true(), caso contrário false()"
+      },
+      "MembershipFacts.IsGrounded": {
+        "table": "MembershipFacts",
+        "field": "IsGrounded",
+        "kind": "formula",
+        "rule": "Um membership fact é considerado grounded se não é o caso de que o membership value é “null”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “is grounded” do membership fact é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "falso",
+              "when": {
+                "kind": "leaf",
+                "text": "o membership value é “null”"
+              }
+            },
+            {
+              "value": "verdadeiro",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se membership value é \"null\", então false(), caso contrário true()"
+      },
+      "MembershipFacts.CountOfEvaluationSteps": {
+        "table": "MembershipFacts",
+        "field": "CountOfEvaluationSteps",
+        "kind": "rollup",
+        "rule": "Um membership fact: count of evaluation steps é o número de evaluation steps relacionados a o membership fact.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "MembershipFact",
+            "label": "membership fact"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipFactId",
+            "label": "membership fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de evaluation steps cujo membership fact é membership fact ID"
+      },
+      "EvaluationSteps.Name": {
+        "table": "EvaluationSteps",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um evaluation step: name é calculado como “try ”, seguido de o trial value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          }
+        ],
+        "structure": null,
+        "plain": "\"try \" unido a trial value"
+      },
+      "EvaluationSteps.IsStable": {
+        "table": "EvaluationSteps",
+        "field": "IsStable",
+        "kind": "formula",
+        "rule": "Um evaluation step é considerado stable se o trial value é o resulting value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “is stable” do evaluation step é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "verdadeiro",
+              "when": {
+                "kind": "leaf",
+                "text": "o trial value é o resulting value"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se trial value é igual a resulting value, então true(), caso contrário false()"
+      },
+      "EvaluationSteps.Outcome": {
+        "table": "EvaluationSteps",
+        "field": "Outcome",
+        "kind": "formula",
+        "rule": "O campo “outcome” do evaluation step é determinado pela seguinte prioridade:\n1. “stable fixed point”, se o trial value é o resulting value;\n2. em todos os outros casos, “contradiction”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “outcome” do evaluation step é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“stable fixed point”",
+              "when": {
+                "kind": "leaf",
+                "text": "o trial value é o resulting value"
+              }
+            },
+            {
+              "value": "“contradiction”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se trial value é igual a resulting value, então \"stable fixed point\", caso contrário \"contradiction\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "TruthValues": [
+        "Um truth value **deve** ter um symbol; um glyph; e um rank."
+      ],
+      "Connectives": [
+        "Um connective **deve** ter um symbol; um arity; e um kleene rule."
+      ],
+      "TruthTableRows": [
+        "Um truth table row **deve** referenciar exatamente um connective.",
+        "Um truth table row **deve** referenciar exatamente um truth value como seu left input.",
+        "Um truth table row **deve** referenciar exatamente um truth value como seu output."
+      ],
+      "SetRules": [
+        "Um set rule **deve** ter um rule number; um title; e um statement."
+      ],
+      "Sets": [
+        "Um set **deve** ter um label e um condition expression, e registrar se é self referential."
+      ],
+      "MembershipFacts": [
+        "Um membership fact **deve** referenciar exatamente um set como seu element.",
+        "Um membership fact **deve** referenciar exatamente um set como seu container.",
+        "Um membership fact **deve** referenciar exatamente um truth value como seu membership value."
+      ],
+      "EvaluationSteps": [
+        "Um evaluation step **deve** referenciar exatamente um membership fact.",
+        "Um evaluation step **deve** referenciar exatamente um truth value como seu trial value.",
+        "Um evaluation step **deve** referenciar exatamente um truth value como seu resulting value.",
+        "Um evaluation step **deve** ter um step order."
+      ]
+    },
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TruthValues": "truth value",
+      "Connectives": "connective",
+      "TruthTableRows": "truth table row",
+      "SetRules": "set rule",
+      "Sets": "set",
+      "MembershipFacts": "membership fact",
+      "EvaluationSteps": "evaluation step"
+    }
+  },
+  "ru": {
+    "fields": {
+      "TruthValues.Name": {
+        "table": "TruthValues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Truth value: «name» совпадает с truth value ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Truth value ID"
+      },
+      "TruthValues.IsClassical": {
+        "table": "TruthValues",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "Truth value считается «classical», если выполняется хотя бы одно из следующего: truth value ID равно «true» или truth value ID равно «false».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Truth value считается «classical», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "truth value ID равно «true»"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "truth value ID равно «false»"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Truth value ID равно \"true\" или truth value ID равно \"false\""
+      },
+      "TruthValues.IsUndefined": {
+        "table": "TruthValues",
+        "field": "IsUndefined",
+        "kind": "formula",
+        "rule": "Truth value считается «undefined», если truth value ID равно «null».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «is undefined» (Truth value) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "истина",
+              "when": {
+                "kind": "leaf",
+                "text": "truth value ID равно «null»"
+              }
+            },
+            {
+              "value": "ложь",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если truth value ID равно \"null\", то true(), иначе false()"
+      },
+      "TruthValues.CountOfFacts": {
+        "table": "TruthValues",
+        "field": "CountOfFacts",
+        "kind": "rollup",
+        "rule": "Truth value: «count of facts» — это число записей «membership facts», связанных с truth value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «membership facts», у которых membership value равно truth value ID"
+      },
+      "Connectives.Name": {
+        "table": "Connectives",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Connective: «name» совпадает с connective ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Connective ID"
+      },
+      "Connectives.CountOfTruthTableRows": {
+        "table": "Connectives",
+        "field": "CountOfTruthTableRows",
+        "kind": "rollup",
+        "rule": "Connective: «count of truth table rows» — это число записей «truth table rows», связанных с connective.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «truth table rows», у которых connective равно connective ID"
+      },
+      "TruthTableRows.OutputSymbol": {
+        "table": "TruthTableRows",
+        "field": "OutputSymbol",
+        "kind": "lookup",
+        "rule": "Truth table row: «output symbol» — берётся из связанного «output».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symbol связанного «output»"
+      },
+      "TruthTableRows.Name": {
+        "table": "TruthTableRows",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Truth table row: «name» вычисляется как connective, затем «: », затем left input, затем « , », затем right input, затем « -> », затем output.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "LeftInput",
+            "label": "left input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "RightInput",
+            "label": "right input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          }
+        ],
+        "structure": null,
+        "plain": "((((connective соединено с \": \") соединено с left input) соединено с если right input равно \"\", то \"\", иначе (\" , \" соединено с right input)) соединено с \" -> \") соединено с output"
+      },
+      "SetRules.Name": {
+        "table": "SetRules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Set rule: «name» вычисляется как «R», затем rule number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": null,
+        "plain": "\"R\" соединено с rule number"
+      },
+      "SetRules.IsClassical": {
+        "table": "SetRules",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "Set rule считается «classical», если rule number не больше 11.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «is classical» (Set rule) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "истина",
+              "when": {
+                "kind": "leaf",
+                "text": "rule number не больше 11"
+              }
+            },
+            {
+              "value": "ложь",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если rule number не больше 11, то true(), иначе false()"
+      },
+      "SetRules.IsTheMissingRule": {
+        "table": "SetRules",
+        "field": "IsTheMissingRule",
+        "kind": "formula",
+        "rule": "Set rule считается «the missing rule», если rule number равно 12.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «is the missing rule» (Set rule) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "истина",
+              "when": {
+                "kind": "leaf",
+                "text": "rule number равно 12"
+              }
+            },
+            {
+              "value": "ложь",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если rule number равно 12, то true(), иначе false()"
+      },
+      "Sets.Name": {
+        "table": "Sets",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Set: «name» совпадает с set ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Set ID"
+      },
+      "Sets.IsRussellSet": {
+        "table": "Sets",
+        "field": "IsRussellSet",
+        "kind": "formula",
+        "rule": "Set считается «russell set», если set ID равно «russell-set».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «is russell set» (Set) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "истина",
+              "when": {
+                "kind": "leaf",
+                "text": "set ID равно «russell-set»"
+              }
+            },
+            {
+              "value": "ложь",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если set ID равно \"russell-set\", то true(), иначе false()"
+      },
+      "Sets.CountOfMemberships": {
+        "table": "Sets",
+        "field": "CountOfMemberships",
+        "kind": "rollup",
+        "rule": "Set: «count of memberships» — это число записей «membership facts», связанных с set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «membership facts», у которых container равно set ID"
+      },
+      "Sets.CountOfNullMemberships": {
+        "table": "Sets",
+        "field": "CountOfNullMemberships",
+        "kind": "rollup",
+        "rule": "Set: «count of null memberships» — это число записей «membership facts» (set), которые имеют «membership value», равный «null».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «membership facts», у которых container равно set ID и membership value равно \"null\""
+      },
+      "MembershipFacts.Name": {
+        "table": "MembershipFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Membership fact: «name» вычисляется как element, затем « ∈ », затем container.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Element",
+            "label": "element"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          }
+        ],
+        "structure": null,
+        "plain": "(element соединено с \" ∈ \") соединено с container"
+      },
+      "MembershipFacts.ContainerLabel": {
+        "table": "MembershipFacts",
+        "field": "ContainerLabel",
+        "kind": "lookup",
+        "rule": "Membership fact: «container label» — берётся из связанного «container».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Label связанного «container»"
+      },
+      "MembershipFacts.MembershipValueSymbol": {
+        "table": "MembershipFacts",
+        "field": "MembershipValueSymbol",
+        "kind": "lookup",
+        "rule": "Membership fact: «membership value symbol» — берётся из связанного «membership value».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symbol связанного «membership value»"
+      },
+      "MembershipFacts.IsBivalent": {
+        "table": "MembershipFacts",
+        "field": "IsBivalent",
+        "kind": "lookup",
+        "rule": "Membership fact: «is bivalent» истинно, когда связанный «membership value» является «classical».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "IsClassical",
+            "label": "is classical"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is classical связанного «membership value»"
+      },
+      "MembershipFacts.IsNull": {
+        "table": "MembershipFacts",
+        "field": "IsNull",
+        "kind": "formula",
+        "rule": "Membership fact считается «null», если membership value равно «null».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «is null» (Membership fact) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "истина",
+              "when": {
+                "kind": "leaf",
+                "text": "membership value равно «null»"
+              }
+            },
+            {
+              "value": "ложь",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если membership value равно \"null\", то true(), иначе false()"
+      },
+      "MembershipFacts.IsGrounded": {
+        "table": "MembershipFacts",
+        "field": "IsGrounded",
+        "kind": "formula",
+        "rule": "Membership fact считается «grounded», если неверно, что membership value равно «null».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «is grounded» (Membership fact) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "ложь",
+              "when": {
+                "kind": "leaf",
+                "text": "membership value равно «null»"
+              }
+            },
+            {
+              "value": "истина",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если membership value равно \"null\", то false(), иначе true()"
+      },
+      "MembershipFacts.CountOfEvaluationSteps": {
+        "table": "MembershipFacts",
+        "field": "CountOfEvaluationSteps",
+        "kind": "rollup",
+        "rule": "Membership fact: «count of evaluation steps» — это число записей «evaluation steps», связанных с membership fact.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "MembershipFact",
+            "label": "membership fact"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipFactId",
+            "label": "membership fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «evaluation steps», у которых membership fact равно membership fact ID"
+      },
+      "EvaluationSteps.Name": {
+        "table": "EvaluationSteps",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Evaluation step: «name» вычисляется как «try », затем trial value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          }
+        ],
+        "structure": null,
+        "plain": "\"try \" соединено с trial value"
+      },
+      "EvaluationSteps.IsStable": {
+        "table": "EvaluationSteps",
+        "field": "IsStable",
+        "kind": "formula",
+        "rule": "Evaluation step считается «stable», если trial value равно resulting value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «is stable» (Evaluation step) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "истина",
+              "when": {
+                "kind": "leaf",
+                "text": "trial value равно resulting value"
+              }
+            },
+            {
+              "value": "ложь",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если trial value равно resulting value, то true(), иначе false()"
+      },
+      "EvaluationSteps.Outcome": {
+        "table": "EvaluationSteps",
+        "field": "Outcome",
+        "kind": "formula",
+        "rule": "Поле «outcome» (Evaluation step) определяется по следующему приоритету:\n1. «stable fixed point», если trial value равно resulting value;\n2. во всех остальных случаях — «contradiction».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «outcome» (Evaluation step) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«stable fixed point»",
+              "when": {
+                "kind": "leaf",
+                "text": "trial value равно resulting value"
+              }
+            },
+            {
+              "value": "«contradiction»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если trial value равно resulting value, то \"stable fixed point\", иначе \"contradiction\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "TruthValues": [
+        "Truth value **обязан** иметь symbol; glyph; и rank."
+      ],
+      "Connectives": [
+        "Connective **обязан** иметь symbol; arity; и kleene rule."
+      ],
+      "TruthTableRows": [
+        "Truth table row **обязан** ссылаться ровно на один «connective».",
+        "Truth table row **обязан** ссылаться ровно на один «truth value» в роли «left input».",
+        "Truth table row **обязан** ссылаться ровно на один «truth value» в роли «output»."
+      ],
+      "SetRules": [
+        "Set rule **обязан** иметь rule number; title; и statement."
+      ],
+      "Sets": [
+        "Set **обязан** иметь label и condition expression, а также фиксировать то, он является «self referential» ли."
+      ],
+      "MembershipFacts": [
+        "Membership fact **обязан** ссылаться ровно на один «set» в роли «element».",
+        "Membership fact **обязан** ссылаться ровно на один «set» в роли «container».",
+        "Membership fact **обязан** ссылаться ровно на один «truth value» в роли «membership value»."
+      ],
+      "EvaluationSteps": [
+        "Evaluation step **обязан** ссылаться ровно на один «membership fact».",
+        "Evaluation step **обязан** ссылаться ровно на один «truth value» в роли «trial value».",
+        "Evaluation step **обязан** ссылаться ровно на один «truth value» в роли «resulting value».",
+        "Evaluation step **обязан** иметь step order."
+      ]
+    },
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TruthValues": "truth value",
+      "Connectives": "connective",
+      "TruthTableRows": "truth table row",
+      "SetRules": "set rule",
+      "Sets": "set",
+      "MembershipFacts": "membership fact",
+      "EvaluationSteps": "evaluation step"
+    }
+  },
+  "tr": {
+    "fields": {
+      "TruthValues.Name": {
+        "table": "TruthValues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“truth value” kaydının “name” alanı, “truth value ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Truth value ID"
+      },
+      "TruthValues.IsClassical": {
+        "table": "TruthValues",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "“truth value” kaydı, “truth value ID” “true” değerine eşit veya “truth value ID” “false” değerine eşit ise “classical” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“truth value” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “classical” sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“truth value ID” “true” değerine eşit"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“truth value ID” “false” değerine eşit"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Truth value ID, \"true\" değerine eşit veya truth value ID, \"false\" değerine eşit"
+      },
+      "TruthValues.IsUndefined": {
+        "table": "TruthValues",
+        "field": "IsUndefined",
+        "kind": "formula",
+        "rule": "“truth value” kaydı, “truth value ID” “null” değerine eşit ise “undefined” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“truth value” kaydının “is undefined” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "doğru",
+              "when": {
+                "kind": "leaf",
+                "text": "“truth value ID” “null” değerine eşit"
+              }
+            },
+            {
+              "value": "yanlış",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Truth value ID, \"null\" değerine eşit ise true(), aksi takdirde false()"
+      },
+      "TruthValues.CountOfFacts": {
+        "table": "TruthValues",
+        "field": "CountOfFacts",
+        "kind": "rollup",
+        "rule": "“truth value” kaydının “count of facts” alanı, “truth value” kaydıyla ilişkili “membership facts” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Membership value değeri truth value ID olan membership facts kayıtlarının sayısı"
+      },
+      "Connectives.Name": {
+        "table": "Connectives",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“connective” kaydının “name” alanı, “connective ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Connective ID"
+      },
+      "Connectives.CountOfTruthTableRows": {
+        "table": "Connectives",
+        "field": "CountOfTruthTableRows",
+        "kind": "rollup",
+        "rule": "“connective” kaydının “count of truth table rows” alanı, “connective” kaydıyla ilişkili “truth table rows” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Connective değeri connective ID olan truth table rows kayıtlarının sayısı"
+      },
+      "TruthTableRows.OutputSymbol": {
+        "table": "TruthTableRows",
+        "field": "OutputSymbol",
+        "kind": "lookup",
+        "rule": "“truth table row” kaydının “output symbol” alanı, “output” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı output kaydının symbol değeri"
+      },
+      "TruthTableRows.Name": {
+        "table": "TruthTableRows",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“truth table row” kaydının “name” alanı, “connective” alanı, ardından “: ”, ardından “left input” alanı, ardından “ , ”, ardından “right input” alanı, ardından “ -> ”, ardından “output” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "LeftInput",
+            "label": "left input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "RightInput",
+            "label": "right input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          }
+        ],
+        "structure": null,
+        "plain": "((((connective ile \": \" birleşimi) ile left input birleşimi) ile right input, \"\" değerine eşit ise \"\", aksi takdirde (\" , \" ile right input birleşimi) birleşimi) ile \" -> \" birleşimi) ile output birleşimi"
+      },
+      "SetRules.Name": {
+        "table": "SetRules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“set rule” kaydının “name” alanı, “R”, ardından “rule number” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": null,
+        "plain": "\"R\" ile rule number birleşimi"
+      },
+      "SetRules.IsClassical": {
+        "table": "SetRules",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "“set rule” kaydı, “rule number” alanı en çok 11 değerinde ise “classical” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“set rule” kaydının “is classical” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "doğru",
+              "when": {
+                "kind": "leaf",
+                "text": "“rule number” alanı en çok 11 değerinde"
+              }
+            },
+            {
+              "value": "yanlış",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Rule number, en çok 11 değerinde ise true(), aksi takdirde false()"
+      },
+      "SetRules.IsTheMissingRule": {
+        "table": "SetRules",
+        "field": "IsTheMissingRule",
+        "kind": "formula",
+        "rule": "“set rule” kaydı, “rule number” alanı 12 değerine eşit ise “the missing rule” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“set rule” kaydının “is the missing rule” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "doğru",
+              "when": {
+                "kind": "leaf",
+                "text": "“rule number” alanı 12 değerine eşit"
+              }
+            },
+            {
+              "value": "yanlış",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Rule number, 12 değerine eşit ise true(), aksi takdirde false()"
+      },
+      "Sets.Name": {
+        "table": "Sets",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“set” kaydının “name” alanı, “set ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Set ID"
+      },
+      "Sets.IsRussellSet": {
+        "table": "Sets",
+        "field": "IsRussellSet",
+        "kind": "formula",
+        "rule": "“set” kaydı, “set ID” “russell-set” değerine eşit ise “russell set” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“set” kaydının “is russell set” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "doğru",
+              "when": {
+                "kind": "leaf",
+                "text": "“set ID” “russell-set” değerine eşit"
+              }
+            },
+            {
+              "value": "yanlış",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Set ID, \"russell-set\" değerine eşit ise true(), aksi takdirde false()"
+      },
+      "Sets.CountOfMemberships": {
+        "table": "Sets",
+        "field": "CountOfMemberships",
+        "kind": "rollup",
+        "rule": "“set” kaydının “count of memberships” alanı, “set” kaydıyla ilişkili “membership facts” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Container değeri set ID olan membership facts kayıtlarının sayısı"
+      },
+      "Sets.CountOfNullMemberships": {
+        "table": "Sets",
+        "field": "CountOfNullMemberships",
+        "kind": "rollup",
+        "rule": "“set” kaydının “count of null memberships” alanı, “set” kaydıyla ilişkili, “membership value” alanı “null” olan “membership facts” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": null,
+        "plain": "Container değeri set ID ve membership value değeri \"null\" olan membership facts kayıtlarının sayısı"
+      },
+      "MembershipFacts.Name": {
+        "table": "MembershipFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“membership fact” kaydının “name” alanı, “element” alanı, ardından “ ∈ ”, ardından “container” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Element",
+            "label": "element"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          }
+        ],
+        "structure": null,
+        "plain": "(element ile \" ∈ \" birleşimi) ile container birleşimi"
+      },
+      "MembershipFacts.ContainerLabel": {
+        "table": "MembershipFacts",
+        "field": "ContainerLabel",
+        "kind": "lookup",
+        "rule": "“membership fact” kaydının “container label” alanı, “container” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı container kaydının label değeri"
+      },
+      "MembershipFacts.MembershipValueSymbol": {
+        "table": "MembershipFacts",
+        "field": "MembershipValueSymbol",
+        "kind": "lookup",
+        "rule": "“membership fact” kaydının “membership value symbol” alanı, “membership value” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı membership value kaydının symbol değeri"
+      },
+      "MembershipFacts.IsBivalent": {
+        "table": "MembershipFacts",
+        "field": "IsBivalent",
+        "kind": "lookup",
+        "rule": "“membership fact” kaydının “is bivalent” alanı, “membership value” alanı üzerinden bağlı kayıt “classical” ise doğrudur.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "IsClassical",
+            "label": "is classical"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı membership value kaydının is classical değeri"
+      },
+      "MembershipFacts.IsNull": {
+        "table": "MembershipFacts",
+        "field": "IsNull",
+        "kind": "formula",
+        "rule": "“membership fact” kaydı, “membership value” alanı “null” değerine eşit ise “null” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“membership fact” kaydının “is null” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "doğru",
+              "when": {
+                "kind": "leaf",
+                "text": "“membership value” alanı “null” değerine eşit"
+              }
+            },
+            {
+              "value": "yanlış",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Membership value, \"null\" değerine eşit ise true(), aksi takdirde false()"
+      },
+      "MembershipFacts.IsGrounded": {
+        "table": "MembershipFacts",
+        "field": "IsGrounded",
+        "kind": "formula",
+        "rule": "“membership fact” kaydı, (“membership value” alanı “null” değerine eşit) koşulu sağlanmıyor ise “grounded” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“membership fact” kaydının “is grounded” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "yanlış",
+              "when": {
+                "kind": "leaf",
+                "text": "“membership value” alanı “null” değerine eşit"
+              }
+            },
+            {
+              "value": "doğru",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Membership value, \"null\" değerine eşit ise false(), aksi takdirde true()"
+      },
+      "MembershipFacts.CountOfEvaluationSteps": {
+        "table": "MembershipFacts",
+        "field": "CountOfEvaluationSteps",
+        "kind": "rollup",
+        "rule": "“membership fact” kaydının “count of evaluation steps” alanı, “membership fact” kaydıyla ilişkili “evaluation steps” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "MembershipFact",
+            "label": "membership fact"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipFactId",
+            "label": "membership fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Membership fact değeri membership fact ID olan evaluation steps kayıtlarının sayısı"
+      },
+      "EvaluationSteps.Name": {
+        "table": "EvaluationSteps",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“evaluation step” kaydının “name” alanı, “try ”, ardından “trial value” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          }
+        ],
+        "structure": null,
+        "plain": "\"try \" ile trial value birleşimi"
+      },
+      "EvaluationSteps.IsStable": {
+        "table": "EvaluationSteps",
+        "field": "IsStable",
+        "kind": "formula",
+        "rule": "“evaluation step” kaydı, “trial value” alanı “resulting value” alanı değerine eşit ise “stable” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“evaluation step” kaydının “is stable” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "doğru",
+              "when": {
+                "kind": "leaf",
+                "text": "“trial value” alanı “resulting value” alanı değerine eşit"
+              }
+            },
+            {
+              "value": "yanlış",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Trial value, resulting value değerine eşit ise true(), aksi takdirde false()"
+      },
+      "EvaluationSteps.Outcome": {
+        "table": "EvaluationSteps",
+        "field": "Outcome",
+        "kind": "formula",
+        "rule": "“evaluation step” kaydının “outcome” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “trial value” alanı “resulting value” alanı değerine eşit ise “stable fixed point”;\n2. diğer tüm durumlarda “contradiction”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“evaluation step” kaydının “outcome” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“stable fixed point”",
+              "when": {
+                "kind": "leaf",
+                "text": "“trial value” alanı “resulting value” alanı değerine eşit"
+              }
+            },
+            {
+              "value": "“contradiction”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Trial value, resulting value değerine eşit ise \"stable fixed point\", aksi takdirde \"contradiction\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "TruthValues": [
+        "“truth value” kaydı, “symbol” alanı, “glyph” alanı ve “rank” alanı dolu olmak **zorundadır**."
+      ],
+      "Connectives": [
+        "“connective” kaydı, “symbol” alanı, “arity” alanı ve “kleene rule” alanı dolu olmak **zorundadır**."
+      ],
+      "TruthTableRows": [
+        "“truth table row” kaydı, tam olarak bir “connective” kaydına referans vermek **zorundadır**.",
+        "“truth table row” kaydı, “left input” alanı aracılığıyla tam olarak bir “truth value” kaydına referans vermek **zorundadır**.",
+        "“truth table row” kaydı, “output” alanı aracılığıyla tam olarak bir “truth value” kaydına referans vermek **zorundadır**."
+      ],
+      "SetRules": [
+        "“set rule” kaydı, “rule number” alanı, “title” alanı ve “statement” alanı dolu olmak **zorundadır**."
+      ],
+      "Sets": [
+        "“set” kaydı, “label” alanı ve “condition expression” alanı dolu olmak, ayrıca “self referential” olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ],
+      "MembershipFacts": [
+        "“membership fact” kaydı, “element” alanı aracılığıyla tam olarak bir “set” kaydına referans vermek **zorundadır**.",
+        "“membership fact” kaydı, “container” alanı aracılığıyla tam olarak bir “set” kaydına referans vermek **zorundadır**.",
+        "“membership fact” kaydı, “membership value” alanı aracılığıyla tam olarak bir “truth value” kaydına referans vermek **zorundadır**."
+      ],
+      "EvaluationSteps": [
+        "“evaluation step” kaydı, tam olarak bir “membership fact” kaydına referans vermek **zorundadır**.",
+        "“evaluation step” kaydı, “trial value” alanı aracılığıyla tam olarak bir “truth value” kaydına referans vermek **zorundadır**.",
+        "“evaluation step” kaydı, “resulting value” alanı aracılığıyla tam olarak bir “truth value” kaydına referans vermek **zorundadır**.",
+        "“evaluation step” kaydı, “step order” alanı dolu olmak **zorundadır**."
+      ]
+    },
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TruthValues": "truth value",
+      "Connectives": "connective",
+      "TruthTableRows": "truth table row",
+      "SetRules": "set rule",
+      "Sets": "set",
+      "MembershipFacts": "membership fact",
+      "EvaluationSteps": "evaluation step"
+    }
+  },
+  "vi": {
+    "fields": {
+      "TruthValues.Name": {
+        "table": "TruthValues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi truth value có cùng giá trị với trường “truth value ID” của chính truth value đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Truth value ID"
+      },
+      "TruthValues.IsClassical": {
+        "table": "TruthValues",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "Mỗi truth value được coi là “classical” nếu ít nhất một trong các điều kiện sau đúng: truth value ID là “true” hoặc truth value ID là “false”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi truth value được coi là “classical” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "truth value ID là “true”"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "truth value ID là “false”"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Truth value ID là \"true\" hoặc truth value ID là \"false\""
+      },
+      "TruthValues.IsUndefined": {
+        "table": "TruthValues",
+        "field": "IsUndefined",
+        "kind": "formula",
+        "rule": "Mỗi truth value được coi là “undefined” nếu truth value ID là “null”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “is undefined” của mỗi truth value được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "đúng",
+              "when": {
+                "kind": "leaf",
+                "text": "truth value ID là “null”"
+              }
+            },
+            {
+              "value": "sai",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu truth value ID là \"null\" thì true(), nếu không thì false()"
+      },
+      "TruthValues.CountOfFacts": {
+        "table": "TruthValues",
+        "field": "CountOfFacts",
+        "kind": "rollup",
+        "rule": "Trường “count of facts” của mỗi truth value là số lượng membership facts liên quan đến truth value đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng membership facts có membership value là truth value ID"
+      },
+      "Connectives.Name": {
+        "table": "Connectives",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi connective có cùng giá trị với trường “connective ID” của chính connective đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Connective ID"
+      },
+      "Connectives.CountOfTruthTableRows": {
+        "table": "Connectives",
+        "field": "CountOfTruthTableRows",
+        "kind": "rollup",
+        "rule": "Trường “count of truth table rows” của mỗi connective là số lượng truth table rows liên quan đến connective đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng truth table rows có connective là connective ID"
+      },
+      "TruthTableRows.OutputSymbol": {
+        "table": "TruthTableRows",
+        "field": "OutputSymbol",
+        "kind": "lookup",
+        "rule": "Trường “output symbol” của mỗi truth table row được lấy từ bản ghi liên kết qua trường “output”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symbol của bản ghi liên kết qua output"
+      },
+      "TruthTableRows.Name": {
+        "table": "TruthTableRows",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi truth table row được tính bằng connective, tiếp theo là “: ”, tiếp theo là left input, tiếp theo là “ , ”, tiếp theo là right input, tiếp theo là “ -> ”, tiếp theo là output.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "LeftInput",
+            "label": "left input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "RightInput",
+            "label": "right input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          }
+        ],
+        "structure": null,
+        "plain": "((((connective nối với \": \") nối với left input) nối với nếu right input là \"\" thì \"\", nếu không thì (\" , \" nối với right input)) nối với \" -> \") nối với output"
+      },
+      "SetRules.Name": {
+        "table": "SetRules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi set rule được tính bằng “R”, tiếp theo là rule number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": null,
+        "plain": "\"R\" nối với rule number"
+      },
+      "SetRules.IsClassical": {
+        "table": "SetRules",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "Mỗi set rule được coi là “classical” nếu rule number không lớn hơn 11.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “is classical” của mỗi set rule được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "đúng",
+              "when": {
+                "kind": "leaf",
+                "text": "rule number không lớn hơn 11"
+              }
+            },
+            {
+              "value": "sai",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu rule number không lớn hơn 11 thì true(), nếu không thì false()"
+      },
+      "SetRules.IsTheMissingRule": {
+        "table": "SetRules",
+        "field": "IsTheMissingRule",
+        "kind": "formula",
+        "rule": "Mỗi set rule được coi là “the missing rule” nếu rule number là 12.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “is the missing rule” của mỗi set rule được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "đúng",
+              "when": {
+                "kind": "leaf",
+                "text": "rule number là 12"
+              }
+            },
+            {
+              "value": "sai",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu rule number bằng 12 thì true(), nếu không thì false()"
+      },
+      "Sets.Name": {
+        "table": "Sets",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi set có cùng giá trị với trường “set ID” của chính set đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Set ID"
+      },
+      "Sets.IsRussellSet": {
+        "table": "Sets",
+        "field": "IsRussellSet",
+        "kind": "formula",
+        "rule": "Mỗi set được coi là “russell set” nếu set ID là “russell-set”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “is russell set” của mỗi set được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "đúng",
+              "when": {
+                "kind": "leaf",
+                "text": "set ID là “russell-set”"
+              }
+            },
+            {
+              "value": "sai",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu set ID là \"russell-set\" thì true(), nếu không thì false()"
+      },
+      "Sets.CountOfMemberships": {
+        "table": "Sets",
+        "field": "CountOfMemberships",
+        "kind": "rollup",
+        "rule": "Trường “count of memberships” của mỗi set là số lượng membership facts liên quan đến set đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng membership facts có container là set ID"
+      },
+      "Sets.CountOfNullMemberships": {
+        "table": "Sets",
+        "field": "CountOfNullMemberships",
+        "kind": "rollup",
+        "rule": "Trường “count of null memberships” của mỗi set là số lượng membership facts liên quan đến set đó, chỉ tính các bản ghi có trường “membership value” là “null”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng membership facts có container là set ID và membership value là \"null\""
+      },
+      "MembershipFacts.Name": {
+        "table": "MembershipFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi membership fact được tính bằng element, tiếp theo là “ ∈ ”, tiếp theo là container.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Element",
+            "label": "element"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          }
+        ],
+        "structure": null,
+        "plain": "(element nối với \" ∈ \") nối với container"
+      },
+      "MembershipFacts.ContainerLabel": {
+        "table": "MembershipFacts",
+        "field": "ContainerLabel",
+        "kind": "lookup",
+        "rule": "Trường “container label” của mỗi membership fact được lấy từ bản ghi liên kết qua trường “container”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Label của bản ghi liên kết qua container"
+      },
+      "MembershipFacts.MembershipValueSymbol": {
+        "table": "MembershipFacts",
+        "field": "MembershipValueSymbol",
+        "kind": "lookup",
+        "rule": "Trường “membership value symbol” của mỗi membership fact được lấy từ bản ghi liên kết qua trường “membership value”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symbol của bản ghi liên kết qua membership value"
+      },
+      "MembershipFacts.IsBivalent": {
+        "table": "MembershipFacts",
+        "field": "IsBivalent",
+        "kind": "lookup",
+        "rule": "Trường “is bivalent” của mỗi membership fact có giá trị đúng khi bản ghi liên kết qua trường “membership value” là “classical”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "IsClassical",
+            "label": "is classical"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is classical của bản ghi liên kết qua membership value"
+      },
+      "MembershipFacts.IsNull": {
+        "table": "MembershipFacts",
+        "field": "IsNull",
+        "kind": "formula",
+        "rule": "Mỗi membership fact được coi là “null” nếu membership value là “null”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “is null” của mỗi membership fact được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "đúng",
+              "when": {
+                "kind": "leaf",
+                "text": "membership value là “null”"
+              }
+            },
+            {
+              "value": "sai",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu membership value là \"null\" thì true(), nếu không thì false()"
+      },
+      "MembershipFacts.IsGrounded": {
+        "table": "MembershipFacts",
+        "field": "IsGrounded",
+        "kind": "formula",
+        "rule": "Mỗi membership fact được coi là “grounded” nếu không xảy ra việc membership value là “null”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “is grounded” của mỗi membership fact được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "sai",
+              "when": {
+                "kind": "leaf",
+                "text": "membership value là “null”"
+              }
+            },
+            {
+              "value": "đúng",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu membership value là \"null\" thì false(), nếu không thì true()"
+      },
+      "MembershipFacts.CountOfEvaluationSteps": {
+        "table": "MembershipFacts",
+        "field": "CountOfEvaluationSteps",
+        "kind": "rollup",
+        "rule": "Trường “count of evaluation steps” của mỗi membership fact là số lượng evaluation steps liên quan đến membership fact đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "MembershipFact",
+            "label": "membership fact"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipFactId",
+            "label": "membership fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng evaluation steps có membership fact là membership fact ID"
+      },
+      "EvaluationSteps.Name": {
+        "table": "EvaluationSteps",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi evaluation step được tính bằng “try ”, tiếp theo là trial value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          }
+        ],
+        "structure": null,
+        "plain": "\"try \" nối với trial value"
+      },
+      "EvaluationSteps.IsStable": {
+        "table": "EvaluationSteps",
+        "field": "IsStable",
+        "kind": "formula",
+        "rule": "Mỗi evaluation step được coi là “stable” nếu trial value là resulting value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “is stable” của mỗi evaluation step được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "đúng",
+              "when": {
+                "kind": "leaf",
+                "text": "trial value là resulting value"
+              }
+            },
+            {
+              "value": "sai",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu trial value bằng resulting value thì true(), nếu không thì false()"
+      },
+      "EvaluationSteps.Outcome": {
+        "table": "EvaluationSteps",
+        "field": "Outcome",
+        "kind": "formula",
+        "rule": "Trường “outcome” của mỗi evaluation step được xác định theo thứ tự ưu tiên sau:\n1. “stable fixed point”, nếu trial value là resulting value;\n2. trong mọi trường hợp còn lại, “contradiction”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “outcome” của mỗi evaluation step được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“stable fixed point”",
+              "when": {
+                "kind": "leaf",
+                "text": "trial value là resulting value"
+              }
+            },
+            {
+              "value": "“contradiction”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu trial value bằng resulting value thì \"stable fixed point\", nếu không thì \"contradiction\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "TruthValues": [
+        "Mỗi truth value **phải** có symbol, glyph và rank."
+      ],
+      "Connectives": [
+        "Mỗi connective **phải** có symbol, arity và kleene rule."
+      ],
+      "TruthTableRows": [
+        "Mỗi truth table row **phải** tham chiếu đến đúng một connective.",
+        "Mỗi truth table row **phải** tham chiếu đến đúng một truth value với vai trò left input.",
+        "Mỗi truth table row **phải** tham chiếu đến đúng một truth value với vai trò output."
+      ],
+      "SetRules": [
+        "Mỗi set rule **phải** có rule number, title và statement."
+      ],
+      "Sets": [
+        "Mỗi set **phải** có label và condition expression, đồng thời được ghi nhận rõ là “self referential” hay không."
+      ],
+      "MembershipFacts": [
+        "Mỗi membership fact **phải** tham chiếu đến đúng một set với vai trò element.",
+        "Mỗi membership fact **phải** tham chiếu đến đúng một set với vai trò container.",
+        "Mỗi membership fact **phải** tham chiếu đến đúng một truth value với vai trò membership value."
+      ],
+      "EvaluationSteps": [
+        "Mỗi evaluation step **phải** tham chiếu đến đúng một membership fact.",
+        "Mỗi evaluation step **phải** tham chiếu đến đúng một truth value với vai trò trial value.",
+        "Mỗi evaluation step **phải** tham chiếu đến đúng một truth value với vai trò resulting value.",
+        "Mỗi evaluation step **phải** có step order."
+      ]
+    },
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TruthValues": "truth value",
+      "Connectives": "connective",
+      "TruthTableRows": "truth table row",
+      "SetRules": "set rule",
+      "Sets": "set",
+      "MembershipFacts": "membership fact",
+      "EvaluationSteps": "evaluation step"
+    }
+  },
+  "zh": {
+    "fields": {
+      "TruthValues.Name": {
+        "table": "TruthValues",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "truth value的“name”与 truth value ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Truth value ID"
+      },
+      "TruthValues.IsClassical": {
+        "table": "TruthValues",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "当以下至少一项成立:truth value ID为“true”或truth value ID为“false”时,truth value被视为“Classical”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,truth value被视为“Classical”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "truth value ID为“true”"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "truth value ID为“false”"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Truth value ID为\"true\"或truth value ID为\"false\""
+      },
+      "TruthValues.IsUndefined": {
+        "table": "TruthValues",
+        "field": "IsUndefined",
+        "kind": "formula",
+        "rule": "当truth value ID为“null”时,truth value被视为“Undefined”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Truth value的“is undefined”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "truth value ID为“null”"
+              }
+            },
+            {
+              "value": "假",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若truth value ID为\"null\",则true(),否则false()"
+      },
+      "TruthValues.CountOfFacts": {
+        "table": "TruthValues",
+        "field": "CountOfFacts",
+        "kind": "rollup",
+        "rule": "truth value的“count of facts”为 与truth value相关的“membership facts”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Membership value为truth value ID的“membership facts”的数量"
+      },
+      "Connectives.Name": {
+        "table": "Connectives",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "connective的“name”与 connective ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Connective ID"
+      },
+      "Connectives.CountOfTruthTableRows": {
+        "table": "Connectives",
+        "field": "CountOfTruthTableRows",
+        "kind": "rollup",
+        "rule": "connective的“count of truth table rows”为 与connective相关的“truth table rows”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "Connectives",
+            "field": "ConnectiveId",
+            "label": "connective ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Connective为connective ID的“truth table rows”的数量"
+      },
+      "TruthTableRows.OutputSymbol": {
+        "table": "TruthTableRows",
+        "field": "OutputSymbol",
+        "kind": "lookup",
+        "rule": "truth table row的“output symbol”——取自所关联的“output”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“output”的symbol"
+      },
+      "TruthTableRows.Name": {
+        "table": "TruthTableRows",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "truth table row的“name”按 connective,接着是“: ”,接着是left input,接着是“ , ”,接着是right input,接着是“ -> ”,接着是output 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthTableRows",
+            "field": "Connective",
+            "label": "connective"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "LeftInput",
+            "label": "left input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "RightInput",
+            "label": "right input"
+          },
+          {
+            "table": "TruthTableRows",
+            "field": "Output",
+            "label": "output"
+          }
+        ],
+        "structure": null,
+        "plain": "((((connective与\": \"拼接)与left input拼接)与若right input为\"\",则\"\",否则(\" , \"与right input拼接)拼接)与\" -> \"拼接)与output拼接"
+      },
+      "SetRules.Name": {
+        "table": "SetRules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "set rule的“name”按 “R”,接着是rule number 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": null,
+        "plain": "\"R\"与rule number拼接"
+      },
+      "SetRules.IsClassical": {
+        "table": "SetRules",
+        "field": "IsClassical",
+        "kind": "formula",
+        "rule": "当rule number不大于11时,set rule被视为“Classical”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Set rule的“is classical”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "rule number不大于11"
+              }
+            },
+            {
+              "value": "假",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若rule number不大于11,则true(),否则false()"
+      },
+      "SetRules.IsTheMissingRule": {
+        "table": "SetRules",
+        "field": "IsTheMissingRule",
+        "kind": "formula",
+        "rule": "当rule number为12时,set rule被视为“The Missing Rule”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SetRules",
+            "field": "RuleNumber",
+            "label": "rule number"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Set rule的“is the missing rule”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "rule number为12"
+              }
+            },
+            {
+              "value": "假",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若rule number等于12,则true(),否则false()"
+      },
+      "Sets.Name": {
+        "table": "Sets",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "set的“name”与 set ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Set ID"
+      },
+      "Sets.IsRussellSet": {
+        "table": "Sets",
+        "field": "IsRussellSet",
+        "kind": "formula",
+        "rule": "当set ID为“russell-set”时,set被视为“Russell Set”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Set的“is russell set”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "set ID为“russell-set”"
+              }
+            },
+            {
+              "value": "假",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若set ID为\"russell-set\",则true(),否则false()"
+      },
+      "Sets.CountOfMemberships": {
+        "table": "Sets",
+        "field": "CountOfMemberships",
+        "kind": "rollup",
+        "rule": "set的“count of memberships”为 与set相关的“membership facts”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Container为set ID的“membership facts”的数量"
+      },
+      "Sets.CountOfNullMemberships": {
+        "table": "Sets",
+        "field": "CountOfNullMemberships",
+        "kind": "rollup",
+        "rule": "set的“count of null memberships”为 set的“membership facts”中“membership value”为 “null”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": null,
+        "plain": "Container为set ID且membership value为\"null\"的“membership facts”的数量"
+      },
+      "MembershipFacts.Name": {
+        "table": "MembershipFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "membership fact的“name”按 element,接着是“ ∈ ”,接着是container 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "Element",
+            "label": "element"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          }
+        ],
+        "structure": null,
+        "plain": "(element与\" ∈ \"拼接)与container拼接"
+      },
+      "MembershipFacts.ContainerLabel": {
+        "table": "MembershipFacts",
+        "field": "ContainerLabel",
+        "kind": "lookup",
+        "rule": "membership fact的“container label”——取自所关联的“container”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sets",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "Container",
+            "label": "container"
+          },
+          {
+            "table": "Sets",
+            "field": "SetId",
+            "label": "set ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“container”的label"
+      },
+      "MembershipFacts.MembershipValueSymbol": {
+        "table": "MembershipFacts",
+        "field": "MembershipValueSymbol",
+        "kind": "lookup",
+        "rule": "membership fact的“membership value symbol”——取自所关联的“membership value”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "Symbol",
+            "label": "symbol"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“membership value”的symbol"
+      },
+      "MembershipFacts.IsBivalent": {
+        "table": "MembershipFacts",
+        "field": "IsBivalent",
+        "kind": "lookup",
+        "rule": "membership fact的“is bivalent”在所关联的“membership value”是“Classical”时为真。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TruthValues",
+            "field": "IsClassical",
+            "label": "is classical"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          },
+          {
+            "table": "TruthValues",
+            "field": "TruthValueId",
+            "label": "truth value ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“membership value”的is classical"
+      },
+      "MembershipFacts.IsNull": {
+        "table": "MembershipFacts",
+        "field": "IsNull",
+        "kind": "formula",
+        "rule": "当membership value为“null”时,membership fact被视为“Null”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Membership fact的“is null”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "membership value为“null”"
+              }
+            },
+            {
+              "value": "假",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若membership value为\"null\",则true(),否则false()"
+      },
+      "MembershipFacts.IsGrounded": {
+        "table": "MembershipFacts",
+        "field": "IsGrounded",
+        "kind": "formula",
+        "rule": "当并非membership value为“null”时,membership fact被视为“Grounded”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipValue",
+            "label": "membership value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Membership fact的“is grounded”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "假",
+              "when": {
+                "kind": "leaf",
+                "text": "membership value为“null”"
+              }
+            },
+            {
+              "value": "真",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若membership value为\"null\",则false(),否则true()"
+      },
+      "MembershipFacts.CountOfEvaluationSteps": {
+        "table": "MembershipFacts",
+        "field": "CountOfEvaluationSteps",
+        "kind": "rollup",
+        "rule": "membership fact的“count of evaluation steps”为 与membership fact相关的“evaluation steps”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "MembershipFact",
+            "label": "membership fact"
+          },
+          {
+            "table": "MembershipFacts",
+            "field": "MembershipFactId",
+            "label": "membership fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Membership fact为membership fact ID的“evaluation steps”的数量"
+      },
+      "EvaluationSteps.Name": {
+        "table": "EvaluationSteps",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "evaluation step的“name”按 “try ”,接着是trial value 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          }
+        ],
+        "structure": null,
+        "plain": "\"try \"与trial value拼接"
+      },
+      "EvaluationSteps.IsStable": {
+        "table": "EvaluationSteps",
+        "field": "IsStable",
+        "kind": "formula",
+        "rule": "当trial value为resulting value时,evaluation step被视为“Stable”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Evaluation step的“is stable”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "trial value为resulting value"
+              }
+            },
+            {
+              "value": "假",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若trial value等于resulting value,则true(),否则false()"
+      },
+      "EvaluationSteps.Outcome": {
+        "table": "EvaluationSteps",
+        "field": "Outcome",
+        "kind": "formula",
+        "rule": "Evaluation step的“outcome”按以下优先级确定:\n1. 当trial value为resulting value时,取 “stable fixed point”;\n2. 其余情况取 “contradiction”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvaluationSteps",
+            "field": "TrialValue",
+            "label": "trial value"
+          },
+          {
+            "table": "EvaluationSteps",
+            "field": "ResultingValue",
+            "label": "resulting value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Evaluation step的“outcome”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“stable fixed point”",
+              "when": {
+                "kind": "leaf",
+                "text": "trial value为resulting value"
+              }
+            },
+            {
+              "value": "“contradiction”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若trial value等于resulting value,则\"stable fixed point\",否则\"contradiction\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "TruthValues": [
+        "truth value**必须**具有symbol、glyph,且rank。"
+      ],
+      "Connectives": [
+        "connective**必须**具有symbol、arity,且kleene rule。"
+      ],
+      "TruthTableRows": [
+        "truth table row**必须**恰好引用一个“connective”。",
+        "truth table row**必须**恰好引用一个“truth value”作为其left input。",
+        "truth table row**必须**恰好引用一个“truth value”作为其output。"
+      ],
+      "SetRules": [
+        "set rule**必须**具有rule number、title,且statement。"
+      ],
+      "Sets": [
+        "set**必须**具有label且condition expression,并记录其是“Self Referential”与否。"
+      ],
+      "MembershipFacts": [
+        "membership fact**必须**恰好引用一个“set”作为其element。",
+        "membership fact**必须**恰好引用一个“set”作为其container。",
+        "membership fact**必须**恰好引用一个“truth value”作为其membership value。"
+      ],
+      "EvaluationSteps": [
+        "evaluation step**必须**恰好引用一个“membership fact”。",
+        "evaluation step**必须**恰好引用一个“truth value”作为其trial value。",
+        "evaluation step**必须**恰好引用一个“truth value”作为其resulting value。",
+        "evaluation step**必须**具有step order。"
+      ]
+    },
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "TruthValues": "truth value",

@@ -424,7 +424,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -1876,6 +1891,22881 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "Loops": "loop",
+      "PhysicsConstants": "physics constant",
+      "Particles": "particle",
+      "Charges": "charge",
+      "Systems": "system",
+      "ChargeInteractions": "charge interaction",
+      "ForceVectors": "force vector",
+      "ElectricFieldPoints": "electric field point",
+      "InvariantChecks": "invariant check",
+      "SystemSummary": "system summary"
+    }
+  },
+  "ar": {
+    "fields": {
+      "Loops.Name": {
+        "table": "Loops",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «loop» يطابق حقل «loop ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loops",
+            "field": "LoopId",
+            "label": "loop ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Loop ID"
+      },
+      "Particles.ChargeSign": {
+        "table": "Particles",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "حقل «charge sign» في سجل «particle» يتحدد وفق ترتيب الأولوية الآتي:\n1. «positive»، إذا تحقق أنّ حقل «canonical charge» أكبر من 0؛\n2. «negative»، إذا تحقق أنّ حقل «canonical charge» أقل من 0؛\n3. «neutral»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Particles",
+            "field": "CanonicalCharge",
+            "label": "canonical charge"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «charge sign» في سجل «particle» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«positive»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «canonical charge» أكبر من 0"
+              }
+            },
+            {
+              "value": "«negative»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «canonical charge» أقل من 0"
+              }
+            },
+            {
+              "value": "«neutral»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ canonical charge أكبر من 0 فالناتج \"positive\"، وإلا فالناتج إذا تحقق أنّ canonical charge أقل من 0 فالناتج \"negative\"، وإلا فالناتج \"neutral\""
+      },
+      "Charges.ChargeSign": {
+        "table": "Charges",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "حقل «charge sign» في سجل «charge» يتحدد وفق ترتيب الأولوية الآتي:\n1. «positive»، إذا تحقق أنّ حقل «charge value» أكبر من 0؛\n2. «negative»، إذا تحقق أنّ حقل «charge value» أقل من 0؛\n3. «neutral»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «charge sign» في سجل «charge» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«positive»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «charge value» أكبر من 0"
+              }
+            },
+            {
+              "value": "«negative»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «charge value» أقل من 0"
+              }
+            },
+            {
+              "value": "«neutral»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ charge value أكبر من 0 فالناتج \"positive\"، وإلا فالناتج إذا تحقق أنّ charge value أقل من 0 فالناتج \"negative\"، وإلا فالناتج \"neutral\""
+      },
+      "Charges.ChargeMagnitude": {
+        "table": "Charges",
+        "field": "ChargeMagnitude",
+        "kind": "formula",
+        "rule": "حقل «charge magnitude» في سجل «charge» يُحسب على النحو الآتي: حقل «charge value» بالقيمة المطلقة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge value بالقيمة المطلقة"
+      },
+      "Charges.SystemName": {
+        "table": "Charges",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "حقل «system name» في سجل «charge» هو ناتج LOOKUP(SystemId, Systems[SystemId], Systems[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "Charges.ParticleName": {
+        "table": "Charges",
+        "field": "ParticleName",
+        "kind": "lookup",
+        "rule": "حقل «particle name» في سجل «charge» هو ناتج LOOKUP(ParticleId, Particles[ParticleId], Particles[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ParticleId",
+            "label": "particle ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{ParticleId}}, Particles[ParticleId], Particles[Name])"
+      },
+      "Charges.InteractionCount": {
+        "table": "Charges",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "حقل «interaction count» في سجل «charge» هو عدد سجلات «charge interactions» المرتبطة بسجل «charge».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Charge1Id",
+            "label": "charge1 ID"
+          },
+          {
+            "table": "Charges",
+            "field": "ChargeId",
+            "label": "charge ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «charge interactions» التي يتحقق فيها أنّ حقل «charge1 ID» يساوي charge ID"
+      },
+      "Systems.ChargeCount": {
+        "table": "Systems",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "حقل «charge count» في سجل «system» هو عدد سجلات «charges» المرتبطة بسجل «system».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «charges» التي يتحقق فيها أنّ حقل «system ID» يساوي system ID"
+      },
+      "Systems.InteractionCount": {
+        "table": "Systems",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "حقل «interaction count» في سجل «system» هو عدد سجلات «charge interactions» المرتبطة بسجل «system».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «charge interactions» التي يتحقق فيها أنّ حقل «system ID» يساوي system ID"
+      },
+      "Systems.AttractiveCount": {
+        "table": "Systems",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "حقل «attractive count» في سجل «system» هو عدد سجلات «charge interactions» المرتبطة بسجل «system» التي تُصنّف على أنها «attractive».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «charge interactions» التي يتحقق فيها أنّ حقل «system ID» يساوي system ID وحقل «is attractive» يساوي true()"
+      },
+      "Systems.RepulsiveCount": {
+        "table": "Systems",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "حقل «repulsive count» في سجل «system» هو عدد سجلات «charge interactions» المرتبطة بسجل «system» التي تُصنّف على أنها «repulsive».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «charge interactions» التي يتحقق فيها أنّ حقل «system ID» يساوي system ID وحقل «is repulsive» يساوي true()"
+      },
+      "Systems.TotalCharge": {
+        "table": "Systems",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "حقل «total charge» في سجل «system» هو مجموع قيم حقل «charge value» عبر سجلات «charges» المرتبطة بسجل «system».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «charge value» في جميع سجلات «charges» التي يتحقق فيها أنّ حقل «system ID» يساوي system ID"
+      },
+      "Systems.IsNeutral": {
+        "table": "Systems",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «system» على أنه «neutral» إذا تحقق أنّ ناتج ABS(TotalCharge) < 1e-30.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Systems",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "Systems.MaxForceMagnitude": {
+        "table": "Systems",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "حقل «max force magnitude» في سجل «system» هو أكبر قيم حقل «force magnitude» عبر سجلات «charge interactions» المرتبطة بسجل «system».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "أكبر قيم «force magnitude» في جميع سجلات «charge interactions» التي يتحقق فيها أنّ حقل «system ID» يساوي system ID"
+      },
+      "ChargeInteractions.Name": {
+        "table": "ChargeInteractions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «charge interaction» يطابق حقل «interaction ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "InteractionId",
+            "label": "interaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction ID"
+      },
+      "ChargeInteractions.DeltaX": {
+        "table": "ChargeInteractions",
+        "field": "DeltaX",
+        "kind": "formula",
+        "rule": "حقل «delta x» في سجل «charge interaction» يُحسب على النحو الآتي: حقل «x2» ناقص حقل «x1».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "X2",
+            "label": "x2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "X1",
+            "label": "x1"
+          }
+        ],
+        "structure": null,
+        "plain": "X2 ناقص x1"
+      },
+      "ChargeInteractions.DeltaY": {
+        "table": "ChargeInteractions",
+        "field": "DeltaY",
+        "kind": "formula",
+        "rule": "حقل «delta y» في سجل «charge interaction» يُحسب على النحو الآتي: حقل «y2» ناقص حقل «y1».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Y2",
+            "label": "y2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Y1",
+            "label": "y1"
+          }
+        ],
+        "structure": null,
+        "plain": "Y2 ناقص y1"
+      },
+      "ChargeInteractions.DeltaZ": {
+        "table": "ChargeInteractions",
+        "field": "DeltaZ",
+        "kind": "formula",
+        "rule": "حقل «delta z» في سجل «charge interaction» يُحسب على النحو الآتي: حقل «z2» ناقص حقل «z1».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Z2",
+            "label": "z2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Z1",
+            "label": "z1"
+          }
+        ],
+        "structure": null,
+        "plain": "Z2 ناقص z1"
+      },
+      "ChargeInteractions.DistanceSquared": {
+        "table": "ChargeInteractions",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "حقل «distance squared» في سجل «charge interaction» يُحسب على النحو الآتي: حقل «delta x» مضروبًا في حقل «delta x» زائد حقل «delta y» مضروبًا في حقل «delta y» زائد حقل «delta z» مضروبًا في حقل «delta z».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaX",
+            "label": "delta x"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaY",
+            "label": "delta y"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaZ",
+            "label": "delta z"
+          }
+        ],
+        "structure": null,
+        "plain": "((delta x ضرب delta x) زائد (delta y ضرب delta y)) زائد (delta z ضرب delta z)"
+      },
+      "ChargeInteractions.DistanceMeters": {
+        "table": "ChargeInteractions",
+        "field": "DistanceMeters",
+        "kind": "formula",
+        "rule": "حقل «distance meters» في سجل «charge interaction» يُحسب على النحو الآتي: جذر حقل «distance squared» التربيعي.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ChargeInteractions.DistancePicometers": {
+        "table": "ChargeInteractions",
+        "field": "DistancePicometers",
+        "kind": "formula",
+        "rule": "حقل «distance picometers» في سجل «charge interaction» يُحسب على النحو الآتي: حقل «distance meters» مضروبًا في 1000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance meters ضرب 1,000,000,000,000"
+      },
+      "ChargeInteractions.ChargeProduct": {
+        "table": "ChargeInteractions",
+        "field": "ChargeProduct",
+        "kind": "formula",
+        "rule": "حقل «charge product» في سجل «charge interaction» يُحسب على النحو الآتي: حقل «q1» مضروبًا في حقل «q2».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Q1",
+            "label": "q1"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Q2",
+            "label": "q2"
+          }
+        ],
+        "structure": null,
+        "plain": "Q1 ضرب q2"
+      },
+      "ChargeInteractions.ForceMagnitude": {
+        "table": "ChargeInteractions",
+        "field": "ForceMagnitude",
+        "kind": "formula",
+        "rule": "حقل «force magnitude» في سجل «charge interaction» يُحسب على النحو الآتي: حقل «coulomb k» مضروبًا في حقل «charge product» بالقيمة المطلقة مقسومًا على حقل «distance squared».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k ضرب charge product بالقيمة المطلقة) تقسيم distance squared"
+      },
+      "ChargeInteractions.IsAttractive": {
+        "table": "ChargeInteractions",
+        "field": "IsAttractive",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «charge interaction» على أنه «attractive» إذا تحقق أنّ حقل «charge product» أقل من 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product أقل من 0"
+      },
+      "ChargeInteractions.IsRepulsive": {
+        "table": "ChargeInteractions",
+        "field": "IsRepulsive",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «charge interaction» على أنه «repulsive» إذا تحقق أنّ حقل «charge product» أكبر من 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product أكبر من 0"
+      },
+      "ChargeInteractions.InteractionType": {
+        "table": "ChargeInteractions",
+        "field": "InteractionType",
+        "kind": "formula",
+        "rule": "حقل «interaction type» في سجل «charge interaction» يتحدد وفق ترتيب الأولوية الآتي:\n1. «attractive»، إذا تحقق أنّ علامة «attractive» مفعّلة؛\n2. «repulsive»، إذا تحقق أنّ علامة «repulsive» مفعّلة؛\n3. «neutral»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «interaction type» في سجل «charge interaction» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«attractive»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «attractive» مفعّلة"
+              }
+            },
+            {
+              "value": "«repulsive»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «repulsive» مفعّلة"
+              }
+            },
+            {
+              "value": "«neutral»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ is attractive فالناتج \"attractive\"، وإلا فالناتج إذا تحقق أنّ is repulsive فالناتج \"repulsive\"، وإلا فالناتج \"neutral\""
+      },
+      "ChargeInteractions.ForceInAttoNewtons": {
+        "table": "ChargeInteractions",
+        "field": "ForceInAttoNewtons",
+        "kind": "formula",
+        "rule": "حقل «force in atto newtons» في سجل «charge interaction» يُحسب على النحو الآتي: حقل «force magnitude» مضروبًا في 1000000000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          }
+        ],
+        "structure": null,
+        "plain": "Force magnitude ضرب 1,000,000,000,000,000,000"
+      },
+      "ForceVectors.Name": {
+        "table": "ForceVectors",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «force vector» يطابق حقل «force vector ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceVectorId",
+            "label": "force vector ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Force vector ID"
+      },
+      "ForceVectors.UnitX": {
+        "table": "ForceVectors",
+        "field": "UnitX",
+        "kind": "formula",
+        "rule": "حقل «unit x» في سجل «force vector» يتحدد وفق ترتيب الأولوية الآتي:\n1. 0، إذا تحقق أنّ حقل «dist raw» يساوي 0؛\n2. حقل «DX» مقسومًا على حقل «dist raw»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DX",
+            "label": "DX"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «unit x» في سجل «force vector» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «dist raw» يساوي 0"
+              }
+            },
+            {
+              "value": "حقل «DX» مقسومًا على حقل «dist raw»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ dist raw يساوي 0 فالناتج 0، وإلا فالناتج (DX تقسيم dist raw)"
+      },
+      "ForceVectors.UnitY": {
+        "table": "ForceVectors",
+        "field": "UnitY",
+        "kind": "formula",
+        "rule": "حقل «unit y» في سجل «force vector» يتحدد وفق ترتيب الأولوية الآتي:\n1. 0، إذا تحقق أنّ حقل «dist raw» يساوي 0؛\n2. حقل «DY» مقسومًا على حقل «dist raw»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DY",
+            "label": "DY"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «unit y» في سجل «force vector» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «dist raw» يساوي 0"
+              }
+            },
+            {
+              "value": "حقل «DY» مقسومًا على حقل «dist raw»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ dist raw يساوي 0 فالناتج 0، وإلا فالناتج (DY تقسيم dist raw)"
+      },
+      "ForceVectors.UnitZ": {
+        "table": "ForceVectors",
+        "field": "UnitZ",
+        "kind": "formula",
+        "rule": "حقل «unit z» في سجل «force vector» يتحدد وفق ترتيب الأولوية الآتي:\n1. 0، إذا تحقق أنّ حقل «dist raw» يساوي 0؛\n2. حقل «DZ» مقسومًا على حقل «dist raw»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DZ",
+            "label": "DZ"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «unit z» في سجل «force vector» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «dist raw» يساوي 0"
+              }
+            },
+            {
+              "value": "حقل «DZ» مقسومًا على حقل «dist raw»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ dist raw يساوي 0 فالناتج 0، وإلا فالناتج (DZ تقسيم dist raw)"
+      },
+      "ForceVectors.SignFactor": {
+        "table": "ForceVectors",
+        "field": "SignFactor",
+        "kind": "formula",
+        "rule": "حقل «sign factor» في سجل «force vector» يتحدد وفق ترتيب الأولوية الآتي:\n1. سالب 1، إذا تحقق أنّ علامة «attractive raw» مفعّلة؛\n2. 1، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «sign factor» في سجل «force vector» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "سالب 1",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «attractive raw» مفعّلة"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ is attractive raw فالناتج سالب 1، وإلا فالناتج 1"
+      },
+      "ForceVectors.FX": {
+        "table": "ForceVectors",
+        "field": "FX",
+        "kind": "formula",
+        "rule": "حقل «FX» في سجل «force vector» يُحسب على النحو الآتي: حقل «force magnitude raw» مضروبًا في حقل «sign factor» مضروبًا في حقل «unit x».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitX",
+            "label": "unit x"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw ضرب sign factor) ضرب unit x"
+      },
+      "ForceVectors.FY": {
+        "table": "ForceVectors",
+        "field": "FY",
+        "kind": "formula",
+        "rule": "حقل «FY» في سجل «force vector» يُحسب على النحو الآتي: حقل «force magnitude raw» مضروبًا في حقل «sign factor» مضروبًا في حقل «unit y».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitY",
+            "label": "unit y"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw ضرب sign factor) ضرب unit y"
+      },
+      "ForceVectors.FZ": {
+        "table": "ForceVectors",
+        "field": "FZ",
+        "kind": "formula",
+        "rule": "حقل «FZ» في سجل «force vector» يُحسب على النحو الآتي: حقل «force magnitude raw» مضروبًا في حقل «sign factor» مضروبًا في حقل «unit z».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitZ",
+            "label": "unit z"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw ضرب sign factor) ضرب unit z"
+      },
+      "ForceVectors.ForceDirDescription": {
+        "table": "ForceVectors",
+        "field": "ForceDirDescription",
+        "kind": "formula",
+        "rule": "حقل «force dir description» في سجل «force vector» يتحدد وفق ترتيب الأولوية الآتي:\n1. «towards»، إذا تحقق أنّ علامة «attractive raw» مفعّلة؛\n2. «away-from»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «force dir description» في سجل «force vector» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«towards»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «attractive raw» مفعّلة"
+              }
+            },
+            {
+              "value": "«away-from»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ is attractive raw فالناتج \"towards\"، وإلا فالناتج \"away-from\""
+      },
+      "ElectricFieldPoints.Name": {
+        "table": "ElectricFieldPoints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «electric field point» يطابق حقل «field point ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "FieldPointId",
+            "label": "field point ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Field point ID"
+      },
+      "ElectricFieldPoints.dX": {
+        "table": "ElectricFieldPoints",
+        "field": "dX",
+        "kind": "formula",
+        "rule": "حقل «d x» في سجل «electric field point» يُحسب على النحو الآتي: حقل «obs x» ناقص حقل «src x».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsX",
+            "label": "obs x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcX",
+            "label": "src x"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs x ناقص src x"
+      },
+      "ElectricFieldPoints.dY": {
+        "table": "ElectricFieldPoints",
+        "field": "dY",
+        "kind": "formula",
+        "rule": "حقل «d y» في سجل «electric field point» يُحسب على النحو الآتي: حقل «obs y» ناقص حقل «src y».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsY",
+            "label": "obs y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcY",
+            "label": "src y"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs y ناقص src y"
+      },
+      "ElectricFieldPoints.dZ": {
+        "table": "ElectricFieldPoints",
+        "field": "dZ",
+        "kind": "formula",
+        "rule": "حقل «d z» في سجل «electric field point» يُحسب على النحو الآتي: حقل «obs z» ناقص حقل «src z».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsZ",
+            "label": "obs z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcZ",
+            "label": "src z"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs z ناقص src z"
+      },
+      "ElectricFieldPoints.DistanceSquared": {
+        "table": "ElectricFieldPoints",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "حقل «distance squared» في سجل «electric field point» يُحسب على النحو الآتي: حقل «d x» مضروبًا في حقل «d x» زائد حقل «d y» مضروبًا في حقل «d y» زائد حقل «d z» مضروبًا في حقل «d z».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          }
+        ],
+        "structure": null,
+        "plain": "((d x ضرب d x) زائد (d y ضرب d y)) زائد (d z ضرب d z)"
+      },
+      "ElectricFieldPoints.Distance": {
+        "table": "ElectricFieldPoints",
+        "field": "Distance",
+        "kind": "formula",
+        "rule": "حقل «distance» في سجل «electric field point» يُحسب على النحو الآتي: جذر حقل «distance squared» التربيعي.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ElectricFieldPoints.EFieldMagnitude": {
+        "table": "ElectricFieldPoints",
+        "field": "EFieldMagnitude",
+        "kind": "formula",
+        "rule": "حقل «e field magnitude» في سجل «electric field point» يُحسب على النحو الآتي: حقل «coulomb k» مضروبًا في حقل «source q» بالقيمة المطلقة مقسومًا على حقل «distance squared».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k ضرب source q بالقيمة المطلقة) تقسيم distance squared"
+      },
+      "ElectricFieldPoints.QSign": {
+        "table": "ElectricFieldPoints",
+        "field": "QSign",
+        "kind": "formula",
+        "rule": "حقل «q sign» في سجل «electric field point» يتحدد وفق ترتيب الأولوية الآتي:\n1. 1، إذا تحقق أنّ حقل «source q» أكبر من 0؛\n2. سالب 1، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «q sign» في سجل «electric field point» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «source q» أكبر من 0"
+              }
+            },
+            {
+              "value": "سالب 1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ source q أكبر من 0 فالناتج 1، وإلا فالناتج سالب 1"
+      },
+      "ElectricFieldPoints.EX": {
+        "table": "ElectricFieldPoints",
+        "field": "EX",
+        "kind": "formula",
+        "rule": "حقل «EX» في سجل «electric field point» يُحسب على النحو الآتي: حقل «e field magnitude» مضروبًا في حقل «q sign» مضروبًا في حقل «d x» مقسومًا على حقل «distance».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude ضرب q sign) ضرب d x) تقسيم distance"
+      },
+      "ElectricFieldPoints.EY": {
+        "table": "ElectricFieldPoints",
+        "field": "EY",
+        "kind": "formula",
+        "rule": "حقل «EY» في سجل «electric field point» يُحسب على النحو الآتي: حقل «e field magnitude» مضروبًا في حقل «q sign» مضروبًا في حقل «d y» مقسومًا على حقل «distance».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude ضرب q sign) ضرب d y) تقسيم distance"
+      },
+      "ElectricFieldPoints.EZ": {
+        "table": "ElectricFieldPoints",
+        "field": "EZ",
+        "kind": "formula",
+        "rule": "حقل «EZ» في سجل «electric field point» يُحسب على النحو الآتي: حقل «e field magnitude» مضروبًا في حقل «q sign» مضروبًا في حقل «d z» مقسومًا على حقل «distance».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude ضرب q sign) ضرب d z) تقسيم distance"
+      },
+      "InvariantChecks.Name": {
+        "table": "InvariantChecks",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «invariant check» يطابق حقل «invariant ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "InvariantId",
+            "label": "invariant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Invariant ID"
+      },
+      "SystemSummary.Name": {
+        "table": "SystemSummary",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «system summary» يطابق حقل «summary ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SummaryId",
+            "label": "summary ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summary ID"
+      },
+      "SystemSummary.SystemName": {
+        "table": "SystemSummary",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "حقل «system name» في سجل «system summary» هو ناتج LOOKUP(SystemId, Systems[SystemId], Systems[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "SystemSummary.ChargeCount": {
+        "table": "SystemSummary",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "حقل «charge count» في سجل «system summary» هو عدد سجلات «charges» المرتبطة بسجل «system summary».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «charges» التي يتحقق فيها أنّ حقل «system ID» يساوي system ID"
+      },
+      "SystemSummary.InteractionCount": {
+        "table": "SystemSummary",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "حقل «interaction count» في سجل «system summary» هو عدد سجلات «charge interactions» المرتبطة بسجل «system summary».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «charge interactions» التي يتحقق فيها أنّ حقل «system ID» يساوي system ID"
+      },
+      "SystemSummary.AttractiveCount": {
+        "table": "SystemSummary",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "حقل «attractive count» في سجل «system summary» هو عدد سجلات «charge interactions» المرتبطة بسجل «system summary» التي تُصنّف على أنها «attractive».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «charge interactions» التي يتحقق فيها أنّ حقل «system ID» يساوي system ID وحقل «is attractive» يساوي true()"
+      },
+      "SystemSummary.RepulsiveCount": {
+        "table": "SystemSummary",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "حقل «repulsive count» في سجل «system summary» هو عدد سجلات «charge interactions» المرتبطة بسجل «system summary» التي تُصنّف على أنها «repulsive».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «charge interactions» التي يتحقق فيها أنّ حقل «system ID» يساوي system ID وحقل «is repulsive» يساوي true()"
+      },
+      "SystemSummary.TotalCharge": {
+        "table": "SystemSummary",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "حقل «total charge» في سجل «system summary» هو مجموع قيم حقل «charge value» عبر سجلات «charges» المرتبطة بسجل «system summary».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «charge value» في جميع سجلات «charges» التي يتحقق فيها أنّ حقل «system ID» يساوي system ID"
+      },
+      "SystemSummary.IsNeutral": {
+        "table": "SystemSummary",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «system summary» على أنه «neutral» إذا تحقق أنّ ناتج ABS(TotalCharge) < 1e-30.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "SystemSummary.MaxForceMagnitude": {
+        "table": "SystemSummary",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "حقل «max force magnitude» في سجل «system summary» هو أكبر قيم حقل «force magnitude» عبر سجلات «charge interactions» المرتبطة بسجل «system summary».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "أكبر قيم «force magnitude» في جميع سجلات «charge interactions» التي يتحقق فيها أنّ حقل «system ID» يساوي system ID"
+      },
+      "SystemSummary.MinDistanceMeters": {
+        "table": "SystemSummary",
+        "field": "MinDistanceMeters",
+        "kind": "rollup",
+        "rule": "حقل «min distance meters» في سجل «system summary» هو أصغر قيم حقل «distance meters» عبر سجلات «charge interactions» المرتبطة بسجل «system summary».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "أصغر قيم «distance meters» في جميع سجلات «charge interactions» التي يتحقق فيها أنّ حقل «system ID» يساوي system ID"
+      },
+      "SystemSummary.AllAttractive": {
+        "table": "SystemSummary",
+        "field": "AllAttractive",
+        "kind": "formula",
+        "rule": "يوسم سجل «system summary» بعلامة «all attractive» إذا تحقق أنّ حقل «attractive count» يساوي حقل «interaction count».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Attractive count يساوي interaction count"
+      },
+      "SystemSummary.AllRepulsive": {
+        "table": "SystemSummary",
+        "field": "AllRepulsive",
+        "kind": "formula",
+        "rule": "يوسم سجل «system summary» بعلامة «all repulsive» إذا تحقق أنّ حقل «repulsive count» يساوي حقل «interaction count».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Repulsive count يساوي interaction count"
+      },
+      "SystemSummary.HasMixedInteractions": {
+        "table": "SystemSummary",
+        "field": "HasMixedInteractions",
+        "kind": "formula",
+        "rule": "يُعدّ سجل «system summary» حائزًا على «mixed interactions» إذا تحقق أنّ جميع الشروط الآتية متحققة: حقل «attractive count» أكبر من 0 وحقل «repulsive count» أكبر من 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُعدّ سجل «system summary» حائزًا على «mixed interactions» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "حقل «attractive count» أكبر من 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "حقل «repulsive count» أكبر من 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Attractive count أكبر من 0 وrepulsive count أكبر من 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Loops": [
+        "في كل سجل «loop»، **يجب أن** تُحدّد قيمة حقل «title» وحقل «status»."
+      ],
+      "PhysicsConstants": [
+        "في كل سجل «physics constant»، **يجب أن** تُحدّد قيمة حقل «name»، وحقل «symbol»، وحقل «value»، وحقل «units»."
+      ],
+      "Particles": [
+        "في كل سجل «particle»، **يجب أن** تُحدّد قيمة حقل «name»، وحقل «canonical charge»، وحقل «canonical mass»."
+      ],
+      "Charges": [
+        "في كل سجل «charge»، **يجب أن** تُحدّد قيمة حقل «name»، وحقل «system ID»، وحقل «charge value»، وحقل «position x»، وحقل «position y»، وحقل «position z»."
+      ],
+      "Systems": [
+        "في كل سجل «system»، **يجب أن** تُحدّد قيمة حقل «name»، وأن يُسجّل ما إذا كان مصنّفًا على أنه «synthetic»."
+      ],
+      "ChargeInteractions": [
+        "في كل سجل «charge interaction»، **يجب أن** تُحدّد قيمة حقل «system ID»، وحقل «charge1 ID»، وحقل «charge2 ID»، وحقل «q1»، وحقل «q2»، وحقل «x1»، وحقل «y1»، وحقل «z1»، وحقل «x2»، وحقل «y2»، وحقل «z2»، وحقل «coulomb k»."
+      ],
+      "ForceVectors": [
+        "في كل سجل «force vector»، **يجب أن** تُحدّد قيمة حقل «interaction ID»، وحقل «force magnitude raw»، وحقل «DX»، وحقل «DY»، وحقل «DZ»، وحقل «dist raw»، وأن يُسجّل ما إذا كان مصنّفًا على أنه «attractive raw»."
+      ],
+      "ElectricFieldPoints": [
+        "في كل سجل «electric field point»، **يجب أن** تُحدّد قيمة حقل «system ID»، وحقل «source charge ID»، وحقل «observation label»، وحقل «obs x»، وحقل «obs y»، وحقل «obs z»، وحقل «coulomb k»، وحقل «source q»، وحقل «src x»، وحقل «src y»، وحقل «src z»."
+      ],
+      "InvariantChecks": [
+        "في كل سجل «invariant check»، **يجب أن** تُحدّد قيمة حقل «algebraic statement»، وحقل «natural language»، وحقل «severity»."
+      ],
+      "SystemSummary": [
+        "في كل سجل «system summary»، **يجب أن** تُحدّد قيمة حقل «system ID»."
+      ]
+    },
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Loops": "loop",
+      "PhysicsConstants": "physics constant",
+      "Particles": "particle",
+      "Charges": "charge",
+      "Systems": "system",
+      "ChargeInteractions": "charge interaction",
+      "ForceVectors": "force vector",
+      "ElectricFieldPoints": "electric field point",
+      "InvariantChecks": "invariant check",
+      "SystemSummary": "system summary"
+    }
+  },
+  "de": {
+    "fields": {
+      "Loops.Name": {
+        "table": "Loops",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Loop: Name entspricht Loop ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loops",
+            "field": "LoopId",
+            "label": "loop ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Loop ID"
+      },
+      "Particles.ChargeSign": {
+        "table": "Particles",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "Das Feld „Charge Sign“ der Particle wird nach folgender Priorität bestimmt:\n1. „positive“, wenn die Canonical Charge größer ist als 0;\n2. „negative“, wenn die Canonical Charge kleiner ist als 0;\n3. andernfalls „neutral“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Particles",
+            "field": "CanonicalCharge",
+            "label": "canonical charge"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Charge Sign“ der Particle wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„positive“",
+              "when": {
+                "kind": "leaf",
+                "text": "die Canonical Charge größer ist als 0"
+              }
+            },
+            {
+              "value": "„negative“",
+              "when": {
+                "kind": "leaf",
+                "text": "die Canonical Charge kleiner ist als 0"
+              }
+            },
+            {
+              "value": "„neutral“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Canonical Charge größer als 0 ist, dann \"positive\", andernfalls wenn Canonical Charge kleiner als 0 ist, dann \"negative\", andernfalls \"neutral\""
+      },
+      "Charges.ChargeSign": {
+        "table": "Charges",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "Das Feld „Charge Sign“ der Charge wird nach folgender Priorität bestimmt:\n1. „positive“, wenn die Charge Value größer ist als 0;\n2. „negative“, wenn die Charge Value kleiner ist als 0;\n3. andernfalls „neutral“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Charge Sign“ der Charge wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„positive“",
+              "when": {
+                "kind": "leaf",
+                "text": "die Charge Value größer ist als 0"
+              }
+            },
+            {
+              "value": "„negative“",
+              "when": {
+                "kind": "leaf",
+                "text": "die Charge Value kleiner ist als 0"
+              }
+            },
+            {
+              "value": "„neutral“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Charge Value größer als 0 ist, dann \"positive\", andernfalls wenn Charge Value kleiner als 0 ist, dann \"negative\", andernfalls \"neutral\""
+      },
+      "Charges.ChargeMagnitude": {
+        "table": "Charges",
+        "field": "ChargeMagnitude",
+        "kind": "formula",
+        "rule": "Eine Charge: Charge Magnitude wird berechnet als der Absolutwert von die Charge Value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Absolutwert von Charge Value"
+      },
+      "Charges.SystemName": {
+        "table": "Charges",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "Eine Charge: System Name ist der Wert von LOOKUP(SystemId, Systems[SystemId], Systems[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "Charges.ParticleName": {
+        "table": "Charges",
+        "field": "ParticleName",
+        "kind": "lookup",
+        "rule": "Eine Charge: Particle Name ist der Wert von LOOKUP(ParticleId, Particles[ParticleId], Particles[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ParticleId",
+            "label": "particle ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{ParticleId}}, Particles[ParticleId], Particles[Name])"
+      },
+      "Charges.InteractionCount": {
+        "table": "Charges",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Eine Charge: Interaction Count ist die Anzahl der mit der Charge verbundenen Charge Interactions.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Charge1Id",
+            "label": "charge1 ID"
+          },
+          {
+            "table": "Charges",
+            "field": "ChargeId",
+            "label": "charge ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Charge Interactions, deren Charge1 ID ist Charge ID"
+      },
+      "Systems.ChargeCount": {
+        "table": "Systems",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "Ein System: Charge Count ist die Anzahl der mit dem System verbundenen Charges.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Charges, deren System ID ist System ID"
+      },
+      "Systems.InteractionCount": {
+        "table": "Systems",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Ein System: Interaction Count ist die Anzahl der mit dem System verbundenen Charge Interactions.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Charge Interactions, deren System ID ist System ID"
+      },
+      "Systems.AttractiveCount": {
+        "table": "Systems",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "Ein System: Attractive Count ist die Anzahl der Charge Interactions des System, die attractive sind.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Charge Interactions, deren System ID ist System ID und Is Attractive ist true()"
+      },
+      "Systems.RepulsiveCount": {
+        "table": "Systems",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "Ein System: Repulsive Count ist die Anzahl der Charge Interactions des System, die repulsive sind.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Charge Interactions, deren System ID ist System ID und Is Repulsive ist true()"
+      },
+      "Systems.TotalCharge": {
+        "table": "Systems",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "Ein System: Total Charge ist die Gesamtsumme von Charge Value über die mit dem System verbundenen Charges.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Charge Value über alle Charges, deren System ID ist System ID"
+      },
+      "Systems.IsNeutral": {
+        "table": "Systems",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "Ein System gilt als ein Neutral, wenn der Wert von ABS(TotalCharge) < 1e-30.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Systems",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "Systems.MaxForceMagnitude": {
+        "table": "Systems",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "Ein System: Max Force Magnitude ist der größte Wert von Force Magnitude über die mit dem System verbundenen Charge Interactions.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Größter Wert von Force Magnitude über alle Charge Interactions, deren System ID ist System ID"
+      },
+      "ChargeInteractions.Name": {
+        "table": "ChargeInteractions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Charge Interaction: Name entspricht Interaction ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "InteractionId",
+            "label": "interaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction ID"
+      },
+      "ChargeInteractions.DeltaX": {
+        "table": "ChargeInteractions",
+        "field": "DeltaX",
+        "kind": "formula",
+        "rule": "Eine Charge Interaction: Delta X wird berechnet als der X2 minus der X1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "X2",
+            "label": "x2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "X1",
+            "label": "x1"
+          }
+        ],
+        "structure": null,
+        "plain": "X2 minus X1"
+      },
+      "ChargeInteractions.DeltaY": {
+        "table": "ChargeInteractions",
+        "field": "DeltaY",
+        "kind": "formula",
+        "rule": "Eine Charge Interaction: Delta Y wird berechnet als der Y2 minus der Y1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Y2",
+            "label": "y2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Y1",
+            "label": "y1"
+          }
+        ],
+        "structure": null,
+        "plain": "Y2 minus Y1"
+      },
+      "ChargeInteractions.DeltaZ": {
+        "table": "ChargeInteractions",
+        "field": "DeltaZ",
+        "kind": "formula",
+        "rule": "Eine Charge Interaction: Delta Z wird berechnet als der Z2 minus der Z1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Z2",
+            "label": "z2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Z1",
+            "label": "z1"
+          }
+        ],
+        "structure": null,
+        "plain": "Z2 minus Z1"
+      },
+      "ChargeInteractions.DistanceSquared": {
+        "table": "ChargeInteractions",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "Eine Charge Interaction: Distance Squared wird berechnet als der Delta X mal der Delta X plus der Delta Y mal der Delta Y plus der Delta Z mal der Delta Z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaX",
+            "label": "delta x"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaY",
+            "label": "delta y"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaZ",
+            "label": "delta z"
+          }
+        ],
+        "structure": null,
+        "plain": "((Delta X mal Delta X) plus (Delta Y mal Delta Y)) plus (Delta Z mal Delta Z)"
+      },
+      "ChargeInteractions.DistanceMeters": {
+        "table": "ChargeInteractions",
+        "field": "DistanceMeters",
+        "kind": "formula",
+        "rule": "Eine Charge Interaction: Distance Meters wird berechnet als die Quadratwurzel von der Distance Squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(Distance Squared)"
+      },
+      "ChargeInteractions.DistancePicometers": {
+        "table": "ChargeInteractions",
+        "field": "DistancePicometers",
+        "kind": "formula",
+        "rule": "Eine Charge Interaction: Distance Picometers wird berechnet als der Distance Meters mal 1000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance Meters mal 1,000,000,000,000"
+      },
+      "ChargeInteractions.ChargeProduct": {
+        "table": "ChargeInteractions",
+        "field": "ChargeProduct",
+        "kind": "formula",
+        "rule": "Eine Charge Interaction: Charge Product wird berechnet als der Q1 mal der Q2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Q1",
+            "label": "q1"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Q2",
+            "label": "q2"
+          }
+        ],
+        "structure": null,
+        "plain": "Q1 mal Q2"
+      },
+      "ChargeInteractions.ForceMagnitude": {
+        "table": "ChargeInteractions",
+        "field": "ForceMagnitude",
+        "kind": "formula",
+        "rule": "Eine Charge Interaction: Force Magnitude wird berechnet als der Coulomb K mal der Absolutwert von der Charge Product geteilt durch der Distance Squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(Coulomb K mal der Absolutwert von Charge Product) geteilt durch Distance Squared"
+      },
+      "ChargeInteractions.IsAttractive": {
+        "table": "ChargeInteractions",
+        "field": "IsAttractive",
+        "kind": "formula",
+        "rule": "Eine Charge Interaction gilt als eine Attractive, wenn der Charge Product kleiner ist als 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge Product kleiner als 0 ist"
+      },
+      "ChargeInteractions.IsRepulsive": {
+        "table": "ChargeInteractions",
+        "field": "IsRepulsive",
+        "kind": "formula",
+        "rule": "Eine Charge Interaction gilt als eine Repulsive, wenn der Charge Product größer ist als 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge Product größer als 0 ist"
+      },
+      "ChargeInteractions.InteractionType": {
+        "table": "ChargeInteractions",
+        "field": "InteractionType",
+        "kind": "formula",
+        "rule": "Das Feld „Interaction Type“ der Charge Interaction wird nach folgender Priorität bestimmt:\n1. „attractive“, wenn das Kennzeichen „Is Attractive“ gesetzt ist;\n2. „repulsive“, wenn das Kennzeichen „Is Repulsive“ gesetzt ist;\n3. andernfalls „neutral“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Interaction Type“ der Charge Interaction wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„attractive“",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Is Attractive“ gesetzt ist"
+              }
+            },
+            {
+              "value": "„repulsive“",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Is Repulsive“ gesetzt ist"
+              }
+            },
+            {
+              "value": "„neutral“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Is Attractive, dann \"attractive\", andernfalls wenn Is Repulsive, dann \"repulsive\", andernfalls \"neutral\""
+      },
+      "ChargeInteractions.ForceInAttoNewtons": {
+        "table": "ChargeInteractions",
+        "field": "ForceInAttoNewtons",
+        "kind": "formula",
+        "rule": "Eine Charge Interaction: Force in Atto Newtons wird berechnet als die Force Magnitude mal 1000000000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          }
+        ],
+        "structure": null,
+        "plain": "Force Magnitude mal 1,000,000,000,000,000,000"
+      },
+      "ForceVectors.Name": {
+        "table": "ForceVectors",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Force Vector: Name entspricht Force Vector ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceVectorId",
+            "label": "force vector ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Force Vector ID"
+      },
+      "ForceVectors.UnitX": {
+        "table": "ForceVectors",
+        "field": "UnitX",
+        "kind": "formula",
+        "rule": "Das Feld „Unit X“ des Force Vector wird nach folgender Priorität bestimmt:\n1. 0, wenn der Dist Raw 0 ist;\n2. andernfalls der DX geteilt durch der Dist Raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DX",
+            "label": "DX"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Unit X“ des Force Vector wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "der Dist Raw 0 ist"
+              }
+            },
+            {
+              "value": "der DX geteilt durch der Dist Raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Dist Raw gleich 0 ist, dann 0, andernfalls (DX geteilt durch Dist Raw)"
+      },
+      "ForceVectors.UnitY": {
+        "table": "ForceVectors",
+        "field": "UnitY",
+        "kind": "formula",
+        "rule": "Das Feld „Unit Y“ des Force Vector wird nach folgender Priorität bestimmt:\n1. 0, wenn der Dist Raw 0 ist;\n2. andernfalls der DY geteilt durch der Dist Raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DY",
+            "label": "DY"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Unit Y“ des Force Vector wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "der Dist Raw 0 ist"
+              }
+            },
+            {
+              "value": "der DY geteilt durch der Dist Raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Dist Raw gleich 0 ist, dann 0, andernfalls (DY geteilt durch Dist Raw)"
+      },
+      "ForceVectors.UnitZ": {
+        "table": "ForceVectors",
+        "field": "UnitZ",
+        "kind": "formula",
+        "rule": "Das Feld „Unit Z“ des Force Vector wird nach folgender Priorität bestimmt:\n1. 0, wenn der Dist Raw 0 ist;\n2. andernfalls der DZ geteilt durch der Dist Raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DZ",
+            "label": "DZ"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Unit Z“ des Force Vector wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "der Dist Raw 0 ist"
+              }
+            },
+            {
+              "value": "der DZ geteilt durch der Dist Raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Dist Raw gleich 0 ist, dann 0, andernfalls (DZ geteilt durch Dist Raw)"
+      },
+      "ForceVectors.SignFactor": {
+        "table": "ForceVectors",
+        "field": "SignFactor",
+        "kind": "formula",
+        "rule": "Das Feld „Sign Factor“ des Force Vector wird nach folgender Priorität bestimmt:\n1. das Negative von 1, wenn das Kennzeichen „Is Attractive Raw“ gesetzt ist;\n2. andernfalls 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Sign Factor“ des Force Vector wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "das Negative von 1",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Is Attractive Raw“ gesetzt ist"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Is Attractive Raw, dann negativ 1, andernfalls 1"
+      },
+      "ForceVectors.FX": {
+        "table": "ForceVectors",
+        "field": "FX",
+        "kind": "formula",
+        "rule": "Ein Force Vector: FX wird berechnet als der Force Magnitude Raw mal der Sign Factor mal der Unit X.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitX",
+            "label": "unit x"
+          }
+        ],
+        "structure": null,
+        "plain": "(Force Magnitude Raw mal Sign Factor) mal Unit X"
+      },
+      "ForceVectors.FY": {
+        "table": "ForceVectors",
+        "field": "FY",
+        "kind": "formula",
+        "rule": "Ein Force Vector: FY wird berechnet als der Force Magnitude Raw mal der Sign Factor mal der Unit Y.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitY",
+            "label": "unit y"
+          }
+        ],
+        "structure": null,
+        "plain": "(Force Magnitude Raw mal Sign Factor) mal Unit Y"
+      },
+      "ForceVectors.FZ": {
+        "table": "ForceVectors",
+        "field": "FZ",
+        "kind": "formula",
+        "rule": "Ein Force Vector: FZ wird berechnet als der Force Magnitude Raw mal der Sign Factor mal der Unit Z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitZ",
+            "label": "unit z"
+          }
+        ],
+        "structure": null,
+        "plain": "(Force Magnitude Raw mal Sign Factor) mal Unit Z"
+      },
+      "ForceVectors.ForceDirDescription": {
+        "table": "ForceVectors",
+        "field": "ForceDirDescription",
+        "kind": "formula",
+        "rule": "Das Feld „Force Dir Description“ des Force Vector wird nach folgender Priorität bestimmt:\n1. „towards“, wenn das Kennzeichen „Is Attractive Raw“ gesetzt ist;\n2. andernfalls „away-from“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Force Dir Description“ des Force Vector wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„towards“",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Is Attractive Raw“ gesetzt ist"
+              }
+            },
+            {
+              "value": "„away-from“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Is Attractive Raw, dann \"towards\", andernfalls \"away-from\""
+      },
+      "ElectricFieldPoints.Name": {
+        "table": "ElectricFieldPoints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Electric Field Point: Name entspricht Field Point ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "FieldPointId",
+            "label": "field point ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Field Point ID"
+      },
+      "ElectricFieldPoints.dX": {
+        "table": "ElectricFieldPoints",
+        "field": "dX",
+        "kind": "formula",
+        "rule": "Ein Electric Field Point: d X wird berechnet als der Obs X minus der Src X.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsX",
+            "label": "obs x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcX",
+            "label": "src x"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs X minus Src X"
+      },
+      "ElectricFieldPoints.dY": {
+        "table": "ElectricFieldPoints",
+        "field": "dY",
+        "kind": "formula",
+        "rule": "Ein Electric Field Point: d Y wird berechnet als der Obs Y minus der Src Y.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsY",
+            "label": "obs y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcY",
+            "label": "src y"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs Y minus Src Y"
+      },
+      "ElectricFieldPoints.dZ": {
+        "table": "ElectricFieldPoints",
+        "field": "dZ",
+        "kind": "formula",
+        "rule": "Ein Electric Field Point: d Z wird berechnet als der Obs Z minus der Src Z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsZ",
+            "label": "obs z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcZ",
+            "label": "src z"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs Z minus Src Z"
+      },
+      "ElectricFieldPoints.DistanceSquared": {
+        "table": "ElectricFieldPoints",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "Ein Electric Field Point: Distance Squared wird berechnet als der d X mal der d X plus der d Y mal der d Y plus der d Z mal der d Z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          }
+        ],
+        "structure": null,
+        "plain": "((d X mal d X) plus (d Y mal d Y)) plus (d Z mal d Z)"
+      },
+      "ElectricFieldPoints.Distance": {
+        "table": "ElectricFieldPoints",
+        "field": "Distance",
+        "kind": "formula",
+        "rule": "Ein Electric Field Point: Distance wird berechnet als die Quadratwurzel von der Distance Squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(Distance Squared)"
+      },
+      "ElectricFieldPoints.EFieldMagnitude": {
+        "table": "ElectricFieldPoints",
+        "field": "EFieldMagnitude",
+        "kind": "formula",
+        "rule": "Ein Electric Field Point: E Field Magnitude wird berechnet als der Coulomb K mal der Absolutwert von der Source Q geteilt durch der Distance Squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(Coulomb K mal der Absolutwert von Source Q) geteilt durch Distance Squared"
+      },
+      "ElectricFieldPoints.QSign": {
+        "table": "ElectricFieldPoints",
+        "field": "QSign",
+        "kind": "formula",
+        "rule": "Das Feld „Q Sign“ des Electric Field Point wird nach folgender Priorität bestimmt:\n1. 1, wenn der Source Q größer ist als 0;\n2. andernfalls das Negative von 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Q Sign“ des Electric Field Point wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "der Source Q größer ist als 0"
+              }
+            },
+            {
+              "value": "das Negative von 1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Source Q größer als 0 ist, dann 1, andernfalls negativ 1"
+      },
+      "ElectricFieldPoints.EX": {
+        "table": "ElectricFieldPoints",
+        "field": "EX",
+        "kind": "formula",
+        "rule": "Ein Electric Field Point: EX wird berechnet als die E Field Magnitude mal der Q Sign mal der d X geteilt durch die Distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((E Field Magnitude mal Q Sign) mal d X) geteilt durch Distance"
+      },
+      "ElectricFieldPoints.EY": {
+        "table": "ElectricFieldPoints",
+        "field": "EY",
+        "kind": "formula",
+        "rule": "Ein Electric Field Point: EY wird berechnet als die E Field Magnitude mal der Q Sign mal der d Y geteilt durch die Distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((E Field Magnitude mal Q Sign) mal d Y) geteilt durch Distance"
+      },
+      "ElectricFieldPoints.EZ": {
+        "table": "ElectricFieldPoints",
+        "field": "EZ",
+        "kind": "formula",
+        "rule": "Ein Electric Field Point: EZ wird berechnet als die E Field Magnitude mal der Q Sign mal der d Z geteilt durch die Distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((E Field Magnitude mal Q Sign) mal d Z) geteilt durch Distance"
+      },
+      "InvariantChecks.Name": {
+        "table": "InvariantChecks",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Invariant Check: Name entspricht Invariant ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "InvariantId",
+            "label": "invariant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Invariant ID"
+      },
+      "SystemSummary.Name": {
+        "table": "SystemSummary",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein System Summary: Name entspricht Summary ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SummaryId",
+            "label": "summary ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summary ID"
+      },
+      "SystemSummary.SystemName": {
+        "table": "SystemSummary",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "Ein System Summary: System Name ist der Wert von LOOKUP(SystemId, Systems[SystemId], Systems[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "SystemSummary.ChargeCount": {
+        "table": "SystemSummary",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "Ein System Summary: Charge Count ist die Anzahl der mit dem System Summary verbundenen Charges.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Charges, deren System ID ist System ID"
+      },
+      "SystemSummary.InteractionCount": {
+        "table": "SystemSummary",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Ein System Summary: Interaction Count ist die Anzahl der mit dem System Summary verbundenen Charge Interactions.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Charge Interactions, deren System ID ist System ID"
+      },
+      "SystemSummary.AttractiveCount": {
+        "table": "SystemSummary",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "Ein System Summary: Attractive Count ist die Anzahl der Charge Interactions des System Summary, die attractive sind.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Charge Interactions, deren System ID ist System ID und Is Attractive ist true()"
+      },
+      "SystemSummary.RepulsiveCount": {
+        "table": "SystemSummary",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "Ein System Summary: Repulsive Count ist die Anzahl der Charge Interactions des System Summary, die repulsive sind.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Charge Interactions, deren System ID ist System ID und Is Repulsive ist true()"
+      },
+      "SystemSummary.TotalCharge": {
+        "table": "SystemSummary",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "Ein System Summary: Total Charge ist die Gesamtsumme von Charge Value über die mit dem System Summary verbundenen Charges.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Charge Value über alle Charges, deren System ID ist System ID"
+      },
+      "SystemSummary.IsNeutral": {
+        "table": "SystemSummary",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "Ein System Summary gilt als ein Neutral, wenn der Wert von ABS(TotalCharge) < 1e-30.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "SystemSummary.MaxForceMagnitude": {
+        "table": "SystemSummary",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "Ein System Summary: Max Force Magnitude ist der größte Wert von Force Magnitude über die mit dem System Summary verbundenen Charge Interactions.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Größter Wert von Force Magnitude über alle Charge Interactions, deren System ID ist System ID"
+      },
+      "SystemSummary.MinDistanceMeters": {
+        "table": "SystemSummary",
+        "field": "MinDistanceMeters",
+        "kind": "rollup",
+        "rule": "Ein System Summary: Min Distance Meters ist der kleinste Wert von Distance Meters über die mit dem System Summary verbundenen Charge Interactions.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Kleinster Wert von Distance Meters über alle Charge Interactions, deren System ID ist System ID"
+      },
+      "SystemSummary.AllAttractive": {
+        "table": "SystemSummary",
+        "field": "AllAttractive",
+        "kind": "formula",
+        "rule": "Ein System Summary ist markiert als All Attractive, wenn der Attractive Count der Interaction Count ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Attractive Count gleich Interaction Count ist"
+      },
+      "SystemSummary.AllRepulsive": {
+        "table": "SystemSummary",
+        "field": "AllRepulsive",
+        "kind": "formula",
+        "rule": "Ein System Summary ist markiert als All Repulsive, wenn der Repulsive Count der Interaction Count ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Repulsive Count gleich Interaction Count ist"
+      },
+      "SystemSummary.HasMixedInteractions": {
+        "table": "SystemSummary",
+        "field": "HasMixedInteractions",
+        "kind": "formula",
+        "rule": "Ein System Summary gilt als über einen Mixed Interactions verfügend, wenn alles Folgende gilt: der Attractive Count größer ist als 0 und der Repulsive Count größer ist als 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Ein System Summary gilt als über einen Mixed Interactions verfügend, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "der Attractive Count größer ist als 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "der Repulsive Count größer ist als 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Attractive Count größer als 0 ist und Repulsive Count größer als 0 ist"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Loops": [
+        "Ein Loop **muss** eine Title und ein Status haben."
+      ],
+      "PhysicsConstants": [
+        "Ein Physics Constant **muss** eine Name; ein Symbol; eine Value; und ein Units haben."
+      ],
+      "Particles": [
+        "Eine Particle **muss** eine Name; eine Canonical Charge; und ein Canonical Mass haben."
+      ],
+      "Charges": [
+        "Eine Charge **muss** eine Name; ein System ID; eine Charge Value; ein Position X; ein Position Y; und ein Position Z haben."
+      ],
+      "Systems": [
+        "Ein System **muss** eine Name haben und erfassen, ob es ist ein Synthetic."
+      ],
+      "ChargeInteractions": [
+        "Eine Charge Interaction **muss** ein System ID; ein Charge1 ID; ein Charge2 ID; ein Q1; ein Q2; ein X1; ein Y1; ein Z1; ein X2; ein Y2; ein Z2; und ein Coulomb K haben."
+      ],
+      "ForceVectors": [
+        "Ein Force Vector **muss** ein Interaction ID; ein Force Magnitude Raw; ein DX; ein DY; ein DZ; und ein Dist Raw haben und erfassen, ob es ist ein Attractive Raw."
+      ],
+      "ElectricFieldPoints": [
+        "Ein Electric Field Point **muss** ein System ID; ein Source Charge ID; ein Observation Label; ein Obs X; ein Obs Y; ein Obs Z; ein Coulomb K; ein Source Q; ein Src X; ein Src Y; und ein Src Z haben."
+      ],
+      "InvariantChecks": [
+        "Ein Invariant Check **muss** ein Algebraic Statement; eine Natural Language; und ein Severity haben."
+      ],
+      "SystemSummary": [
+        "Ein System Summary **muss** ein System ID haben."
+      ]
+    },
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Loops": "Loop",
+      "PhysicsConstants": "Physics Constant",
+      "Particles": "Particle",
+      "Charges": "Charge",
+      "Systems": "System",
+      "ChargeInteractions": "Charge Interaction",
+      "ForceVectors": "Force Vector",
+      "ElectricFieldPoints": "Electric Field Point",
+      "InvariantChecks": "Invariant Check",
+      "SystemSummary": "System Summary"
+    }
+  },
+  "es": {
+    "fields": {
+      "Loops.Name": {
+        "table": "Loops",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un loop: name es igual a loop ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loops",
+            "field": "LoopId",
+            "label": "loop ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Loop ID"
+      },
+      "Particles.ChargeSign": {
+        "table": "Particles",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "El campo «charge sign» del particle se determina según la siguiente prioridad:\n1. «positive», si el canonical charge es mayor que 0;\n2. «negative», si el canonical charge es menor que 0;\n3. en todos los demás casos, «neutral».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Particles",
+            "field": "CanonicalCharge",
+            "label": "canonical charge"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «charge sign» del particle se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«positive»",
+              "when": {
+                "kind": "leaf",
+                "text": "el canonical charge es mayor que 0"
+              }
+            },
+            {
+              "value": "«negative»",
+              "when": {
+                "kind": "leaf",
+                "text": "el canonical charge es menor que 0"
+              }
+            },
+            {
+              "value": "«neutral»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si canonical charge es mayor que 0, entonces \"positive\", de lo contrario si canonical charge es menor que 0, entonces \"negative\", de lo contrario \"neutral\""
+      },
+      "Charges.ChargeSign": {
+        "table": "Charges",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "El campo «charge sign» del charge se determina según la siguiente prioridad:\n1. «positive», si el charge value es mayor que 0;\n2. «negative», si el charge value es menor que 0;\n3. en todos los demás casos, «neutral».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «charge sign» del charge se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«positive»",
+              "when": {
+                "kind": "leaf",
+                "text": "el charge value es mayor que 0"
+              }
+            },
+            {
+              "value": "«negative»",
+              "when": {
+                "kind": "leaf",
+                "text": "el charge value es menor que 0"
+              }
+            },
+            {
+              "value": "«neutral»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si charge value es mayor que 0, entonces \"positive\", de lo contrario si charge value es menor que 0, entonces \"negative\", de lo contrario \"neutral\""
+      },
+      "Charges.ChargeMagnitude": {
+        "table": "Charges",
+        "field": "ChargeMagnitude",
+        "kind": "formula",
+        "rule": "Un charge: charge magnitude se calcula como el valor absoluto de el charge value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": null,
+        "plain": "El valor absoluto de charge value"
+      },
+      "Charges.SystemName": {
+        "table": "Charges",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "Un charge: system name es el valor de LOOKUP(SystemId, Systems[SystemId], Systems[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "Charges.ParticleName": {
+        "table": "Charges",
+        "field": "ParticleName",
+        "kind": "lookup",
+        "rule": "Un charge: particle name es el valor de LOOKUP(ParticleId, Particles[ParticleId], Particles[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ParticleId",
+            "label": "particle ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{ParticleId}}, Particles[ParticleId], Particles[Name])"
+      },
+      "Charges.InteractionCount": {
+        "table": "Charges",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Un charge: interaction count es el número de charge interactions relacionados con el charge.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Charge1Id",
+            "label": "charge1 ID"
+          },
+          {
+            "table": "Charges",
+            "field": "ChargeId",
+            "label": "charge ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de charge interactions cuyo charge1 ID es charge ID"
+      },
+      "Systems.ChargeCount": {
+        "table": "Systems",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "Un system: charge count es el número de charges relacionados con el system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de charges cuyo system ID es system ID"
+      },
+      "Systems.InteractionCount": {
+        "table": "Systems",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Un system: interaction count es el número de charge interactions relacionados con el system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de charge interactions cuyo system ID es system ID"
+      },
+      "Systems.AttractiveCount": {
+        "table": "Systems",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "Un system: attractive count es el número de charge interactions del system que son attractive.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de charge interactions cuyo system ID es system ID y is attractive es true()"
+      },
+      "Systems.RepulsiveCount": {
+        "table": "Systems",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "Un system: repulsive count es el número de charge interactions del system que son repulsive.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de charge interactions cuyo system ID es system ID y is repulsive es true()"
+      },
+      "Systems.TotalCharge": {
+        "table": "Systems",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "Un system: total charge es el total de charge value entre los charges relacionados con el system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de charge value entre todos los charges cuyo system ID es system ID"
+      },
+      "Systems.IsNeutral": {
+        "table": "Systems",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "Un system se considera neutral si el valor de ABS(TotalCharge) < 1e-30.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Systems",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "Systems.MaxForceMagnitude": {
+        "table": "Systems",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "Un system: max force magnitude es el mayor valor de force magnitude entre los charge interactions relacionados con el system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Mayor valor de force magnitude entre todos los charge interactions cuyo system ID es system ID"
+      },
+      "ChargeInteractions.Name": {
+        "table": "ChargeInteractions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un charge interaction: name es igual a interaction ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "InteractionId",
+            "label": "interaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction ID"
+      },
+      "ChargeInteractions.DeltaX": {
+        "table": "ChargeInteractions",
+        "field": "DeltaX",
+        "kind": "formula",
+        "rule": "Un charge interaction: delta x se calcula como el x2 menos el x1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "X2",
+            "label": "x2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "X1",
+            "label": "x1"
+          }
+        ],
+        "structure": null,
+        "plain": "X2 menos x1"
+      },
+      "ChargeInteractions.DeltaY": {
+        "table": "ChargeInteractions",
+        "field": "DeltaY",
+        "kind": "formula",
+        "rule": "Un charge interaction: delta y se calcula como el y2 menos el y1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Y2",
+            "label": "y2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Y1",
+            "label": "y1"
+          }
+        ],
+        "structure": null,
+        "plain": "Y2 menos y1"
+      },
+      "ChargeInteractions.DeltaZ": {
+        "table": "ChargeInteractions",
+        "field": "DeltaZ",
+        "kind": "formula",
+        "rule": "Un charge interaction: delta z se calcula como el z2 menos el z1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Z2",
+            "label": "z2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Z1",
+            "label": "z1"
+          }
+        ],
+        "structure": null,
+        "plain": "Z2 menos z1"
+      },
+      "ChargeInteractions.DistanceSquared": {
+        "table": "ChargeInteractions",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "Un charge interaction: distance squared se calcula como el delta x por el delta x más el delta y por el delta y más el delta z por el delta z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaX",
+            "label": "delta x"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaY",
+            "label": "delta y"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaZ",
+            "label": "delta z"
+          }
+        ],
+        "structure": null,
+        "plain": "((delta x por delta x) más (delta y por delta y)) más (delta z por delta z)"
+      },
+      "ChargeInteractions.DistanceMeters": {
+        "table": "ChargeInteractions",
+        "field": "DistanceMeters",
+        "kind": "formula",
+        "rule": "Un charge interaction: distance meters se calcula como la raíz cuadrada de el distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ChargeInteractions.DistancePicometers": {
+        "table": "ChargeInteractions",
+        "field": "DistancePicometers",
+        "kind": "formula",
+        "rule": "Un charge interaction: distance picometers se calcula como el distance meters por 1000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance meters por 1,000,000,000,000"
+      },
+      "ChargeInteractions.ChargeProduct": {
+        "table": "ChargeInteractions",
+        "field": "ChargeProduct",
+        "kind": "formula",
+        "rule": "Un charge interaction: charge product se calcula como el q1 por el q2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Q1",
+            "label": "q1"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Q2",
+            "label": "q2"
+          }
+        ],
+        "structure": null,
+        "plain": "Q1 por q2"
+      },
+      "ChargeInteractions.ForceMagnitude": {
+        "table": "ChargeInteractions",
+        "field": "ForceMagnitude",
+        "kind": "formula",
+        "rule": "Un charge interaction: force magnitude se calcula como el coulomb k por el valor absoluto de el charge product dividido por el distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k por el valor absoluto de charge product) dividido por distance squared"
+      },
+      "ChargeInteractions.IsAttractive": {
+        "table": "ChargeInteractions",
+        "field": "IsAttractive",
+        "kind": "formula",
+        "rule": "Un charge interaction se considera attractive si el charge product es menor que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product es menor que 0"
+      },
+      "ChargeInteractions.IsRepulsive": {
+        "table": "ChargeInteractions",
+        "field": "IsRepulsive",
+        "kind": "formula",
+        "rule": "Un charge interaction se considera repulsive si el charge product es mayor que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product es mayor que 0"
+      },
+      "ChargeInteractions.InteractionType": {
+        "table": "ChargeInteractions",
+        "field": "InteractionType",
+        "kind": "formula",
+        "rule": "El campo «interaction type» del charge interaction se determina según la siguiente prioridad:\n1. «attractive», si el indicador «attractive» está activado;\n2. «repulsive», si el indicador «repulsive» está activado;\n3. en todos los demás casos, «neutral».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «interaction type» del charge interaction se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«attractive»",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «attractive» está activado"
+              }
+            },
+            {
+              "value": "«repulsive»",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «repulsive» está activado"
+              }
+            },
+            {
+              "value": "«neutral»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is attractive, entonces \"attractive\", de lo contrario si is repulsive, entonces \"repulsive\", de lo contrario \"neutral\""
+      },
+      "ChargeInteractions.ForceInAttoNewtons": {
+        "table": "ChargeInteractions",
+        "field": "ForceInAttoNewtons",
+        "kind": "formula",
+        "rule": "Un charge interaction: force in atto newtons se calcula como el force magnitude por 1000000000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          }
+        ],
+        "structure": null,
+        "plain": "Force magnitude por 1,000,000,000,000,000,000"
+      },
+      "ForceVectors.Name": {
+        "table": "ForceVectors",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un force vector: name es igual a force vector ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceVectorId",
+            "label": "force vector ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Force vector ID"
+      },
+      "ForceVectors.UnitX": {
+        "table": "ForceVectors",
+        "field": "UnitX",
+        "kind": "formula",
+        "rule": "El campo «unit x» del force vector se determina según la siguiente prioridad:\n1. 0, si el dist raw es 0;\n2. en todos los demás casos, el DX dividido por el dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DX",
+            "label": "DX"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «unit x» del force vector se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "el dist raw es 0"
+              }
+            },
+            {
+              "value": "el DX dividido por el dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si dist raw es igual a 0, entonces 0, de lo contrario (DX dividido por dist raw)"
+      },
+      "ForceVectors.UnitY": {
+        "table": "ForceVectors",
+        "field": "UnitY",
+        "kind": "formula",
+        "rule": "El campo «unit y» del force vector se determina según la siguiente prioridad:\n1. 0, si el dist raw es 0;\n2. en todos los demás casos, el DY dividido por el dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DY",
+            "label": "DY"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «unit y» del force vector se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "el dist raw es 0"
+              }
+            },
+            {
+              "value": "el DY dividido por el dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si dist raw es igual a 0, entonces 0, de lo contrario (DY dividido por dist raw)"
+      },
+      "ForceVectors.UnitZ": {
+        "table": "ForceVectors",
+        "field": "UnitZ",
+        "kind": "formula",
+        "rule": "El campo «unit z» del force vector se determina según la siguiente prioridad:\n1. 0, si el dist raw es 0;\n2. en todos los demás casos, el DZ dividido por el dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DZ",
+            "label": "DZ"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «unit z» del force vector se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "el dist raw es 0"
+              }
+            },
+            {
+              "value": "el DZ dividido por el dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si dist raw es igual a 0, entonces 0, de lo contrario (DZ dividido por dist raw)"
+      },
+      "ForceVectors.SignFactor": {
+        "table": "ForceVectors",
+        "field": "SignFactor",
+        "kind": "formula",
+        "rule": "El campo «sign factor» del force vector se determina según la siguiente prioridad:\n1. el negativo de 1, si el indicador «attractive raw» está activado;\n2. en todos los demás casos, 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «sign factor» del force vector se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "el negativo de 1",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «attractive raw» está activado"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is attractive raw, entonces negativo 1, de lo contrario 1"
+      },
+      "ForceVectors.FX": {
+        "table": "ForceVectors",
+        "field": "FX",
+        "kind": "formula",
+        "rule": "Un force vector: FX se calcula como el force magnitude raw por el sign factor por el unit x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitX",
+            "label": "unit x"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw por sign factor) por unit x"
+      },
+      "ForceVectors.FY": {
+        "table": "ForceVectors",
+        "field": "FY",
+        "kind": "formula",
+        "rule": "Un force vector: FY se calcula como el force magnitude raw por el sign factor por el unit y.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitY",
+            "label": "unit y"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw por sign factor) por unit y"
+      },
+      "ForceVectors.FZ": {
+        "table": "ForceVectors",
+        "field": "FZ",
+        "kind": "formula",
+        "rule": "Un force vector: FZ se calcula como el force magnitude raw por el sign factor por el unit z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitZ",
+            "label": "unit z"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw por sign factor) por unit z"
+      },
+      "ForceVectors.ForceDirDescription": {
+        "table": "ForceVectors",
+        "field": "ForceDirDescription",
+        "kind": "formula",
+        "rule": "El campo «force dir description» del force vector se determina según la siguiente prioridad:\n1. «towards», si el indicador «attractive raw» está activado;\n2. en todos los demás casos, «away-from».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «force dir description» del force vector se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«towards»",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «attractive raw» está activado"
+              }
+            },
+            {
+              "value": "«away-from»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is attractive raw, entonces \"towards\", de lo contrario \"away-from\""
+      },
+      "ElectricFieldPoints.Name": {
+        "table": "ElectricFieldPoints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un electric field point: name es igual a field point ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "FieldPointId",
+            "label": "field point ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Field point ID"
+      },
+      "ElectricFieldPoints.dX": {
+        "table": "ElectricFieldPoints",
+        "field": "dX",
+        "kind": "formula",
+        "rule": "Un electric field point: d x se calcula como el obs x menos el src x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsX",
+            "label": "obs x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcX",
+            "label": "src x"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs x menos src x"
+      },
+      "ElectricFieldPoints.dY": {
+        "table": "ElectricFieldPoints",
+        "field": "dY",
+        "kind": "formula",
+        "rule": "Un electric field point: d y se calcula como el obs y menos el src y.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsY",
+            "label": "obs y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcY",
+            "label": "src y"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs y menos src y"
+      },
+      "ElectricFieldPoints.dZ": {
+        "table": "ElectricFieldPoints",
+        "field": "dZ",
+        "kind": "formula",
+        "rule": "Un electric field point: d z se calcula como el obs z menos el src z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsZ",
+            "label": "obs z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcZ",
+            "label": "src z"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs z menos src z"
+      },
+      "ElectricFieldPoints.DistanceSquared": {
+        "table": "ElectricFieldPoints",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "Un electric field point: distance squared se calcula como el d x por el d x más el d y por el d y más el d z por el d z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          }
+        ],
+        "structure": null,
+        "plain": "((d x por d x) más (d y por d y)) más (d z por d z)"
+      },
+      "ElectricFieldPoints.Distance": {
+        "table": "ElectricFieldPoints",
+        "field": "Distance",
+        "kind": "formula",
+        "rule": "Un electric field point: distance se calcula como la raíz cuadrada de el distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ElectricFieldPoints.EFieldMagnitude": {
+        "table": "ElectricFieldPoints",
+        "field": "EFieldMagnitude",
+        "kind": "formula",
+        "rule": "Un electric field point: e field magnitude se calcula como el coulomb k por el valor absoluto de el source q dividido por el distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k por el valor absoluto de source q) dividido por distance squared"
+      },
+      "ElectricFieldPoints.QSign": {
+        "table": "ElectricFieldPoints",
+        "field": "QSign",
+        "kind": "formula",
+        "rule": "El campo «q sign» del electric field point se determina según la siguiente prioridad:\n1. 1, si el source q es mayor que 0;\n2. en todos los demás casos, el negativo de 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «q sign» del electric field point se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "el source q es mayor que 0"
+              }
+            },
+            {
+              "value": "el negativo de 1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si source q es mayor que 0, entonces 1, de lo contrario negativo 1"
+      },
+      "ElectricFieldPoints.EX": {
+        "table": "ElectricFieldPoints",
+        "field": "EX",
+        "kind": "formula",
+        "rule": "Un electric field point: EX se calcula como el e field magnitude por el q sign por el d x dividido por el distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude por q sign) por d x) dividido por distance"
+      },
+      "ElectricFieldPoints.EY": {
+        "table": "ElectricFieldPoints",
+        "field": "EY",
+        "kind": "formula",
+        "rule": "Un electric field point: EY se calcula como el e field magnitude por el q sign por el d y dividido por el distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude por q sign) por d y) dividido por distance"
+      },
+      "ElectricFieldPoints.EZ": {
+        "table": "ElectricFieldPoints",
+        "field": "EZ",
+        "kind": "formula",
+        "rule": "Un electric field point: EZ se calcula como el e field magnitude por el q sign por el d z dividido por el distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude por q sign) por d z) dividido por distance"
+      },
+      "InvariantChecks.Name": {
+        "table": "InvariantChecks",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un invariant check: name es igual a invariant ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "InvariantId",
+            "label": "invariant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Invariant ID"
+      },
+      "SystemSummary.Name": {
+        "table": "SystemSummary",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un system summary: name es igual a summary ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SummaryId",
+            "label": "summary ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summary ID"
+      },
+      "SystemSummary.SystemName": {
+        "table": "SystemSummary",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "Un system summary: system name es el valor de LOOKUP(SystemId, Systems[SystemId], Systems[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "SystemSummary.ChargeCount": {
+        "table": "SystemSummary",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "Un system summary: charge count es el número de charges relacionados con el system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de charges cuyo system ID es system ID"
+      },
+      "SystemSummary.InteractionCount": {
+        "table": "SystemSummary",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Un system summary: interaction count es el número de charge interactions relacionados con el system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de charge interactions cuyo system ID es system ID"
+      },
+      "SystemSummary.AttractiveCount": {
+        "table": "SystemSummary",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "Un system summary: attractive count es el número de charge interactions del system summary que son attractive.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de charge interactions cuyo system ID es system ID y is attractive es true()"
+      },
+      "SystemSummary.RepulsiveCount": {
+        "table": "SystemSummary",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "Un system summary: repulsive count es el número de charge interactions del system summary que son repulsive.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de charge interactions cuyo system ID es system ID y is repulsive es true()"
+      },
+      "SystemSummary.TotalCharge": {
+        "table": "SystemSummary",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "Un system summary: total charge es el total de charge value entre los charges relacionados con el system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de charge value entre todos los charges cuyo system ID es system ID"
+      },
+      "SystemSummary.IsNeutral": {
+        "table": "SystemSummary",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "Un system summary se considera neutral si el valor de ABS(TotalCharge) < 1e-30.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "SystemSummary.MaxForceMagnitude": {
+        "table": "SystemSummary",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "Un system summary: max force magnitude es el mayor valor de force magnitude entre los charge interactions relacionados con el system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Mayor valor de force magnitude entre todos los charge interactions cuyo system ID es system ID"
+      },
+      "SystemSummary.MinDistanceMeters": {
+        "table": "SystemSummary",
+        "field": "MinDistanceMeters",
+        "kind": "rollup",
+        "rule": "Un system summary: min distance meters es el menor valor de distance meters entre los charge interactions relacionados con el system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Menor valor de distance meters entre todos los charge interactions cuyo system ID es system ID"
+      },
+      "SystemSummary.AllAttractive": {
+        "table": "SystemSummary",
+        "field": "AllAttractive",
+        "kind": "formula",
+        "rule": "Un system summary está marcado como all attractive si el attractive count es el interaction count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Attractive count es igual a interaction count"
+      },
+      "SystemSummary.AllRepulsive": {
+        "table": "SystemSummary",
+        "field": "AllRepulsive",
+        "kind": "formula",
+        "rule": "Un system summary está marcado como all repulsive si el repulsive count es el interaction count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Repulsive count es igual a interaction count"
+      },
+      "SystemSummary.HasMixedInteractions": {
+        "table": "SystemSummary",
+        "field": "HasMixedInteractions",
+        "kind": "formula",
+        "rule": "Un system summary se considera que tiene un mixed interactions si se cumple todo lo siguiente: el attractive count es mayor que 0 y el repulsive count es mayor que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un system summary se considera que tiene un mixed interactions si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el attractive count es mayor que 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el repulsive count es mayor que 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Attractive count es mayor que 0 y repulsive count es mayor que 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Loops": [
+        "Un loop **debe** tener un title y un status."
+      ],
+      "PhysicsConstants": [
+        "Un physics constant **debe** tener un name; un symbol; un value; y un units."
+      ],
+      "Particles": [
+        "Un particle **debe** tener un name; un canonical charge; y un canonical mass."
+      ],
+      "Charges": [
+        "Un charge **debe** tener un name; un system ID; un charge value; un position x; un position y; y un position z."
+      ],
+      "Systems": [
+        "Un system **debe** tener un name, y registrar si es synthetic."
+      ],
+      "ChargeInteractions": [
+        "Un charge interaction **debe** tener un system ID; un charge1 ID; un charge2 ID; un q1; un q2; un x1; un y1; un z1; un x2; un y2; un z2; y un coulomb k."
+      ],
+      "ForceVectors": [
+        "Un force vector **debe** tener un interaction ID; un force magnitude raw; un DX; un DY; un DZ; y un dist raw, y registrar si es un attractive raw."
+      ],
+      "ElectricFieldPoints": [
+        "Un electric field point **debe** tener un system ID; un source charge ID; un observation label; un obs x; un obs y; un obs z; un coulomb k; un source q; un src x; un src y; y un src z."
+      ],
+      "InvariantChecks": [
+        "Un invariant check **debe** tener un algebraic statement; un natural language; y un severity."
+      ],
+      "SystemSummary": [
+        "Un system summary **debe** tener un system ID."
+      ]
+    },
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Loops": "loop",
+      "PhysicsConstants": "physics constant",
+      "Particles": "particle",
+      "Charges": "charge",
+      "Systems": "system",
+      "ChargeInteractions": "charge interaction",
+      "ForceVectors": "force vector",
+      "ElectricFieldPoints": "electric field point",
+      "InvariantChecks": "invariant check",
+      "SystemSummary": "system summary"
+    }
+  },
+  "fr": {
+    "fields": {
+      "Loops.Name": {
+        "table": "Loops",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un loop : name est identique à loop ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loops",
+            "field": "LoopId",
+            "label": "loop ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Loop ID"
+      },
+      "Particles.ChargeSign": {
+        "table": "Particles",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "Le champ « charge sign » du particle est déterminé selon la priorité suivante :\n1. « positive », si le canonical charge est supérieur à 0 ;\n2. « negative », si le canonical charge est inférieur à 0 ;\n3. dans tous les autres cas, « neutral ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Particles",
+            "field": "CanonicalCharge",
+            "label": "canonical charge"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « charge sign » du particle est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« positive »",
+              "when": {
+                "kind": "leaf",
+                "text": "le canonical charge est supérieur à 0"
+              }
+            },
+            {
+              "value": "« negative »",
+              "when": {
+                "kind": "leaf",
+                "text": "le canonical charge est inférieur à 0"
+              }
+            },
+            {
+              "value": "« neutral »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si canonical charge est supérieur à 0, alors \"positive\", sinon si canonical charge est inférieur à 0, alors \"negative\", sinon \"neutral\""
+      },
+      "Charges.ChargeSign": {
+        "table": "Charges",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "Le champ « charge sign » du charge est déterminé selon la priorité suivante :\n1. « positive », si le charge value est supérieur à 0 ;\n2. « negative », si le charge value est inférieur à 0 ;\n3. dans tous les autres cas, « neutral ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « charge sign » du charge est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« positive »",
+              "when": {
+                "kind": "leaf",
+                "text": "le charge value est supérieur à 0"
+              }
+            },
+            {
+              "value": "« negative »",
+              "when": {
+                "kind": "leaf",
+                "text": "le charge value est inférieur à 0"
+              }
+            },
+            {
+              "value": "« neutral »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si charge value est supérieur à 0, alors \"positive\", sinon si charge value est inférieur à 0, alors \"negative\", sinon \"neutral\""
+      },
+      "Charges.ChargeMagnitude": {
+        "table": "Charges",
+        "field": "ChargeMagnitude",
+        "kind": "formula",
+        "rule": "Un charge : charge magnitude est calculé comme la valeur absolue de le charge value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": null,
+        "plain": "La valeur absolue de charge value"
+      },
+      "Charges.SystemName": {
+        "table": "Charges",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "Un charge : system name est la valeur de LOOKUP(SystemId, Systems[SystemId], Systems[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "Charges.ParticleName": {
+        "table": "Charges",
+        "field": "ParticleName",
+        "kind": "lookup",
+        "rule": "Un charge : particle name est la valeur de LOOKUP(ParticleId, Particles[ParticleId], Particles[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ParticleId",
+            "label": "particle ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{ParticleId}}, Particles[ParticleId], Particles[Name])"
+      },
+      "Charges.InteractionCount": {
+        "table": "Charges",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Un charge : interaction count est le nombre de charge interactions liés à le charge.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Charge1Id",
+            "label": "charge1 ID"
+          },
+          {
+            "table": "Charges",
+            "field": "ChargeId",
+            "label": "charge ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des charge interactions dont charge1 ID est charge ID"
+      },
+      "Systems.ChargeCount": {
+        "table": "Systems",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "Un system : charge count est le nombre de charges liés à le system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des charges dont system ID est system ID"
+      },
+      "Systems.InteractionCount": {
+        "table": "Systems",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Un system : interaction count est le nombre de charge interactions liés à le system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des charge interactions dont system ID est system ID"
+      },
+      "Systems.AttractiveCount": {
+        "table": "Systems",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "Un system : attractive count est le nombre de charge interactions du system qui sont attractive.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des charge interactions dont system ID est system ID et is attractive est true()"
+      },
+      "Systems.RepulsiveCount": {
+        "table": "Systems",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "Un system : repulsive count est le nombre de charge interactions du system qui sont repulsive.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des charge interactions dont system ID est system ID et is repulsive est true()"
+      },
+      "Systems.TotalCharge": {
+        "table": "Systems",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "Un system : total charge est le total de charge value sur les charges liés à le system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de charge value sur tous les charges dont system ID est system ID"
+      },
+      "Systems.IsNeutral": {
+        "table": "Systems",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "Un system est considéré comme neutral si la valeur de ABS(TotalCharge) < 1e-30.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Systems",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "Systems.MaxForceMagnitude": {
+        "table": "Systems",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "Un system : max force magnitude est la plus grande valeur de force magnitude sur les charge interactions liés à le system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Plus grande valeur de force magnitude sur tous les charge interactions dont system ID est system ID"
+      },
+      "ChargeInteractions.Name": {
+        "table": "ChargeInteractions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Une charge interaction : name est identique à interaction ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "InteractionId",
+            "label": "interaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction ID"
+      },
+      "ChargeInteractions.DeltaX": {
+        "table": "ChargeInteractions",
+        "field": "DeltaX",
+        "kind": "formula",
+        "rule": "Une charge interaction : delta x est calculé comme le x2 moins le x1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "X2",
+            "label": "x2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "X1",
+            "label": "x1"
+          }
+        ],
+        "structure": null,
+        "plain": "X2 moins x1"
+      },
+      "ChargeInteractions.DeltaY": {
+        "table": "ChargeInteractions",
+        "field": "DeltaY",
+        "kind": "formula",
+        "rule": "Une charge interaction : delta y est calculé comme l'y2 moins l'y1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Y2",
+            "label": "y2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Y1",
+            "label": "y1"
+          }
+        ],
+        "structure": null,
+        "plain": "Y2 moins y1"
+      },
+      "ChargeInteractions.DeltaZ": {
+        "table": "ChargeInteractions",
+        "field": "DeltaZ",
+        "kind": "formula",
+        "rule": "Une charge interaction : delta z est calculé comme le z2 moins le z1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Z2",
+            "label": "z2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Z1",
+            "label": "z1"
+          }
+        ],
+        "structure": null,
+        "plain": "Z2 moins z1"
+      },
+      "ChargeInteractions.DistanceSquared": {
+        "table": "ChargeInteractions",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "Une charge interaction : distance squared est calculé comme le delta x multiplié par le delta x plus le delta y multiplié par le delta y plus le delta z multiplié par le delta z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaX",
+            "label": "delta x"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaY",
+            "label": "delta y"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaZ",
+            "label": "delta z"
+          }
+        ],
+        "structure": null,
+        "plain": "((delta x fois delta x) plus (delta y fois delta y)) plus (delta z fois delta z)"
+      },
+      "ChargeInteractions.DistanceMeters": {
+        "table": "ChargeInteractions",
+        "field": "DistanceMeters",
+        "kind": "formula",
+        "rule": "Une charge interaction : distance meters est calculé comme la racine carrée de le distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ChargeInteractions.DistancePicometers": {
+        "table": "ChargeInteractions",
+        "field": "DistancePicometers",
+        "kind": "formula",
+        "rule": "Une charge interaction : distance picometers est calculé comme le distance meters multiplié par 1000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance meters fois 1,000,000,000,000"
+      },
+      "ChargeInteractions.ChargeProduct": {
+        "table": "ChargeInteractions",
+        "field": "ChargeProduct",
+        "kind": "formula",
+        "rule": "Une charge interaction : charge product est calculé comme le q1 multiplié par le q2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Q1",
+            "label": "q1"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Q2",
+            "label": "q2"
+          }
+        ],
+        "structure": null,
+        "plain": "Q1 fois q2"
+      },
+      "ChargeInteractions.ForceMagnitude": {
+        "table": "ChargeInteractions",
+        "field": "ForceMagnitude",
+        "kind": "formula",
+        "rule": "Une charge interaction : force magnitude est calculé comme le coulomb k multiplié par la valeur absolue de le charge product divisé par le distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k fois la valeur absolue de charge product) divisé par distance squared"
+      },
+      "ChargeInteractions.IsAttractive": {
+        "table": "ChargeInteractions",
+        "field": "IsAttractive",
+        "kind": "formula",
+        "rule": "Une charge interaction est considéré comme attractive si le charge product est inférieur à 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product est inférieur à 0"
+      },
+      "ChargeInteractions.IsRepulsive": {
+        "table": "ChargeInteractions",
+        "field": "IsRepulsive",
+        "kind": "formula",
+        "rule": "Une charge interaction est considéré comme repulsive si le charge product est supérieur à 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product est supérieur à 0"
+      },
+      "ChargeInteractions.InteractionType": {
+        "table": "ChargeInteractions",
+        "field": "InteractionType",
+        "kind": "formula",
+        "rule": "Le champ « interaction type » de la charge interaction est déterminé selon la priorité suivante :\n1. « attractive », si l'indicateur « attractive » est activé ;\n2. « repulsive », si l'indicateur « repulsive » est activé ;\n3. dans tous les autres cas, « neutral ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « interaction type » de la charge interaction est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« attractive »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « attractive » est activé"
+              }
+            },
+            {
+              "value": "« repulsive »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « repulsive » est activé"
+              }
+            },
+            {
+              "value": "« neutral »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is attractive, alors \"attractive\", sinon si is repulsive, alors \"repulsive\", sinon \"neutral\""
+      },
+      "ChargeInteractions.ForceInAttoNewtons": {
+        "table": "ChargeInteractions",
+        "field": "ForceInAttoNewtons",
+        "kind": "formula",
+        "rule": "Une charge interaction : force in atto newtons est calculé comme le force magnitude multiplié par 1000000000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          }
+        ],
+        "structure": null,
+        "plain": "Force magnitude fois 1,000,000,000,000,000,000"
+      },
+      "ForceVectors.Name": {
+        "table": "ForceVectors",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un force vector : name est identique à force vector ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceVectorId",
+            "label": "force vector ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Force vector ID"
+      },
+      "ForceVectors.UnitX": {
+        "table": "ForceVectors",
+        "field": "UnitX",
+        "kind": "formula",
+        "rule": "Le champ « unit x » du force vector est déterminé selon la priorité suivante :\n1. 0, si le dist raw est 0 ;\n2. dans tous les autres cas, le DX divisé par le dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DX",
+            "label": "DX"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « unit x » du force vector est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "le dist raw est 0"
+              }
+            },
+            {
+              "value": "le DX divisé par le dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si dist raw est égal à 0, alors 0, sinon (DX divisé par dist raw)"
+      },
+      "ForceVectors.UnitY": {
+        "table": "ForceVectors",
+        "field": "UnitY",
+        "kind": "formula",
+        "rule": "Le champ « unit y » du force vector est déterminé selon la priorité suivante :\n1. 0, si le dist raw est 0 ;\n2. dans tous les autres cas, le DY divisé par le dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DY",
+            "label": "DY"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « unit y » du force vector est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "le dist raw est 0"
+              }
+            },
+            {
+              "value": "le DY divisé par le dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si dist raw est égal à 0, alors 0, sinon (DY divisé par dist raw)"
+      },
+      "ForceVectors.UnitZ": {
+        "table": "ForceVectors",
+        "field": "UnitZ",
+        "kind": "formula",
+        "rule": "Le champ « unit z » du force vector est déterminé selon la priorité suivante :\n1. 0, si le dist raw est 0 ;\n2. dans tous les autres cas, le DZ divisé par le dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DZ",
+            "label": "DZ"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « unit z » du force vector est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "le dist raw est 0"
+              }
+            },
+            {
+              "value": "le DZ divisé par le dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si dist raw est égal à 0, alors 0, sinon (DZ divisé par dist raw)"
+      },
+      "ForceVectors.SignFactor": {
+        "table": "ForceVectors",
+        "field": "SignFactor",
+        "kind": "formula",
+        "rule": "Le champ « sign factor » du force vector est déterminé selon la priorité suivante :\n1. l'opposé de 1, si l'indicateur « attractive raw » est activé ;\n2. dans tous les autres cas, 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « sign factor » du force vector est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "l'opposé de 1",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « attractive raw » est activé"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is attractive raw, alors moins 1, sinon 1"
+      },
+      "ForceVectors.FX": {
+        "table": "ForceVectors",
+        "field": "FX",
+        "kind": "formula",
+        "rule": "Un force vector : FX est calculé comme le force magnitude raw multiplié par le sign factor multiplié par l'unit x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitX",
+            "label": "unit x"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw fois sign factor) fois unit x"
+      },
+      "ForceVectors.FY": {
+        "table": "ForceVectors",
+        "field": "FY",
+        "kind": "formula",
+        "rule": "Un force vector : FY est calculé comme le force magnitude raw multiplié par le sign factor multiplié par l'unit y.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitY",
+            "label": "unit y"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw fois sign factor) fois unit y"
+      },
+      "ForceVectors.FZ": {
+        "table": "ForceVectors",
+        "field": "FZ",
+        "kind": "formula",
+        "rule": "Un force vector : FZ est calculé comme le force magnitude raw multiplié par le sign factor multiplié par l'unit z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitZ",
+            "label": "unit z"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw fois sign factor) fois unit z"
+      },
+      "ForceVectors.ForceDirDescription": {
+        "table": "ForceVectors",
+        "field": "ForceDirDescription",
+        "kind": "formula",
+        "rule": "Le champ « force dir description » du force vector est déterminé selon la priorité suivante :\n1. « towards », si l'indicateur « attractive raw » est activé ;\n2. dans tous les autres cas, « away-from ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « force dir description » du force vector est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« towards »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « attractive raw » est activé"
+              }
+            },
+            {
+              "value": "« away-from »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is attractive raw, alors \"towards\", sinon \"away-from\""
+      },
+      "ElectricFieldPoints.Name": {
+        "table": "ElectricFieldPoints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un electric field point : name est identique à field point ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "FieldPointId",
+            "label": "field point ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Field point ID"
+      },
+      "ElectricFieldPoints.dX": {
+        "table": "ElectricFieldPoints",
+        "field": "dX",
+        "kind": "formula",
+        "rule": "Un electric field point : d x est calculé comme l'obs x moins le src x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsX",
+            "label": "obs x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcX",
+            "label": "src x"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs x moins src x"
+      },
+      "ElectricFieldPoints.dY": {
+        "table": "ElectricFieldPoints",
+        "field": "dY",
+        "kind": "formula",
+        "rule": "Un electric field point : d y est calculé comme l'obs y moins le src y.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsY",
+            "label": "obs y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcY",
+            "label": "src y"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs y moins src y"
+      },
+      "ElectricFieldPoints.dZ": {
+        "table": "ElectricFieldPoints",
+        "field": "dZ",
+        "kind": "formula",
+        "rule": "Un electric field point : d z est calculé comme l'obs z moins le src z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsZ",
+            "label": "obs z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcZ",
+            "label": "src z"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs z moins src z"
+      },
+      "ElectricFieldPoints.DistanceSquared": {
+        "table": "ElectricFieldPoints",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "Un electric field point : distance squared est calculé comme le d x multiplié par le d x plus le d y multiplié par le d y plus le d z multiplié par le d z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          }
+        ],
+        "structure": null,
+        "plain": "((d x fois d x) plus (d y fois d y)) plus (d z fois d z)"
+      },
+      "ElectricFieldPoints.Distance": {
+        "table": "ElectricFieldPoints",
+        "field": "Distance",
+        "kind": "formula",
+        "rule": "Un electric field point : distance est calculé comme la racine carrée de le distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ElectricFieldPoints.EFieldMagnitude": {
+        "table": "ElectricFieldPoints",
+        "field": "EFieldMagnitude",
+        "kind": "formula",
+        "rule": "Un electric field point : e field magnitude est calculé comme le coulomb k multiplié par la valeur absolue de le source q divisé par le distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k fois la valeur absolue de source q) divisé par distance squared"
+      },
+      "ElectricFieldPoints.QSign": {
+        "table": "ElectricFieldPoints",
+        "field": "QSign",
+        "kind": "formula",
+        "rule": "Le champ « q sign » de l'electric field point est déterminé selon la priorité suivante :\n1. 1, si le source q est supérieur à 0 ;\n2. dans tous les autres cas, l'opposé de 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « q sign » de l'electric field point est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "le source q est supérieur à 0"
+              }
+            },
+            {
+              "value": "l'opposé de 1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si source q est supérieur à 0, alors 1, sinon moins 1"
+      },
+      "ElectricFieldPoints.EX": {
+        "table": "ElectricFieldPoints",
+        "field": "EX",
+        "kind": "formula",
+        "rule": "Un electric field point : EX est calculé comme l'e field magnitude multiplié par le q sign multiplié par le d x divisé par la distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude fois q sign) fois d x) divisé par distance"
+      },
+      "ElectricFieldPoints.EY": {
+        "table": "ElectricFieldPoints",
+        "field": "EY",
+        "kind": "formula",
+        "rule": "Un electric field point : EY est calculé comme l'e field magnitude multiplié par le q sign multiplié par le d y divisé par la distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude fois q sign) fois d y) divisé par distance"
+      },
+      "ElectricFieldPoints.EZ": {
+        "table": "ElectricFieldPoints",
+        "field": "EZ",
+        "kind": "formula",
+        "rule": "Un electric field point : EZ est calculé comme l'e field magnitude multiplié par le q sign multiplié par le d z divisé par la distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude fois q sign) fois d z) divisé par distance"
+      },
+      "InvariantChecks.Name": {
+        "table": "InvariantChecks",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un invariant check : name est identique à invariant ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "InvariantId",
+            "label": "invariant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Invariant ID"
+      },
+      "SystemSummary.Name": {
+        "table": "SystemSummary",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un system summary : name est identique à summary ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SummaryId",
+            "label": "summary ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summary ID"
+      },
+      "SystemSummary.SystemName": {
+        "table": "SystemSummary",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "Un system summary : system name est la valeur de LOOKUP(SystemId, Systems[SystemId], Systems[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "SystemSummary.ChargeCount": {
+        "table": "SystemSummary",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "Un system summary : charge count est le nombre de charges liés à le system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des charges dont system ID est system ID"
+      },
+      "SystemSummary.InteractionCount": {
+        "table": "SystemSummary",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Un system summary : interaction count est le nombre de charge interactions liés à le system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des charge interactions dont system ID est system ID"
+      },
+      "SystemSummary.AttractiveCount": {
+        "table": "SystemSummary",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "Un system summary : attractive count est le nombre de charge interactions du system summary qui sont attractive.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des charge interactions dont system ID est system ID et is attractive est true()"
+      },
+      "SystemSummary.RepulsiveCount": {
+        "table": "SystemSummary",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "Un system summary : repulsive count est le nombre de charge interactions du system summary qui sont repulsive.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des charge interactions dont system ID est system ID et is repulsive est true()"
+      },
+      "SystemSummary.TotalCharge": {
+        "table": "SystemSummary",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "Un system summary : total charge est le total de charge value sur les charges liés à le system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de charge value sur tous les charges dont system ID est system ID"
+      },
+      "SystemSummary.IsNeutral": {
+        "table": "SystemSummary",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "Un system summary est considéré comme neutral si la valeur de ABS(TotalCharge) < 1e-30.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "SystemSummary.MaxForceMagnitude": {
+        "table": "SystemSummary",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "Un system summary : max force magnitude est la plus grande valeur de force magnitude sur les charge interactions liés à le system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Plus grande valeur de force magnitude sur tous les charge interactions dont system ID est system ID"
+      },
+      "SystemSummary.MinDistanceMeters": {
+        "table": "SystemSummary",
+        "field": "MinDistanceMeters",
+        "kind": "rollup",
+        "rule": "Un system summary : min distance meters est la plus petite valeur de distance meters sur les charge interactions liés à le system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Plus petite valeur de distance meters sur tous les charge interactions dont system ID est system ID"
+      },
+      "SystemSummary.AllAttractive": {
+        "table": "SystemSummary",
+        "field": "AllAttractive",
+        "kind": "formula",
+        "rule": "Un system summary est marqué comme all attractive si l'attractive count est l'interaction count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Attractive count est égal à interaction count"
+      },
+      "SystemSummary.AllRepulsive": {
+        "table": "SystemSummary",
+        "field": "AllRepulsive",
+        "kind": "formula",
+        "rule": "Un system summary est marqué comme all repulsive si le repulsive count est l'interaction count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Repulsive count est égal à interaction count"
+      },
+      "SystemSummary.HasMixedInteractions": {
+        "table": "SystemSummary",
+        "field": "HasMixedInteractions",
+        "kind": "formula",
+        "rule": "Un system summary est considéré comme disposant de un mixed interactions si tout ce qui suit est vrai : l'attractive count est supérieur à 0 et le repulsive count est supérieur à 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un system summary est considéré comme disposant de un mixed interactions si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'attractive count est supérieur à 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "le repulsive count est supérieur à 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Attractive count est supérieur à 0 et repulsive count est supérieur à 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Loops": [
+        "Un loop **doit** avoir un title et un status."
+      ],
+      "PhysicsConstants": [
+        "Un physics constant **doit** avoir un name; un symbol; un value; et un units."
+      ],
+      "Particles": [
+        "Un particle **doit** avoir un name; un canonical charge; et un canonical mass."
+      ],
+      "Charges": [
+        "Un charge **doit** avoir un name; un system ID; un charge value; un position x; un position y; et un position z."
+      ],
+      "Systems": [
+        "Un system **doit** avoir un name, et consigner si il est synthetic."
+      ],
+      "ChargeInteractions": [
+        "Une charge interaction **doit** avoir un system ID; un charge1 ID; un charge2 ID; un q1; un q2; un x1; un y1; un z1; un x2; un y2; un z2; et un coulomb k."
+      ],
+      "ForceVectors": [
+        "Un force vector **doit** avoir un interaction ID; un force magnitude raw; un DX; un DY; un DZ; et un dist raw, et consigner si il est un attractive raw."
+      ],
+      "ElectricFieldPoints": [
+        "Un electric field point **doit** avoir un system ID; un source charge ID; un observation label; un obs x; un obs y; un obs z; un coulomb k; un source q; un src x; un src y; et un src z."
+      ],
+      "InvariantChecks": [
+        "Un invariant check **doit** avoir un algebraic statement; un natural language; et un severity."
+      ],
+      "SystemSummary": [
+        "Un system summary **doit** avoir un system ID."
+      ]
+    },
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Loops": "loop",
+      "PhysicsConstants": "physics constant",
+      "Particles": "particle",
+      "Charges": "charge",
+      "Systems": "system",
+      "ChargeInteractions": "charge interaction",
+      "ForceVectors": "force vector",
+      "ElectricFieldPoints": "electric field point",
+      "InvariantChecks": "invariant check",
+      "SystemSummary": "system summary"
+    }
+  },
+  "hi": {
+    "fields": {
+      "Loops.Name": {
+        "table": "Loops",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "loop का “name” उसके “loop ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loops",
+            "field": "LoopId",
+            "label": "loop ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Loop ID"
+      },
+      "Particles.ChargeSign": {
+        "table": "Particles",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "Particle का “charge sign” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “positive”, यदि canonical charge 0 से अधिक है;\n2. “negative”, यदि canonical charge 0 से कम है;\n3. अन्य सभी स्थितियों में, “neutral”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Particles",
+            "field": "CanonicalCharge",
+            "label": "canonical charge"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Particle का “charge sign” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“positive”",
+              "when": {
+                "kind": "leaf",
+                "text": "canonical charge 0 से अधिक है"
+              }
+            },
+            {
+              "value": "“negative”",
+              "when": {
+                "kind": "leaf",
+                "text": "canonical charge 0 से कम है"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि canonical charge 0 से अधिक है, तो \"positive\", अन्यथा यदि canonical charge 0 से कम है, तो \"negative\", अन्यथा \"neutral\""
+      },
+      "Charges.ChargeSign": {
+        "table": "Charges",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "Charge का “charge sign” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “positive”, यदि charge value 0 से अधिक है;\n2. “negative”, यदि charge value 0 से कम है;\n3. अन्य सभी स्थितियों में, “neutral”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Charge का “charge sign” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“positive”",
+              "when": {
+                "kind": "leaf",
+                "text": "charge value 0 से अधिक है"
+              }
+            },
+            {
+              "value": "“negative”",
+              "when": {
+                "kind": "leaf",
+                "text": "charge value 0 से कम है"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि charge value 0 से अधिक है, तो \"positive\", अन्यथा यदि charge value 0 से कम है, तो \"negative\", अन्यथा \"neutral\""
+      },
+      "Charges.ChargeMagnitude": {
+        "table": "Charges",
+        "field": "ChargeMagnitude",
+        "kind": "formula",
+        "rule": "charge का “charge magnitude” charge value का निरपेक्ष मान के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge value का निरपेक्ष मान"
+      },
+      "Charges.SystemName": {
+        "table": "Charges",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "charge का “system name” LOOKUP(SystemId, Systems[SystemId], Systems[Name]) का मान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "Charges.ParticleName": {
+        "table": "Charges",
+        "field": "ParticleName",
+        "kind": "lookup",
+        "rule": "charge का “particle name” LOOKUP(ParticleId, Particles[ParticleId], Particles[Name]) का मान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ParticleId",
+            "label": "particle ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{ParticleId}}, Particles[ParticleId], Particles[Name])"
+      },
+      "Charges.InteractionCount": {
+        "table": "Charges",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "charge का “interaction count” charge से संबंधित “charge interactions” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Charge1Id",
+            "label": "charge1 ID"
+          },
+          {
+            "table": "Charges",
+            "field": "ChargeId",
+            "label": "charge ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “charge interactions” की संख्या, जिनका charge1 ID charge ID है"
+      },
+      "Systems.ChargeCount": {
+        "table": "Systems",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "system का “charge count” system से संबंधित “charges” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “charges” की संख्या, जिनका system ID system ID है"
+      },
+      "Systems.InteractionCount": {
+        "table": "Systems",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "system का “interaction count” system से संबंधित “charge interactions” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “charge interactions” की संख्या, जिनका system ID system ID है"
+      },
+      "Systems.AttractiveCount": {
+        "table": "Systems",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "system का “attractive count” system के उन “charge interactions” की संख्या, जो “attractive” हैं है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “charge interactions” की संख्या, जिनका system ID system ID है और is attractive true() है"
+      },
+      "Systems.RepulsiveCount": {
+        "table": "Systems",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "system का “repulsive count” system के उन “charge interactions” की संख्या, जो “repulsive” हैं है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “charge interactions” की संख्या, जिनका system ID system ID है और is repulsive true() है"
+      },
+      "Systems.TotalCharge": {
+        "table": "Systems",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "system का “total charge” system से संबंधित “charges” पर कुल “charge value” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “charges” पर योग charge value, जिनका system ID system ID है"
+      },
+      "Systems.IsNeutral": {
+        "table": "Systems",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "यदि ABS(TotalCharge) < 1e-30 का मान, तो system “neutral” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Systems",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "Systems.MaxForceMagnitude": {
+        "table": "Systems",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "system का “max force magnitude” system से संबंधित “charge interactions” पर अधिकतम “force magnitude” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “charge interactions” पर अधिकतम force magnitude, जिनका system ID system ID है"
+      },
+      "ChargeInteractions.Name": {
+        "table": "ChargeInteractions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "charge interaction का “name” उसके “interaction ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "InteractionId",
+            "label": "interaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction ID"
+      },
+      "ChargeInteractions.DeltaX": {
+        "table": "ChargeInteractions",
+        "field": "DeltaX",
+        "kind": "formula",
+        "rule": "charge interaction का “delta x” x2 घटा x1 के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "X2",
+            "label": "x2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "X1",
+            "label": "x1"
+          }
+        ],
+        "structure": null,
+        "plain": "X2 घटा x1"
+      },
+      "ChargeInteractions.DeltaY": {
+        "table": "ChargeInteractions",
+        "field": "DeltaY",
+        "kind": "formula",
+        "rule": "charge interaction का “delta y” y2 घटा y1 के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Y2",
+            "label": "y2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Y1",
+            "label": "y1"
+          }
+        ],
+        "structure": null,
+        "plain": "Y2 घटा y1"
+      },
+      "ChargeInteractions.DeltaZ": {
+        "table": "ChargeInteractions",
+        "field": "DeltaZ",
+        "kind": "formula",
+        "rule": "charge interaction का “delta z” z2 घटा z1 के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Z2",
+            "label": "z2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Z1",
+            "label": "z1"
+          }
+        ],
+        "structure": null,
+        "plain": "Z2 घटा z1"
+      },
+      "ChargeInteractions.DistanceSquared": {
+        "table": "ChargeInteractions",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "charge interaction का “distance squared” delta x गुणा delta x जोड़ delta y गुणा delta y जोड़ delta z गुणा delta z के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaX",
+            "label": "delta x"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaY",
+            "label": "delta y"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaZ",
+            "label": "delta z"
+          }
+        ],
+        "structure": null,
+        "plain": "((delta x गुणा delta x) जोड़ (delta y गुणा delta y)) जोड़ (delta z गुणा delta z)"
+      },
+      "ChargeInteractions.DistanceMeters": {
+        "table": "ChargeInteractions",
+        "field": "DistanceMeters",
+        "kind": "formula",
+        "rule": "charge interaction का “distance meters” distance squared का वर्गमूल के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ChargeInteractions.DistancePicometers": {
+        "table": "ChargeInteractions",
+        "field": "DistancePicometers",
+        "kind": "formula",
+        "rule": "charge interaction का “distance picometers” distance meters गुणा 1000000000000 के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance meters गुणा 1,000,000,000,000"
+      },
+      "ChargeInteractions.ChargeProduct": {
+        "table": "ChargeInteractions",
+        "field": "ChargeProduct",
+        "kind": "formula",
+        "rule": "charge interaction का “charge product” q1 गुणा q2 के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Q1",
+            "label": "q1"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Q2",
+            "label": "q2"
+          }
+        ],
+        "structure": null,
+        "plain": "Q1 गुणा q2"
+      },
+      "ChargeInteractions.ForceMagnitude": {
+        "table": "ChargeInteractions",
+        "field": "ForceMagnitude",
+        "kind": "formula",
+        "rule": "charge interaction का “force magnitude” coulomb k गुणा charge product का निरपेक्ष मान भाग distance squared के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k गुणा charge product का निरपेक्ष मान) भाग distance squared"
+      },
+      "ChargeInteractions.IsAttractive": {
+        "table": "ChargeInteractions",
+        "field": "IsAttractive",
+        "kind": "formula",
+        "rule": "यदि charge product 0 से कम है, तो charge interaction “attractive” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product 0 से कम है"
+      },
+      "ChargeInteractions.IsRepulsive": {
+        "table": "ChargeInteractions",
+        "field": "IsRepulsive",
+        "kind": "formula",
+        "rule": "यदि charge product 0 से अधिक है, तो charge interaction “repulsive” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product 0 से अधिक है"
+      },
+      "ChargeInteractions.InteractionType": {
+        "table": "ChargeInteractions",
+        "field": "InteractionType",
+        "kind": "formula",
+        "rule": "Charge interaction का “interaction type” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “attractive”, यदि “attractive” ध्वज लगा हुआ है;\n2. “repulsive”, यदि “repulsive” ध्वज लगा हुआ है;\n3. अन्य सभी स्थितियों में, “neutral”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Charge interaction का “interaction type” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“attractive”",
+              "when": {
+                "kind": "leaf",
+                "text": "“attractive” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "“repulsive”",
+              "when": {
+                "kind": "leaf",
+                "text": "“repulsive” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि is attractive, तो \"attractive\", अन्यथा यदि is repulsive, तो \"repulsive\", अन्यथा \"neutral\""
+      },
+      "ChargeInteractions.ForceInAttoNewtons": {
+        "table": "ChargeInteractions",
+        "field": "ForceInAttoNewtons",
+        "kind": "formula",
+        "rule": "charge interaction का “force in atto newtons” force magnitude गुणा 1000000000000000000 के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          }
+        ],
+        "structure": null,
+        "plain": "Force magnitude गुणा 1,000,000,000,000,000,000"
+      },
+      "ForceVectors.Name": {
+        "table": "ForceVectors",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "force vector का “name” उसके “force vector ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceVectorId",
+            "label": "force vector ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Force vector ID"
+      },
+      "ForceVectors.UnitX": {
+        "table": "ForceVectors",
+        "field": "UnitX",
+        "kind": "formula",
+        "rule": "Force vector का “unit x” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. 0, यदि dist raw 0 है;\n2. अन्य सभी स्थितियों में, DX भाग dist raw।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DX",
+            "label": "DX"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Force vector का “unit x” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "dist raw 0 है"
+              }
+            },
+            {
+              "value": "DX भाग dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि dist raw 0 के बराबर है, तो 0, अन्यथा (DX भाग dist raw)"
+      },
+      "ForceVectors.UnitY": {
+        "table": "ForceVectors",
+        "field": "UnitY",
+        "kind": "formula",
+        "rule": "Force vector का “unit y” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. 0, यदि dist raw 0 है;\n2. अन्य सभी स्थितियों में, DY भाग dist raw।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DY",
+            "label": "DY"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Force vector का “unit y” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "dist raw 0 है"
+              }
+            },
+            {
+              "value": "DY भाग dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि dist raw 0 के बराबर है, तो 0, अन्यथा (DY भाग dist raw)"
+      },
+      "ForceVectors.UnitZ": {
+        "table": "ForceVectors",
+        "field": "UnitZ",
+        "kind": "formula",
+        "rule": "Force vector का “unit z” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. 0, यदि dist raw 0 है;\n2. अन्य सभी स्थितियों में, DZ भाग dist raw।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DZ",
+            "label": "DZ"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Force vector का “unit z” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "dist raw 0 है"
+              }
+            },
+            {
+              "value": "DZ भाग dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि dist raw 0 के बराबर है, तो 0, अन्यथा (DZ भाग dist raw)"
+      },
+      "ForceVectors.SignFactor": {
+        "table": "ForceVectors",
+        "field": "SignFactor",
+        "kind": "formula",
+        "rule": "Force vector का “sign factor” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. 1 का ऋणात्मक मान, यदि “attractive raw” ध्वज लगा हुआ है;\n2. अन्य सभी स्थितियों में, 1।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Force vector का “sign factor” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "1 का ऋणात्मक मान",
+              "when": {
+                "kind": "leaf",
+                "text": "“attractive raw” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि is attractive raw, तो ऋण 1, अन्यथा 1"
+      },
+      "ForceVectors.FX": {
+        "table": "ForceVectors",
+        "field": "FX",
+        "kind": "formula",
+        "rule": "force vector का “FX” force magnitude raw गुणा sign factor गुणा unit x के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitX",
+            "label": "unit x"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw गुणा sign factor) गुणा unit x"
+      },
+      "ForceVectors.FY": {
+        "table": "ForceVectors",
+        "field": "FY",
+        "kind": "formula",
+        "rule": "force vector का “FY” force magnitude raw गुणा sign factor गुणा unit y के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitY",
+            "label": "unit y"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw गुणा sign factor) गुणा unit y"
+      },
+      "ForceVectors.FZ": {
+        "table": "ForceVectors",
+        "field": "FZ",
+        "kind": "formula",
+        "rule": "force vector का “FZ” force magnitude raw गुणा sign factor गुणा unit z के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitZ",
+            "label": "unit z"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw गुणा sign factor) गुणा unit z"
+      },
+      "ForceVectors.ForceDirDescription": {
+        "table": "ForceVectors",
+        "field": "ForceDirDescription",
+        "kind": "formula",
+        "rule": "Force vector का “force dir description” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “towards”, यदि “attractive raw” ध्वज लगा हुआ है;\n2. अन्य सभी स्थितियों में, “away-from”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Force vector का “force dir description” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“towards”",
+              "when": {
+                "kind": "leaf",
+                "text": "“attractive raw” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "“away-from”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि is attractive raw, तो \"towards\", अन्यथा \"away-from\""
+      },
+      "ElectricFieldPoints.Name": {
+        "table": "ElectricFieldPoints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "electric field point का “name” उसके “field point ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "FieldPointId",
+            "label": "field point ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Field point ID"
+      },
+      "ElectricFieldPoints.dX": {
+        "table": "ElectricFieldPoints",
+        "field": "dX",
+        "kind": "formula",
+        "rule": "electric field point का “d x” obs x घटा src x के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsX",
+            "label": "obs x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcX",
+            "label": "src x"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs x घटा src x"
+      },
+      "ElectricFieldPoints.dY": {
+        "table": "ElectricFieldPoints",
+        "field": "dY",
+        "kind": "formula",
+        "rule": "electric field point का “d y” obs y घटा src y के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsY",
+            "label": "obs y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcY",
+            "label": "src y"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs y घटा src y"
+      },
+      "ElectricFieldPoints.dZ": {
+        "table": "ElectricFieldPoints",
+        "field": "dZ",
+        "kind": "formula",
+        "rule": "electric field point का “d z” obs z घटा src z के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsZ",
+            "label": "obs z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcZ",
+            "label": "src z"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs z घटा src z"
+      },
+      "ElectricFieldPoints.DistanceSquared": {
+        "table": "ElectricFieldPoints",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "electric field point का “distance squared” d x गुणा d x जोड़ d y गुणा d y जोड़ d z गुणा d z के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          }
+        ],
+        "structure": null,
+        "plain": "((d x गुणा d x) जोड़ (d y गुणा d y)) जोड़ (d z गुणा d z)"
+      },
+      "ElectricFieldPoints.Distance": {
+        "table": "ElectricFieldPoints",
+        "field": "Distance",
+        "kind": "formula",
+        "rule": "electric field point का “distance” distance squared का वर्गमूल के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ElectricFieldPoints.EFieldMagnitude": {
+        "table": "ElectricFieldPoints",
+        "field": "EFieldMagnitude",
+        "kind": "formula",
+        "rule": "electric field point का “e field magnitude” coulomb k गुणा source q का निरपेक्ष मान भाग distance squared के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k गुणा source q का निरपेक्ष मान) भाग distance squared"
+      },
+      "ElectricFieldPoints.QSign": {
+        "table": "ElectricFieldPoints",
+        "field": "QSign",
+        "kind": "formula",
+        "rule": "Electric field point का “q sign” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. 1, यदि source q 0 से अधिक है;\n2. अन्य सभी स्थितियों में, 1 का ऋणात्मक मान।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Electric field point का “q sign” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "source q 0 से अधिक है"
+              }
+            },
+            {
+              "value": "1 का ऋणात्मक मान",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि source q 0 से अधिक है, तो 1, अन्यथा ऋण 1"
+      },
+      "ElectricFieldPoints.EX": {
+        "table": "ElectricFieldPoints",
+        "field": "EX",
+        "kind": "formula",
+        "rule": "electric field point का “EX” e field magnitude गुणा q sign गुणा d x भाग distance के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude गुणा q sign) गुणा d x) भाग distance"
+      },
+      "ElectricFieldPoints.EY": {
+        "table": "ElectricFieldPoints",
+        "field": "EY",
+        "kind": "formula",
+        "rule": "electric field point का “EY” e field magnitude गुणा q sign गुणा d y भाग distance के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude गुणा q sign) गुणा d y) भाग distance"
+      },
+      "ElectricFieldPoints.EZ": {
+        "table": "ElectricFieldPoints",
+        "field": "EZ",
+        "kind": "formula",
+        "rule": "electric field point का “EZ” e field magnitude गुणा q sign गुणा d z भाग distance के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude गुणा q sign) गुणा d z) भाग distance"
+      },
+      "InvariantChecks.Name": {
+        "table": "InvariantChecks",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "invariant check का “name” उसके “invariant ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "InvariantId",
+            "label": "invariant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Invariant ID"
+      },
+      "SystemSummary.Name": {
+        "table": "SystemSummary",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "system summary का “name” उसके “summary ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SummaryId",
+            "label": "summary ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summary ID"
+      },
+      "SystemSummary.SystemName": {
+        "table": "SystemSummary",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "system summary का “system name” LOOKUP(SystemId, Systems[SystemId], Systems[Name]) का मान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "SystemSummary.ChargeCount": {
+        "table": "SystemSummary",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "system summary का “charge count” system summary से संबंधित “charges” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “charges” की संख्या, जिनका system ID system ID है"
+      },
+      "SystemSummary.InteractionCount": {
+        "table": "SystemSummary",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "system summary का “interaction count” system summary से संबंधित “charge interactions” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “charge interactions” की संख्या, जिनका system ID system ID है"
+      },
+      "SystemSummary.AttractiveCount": {
+        "table": "SystemSummary",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "system summary का “attractive count” system summary के उन “charge interactions” की संख्या, जो “attractive” हैं है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “charge interactions” की संख्या, जिनका system ID system ID है और is attractive true() है"
+      },
+      "SystemSummary.RepulsiveCount": {
+        "table": "SystemSummary",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "system summary का “repulsive count” system summary के उन “charge interactions” की संख्या, जो “repulsive” हैं है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “charge interactions” की संख्या, जिनका system ID system ID है और is repulsive true() है"
+      },
+      "SystemSummary.TotalCharge": {
+        "table": "SystemSummary",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "system summary का “total charge” system summary से संबंधित “charges” पर कुल “charge value” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “charges” पर योग charge value, जिनका system ID system ID है"
+      },
+      "SystemSummary.IsNeutral": {
+        "table": "SystemSummary",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "यदि ABS(TotalCharge) < 1e-30 का मान, तो system summary “neutral” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "SystemSummary.MaxForceMagnitude": {
+        "table": "SystemSummary",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "system summary का “max force magnitude” system summary से संबंधित “charge interactions” पर अधिकतम “force magnitude” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “charge interactions” पर अधिकतम force magnitude, जिनका system ID system ID है"
+      },
+      "SystemSummary.MinDistanceMeters": {
+        "table": "SystemSummary",
+        "field": "MinDistanceMeters",
+        "kind": "rollup",
+        "rule": "system summary का “min distance meters” system summary से संबंधित “charge interactions” पर न्यूनतम “distance meters” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “charge interactions” पर न्यूनतम distance meters, जिनका system ID system ID है"
+      },
+      "SystemSummary.AllAttractive": {
+        "table": "SystemSummary",
+        "field": "AllAttractive",
+        "kind": "formula",
+        "rule": "यदि attractive count interaction count है, तो system summary “all attractive” के रूप में दर्ज किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Attractive count interaction count के बराबर है"
+      },
+      "SystemSummary.AllRepulsive": {
+        "table": "SystemSummary",
+        "field": "AllRepulsive",
+        "kind": "formula",
+        "rule": "यदि repulsive count interaction count है, तो system summary “all repulsive” के रूप में दर्ज किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Repulsive count interaction count के बराबर है"
+      },
+      "SystemSummary.HasMixedInteractions": {
+        "table": "SystemSummary",
+        "field": "HasMixedInteractions",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: attractive count 0 से अधिक है और repulsive count 0 से अधिक है, तो system summary “mixed interactions” रखने वाला माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "system summary “mixed interactions” रखने वाला माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "attractive count 0 से अधिक है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "repulsive count 0 से अधिक है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Attractive count 0 से अधिक है और repulsive count 0 से अधिक है"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Loops": [
+        "loop को title और status रखना **अनिवार्य** है।"
+      ],
+      "PhysicsConstants": [
+        "physics constant को name, symbol, value और units रखना **अनिवार्य** है।"
+      ],
+      "Particles": [
+        "particle को name, canonical charge और canonical mass रखना **अनिवार्य** है।"
+      ],
+      "Charges": [
+        "charge को name, system ID, charge value, position x, position y और position z रखना **अनिवार्य** है।"
+      ],
+      "Systems": [
+        "system को name रखना, तथा यह कि वह “synthetic” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ],
+      "ChargeInteractions": [
+        "charge interaction को system ID, charge1 ID, charge2 ID, q1, q2, x1, y1, z1, x2, y2, z2 और coulomb k रखना **अनिवार्य** है।"
+      ],
+      "ForceVectors": [
+        "force vector को interaction ID, force magnitude raw, DX, DY, DZ और dist raw रखना, तथा यह कि वह “attractive raw” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ],
+      "ElectricFieldPoints": [
+        "electric field point को system ID, source charge ID, observation label, obs x, obs y, obs z, coulomb k, source q, src x, src y और src z रखना **अनिवार्य** है।"
+      ],
+      "InvariantChecks": [
+        "invariant check को algebraic statement, natural language और severity रखना **अनिवार्य** है।"
+      ],
+      "SystemSummary": [
+        "system summary को system ID रखना **अनिवार्य** है।"
+      ]
+    },
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "Loops": "loop",
+      "PhysicsConstants": "physics constant",
+      "Particles": "particle",
+      "Charges": "charge",
+      "Systems": "system",
+      "ChargeInteractions": "charge interaction",
+      "ForceVectors": "force vector",
+      "ElectricFieldPoints": "electric field point",
+      "InvariantChecks": "invariant check",
+      "SystemSummary": "system summary"
+    }
+  },
+  "id": {
+    "fields": {
+      "Loops.Name": {
+        "table": "Loops",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap loop, name sama dengan loop ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loops",
+            "field": "LoopId",
+            "label": "loop ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Loop ID"
+      },
+      "Particles.ChargeSign": {
+        "table": "Particles",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "Untuk setiap particle, charge sign ditentukan menurut urutan prioritas berikut:\n1. “positive”, jika canonical charge lebih dari 0;\n2. “negative”, jika canonical charge kurang dari 0;\n3. dalam semua kasus lainnya, “neutral”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Particles",
+            "field": "CanonicalCharge",
+            "label": "canonical charge"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap particle, charge sign ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“positive”",
+              "when": {
+                "kind": "leaf",
+                "text": "canonical charge lebih dari 0"
+              }
+            },
+            {
+              "value": "“negative”",
+              "when": {
+                "kind": "leaf",
+                "text": "canonical charge kurang dari 0"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika canonical charge lebih dari 0 maka \"positive\", selain itu jika canonical charge kurang dari 0 maka \"negative\", selain itu \"neutral\""
+      },
+      "Charges.ChargeSign": {
+        "table": "Charges",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "Untuk setiap charge, charge sign ditentukan menurut urutan prioritas berikut:\n1. “positive”, jika charge value lebih dari 0;\n2. “negative”, jika charge value kurang dari 0;\n3. dalam semua kasus lainnya, “neutral”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap charge, charge sign ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“positive”",
+              "when": {
+                "kind": "leaf",
+                "text": "charge value lebih dari 0"
+              }
+            },
+            {
+              "value": "“negative”",
+              "when": {
+                "kind": "leaf",
+                "text": "charge value kurang dari 0"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika charge value lebih dari 0 maka \"positive\", selain itu jika charge value kurang dari 0 maka \"negative\", selain itu \"neutral\""
+      },
+      "Charges.ChargeMagnitude": {
+        "table": "Charges",
+        "field": "ChargeMagnitude",
+        "kind": "formula",
+        "rule": "Untuk setiap charge, charge magnitude dihitung sebagai nilai mutlak dari charge value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": null,
+        "plain": "Nilai mutlak dari charge value"
+      },
+      "Charges.SystemName": {
+        "table": "Charges",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "Untuk setiap charge, system name adalah nilai dari LOOKUP(SystemId, Systems[SystemId], Systems[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "Charges.ParticleName": {
+        "table": "Charges",
+        "field": "ParticleName",
+        "kind": "lookup",
+        "rule": "Untuk setiap charge, particle name adalah nilai dari LOOKUP(ParticleId, Particles[ParticleId], Particles[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ParticleId",
+            "label": "particle ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{ParticleId}}, Particles[ParticleId], Particles[Name])"
+      },
+      "Charges.InteractionCount": {
+        "table": "Charges",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap charge, interaction count adalah jumlah charge interactions yang terkait dengan charge tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Charge1Id",
+            "label": "charge1 ID"
+          },
+          {
+            "table": "Charges",
+            "field": "ChargeId",
+            "label": "charge ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah charge interactions dengan syarat charge1 ID adalah charge ID"
+      },
+      "Systems.ChargeCount": {
+        "table": "Systems",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap system, charge count adalah jumlah charges yang terkait dengan system tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah charges dengan syarat system ID adalah system ID"
+      },
+      "Systems.InteractionCount": {
+        "table": "Systems",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap system, interaction count adalah jumlah charge interactions yang terkait dengan system tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah charge interactions dengan syarat system ID adalah system ID"
+      },
+      "Systems.AttractiveCount": {
+        "table": "Systems",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap system, attractive count adalah jumlah charge interactions dari system tersebut yang tergolong “attractive”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah charge interactions dengan syarat system ID adalah system ID dan is attractive adalah true()"
+      },
+      "Systems.RepulsiveCount": {
+        "table": "Systems",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap system, repulsive count adalah jumlah charge interactions dari system tersebut yang tergolong “repulsive”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah charge interactions dengan syarat system ID adalah system ID dan is repulsive adalah true()"
+      },
+      "Systems.TotalCharge": {
+        "table": "Systems",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "Untuk setiap system, total charge adalah nilai total charge value pada seluruh charges yang terkait dengan system tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total charge value pada semua charges dengan syarat system ID adalah system ID"
+      },
+      "Systems.IsNeutral": {
+        "table": "Systems",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "Setiap system dianggap “neutral” jika nilai dari ABS(TotalCharge) < 1e-30.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Systems",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "Systems.MaxForceMagnitude": {
+        "table": "Systems",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "Untuk setiap system, max force magnitude adalah nilai maksimum force magnitude pada seluruh charge interactions yang terkait dengan system tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Nilai maksimum force magnitude pada semua charge interactions dengan syarat system ID adalah system ID"
+      },
+      "ChargeInteractions.Name": {
+        "table": "ChargeInteractions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap charge interaction, name sama dengan interaction ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "InteractionId",
+            "label": "interaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction ID"
+      },
+      "ChargeInteractions.DeltaX": {
+        "table": "ChargeInteractions",
+        "field": "DeltaX",
+        "kind": "formula",
+        "rule": "Untuk setiap charge interaction, delta x dihitung sebagai x2 dikurangi x1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "X2",
+            "label": "x2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "X1",
+            "label": "x1"
+          }
+        ],
+        "structure": null,
+        "plain": "X2 dikurangi x1"
+      },
+      "ChargeInteractions.DeltaY": {
+        "table": "ChargeInteractions",
+        "field": "DeltaY",
+        "kind": "formula",
+        "rule": "Untuk setiap charge interaction, delta y dihitung sebagai y2 dikurangi y1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Y2",
+            "label": "y2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Y1",
+            "label": "y1"
+          }
+        ],
+        "structure": null,
+        "plain": "Y2 dikurangi y1"
+      },
+      "ChargeInteractions.DeltaZ": {
+        "table": "ChargeInteractions",
+        "field": "DeltaZ",
+        "kind": "formula",
+        "rule": "Untuk setiap charge interaction, delta z dihitung sebagai z2 dikurangi z1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Z2",
+            "label": "z2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Z1",
+            "label": "z1"
+          }
+        ],
+        "structure": null,
+        "plain": "Z2 dikurangi z1"
+      },
+      "ChargeInteractions.DistanceSquared": {
+        "table": "ChargeInteractions",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "Untuk setiap charge interaction, distance squared dihitung sebagai delta x dikali delta x ditambah delta y dikali delta y ditambah delta z dikali delta z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaX",
+            "label": "delta x"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaY",
+            "label": "delta y"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaZ",
+            "label": "delta z"
+          }
+        ],
+        "structure": null,
+        "plain": "((delta x dikali delta x) ditambah (delta y dikali delta y)) ditambah (delta z dikali delta z)"
+      },
+      "ChargeInteractions.DistanceMeters": {
+        "table": "ChargeInteractions",
+        "field": "DistanceMeters",
+        "kind": "formula",
+        "rule": "Untuk setiap charge interaction, distance meters dihitung sebagai akar kuadrat dari distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ChargeInteractions.DistancePicometers": {
+        "table": "ChargeInteractions",
+        "field": "DistancePicometers",
+        "kind": "formula",
+        "rule": "Untuk setiap charge interaction, distance picometers dihitung sebagai distance meters dikali 1000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance meters dikali 1,000,000,000,000"
+      },
+      "ChargeInteractions.ChargeProduct": {
+        "table": "ChargeInteractions",
+        "field": "ChargeProduct",
+        "kind": "formula",
+        "rule": "Untuk setiap charge interaction, charge product dihitung sebagai q1 dikali q2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Q1",
+            "label": "q1"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Q2",
+            "label": "q2"
+          }
+        ],
+        "structure": null,
+        "plain": "Q1 dikali q2"
+      },
+      "ChargeInteractions.ForceMagnitude": {
+        "table": "ChargeInteractions",
+        "field": "ForceMagnitude",
+        "kind": "formula",
+        "rule": "Untuk setiap charge interaction, force magnitude dihitung sebagai coulomb k dikali nilai mutlak dari charge product dibagi distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k dikali nilai mutlak dari charge product) dibagi distance squared"
+      },
+      "ChargeInteractions.IsAttractive": {
+        "table": "ChargeInteractions",
+        "field": "IsAttractive",
+        "kind": "formula",
+        "rule": "Setiap charge interaction dianggap “attractive” jika charge product kurang dari 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product kurang dari 0"
+      },
+      "ChargeInteractions.IsRepulsive": {
+        "table": "ChargeInteractions",
+        "field": "IsRepulsive",
+        "kind": "formula",
+        "rule": "Setiap charge interaction dianggap “repulsive” jika charge product lebih dari 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product lebih dari 0"
+      },
+      "ChargeInteractions.InteractionType": {
+        "table": "ChargeInteractions",
+        "field": "InteractionType",
+        "kind": "formula",
+        "rule": "Untuk setiap charge interaction, interaction type ditentukan menurut urutan prioritas berikut:\n1. “attractive”, jika penanda “attractive” aktif;\n2. “repulsive”, jika penanda “repulsive” aktif;\n3. dalam semua kasus lainnya, “neutral”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap charge interaction, interaction type ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“attractive”",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “attractive” aktif"
+              }
+            },
+            {
+              "value": "“repulsive”",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “repulsive” aktif"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika is attractive maka \"attractive\", selain itu jika is repulsive maka \"repulsive\", selain itu \"neutral\""
+      },
+      "ChargeInteractions.ForceInAttoNewtons": {
+        "table": "ChargeInteractions",
+        "field": "ForceInAttoNewtons",
+        "kind": "formula",
+        "rule": "Untuk setiap charge interaction, force in atto newtons dihitung sebagai force magnitude dikali 1000000000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          }
+        ],
+        "structure": null,
+        "plain": "Force magnitude dikali 1,000,000,000,000,000,000"
+      },
+      "ForceVectors.Name": {
+        "table": "ForceVectors",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap force vector, name sama dengan force vector ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceVectorId",
+            "label": "force vector ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Force vector ID"
+      },
+      "ForceVectors.UnitX": {
+        "table": "ForceVectors",
+        "field": "UnitX",
+        "kind": "formula",
+        "rule": "Untuk setiap force vector, unit x ditentukan menurut urutan prioritas berikut:\n1. 0, jika dist raw adalah 0;\n2. dalam semua kasus lainnya, DX dibagi dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DX",
+            "label": "DX"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap force vector, unit x ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "dist raw adalah 0"
+              }
+            },
+            {
+              "value": "DX dibagi dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika dist raw sama dengan 0 maka 0, selain itu (DX dibagi dist raw)"
+      },
+      "ForceVectors.UnitY": {
+        "table": "ForceVectors",
+        "field": "UnitY",
+        "kind": "formula",
+        "rule": "Untuk setiap force vector, unit y ditentukan menurut urutan prioritas berikut:\n1. 0, jika dist raw adalah 0;\n2. dalam semua kasus lainnya, DY dibagi dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DY",
+            "label": "DY"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap force vector, unit y ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "dist raw adalah 0"
+              }
+            },
+            {
+              "value": "DY dibagi dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika dist raw sama dengan 0 maka 0, selain itu (DY dibagi dist raw)"
+      },
+      "ForceVectors.UnitZ": {
+        "table": "ForceVectors",
+        "field": "UnitZ",
+        "kind": "formula",
+        "rule": "Untuk setiap force vector, unit z ditentukan menurut urutan prioritas berikut:\n1. 0, jika dist raw adalah 0;\n2. dalam semua kasus lainnya, DZ dibagi dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DZ",
+            "label": "DZ"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap force vector, unit z ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "dist raw adalah 0"
+              }
+            },
+            {
+              "value": "DZ dibagi dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika dist raw sama dengan 0 maka 0, selain itu (DZ dibagi dist raw)"
+      },
+      "ForceVectors.SignFactor": {
+        "table": "ForceVectors",
+        "field": "SignFactor",
+        "kind": "formula",
+        "rule": "Untuk setiap force vector, sign factor ditentukan menurut urutan prioritas berikut:\n1. nilai negatif dari 1, jika penanda “attractive raw” aktif;\n2. dalam semua kasus lainnya, 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap force vector, sign factor ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "nilai negatif dari 1",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “attractive raw” aktif"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika is attractive raw maka negatif 1, selain itu 1"
+      },
+      "ForceVectors.FX": {
+        "table": "ForceVectors",
+        "field": "FX",
+        "kind": "formula",
+        "rule": "Untuk setiap force vector, FX dihitung sebagai force magnitude raw dikali sign factor dikali unit x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitX",
+            "label": "unit x"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw dikali sign factor) dikali unit x"
+      },
+      "ForceVectors.FY": {
+        "table": "ForceVectors",
+        "field": "FY",
+        "kind": "formula",
+        "rule": "Untuk setiap force vector, FY dihitung sebagai force magnitude raw dikali sign factor dikali unit y.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitY",
+            "label": "unit y"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw dikali sign factor) dikali unit y"
+      },
+      "ForceVectors.FZ": {
+        "table": "ForceVectors",
+        "field": "FZ",
+        "kind": "formula",
+        "rule": "Untuk setiap force vector, FZ dihitung sebagai force magnitude raw dikali sign factor dikali unit z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitZ",
+            "label": "unit z"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw dikali sign factor) dikali unit z"
+      },
+      "ForceVectors.ForceDirDescription": {
+        "table": "ForceVectors",
+        "field": "ForceDirDescription",
+        "kind": "formula",
+        "rule": "Untuk setiap force vector, force dir description ditentukan menurut urutan prioritas berikut:\n1. “towards”, jika penanda “attractive raw” aktif;\n2. dalam semua kasus lainnya, “away-from”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap force vector, force dir description ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“towards”",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “attractive raw” aktif"
+              }
+            },
+            {
+              "value": "“away-from”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika is attractive raw maka \"towards\", selain itu \"away-from\""
+      },
+      "ElectricFieldPoints.Name": {
+        "table": "ElectricFieldPoints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap electric field point, name sama dengan field point ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "FieldPointId",
+            "label": "field point ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Field point ID"
+      },
+      "ElectricFieldPoints.dX": {
+        "table": "ElectricFieldPoints",
+        "field": "dX",
+        "kind": "formula",
+        "rule": "Untuk setiap electric field point, d x dihitung sebagai obs x dikurangi src x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsX",
+            "label": "obs x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcX",
+            "label": "src x"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs x dikurangi src x"
+      },
+      "ElectricFieldPoints.dY": {
+        "table": "ElectricFieldPoints",
+        "field": "dY",
+        "kind": "formula",
+        "rule": "Untuk setiap electric field point, d y dihitung sebagai obs y dikurangi src y.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsY",
+            "label": "obs y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcY",
+            "label": "src y"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs y dikurangi src y"
+      },
+      "ElectricFieldPoints.dZ": {
+        "table": "ElectricFieldPoints",
+        "field": "dZ",
+        "kind": "formula",
+        "rule": "Untuk setiap electric field point, d z dihitung sebagai obs z dikurangi src z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsZ",
+            "label": "obs z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcZ",
+            "label": "src z"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs z dikurangi src z"
+      },
+      "ElectricFieldPoints.DistanceSquared": {
+        "table": "ElectricFieldPoints",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "Untuk setiap electric field point, distance squared dihitung sebagai d x dikali d x ditambah d y dikali d y ditambah d z dikali d z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          }
+        ],
+        "structure": null,
+        "plain": "((d x dikali d x) ditambah (d y dikali d y)) ditambah (d z dikali d z)"
+      },
+      "ElectricFieldPoints.Distance": {
+        "table": "ElectricFieldPoints",
+        "field": "Distance",
+        "kind": "formula",
+        "rule": "Untuk setiap electric field point, distance dihitung sebagai akar kuadrat dari distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ElectricFieldPoints.EFieldMagnitude": {
+        "table": "ElectricFieldPoints",
+        "field": "EFieldMagnitude",
+        "kind": "formula",
+        "rule": "Untuk setiap electric field point, e field magnitude dihitung sebagai coulomb k dikali nilai mutlak dari source q dibagi distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k dikali nilai mutlak dari source q) dibagi distance squared"
+      },
+      "ElectricFieldPoints.QSign": {
+        "table": "ElectricFieldPoints",
+        "field": "QSign",
+        "kind": "formula",
+        "rule": "Untuk setiap electric field point, q sign ditentukan menurut urutan prioritas berikut:\n1. 1, jika source q lebih dari 0;\n2. dalam semua kasus lainnya, nilai negatif dari 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap electric field point, q sign ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "source q lebih dari 0"
+              }
+            },
+            {
+              "value": "nilai negatif dari 1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika source q lebih dari 0 maka 1, selain itu negatif 1"
+      },
+      "ElectricFieldPoints.EX": {
+        "table": "ElectricFieldPoints",
+        "field": "EX",
+        "kind": "formula",
+        "rule": "Untuk setiap electric field point, EX dihitung sebagai e field magnitude dikali q sign dikali d x dibagi distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude dikali q sign) dikali d x) dibagi distance"
+      },
+      "ElectricFieldPoints.EY": {
+        "table": "ElectricFieldPoints",
+        "field": "EY",
+        "kind": "formula",
+        "rule": "Untuk setiap electric field point, EY dihitung sebagai e field magnitude dikali q sign dikali d y dibagi distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude dikali q sign) dikali d y) dibagi distance"
+      },
+      "ElectricFieldPoints.EZ": {
+        "table": "ElectricFieldPoints",
+        "field": "EZ",
+        "kind": "formula",
+        "rule": "Untuk setiap electric field point, EZ dihitung sebagai e field magnitude dikali q sign dikali d z dibagi distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude dikali q sign) dikali d z) dibagi distance"
+      },
+      "InvariantChecks.Name": {
+        "table": "InvariantChecks",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap invariant check, name sama dengan invariant ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "InvariantId",
+            "label": "invariant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Invariant ID"
+      },
+      "SystemSummary.Name": {
+        "table": "SystemSummary",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap system summary, name sama dengan summary ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SummaryId",
+            "label": "summary ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summary ID"
+      },
+      "SystemSummary.SystemName": {
+        "table": "SystemSummary",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "Untuk setiap system summary, system name adalah nilai dari LOOKUP(SystemId, Systems[SystemId], Systems[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "SystemSummary.ChargeCount": {
+        "table": "SystemSummary",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap system summary, charge count adalah jumlah charges yang terkait dengan system summary tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah charges dengan syarat system ID adalah system ID"
+      },
+      "SystemSummary.InteractionCount": {
+        "table": "SystemSummary",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap system summary, interaction count adalah jumlah charge interactions yang terkait dengan system summary tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah charge interactions dengan syarat system ID adalah system ID"
+      },
+      "SystemSummary.AttractiveCount": {
+        "table": "SystemSummary",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap system summary, attractive count adalah jumlah charge interactions dari system summary tersebut yang tergolong “attractive”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah charge interactions dengan syarat system ID adalah system ID dan is attractive adalah true()"
+      },
+      "SystemSummary.RepulsiveCount": {
+        "table": "SystemSummary",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap system summary, repulsive count adalah jumlah charge interactions dari system summary tersebut yang tergolong “repulsive”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah charge interactions dengan syarat system ID adalah system ID dan is repulsive adalah true()"
+      },
+      "SystemSummary.TotalCharge": {
+        "table": "SystemSummary",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "Untuk setiap system summary, total charge adalah nilai total charge value pada seluruh charges yang terkait dengan system summary tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total charge value pada semua charges dengan syarat system ID adalah system ID"
+      },
+      "SystemSummary.IsNeutral": {
+        "table": "SystemSummary",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "Setiap system summary dianggap “neutral” jika nilai dari ABS(TotalCharge) < 1e-30.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "SystemSummary.MaxForceMagnitude": {
+        "table": "SystemSummary",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "Untuk setiap system summary, max force magnitude adalah nilai maksimum force magnitude pada seluruh charge interactions yang terkait dengan system summary tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Nilai maksimum force magnitude pada semua charge interactions dengan syarat system ID adalah system ID"
+      },
+      "SystemSummary.MinDistanceMeters": {
+        "table": "SystemSummary",
+        "field": "MinDistanceMeters",
+        "kind": "rollup",
+        "rule": "Untuk setiap system summary, min distance meters adalah nilai minimum distance meters pada seluruh charge interactions yang terkait dengan system summary tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Nilai minimum distance meters pada semua charge interactions dengan syarat system ID adalah system ID"
+      },
+      "SystemSummary.AllAttractive": {
+        "table": "SystemSummary",
+        "field": "AllAttractive",
+        "kind": "formula",
+        "rule": "Setiap system summary ditandai sebagai “all attractive” jika attractive count adalah interaction count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Attractive count sama dengan interaction count"
+      },
+      "SystemSummary.AllRepulsive": {
+        "table": "SystemSummary",
+        "field": "AllRepulsive",
+        "kind": "formula",
+        "rule": "Setiap system summary ditandai sebagai “all repulsive” jika repulsive count adalah interaction count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Repulsive count sama dengan interaction count"
+      },
+      "SystemSummary.HasMixedInteractions": {
+        "table": "SystemSummary",
+        "field": "HasMixedInteractions",
+        "kind": "formula",
+        "rule": "Setiap system summary dianggap memiliki “mixed interactions” jika semua kondisi berikut terpenuhi: attractive count lebih dari 0 dan repulsive count lebih dari 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap system summary dianggap memiliki “mixed interactions” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "attractive count lebih dari 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "repulsive count lebih dari 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Attractive count lebih dari 0 dan repulsive count lebih dari 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Loops": [
+        "Setiap loop **harus** memiliki title dan status."
+      ],
+      "PhysicsConstants": [
+        "Setiap physics constant **harus** memiliki name, symbol, value, dan units."
+      ],
+      "Particles": [
+        "Setiap particle **harus** memiliki name, canonical charge, dan canonical mass."
+      ],
+      "Charges": [
+        "Setiap charge **harus** memiliki name, system ID, charge value, position x, position y, dan position z."
+      ],
+      "Systems": [
+        "Setiap system **harus** memiliki name, serta menyatakan apakah tergolong “synthetic”."
+      ],
+      "ChargeInteractions": [
+        "Setiap charge interaction **harus** memiliki system ID, charge1 ID, charge2 ID, q1, q2, x1, y1, z1, x2, y2, z2, dan coulomb k."
+      ],
+      "ForceVectors": [
+        "Setiap force vector **harus** memiliki interaction ID, force magnitude raw, DX, DY, DZ, dan dist raw, serta menyatakan apakah tergolong “attractive raw”."
+      ],
+      "ElectricFieldPoints": [
+        "Setiap electric field point **harus** memiliki system ID, source charge ID, observation label, obs x, obs y, obs z, coulomb k, source q, src x, src y, dan src z."
+      ],
+      "InvariantChecks": [
+        "Setiap invariant check **harus** memiliki algebraic statement, natural language, dan severity."
+      ],
+      "SystemSummary": [
+        "Setiap system summary **harus** memiliki system ID."
+      ]
+    },
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Loops": "loop",
+      "PhysicsConstants": "physics constant",
+      "Particles": "particle",
+      "Charges": "charge",
+      "Systems": "system",
+      "ChargeInteractions": "charge interaction",
+      "ForceVectors": "force vector",
+      "ElectricFieldPoints": "electric field point",
+      "InvariantChecks": "invariant check",
+      "SystemSummary": "system summary"
+    }
+  },
+  "it": {
+    "fields": {
+      "Loops.Name": {
+        "table": "Loops",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un loop: name è uguale a loop ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loops",
+            "field": "LoopId",
+            "label": "loop ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Loop ID"
+      },
+      "Particles.ChargeSign": {
+        "table": "Particles",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "Il campo “charge sign” del particle è determinato secondo la seguente priorità:\n1. «positive», se il canonical charge è maggiore di 0;\n2. «negative», se il canonical charge è minore di 0;\n3. in tutti gli altri casi, «neutral».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Particles",
+            "field": "CanonicalCharge",
+            "label": "canonical charge"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “charge sign” del particle è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«positive»",
+              "when": {
+                "kind": "leaf",
+                "text": "il canonical charge è maggiore di 0"
+              }
+            },
+            {
+              "value": "«negative»",
+              "when": {
+                "kind": "leaf",
+                "text": "il canonical charge è minore di 0"
+              }
+            },
+            {
+              "value": "«neutral»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se canonical charge è maggiore di 0, allora \"positive\", altrimenti se canonical charge è minore di 0, allora \"negative\", altrimenti \"neutral\""
+      },
+      "Charges.ChargeSign": {
+        "table": "Charges",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "Il campo “charge sign” del charge è determinato secondo la seguente priorità:\n1. «positive», se il charge value è maggiore di 0;\n2. «negative», se il charge value è minore di 0;\n3. in tutti gli altri casi, «neutral».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “charge sign” del charge è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«positive»",
+              "when": {
+                "kind": "leaf",
+                "text": "il charge value è maggiore di 0"
+              }
+            },
+            {
+              "value": "«negative»",
+              "when": {
+                "kind": "leaf",
+                "text": "il charge value è minore di 0"
+              }
+            },
+            {
+              "value": "«neutral»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se charge value è maggiore di 0, allora \"positive\", altrimenti se charge value è minore di 0, allora \"negative\", altrimenti \"neutral\""
+      },
+      "Charges.ChargeMagnitude": {
+        "table": "Charges",
+        "field": "ChargeMagnitude",
+        "kind": "formula",
+        "rule": "Un charge: charge magnitude è calcolato come il valore assoluto di il charge value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": null,
+        "plain": "Il valore assoluto di charge value"
+      },
+      "Charges.SystemName": {
+        "table": "Charges",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "Un charge: system name è il valore di LOOKUP(SystemId, Systems[SystemId], Systems[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "Charges.ParticleName": {
+        "table": "Charges",
+        "field": "ParticleName",
+        "kind": "lookup",
+        "rule": "Un charge: particle name è il valore di LOOKUP(ParticleId, Particles[ParticleId], Particles[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ParticleId",
+            "label": "particle ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{ParticleId}}, Particles[ParticleId], Particles[Name])"
+      },
+      "Charges.InteractionCount": {
+        "table": "Charges",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Un charge: interaction count è il numero di charge interactions collegati a il charge.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Charge1Id",
+            "label": "charge1 ID"
+          },
+          {
+            "table": "Charges",
+            "field": "ChargeId",
+            "label": "charge ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei charge interactions il cui charge1 ID è charge ID"
+      },
+      "Systems.ChargeCount": {
+        "table": "Systems",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "Un system: charge count è il numero di charges collegati a il system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei charges il cui system ID è system ID"
+      },
+      "Systems.InteractionCount": {
+        "table": "Systems",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Un system: interaction count è il numero di charge interactions collegati a il system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei charge interactions il cui system ID è system ID"
+      },
+      "Systems.AttractiveCount": {
+        "table": "Systems",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "Un system: attractive count è il numero di charge interactions del system che sono attractive.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei charge interactions il cui system ID è system ID e is attractive è true()"
+      },
+      "Systems.RepulsiveCount": {
+        "table": "Systems",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "Un system: repulsive count è il numero di charge interactions del system che sono repulsive.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei charge interactions il cui system ID è system ID e is repulsive è true()"
+      },
+      "Systems.TotalCharge": {
+        "table": "Systems",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "Un system: total charge è il totale di charge value tra i charges collegati a il system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di charge value su tutti i charges il cui system ID è system ID"
+      },
+      "Systems.IsNeutral": {
+        "table": "Systems",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "Un system è considerato neutral se il valore di ABS(TotalCharge) < 1e-30.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Systems",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "Systems.MaxForceMagnitude": {
+        "table": "Systems",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "Un system: max force magnitude è il valore massimo di force magnitude tra i charge interactions collegati a il system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Valore massimo di force magnitude su tutti i charge interactions il cui system ID è system ID"
+      },
+      "ChargeInteractions.Name": {
+        "table": "ChargeInteractions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un charge interaction: name è uguale a interaction ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "InteractionId",
+            "label": "interaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction ID"
+      },
+      "ChargeInteractions.DeltaX": {
+        "table": "ChargeInteractions",
+        "field": "DeltaX",
+        "kind": "formula",
+        "rule": "Un charge interaction: delta x è calcolato come il x2 meno il x1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "X2",
+            "label": "x2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "X1",
+            "label": "x1"
+          }
+        ],
+        "structure": null,
+        "plain": "X2 meno x1"
+      },
+      "ChargeInteractions.DeltaY": {
+        "table": "ChargeInteractions",
+        "field": "DeltaY",
+        "kind": "formula",
+        "rule": "Un charge interaction: delta y è calcolato come il y2 meno il y1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Y2",
+            "label": "y2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Y1",
+            "label": "y1"
+          }
+        ],
+        "structure": null,
+        "plain": "Y2 meno y1"
+      },
+      "ChargeInteractions.DeltaZ": {
+        "table": "ChargeInteractions",
+        "field": "DeltaZ",
+        "kind": "formula",
+        "rule": "Un charge interaction: delta z è calcolato come il z2 meno il z1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Z2",
+            "label": "z2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Z1",
+            "label": "z1"
+          }
+        ],
+        "structure": null,
+        "plain": "Z2 meno z1"
+      },
+      "ChargeInteractions.DistanceSquared": {
+        "table": "ChargeInteractions",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "Un charge interaction: distance squared è calcolato come il delta x per il delta x più il delta y per il delta y più il delta z per il delta z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaX",
+            "label": "delta x"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaY",
+            "label": "delta y"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaZ",
+            "label": "delta z"
+          }
+        ],
+        "structure": null,
+        "plain": "((delta x per delta x) più (delta y per delta y)) più (delta z per delta z)"
+      },
+      "ChargeInteractions.DistanceMeters": {
+        "table": "ChargeInteractions",
+        "field": "DistanceMeters",
+        "kind": "formula",
+        "rule": "Un charge interaction: distance meters è calcolato come la radice quadrata di il distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ChargeInteractions.DistancePicometers": {
+        "table": "ChargeInteractions",
+        "field": "DistancePicometers",
+        "kind": "formula",
+        "rule": "Un charge interaction: distance picometers è calcolato come il distance meters per 1000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance meters per 1,000,000,000,000"
+      },
+      "ChargeInteractions.ChargeProduct": {
+        "table": "ChargeInteractions",
+        "field": "ChargeProduct",
+        "kind": "formula",
+        "rule": "Un charge interaction: charge product è calcolato come il q1 per il q2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Q1",
+            "label": "q1"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Q2",
+            "label": "q2"
+          }
+        ],
+        "structure": null,
+        "plain": "Q1 per q2"
+      },
+      "ChargeInteractions.ForceMagnitude": {
+        "table": "ChargeInteractions",
+        "field": "ForceMagnitude",
+        "kind": "formula",
+        "rule": "Un charge interaction: force magnitude è calcolato come il coulomb k per il valore assoluto di il charge product diviso il distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k per il valore assoluto di charge product) diviso distance squared"
+      },
+      "ChargeInteractions.IsAttractive": {
+        "table": "ChargeInteractions",
+        "field": "IsAttractive",
+        "kind": "formula",
+        "rule": "Un charge interaction è considerato attractive se il charge product è minore di 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product è minore di 0"
+      },
+      "ChargeInteractions.IsRepulsive": {
+        "table": "ChargeInteractions",
+        "field": "IsRepulsive",
+        "kind": "formula",
+        "rule": "Un charge interaction è considerato repulsive se il charge product è maggiore di 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product è maggiore di 0"
+      },
+      "ChargeInteractions.InteractionType": {
+        "table": "ChargeInteractions",
+        "field": "InteractionType",
+        "kind": "formula",
+        "rule": "Il campo “interaction type” del charge interaction è determinato secondo la seguente priorità:\n1. «attractive», se l'indicatore “attractive” è attivo;\n2. «repulsive», se l'indicatore “repulsive” è attivo;\n3. in tutti gli altri casi, «neutral».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “interaction type” del charge interaction è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«attractive»",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “attractive” è attivo"
+              }
+            },
+            {
+              "value": "«repulsive»",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “repulsive” è attivo"
+              }
+            },
+            {
+              "value": "«neutral»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is attractive, allora \"attractive\", altrimenti se is repulsive, allora \"repulsive\", altrimenti \"neutral\""
+      },
+      "ChargeInteractions.ForceInAttoNewtons": {
+        "table": "ChargeInteractions",
+        "field": "ForceInAttoNewtons",
+        "kind": "formula",
+        "rule": "Un charge interaction: force in atto newtons è calcolato come il force magnitude per 1000000000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          }
+        ],
+        "structure": null,
+        "plain": "Force magnitude per 1,000,000,000,000,000,000"
+      },
+      "ForceVectors.Name": {
+        "table": "ForceVectors",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un force vector: name è uguale a force vector ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceVectorId",
+            "label": "force vector ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Force vector ID"
+      },
+      "ForceVectors.UnitX": {
+        "table": "ForceVectors",
+        "field": "UnitX",
+        "kind": "formula",
+        "rule": "Il campo “unit x” del force vector è determinato secondo la seguente priorità:\n1. 0, se il dist raw è 0;\n2. in tutti gli altri casi, il DX diviso il dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DX",
+            "label": "DX"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “unit x” del force vector è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "il dist raw è 0"
+              }
+            },
+            {
+              "value": "il DX diviso il dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se dist raw è uguale a 0, allora 0, altrimenti (DX diviso dist raw)"
+      },
+      "ForceVectors.UnitY": {
+        "table": "ForceVectors",
+        "field": "UnitY",
+        "kind": "formula",
+        "rule": "Il campo “unit y” del force vector è determinato secondo la seguente priorità:\n1. 0, se il dist raw è 0;\n2. in tutti gli altri casi, il DY diviso il dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DY",
+            "label": "DY"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “unit y” del force vector è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "il dist raw è 0"
+              }
+            },
+            {
+              "value": "il DY diviso il dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se dist raw è uguale a 0, allora 0, altrimenti (DY diviso dist raw)"
+      },
+      "ForceVectors.UnitZ": {
+        "table": "ForceVectors",
+        "field": "UnitZ",
+        "kind": "formula",
+        "rule": "Il campo “unit z” del force vector è determinato secondo la seguente priorità:\n1. 0, se il dist raw è 0;\n2. in tutti gli altri casi, il DZ diviso il dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DZ",
+            "label": "DZ"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “unit z” del force vector è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "il dist raw è 0"
+              }
+            },
+            {
+              "value": "il DZ diviso il dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se dist raw è uguale a 0, allora 0, altrimenti (DZ diviso dist raw)"
+      },
+      "ForceVectors.SignFactor": {
+        "table": "ForceVectors",
+        "field": "SignFactor",
+        "kind": "formula",
+        "rule": "Il campo “sign factor” del force vector è determinato secondo la seguente priorità:\n1. l'opposto di 1, se l'indicatore “attractive raw” è attivo;\n2. in tutti gli altri casi, 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “sign factor” del force vector è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "l'opposto di 1",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “attractive raw” è attivo"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is attractive raw, allora negativo 1, altrimenti 1"
+      },
+      "ForceVectors.FX": {
+        "table": "ForceVectors",
+        "field": "FX",
+        "kind": "formula",
+        "rule": "Un force vector: FX è calcolato come il force magnitude raw per il sign factor per l'unit x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitX",
+            "label": "unit x"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw per sign factor) per unit x"
+      },
+      "ForceVectors.FY": {
+        "table": "ForceVectors",
+        "field": "FY",
+        "kind": "formula",
+        "rule": "Un force vector: FY è calcolato come il force magnitude raw per il sign factor per l'unit y.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitY",
+            "label": "unit y"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw per sign factor) per unit y"
+      },
+      "ForceVectors.FZ": {
+        "table": "ForceVectors",
+        "field": "FZ",
+        "kind": "formula",
+        "rule": "Un force vector: FZ è calcolato come il force magnitude raw per il sign factor per l'unit z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitZ",
+            "label": "unit z"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw per sign factor) per unit z"
+      },
+      "ForceVectors.ForceDirDescription": {
+        "table": "ForceVectors",
+        "field": "ForceDirDescription",
+        "kind": "formula",
+        "rule": "Il campo “force dir description” del force vector è determinato secondo la seguente priorità:\n1. «towards», se l'indicatore “attractive raw” è attivo;\n2. in tutti gli altri casi, «away-from».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “force dir description” del force vector è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«towards»",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “attractive raw” è attivo"
+              }
+            },
+            {
+              "value": "«away-from»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is attractive raw, allora \"towards\", altrimenti \"away-from\""
+      },
+      "ElectricFieldPoints.Name": {
+        "table": "ElectricFieldPoints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un electric field point: name è uguale a field point ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "FieldPointId",
+            "label": "field point ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Field point ID"
+      },
+      "ElectricFieldPoints.dX": {
+        "table": "ElectricFieldPoints",
+        "field": "dX",
+        "kind": "formula",
+        "rule": "Un electric field point: d x è calcolato come l'obs x meno il src x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsX",
+            "label": "obs x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcX",
+            "label": "src x"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs x meno src x"
+      },
+      "ElectricFieldPoints.dY": {
+        "table": "ElectricFieldPoints",
+        "field": "dY",
+        "kind": "formula",
+        "rule": "Un electric field point: d y è calcolato come l'obs y meno il src y.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsY",
+            "label": "obs y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcY",
+            "label": "src y"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs y meno src y"
+      },
+      "ElectricFieldPoints.dZ": {
+        "table": "ElectricFieldPoints",
+        "field": "dZ",
+        "kind": "formula",
+        "rule": "Un electric field point: d z è calcolato come l'obs z meno il src z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsZ",
+            "label": "obs z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcZ",
+            "label": "src z"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs z meno src z"
+      },
+      "ElectricFieldPoints.DistanceSquared": {
+        "table": "ElectricFieldPoints",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "Un electric field point: distance squared è calcolato come il d x per il d x più il d y per il d y più il d z per il d z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          }
+        ],
+        "structure": null,
+        "plain": "((d x per d x) più (d y per d y)) più (d z per d z)"
+      },
+      "ElectricFieldPoints.Distance": {
+        "table": "ElectricFieldPoints",
+        "field": "Distance",
+        "kind": "formula",
+        "rule": "Un electric field point: distance è calcolato come la radice quadrata di il distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ElectricFieldPoints.EFieldMagnitude": {
+        "table": "ElectricFieldPoints",
+        "field": "EFieldMagnitude",
+        "kind": "formula",
+        "rule": "Un electric field point: e field magnitude è calcolato come il coulomb k per il valore assoluto di il source q diviso il distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k per il valore assoluto di source q) diviso distance squared"
+      },
+      "ElectricFieldPoints.QSign": {
+        "table": "ElectricFieldPoints",
+        "field": "QSign",
+        "kind": "formula",
+        "rule": "Il campo “q sign” dell'electric field point è determinato secondo la seguente priorità:\n1. 1, se il source q è maggiore di 0;\n2. in tutti gli altri casi, l'opposto di 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “q sign” dell'electric field point è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "il source q è maggiore di 0"
+              }
+            },
+            {
+              "value": "l'opposto di 1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se source q è maggiore di 0, allora 1, altrimenti negativo 1"
+      },
+      "ElectricFieldPoints.EX": {
+        "table": "ElectricFieldPoints",
+        "field": "EX",
+        "kind": "formula",
+        "rule": "Un electric field point: EX è calcolato come l'e field magnitude per il q sign per il d x diviso il distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude per q sign) per d x) diviso distance"
+      },
+      "ElectricFieldPoints.EY": {
+        "table": "ElectricFieldPoints",
+        "field": "EY",
+        "kind": "formula",
+        "rule": "Un electric field point: EY è calcolato come l'e field magnitude per il q sign per il d y diviso il distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude per q sign) per d y) diviso distance"
+      },
+      "ElectricFieldPoints.EZ": {
+        "table": "ElectricFieldPoints",
+        "field": "EZ",
+        "kind": "formula",
+        "rule": "Un electric field point: EZ è calcolato come l'e field magnitude per il q sign per il d z diviso il distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude per q sign) per d z) diviso distance"
+      },
+      "InvariantChecks.Name": {
+        "table": "InvariantChecks",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un invariant check: name è uguale a invariant ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "InvariantId",
+            "label": "invariant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Invariant ID"
+      },
+      "SystemSummary.Name": {
+        "table": "SystemSummary",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un system summary: name è uguale a summary ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SummaryId",
+            "label": "summary ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summary ID"
+      },
+      "SystemSummary.SystemName": {
+        "table": "SystemSummary",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "Un system summary: system name è il valore di LOOKUP(SystemId, Systems[SystemId], Systems[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "SystemSummary.ChargeCount": {
+        "table": "SystemSummary",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "Un system summary: charge count è il numero di charges collegati a il system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei charges il cui system ID è system ID"
+      },
+      "SystemSummary.InteractionCount": {
+        "table": "SystemSummary",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Un system summary: interaction count è il numero di charge interactions collegati a il system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei charge interactions il cui system ID è system ID"
+      },
+      "SystemSummary.AttractiveCount": {
+        "table": "SystemSummary",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "Un system summary: attractive count è il numero di charge interactions del system summary che sono attractive.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei charge interactions il cui system ID è system ID e is attractive è true()"
+      },
+      "SystemSummary.RepulsiveCount": {
+        "table": "SystemSummary",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "Un system summary: repulsive count è il numero di charge interactions del system summary che sono repulsive.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei charge interactions il cui system ID è system ID e is repulsive è true()"
+      },
+      "SystemSummary.TotalCharge": {
+        "table": "SystemSummary",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "Un system summary: total charge è il totale di charge value tra i charges collegati a il system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di charge value su tutti i charges il cui system ID è system ID"
+      },
+      "SystemSummary.IsNeutral": {
+        "table": "SystemSummary",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "Un system summary è considerato neutral se il valore di ABS(TotalCharge) < 1e-30.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "SystemSummary.MaxForceMagnitude": {
+        "table": "SystemSummary",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "Un system summary: max force magnitude è il valore massimo di force magnitude tra i charge interactions collegati a il system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Valore massimo di force magnitude su tutti i charge interactions il cui system ID è system ID"
+      },
+      "SystemSummary.MinDistanceMeters": {
+        "table": "SystemSummary",
+        "field": "MinDistanceMeters",
+        "kind": "rollup",
+        "rule": "Un system summary: min distance meters è il valore minimo di distance meters tra i charge interactions collegati a il system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Valore minimo di distance meters su tutti i charge interactions il cui system ID è system ID"
+      },
+      "SystemSummary.AllAttractive": {
+        "table": "SystemSummary",
+        "field": "AllAttractive",
+        "kind": "formula",
+        "rule": "Un system summary è contrassegnato come all attractive se l'attractive count è l'interaction count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Attractive count è uguale a interaction count"
+      },
+      "SystemSummary.AllRepulsive": {
+        "table": "SystemSummary",
+        "field": "AllRepulsive",
+        "kind": "formula",
+        "rule": "Un system summary è contrassegnato come all repulsive se il repulsive count è l'interaction count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Repulsive count è uguale a interaction count"
+      },
+      "SystemSummary.HasMixedInteractions": {
+        "table": "SystemSummary",
+        "field": "HasMixedInteractions",
+        "kind": "formula",
+        "rule": "Un system summary è considerato come dotato di un mixed interactions se vale tutto quanto segue: l'attractive count è maggiore di 0 e il repulsive count è maggiore di 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un system summary è considerato come dotato di un mixed interactions se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'attractive count è maggiore di 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "il repulsive count è maggiore di 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Attractive count è maggiore di 0 e repulsive count è maggiore di 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Loops": [
+        "Un loop **deve** avere un title e un status."
+      ],
+      "PhysicsConstants": [
+        "Un physics constant **deve** avere un name; un symbol; un value; e un units."
+      ],
+      "Particles": [
+        "Un particle **deve** avere un name; un canonical charge; e un canonical mass."
+      ],
+      "Charges": [
+        "Un charge **deve** avere un name; un system ID; un charge value; un position x; un position y; e un position z."
+      ],
+      "Systems": [
+        "Un system **deve** avere un name, e registrare se è synthetic."
+      ],
+      "ChargeInteractions": [
+        "Un charge interaction **deve** avere un system ID; un charge1 ID; un charge2 ID; un q1; un q2; un x1; un y1; un z1; un x2; un y2; un z2; e un coulomb k."
+      ],
+      "ForceVectors": [
+        "Un force vector **deve** avere un interaction ID; un force magnitude raw; un DX; un DY; un DZ; e un dist raw, e registrare se è un attractive raw."
+      ],
+      "ElectricFieldPoints": [
+        "Un electric field point **deve** avere un system ID; un source charge ID; un observation label; un obs x; un obs y; un obs z; un coulomb k; un source q; un src x; un src y; e un src z."
+      ],
+      "InvariantChecks": [
+        "Un invariant check **deve** avere un algebraic statement; un natural language; e un severity."
+      ],
+      "SystemSummary": [
+        "Un system summary **deve** avere un system ID."
+      ]
+    },
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Loops": "loop",
+      "PhysicsConstants": "physics constant",
+      "Particles": "particle",
+      "Charges": "charge",
+      "Systems": "system",
+      "ChargeInteractions": "charge interaction",
+      "ForceVectors": "force vector",
+      "ElectricFieldPoints": "electric field point",
+      "InvariantChecks": "invariant check",
+      "SystemSummary": "system summary"
+    }
+  },
+  "ja": {
+    "fields": {
+      "Loops.Name": {
+        "table": "Loops",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "loopの「name」は loop ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loops",
+            "field": "LoopId",
+            "label": "loop ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Loop ID"
+      },
+      "Particles.ChargeSign": {
+        "table": "Particles",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "Particleの「charge sign」は、次の優先順位で決まります:\n1. canonical charge が 0 より大きい場合は 「positive」;\n2. canonical charge が 0 より小さい場合は 「negative」;\n3. それ以外の場合は 「neutral」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Particles",
+            "field": "CanonicalCharge",
+            "label": "canonical charge"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Particleの「charge sign」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「positive」",
+              "when": {
+                "kind": "leaf",
+                "text": "canonical charge が 0 より大きい"
+              }
+            },
+            {
+              "value": "「negative」",
+              "when": {
+                "kind": "leaf",
+                "text": "canonical charge が 0 より小さい"
+              }
+            },
+            {
+              "value": "「neutral」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Canonical charge が 0 より大きいなら \"positive\"、そうでなければ canonical charge が 0 より小さいなら \"negative\"、そうでなければ \"neutral\""
+      },
+      "Charges.ChargeSign": {
+        "table": "Charges",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "Chargeの「charge sign」は、次の優先順位で決まります:\n1. charge value が 0 より大きい場合は 「positive」;\n2. charge value が 0 より小さい場合は 「negative」;\n3. それ以外の場合は 「neutral」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Chargeの「charge sign」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「positive」",
+              "when": {
+                "kind": "leaf",
+                "text": "charge value が 0 より大きい"
+              }
+            },
+            {
+              "value": "「negative」",
+              "when": {
+                "kind": "leaf",
+                "text": "charge value が 0 より小さい"
+              }
+            },
+            {
+              "value": "「neutral」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Charge value が 0 より大きいなら \"positive\"、そうでなければ charge value が 0 より小さいなら \"negative\"、そうでなければ \"neutral\""
+      },
+      "Charges.ChargeMagnitude": {
+        "table": "Charges",
+        "field": "ChargeMagnitude",
+        "kind": "formula",
+        "rule": "chargeの「charge magnitude」は charge value の絶対値 として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge value の絶対値"
+      },
+      "Charges.SystemName": {
+        "table": "Charges",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "chargeの「system name」は LOOKUP(SystemId, Systems[SystemId], Systems[Name]) の値 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "Charges.ParticleName": {
+        "table": "Charges",
+        "field": "ParticleName",
+        "kind": "lookup",
+        "rule": "chargeの「particle name」は LOOKUP(ParticleId, Particles[ParticleId], Particles[Name]) の値 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ParticleId",
+            "label": "particle ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{ParticleId}}, Particles[ParticleId], Particles[Name])"
+      },
+      "Charges.InteractionCount": {
+        "table": "Charges",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "chargeの「interaction count」は chargeに関連する「charge interactions」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Charge1Id",
+            "label": "charge1 ID"
+          },
+          {
+            "table": "Charges",
+            "field": "ChargeId",
+            "label": "charge ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge1 ID が charge ID である「charge interactions」の件数"
+      },
+      "Systems.ChargeCount": {
+        "table": "Systems",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "systemの「charge count」は systemに関連する「charges」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID が system ID である「charges」の件数"
+      },
+      "Systems.InteractionCount": {
+        "table": "Systems",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "systemの「interaction count」は systemに関連する「charge interactions」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID が system ID である「charge interactions」の件数"
+      },
+      "Systems.AttractiveCount": {
+        "table": "Systems",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "systemの「attractive count」は systemの「charge interactions」のうち、「Attractive」であるものの件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID が system IDおよびis attractive が true() である「charge interactions」の件数"
+      },
+      "Systems.RepulsiveCount": {
+        "table": "Systems",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "systemの「repulsive count」は systemの「charge interactions」のうち、「Repulsive」であるものの件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID が system IDおよびis repulsive が true() である「charge interactions」の件数"
+      },
+      "Systems.TotalCharge": {
+        "table": "Systems",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "systemの「total charge」は systemに関連する「charges」全体での「charge value」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID が system ID であるすべての「charges」にわたる charge value の合計"
+      },
+      "Systems.IsNeutral": {
+        "table": "Systems",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "ABS(TotalCharge) < 1e-30 の値場合、systemは「Neutral」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Systems",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "Systems.MaxForceMagnitude": {
+        "table": "Systems",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "systemの「max force magnitude」は systemに関連する「charge interactions」全体での「force magnitude」の最大値 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID が system ID であるすべての「charge interactions」にわたる force magnitude の最大"
+      },
+      "ChargeInteractions.Name": {
+        "table": "ChargeInteractions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "charge interactionの「name」は interaction ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "InteractionId",
+            "label": "interaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction ID"
+      },
+      "ChargeInteractions.DeltaX": {
+        "table": "ChargeInteractions",
+        "field": "DeltaX",
+        "kind": "formula",
+        "rule": "charge interactionの「delta x」は x2 ひく x1 として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "X2",
+            "label": "x2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "X1",
+            "label": "x1"
+          }
+        ],
+        "structure": null,
+        "plain": "X2 ひく x1"
+      },
+      "ChargeInteractions.DeltaY": {
+        "table": "ChargeInteractions",
+        "field": "DeltaY",
+        "kind": "formula",
+        "rule": "charge interactionの「delta y」は y2 ひく y1 として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Y2",
+            "label": "y2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Y1",
+            "label": "y1"
+          }
+        ],
+        "structure": null,
+        "plain": "Y2 ひく y1"
+      },
+      "ChargeInteractions.DeltaZ": {
+        "table": "ChargeInteractions",
+        "field": "DeltaZ",
+        "kind": "formula",
+        "rule": "charge interactionの「delta z」は z2 ひく z1 として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Z2",
+            "label": "z2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Z1",
+            "label": "z1"
+          }
+        ],
+        "structure": null,
+        "plain": "Z2 ひく z1"
+      },
+      "ChargeInteractions.DistanceSquared": {
+        "table": "ChargeInteractions",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "charge interactionの「distance squared」は delta x かける delta x たす delta y かける delta y たす delta z かける delta z として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaX",
+            "label": "delta x"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaY",
+            "label": "delta y"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaZ",
+            "label": "delta z"
+          }
+        ],
+        "structure": null,
+        "plain": "((delta x かける delta x) たす (delta y かける delta y)) たす (delta z かける delta z)"
+      },
+      "ChargeInteractions.DistanceMeters": {
+        "table": "ChargeInteractions",
+        "field": "DistanceMeters",
+        "kind": "formula",
+        "rule": "charge interactionの「distance meters」は distance squared の平方根 として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ChargeInteractions.DistancePicometers": {
+        "table": "ChargeInteractions",
+        "field": "DistancePicometers",
+        "kind": "formula",
+        "rule": "charge interactionの「distance picometers」は distance meters かける 1000000000000 として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance meters かける 1,000,000,000,000"
+      },
+      "ChargeInteractions.ChargeProduct": {
+        "table": "ChargeInteractions",
+        "field": "ChargeProduct",
+        "kind": "formula",
+        "rule": "charge interactionの「charge product」は q1 かける q2 として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Q1",
+            "label": "q1"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Q2",
+            "label": "q2"
+          }
+        ],
+        "structure": null,
+        "plain": "Q1 かける q2"
+      },
+      "ChargeInteractions.ForceMagnitude": {
+        "table": "ChargeInteractions",
+        "field": "ForceMagnitude",
+        "kind": "formula",
+        "rule": "charge interactionの「force magnitude」は coulomb k かける charge product の絶対値 わる distance squared として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k かける charge product の絶対値) わる distance squared"
+      },
+      "ChargeInteractions.IsAttractive": {
+        "table": "ChargeInteractions",
+        "field": "IsAttractive",
+        "kind": "formula",
+        "rule": "charge product が 0 より小さい場合、charge interactionは「Attractive」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product が 0 より小さい"
+      },
+      "ChargeInteractions.IsRepulsive": {
+        "table": "ChargeInteractions",
+        "field": "IsRepulsive",
+        "kind": "formula",
+        "rule": "charge product が 0 より大きい場合、charge interactionは「Repulsive」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product が 0 より大きい"
+      },
+      "ChargeInteractions.InteractionType": {
+        "table": "ChargeInteractions",
+        "field": "InteractionType",
+        "kind": "formula",
+        "rule": "Charge interactionの「interaction type」は、次の優先順位で決まります:\n1. フラグ「attractive」が設定されている場合は 「attractive」;\n2. フラグ「repulsive」が設定されている場合は 「repulsive」;\n3. それ以外の場合は 「neutral」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Charge interactionの「interaction type」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「attractive」",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「attractive」が設定されている"
+              }
+            },
+            {
+              "value": "「repulsive」",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「repulsive」が設定されている"
+              }
+            },
+            {
+              "value": "「neutral」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is attractiveなら \"attractive\"、そうでなければ is repulsiveなら \"repulsive\"、そうでなければ \"neutral\""
+      },
+      "ChargeInteractions.ForceInAttoNewtons": {
+        "table": "ChargeInteractions",
+        "field": "ForceInAttoNewtons",
+        "kind": "formula",
+        "rule": "charge interactionの「force in atto newtons」は force magnitude かける 1000000000000000000 として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          }
+        ],
+        "structure": null,
+        "plain": "Force magnitude かける 1,000,000,000,000,000,000"
+      },
+      "ForceVectors.Name": {
+        "table": "ForceVectors",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "force vectorの「name」は force vector ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceVectorId",
+            "label": "force vector ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Force vector ID"
+      },
+      "ForceVectors.UnitX": {
+        "table": "ForceVectors",
+        "field": "UnitX",
+        "kind": "formula",
+        "rule": "Force vectorの「unit x」は、次の優先順位で決まります:\n1. dist raw が 0 である場合は 0;\n2. それ以外の場合は DX わる dist raw。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DX",
+            "label": "DX"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Force vectorの「unit x」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "dist raw が 0 である"
+              }
+            },
+            {
+              "value": "DX わる dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Dist raw が 0 と等しいなら 0、そうでなければ (DX わる dist raw)"
+      },
+      "ForceVectors.UnitY": {
+        "table": "ForceVectors",
+        "field": "UnitY",
+        "kind": "formula",
+        "rule": "Force vectorの「unit y」は、次の優先順位で決まります:\n1. dist raw が 0 である場合は 0;\n2. それ以外の場合は DY わる dist raw。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DY",
+            "label": "DY"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Force vectorの「unit y」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "dist raw が 0 である"
+              }
+            },
+            {
+              "value": "DY わる dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Dist raw が 0 と等しいなら 0、そうでなければ (DY わる dist raw)"
+      },
+      "ForceVectors.UnitZ": {
+        "table": "ForceVectors",
+        "field": "UnitZ",
+        "kind": "formula",
+        "rule": "Force vectorの「unit z」は、次の優先順位で決まります:\n1. dist raw が 0 である場合は 0;\n2. それ以外の場合は DZ わる dist raw。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DZ",
+            "label": "DZ"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Force vectorの「unit z」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "dist raw が 0 である"
+              }
+            },
+            {
+              "value": "DZ わる dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Dist raw が 0 と等しいなら 0、そうでなければ (DZ わる dist raw)"
+      },
+      "ForceVectors.SignFactor": {
+        "table": "ForceVectors",
+        "field": "SignFactor",
+        "kind": "formula",
+        "rule": "Force vectorの「sign factor」は、次の優先順位で決まります:\n1. フラグ「attractive raw」が設定されている場合は 1 の符号を反転した値;\n2. それ以外の場合は 1。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Force vectorの「sign factor」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "1 の符号を反転した値",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「attractive raw」が設定されている"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is attractive rawなら マイナス 1、そうでなければ 1"
+      },
+      "ForceVectors.FX": {
+        "table": "ForceVectors",
+        "field": "FX",
+        "kind": "formula",
+        "rule": "force vectorの「FX」は force magnitude raw かける sign factor かける unit x として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitX",
+            "label": "unit x"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw かける sign factor) かける unit x"
+      },
+      "ForceVectors.FY": {
+        "table": "ForceVectors",
+        "field": "FY",
+        "kind": "formula",
+        "rule": "force vectorの「FY」は force magnitude raw かける sign factor かける unit y として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitY",
+            "label": "unit y"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw かける sign factor) かける unit y"
+      },
+      "ForceVectors.FZ": {
+        "table": "ForceVectors",
+        "field": "FZ",
+        "kind": "formula",
+        "rule": "force vectorの「FZ」は force magnitude raw かける sign factor かける unit z として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitZ",
+            "label": "unit z"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw かける sign factor) かける unit z"
+      },
+      "ForceVectors.ForceDirDescription": {
+        "table": "ForceVectors",
+        "field": "ForceDirDescription",
+        "kind": "formula",
+        "rule": "Force vectorの「force dir description」は、次の優先順位で決まります:\n1. フラグ「attractive raw」が設定されている場合は 「towards」;\n2. それ以外の場合は 「away-from」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Force vectorの「force dir description」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「towards」",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「attractive raw」が設定されている"
+              }
+            },
+            {
+              "value": "「away-from」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is attractive rawなら \"towards\"、そうでなければ \"away-from\""
+      },
+      "ElectricFieldPoints.Name": {
+        "table": "ElectricFieldPoints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "electric field pointの「name」は field point ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "FieldPointId",
+            "label": "field point ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Field point ID"
+      },
+      "ElectricFieldPoints.dX": {
+        "table": "ElectricFieldPoints",
+        "field": "dX",
+        "kind": "formula",
+        "rule": "electric field pointの「d x」は obs x ひく src x として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsX",
+            "label": "obs x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcX",
+            "label": "src x"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs x ひく src x"
+      },
+      "ElectricFieldPoints.dY": {
+        "table": "ElectricFieldPoints",
+        "field": "dY",
+        "kind": "formula",
+        "rule": "electric field pointの「d y」は obs y ひく src y として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsY",
+            "label": "obs y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcY",
+            "label": "src y"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs y ひく src y"
+      },
+      "ElectricFieldPoints.dZ": {
+        "table": "ElectricFieldPoints",
+        "field": "dZ",
+        "kind": "formula",
+        "rule": "electric field pointの「d z」は obs z ひく src z として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsZ",
+            "label": "obs z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcZ",
+            "label": "src z"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs z ひく src z"
+      },
+      "ElectricFieldPoints.DistanceSquared": {
+        "table": "ElectricFieldPoints",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "electric field pointの「distance squared」は d x かける d x たす d y かける d y たす d z かける d z として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          }
+        ],
+        "structure": null,
+        "plain": "((d x かける d x) たす (d y かける d y)) たす (d z かける d z)"
+      },
+      "ElectricFieldPoints.Distance": {
+        "table": "ElectricFieldPoints",
+        "field": "Distance",
+        "kind": "formula",
+        "rule": "electric field pointの「distance」は distance squared の平方根 として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ElectricFieldPoints.EFieldMagnitude": {
+        "table": "ElectricFieldPoints",
+        "field": "EFieldMagnitude",
+        "kind": "formula",
+        "rule": "electric field pointの「e field magnitude」は coulomb k かける source q の絶対値 わる distance squared として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k かける source q の絶対値) わる distance squared"
+      },
+      "ElectricFieldPoints.QSign": {
+        "table": "ElectricFieldPoints",
+        "field": "QSign",
+        "kind": "formula",
+        "rule": "Electric field pointの「q sign」は、次の優先順位で決まります:\n1. source q が 0 より大きい場合は 1;\n2. それ以外の場合は 1 の符号を反転した値。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Electric field pointの「q sign」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "source q が 0 より大きい"
+              }
+            },
+            {
+              "value": "1 の符号を反転した値",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Source q が 0 より大きいなら 1、そうでなければ マイナス 1"
+      },
+      "ElectricFieldPoints.EX": {
+        "table": "ElectricFieldPoints",
+        "field": "EX",
+        "kind": "formula",
+        "rule": "electric field pointの「EX」は e field magnitude かける q sign かける d x わる distance として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude かける q sign) かける d x) わる distance"
+      },
+      "ElectricFieldPoints.EY": {
+        "table": "ElectricFieldPoints",
+        "field": "EY",
+        "kind": "formula",
+        "rule": "electric field pointの「EY」は e field magnitude かける q sign かける d y わる distance として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude かける q sign) かける d y) わる distance"
+      },
+      "ElectricFieldPoints.EZ": {
+        "table": "ElectricFieldPoints",
+        "field": "EZ",
+        "kind": "formula",
+        "rule": "electric field pointの「EZ」は e field magnitude かける q sign かける d z わる distance として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude かける q sign) かける d z) わる distance"
+      },
+      "InvariantChecks.Name": {
+        "table": "InvariantChecks",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "invariant checkの「name」は invariant ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "InvariantId",
+            "label": "invariant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Invariant ID"
+      },
+      "SystemSummary.Name": {
+        "table": "SystemSummary",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "system summaryの「name」は summary ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SummaryId",
+            "label": "summary ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summary ID"
+      },
+      "SystemSummary.SystemName": {
+        "table": "SystemSummary",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "system summaryの「system name」は LOOKUP(SystemId, Systems[SystemId], Systems[Name]) の値 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "SystemSummary.ChargeCount": {
+        "table": "SystemSummary",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "system summaryの「charge count」は system summaryに関連する「charges」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID が system ID である「charges」の件数"
+      },
+      "SystemSummary.InteractionCount": {
+        "table": "SystemSummary",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "system summaryの「interaction count」は system summaryに関連する「charge interactions」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID が system ID である「charge interactions」の件数"
+      },
+      "SystemSummary.AttractiveCount": {
+        "table": "SystemSummary",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "system summaryの「attractive count」は system summaryの「charge interactions」のうち、「Attractive」であるものの件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID が system IDおよびis attractive が true() である「charge interactions」の件数"
+      },
+      "SystemSummary.RepulsiveCount": {
+        "table": "SystemSummary",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "system summaryの「repulsive count」は system summaryの「charge interactions」のうち、「Repulsive」であるものの件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID が system IDおよびis repulsive が true() である「charge interactions」の件数"
+      },
+      "SystemSummary.TotalCharge": {
+        "table": "SystemSummary",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "system summaryの「total charge」は system summaryに関連する「charges」全体での「charge value」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID が system ID であるすべての「charges」にわたる charge value の合計"
+      },
+      "SystemSummary.IsNeutral": {
+        "table": "SystemSummary",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "ABS(TotalCharge) < 1e-30 の値場合、system summaryは「Neutral」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "SystemSummary.MaxForceMagnitude": {
+        "table": "SystemSummary",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "system summaryの「max force magnitude」は system summaryに関連する「charge interactions」全体での「force magnitude」の最大値 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID が system ID であるすべての「charge interactions」にわたる force magnitude の最大"
+      },
+      "SystemSummary.MinDistanceMeters": {
+        "table": "SystemSummary",
+        "field": "MinDistanceMeters",
+        "kind": "rollup",
+        "rule": "system summaryの「min distance meters」は system summaryに関連する「charge interactions」全体での「distance meters」の最小値 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID が system ID であるすべての「charge interactions」にわたる distance meters の最小"
+      },
+      "SystemSummary.AllAttractive": {
+        "table": "SystemSummary",
+        "field": "AllAttractive",
+        "kind": "formula",
+        "rule": "attractive count が interaction count である場合、system summaryは「All Attractive」と記録されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Attractive count が interaction count と等しい"
+      },
+      "SystemSummary.AllRepulsive": {
+        "table": "SystemSummary",
+        "field": "AllRepulsive",
+        "kind": "formula",
+        "rule": "repulsive count が interaction count である場合、system summaryは「All Repulsive」と記録されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Repulsive count が interaction count と等しい"
+      },
+      "SystemSummary.HasMixedInteractions": {
+        "table": "SystemSummary",
+        "field": "HasMixedInteractions",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: attractive count が 0 より大きいおよびrepulsive count が 0 より大きい場合、system summaryは「Mixed Interactions」を持つと見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、system summaryは「Mixed Interactions」を持つと見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "attractive count が 0 より大きい"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "repulsive count が 0 より大きい"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Attractive count が 0 より大きいおよびrepulsive count が 0 より大きい"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Loops": [
+        "loopは titleおよびstatus を持た**なければなりません**。"
+      ],
+      "PhysicsConstants": [
+        "physics constantは name、symbol、value、およびunits を持た**なければなりません**。"
+      ],
+      "Particles": [
+        "particleは name、canonical charge、およびcanonical mass を持た**なければなりません**。"
+      ],
+      "Charges": [
+        "chargeは name、system ID、charge value、position x、position y、およびposition z を持た**なければなりません**。"
+      ],
+      "Systems": [
+        "systemは name を持た、かつ 「Synthetic」であるかどうかを記録し**なければなりません**。"
+      ],
+      "ChargeInteractions": [
+        "charge interactionは system ID、charge1 ID、charge2 ID、q1、q2、x1、y1、z1、x2、y2、z2、およびcoulomb k を持た**なければなりません**。"
+      ],
+      "ForceVectors": [
+        "force vectorは interaction ID、force magnitude raw、DX、DY、DZ、およびdist raw を持た、かつ 「Attractive Raw」であるかどうかを記録し**なければなりません**。"
+      ],
+      "ElectricFieldPoints": [
+        "electric field pointは system ID、source charge ID、observation label、obs x、obs y、obs z、coulomb k、source q、src x、src y、およびsrc z を持た**なければなりません**。"
+      ],
+      "InvariantChecks": [
+        "invariant checkは algebraic statement、natural language、およびseverity を持た**なければなりません**。"
+      ],
+      "SystemSummary": [
+        "system summaryは system ID を持た**なければなりません**。"
+      ]
+    },
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "Loops": "loop",
+      "PhysicsConstants": "physics constant",
+      "Particles": "particle",
+      "Charges": "charge",
+      "Systems": "system",
+      "ChargeInteractions": "charge interaction",
+      "ForceVectors": "force vector",
+      "ElectricFieldPoints": "electric field point",
+      "InvariantChecks": "invariant check",
+      "SystemSummary": "system summary"
+    }
+  },
+  "ko": {
+    "fields": {
+      "Loops.Name": {
+        "table": "Loops",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘loop’ 레코드의 ‘name’ 값은 같은 레코드의 ‘loop ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loops",
+            "field": "LoopId",
+            "label": "loop ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Loop ID"
+      },
+      "Particles.ChargeSign": {
+        "table": "Particles",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "‘particle’ 레코드의 ‘charge sign’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘canonical charge’ 값이 0보다 큰 경우: “positive”\n2. ‘canonical charge’ 값이 0보다 작은 경우: “negative”\n3. 그 밖의 경우: “neutral”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Particles",
+            "field": "CanonicalCharge",
+            "label": "canonical charge"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘particle’ 레코드의 ‘charge sign’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“positive”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘canonical charge’ 값이 0보다 큰 경우"
+              }
+            },
+            {
+              "value": "“negative”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘canonical charge’ 값이 0보다 작은 경우"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(canonical charge 값이 0보다 큼)이 성립하면 \"positive\", 그렇지 않으면 조건(canonical charge 값이 0보다 작음)이 성립하면 \"negative\", 그렇지 않으면 \"neutral\""
+      },
+      "Charges.ChargeSign": {
+        "table": "Charges",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "‘charge’ 레코드의 ‘charge sign’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘charge value’ 값이 0보다 큰 경우: “positive”\n2. ‘charge value’ 값이 0보다 작은 경우: “negative”\n3. 그 밖의 경우: “neutral”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘charge’ 레코드의 ‘charge sign’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“positive”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘charge value’ 값이 0보다 큰 경우"
+              }
+            },
+            {
+              "value": "“negative”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘charge value’ 값이 0보다 작은 경우"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(charge value 값이 0보다 큼)이 성립하면 \"positive\", 그렇지 않으면 조건(charge value 값이 0보다 작음)이 성립하면 \"negative\", 그렇지 않으면 \"neutral\""
+      },
+      "Charges.ChargeMagnitude": {
+        "table": "Charges",
+        "field": "ChargeMagnitude",
+        "kind": "formula",
+        "rule": "‘charge’ 레코드의 ‘charge magnitude’ 값은 다음과 같이 계산됩니다: ‘charge value’의 절대치.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge value의 절대치"
+      },
+      "Charges.SystemName": {
+        "table": "Charges",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "‘charge’ 레코드의 ‘system name’ 값은 LOOKUP(SystemId, Systems[SystemId], Systems[Name])의 결과입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "Charges.ParticleName": {
+        "table": "Charges",
+        "field": "ParticleName",
+        "kind": "lookup",
+        "rule": "‘charge’ 레코드의 ‘particle name’ 값은 LOOKUP(ParticleId, Particles[ParticleId], Particles[Name])의 결과입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ParticleId",
+            "label": "particle ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{ParticleId}}, Particles[ParticleId], Particles[Name])"
+      },
+      "Charges.InteractionCount": {
+        "table": "Charges",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "‘charge’ 레코드의 ‘interaction count’ 값은 해당 ‘charge’ 레코드에 연결된 ‘charge interactions’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Charge1Id",
+            "label": "charge1 ID"
+          },
+          {
+            "table": "Charges",
+            "field": "ChargeId",
+            "label": "charge ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(charge1 ID 값이 charge ID임)에 맞는 charge interactions 레코드의 개수"
+      },
+      "Systems.ChargeCount": {
+        "table": "Systems",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "‘system’ 레코드의 ‘charge count’ 값은 해당 ‘system’ 레코드에 연결된 ‘charges’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(system ID 값이 system ID임)에 맞는 charges 레코드의 개수"
+      },
+      "Systems.InteractionCount": {
+        "table": "Systems",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "‘system’ 레코드의 ‘interaction count’ 값은 해당 ‘system’ 레코드에 연결된 ‘charge interactions’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(system ID 값이 system ID임)에 맞는 charge interactions 레코드의 개수"
+      },
+      "Systems.AttractiveCount": {
+        "table": "Systems",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "‘system’ 레코드의 ‘attractive count’ 값은 해당 ‘system’ 레코드에 연결된 ‘charge interactions’ 레코드 중 ‘attractive’에 해당하는 것의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(system ID 값이 system ID임 및 is attractive 값이 true()임)에 맞는 charge interactions 레코드의 개수"
+      },
+      "Systems.RepulsiveCount": {
+        "table": "Systems",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "‘system’ 레코드의 ‘repulsive count’ 값은 해당 ‘system’ 레코드에 연결된 ‘charge interactions’ 레코드 중 ‘repulsive’에 해당하는 것의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(system ID 값이 system ID임 및 is repulsive 값이 true()임)에 맞는 charge interactions 레코드의 개수"
+      },
+      "Systems.TotalCharge": {
+        "table": "Systems",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "‘system’ 레코드의 ‘total charge’ 값은 해당 ‘system’ 레코드에 연결된 모든 ‘charges’ 레코드의 총 ‘charge value’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(system ID 값이 system ID임)에 맞는 모든 charges 레코드의 charge value 합계"
+      },
+      "Systems.IsNeutral": {
+        "table": "Systems",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "ABS(TotalCharge) < 1e-30의 결과, ‘system’ 레코드는 ‘neutral’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Systems",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "Systems.MaxForceMagnitude": {
+        "table": "Systems",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "‘system’ 레코드의 ‘max force magnitude’ 값은 해당 ‘system’ 레코드에 연결된 모든 ‘charge interactions’ 레코드의 최대 ‘force magnitude’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(system ID 값이 system ID임)에 맞는 모든 charge interactions 레코드의 force magnitude 최댓값"
+      },
+      "ChargeInteractions.Name": {
+        "table": "ChargeInteractions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘charge interaction’ 레코드의 ‘name’ 값은 같은 레코드의 ‘interaction ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "InteractionId",
+            "label": "interaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction ID"
+      },
+      "ChargeInteractions.DeltaX": {
+        "table": "ChargeInteractions",
+        "field": "DeltaX",
+        "kind": "formula",
+        "rule": "‘charge interaction’ 레코드의 ‘delta x’ 값은 다음과 같이 계산됩니다: ‘x2’ 빼기 ‘x1’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "X2",
+            "label": "x2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "X1",
+            "label": "x1"
+          }
+        ],
+        "structure": null,
+        "plain": "X2 빼기 x1"
+      },
+      "ChargeInteractions.DeltaY": {
+        "table": "ChargeInteractions",
+        "field": "DeltaY",
+        "kind": "formula",
+        "rule": "‘charge interaction’ 레코드의 ‘delta y’ 값은 다음과 같이 계산됩니다: ‘y2’ 빼기 ‘y1’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Y2",
+            "label": "y2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Y1",
+            "label": "y1"
+          }
+        ],
+        "structure": null,
+        "plain": "Y2 빼기 y1"
+      },
+      "ChargeInteractions.DeltaZ": {
+        "table": "ChargeInteractions",
+        "field": "DeltaZ",
+        "kind": "formula",
+        "rule": "‘charge interaction’ 레코드의 ‘delta z’ 값은 다음과 같이 계산됩니다: ‘z2’ 빼기 ‘z1’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Z2",
+            "label": "z2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Z1",
+            "label": "z1"
+          }
+        ],
+        "structure": null,
+        "plain": "Z2 빼기 z1"
+      },
+      "ChargeInteractions.DistanceSquared": {
+        "table": "ChargeInteractions",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "‘charge interaction’ 레코드의 ‘distance squared’ 값은 다음과 같이 계산됩니다: ‘delta x’ 곱하기 ‘delta x’ 더하기 ‘delta y’ 곱하기 ‘delta y’ 더하기 ‘delta z’ 곱하기 ‘delta z’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaX",
+            "label": "delta x"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaY",
+            "label": "delta y"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaZ",
+            "label": "delta z"
+          }
+        ],
+        "structure": null,
+        "plain": "((delta x 곱하기 delta x) 더하기 (delta y 곱하기 delta y)) 더하기 (delta z 곱하기 delta z)"
+      },
+      "ChargeInteractions.DistanceMeters": {
+        "table": "ChargeInteractions",
+        "field": "DistanceMeters",
+        "kind": "formula",
+        "rule": "‘charge interaction’ 레코드의 ‘distance meters’ 값은 다음과 같이 계산됩니다: ‘distance squared’의 제곱근.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ChargeInteractions.DistancePicometers": {
+        "table": "ChargeInteractions",
+        "field": "DistancePicometers",
+        "kind": "formula",
+        "rule": "‘charge interaction’ 레코드의 ‘distance picometers’ 값은 다음과 같이 계산됩니다: ‘distance meters’ 곱하기 1000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance meters 곱하기 1,000,000,000,000"
+      },
+      "ChargeInteractions.ChargeProduct": {
+        "table": "ChargeInteractions",
+        "field": "ChargeProduct",
+        "kind": "formula",
+        "rule": "‘charge interaction’ 레코드의 ‘charge product’ 값은 다음과 같이 계산됩니다: ‘q1’ 곱하기 ‘q2’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Q1",
+            "label": "q1"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Q2",
+            "label": "q2"
+          }
+        ],
+        "structure": null,
+        "plain": "Q1 곱하기 q2"
+      },
+      "ChargeInteractions.ForceMagnitude": {
+        "table": "ChargeInteractions",
+        "field": "ForceMagnitude",
+        "kind": "formula",
+        "rule": "‘charge interaction’ 레코드의 ‘force magnitude’ 값은 다음과 같이 계산됩니다: ‘coulomb k’ 곱하기 ‘charge product’의 절대치 나누기 ‘distance squared’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k 곱하기 charge product의 절대치) 나누기 distance squared"
+      },
+      "ChargeInteractions.IsAttractive": {
+        "table": "ChargeInteractions",
+        "field": "IsAttractive",
+        "kind": "formula",
+        "rule": "‘charge product’ 값이 0보다 작은 경우, ‘charge interaction’ 레코드는 ‘attractive’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product 값이 0보다 작음"
+      },
+      "ChargeInteractions.IsRepulsive": {
+        "table": "ChargeInteractions",
+        "field": "IsRepulsive",
+        "kind": "formula",
+        "rule": "‘charge product’ 값이 0보다 큰 경우, ‘charge interaction’ 레코드는 ‘repulsive’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product 값이 0보다 큼"
+      },
+      "ChargeInteractions.InteractionType": {
+        "table": "ChargeInteractions",
+        "field": "InteractionType",
+        "kind": "formula",
+        "rule": "‘charge interaction’ 레코드의 ‘interaction type’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘attractive’ 플래그가 설정된 경우: “attractive”\n2. ‘repulsive’ 플래그가 설정된 경우: “repulsive”\n3. 그 밖의 경우: “neutral”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘charge interaction’ 레코드의 ‘interaction type’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“attractive”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘attractive’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "“repulsive”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘repulsive’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(is attractive)이 성립하면 \"attractive\", 그렇지 않으면 조건(is repulsive)이 성립하면 \"repulsive\", 그렇지 않으면 \"neutral\""
+      },
+      "ChargeInteractions.ForceInAttoNewtons": {
+        "table": "ChargeInteractions",
+        "field": "ForceInAttoNewtons",
+        "kind": "formula",
+        "rule": "‘charge interaction’ 레코드의 ‘force in atto newtons’ 값은 다음과 같이 계산됩니다: ‘force magnitude’ 곱하기 1000000000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          }
+        ],
+        "structure": null,
+        "plain": "Force magnitude 곱하기 1,000,000,000,000,000,000"
+      },
+      "ForceVectors.Name": {
+        "table": "ForceVectors",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘force vector’ 레코드의 ‘name’ 값은 같은 레코드의 ‘force vector ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceVectorId",
+            "label": "force vector ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Force vector ID"
+      },
+      "ForceVectors.UnitX": {
+        "table": "ForceVectors",
+        "field": "UnitX",
+        "kind": "formula",
+        "rule": "‘force vector’ 레코드의 ‘unit x’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘dist raw’ 값이 0인 경우: 0\n2. 그 밖의 경우: ‘DX’ 나누기 ‘dist raw’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DX",
+            "label": "DX"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘force vector’ 레코드의 ‘unit x’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "‘dist raw’ 값이 0인 경우"
+              }
+            },
+            {
+              "value": "‘DX’ 나누기 ‘dist raw’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(dist raw 값이 0 값과 같음)이 성립하면 0, 그렇지 않으면 (DX 나누기 dist raw)"
+      },
+      "ForceVectors.UnitY": {
+        "table": "ForceVectors",
+        "field": "UnitY",
+        "kind": "formula",
+        "rule": "‘force vector’ 레코드의 ‘unit y’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘dist raw’ 값이 0인 경우: 0\n2. 그 밖의 경우: ‘DY’ 나누기 ‘dist raw’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DY",
+            "label": "DY"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘force vector’ 레코드의 ‘unit y’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "‘dist raw’ 값이 0인 경우"
+              }
+            },
+            {
+              "value": "‘DY’ 나누기 ‘dist raw’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(dist raw 값이 0 값과 같음)이 성립하면 0, 그렇지 않으면 (DY 나누기 dist raw)"
+      },
+      "ForceVectors.UnitZ": {
+        "table": "ForceVectors",
+        "field": "UnitZ",
+        "kind": "formula",
+        "rule": "‘force vector’ 레코드의 ‘unit z’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘dist raw’ 값이 0인 경우: 0\n2. 그 밖의 경우: ‘DZ’ 나누기 ‘dist raw’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DZ",
+            "label": "DZ"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘force vector’ 레코드의 ‘unit z’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "‘dist raw’ 값이 0인 경우"
+              }
+            },
+            {
+              "value": "‘DZ’ 나누기 ‘dist raw’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(dist raw 값이 0 값과 같음)이 성립하면 0, 그렇지 않으면 (DZ 나누기 dist raw)"
+      },
+      "ForceVectors.SignFactor": {
+        "table": "ForceVectors",
+        "field": "SignFactor",
+        "kind": "formula",
+        "rule": "‘force vector’ 레코드의 ‘sign factor’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘attractive raw’ 플래그가 설정된 경우: 1의 부호를 바꾼 결과\n2. 그 밖의 경우: 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘force vector’ 레코드의 ‘sign factor’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "1의 부호를 바꾼 결과",
+              "when": {
+                "kind": "leaf",
+                "text": "‘attractive raw’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(is attractive raw)이 성립하면 마이너스 1, 그렇지 않으면 1"
+      },
+      "ForceVectors.FX": {
+        "table": "ForceVectors",
+        "field": "FX",
+        "kind": "formula",
+        "rule": "‘force vector’ 레코드의 ‘FX’ 값은 다음과 같이 계산됩니다: ‘force magnitude raw’ 곱하기 ‘sign factor’ 곱하기 ‘unit x’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitX",
+            "label": "unit x"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw 곱하기 sign factor) 곱하기 unit x"
+      },
+      "ForceVectors.FY": {
+        "table": "ForceVectors",
+        "field": "FY",
+        "kind": "formula",
+        "rule": "‘force vector’ 레코드의 ‘FY’ 값은 다음과 같이 계산됩니다: ‘force magnitude raw’ 곱하기 ‘sign factor’ 곱하기 ‘unit y’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitY",
+            "label": "unit y"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw 곱하기 sign factor) 곱하기 unit y"
+      },
+      "ForceVectors.FZ": {
+        "table": "ForceVectors",
+        "field": "FZ",
+        "kind": "formula",
+        "rule": "‘force vector’ 레코드의 ‘FZ’ 값은 다음과 같이 계산됩니다: ‘force magnitude raw’ 곱하기 ‘sign factor’ 곱하기 ‘unit z’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitZ",
+            "label": "unit z"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw 곱하기 sign factor) 곱하기 unit z"
+      },
+      "ForceVectors.ForceDirDescription": {
+        "table": "ForceVectors",
+        "field": "ForceDirDescription",
+        "kind": "formula",
+        "rule": "‘force vector’ 레코드의 ‘force dir description’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘attractive raw’ 플래그가 설정된 경우: “towards”\n2. 그 밖의 경우: “away-from”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘force vector’ 레코드의 ‘force dir description’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“towards”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘attractive raw’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "“away-from”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(is attractive raw)이 성립하면 \"towards\", 그렇지 않으면 \"away-from\""
+      },
+      "ElectricFieldPoints.Name": {
+        "table": "ElectricFieldPoints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘electric field point’ 레코드의 ‘name’ 값은 같은 레코드의 ‘field point ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "FieldPointId",
+            "label": "field point ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Field point ID"
+      },
+      "ElectricFieldPoints.dX": {
+        "table": "ElectricFieldPoints",
+        "field": "dX",
+        "kind": "formula",
+        "rule": "‘electric field point’ 레코드의 ‘d x’ 값은 다음과 같이 계산됩니다: ‘obs x’ 빼기 ‘src x’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsX",
+            "label": "obs x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcX",
+            "label": "src x"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs x 빼기 src x"
+      },
+      "ElectricFieldPoints.dY": {
+        "table": "ElectricFieldPoints",
+        "field": "dY",
+        "kind": "formula",
+        "rule": "‘electric field point’ 레코드의 ‘d y’ 값은 다음과 같이 계산됩니다: ‘obs y’ 빼기 ‘src y’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsY",
+            "label": "obs y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcY",
+            "label": "src y"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs y 빼기 src y"
+      },
+      "ElectricFieldPoints.dZ": {
+        "table": "ElectricFieldPoints",
+        "field": "dZ",
+        "kind": "formula",
+        "rule": "‘electric field point’ 레코드의 ‘d z’ 값은 다음과 같이 계산됩니다: ‘obs z’ 빼기 ‘src z’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsZ",
+            "label": "obs z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcZ",
+            "label": "src z"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs z 빼기 src z"
+      },
+      "ElectricFieldPoints.DistanceSquared": {
+        "table": "ElectricFieldPoints",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "‘electric field point’ 레코드의 ‘distance squared’ 값은 다음과 같이 계산됩니다: ‘d x’ 곱하기 ‘d x’ 더하기 ‘d y’ 곱하기 ‘d y’ 더하기 ‘d z’ 곱하기 ‘d z’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          }
+        ],
+        "structure": null,
+        "plain": "((d x 곱하기 d x) 더하기 (d y 곱하기 d y)) 더하기 (d z 곱하기 d z)"
+      },
+      "ElectricFieldPoints.Distance": {
+        "table": "ElectricFieldPoints",
+        "field": "Distance",
+        "kind": "formula",
+        "rule": "‘electric field point’ 레코드의 ‘distance’ 값은 다음과 같이 계산됩니다: ‘distance squared’의 제곱근.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ElectricFieldPoints.EFieldMagnitude": {
+        "table": "ElectricFieldPoints",
+        "field": "EFieldMagnitude",
+        "kind": "formula",
+        "rule": "‘electric field point’ 레코드의 ‘e field magnitude’ 값은 다음과 같이 계산됩니다: ‘coulomb k’ 곱하기 ‘source q’의 절대치 나누기 ‘distance squared’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k 곱하기 source q의 절대치) 나누기 distance squared"
+      },
+      "ElectricFieldPoints.QSign": {
+        "table": "ElectricFieldPoints",
+        "field": "QSign",
+        "kind": "formula",
+        "rule": "‘electric field point’ 레코드의 ‘q sign’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘source q’ 값이 0보다 큰 경우: 1\n2. 그 밖의 경우: 1의 부호를 바꾼 결과.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘electric field point’ 레코드의 ‘q sign’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "‘source q’ 값이 0보다 큰 경우"
+              }
+            },
+            {
+              "value": "1의 부호를 바꾼 결과",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(source q 값이 0보다 큼)이 성립하면 1, 그렇지 않으면 마이너스 1"
+      },
+      "ElectricFieldPoints.EX": {
+        "table": "ElectricFieldPoints",
+        "field": "EX",
+        "kind": "formula",
+        "rule": "‘electric field point’ 레코드의 ‘EX’ 값은 다음과 같이 계산됩니다: ‘e field magnitude’ 곱하기 ‘q sign’ 곱하기 ‘d x’ 나누기 ‘distance’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude 곱하기 q sign) 곱하기 d x) 나누기 distance"
+      },
+      "ElectricFieldPoints.EY": {
+        "table": "ElectricFieldPoints",
+        "field": "EY",
+        "kind": "formula",
+        "rule": "‘electric field point’ 레코드의 ‘EY’ 값은 다음과 같이 계산됩니다: ‘e field magnitude’ 곱하기 ‘q sign’ 곱하기 ‘d y’ 나누기 ‘distance’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude 곱하기 q sign) 곱하기 d y) 나누기 distance"
+      },
+      "ElectricFieldPoints.EZ": {
+        "table": "ElectricFieldPoints",
+        "field": "EZ",
+        "kind": "formula",
+        "rule": "‘electric field point’ 레코드의 ‘EZ’ 값은 다음과 같이 계산됩니다: ‘e field magnitude’ 곱하기 ‘q sign’ 곱하기 ‘d z’ 나누기 ‘distance’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude 곱하기 q sign) 곱하기 d z) 나누기 distance"
+      },
+      "InvariantChecks.Name": {
+        "table": "InvariantChecks",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘invariant check’ 레코드의 ‘name’ 값은 같은 레코드의 ‘invariant ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "InvariantId",
+            "label": "invariant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Invariant ID"
+      },
+      "SystemSummary.Name": {
+        "table": "SystemSummary",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘system summary’ 레코드의 ‘name’ 값은 같은 레코드의 ‘summary ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SummaryId",
+            "label": "summary ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summary ID"
+      },
+      "SystemSummary.SystemName": {
+        "table": "SystemSummary",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "‘system summary’ 레코드의 ‘system name’ 값은 LOOKUP(SystemId, Systems[SystemId], Systems[Name])의 결과입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "SystemSummary.ChargeCount": {
+        "table": "SystemSummary",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "‘system summary’ 레코드의 ‘charge count’ 값은 해당 ‘system summary’ 레코드에 연결된 ‘charges’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(system ID 값이 system ID임)에 맞는 charges 레코드의 개수"
+      },
+      "SystemSummary.InteractionCount": {
+        "table": "SystemSummary",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "‘system summary’ 레코드의 ‘interaction count’ 값은 해당 ‘system summary’ 레코드에 연결된 ‘charge interactions’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(system ID 값이 system ID임)에 맞는 charge interactions 레코드의 개수"
+      },
+      "SystemSummary.AttractiveCount": {
+        "table": "SystemSummary",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "‘system summary’ 레코드의 ‘attractive count’ 값은 해당 ‘system summary’ 레코드에 연결된 ‘charge interactions’ 레코드 중 ‘attractive’에 해당하는 것의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(system ID 값이 system ID임 및 is attractive 값이 true()임)에 맞는 charge interactions 레코드의 개수"
+      },
+      "SystemSummary.RepulsiveCount": {
+        "table": "SystemSummary",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "‘system summary’ 레코드의 ‘repulsive count’ 값은 해당 ‘system summary’ 레코드에 연결된 ‘charge interactions’ 레코드 중 ‘repulsive’에 해당하는 것의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(system ID 값이 system ID임 및 is repulsive 값이 true()임)에 맞는 charge interactions 레코드의 개수"
+      },
+      "SystemSummary.TotalCharge": {
+        "table": "SystemSummary",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "‘system summary’ 레코드의 ‘total charge’ 값은 해당 ‘system summary’ 레코드에 연결된 모든 ‘charges’ 레코드의 총 ‘charge value’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(system ID 값이 system ID임)에 맞는 모든 charges 레코드의 charge value 합계"
+      },
+      "SystemSummary.IsNeutral": {
+        "table": "SystemSummary",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "ABS(TotalCharge) < 1e-30의 결과, ‘system summary’ 레코드는 ‘neutral’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "SystemSummary.MaxForceMagnitude": {
+        "table": "SystemSummary",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "‘system summary’ 레코드의 ‘max force magnitude’ 값은 해당 ‘system summary’ 레코드에 연결된 모든 ‘charge interactions’ 레코드의 최대 ‘force magnitude’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(system ID 값이 system ID임)에 맞는 모든 charge interactions 레코드의 force magnitude 최댓값"
+      },
+      "SystemSummary.MinDistanceMeters": {
+        "table": "SystemSummary",
+        "field": "MinDistanceMeters",
+        "kind": "rollup",
+        "rule": "‘system summary’ 레코드의 ‘min distance meters’ 값은 해당 ‘system summary’ 레코드에 연결된 모든 ‘charge interactions’ 레코드의 최소 ‘distance meters’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(system ID 값이 system ID임)에 맞는 모든 charge interactions 레코드의 distance meters 최솟값"
+      },
+      "SystemSummary.AllAttractive": {
+        "table": "SystemSummary",
+        "field": "AllAttractive",
+        "kind": "formula",
+        "rule": "‘attractive count’ 값이 ‘interaction count’인 경우, ‘system summary’ 레코드는 ‘all attractive’에 해당하는 것으로 표시됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Attractive count 값이 interaction count 값과 같음"
+      },
+      "SystemSummary.AllRepulsive": {
+        "table": "SystemSummary",
+        "field": "AllRepulsive",
+        "kind": "formula",
+        "rule": "‘repulsive count’ 값이 ‘interaction count’인 경우, ‘system summary’ 레코드는 ‘all repulsive’에 해당하는 것으로 표시됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Repulsive count 값이 interaction count 값과 같음"
+      },
+      "SystemSummary.HasMixedInteractions": {
+        "table": "SystemSummary",
+        "field": "HasMixedInteractions",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘attractive count’ 값이 0보다 큰 경우 및 ‘repulsive count’ 값이 0보다 큰 경우), ‘system summary’ 레코드는 ‘mixed interactions’ 항목이 있는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘system summary’ 레코드는 ‘mixed interactions’ 항목이 있는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘attractive count’ 값이 0보다 큰 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘repulsive count’ 값이 0보다 큰 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Attractive count 값이 0보다 큼 및 repulsive count 값이 0보다 큼"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Loops": [
+        "‘loop’ 레코드는 ‘title’ 및 ‘status’ 값을 포함**해야 합니다**."
+      ],
+      "PhysicsConstants": [
+        "‘physics constant’ 레코드는 ‘name’, ‘symbol’, ‘value’ 및 ‘units’ 값을 포함**해야 합니다**."
+      ],
+      "Particles": [
+        "‘particle’ 레코드는 ‘name’, ‘canonical charge’ 및 ‘canonical mass’ 값을 포함**해야 합니다**."
+      ],
+      "Charges": [
+        "‘charge’ 레코드는 ‘name’, ‘system ID’, ‘charge value’, ‘position x’, ‘position y’ 및 ‘position z’ 값을 포함**해야 합니다**."
+      ],
+      "Systems": [
+        "‘system’ 레코드는 ‘name’ 값을 포함하고, 해당 레코드가 ‘synthetic’에 해당하는지 여부를 기록**해야 합니다**."
+      ],
+      "ChargeInteractions": [
+        "‘charge interaction’ 레코드는 ‘system ID’, ‘charge1 ID’, ‘charge2 ID’, ‘q1’, ‘q2’, ‘x1’, ‘y1’, ‘z1’, ‘x2’, ‘y2’, ‘z2’ 및 ‘coulomb k’ 값을 포함**해야 합니다**."
+      ],
+      "ForceVectors": [
+        "‘force vector’ 레코드는 ‘interaction ID’, ‘force magnitude raw’, ‘DX’, ‘DY’, ‘DZ’ 및 ‘dist raw’ 값을 포함하고, 해당 레코드가 ‘attractive raw’에 해당하는지 여부를 기록**해야 합니다**."
+      ],
+      "ElectricFieldPoints": [
+        "‘electric field point’ 레코드는 ‘system ID’, ‘source charge ID’, ‘observation label’, ‘obs x’, ‘obs y’, ‘obs z’, ‘coulomb k’, ‘source q’, ‘src x’, ‘src y’ 및 ‘src z’ 값을 포함**해야 합니다**."
+      ],
+      "InvariantChecks": [
+        "‘invariant check’ 레코드는 ‘algebraic statement’, ‘natural language’ 및 ‘severity’ 값을 포함**해야 합니다**."
+      ],
+      "SystemSummary": [
+        "‘system summary’ 레코드는 ‘system ID’ 값을 포함**해야 합니다**."
+      ]
+    },
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Loops": "loop",
+      "PhysicsConstants": "physics constant",
+      "Particles": "particle",
+      "Charges": "charge",
+      "Systems": "system",
+      "ChargeInteractions": "charge interaction",
+      "ForceVectors": "force vector",
+      "ElectricFieldPoints": "electric field point",
+      "InvariantChecks": "invariant check",
+      "SystemSummary": "system summary"
+    }
+  },
+  "nl": {
+    "fields": {
+      "Loops.Name": {
+        "table": "Loops",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een loop: name is gelijk aan loop ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loops",
+            "field": "LoopId",
+            "label": "loop ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Loop ID"
+      },
+      "Particles.ChargeSign": {
+        "table": "Particles",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "Het veld ‘charge sign’ van de particle wordt bepaald volgens de volgende prioriteit:\n1. ‘positive’, als de canonical charge groter is dan 0;\n2. ‘negative’, als de canonical charge kleiner is dan 0;\n3. in alle andere gevallen ‘neutral’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Particles",
+            "field": "CanonicalCharge",
+            "label": "canonical charge"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘charge sign’ van de particle wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘positive’",
+              "when": {
+                "kind": "leaf",
+                "text": "de canonical charge groter is dan 0"
+              }
+            },
+            {
+              "value": "‘negative’",
+              "when": {
+                "kind": "leaf",
+                "text": "de canonical charge kleiner is dan 0"
+              }
+            },
+            {
+              "value": "‘neutral’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als canonical charge is groter dan 0, dan \"positive\", anders als canonical charge is kleiner dan 0, dan \"negative\", anders \"neutral\""
+      },
+      "Charges.ChargeSign": {
+        "table": "Charges",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "Het veld ‘charge sign’ van de charge wordt bepaald volgens de volgende prioriteit:\n1. ‘positive’, als de charge value groter is dan 0;\n2. ‘negative’, als de charge value kleiner is dan 0;\n3. in alle andere gevallen ‘neutral’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘charge sign’ van de charge wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘positive’",
+              "when": {
+                "kind": "leaf",
+                "text": "de charge value groter is dan 0"
+              }
+            },
+            {
+              "value": "‘negative’",
+              "when": {
+                "kind": "leaf",
+                "text": "de charge value kleiner is dan 0"
+              }
+            },
+            {
+              "value": "‘neutral’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als charge value is groter dan 0, dan \"positive\", anders als charge value is kleiner dan 0, dan \"negative\", anders \"neutral\""
+      },
+      "Charges.ChargeMagnitude": {
+        "table": "Charges",
+        "field": "ChargeMagnitude",
+        "kind": "formula",
+        "rule": "Een charge: charge magnitude wordt berekend als de absolute waarde van de charge value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": null,
+        "plain": "De absolute waarde van charge value"
+      },
+      "Charges.SystemName": {
+        "table": "Charges",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "Een charge: system name is de waarde van LOOKUP(SystemId, Systems[SystemId], Systems[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "Charges.ParticleName": {
+        "table": "Charges",
+        "field": "ParticleName",
+        "kind": "lookup",
+        "rule": "Een charge: particle name is de waarde van LOOKUP(ParticleId, Particles[ParticleId], Particles[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ParticleId",
+            "label": "particle ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{ParticleId}}, Particles[ParticleId], Particles[Name])"
+      },
+      "Charges.InteractionCount": {
+        "table": "Charges",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Een charge: interaction count is het aantal charge interactions dat is gekoppeld aan de charge.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Charge1Id",
+            "label": "charge1 ID"
+          },
+          {
+            "table": "Charges",
+            "field": "ChargeId",
+            "label": "charge ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal charge interactions waarvan charge1 ID is charge ID"
+      },
+      "Systems.ChargeCount": {
+        "table": "Systems",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "Een system: charge count is het aantal charges dat is gekoppeld aan de system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal charges waarvan system ID is system ID"
+      },
+      "Systems.InteractionCount": {
+        "table": "Systems",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Een system: interaction count is het aantal charge interactions dat is gekoppeld aan de system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal charge interactions waarvan system ID is system ID"
+      },
+      "Systems.AttractiveCount": {
+        "table": "Systems",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "Een system: attractive count is het aantal charge interactions van de system dat attractive zijn.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal charge interactions waarvan system ID is system ID en is attractive is true()"
+      },
+      "Systems.RepulsiveCount": {
+        "table": "Systems",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "Een system: repulsive count is het aantal charge interactions van de system dat repulsive zijn.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal charge interactions waarvan system ID is system ID en is repulsive is true()"
+      },
+      "Systems.TotalCharge": {
+        "table": "Systems",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "Een system: total charge is het totaal van charge value over de charges gekoppeld aan de system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van charge value over alle charges waarvan system ID is system ID"
+      },
+      "Systems.IsNeutral": {
+        "table": "Systems",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "Een system geldt als neutral als de waarde van ABS(TotalCharge) < 1e-30.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Systems",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "Systems.MaxForceMagnitude": {
+        "table": "Systems",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "Een system: max force magnitude is de hoogste waarde van force magnitude over de charge interactions gekoppeld aan de system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Hoogste waarde van force magnitude over alle charge interactions waarvan system ID is system ID"
+      },
+      "ChargeInteractions.Name": {
+        "table": "ChargeInteractions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een charge interaction: name is gelijk aan interaction ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "InteractionId",
+            "label": "interaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction ID"
+      },
+      "ChargeInteractions.DeltaX": {
+        "table": "ChargeInteractions",
+        "field": "DeltaX",
+        "kind": "formula",
+        "rule": "Een charge interaction: delta x wordt berekend als de x2 min de x1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "X2",
+            "label": "x2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "X1",
+            "label": "x1"
+          }
+        ],
+        "structure": null,
+        "plain": "X2 min x1"
+      },
+      "ChargeInteractions.DeltaY": {
+        "table": "ChargeInteractions",
+        "field": "DeltaY",
+        "kind": "formula",
+        "rule": "Een charge interaction: delta y wordt berekend als de y2 min de y1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Y2",
+            "label": "y2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Y1",
+            "label": "y1"
+          }
+        ],
+        "structure": null,
+        "plain": "Y2 min y1"
+      },
+      "ChargeInteractions.DeltaZ": {
+        "table": "ChargeInteractions",
+        "field": "DeltaZ",
+        "kind": "formula",
+        "rule": "Een charge interaction: delta z wordt berekend als de z2 min de z1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Z2",
+            "label": "z2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Z1",
+            "label": "z1"
+          }
+        ],
+        "structure": null,
+        "plain": "Z2 min z1"
+      },
+      "ChargeInteractions.DistanceSquared": {
+        "table": "ChargeInteractions",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "Een charge interaction: distance squared wordt berekend als de delta x maal de delta x plus de delta y maal de delta y plus de delta z maal de delta z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaX",
+            "label": "delta x"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaY",
+            "label": "delta y"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaZ",
+            "label": "delta z"
+          }
+        ],
+        "structure": null,
+        "plain": "((delta x maal delta x) plus (delta y maal delta y)) plus (delta z maal delta z)"
+      },
+      "ChargeInteractions.DistanceMeters": {
+        "table": "ChargeInteractions",
+        "field": "DistanceMeters",
+        "kind": "formula",
+        "rule": "Een charge interaction: distance meters wordt berekend als de vierkantswortel van de distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ChargeInteractions.DistancePicometers": {
+        "table": "ChargeInteractions",
+        "field": "DistancePicometers",
+        "kind": "formula",
+        "rule": "Een charge interaction: distance picometers wordt berekend als de distance meters maal 1000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance meters maal 1,000,000,000,000"
+      },
+      "ChargeInteractions.ChargeProduct": {
+        "table": "ChargeInteractions",
+        "field": "ChargeProduct",
+        "kind": "formula",
+        "rule": "Een charge interaction: charge product wordt berekend als de q1 maal de q2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Q1",
+            "label": "q1"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Q2",
+            "label": "q2"
+          }
+        ],
+        "structure": null,
+        "plain": "Q1 maal q2"
+      },
+      "ChargeInteractions.ForceMagnitude": {
+        "table": "ChargeInteractions",
+        "field": "ForceMagnitude",
+        "kind": "formula",
+        "rule": "Een charge interaction: force magnitude wordt berekend als de coulomb k maal de absolute waarde van de charge product gedeeld door de distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k maal de absolute waarde van charge product) gedeeld door distance squared"
+      },
+      "ChargeInteractions.IsAttractive": {
+        "table": "ChargeInteractions",
+        "field": "IsAttractive",
+        "kind": "formula",
+        "rule": "Een charge interaction geldt als attractive als de charge product kleiner is dan 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product is kleiner dan 0"
+      },
+      "ChargeInteractions.IsRepulsive": {
+        "table": "ChargeInteractions",
+        "field": "IsRepulsive",
+        "kind": "formula",
+        "rule": "Een charge interaction geldt als repulsive als de charge product groter is dan 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product is groter dan 0"
+      },
+      "ChargeInteractions.InteractionType": {
+        "table": "ChargeInteractions",
+        "field": "InteractionType",
+        "kind": "formula",
+        "rule": "Het veld ‘interaction type’ van de charge interaction wordt bepaald volgens de volgende prioriteit:\n1. ‘attractive’, als de vlag ‘attractive’ is gezet;\n2. ‘repulsive’, als de vlag ‘repulsive’ is gezet;\n3. in alle andere gevallen ‘neutral’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘interaction type’ van de charge interaction wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘attractive’",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘attractive’ is gezet"
+              }
+            },
+            {
+              "value": "‘repulsive’",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘repulsive’ is gezet"
+              }
+            },
+            {
+              "value": "‘neutral’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als is attractive, dan \"attractive\", anders als is repulsive, dan \"repulsive\", anders \"neutral\""
+      },
+      "ChargeInteractions.ForceInAttoNewtons": {
+        "table": "ChargeInteractions",
+        "field": "ForceInAttoNewtons",
+        "kind": "formula",
+        "rule": "Een charge interaction: force in atto newtons wordt berekend als de force magnitude maal 1000000000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          }
+        ],
+        "structure": null,
+        "plain": "Force magnitude maal 1,000,000,000,000,000,000"
+      },
+      "ForceVectors.Name": {
+        "table": "ForceVectors",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een force vector: name is gelijk aan force vector ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceVectorId",
+            "label": "force vector ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Force vector ID"
+      },
+      "ForceVectors.UnitX": {
+        "table": "ForceVectors",
+        "field": "UnitX",
+        "kind": "formula",
+        "rule": "Het veld ‘unit x’ van de force vector wordt bepaald volgens de volgende prioriteit:\n1. 0, als de dist raw 0 is;\n2. in alle andere gevallen de DX gedeeld door de dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DX",
+            "label": "DX"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘unit x’ van de force vector wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "de dist raw 0 is"
+              }
+            },
+            {
+              "value": "de DX gedeeld door de dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als dist raw is gelijk aan 0, dan 0, anders (DX gedeeld door dist raw)"
+      },
+      "ForceVectors.UnitY": {
+        "table": "ForceVectors",
+        "field": "UnitY",
+        "kind": "formula",
+        "rule": "Het veld ‘unit y’ van de force vector wordt bepaald volgens de volgende prioriteit:\n1. 0, als de dist raw 0 is;\n2. in alle andere gevallen de DY gedeeld door de dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DY",
+            "label": "DY"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘unit y’ van de force vector wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "de dist raw 0 is"
+              }
+            },
+            {
+              "value": "de DY gedeeld door de dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als dist raw is gelijk aan 0, dan 0, anders (DY gedeeld door dist raw)"
+      },
+      "ForceVectors.UnitZ": {
+        "table": "ForceVectors",
+        "field": "UnitZ",
+        "kind": "formula",
+        "rule": "Het veld ‘unit z’ van de force vector wordt bepaald volgens de volgende prioriteit:\n1. 0, als de dist raw 0 is;\n2. in alle andere gevallen de DZ gedeeld door de dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DZ",
+            "label": "DZ"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘unit z’ van de force vector wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "de dist raw 0 is"
+              }
+            },
+            {
+              "value": "de DZ gedeeld door de dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als dist raw is gelijk aan 0, dan 0, anders (DZ gedeeld door dist raw)"
+      },
+      "ForceVectors.SignFactor": {
+        "table": "ForceVectors",
+        "field": "SignFactor",
+        "kind": "formula",
+        "rule": "Het veld ‘sign factor’ van de force vector wordt bepaald volgens de volgende prioriteit:\n1. het negatieve van 1, als de vlag ‘attractive raw’ is gezet;\n2. in alle andere gevallen 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘sign factor’ van de force vector wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "het negatieve van 1",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘attractive raw’ is gezet"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als is attractive raw, dan negatief 1, anders 1"
+      },
+      "ForceVectors.FX": {
+        "table": "ForceVectors",
+        "field": "FX",
+        "kind": "formula",
+        "rule": "Een force vector: FX wordt berekend als de force magnitude raw maal de sign factor maal de unit x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitX",
+            "label": "unit x"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw maal sign factor) maal unit x"
+      },
+      "ForceVectors.FY": {
+        "table": "ForceVectors",
+        "field": "FY",
+        "kind": "formula",
+        "rule": "Een force vector: FY wordt berekend als de force magnitude raw maal de sign factor maal de unit y.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitY",
+            "label": "unit y"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw maal sign factor) maal unit y"
+      },
+      "ForceVectors.FZ": {
+        "table": "ForceVectors",
+        "field": "FZ",
+        "kind": "formula",
+        "rule": "Een force vector: FZ wordt berekend als de force magnitude raw maal de sign factor maal de unit z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitZ",
+            "label": "unit z"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw maal sign factor) maal unit z"
+      },
+      "ForceVectors.ForceDirDescription": {
+        "table": "ForceVectors",
+        "field": "ForceDirDescription",
+        "kind": "formula",
+        "rule": "Het veld ‘force dir description’ van de force vector wordt bepaald volgens de volgende prioriteit:\n1. ‘towards’, als de vlag ‘attractive raw’ is gezet;\n2. in alle andere gevallen ‘away-from’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘force dir description’ van de force vector wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘towards’",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘attractive raw’ is gezet"
+              }
+            },
+            {
+              "value": "‘away-from’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als is attractive raw, dan \"towards\", anders \"away-from\""
+      },
+      "ElectricFieldPoints.Name": {
+        "table": "ElectricFieldPoints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een electric field point: name is gelijk aan field point ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "FieldPointId",
+            "label": "field point ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Field point ID"
+      },
+      "ElectricFieldPoints.dX": {
+        "table": "ElectricFieldPoints",
+        "field": "dX",
+        "kind": "formula",
+        "rule": "Een electric field point: d x wordt berekend als de obs x min de src x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsX",
+            "label": "obs x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcX",
+            "label": "src x"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs x min src x"
+      },
+      "ElectricFieldPoints.dY": {
+        "table": "ElectricFieldPoints",
+        "field": "dY",
+        "kind": "formula",
+        "rule": "Een electric field point: d y wordt berekend als de obs y min de src y.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsY",
+            "label": "obs y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcY",
+            "label": "src y"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs y min src y"
+      },
+      "ElectricFieldPoints.dZ": {
+        "table": "ElectricFieldPoints",
+        "field": "dZ",
+        "kind": "formula",
+        "rule": "Een electric field point: d z wordt berekend als de obs z min de src z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsZ",
+            "label": "obs z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcZ",
+            "label": "src z"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs z min src z"
+      },
+      "ElectricFieldPoints.DistanceSquared": {
+        "table": "ElectricFieldPoints",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "Een electric field point: distance squared wordt berekend als de d x maal de d x plus de d y maal de d y plus de d z maal de d z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          }
+        ],
+        "structure": null,
+        "plain": "((d x maal d x) plus (d y maal d y)) plus (d z maal d z)"
+      },
+      "ElectricFieldPoints.Distance": {
+        "table": "ElectricFieldPoints",
+        "field": "Distance",
+        "kind": "formula",
+        "rule": "Een electric field point: distance wordt berekend als de vierkantswortel van de distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ElectricFieldPoints.EFieldMagnitude": {
+        "table": "ElectricFieldPoints",
+        "field": "EFieldMagnitude",
+        "kind": "formula",
+        "rule": "Een electric field point: e field magnitude wordt berekend als de coulomb k maal de absolute waarde van de source q gedeeld door de distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k maal de absolute waarde van source q) gedeeld door distance squared"
+      },
+      "ElectricFieldPoints.QSign": {
+        "table": "ElectricFieldPoints",
+        "field": "QSign",
+        "kind": "formula",
+        "rule": "Het veld ‘q sign’ van de electric field point wordt bepaald volgens de volgende prioriteit:\n1. 1, als de source q groter is dan 0;\n2. in alle andere gevallen het negatieve van 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘q sign’ van de electric field point wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "de source q groter is dan 0"
+              }
+            },
+            {
+              "value": "het negatieve van 1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als source q is groter dan 0, dan 1, anders negatief 1"
+      },
+      "ElectricFieldPoints.EX": {
+        "table": "ElectricFieldPoints",
+        "field": "EX",
+        "kind": "formula",
+        "rule": "Een electric field point: EX wordt berekend als de e field magnitude maal de q sign maal de d x gedeeld door de distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude maal q sign) maal d x) gedeeld door distance"
+      },
+      "ElectricFieldPoints.EY": {
+        "table": "ElectricFieldPoints",
+        "field": "EY",
+        "kind": "formula",
+        "rule": "Een electric field point: EY wordt berekend als de e field magnitude maal de q sign maal de d y gedeeld door de distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude maal q sign) maal d y) gedeeld door distance"
+      },
+      "ElectricFieldPoints.EZ": {
+        "table": "ElectricFieldPoints",
+        "field": "EZ",
+        "kind": "formula",
+        "rule": "Een electric field point: EZ wordt berekend als de e field magnitude maal de q sign maal de d z gedeeld door de distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude maal q sign) maal d z) gedeeld door distance"
+      },
+      "InvariantChecks.Name": {
+        "table": "InvariantChecks",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een invariant check: name is gelijk aan invariant ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "InvariantId",
+            "label": "invariant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Invariant ID"
+      },
+      "SystemSummary.Name": {
+        "table": "SystemSummary",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een system summary: name is gelijk aan summary ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SummaryId",
+            "label": "summary ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summary ID"
+      },
+      "SystemSummary.SystemName": {
+        "table": "SystemSummary",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "Een system summary: system name is de waarde van LOOKUP(SystemId, Systems[SystemId], Systems[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "SystemSummary.ChargeCount": {
+        "table": "SystemSummary",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "Een system summary: charge count is het aantal charges dat is gekoppeld aan de system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal charges waarvan system ID is system ID"
+      },
+      "SystemSummary.InteractionCount": {
+        "table": "SystemSummary",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Een system summary: interaction count is het aantal charge interactions dat is gekoppeld aan de system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal charge interactions waarvan system ID is system ID"
+      },
+      "SystemSummary.AttractiveCount": {
+        "table": "SystemSummary",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "Een system summary: attractive count is het aantal charge interactions van de system summary dat attractive zijn.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal charge interactions waarvan system ID is system ID en is attractive is true()"
+      },
+      "SystemSummary.RepulsiveCount": {
+        "table": "SystemSummary",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "Een system summary: repulsive count is het aantal charge interactions van de system summary dat repulsive zijn.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal charge interactions waarvan system ID is system ID en is repulsive is true()"
+      },
+      "SystemSummary.TotalCharge": {
+        "table": "SystemSummary",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "Een system summary: total charge is het totaal van charge value over de charges gekoppeld aan de system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van charge value over alle charges waarvan system ID is system ID"
+      },
+      "SystemSummary.IsNeutral": {
+        "table": "SystemSummary",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "Een system summary geldt als neutral als de waarde van ABS(TotalCharge) < 1e-30.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "SystemSummary.MaxForceMagnitude": {
+        "table": "SystemSummary",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "Een system summary: max force magnitude is de hoogste waarde van force magnitude over de charge interactions gekoppeld aan de system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Hoogste waarde van force magnitude over alle charge interactions waarvan system ID is system ID"
+      },
+      "SystemSummary.MinDistanceMeters": {
+        "table": "SystemSummary",
+        "field": "MinDistanceMeters",
+        "kind": "rollup",
+        "rule": "Een system summary: min distance meters is de laagste waarde van distance meters over de charge interactions gekoppeld aan de system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Laagste waarde van distance meters over alle charge interactions waarvan system ID is system ID"
+      },
+      "SystemSummary.AllAttractive": {
+        "table": "SystemSummary",
+        "field": "AllAttractive",
+        "kind": "formula",
+        "rule": "Een system summary is gemarkeerd als all attractive als de attractive count de interaction count is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Attractive count is gelijk aan interaction count"
+      },
+      "SystemSummary.AllRepulsive": {
+        "table": "SystemSummary",
+        "field": "AllRepulsive",
+        "kind": "formula",
+        "rule": "Een system summary is gemarkeerd als all repulsive als de repulsive count de interaction count is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Repulsive count is gelijk aan interaction count"
+      },
+      "SystemSummary.HasMixedInteractions": {
+        "table": "SystemSummary",
+        "field": "HasMixedInteractions",
+        "kind": "formula",
+        "rule": "Een system summary geldt als beschikkend over een mixed interactions als al het volgende geldt: de attractive count groter is dan 0 en de repulsive count groter is dan 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een system summary geldt als beschikkend over een mixed interactions als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de attractive count groter is dan 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de repulsive count groter is dan 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Attractive count is groter dan 0 en repulsive count is groter dan 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Loops": [
+        "Een loop **moet** een title en een status hebben."
+      ],
+      "PhysicsConstants": [
+        "Een physics constant **moet** een name; een symbol; een value; en een units hebben."
+      ],
+      "Particles": [
+        "Een particle **moet** een name; een canonical charge; en een canonical mass hebben."
+      ],
+      "Charges": [
+        "Een charge **moet** een name; een system ID; een charge value; een position x; een position y; en een position z hebben."
+      ],
+      "Systems": [
+        "Een system **moet** een name hebben, en vastleggen of het is synthetic."
+      ],
+      "ChargeInteractions": [
+        "Een charge interaction **moet** een system ID; een charge1 ID; een charge2 ID; een q1; een q2; een x1; een y1; een z1; een x2; een y2; een z2; en een coulomb k hebben."
+      ],
+      "ForceVectors": [
+        "Een force vector **moet** een interaction ID; een force magnitude raw; een DX; een DY; een DZ; en een dist raw hebben, en vastleggen of het is een attractive raw."
+      ],
+      "ElectricFieldPoints": [
+        "Een electric field point **moet** een system ID; een source charge ID; een observation label; een obs x; een obs y; een obs z; een coulomb k; een source q; een src x; een src y; en een src z hebben."
+      ],
+      "InvariantChecks": [
+        "Een invariant check **moet** een algebraic statement; een natural language; en een severity hebben."
+      ],
+      "SystemSummary": [
+        "Een system summary **moet** een system ID hebben."
+      ]
+    },
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Loops": "loop",
+      "PhysicsConstants": "physics constant",
+      "Particles": "particle",
+      "Charges": "charge",
+      "Systems": "system",
+      "ChargeInteractions": "charge interaction",
+      "ForceVectors": "force vector",
+      "ElectricFieldPoints": "electric field point",
+      "InvariantChecks": "invariant check",
+      "SystemSummary": "system summary"
+    }
+  },
+  "pt": {
+    "fields": {
+      "Loops.Name": {
+        "table": "Loops",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um loop: name é igual a loop ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loops",
+            "field": "LoopId",
+            "label": "loop ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Loop ID"
+      },
+      "Particles.ChargeSign": {
+        "table": "Particles",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "O campo “charge sign” do particle é determinado pela seguinte prioridade:\n1. “positive”, se o canonical charge é maior que 0;\n2. “negative”, se o canonical charge é menor que 0;\n3. em todos os outros casos, “neutral”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Particles",
+            "field": "CanonicalCharge",
+            "label": "canonical charge"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “charge sign” do particle é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“positive”",
+              "when": {
+                "kind": "leaf",
+                "text": "o canonical charge é maior que 0"
+              }
+            },
+            {
+              "value": "“negative”",
+              "when": {
+                "kind": "leaf",
+                "text": "o canonical charge é menor que 0"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se canonical charge é maior que 0, então \"positive\", caso contrário se canonical charge é menor que 0, então \"negative\", caso contrário \"neutral\""
+      },
+      "Charges.ChargeSign": {
+        "table": "Charges",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "O campo “charge sign” do charge é determinado pela seguinte prioridade:\n1. “positive”, se o charge value é maior que 0;\n2. “negative”, se o charge value é menor que 0;\n3. em todos os outros casos, “neutral”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “charge sign” do charge é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“positive”",
+              "when": {
+                "kind": "leaf",
+                "text": "o charge value é maior que 0"
+              }
+            },
+            {
+              "value": "“negative”",
+              "when": {
+                "kind": "leaf",
+                "text": "o charge value é menor que 0"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se charge value é maior que 0, então \"positive\", caso contrário se charge value é menor que 0, então \"negative\", caso contrário \"neutral\""
+      },
+      "Charges.ChargeMagnitude": {
+        "table": "Charges",
+        "field": "ChargeMagnitude",
+        "kind": "formula",
+        "rule": "Um charge: charge magnitude é calculado como o valor absoluto de o charge value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": null,
+        "plain": "O valor absoluto de charge value"
+      },
+      "Charges.SystemName": {
+        "table": "Charges",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "Um charge: system name é o valor de LOOKUP(SystemId, Systems[SystemId], Systems[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "Charges.ParticleName": {
+        "table": "Charges",
+        "field": "ParticleName",
+        "kind": "lookup",
+        "rule": "Um charge: particle name é o valor de LOOKUP(ParticleId, Particles[ParticleId], Particles[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ParticleId",
+            "label": "particle ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{ParticleId}}, Particles[ParticleId], Particles[Name])"
+      },
+      "Charges.InteractionCount": {
+        "table": "Charges",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Um charge: interaction count é o número de charge interactions relacionados a o charge.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Charge1Id",
+            "label": "charge1 ID"
+          },
+          {
+            "table": "Charges",
+            "field": "ChargeId",
+            "label": "charge ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de charge interactions cujo charge1 ID é charge ID"
+      },
+      "Systems.ChargeCount": {
+        "table": "Systems",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "Um system: charge count é o número de charges relacionados a o system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de charges cujo system ID é system ID"
+      },
+      "Systems.InteractionCount": {
+        "table": "Systems",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Um system: interaction count é o número de charge interactions relacionados a o system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de charge interactions cujo system ID é system ID"
+      },
+      "Systems.AttractiveCount": {
+        "table": "Systems",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "Um system: attractive count é o número de charge interactions do system que são attractive.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de charge interactions cujo system ID é system ID e is attractive é true()"
+      },
+      "Systems.RepulsiveCount": {
+        "table": "Systems",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "Um system: repulsive count é o número de charge interactions do system que são repulsive.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de charge interactions cujo system ID é system ID e is repulsive é true()"
+      },
+      "Systems.TotalCharge": {
+        "table": "Systems",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "Um system: total charge é o total de charge value entre os charges relacionados a o system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de charge value entre todos os charges cujo system ID é system ID"
+      },
+      "Systems.IsNeutral": {
+        "table": "Systems",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "Um system é considerado neutral se o valor de ABS(TotalCharge) < 1e-30.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Systems",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "Systems.MaxForceMagnitude": {
+        "table": "Systems",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "Um system: max force magnitude é o maior valor de force magnitude entre os charge interactions relacionados a o system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Maior valor de force magnitude entre todos os charge interactions cujo system ID é system ID"
+      },
+      "ChargeInteractions.Name": {
+        "table": "ChargeInteractions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um charge interaction: name é igual a interaction ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "InteractionId",
+            "label": "interaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction ID"
+      },
+      "ChargeInteractions.DeltaX": {
+        "table": "ChargeInteractions",
+        "field": "DeltaX",
+        "kind": "formula",
+        "rule": "Um charge interaction: delta x é calculado como o x2 menos o x1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "X2",
+            "label": "x2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "X1",
+            "label": "x1"
+          }
+        ],
+        "structure": null,
+        "plain": "X2 menos x1"
+      },
+      "ChargeInteractions.DeltaY": {
+        "table": "ChargeInteractions",
+        "field": "DeltaY",
+        "kind": "formula",
+        "rule": "Um charge interaction: delta y é calculado como o y2 menos o y1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Y2",
+            "label": "y2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Y1",
+            "label": "y1"
+          }
+        ],
+        "structure": null,
+        "plain": "Y2 menos y1"
+      },
+      "ChargeInteractions.DeltaZ": {
+        "table": "ChargeInteractions",
+        "field": "DeltaZ",
+        "kind": "formula",
+        "rule": "Um charge interaction: delta z é calculado como o z2 menos o z1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Z2",
+            "label": "z2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Z1",
+            "label": "z1"
+          }
+        ],
+        "structure": null,
+        "plain": "Z2 menos z1"
+      },
+      "ChargeInteractions.DistanceSquared": {
+        "table": "ChargeInteractions",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "Um charge interaction: distance squared é calculado como o delta x vezes o delta x mais o delta y vezes o delta y mais o delta z vezes o delta z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaX",
+            "label": "delta x"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaY",
+            "label": "delta y"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaZ",
+            "label": "delta z"
+          }
+        ],
+        "structure": null,
+        "plain": "((delta x vezes delta x) mais (delta y vezes delta y)) mais (delta z vezes delta z)"
+      },
+      "ChargeInteractions.DistanceMeters": {
+        "table": "ChargeInteractions",
+        "field": "DistanceMeters",
+        "kind": "formula",
+        "rule": "Um charge interaction: distance meters é calculado como a raiz quadrada de o distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ChargeInteractions.DistancePicometers": {
+        "table": "ChargeInteractions",
+        "field": "DistancePicometers",
+        "kind": "formula",
+        "rule": "Um charge interaction: distance picometers é calculado como o distance meters vezes 1000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance meters vezes 1,000,000,000,000"
+      },
+      "ChargeInteractions.ChargeProduct": {
+        "table": "ChargeInteractions",
+        "field": "ChargeProduct",
+        "kind": "formula",
+        "rule": "Um charge interaction: charge product é calculado como o q1 vezes o q2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Q1",
+            "label": "q1"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Q2",
+            "label": "q2"
+          }
+        ],
+        "structure": null,
+        "plain": "Q1 vezes q2"
+      },
+      "ChargeInteractions.ForceMagnitude": {
+        "table": "ChargeInteractions",
+        "field": "ForceMagnitude",
+        "kind": "formula",
+        "rule": "Um charge interaction: force magnitude é calculado como o coulomb k vezes o valor absoluto de o charge product dividido por o distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k vezes o valor absoluto de charge product) dividido por distance squared"
+      },
+      "ChargeInteractions.IsAttractive": {
+        "table": "ChargeInteractions",
+        "field": "IsAttractive",
+        "kind": "formula",
+        "rule": "Um charge interaction é considerado attractive se o charge product é menor que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product é menor que 0"
+      },
+      "ChargeInteractions.IsRepulsive": {
+        "table": "ChargeInteractions",
+        "field": "IsRepulsive",
+        "kind": "formula",
+        "rule": "Um charge interaction é considerado repulsive se o charge product é maior que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product é maior que 0"
+      },
+      "ChargeInteractions.InteractionType": {
+        "table": "ChargeInteractions",
+        "field": "InteractionType",
+        "kind": "formula",
+        "rule": "O campo “interaction type” do charge interaction é determinado pela seguinte prioridade:\n1. “attractive”, se o indicador “attractive” está ativado;\n2. “repulsive”, se o indicador “repulsive” está ativado;\n3. em todos os outros casos, “neutral”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “interaction type” do charge interaction é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“attractive”",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “attractive” está ativado"
+              }
+            },
+            {
+              "value": "“repulsive”",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “repulsive” está ativado"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is attractive, então \"attractive\", caso contrário se is repulsive, então \"repulsive\", caso contrário \"neutral\""
+      },
+      "ChargeInteractions.ForceInAttoNewtons": {
+        "table": "ChargeInteractions",
+        "field": "ForceInAttoNewtons",
+        "kind": "formula",
+        "rule": "Um charge interaction: force in atto newtons é calculado como o force magnitude vezes 1000000000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          }
+        ],
+        "structure": null,
+        "plain": "Force magnitude vezes 1,000,000,000,000,000,000"
+      },
+      "ForceVectors.Name": {
+        "table": "ForceVectors",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um force vector: name é igual a force vector ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceVectorId",
+            "label": "force vector ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Force vector ID"
+      },
+      "ForceVectors.UnitX": {
+        "table": "ForceVectors",
+        "field": "UnitX",
+        "kind": "formula",
+        "rule": "O campo “unit x” do force vector é determinado pela seguinte prioridade:\n1. 0, se o dist raw é 0;\n2. em todos os outros casos, o DX dividido por o dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DX",
+            "label": "DX"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “unit x” do force vector é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "o dist raw é 0"
+              }
+            },
+            {
+              "value": "o DX dividido por o dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se dist raw é igual a 0, então 0, caso contrário (DX dividido por dist raw)"
+      },
+      "ForceVectors.UnitY": {
+        "table": "ForceVectors",
+        "field": "UnitY",
+        "kind": "formula",
+        "rule": "O campo “unit y” do force vector é determinado pela seguinte prioridade:\n1. 0, se o dist raw é 0;\n2. em todos os outros casos, o DY dividido por o dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DY",
+            "label": "DY"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “unit y” do force vector é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "o dist raw é 0"
+              }
+            },
+            {
+              "value": "o DY dividido por o dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se dist raw é igual a 0, então 0, caso contrário (DY dividido por dist raw)"
+      },
+      "ForceVectors.UnitZ": {
+        "table": "ForceVectors",
+        "field": "UnitZ",
+        "kind": "formula",
+        "rule": "O campo “unit z” do force vector é determinado pela seguinte prioridade:\n1. 0, se o dist raw é 0;\n2. em todos os outros casos, o DZ dividido por o dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DZ",
+            "label": "DZ"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “unit z” do force vector é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "o dist raw é 0"
+              }
+            },
+            {
+              "value": "o DZ dividido por o dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se dist raw é igual a 0, então 0, caso contrário (DZ dividido por dist raw)"
+      },
+      "ForceVectors.SignFactor": {
+        "table": "ForceVectors",
+        "field": "SignFactor",
+        "kind": "formula",
+        "rule": "O campo “sign factor” do force vector é determinado pela seguinte prioridade:\n1. o negativo de 1, se o indicador “attractive raw” está ativado;\n2. em todos os outros casos, 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “sign factor” do force vector é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "o negativo de 1",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “attractive raw” está ativado"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is attractive raw, então negativo 1, caso contrário 1"
+      },
+      "ForceVectors.FX": {
+        "table": "ForceVectors",
+        "field": "FX",
+        "kind": "formula",
+        "rule": "Um force vector: FX é calculado como o force magnitude raw vezes o sign factor vezes o unit x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitX",
+            "label": "unit x"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw vezes sign factor) vezes unit x"
+      },
+      "ForceVectors.FY": {
+        "table": "ForceVectors",
+        "field": "FY",
+        "kind": "formula",
+        "rule": "Um force vector: FY é calculado como o force magnitude raw vezes o sign factor vezes o unit y.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitY",
+            "label": "unit y"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw vezes sign factor) vezes unit y"
+      },
+      "ForceVectors.FZ": {
+        "table": "ForceVectors",
+        "field": "FZ",
+        "kind": "formula",
+        "rule": "Um force vector: FZ é calculado como o force magnitude raw vezes o sign factor vezes o unit z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitZ",
+            "label": "unit z"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw vezes sign factor) vezes unit z"
+      },
+      "ForceVectors.ForceDirDescription": {
+        "table": "ForceVectors",
+        "field": "ForceDirDescription",
+        "kind": "formula",
+        "rule": "O campo “force dir description” do force vector é determinado pela seguinte prioridade:\n1. “towards”, se o indicador “attractive raw” está ativado;\n2. em todos os outros casos, “away-from”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “force dir description” do force vector é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“towards”",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “attractive raw” está ativado"
+              }
+            },
+            {
+              "value": "“away-from”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is attractive raw, então \"towards\", caso contrário \"away-from\""
+      },
+      "ElectricFieldPoints.Name": {
+        "table": "ElectricFieldPoints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um electric field point: name é igual a field point ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "FieldPointId",
+            "label": "field point ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Field point ID"
+      },
+      "ElectricFieldPoints.dX": {
+        "table": "ElectricFieldPoints",
+        "field": "dX",
+        "kind": "formula",
+        "rule": "Um electric field point: d x é calculado como o obs x menos o src x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsX",
+            "label": "obs x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcX",
+            "label": "src x"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs x menos src x"
+      },
+      "ElectricFieldPoints.dY": {
+        "table": "ElectricFieldPoints",
+        "field": "dY",
+        "kind": "formula",
+        "rule": "Um electric field point: d y é calculado como o obs y menos o src y.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsY",
+            "label": "obs y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcY",
+            "label": "src y"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs y menos src y"
+      },
+      "ElectricFieldPoints.dZ": {
+        "table": "ElectricFieldPoints",
+        "field": "dZ",
+        "kind": "formula",
+        "rule": "Um electric field point: d z é calculado como o obs z menos o src z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsZ",
+            "label": "obs z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcZ",
+            "label": "src z"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs z menos src z"
+      },
+      "ElectricFieldPoints.DistanceSquared": {
+        "table": "ElectricFieldPoints",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "Um electric field point: distance squared é calculado como o d x vezes o d x mais o d y vezes o d y mais o d z vezes o d z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          }
+        ],
+        "structure": null,
+        "plain": "((d x vezes d x) mais (d y vezes d y)) mais (d z vezes d z)"
+      },
+      "ElectricFieldPoints.Distance": {
+        "table": "ElectricFieldPoints",
+        "field": "Distance",
+        "kind": "formula",
+        "rule": "Um electric field point: distance é calculado como a raiz quadrada de o distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ElectricFieldPoints.EFieldMagnitude": {
+        "table": "ElectricFieldPoints",
+        "field": "EFieldMagnitude",
+        "kind": "formula",
+        "rule": "Um electric field point: e field magnitude é calculado como o coulomb k vezes o valor absoluto de o source q dividido por o distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k vezes o valor absoluto de source q) dividido por distance squared"
+      },
+      "ElectricFieldPoints.QSign": {
+        "table": "ElectricFieldPoints",
+        "field": "QSign",
+        "kind": "formula",
+        "rule": "O campo “q sign” do electric field point é determinado pela seguinte prioridade:\n1. 1, se o source q é maior que 0;\n2. em todos os outros casos, o negativo de 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “q sign” do electric field point é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "o source q é maior que 0"
+              }
+            },
+            {
+              "value": "o negativo de 1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se source q é maior que 0, então 1, caso contrário negativo 1"
+      },
+      "ElectricFieldPoints.EX": {
+        "table": "ElectricFieldPoints",
+        "field": "EX",
+        "kind": "formula",
+        "rule": "Um electric field point: EX é calculado como o e field magnitude vezes o q sign vezes o d x dividido por o distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude vezes q sign) vezes d x) dividido por distance"
+      },
+      "ElectricFieldPoints.EY": {
+        "table": "ElectricFieldPoints",
+        "field": "EY",
+        "kind": "formula",
+        "rule": "Um electric field point: EY é calculado como o e field magnitude vezes o q sign vezes o d y dividido por o distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude vezes q sign) vezes d y) dividido por distance"
+      },
+      "ElectricFieldPoints.EZ": {
+        "table": "ElectricFieldPoints",
+        "field": "EZ",
+        "kind": "formula",
+        "rule": "Um electric field point: EZ é calculado como o e field magnitude vezes o q sign vezes o d z dividido por o distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude vezes q sign) vezes d z) dividido por distance"
+      },
+      "InvariantChecks.Name": {
+        "table": "InvariantChecks",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um invariant check: name é igual a invariant ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "InvariantId",
+            "label": "invariant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Invariant ID"
+      },
+      "SystemSummary.Name": {
+        "table": "SystemSummary",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um system summary: name é igual a summary ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SummaryId",
+            "label": "summary ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summary ID"
+      },
+      "SystemSummary.SystemName": {
+        "table": "SystemSummary",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "Um system summary: system name é o valor de LOOKUP(SystemId, Systems[SystemId], Systems[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "SystemSummary.ChargeCount": {
+        "table": "SystemSummary",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "Um system summary: charge count é o número de charges relacionados a o system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de charges cujo system ID é system ID"
+      },
+      "SystemSummary.InteractionCount": {
+        "table": "SystemSummary",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Um system summary: interaction count é o número de charge interactions relacionados a o system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de charge interactions cujo system ID é system ID"
+      },
+      "SystemSummary.AttractiveCount": {
+        "table": "SystemSummary",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "Um system summary: attractive count é o número de charge interactions do system summary que são attractive.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de charge interactions cujo system ID é system ID e is attractive é true()"
+      },
+      "SystemSummary.RepulsiveCount": {
+        "table": "SystemSummary",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "Um system summary: repulsive count é o número de charge interactions do system summary que são repulsive.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de charge interactions cujo system ID é system ID e is repulsive é true()"
+      },
+      "SystemSummary.TotalCharge": {
+        "table": "SystemSummary",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "Um system summary: total charge é o total de charge value entre os charges relacionados a o system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de charge value entre todos os charges cujo system ID é system ID"
+      },
+      "SystemSummary.IsNeutral": {
+        "table": "SystemSummary",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "Um system summary é considerado neutral se o valor de ABS(TotalCharge) < 1e-30.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "SystemSummary.MaxForceMagnitude": {
+        "table": "SystemSummary",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "Um system summary: max force magnitude é o maior valor de force magnitude entre os charge interactions relacionados a o system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Maior valor de force magnitude entre todos os charge interactions cujo system ID é system ID"
+      },
+      "SystemSummary.MinDistanceMeters": {
+        "table": "SystemSummary",
+        "field": "MinDistanceMeters",
+        "kind": "rollup",
+        "rule": "Um system summary: min distance meters é o menor valor de distance meters entre os charge interactions relacionados a o system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Menor valor de distance meters entre todos os charge interactions cujo system ID é system ID"
+      },
+      "SystemSummary.AllAttractive": {
+        "table": "SystemSummary",
+        "field": "AllAttractive",
+        "kind": "formula",
+        "rule": "Um system summary está marcado como all attractive se o attractive count é o interaction count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Attractive count é igual a interaction count"
+      },
+      "SystemSummary.AllRepulsive": {
+        "table": "SystemSummary",
+        "field": "AllRepulsive",
+        "kind": "formula",
+        "rule": "Um system summary está marcado como all repulsive se o repulsive count é o interaction count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Repulsive count é igual a interaction count"
+      },
+      "SystemSummary.HasMixedInteractions": {
+        "table": "SystemSummary",
+        "field": "HasMixedInteractions",
+        "kind": "formula",
+        "rule": "Um system summary é considerado como tendo um mixed interactions se tudo o que segue é verdadeiro: o attractive count é maior que 0 e o repulsive count é maior que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um system summary é considerado como tendo um mixed interactions se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o attractive count é maior que 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o repulsive count é maior que 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Attractive count é maior que 0 e repulsive count é maior que 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Loops": [
+        "Um loop **deve** ter um title e um status."
+      ],
+      "PhysicsConstants": [
+        "Um physics constant **deve** ter um name; um symbol; um value; e um units."
+      ],
+      "Particles": [
+        "Um particle **deve** ter um name; um canonical charge; e um canonical mass."
+      ],
+      "Charges": [
+        "Um charge **deve** ter um name; um system ID; um charge value; um position x; um position y; e um position z."
+      ],
+      "Systems": [
+        "Um system **deve** ter um name, e registrar se é synthetic."
+      ],
+      "ChargeInteractions": [
+        "Um charge interaction **deve** ter um system ID; um charge1 ID; um charge2 ID; um q1; um q2; um x1; um y1; um z1; um x2; um y2; um z2; e um coulomb k."
+      ],
+      "ForceVectors": [
+        "Um force vector **deve** ter um interaction ID; um force magnitude raw; um DX; um DY; um DZ; e um dist raw, e registrar se é um attractive raw."
+      ],
+      "ElectricFieldPoints": [
+        "Um electric field point **deve** ter um system ID; um source charge ID; um observation label; um obs x; um obs y; um obs z; um coulomb k; um source q; um src x; um src y; e um src z."
+      ],
+      "InvariantChecks": [
+        "Um invariant check **deve** ter um algebraic statement; um natural language; e um severity."
+      ],
+      "SystemSummary": [
+        "Um system summary **deve** ter um system ID."
+      ]
+    },
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Loops": "loop",
+      "PhysicsConstants": "physics constant",
+      "Particles": "particle",
+      "Charges": "charge",
+      "Systems": "system",
+      "ChargeInteractions": "charge interaction",
+      "ForceVectors": "force vector",
+      "ElectricFieldPoints": "electric field point",
+      "InvariantChecks": "invariant check",
+      "SystemSummary": "system summary"
+    }
+  },
+  "ru": {
+    "fields": {
+      "Loops.Name": {
+        "table": "Loops",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Loop: «name» совпадает с loop ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loops",
+            "field": "LoopId",
+            "label": "loop ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Loop ID"
+      },
+      "Particles.ChargeSign": {
+        "table": "Particles",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "Поле «charge sign» (Particle) определяется по следующему приоритету:\n1. «positive», если canonical charge больше 0;\n2. «negative», если canonical charge меньше 0;\n3. во всех остальных случаях — «neutral».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Particles",
+            "field": "CanonicalCharge",
+            "label": "canonical charge"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «charge sign» (Particle) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«positive»",
+              "when": {
+                "kind": "leaf",
+                "text": "canonical charge больше 0"
+              }
+            },
+            {
+              "value": "«negative»",
+              "when": {
+                "kind": "leaf",
+                "text": "canonical charge меньше 0"
+              }
+            },
+            {
+              "value": "«neutral»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если canonical charge больше 0, то \"positive\", иначе если canonical charge меньше 0, то \"negative\", иначе \"neutral\""
+      },
+      "Charges.ChargeSign": {
+        "table": "Charges",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "Поле «charge sign» (Charge) определяется по следующему приоритету:\n1. «positive», если charge value больше 0;\n2. «negative», если charge value меньше 0;\n3. во всех остальных случаях — «neutral».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «charge sign» (Charge) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«positive»",
+              "when": {
+                "kind": "leaf",
+                "text": "charge value больше 0"
+              }
+            },
+            {
+              "value": "«negative»",
+              "when": {
+                "kind": "leaf",
+                "text": "charge value меньше 0"
+              }
+            },
+            {
+              "value": "«neutral»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если charge value больше 0, то \"positive\", иначе если charge value меньше 0, то \"negative\", иначе \"neutral\""
+      },
+      "Charges.ChargeMagnitude": {
+        "table": "Charges",
+        "field": "ChargeMagnitude",
+        "kind": "formula",
+        "rule": "Charge: «charge magnitude» вычисляется как модуль charge value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": null,
+        "plain": "Модуль charge value"
+      },
+      "Charges.SystemName": {
+        "table": "Charges",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "Charge: «system name» — это значение LOOKUP(SystemId, Systems[SystemId], Systems[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "Charges.ParticleName": {
+        "table": "Charges",
+        "field": "ParticleName",
+        "kind": "lookup",
+        "rule": "Charge: «particle name» — это значение LOOKUP(ParticleId, Particles[ParticleId], Particles[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ParticleId",
+            "label": "particle ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{ParticleId}}, Particles[ParticleId], Particles[Name])"
+      },
+      "Charges.InteractionCount": {
+        "table": "Charges",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Charge: «interaction count» — это число записей «charge interactions», связанных с charge.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Charge1Id",
+            "label": "charge1 ID"
+          },
+          {
+            "table": "Charges",
+            "field": "ChargeId",
+            "label": "charge ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «charge interactions», у которых charge1 ID равно charge ID"
+      },
+      "Systems.ChargeCount": {
+        "table": "Systems",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "System: «charge count» — это число записей «charges», связанных с system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «charges», у которых system ID равно system ID"
+      },
+      "Systems.InteractionCount": {
+        "table": "Systems",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "System: «interaction count» — это число записей «charge interactions», связанных с system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «charge interactions», у которых system ID равно system ID"
+      },
+      "Systems.AttractiveCount": {
+        "table": "Systems",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "System: «attractive count» — это число записей «charge interactions» (system), которые являются «attractive».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «charge interactions», у которых system ID равно system ID и is attractive равно true()"
+      },
+      "Systems.RepulsiveCount": {
+        "table": "Systems",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "System: «repulsive count» — это число записей «charge interactions» (system), которые являются «repulsive».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «charge interactions», у которых system ID равно system ID и is repulsive равно true()"
+      },
+      "Systems.TotalCharge": {
+        "table": "Systems",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "System: «total charge» — это сумма «charge value» по записям «charges», связанным с system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма charge value по всем «charges», у которых system ID равно system ID"
+      },
+      "Systems.IsNeutral": {
+        "table": "Systems",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "System считается «neutral», если значение ABS(TotalCharge) < 1e-30.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Systems",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "Systems.MaxForceMagnitude": {
+        "table": "Systems",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "System: «max force magnitude» — это наибольшее значение «force magnitude» по записям «charge interactions», связанным с system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Наибольшее force magnitude по всем «charge interactions», у которых system ID равно system ID"
+      },
+      "ChargeInteractions.Name": {
+        "table": "ChargeInteractions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Charge interaction: «name» совпадает с interaction ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "InteractionId",
+            "label": "interaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction ID"
+      },
+      "ChargeInteractions.DeltaX": {
+        "table": "ChargeInteractions",
+        "field": "DeltaX",
+        "kind": "formula",
+        "rule": "Charge interaction: «delta x» вычисляется как x2 минус x1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "X2",
+            "label": "x2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "X1",
+            "label": "x1"
+          }
+        ],
+        "structure": null,
+        "plain": "X2 минус x1"
+      },
+      "ChargeInteractions.DeltaY": {
+        "table": "ChargeInteractions",
+        "field": "DeltaY",
+        "kind": "formula",
+        "rule": "Charge interaction: «delta y» вычисляется как y2 минус y1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Y2",
+            "label": "y2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Y1",
+            "label": "y1"
+          }
+        ],
+        "structure": null,
+        "plain": "Y2 минус y1"
+      },
+      "ChargeInteractions.DeltaZ": {
+        "table": "ChargeInteractions",
+        "field": "DeltaZ",
+        "kind": "formula",
+        "rule": "Charge interaction: «delta z» вычисляется как z2 минус z1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Z2",
+            "label": "z2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Z1",
+            "label": "z1"
+          }
+        ],
+        "structure": null,
+        "plain": "Z2 минус z1"
+      },
+      "ChargeInteractions.DistanceSquared": {
+        "table": "ChargeInteractions",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "Charge interaction: «distance squared» вычисляется как delta x умножить на delta x плюс delta y умножить на delta y плюс delta z умножить на delta z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaX",
+            "label": "delta x"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaY",
+            "label": "delta y"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaZ",
+            "label": "delta z"
+          }
+        ],
+        "structure": null,
+        "plain": "((delta x умножить на delta x) плюс (delta y умножить на delta y)) плюс (delta z умножить на delta z)"
+      },
+      "ChargeInteractions.DistanceMeters": {
+        "table": "ChargeInteractions",
+        "field": "DistanceMeters",
+        "kind": "formula",
+        "rule": "Charge interaction: «distance meters» вычисляется как квадратный корень из distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ChargeInteractions.DistancePicometers": {
+        "table": "ChargeInteractions",
+        "field": "DistancePicometers",
+        "kind": "formula",
+        "rule": "Charge interaction: «distance picometers» вычисляется как distance meters умножить на 1000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance meters умножить на 1,000,000,000,000"
+      },
+      "ChargeInteractions.ChargeProduct": {
+        "table": "ChargeInteractions",
+        "field": "ChargeProduct",
+        "kind": "formula",
+        "rule": "Charge interaction: «charge product» вычисляется как q1 умножить на q2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Q1",
+            "label": "q1"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Q2",
+            "label": "q2"
+          }
+        ],
+        "structure": null,
+        "plain": "Q1 умножить на q2"
+      },
+      "ChargeInteractions.ForceMagnitude": {
+        "table": "ChargeInteractions",
+        "field": "ForceMagnitude",
+        "kind": "formula",
+        "rule": "Charge interaction: «force magnitude» вычисляется как coulomb k умножить на модуль charge product разделить на distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k умножить на модуль charge product) разделить на distance squared"
+      },
+      "ChargeInteractions.IsAttractive": {
+        "table": "ChargeInteractions",
+        "field": "IsAttractive",
+        "kind": "formula",
+        "rule": "Charge interaction считается «attractive», если charge product меньше 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product меньше 0"
+      },
+      "ChargeInteractions.IsRepulsive": {
+        "table": "ChargeInteractions",
+        "field": "IsRepulsive",
+        "kind": "formula",
+        "rule": "Charge interaction считается «repulsive», если charge product больше 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product больше 0"
+      },
+      "ChargeInteractions.InteractionType": {
+        "table": "ChargeInteractions",
+        "field": "InteractionType",
+        "kind": "formula",
+        "rule": "Поле «interaction type» (Charge interaction) определяется по следующему приоритету:\n1. «attractive», если признак «attractive» установлен;\n2. «repulsive», если признак «repulsive» установлен;\n3. во всех остальных случаях — «neutral».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «interaction type» (Charge interaction) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«attractive»",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «attractive» установлен"
+              }
+            },
+            {
+              "value": "«repulsive»",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «repulsive» установлен"
+              }
+            },
+            {
+              "value": "«neutral»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если is attractive, то \"attractive\", иначе если is repulsive, то \"repulsive\", иначе \"neutral\""
+      },
+      "ChargeInteractions.ForceInAttoNewtons": {
+        "table": "ChargeInteractions",
+        "field": "ForceInAttoNewtons",
+        "kind": "formula",
+        "rule": "Charge interaction: «force in atto newtons» вычисляется как force magnitude умножить на 1000000000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          }
+        ],
+        "structure": null,
+        "plain": "Force magnitude умножить на 1,000,000,000,000,000,000"
+      },
+      "ForceVectors.Name": {
+        "table": "ForceVectors",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Force vector: «name» совпадает с force vector ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceVectorId",
+            "label": "force vector ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Force vector ID"
+      },
+      "ForceVectors.UnitX": {
+        "table": "ForceVectors",
+        "field": "UnitX",
+        "kind": "formula",
+        "rule": "Поле «unit x» (Force vector) определяется по следующему приоритету:\n1. 0, если dist raw равно 0;\n2. во всех остальных случаях — DX разделить на dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DX",
+            "label": "DX"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «unit x» (Force vector) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "dist raw равно 0"
+              }
+            },
+            {
+              "value": "DX разделить на dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если dist raw равно 0, то 0, иначе (DX разделить на dist raw)"
+      },
+      "ForceVectors.UnitY": {
+        "table": "ForceVectors",
+        "field": "UnitY",
+        "kind": "formula",
+        "rule": "Поле «unit y» (Force vector) определяется по следующему приоритету:\n1. 0, если dist raw равно 0;\n2. во всех остальных случаях — DY разделить на dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DY",
+            "label": "DY"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «unit y» (Force vector) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "dist raw равно 0"
+              }
+            },
+            {
+              "value": "DY разделить на dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если dist raw равно 0, то 0, иначе (DY разделить на dist raw)"
+      },
+      "ForceVectors.UnitZ": {
+        "table": "ForceVectors",
+        "field": "UnitZ",
+        "kind": "formula",
+        "rule": "Поле «unit z» (Force vector) определяется по следующему приоритету:\n1. 0, если dist raw равно 0;\n2. во всех остальных случаях — DZ разделить на dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DZ",
+            "label": "DZ"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «unit z» (Force vector) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "dist raw равно 0"
+              }
+            },
+            {
+              "value": "DZ разделить на dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если dist raw равно 0, то 0, иначе (DZ разделить на dist raw)"
+      },
+      "ForceVectors.SignFactor": {
+        "table": "ForceVectors",
+        "field": "SignFactor",
+        "kind": "formula",
+        "rule": "Поле «sign factor» (Force vector) определяется по следующему приоритету:\n1. значение 1 с обратным знаком, если признак «attractive raw» установлен;\n2. во всех остальных случаях — 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «sign factor» (Force vector) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "значение 1 с обратным знаком",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «attractive raw» установлен"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если is attractive raw, то минус 1, иначе 1"
+      },
+      "ForceVectors.FX": {
+        "table": "ForceVectors",
+        "field": "FX",
+        "kind": "formula",
+        "rule": "Force vector: «FX» вычисляется как force magnitude raw умножить на sign factor умножить на unit x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitX",
+            "label": "unit x"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw умножить на sign factor) умножить на unit x"
+      },
+      "ForceVectors.FY": {
+        "table": "ForceVectors",
+        "field": "FY",
+        "kind": "formula",
+        "rule": "Force vector: «FY» вычисляется как force magnitude raw умножить на sign factor умножить на unit y.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitY",
+            "label": "unit y"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw умножить на sign factor) умножить на unit y"
+      },
+      "ForceVectors.FZ": {
+        "table": "ForceVectors",
+        "field": "FZ",
+        "kind": "formula",
+        "rule": "Force vector: «FZ» вычисляется как force magnitude raw умножить на sign factor умножить на unit z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitZ",
+            "label": "unit z"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw умножить на sign factor) умножить на unit z"
+      },
+      "ForceVectors.ForceDirDescription": {
+        "table": "ForceVectors",
+        "field": "ForceDirDescription",
+        "kind": "formula",
+        "rule": "Поле «force dir description» (Force vector) определяется по следующему приоритету:\n1. «towards», если признак «attractive raw» установлен;\n2. во всех остальных случаях — «away-from».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «force dir description» (Force vector) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«towards»",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «attractive raw» установлен"
+              }
+            },
+            {
+              "value": "«away-from»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если is attractive raw, то \"towards\", иначе \"away-from\""
+      },
+      "ElectricFieldPoints.Name": {
+        "table": "ElectricFieldPoints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Electric field point: «name» совпадает с field point ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "FieldPointId",
+            "label": "field point ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Field point ID"
+      },
+      "ElectricFieldPoints.dX": {
+        "table": "ElectricFieldPoints",
+        "field": "dX",
+        "kind": "formula",
+        "rule": "Electric field point: «d x» вычисляется как obs x минус src x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsX",
+            "label": "obs x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcX",
+            "label": "src x"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs x минус src x"
+      },
+      "ElectricFieldPoints.dY": {
+        "table": "ElectricFieldPoints",
+        "field": "dY",
+        "kind": "formula",
+        "rule": "Electric field point: «d y» вычисляется как obs y минус src y.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsY",
+            "label": "obs y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcY",
+            "label": "src y"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs y минус src y"
+      },
+      "ElectricFieldPoints.dZ": {
+        "table": "ElectricFieldPoints",
+        "field": "dZ",
+        "kind": "formula",
+        "rule": "Electric field point: «d z» вычисляется как obs z минус src z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsZ",
+            "label": "obs z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcZ",
+            "label": "src z"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs z минус src z"
+      },
+      "ElectricFieldPoints.DistanceSquared": {
+        "table": "ElectricFieldPoints",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "Electric field point: «distance squared» вычисляется как d x умножить на d x плюс d y умножить на d y плюс d z умножить на d z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          }
+        ],
+        "structure": null,
+        "plain": "((d x умножить на d x) плюс (d y умножить на d y)) плюс (d z умножить на d z)"
+      },
+      "ElectricFieldPoints.Distance": {
+        "table": "ElectricFieldPoints",
+        "field": "Distance",
+        "kind": "formula",
+        "rule": "Electric field point: «distance» вычисляется как квадратный корень из distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ElectricFieldPoints.EFieldMagnitude": {
+        "table": "ElectricFieldPoints",
+        "field": "EFieldMagnitude",
+        "kind": "formula",
+        "rule": "Electric field point: «e field magnitude» вычисляется как coulomb k умножить на модуль source q разделить на distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k умножить на модуль source q) разделить на distance squared"
+      },
+      "ElectricFieldPoints.QSign": {
+        "table": "ElectricFieldPoints",
+        "field": "QSign",
+        "kind": "formula",
+        "rule": "Поле «q sign» (Electric field point) определяется по следующему приоритету:\n1. 1, если source q больше 0;\n2. во всех остальных случаях — значение 1 с обратным знаком.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «q sign» (Electric field point) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "source q больше 0"
+              }
+            },
+            {
+              "value": "значение 1 с обратным знаком",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если source q больше 0, то 1, иначе минус 1"
+      },
+      "ElectricFieldPoints.EX": {
+        "table": "ElectricFieldPoints",
+        "field": "EX",
+        "kind": "formula",
+        "rule": "Electric field point: «EX» вычисляется как e field magnitude умножить на q sign умножить на d x разделить на distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude умножить на q sign) умножить на d x) разделить на distance"
+      },
+      "ElectricFieldPoints.EY": {
+        "table": "ElectricFieldPoints",
+        "field": "EY",
+        "kind": "formula",
+        "rule": "Electric field point: «EY» вычисляется как e field magnitude умножить на q sign умножить на d y разделить на distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude умножить на q sign) умножить на d y) разделить на distance"
+      },
+      "ElectricFieldPoints.EZ": {
+        "table": "ElectricFieldPoints",
+        "field": "EZ",
+        "kind": "formula",
+        "rule": "Electric field point: «EZ» вычисляется как e field magnitude умножить на q sign умножить на d z разделить на distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude умножить на q sign) умножить на d z) разделить на distance"
+      },
+      "InvariantChecks.Name": {
+        "table": "InvariantChecks",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Invariant check: «name» совпадает с invariant ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "InvariantId",
+            "label": "invariant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Invariant ID"
+      },
+      "SystemSummary.Name": {
+        "table": "SystemSummary",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "System summary: «name» совпадает с summary ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SummaryId",
+            "label": "summary ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summary ID"
+      },
+      "SystemSummary.SystemName": {
+        "table": "SystemSummary",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "System summary: «system name» — это значение LOOKUP(SystemId, Systems[SystemId], Systems[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "SystemSummary.ChargeCount": {
+        "table": "SystemSummary",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "System summary: «charge count» — это число записей «charges», связанных с system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «charges», у которых system ID равно system ID"
+      },
+      "SystemSummary.InteractionCount": {
+        "table": "SystemSummary",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "System summary: «interaction count» — это число записей «charge interactions», связанных с system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «charge interactions», у которых system ID равно system ID"
+      },
+      "SystemSummary.AttractiveCount": {
+        "table": "SystemSummary",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "System summary: «attractive count» — это число записей «charge interactions» (system summary), которые являются «attractive».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «charge interactions», у которых system ID равно system ID и is attractive равно true()"
+      },
+      "SystemSummary.RepulsiveCount": {
+        "table": "SystemSummary",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "System summary: «repulsive count» — это число записей «charge interactions» (system summary), которые являются «repulsive».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «charge interactions», у которых system ID равно system ID и is repulsive равно true()"
+      },
+      "SystemSummary.TotalCharge": {
+        "table": "SystemSummary",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "System summary: «total charge» — это сумма «charge value» по записям «charges», связанным с system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма charge value по всем «charges», у которых system ID равно system ID"
+      },
+      "SystemSummary.IsNeutral": {
+        "table": "SystemSummary",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "System summary считается «neutral», если значение ABS(TotalCharge) < 1e-30.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "SystemSummary.MaxForceMagnitude": {
+        "table": "SystemSummary",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "System summary: «max force magnitude» — это наибольшее значение «force magnitude» по записям «charge interactions», связанным с system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Наибольшее force magnitude по всем «charge interactions», у которых system ID равно system ID"
+      },
+      "SystemSummary.MinDistanceMeters": {
+        "table": "SystemSummary",
+        "field": "MinDistanceMeters",
+        "kind": "rollup",
+        "rule": "System summary: «min distance meters» — это наименьшее значение «distance meters» по записям «charge interactions», связанным с system summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Наименьшее distance meters по всем «charge interactions», у которых system ID равно system ID"
+      },
+      "SystemSummary.AllAttractive": {
+        "table": "SystemSummary",
+        "field": "AllAttractive",
+        "kind": "formula",
+        "rule": "System summary помечается как «all attractive», если attractive count равно interaction count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Attractive count равно interaction count"
+      },
+      "SystemSummary.AllRepulsive": {
+        "table": "SystemSummary",
+        "field": "AllRepulsive",
+        "kind": "formula",
+        "rule": "System summary помечается как «all repulsive», если repulsive count равно interaction count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Repulsive count равно interaction count"
+      },
+      "SystemSummary.HasMixedInteractions": {
+        "table": "SystemSummary",
+        "field": "HasMixedInteractions",
+        "kind": "formula",
+        "rule": "System summary считается имеющим «mixed interactions», если выполняется всё следующее: attractive count больше 0 и repulsive count больше 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "System summary считается имеющим «mixed interactions», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "attractive count больше 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "repulsive count больше 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Attractive count больше 0 и repulsive count больше 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Loops": [
+        "Loop **обязан** иметь title и status."
+      ],
+      "PhysicsConstants": [
+        "Physics constant **обязан** иметь name; symbol; value; и units."
+      ],
+      "Particles": [
+        "Particle **обязан** иметь name; canonical charge; и canonical mass."
+      ],
+      "Charges": [
+        "Charge **обязан** иметь name; system ID; charge value; position x; position y; и position z."
+      ],
+      "Systems": [
+        "System **обязан** иметь name, а также фиксировать то, он является «synthetic» ли."
+      ],
+      "ChargeInteractions": [
+        "Charge interaction **обязан** иметь system ID; charge1 ID; charge2 ID; q1; q2; x1; y1; z1; x2; y2; z2; и coulomb k."
+      ],
+      "ForceVectors": [
+        "Force vector **обязан** иметь interaction ID; force magnitude raw; DX; DY; DZ; и dist raw, а также фиксировать то, он является «attractive raw» ли."
+      ],
+      "ElectricFieldPoints": [
+        "Electric field point **обязан** иметь system ID; source charge ID; observation label; obs x; obs y; obs z; coulomb k; source q; src x; src y; и src z."
+      ],
+      "InvariantChecks": [
+        "Invariant check **обязан** иметь algebraic statement; natural language; и severity."
+      ],
+      "SystemSummary": [
+        "System summary **обязан** иметь system ID."
+      ]
+    },
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Loops": "loop",
+      "PhysicsConstants": "physics constant",
+      "Particles": "particle",
+      "Charges": "charge",
+      "Systems": "system",
+      "ChargeInteractions": "charge interaction",
+      "ForceVectors": "force vector",
+      "ElectricFieldPoints": "electric field point",
+      "InvariantChecks": "invariant check",
+      "SystemSummary": "system summary"
+    }
+  },
+  "tr": {
+    "fields": {
+      "Loops.Name": {
+        "table": "Loops",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“loop” kaydının “name” alanı, “loop ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loops",
+            "field": "LoopId",
+            "label": "loop ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Loop ID"
+      },
+      "Particles.ChargeSign": {
+        "table": "Particles",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "“particle” kaydının “charge sign” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “canonical charge” alanı 0 değerinden büyük ise “positive”;\n2. “canonical charge” alanı 0 değerinden küçük ise “negative”;\n3. diğer tüm durumlarda “neutral”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Particles",
+            "field": "CanonicalCharge",
+            "label": "canonical charge"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“particle” kaydının “charge sign” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“positive”",
+              "when": {
+                "kind": "leaf",
+                "text": "“canonical charge” alanı 0 değerinden büyük"
+              }
+            },
+            {
+              "value": "“negative”",
+              "when": {
+                "kind": "leaf",
+                "text": "“canonical charge” alanı 0 değerinden küçük"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Canonical charge, 0 değerinden büyük ise \"positive\", aksi takdirde canonical charge, 0 değerinden küçük ise \"negative\", aksi takdirde \"neutral\""
+      },
+      "Charges.ChargeSign": {
+        "table": "Charges",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "“charge” kaydının “charge sign” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “charge value” alanı 0 değerinden büyük ise “positive”;\n2. “charge value” alanı 0 değerinden küçük ise “negative”;\n3. diğer tüm durumlarda “neutral”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“charge” kaydının “charge sign” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“positive”",
+              "when": {
+                "kind": "leaf",
+                "text": "“charge value” alanı 0 değerinden büyük"
+              }
+            },
+            {
+              "value": "“negative”",
+              "when": {
+                "kind": "leaf",
+                "text": "“charge value” alanı 0 değerinden küçük"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Charge value, 0 değerinden büyük ise \"positive\", aksi takdirde charge value, 0 değerinden küçük ise \"negative\", aksi takdirde \"neutral\""
+      },
+      "Charges.ChargeMagnitude": {
+        "table": "Charges",
+        "field": "ChargeMagnitude",
+        "kind": "formula",
+        "rule": "“charge” kaydının “charge magnitude” alanı, “charge value” alanı değerinin mutlak değeri olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge value değerinin mutlak değeri"
+      },
+      "Charges.SystemName": {
+        "table": "Charges",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "“charge” kaydının “system name” alanı, LOOKUP(SystemId, Systems[SystemId], Systems[Name]) değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "Charges.ParticleName": {
+        "table": "Charges",
+        "field": "ParticleName",
+        "kind": "lookup",
+        "rule": "“charge” kaydının “particle name” alanı, LOOKUP(ParticleId, Particles[ParticleId], Particles[Name]) değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ParticleId",
+            "label": "particle ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{ParticleId}}, Particles[ParticleId], Particles[Name])"
+      },
+      "Charges.InteractionCount": {
+        "table": "Charges",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "“charge” kaydının “interaction count” alanı, “charge” kaydıyla ilişkili “charge interactions” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Charge1Id",
+            "label": "charge1 ID"
+          },
+          {
+            "table": "Charges",
+            "field": "ChargeId",
+            "label": "charge ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge1 ID değeri charge ID olan charge interactions kayıtlarının sayısı"
+      },
+      "Systems.ChargeCount": {
+        "table": "Systems",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "“system” kaydının “charge count” alanı, “system” kaydıyla ilişkili “charges” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID değeri system ID olan charges kayıtlarının sayısı"
+      },
+      "Systems.InteractionCount": {
+        "table": "Systems",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "“system” kaydının “interaction count” alanı, “system” kaydıyla ilişkili “charge interactions” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID değeri system ID olan charge interactions kayıtlarının sayısı"
+      },
+      "Systems.AttractiveCount": {
+        "table": "Systems",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "“system” kaydının “attractive count” alanı, “system” kaydıyla ilişkili, “attractive” olan “charge interactions” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID değeri system ID ve is attractive değeri true() olan charge interactions kayıtlarının sayısı"
+      },
+      "Systems.RepulsiveCount": {
+        "table": "Systems",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "“system” kaydının “repulsive count” alanı, “system” kaydıyla ilişkili, “repulsive” olan “charge interactions” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID değeri system ID ve is repulsive değeri true() olan charge interactions kayıtlarının sayısı"
+      },
+      "Systems.TotalCharge": {
+        "table": "Systems",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "“system” kaydının “total charge” alanı, “system” kaydıyla ilişkili “charges” kayıtları üzerinden hesaplanan toplam “charge value” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID değeri system ID olan tüm charges kayıtlarındaki charge value değerlerinin toplamı"
+      },
+      "Systems.IsNeutral": {
+        "table": "Systems",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "“system” kaydı, ABS(TotalCharge) < 1e-30 değeri ise “neutral” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Systems",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "Systems.MaxForceMagnitude": {
+        "table": "Systems",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "“system” kaydının “max force magnitude” alanı, “system” kaydıyla ilişkili “charge interactions” kayıtları üzerinden hesaplanan en büyük “force magnitude” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID değeri system ID olan tüm charge interactions kayıtlarındaki force magnitude değerlerinin en büyüğü"
+      },
+      "ChargeInteractions.Name": {
+        "table": "ChargeInteractions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“charge interaction” kaydının “name” alanı, “interaction ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "InteractionId",
+            "label": "interaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction ID"
+      },
+      "ChargeInteractions.DeltaX": {
+        "table": "ChargeInteractions",
+        "field": "DeltaX",
+        "kind": "formula",
+        "rule": "“charge interaction” kaydının “delta x” alanı, “x2” alanı eksi “x1” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "X2",
+            "label": "x2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "X1",
+            "label": "x1"
+          }
+        ],
+        "structure": null,
+        "plain": "X2 eksi x1"
+      },
+      "ChargeInteractions.DeltaY": {
+        "table": "ChargeInteractions",
+        "field": "DeltaY",
+        "kind": "formula",
+        "rule": "“charge interaction” kaydının “delta y” alanı, “y2” alanı eksi “y1” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Y2",
+            "label": "y2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Y1",
+            "label": "y1"
+          }
+        ],
+        "structure": null,
+        "plain": "Y2 eksi y1"
+      },
+      "ChargeInteractions.DeltaZ": {
+        "table": "ChargeInteractions",
+        "field": "DeltaZ",
+        "kind": "formula",
+        "rule": "“charge interaction” kaydının “delta z” alanı, “z2” alanı eksi “z1” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Z2",
+            "label": "z2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Z1",
+            "label": "z1"
+          }
+        ],
+        "structure": null,
+        "plain": "Z2 eksi z1"
+      },
+      "ChargeInteractions.DistanceSquared": {
+        "table": "ChargeInteractions",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "“charge interaction” kaydının “distance squared” alanı, “delta x” alanı çarpı “delta x” alanı artı “delta y” alanı çarpı “delta y” alanı artı “delta z” alanı çarpı “delta z” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaX",
+            "label": "delta x"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaY",
+            "label": "delta y"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaZ",
+            "label": "delta z"
+          }
+        ],
+        "structure": null,
+        "plain": "((delta x çarpı delta x) artı (delta y çarpı delta y)) artı (delta z çarpı delta z)"
+      },
+      "ChargeInteractions.DistanceMeters": {
+        "table": "ChargeInteractions",
+        "field": "DistanceMeters",
+        "kind": "formula",
+        "rule": "“charge interaction” kaydının “distance meters” alanı, “distance squared” alanı değerinin karekökü olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ChargeInteractions.DistancePicometers": {
+        "table": "ChargeInteractions",
+        "field": "DistancePicometers",
+        "kind": "formula",
+        "rule": "“charge interaction” kaydının “distance picometers” alanı, “distance meters” alanı çarpı 1000000000000 olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance meters çarpı 1,000,000,000,000"
+      },
+      "ChargeInteractions.ChargeProduct": {
+        "table": "ChargeInteractions",
+        "field": "ChargeProduct",
+        "kind": "formula",
+        "rule": "“charge interaction” kaydının “charge product” alanı, “q1” alanı çarpı “q2” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Q1",
+            "label": "q1"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Q2",
+            "label": "q2"
+          }
+        ],
+        "structure": null,
+        "plain": "Q1 çarpı q2"
+      },
+      "ChargeInteractions.ForceMagnitude": {
+        "table": "ChargeInteractions",
+        "field": "ForceMagnitude",
+        "kind": "formula",
+        "rule": "“charge interaction” kaydının “force magnitude” alanı, “coulomb k” alanı çarpı “charge product” alanı değerinin mutlak değeri bölü “distance squared” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k çarpı charge product değerinin mutlak değeri) bölü distance squared"
+      },
+      "ChargeInteractions.IsAttractive": {
+        "table": "ChargeInteractions",
+        "field": "IsAttractive",
+        "kind": "formula",
+        "rule": "“charge interaction” kaydı, “charge product” alanı 0 değerinden küçük ise “attractive” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product, 0 değerinden küçük"
+      },
+      "ChargeInteractions.IsRepulsive": {
+        "table": "ChargeInteractions",
+        "field": "IsRepulsive",
+        "kind": "formula",
+        "rule": "“charge interaction” kaydı, “charge product” alanı 0 değerinden büyük ise “repulsive” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product, 0 değerinden büyük"
+      },
+      "ChargeInteractions.InteractionType": {
+        "table": "ChargeInteractions",
+        "field": "InteractionType",
+        "kind": "formula",
+        "rule": "“charge interaction” kaydının “interaction type” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “attractive” bayrağı etkin ise “attractive”;\n2. “repulsive” bayrağı etkin ise “repulsive”;\n3. diğer tüm durumlarda “neutral”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“charge interaction” kaydının “interaction type” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“attractive”",
+              "when": {
+                "kind": "leaf",
+                "text": "“attractive” bayrağı etkin"
+              }
+            },
+            {
+              "value": "“repulsive”",
+              "when": {
+                "kind": "leaf",
+                "text": "“repulsive” bayrağı etkin"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is attractive ise \"attractive\", aksi takdirde is repulsive ise \"repulsive\", aksi takdirde \"neutral\""
+      },
+      "ChargeInteractions.ForceInAttoNewtons": {
+        "table": "ChargeInteractions",
+        "field": "ForceInAttoNewtons",
+        "kind": "formula",
+        "rule": "“charge interaction” kaydının “force in atto newtons” alanı, “force magnitude” alanı çarpı 1000000000000000000 olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          }
+        ],
+        "structure": null,
+        "plain": "Force magnitude çarpı 1,000,000,000,000,000,000"
+      },
+      "ForceVectors.Name": {
+        "table": "ForceVectors",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“force vector” kaydının “name” alanı, “force vector ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceVectorId",
+            "label": "force vector ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Force vector ID"
+      },
+      "ForceVectors.UnitX": {
+        "table": "ForceVectors",
+        "field": "UnitX",
+        "kind": "formula",
+        "rule": "“force vector” kaydının “unit x” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “dist raw” alanı 0 değerine eşit ise 0;\n2. diğer tüm durumlarda “DX” alanı bölü “dist raw” alanı.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DX",
+            "label": "DX"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“force vector” kaydının “unit x” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "“dist raw” alanı 0 değerine eşit"
+              }
+            },
+            {
+              "value": "“DX” alanı bölü “dist raw” alanı",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Dist raw, 0 değerine eşit ise 0, aksi takdirde (DX bölü dist raw)"
+      },
+      "ForceVectors.UnitY": {
+        "table": "ForceVectors",
+        "field": "UnitY",
+        "kind": "formula",
+        "rule": "“force vector” kaydının “unit y” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “dist raw” alanı 0 değerine eşit ise 0;\n2. diğer tüm durumlarda “DY” alanı bölü “dist raw” alanı.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DY",
+            "label": "DY"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“force vector” kaydının “unit y” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "“dist raw” alanı 0 değerine eşit"
+              }
+            },
+            {
+              "value": "“DY” alanı bölü “dist raw” alanı",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Dist raw, 0 değerine eşit ise 0, aksi takdirde (DY bölü dist raw)"
+      },
+      "ForceVectors.UnitZ": {
+        "table": "ForceVectors",
+        "field": "UnitZ",
+        "kind": "formula",
+        "rule": "“force vector” kaydının “unit z” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “dist raw” alanı 0 değerine eşit ise 0;\n2. diğer tüm durumlarda “DZ” alanı bölü “dist raw” alanı.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DZ",
+            "label": "DZ"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“force vector” kaydının “unit z” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "“dist raw” alanı 0 değerine eşit"
+              }
+            },
+            {
+              "value": "“DZ” alanı bölü “dist raw” alanı",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Dist raw, 0 değerine eşit ise 0, aksi takdirde (DZ bölü dist raw)"
+      },
+      "ForceVectors.SignFactor": {
+        "table": "ForceVectors",
+        "field": "SignFactor",
+        "kind": "formula",
+        "rule": "“force vector” kaydının “sign factor” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “attractive raw” bayrağı etkin ise 1 değerinin negatifi;\n2. diğer tüm durumlarda 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“force vector” kaydının “sign factor” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "1 değerinin negatifi",
+              "when": {
+                "kind": "leaf",
+                "text": "“attractive raw” bayrağı etkin"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is attractive raw ise eksi 1, aksi takdirde 1"
+      },
+      "ForceVectors.FX": {
+        "table": "ForceVectors",
+        "field": "FX",
+        "kind": "formula",
+        "rule": "“force vector” kaydının “FX” alanı, “force magnitude raw” alanı çarpı “sign factor” alanı çarpı “unit x” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitX",
+            "label": "unit x"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw çarpı sign factor) çarpı unit x"
+      },
+      "ForceVectors.FY": {
+        "table": "ForceVectors",
+        "field": "FY",
+        "kind": "formula",
+        "rule": "“force vector” kaydının “FY” alanı, “force magnitude raw” alanı çarpı “sign factor” alanı çarpı “unit y” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitY",
+            "label": "unit y"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw çarpı sign factor) çarpı unit y"
+      },
+      "ForceVectors.FZ": {
+        "table": "ForceVectors",
+        "field": "FZ",
+        "kind": "formula",
+        "rule": "“force vector” kaydının “FZ” alanı, “force magnitude raw” alanı çarpı “sign factor” alanı çarpı “unit z” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitZ",
+            "label": "unit z"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw çarpı sign factor) çarpı unit z"
+      },
+      "ForceVectors.ForceDirDescription": {
+        "table": "ForceVectors",
+        "field": "ForceDirDescription",
+        "kind": "formula",
+        "rule": "“force vector” kaydının “force dir description” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “attractive raw” bayrağı etkin ise “towards”;\n2. diğer tüm durumlarda “away-from”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“force vector” kaydının “force dir description” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“towards”",
+              "when": {
+                "kind": "leaf",
+                "text": "“attractive raw” bayrağı etkin"
+              }
+            },
+            {
+              "value": "“away-from”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is attractive raw ise \"towards\", aksi takdirde \"away-from\""
+      },
+      "ElectricFieldPoints.Name": {
+        "table": "ElectricFieldPoints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“electric field point” kaydının “name” alanı, “field point ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "FieldPointId",
+            "label": "field point ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Field point ID"
+      },
+      "ElectricFieldPoints.dX": {
+        "table": "ElectricFieldPoints",
+        "field": "dX",
+        "kind": "formula",
+        "rule": "“electric field point” kaydının “d x” alanı, “obs x” alanı eksi “src x” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsX",
+            "label": "obs x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcX",
+            "label": "src x"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs x eksi src x"
+      },
+      "ElectricFieldPoints.dY": {
+        "table": "ElectricFieldPoints",
+        "field": "dY",
+        "kind": "formula",
+        "rule": "“electric field point” kaydının “d y” alanı, “obs y” alanı eksi “src y” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsY",
+            "label": "obs y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcY",
+            "label": "src y"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs y eksi src y"
+      },
+      "ElectricFieldPoints.dZ": {
+        "table": "ElectricFieldPoints",
+        "field": "dZ",
+        "kind": "formula",
+        "rule": "“electric field point” kaydının “d z” alanı, “obs z” alanı eksi “src z” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsZ",
+            "label": "obs z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcZ",
+            "label": "src z"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs z eksi src z"
+      },
+      "ElectricFieldPoints.DistanceSquared": {
+        "table": "ElectricFieldPoints",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "“electric field point” kaydının “distance squared” alanı, “d x” alanı çarpı “d x” alanı artı “d y” alanı çarpı “d y” alanı artı “d z” alanı çarpı “d z” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          }
+        ],
+        "structure": null,
+        "plain": "((d x çarpı d x) artı (d y çarpı d y)) artı (d z çarpı d z)"
+      },
+      "ElectricFieldPoints.Distance": {
+        "table": "ElectricFieldPoints",
+        "field": "Distance",
+        "kind": "formula",
+        "rule": "“electric field point” kaydının “distance” alanı, “distance squared” alanı değerinin karekökü olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ElectricFieldPoints.EFieldMagnitude": {
+        "table": "ElectricFieldPoints",
+        "field": "EFieldMagnitude",
+        "kind": "formula",
+        "rule": "“electric field point” kaydının “e field magnitude” alanı, “coulomb k” alanı çarpı “source q” alanı değerinin mutlak değeri bölü “distance squared” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k çarpı source q değerinin mutlak değeri) bölü distance squared"
+      },
+      "ElectricFieldPoints.QSign": {
+        "table": "ElectricFieldPoints",
+        "field": "QSign",
+        "kind": "formula",
+        "rule": "“electric field point” kaydının “q sign” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “source q” alanı 0 değerinden büyük ise 1;\n2. diğer tüm durumlarda 1 değerinin negatifi.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“electric field point” kaydının “q sign” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "“source q” alanı 0 değerinden büyük"
+              }
+            },
+            {
+              "value": "1 değerinin negatifi",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Source q, 0 değerinden büyük ise 1, aksi takdirde eksi 1"
+      },
+      "ElectricFieldPoints.EX": {
+        "table": "ElectricFieldPoints",
+        "field": "EX",
+        "kind": "formula",
+        "rule": "“electric field point” kaydının “EX” alanı, “e field magnitude” alanı çarpı “q sign” alanı çarpı “d x” alanı bölü “distance” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude çarpı q sign) çarpı d x) bölü distance"
+      },
+      "ElectricFieldPoints.EY": {
+        "table": "ElectricFieldPoints",
+        "field": "EY",
+        "kind": "formula",
+        "rule": "“electric field point” kaydının “EY” alanı, “e field magnitude” alanı çarpı “q sign” alanı çarpı “d y” alanı bölü “distance” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude çarpı q sign) çarpı d y) bölü distance"
+      },
+      "ElectricFieldPoints.EZ": {
+        "table": "ElectricFieldPoints",
+        "field": "EZ",
+        "kind": "formula",
+        "rule": "“electric field point” kaydının “EZ” alanı, “e field magnitude” alanı çarpı “q sign” alanı çarpı “d z” alanı bölü “distance” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude çarpı q sign) çarpı d z) bölü distance"
+      },
+      "InvariantChecks.Name": {
+        "table": "InvariantChecks",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“invariant check” kaydının “name” alanı, “invariant ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "InvariantId",
+            "label": "invariant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Invariant ID"
+      },
+      "SystemSummary.Name": {
+        "table": "SystemSummary",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“system summary” kaydının “name” alanı, “summary ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SummaryId",
+            "label": "summary ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summary ID"
+      },
+      "SystemSummary.SystemName": {
+        "table": "SystemSummary",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "“system summary” kaydının “system name” alanı, LOOKUP(SystemId, Systems[SystemId], Systems[Name]) değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "SystemSummary.ChargeCount": {
+        "table": "SystemSummary",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "“system summary” kaydının “charge count” alanı, “system summary” kaydıyla ilişkili “charges” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID değeri system ID olan charges kayıtlarının sayısı"
+      },
+      "SystemSummary.InteractionCount": {
+        "table": "SystemSummary",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "“system summary” kaydının “interaction count” alanı, “system summary” kaydıyla ilişkili “charge interactions” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID değeri system ID olan charge interactions kayıtlarının sayısı"
+      },
+      "SystemSummary.AttractiveCount": {
+        "table": "SystemSummary",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "“system summary” kaydının “attractive count” alanı, “system summary” kaydıyla ilişkili, “attractive” olan “charge interactions” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID değeri system ID ve is attractive değeri true() olan charge interactions kayıtlarının sayısı"
+      },
+      "SystemSummary.RepulsiveCount": {
+        "table": "SystemSummary",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "“system summary” kaydının “repulsive count” alanı, “system summary” kaydıyla ilişkili, “repulsive” olan “charge interactions” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID değeri system ID ve is repulsive değeri true() olan charge interactions kayıtlarının sayısı"
+      },
+      "SystemSummary.TotalCharge": {
+        "table": "SystemSummary",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "“system summary” kaydının “total charge” alanı, “system summary” kaydıyla ilişkili “charges” kayıtları üzerinden hesaplanan toplam “charge value” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID değeri system ID olan tüm charges kayıtlarındaki charge value değerlerinin toplamı"
+      },
+      "SystemSummary.IsNeutral": {
+        "table": "SystemSummary",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "“system summary” kaydı, ABS(TotalCharge) < 1e-30 değeri ise “neutral” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "SystemSummary.MaxForceMagnitude": {
+        "table": "SystemSummary",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "“system summary” kaydının “max force magnitude” alanı, “system summary” kaydıyla ilişkili “charge interactions” kayıtları üzerinden hesaplanan en büyük “force magnitude” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID değeri system ID olan tüm charge interactions kayıtlarındaki force magnitude değerlerinin en büyüğü"
+      },
+      "SystemSummary.MinDistanceMeters": {
+        "table": "SystemSummary",
+        "field": "MinDistanceMeters",
+        "kind": "rollup",
+        "rule": "“system summary” kaydının “min distance meters” alanı, “system summary” kaydıyla ilişkili “charge interactions” kayıtları üzerinden hesaplanan en küçük “distance meters” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID değeri system ID olan tüm charge interactions kayıtlarındaki distance meters değerlerinin en küçüğü"
+      },
+      "SystemSummary.AllAttractive": {
+        "table": "SystemSummary",
+        "field": "AllAttractive",
+        "kind": "formula",
+        "rule": "“system summary” kaydı, “attractive count” alanı “interaction count” alanı değerine eşit ise “all attractive” olarak işaretlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Attractive count, interaction count değerine eşit"
+      },
+      "SystemSummary.AllRepulsive": {
+        "table": "SystemSummary",
+        "field": "AllRepulsive",
+        "kind": "formula",
+        "rule": "“system summary” kaydı, “repulsive count” alanı “interaction count” alanı değerine eşit ise “all repulsive” olarak işaretlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Repulsive count, interaction count değerine eşit"
+      },
+      "SystemSummary.HasMixedInteractions": {
+        "table": "SystemSummary",
+        "field": "HasMixedInteractions",
+        "kind": "formula",
+        "rule": "“system summary” kaydı, “attractive count” alanı 0 değerinden büyük ve “repulsive count” alanı 0 değerinden büyük ise “mixed interactions” sahibi sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“system summary” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “mixed interactions” sahibi sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“attractive count” alanı 0 değerinden büyük"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“repulsive count” alanı 0 değerinden büyük"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Attractive count, 0 değerinden büyük ve repulsive count, 0 değerinden büyük"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Loops": [
+        "“loop” kaydı, “title” alanı ve “status” alanı dolu olmak **zorundadır**."
+      ],
+      "PhysicsConstants": [
+        "“physics constant” kaydı, “name” alanı, “symbol” alanı, “value” alanı ve “units” alanı dolu olmak **zorundadır**."
+      ],
+      "Particles": [
+        "“particle” kaydı, “name” alanı, “canonical charge” alanı ve “canonical mass” alanı dolu olmak **zorundadır**."
+      ],
+      "Charges": [
+        "“charge” kaydı, “name” alanı, “system ID” alanı, “charge value” alanı, “position x” alanı, “position y” alanı ve “position z” alanı dolu olmak **zorundadır**."
+      ],
+      "Systems": [
+        "“system” kaydı, “name” alanı dolu olmak, ayrıca “synthetic” olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ],
+      "ChargeInteractions": [
+        "“charge interaction” kaydı, “system ID” alanı, “charge1 ID” alanı, “charge2 ID” alanı, “q1” alanı, “q2” alanı, “x1” alanı, “y1” alanı, “z1” alanı, “x2” alanı, “y2” alanı, “z2” alanı ve “coulomb k” alanı dolu olmak **zorundadır**."
+      ],
+      "ForceVectors": [
+        "“force vector” kaydı, “interaction ID” alanı, “force magnitude raw” alanı, “DX” alanı, “DY” alanı, “DZ” alanı ve “dist raw” alanı dolu olmak, ayrıca “attractive raw” olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ],
+      "ElectricFieldPoints": [
+        "“electric field point” kaydı, “system ID” alanı, “source charge ID” alanı, “observation label” alanı, “obs x” alanı, “obs y” alanı, “obs z” alanı, “coulomb k” alanı, “source q” alanı, “src x” alanı, “src y” alanı ve “src z” alanı dolu olmak **zorundadır**."
+      ],
+      "InvariantChecks": [
+        "“invariant check” kaydı, “algebraic statement” alanı, “natural language” alanı ve “severity” alanı dolu olmak **zorundadır**."
+      ],
+      "SystemSummary": [
+        "“system summary” kaydı, “system ID” alanı dolu olmak **zorundadır**."
+      ]
+    },
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Loops": "loop",
+      "PhysicsConstants": "physics constant",
+      "Particles": "particle",
+      "Charges": "charge",
+      "Systems": "system",
+      "ChargeInteractions": "charge interaction",
+      "ForceVectors": "force vector",
+      "ElectricFieldPoints": "electric field point",
+      "InvariantChecks": "invariant check",
+      "SystemSummary": "system summary"
+    }
+  },
+  "vi": {
+    "fields": {
+      "Loops.Name": {
+        "table": "Loops",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi loop có cùng giá trị với trường “loop ID” của chính loop đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loops",
+            "field": "LoopId",
+            "label": "loop ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Loop ID"
+      },
+      "Particles.ChargeSign": {
+        "table": "Particles",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "Trường “charge sign” của mỗi particle được xác định theo thứ tự ưu tiên sau:\n1. “positive”, nếu canonical charge lớn hơn 0;\n2. “negative”, nếu canonical charge nhỏ hơn 0;\n3. trong mọi trường hợp còn lại, “neutral”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Particles",
+            "field": "CanonicalCharge",
+            "label": "canonical charge"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “charge sign” của mỗi particle được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“positive”",
+              "when": {
+                "kind": "leaf",
+                "text": "canonical charge lớn hơn 0"
+              }
+            },
+            {
+              "value": "“negative”",
+              "when": {
+                "kind": "leaf",
+                "text": "canonical charge nhỏ hơn 0"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu canonical charge lớn hơn 0 thì \"positive\", nếu không thì nếu canonical charge nhỏ hơn 0 thì \"negative\", nếu không thì \"neutral\""
+      },
+      "Charges.ChargeSign": {
+        "table": "Charges",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "Trường “charge sign” của mỗi charge được xác định theo thứ tự ưu tiên sau:\n1. “positive”, nếu charge value lớn hơn 0;\n2. “negative”, nếu charge value nhỏ hơn 0;\n3. trong mọi trường hợp còn lại, “neutral”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “charge sign” của mỗi charge được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“positive”",
+              "when": {
+                "kind": "leaf",
+                "text": "charge value lớn hơn 0"
+              }
+            },
+            {
+              "value": "“negative”",
+              "when": {
+                "kind": "leaf",
+                "text": "charge value nhỏ hơn 0"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu charge value lớn hơn 0 thì \"positive\", nếu không thì nếu charge value nhỏ hơn 0 thì \"negative\", nếu không thì \"neutral\""
+      },
+      "Charges.ChargeMagnitude": {
+        "table": "Charges",
+        "field": "ChargeMagnitude",
+        "kind": "formula",
+        "rule": "Trường “charge magnitude” của mỗi charge được tính bằng giá trị tuyệt đối của charge value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": null,
+        "plain": "Giá trị tuyệt đối của charge value"
+      },
+      "Charges.SystemName": {
+        "table": "Charges",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "Trường “system name” của mỗi charge là giá trị của LOOKUP(SystemId, Systems[SystemId], Systems[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "Charges.ParticleName": {
+        "table": "Charges",
+        "field": "ParticleName",
+        "kind": "lookup",
+        "rule": "Trường “particle name” của mỗi charge là giá trị của LOOKUP(ParticleId, Particles[ParticleId], Particles[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ParticleId",
+            "label": "particle ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{ParticleId}}, Particles[ParticleId], Particles[Name])"
+      },
+      "Charges.InteractionCount": {
+        "table": "Charges",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Trường “interaction count” của mỗi charge là số lượng charge interactions liên quan đến charge đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Charge1Id",
+            "label": "charge1 ID"
+          },
+          {
+            "table": "Charges",
+            "field": "ChargeId",
+            "label": "charge ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng charge interactions có charge1 ID là charge ID"
+      },
+      "Systems.ChargeCount": {
+        "table": "Systems",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "Trường “charge count” của mỗi system là số lượng charges liên quan đến system đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng charges có system ID là system ID"
+      },
+      "Systems.InteractionCount": {
+        "table": "Systems",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Trường “interaction count” của mỗi system là số lượng charge interactions liên quan đến system đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng charge interactions có system ID là system ID"
+      },
+      "Systems.AttractiveCount": {
+        "table": "Systems",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "Trường “attractive count” của mỗi system là số lượng charge interactions liên quan đến system đó, chỉ tính các bản ghi là “attractive”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng charge interactions có system ID là system ID và is attractive là true()"
+      },
+      "Systems.RepulsiveCount": {
+        "table": "Systems",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "Trường “repulsive count” của mỗi system là số lượng charge interactions liên quan đến system đó, chỉ tính các bản ghi là “repulsive”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng charge interactions có system ID là system ID và is repulsive là true()"
+      },
+      "Systems.TotalCharge": {
+        "table": "Systems",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "Trường “total charge” của mỗi system là giá trị tổng cộng của trường “charge value” trên các charges liên quan đến system đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng charge value trên tất cả charges có system ID là system ID"
+      },
+      "Systems.IsNeutral": {
+        "table": "Systems",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "Mỗi system được coi là “neutral” nếu giá trị của ABS(TotalCharge) < 1e-30.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Systems",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "Systems.MaxForceMagnitude": {
+        "table": "Systems",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "Trường “max force magnitude” của mỗi system là giá trị lớn nhất của trường “force magnitude” trên các charge interactions liên quan đến system đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Giá trị lớn nhất của force magnitude trên tất cả charge interactions có system ID là system ID"
+      },
+      "ChargeInteractions.Name": {
+        "table": "ChargeInteractions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi charge interaction có cùng giá trị với trường “interaction ID” của chính charge interaction đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "InteractionId",
+            "label": "interaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction ID"
+      },
+      "ChargeInteractions.DeltaX": {
+        "table": "ChargeInteractions",
+        "field": "DeltaX",
+        "kind": "formula",
+        "rule": "Trường “delta x” của mỗi charge interaction được tính bằng x2 trừ x1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "X2",
+            "label": "x2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "X1",
+            "label": "x1"
+          }
+        ],
+        "structure": null,
+        "plain": "X2 trừ x1"
+      },
+      "ChargeInteractions.DeltaY": {
+        "table": "ChargeInteractions",
+        "field": "DeltaY",
+        "kind": "formula",
+        "rule": "Trường “delta y” của mỗi charge interaction được tính bằng y2 trừ y1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Y2",
+            "label": "y2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Y1",
+            "label": "y1"
+          }
+        ],
+        "structure": null,
+        "plain": "Y2 trừ y1"
+      },
+      "ChargeInteractions.DeltaZ": {
+        "table": "ChargeInteractions",
+        "field": "DeltaZ",
+        "kind": "formula",
+        "rule": "Trường “delta z” của mỗi charge interaction được tính bằng z2 trừ z1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Z2",
+            "label": "z2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Z1",
+            "label": "z1"
+          }
+        ],
+        "structure": null,
+        "plain": "Z2 trừ z1"
+      },
+      "ChargeInteractions.DistanceSquared": {
+        "table": "ChargeInteractions",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "Trường “distance squared” của mỗi charge interaction được tính bằng delta x nhân delta x cộng delta y nhân delta y cộng delta z nhân delta z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaX",
+            "label": "delta x"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaY",
+            "label": "delta y"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaZ",
+            "label": "delta z"
+          }
+        ],
+        "structure": null,
+        "plain": "((delta x nhân delta x) cộng (delta y nhân delta y)) cộng (delta z nhân delta z)"
+      },
+      "ChargeInteractions.DistanceMeters": {
+        "table": "ChargeInteractions",
+        "field": "DistanceMeters",
+        "kind": "formula",
+        "rule": "Trường “distance meters” của mỗi charge interaction được tính bằng căn bậc hai của distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ChargeInteractions.DistancePicometers": {
+        "table": "ChargeInteractions",
+        "field": "DistancePicometers",
+        "kind": "formula",
+        "rule": "Trường “distance picometers” của mỗi charge interaction được tính bằng distance meters nhân 1000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance meters nhân 1,000,000,000,000"
+      },
+      "ChargeInteractions.ChargeProduct": {
+        "table": "ChargeInteractions",
+        "field": "ChargeProduct",
+        "kind": "formula",
+        "rule": "Trường “charge product” của mỗi charge interaction được tính bằng q1 nhân q2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Q1",
+            "label": "q1"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Q2",
+            "label": "q2"
+          }
+        ],
+        "structure": null,
+        "plain": "Q1 nhân q2"
+      },
+      "ChargeInteractions.ForceMagnitude": {
+        "table": "ChargeInteractions",
+        "field": "ForceMagnitude",
+        "kind": "formula",
+        "rule": "Trường “force magnitude” của mỗi charge interaction được tính bằng coulomb k nhân giá trị tuyệt đối của charge product chia cho distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k nhân giá trị tuyệt đối của charge product) chia cho distance squared"
+      },
+      "ChargeInteractions.IsAttractive": {
+        "table": "ChargeInteractions",
+        "field": "IsAttractive",
+        "kind": "formula",
+        "rule": "Mỗi charge interaction được coi là “attractive” nếu charge product nhỏ hơn 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product nhỏ hơn 0"
+      },
+      "ChargeInteractions.IsRepulsive": {
+        "table": "ChargeInteractions",
+        "field": "IsRepulsive",
+        "kind": "formula",
+        "rule": "Mỗi charge interaction được coi là “repulsive” nếu charge product lớn hơn 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product lớn hơn 0"
+      },
+      "ChargeInteractions.InteractionType": {
+        "table": "ChargeInteractions",
+        "field": "InteractionType",
+        "kind": "formula",
+        "rule": "Trường “interaction type” của mỗi charge interaction được xác định theo thứ tự ưu tiên sau:\n1. “attractive”, nếu cờ “attractive” được bật;\n2. “repulsive”, nếu cờ “repulsive” được bật;\n3. trong mọi trường hợp còn lại, “neutral”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “interaction type” của mỗi charge interaction được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“attractive”",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “attractive” được bật"
+              }
+            },
+            {
+              "value": "“repulsive”",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “repulsive” được bật"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu is attractive thì \"attractive\", nếu không thì nếu is repulsive thì \"repulsive\", nếu không thì \"neutral\""
+      },
+      "ChargeInteractions.ForceInAttoNewtons": {
+        "table": "ChargeInteractions",
+        "field": "ForceInAttoNewtons",
+        "kind": "formula",
+        "rule": "Trường “force in atto newtons” của mỗi charge interaction được tính bằng force magnitude nhân 1000000000000000000.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          }
+        ],
+        "structure": null,
+        "plain": "Force magnitude nhân 1,000,000,000,000,000,000"
+      },
+      "ForceVectors.Name": {
+        "table": "ForceVectors",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi force vector có cùng giá trị với trường “force vector ID” của chính force vector đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceVectorId",
+            "label": "force vector ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Force vector ID"
+      },
+      "ForceVectors.UnitX": {
+        "table": "ForceVectors",
+        "field": "UnitX",
+        "kind": "formula",
+        "rule": "Trường “unit x” của mỗi force vector được xác định theo thứ tự ưu tiên sau:\n1. 0, nếu dist raw là 0;\n2. trong mọi trường hợp còn lại, DX chia cho dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DX",
+            "label": "DX"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “unit x” của mỗi force vector được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "dist raw là 0"
+              }
+            },
+            {
+              "value": "DX chia cho dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu dist raw bằng 0 thì 0, nếu không thì (DX chia cho dist raw)"
+      },
+      "ForceVectors.UnitY": {
+        "table": "ForceVectors",
+        "field": "UnitY",
+        "kind": "formula",
+        "rule": "Trường “unit y” của mỗi force vector được xác định theo thứ tự ưu tiên sau:\n1. 0, nếu dist raw là 0;\n2. trong mọi trường hợp còn lại, DY chia cho dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DY",
+            "label": "DY"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “unit y” của mỗi force vector được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "dist raw là 0"
+              }
+            },
+            {
+              "value": "DY chia cho dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu dist raw bằng 0 thì 0, nếu không thì (DY chia cho dist raw)"
+      },
+      "ForceVectors.UnitZ": {
+        "table": "ForceVectors",
+        "field": "UnitZ",
+        "kind": "formula",
+        "rule": "Trường “unit z” của mỗi force vector được xác định theo thứ tự ưu tiên sau:\n1. 0, nếu dist raw là 0;\n2. trong mọi trường hợp còn lại, DZ chia cho dist raw.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DZ",
+            "label": "DZ"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “unit z” của mỗi force vector được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "dist raw là 0"
+              }
+            },
+            {
+              "value": "DZ chia cho dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu dist raw bằng 0 thì 0, nếu không thì (DZ chia cho dist raw)"
+      },
+      "ForceVectors.SignFactor": {
+        "table": "ForceVectors",
+        "field": "SignFactor",
+        "kind": "formula",
+        "rule": "Trường “sign factor” của mỗi force vector được xác định theo thứ tự ưu tiên sau:\n1. số đối của 1, nếu cờ “attractive raw” được bật;\n2. trong mọi trường hợp còn lại, 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “sign factor” của mỗi force vector được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "số đối của 1",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “attractive raw” được bật"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu is attractive raw thì âm 1, nếu không thì 1"
+      },
+      "ForceVectors.FX": {
+        "table": "ForceVectors",
+        "field": "FX",
+        "kind": "formula",
+        "rule": "Trường “FX” của mỗi force vector được tính bằng force magnitude raw nhân sign factor nhân unit x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitX",
+            "label": "unit x"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw nhân sign factor) nhân unit x"
+      },
+      "ForceVectors.FY": {
+        "table": "ForceVectors",
+        "field": "FY",
+        "kind": "formula",
+        "rule": "Trường “FY” của mỗi force vector được tính bằng force magnitude raw nhân sign factor nhân unit y.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitY",
+            "label": "unit y"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw nhân sign factor) nhân unit y"
+      },
+      "ForceVectors.FZ": {
+        "table": "ForceVectors",
+        "field": "FZ",
+        "kind": "formula",
+        "rule": "Trường “FZ” của mỗi force vector được tính bằng force magnitude raw nhân sign factor nhân unit z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitZ",
+            "label": "unit z"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw nhân sign factor) nhân unit z"
+      },
+      "ForceVectors.ForceDirDescription": {
+        "table": "ForceVectors",
+        "field": "ForceDirDescription",
+        "kind": "formula",
+        "rule": "Trường “force dir description” của mỗi force vector được xác định theo thứ tự ưu tiên sau:\n1. “towards”, nếu cờ “attractive raw” được bật;\n2. trong mọi trường hợp còn lại, “away-from”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “force dir description” của mỗi force vector được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“towards”",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “attractive raw” được bật"
+              }
+            },
+            {
+              "value": "“away-from”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu is attractive raw thì \"towards\", nếu không thì \"away-from\""
+      },
+      "ElectricFieldPoints.Name": {
+        "table": "ElectricFieldPoints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi electric field point có cùng giá trị với trường “field point ID” của chính electric field point đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "FieldPointId",
+            "label": "field point ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Field point ID"
+      },
+      "ElectricFieldPoints.dX": {
+        "table": "ElectricFieldPoints",
+        "field": "dX",
+        "kind": "formula",
+        "rule": "Trường “d x” của mỗi electric field point được tính bằng obs x trừ src x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsX",
+            "label": "obs x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcX",
+            "label": "src x"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs x trừ src x"
+      },
+      "ElectricFieldPoints.dY": {
+        "table": "ElectricFieldPoints",
+        "field": "dY",
+        "kind": "formula",
+        "rule": "Trường “d y” của mỗi electric field point được tính bằng obs y trừ src y.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsY",
+            "label": "obs y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcY",
+            "label": "src y"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs y trừ src y"
+      },
+      "ElectricFieldPoints.dZ": {
+        "table": "ElectricFieldPoints",
+        "field": "dZ",
+        "kind": "formula",
+        "rule": "Trường “d z” của mỗi electric field point được tính bằng obs z trừ src z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsZ",
+            "label": "obs z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcZ",
+            "label": "src z"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs z trừ src z"
+      },
+      "ElectricFieldPoints.DistanceSquared": {
+        "table": "ElectricFieldPoints",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "Trường “distance squared” của mỗi electric field point được tính bằng d x nhân d x cộng d y nhân d y cộng d z nhân d z.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          }
+        ],
+        "structure": null,
+        "plain": "((d x nhân d x) cộng (d y nhân d y)) cộng (d z nhân d z)"
+      },
+      "ElectricFieldPoints.Distance": {
+        "table": "ElectricFieldPoints",
+        "field": "Distance",
+        "kind": "formula",
+        "rule": "Trường “distance” của mỗi electric field point được tính bằng căn bậc hai của distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ElectricFieldPoints.EFieldMagnitude": {
+        "table": "ElectricFieldPoints",
+        "field": "EFieldMagnitude",
+        "kind": "formula",
+        "rule": "Trường “e field magnitude” của mỗi electric field point được tính bằng coulomb k nhân giá trị tuyệt đối của source q chia cho distance squared.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k nhân giá trị tuyệt đối của source q) chia cho distance squared"
+      },
+      "ElectricFieldPoints.QSign": {
+        "table": "ElectricFieldPoints",
+        "field": "QSign",
+        "kind": "formula",
+        "rule": "Trường “q sign” của mỗi electric field point được xác định theo thứ tự ưu tiên sau:\n1. 1, nếu source q lớn hơn 0;\n2. trong mọi trường hợp còn lại, số đối của 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “q sign” của mỗi electric field point được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "source q lớn hơn 0"
+              }
+            },
+            {
+              "value": "số đối của 1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu source q lớn hơn 0 thì 1, nếu không thì âm 1"
+      },
+      "ElectricFieldPoints.EX": {
+        "table": "ElectricFieldPoints",
+        "field": "EX",
+        "kind": "formula",
+        "rule": "Trường “EX” của mỗi electric field point được tính bằng e field magnitude nhân q sign nhân d x chia cho distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude nhân q sign) nhân d x) chia cho distance"
+      },
+      "ElectricFieldPoints.EY": {
+        "table": "ElectricFieldPoints",
+        "field": "EY",
+        "kind": "formula",
+        "rule": "Trường “EY” của mỗi electric field point được tính bằng e field magnitude nhân q sign nhân d y chia cho distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude nhân q sign) nhân d y) chia cho distance"
+      },
+      "ElectricFieldPoints.EZ": {
+        "table": "ElectricFieldPoints",
+        "field": "EZ",
+        "kind": "formula",
+        "rule": "Trường “EZ” của mỗi electric field point được tính bằng e field magnitude nhân q sign nhân d z chia cho distance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude nhân q sign) nhân d z) chia cho distance"
+      },
+      "InvariantChecks.Name": {
+        "table": "InvariantChecks",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi invariant check có cùng giá trị với trường “invariant ID” của chính invariant check đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "InvariantId",
+            "label": "invariant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Invariant ID"
+      },
+      "SystemSummary.Name": {
+        "table": "SystemSummary",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi system summary có cùng giá trị với trường “summary ID” của chính system summary đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SummaryId",
+            "label": "summary ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summary ID"
+      },
+      "SystemSummary.SystemName": {
+        "table": "SystemSummary",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "Trường “system name” của mỗi system summary là giá trị của LOOKUP(SystemId, Systems[SystemId], Systems[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "SystemSummary.ChargeCount": {
+        "table": "SystemSummary",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "Trường “charge count” của mỗi system summary là số lượng charges liên quan đến system summary đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng charges có system ID là system ID"
+      },
+      "SystemSummary.InteractionCount": {
+        "table": "SystemSummary",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "Trường “interaction count” của mỗi system summary là số lượng charge interactions liên quan đến system summary đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng charge interactions có system ID là system ID"
+      },
+      "SystemSummary.AttractiveCount": {
+        "table": "SystemSummary",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "Trường “attractive count” của mỗi system summary là số lượng charge interactions liên quan đến system summary đó, chỉ tính các bản ghi là “attractive”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng charge interactions có system ID là system ID và is attractive là true()"
+      },
+      "SystemSummary.RepulsiveCount": {
+        "table": "SystemSummary",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "Trường “repulsive count” của mỗi system summary là số lượng charge interactions liên quan đến system summary đó, chỉ tính các bản ghi là “repulsive”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng charge interactions có system ID là system ID và is repulsive là true()"
+      },
+      "SystemSummary.TotalCharge": {
+        "table": "SystemSummary",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "Trường “total charge” của mỗi system summary là giá trị tổng cộng của trường “charge value” trên các charges liên quan đến system summary đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng charge value trên tất cả charges có system ID là system ID"
+      },
+      "SystemSummary.IsNeutral": {
+        "table": "SystemSummary",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "Mỗi system summary được coi là “neutral” nếu giá trị của ABS(TotalCharge) < 1e-30.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "SystemSummary.MaxForceMagnitude": {
+        "table": "SystemSummary",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "Trường “max force magnitude” của mỗi system summary là giá trị lớn nhất của trường “force magnitude” trên các charge interactions liên quan đến system summary đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Giá trị lớn nhất của force magnitude trên tất cả charge interactions có system ID là system ID"
+      },
+      "SystemSummary.MinDistanceMeters": {
+        "table": "SystemSummary",
+        "field": "MinDistanceMeters",
+        "kind": "rollup",
+        "rule": "Trường “min distance meters” của mỗi system summary là giá trị nhỏ nhất của trường “distance meters” trên các charge interactions liên quan đến system summary đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Giá trị nhỏ nhất của distance meters trên tất cả charge interactions có system ID là system ID"
+      },
+      "SystemSummary.AllAttractive": {
+        "table": "SystemSummary",
+        "field": "AllAttractive",
+        "kind": "formula",
+        "rule": "Mỗi system summary được đánh dấu là “all attractive” nếu attractive count là interaction count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Attractive count bằng interaction count"
+      },
+      "SystemSummary.AllRepulsive": {
+        "table": "SystemSummary",
+        "field": "AllRepulsive",
+        "kind": "formula",
+        "rule": "Mỗi system summary được đánh dấu là “all repulsive” nếu repulsive count là interaction count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Repulsive count bằng interaction count"
+      },
+      "SystemSummary.HasMixedInteractions": {
+        "table": "SystemSummary",
+        "field": "HasMixedInteractions",
+        "kind": "formula",
+        "rule": "Mỗi system summary được coi là có “mixed interactions” nếu tất cả các điều kiện sau đều đúng: attractive count lớn hơn 0 và repulsive count lớn hơn 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi system summary được coi là có “mixed interactions” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "attractive count lớn hơn 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "repulsive count lớn hơn 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Attractive count lớn hơn 0 và repulsive count lớn hơn 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Loops": [
+        "Mỗi loop **phải** có title và status."
+      ],
+      "PhysicsConstants": [
+        "Mỗi physics constant **phải** có name, symbol, value và units."
+      ],
+      "Particles": [
+        "Mỗi particle **phải** có name, canonical charge và canonical mass."
+      ],
+      "Charges": [
+        "Mỗi charge **phải** có name, system ID, charge value, position x, position y và position z."
+      ],
+      "Systems": [
+        "Mỗi system **phải** có name, đồng thời được ghi nhận rõ là “synthetic” hay không."
+      ],
+      "ChargeInteractions": [
+        "Mỗi charge interaction **phải** có system ID, charge1 ID, charge2 ID, q1, q2, x1, y1, z1, x2, y2, z2 và coulomb k."
+      ],
+      "ForceVectors": [
+        "Mỗi force vector **phải** có interaction ID, force magnitude raw, DX, DY, DZ và dist raw, đồng thời được ghi nhận rõ là “attractive raw” hay không."
+      ],
+      "ElectricFieldPoints": [
+        "Mỗi electric field point **phải** có system ID, source charge ID, observation label, obs x, obs y, obs z, coulomb k, source q, src x, src y và src z."
+      ],
+      "InvariantChecks": [
+        "Mỗi invariant check **phải** có algebraic statement, natural language và severity."
+      ],
+      "SystemSummary": [
+        "Mỗi system summary **phải** có system ID."
+      ]
+    },
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Loops": "loop",
+      "PhysicsConstants": "physics constant",
+      "Particles": "particle",
+      "Charges": "charge",
+      "Systems": "system",
+      "ChargeInteractions": "charge interaction",
+      "ForceVectors": "force vector",
+      "ElectricFieldPoints": "electric field point",
+      "InvariantChecks": "invariant check",
+      "SystemSummary": "system summary"
+    }
+  },
+  "zh": {
+    "fields": {
+      "Loops.Name": {
+        "table": "Loops",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "loop的“name”与 loop ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loops",
+            "field": "LoopId",
+            "label": "loop ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Loop ID"
+      },
+      "Particles.ChargeSign": {
+        "table": "Particles",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "Particle的“charge sign”按以下优先级确定:\n1. 当canonical charge大于0时,取 “positive”;\n2. 当canonical charge小于0时,取 “negative”;\n3. 其余情况取 “neutral”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Particles",
+            "field": "CanonicalCharge",
+            "label": "canonical charge"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Particle的“charge sign”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“positive”",
+              "when": {
+                "kind": "leaf",
+                "text": "canonical charge大于0"
+              }
+            },
+            {
+              "value": "“negative”",
+              "when": {
+                "kind": "leaf",
+                "text": "canonical charge小于0"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若canonical charge大于0,则\"positive\",否则若canonical charge小于0,则\"negative\",否则\"neutral\""
+      },
+      "Charges.ChargeSign": {
+        "table": "Charges",
+        "field": "ChargeSign",
+        "kind": "formula",
+        "rule": "Charge的“charge sign”按以下优先级确定:\n1. 当charge value大于0时,取 “positive”;\n2. 当charge value小于0时,取 “negative”;\n3. 其余情况取 “neutral”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Charge的“charge sign”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“positive”",
+              "when": {
+                "kind": "leaf",
+                "text": "charge value大于0"
+              }
+            },
+            {
+              "value": "“negative”",
+              "when": {
+                "kind": "leaf",
+                "text": "charge value小于0"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若charge value大于0,则\"positive\",否则若charge value小于0,则\"negative\",否则\"neutral\""
+      },
+      "Charges.ChargeMagnitude": {
+        "table": "Charges",
+        "field": "ChargeMagnitude",
+        "kind": "formula",
+        "rule": "charge的“charge magnitude”按 charge value的绝对值 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge value的绝对值"
+      },
+      "Charges.SystemName": {
+        "table": "Charges",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "charge的“system name”为 LOOKUP(SystemId, Systems[SystemId], Systems[Name])的值。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "Charges.ParticleName": {
+        "table": "Charges",
+        "field": "ParticleName",
+        "kind": "lookup",
+        "rule": "charge的“particle name”为 LOOKUP(ParticleId, Particles[ParticleId], Particles[Name])的值。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ParticleId",
+            "label": "particle ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{ParticleId}}, Particles[ParticleId], Particles[Name])"
+      },
+      "Charges.InteractionCount": {
+        "table": "Charges",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "charge的“interaction count”为 与charge相关的“charge interactions”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Charge1Id",
+            "label": "charge1 ID"
+          },
+          {
+            "table": "Charges",
+            "field": "ChargeId",
+            "label": "charge ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge1 ID为charge ID的“charge interactions”的数量"
+      },
+      "Systems.ChargeCount": {
+        "table": "Systems",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "system的“charge count”为 与system相关的“charges”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID为system ID的“charges”的数量"
+      },
+      "Systems.InteractionCount": {
+        "table": "Systems",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "system的“interaction count”为 与system相关的“charge interactions”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID为system ID的“charge interactions”的数量"
+      },
+      "Systems.AttractiveCount": {
+        "table": "Systems",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "system的“attractive count”为 system的“charge interactions”中是“Attractive”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID为system ID且is attractive为true()的“charge interactions”的数量"
+      },
+      "Systems.RepulsiveCount": {
+        "table": "Systems",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "system的“repulsive count”为 system的“charge interactions”中是“Repulsive”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID为system ID且is repulsive为true()的“charge interactions”的数量"
+      },
+      "Systems.TotalCharge": {
+        "table": "Systems",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "system的“total charge”为 与system相关的所有“charges”的“charge value”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有system ID为system ID的“charges”的charge value的总和"
+      },
+      "Systems.IsNeutral": {
+        "table": "Systems",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "当ABS(TotalCharge) < 1e-30的值时,system被视为“Neutral”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Systems",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "Systems.MaxForceMagnitude": {
+        "table": "Systems",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "system的“max force magnitude”为 与system相关的所有“charge interactions”的“force magnitude”的最大值。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "Systems",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有system ID为system ID的“charge interactions”的force magnitude的最大值"
+      },
+      "ChargeInteractions.Name": {
+        "table": "ChargeInteractions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "charge interaction的“name”与 interaction ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "InteractionId",
+            "label": "interaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction ID"
+      },
+      "ChargeInteractions.DeltaX": {
+        "table": "ChargeInteractions",
+        "field": "DeltaX",
+        "kind": "formula",
+        "rule": "charge interaction的“delta x”按 x2减x1 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "X2",
+            "label": "x2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "X1",
+            "label": "x1"
+          }
+        ],
+        "structure": null,
+        "plain": "X2减x1"
+      },
+      "ChargeInteractions.DeltaY": {
+        "table": "ChargeInteractions",
+        "field": "DeltaY",
+        "kind": "formula",
+        "rule": "charge interaction的“delta y”按 y2减y1 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Y2",
+            "label": "y2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Y1",
+            "label": "y1"
+          }
+        ],
+        "structure": null,
+        "plain": "Y2减y1"
+      },
+      "ChargeInteractions.DeltaZ": {
+        "table": "ChargeInteractions",
+        "field": "DeltaZ",
+        "kind": "formula",
+        "rule": "charge interaction的“delta z”按 z2减z1 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Z2",
+            "label": "z2"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Z1",
+            "label": "z1"
+          }
+        ],
+        "structure": null,
+        "plain": "Z2减z1"
+      },
+      "ChargeInteractions.DistanceSquared": {
+        "table": "ChargeInteractions",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "charge interaction的“distance squared”按 delta x乘delta x加delta y乘delta y加delta z乘delta z 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaX",
+            "label": "delta x"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaY",
+            "label": "delta y"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DeltaZ",
+            "label": "delta z"
+          }
+        ],
+        "structure": null,
+        "plain": "((delta x乘delta x)加(delta y乘delta y))加(delta z乘delta z)"
+      },
+      "ChargeInteractions.DistanceMeters": {
+        "table": "ChargeInteractions",
+        "field": "DistanceMeters",
+        "kind": "formula",
+        "rule": "charge interaction的“distance meters”按 distance squared的平方根 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ChargeInteractions.DistancePicometers": {
+        "table": "ChargeInteractions",
+        "field": "DistancePicometers",
+        "kind": "formula",
+        "rule": "charge interaction的“distance picometers”按 distance meters乘1000000000000 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance meters乘1,000,000,000,000"
+      },
+      "ChargeInteractions.ChargeProduct": {
+        "table": "ChargeInteractions",
+        "field": "ChargeProduct",
+        "kind": "formula",
+        "rule": "charge interaction的“charge product”按 q1乘q2 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "Q1",
+            "label": "q1"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "Q2",
+            "label": "q2"
+          }
+        ],
+        "structure": null,
+        "plain": "Q1乘q2"
+      },
+      "ChargeInteractions.ForceMagnitude": {
+        "table": "ChargeInteractions",
+        "field": "ForceMagnitude",
+        "kind": "formula",
+        "rule": "charge interaction的“force magnitude”按 coulomb k乘charge product的绝对值除以distance squared 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k乘charge product的绝对值)除以distance squared"
+      },
+      "ChargeInteractions.IsAttractive": {
+        "table": "ChargeInteractions",
+        "field": "IsAttractive",
+        "kind": "formula",
+        "rule": "当charge product小于0时,charge interaction被视为“Attractive”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product小于0"
+      },
+      "ChargeInteractions.IsRepulsive": {
+        "table": "ChargeInteractions",
+        "field": "IsRepulsive",
+        "kind": "formula",
+        "rule": "当charge product大于0时,charge interaction被视为“Repulsive”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ChargeProduct",
+            "label": "charge product"
+          }
+        ],
+        "structure": null,
+        "plain": "Charge product大于0"
+      },
+      "ChargeInteractions.InteractionType": {
+        "table": "ChargeInteractions",
+        "field": "InteractionType",
+        "kind": "formula",
+        "rule": "Charge interaction的“interaction type”按以下优先级确定:\n1. 当标志“attractive”已设置时,取 “attractive”;\n2. 当标志“repulsive”已设置时,取 “repulsive”;\n3. 其余情况取 “neutral”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Charge interaction的“interaction type”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“attractive”",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“attractive”已设置"
+              }
+            },
+            {
+              "value": "“repulsive”",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“repulsive”已设置"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若is attractive,则\"attractive\",否则若is repulsive,则\"repulsive\",否则\"neutral\""
+      },
+      "ChargeInteractions.ForceInAttoNewtons": {
+        "table": "ChargeInteractions",
+        "field": "ForceInAttoNewtons",
+        "kind": "formula",
+        "rule": "charge interaction的“force in atto newtons”按 force magnitude乘1000000000000000000 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          }
+        ],
+        "structure": null,
+        "plain": "Force magnitude乘1,000,000,000,000,000,000"
+      },
+      "ForceVectors.Name": {
+        "table": "ForceVectors",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "force vector的“name”与 force vector ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceVectorId",
+            "label": "force vector ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Force vector ID"
+      },
+      "ForceVectors.UnitX": {
+        "table": "ForceVectors",
+        "field": "UnitX",
+        "kind": "formula",
+        "rule": "Force vector的“unit x”按以下优先级确定:\n1. 当dist raw为0时,取 0;\n2. 其余情况取 DX除以dist raw。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DX",
+            "label": "DX"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Force vector的“unit x”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "dist raw为0"
+              }
+            },
+            {
+              "value": "DX除以dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若dist raw等于0,则0,否则(DX除以dist raw)"
+      },
+      "ForceVectors.UnitY": {
+        "table": "ForceVectors",
+        "field": "UnitY",
+        "kind": "formula",
+        "rule": "Force vector的“unit y”按以下优先级确定:\n1. 当dist raw为0时,取 0;\n2. 其余情况取 DY除以dist raw。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DY",
+            "label": "DY"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Force vector的“unit y”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "dist raw为0"
+              }
+            },
+            {
+              "value": "DY除以dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若dist raw等于0,则0,否则(DY除以dist raw)"
+      },
+      "ForceVectors.UnitZ": {
+        "table": "ForceVectors",
+        "field": "UnitZ",
+        "kind": "formula",
+        "rule": "Force vector的“unit z”按以下优先级确定:\n1. 当dist raw为0时,取 0;\n2. 其余情况取 DZ除以dist raw。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "DistRaw",
+            "label": "dist raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "DZ",
+            "label": "DZ"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Force vector的“unit z”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "dist raw为0"
+              }
+            },
+            {
+              "value": "DZ除以dist raw",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若dist raw等于0,则0,否则(DZ除以dist raw)"
+      },
+      "ForceVectors.SignFactor": {
+        "table": "ForceVectors",
+        "field": "SignFactor",
+        "kind": "formula",
+        "rule": "Force vector的“sign factor”按以下优先级确定:\n1. 当标志“attractive raw”已设置时,取 1的相反数;\n2. 其余情况取 1。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Force vector的“sign factor”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "1的相反数",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“attractive raw”已设置"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若is attractive raw,则负1,否则1"
+      },
+      "ForceVectors.FX": {
+        "table": "ForceVectors",
+        "field": "FX",
+        "kind": "formula",
+        "rule": "force vector的“FX”按 force magnitude raw乘sign factor乘unit x 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitX",
+            "label": "unit x"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw乘sign factor)乘unit x"
+      },
+      "ForceVectors.FY": {
+        "table": "ForceVectors",
+        "field": "FY",
+        "kind": "formula",
+        "rule": "force vector的“FY”按 force magnitude raw乘sign factor乘unit y 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitY",
+            "label": "unit y"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw乘sign factor)乘unit y"
+      },
+      "ForceVectors.FZ": {
+        "table": "ForceVectors",
+        "field": "FZ",
+        "kind": "formula",
+        "rule": "force vector的“FZ”按 force magnitude raw乘sign factor乘unit z 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "ForceMagnitudeRaw",
+            "label": "force magnitude raw"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "SignFactor",
+            "label": "sign factor"
+          },
+          {
+            "table": "ForceVectors",
+            "field": "UnitZ",
+            "label": "unit z"
+          }
+        ],
+        "structure": null,
+        "plain": "(force magnitude raw乘sign factor)乘unit z"
+      },
+      "ForceVectors.ForceDirDescription": {
+        "table": "ForceVectors",
+        "field": "ForceDirDescription",
+        "kind": "formula",
+        "rule": "Force vector的“force dir description”按以下优先级确定:\n1. 当标志“attractive raw”已设置时,取 “towards”;\n2. 其余情况取 “away-from”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ForceVectors",
+            "field": "IsAttractiveRaw",
+            "label": "is attractive raw"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Force vector的“force dir description”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“towards”",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“attractive raw”已设置"
+              }
+            },
+            {
+              "value": "“away-from”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若is attractive raw,则\"towards\",否则\"away-from\""
+      },
+      "ElectricFieldPoints.Name": {
+        "table": "ElectricFieldPoints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "electric field point的“name”与 field point ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "FieldPointId",
+            "label": "field point ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Field point ID"
+      },
+      "ElectricFieldPoints.dX": {
+        "table": "ElectricFieldPoints",
+        "field": "dX",
+        "kind": "formula",
+        "rule": "electric field point的“d x”按 obs x减src x 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsX",
+            "label": "obs x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcX",
+            "label": "src x"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs x减src x"
+      },
+      "ElectricFieldPoints.dY": {
+        "table": "ElectricFieldPoints",
+        "field": "dY",
+        "kind": "formula",
+        "rule": "electric field point的“d y”按 obs y减src y 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsY",
+            "label": "obs y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcY",
+            "label": "src y"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs y减src y"
+      },
+      "ElectricFieldPoints.dZ": {
+        "table": "ElectricFieldPoints",
+        "field": "dZ",
+        "kind": "formula",
+        "rule": "electric field point的“d z”按 obs z减src z 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "ObsZ",
+            "label": "obs z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SrcZ",
+            "label": "src z"
+          }
+        ],
+        "structure": null,
+        "plain": "Obs z减src z"
+      },
+      "ElectricFieldPoints.DistanceSquared": {
+        "table": "ElectricFieldPoints",
+        "field": "DistanceSquared",
+        "kind": "formula",
+        "rule": "electric field point的“distance squared”按 d x乘d x加d y乘d y加d z乘d z 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          }
+        ],
+        "structure": null,
+        "plain": "((d x乘d x)加(d y乘d y))加(d z乘d z)"
+      },
+      "ElectricFieldPoints.Distance": {
+        "table": "ElectricFieldPoints",
+        "field": "Distance",
+        "kind": "formula",
+        "rule": "electric field point的“distance”按 distance squared的平方根 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "Sqrt(distance squared)"
+      },
+      "ElectricFieldPoints.EFieldMagnitude": {
+        "table": "ElectricFieldPoints",
+        "field": "EFieldMagnitude",
+        "kind": "formula",
+        "rule": "electric field point的“e field magnitude”按 coulomb k乘source q的绝对值除以distance squared 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "CoulombK",
+            "label": "coulomb k"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "DistanceSquared",
+            "label": "distance squared"
+          }
+        ],
+        "structure": null,
+        "plain": "(coulomb k乘source q的绝对值)除以distance squared"
+      },
+      "ElectricFieldPoints.QSign": {
+        "table": "ElectricFieldPoints",
+        "field": "QSign",
+        "kind": "formula",
+        "rule": "Electric field point的“q sign”按以下优先级确定:\n1. 当source q大于0时,取 1;\n2. 其余情况取 1的相反数。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "SourceQ",
+            "label": "source q"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Electric field point的“q sign”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "source q大于0"
+              }
+            },
+            {
+              "value": "1的相反数",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若source q大于0,则1,否则负1"
+      },
+      "ElectricFieldPoints.EX": {
+        "table": "ElectricFieldPoints",
+        "field": "EX",
+        "kind": "formula",
+        "rule": "electric field point的“EX”按 e field magnitude乘q sign乘d x除以distance 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dX",
+            "label": "d x"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude乘q sign)乘d x)除以distance"
+      },
+      "ElectricFieldPoints.EY": {
+        "table": "ElectricFieldPoints",
+        "field": "EY",
+        "kind": "formula",
+        "rule": "electric field point的“EY”按 e field magnitude乘q sign乘d y除以distance 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dY",
+            "label": "d y"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude乘q sign)乘d y)除以distance"
+      },
+      "ElectricFieldPoints.EZ": {
+        "table": "ElectricFieldPoints",
+        "field": "EZ",
+        "kind": "formula",
+        "rule": "electric field point的“EZ”按 e field magnitude乘q sign乘d z除以distance 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ElectricFieldPoints",
+            "field": "EFieldMagnitude",
+            "label": "e field magnitude"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "QSign",
+            "label": "q sign"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "dZ",
+            "label": "d z"
+          },
+          {
+            "table": "ElectricFieldPoints",
+            "field": "Distance",
+            "label": "distance"
+          }
+        ],
+        "structure": null,
+        "plain": "((e field magnitude乘q sign)乘d z)除以distance"
+      },
+      "InvariantChecks.Name": {
+        "table": "InvariantChecks",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "invariant check的“name”与 invariant ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "InvariantId",
+            "label": "invariant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Invariant ID"
+      },
+      "SystemSummary.Name": {
+        "table": "SystemSummary",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "system summary的“name”与 summary ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SummaryId",
+            "label": "summary ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summary ID"
+      },
+      "SystemSummary.SystemName": {
+        "table": "SystemSummary",
+        "field": "SystemName",
+        "kind": "lookup",
+        "rule": "system summary的“system name”为 LOOKUP(SystemId, Systems[SystemId], Systems[Name])的值。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])"
+      },
+      "SystemSummary.ChargeCount": {
+        "table": "SystemSummary",
+        "field": "ChargeCount",
+        "kind": "rollup",
+        "rule": "system summary的“charge count”为 与system summary相关的“charges”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID为system ID的“charges”的数量"
+      },
+      "SystemSummary.InteractionCount": {
+        "table": "SystemSummary",
+        "field": "InteractionCount",
+        "kind": "rollup",
+        "rule": "system summary的“interaction count”为 与system summary相关的“charge interactions”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID为system ID的“charge interactions”的数量"
+      },
+      "SystemSummary.AttractiveCount": {
+        "table": "SystemSummary",
+        "field": "AttractiveCount",
+        "kind": "rollup",
+        "rule": "system summary的“attractive count”为 system summary的“charge interactions”中是“Attractive”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsAttractive",
+            "label": "is attractive"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID为system ID且is attractive为true()的“charge interactions”的数量"
+      },
+      "SystemSummary.RepulsiveCount": {
+        "table": "SystemSummary",
+        "field": "RepulsiveCount",
+        "kind": "rollup",
+        "rule": "system summary的“repulsive count”为 system summary的“charge interactions”中是“Repulsive”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "IsRepulsive",
+            "label": "is repulsive"
+          }
+        ],
+        "structure": null,
+        "plain": "System ID为system ID且is repulsive为true()的“charge interactions”的数量"
+      },
+      "SystemSummary.TotalCharge": {
+        "table": "SystemSummary",
+        "field": "TotalCharge",
+        "kind": "rollup",
+        "rule": "system summary的“total charge”为 与system summary相关的所有“charges”的“charge value”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Charges",
+            "field": "ChargeValue",
+            "label": "charge value"
+          },
+          {
+            "table": "Charges",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有system ID为system ID的“charges”的charge value的总和"
+      },
+      "SystemSummary.IsNeutral": {
+        "table": "SystemSummary",
+        "field": "IsNeutral",
+        "kind": "formula",
+        "rule": "当ABS(TotalCharge) < 1e-30的值时,system summary被视为“Neutral”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "TotalCharge",
+            "label": "total charge"
+          }
+        ],
+        "structure": null,
+        "plain": "ABS({{TotalCharge}}) < 1e-30"
+      },
+      "SystemSummary.MaxForceMagnitude": {
+        "table": "SystemSummary",
+        "field": "MaxForceMagnitude",
+        "kind": "rollup",
+        "rule": "system summary的“max force magnitude”为 与system summary相关的所有“charge interactions”的“force magnitude”的最大值。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "ForceMagnitude",
+            "label": "force magnitude"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有system ID为system ID的“charge interactions”的force magnitude的最大值"
+      },
+      "SystemSummary.MinDistanceMeters": {
+        "table": "SystemSummary",
+        "field": "MinDistanceMeters",
+        "kind": "rollup",
+        "rule": "system summary的“min distance meters”为 与system summary相关的所有“charge interactions”的“distance meters”的最小值。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ChargeInteractions",
+            "field": "DistanceMeters",
+            "label": "distance meters"
+          },
+          {
+            "table": "ChargeInteractions",
+            "field": "SystemId",
+            "label": "system ID"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "SystemId",
+            "label": "system ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有system ID为system ID的“charge interactions”的distance meters的最小值"
+      },
+      "SystemSummary.AllAttractive": {
+        "table": "SystemSummary",
+        "field": "AllAttractive",
+        "kind": "formula",
+        "rule": "当attractive count为interaction count时,system summary被标记为“All Attractive”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Attractive count等于interaction count"
+      },
+      "SystemSummary.AllRepulsive": {
+        "table": "SystemSummary",
+        "field": "AllRepulsive",
+        "kind": "formula",
+        "rule": "当repulsive count为interaction count时,system summary被标记为“All Repulsive”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "InteractionCount",
+            "label": "interaction count"
+          }
+        ],
+        "structure": null,
+        "plain": "Repulsive count等于interaction count"
+      },
+      "SystemSummary.HasMixedInteractions": {
+        "table": "SystemSummary",
+        "field": "HasMixedInteractions",
+        "kind": "formula",
+        "rule": "当以下全部成立:attractive count大于0且repulsive count大于0时,system summary被视为具有“Mixed Interactions”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SystemSummary",
+            "field": "AttractiveCount",
+            "label": "attractive count"
+          },
+          {
+            "table": "SystemSummary",
+            "field": "RepulsiveCount",
+            "label": "repulsive count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,system summary被视为具有“Mixed Interactions”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "attractive count大于0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "repulsive count大于0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Attractive count大于0且repulsive count大于0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Loops": [
+        "loop**必须**具有title且status。"
+      ],
+      "PhysicsConstants": [
+        "physics constant**必须**具有name、symbol、value,且units。"
+      ],
+      "Particles": [
+        "particle**必须**具有name、canonical charge,且canonical mass。"
+      ],
+      "Charges": [
+        "charge**必须**具有name、system ID、charge value、position x、position y,且position z。"
+      ],
+      "Systems": [
+        "system**必须**具有name,并记录其是“Synthetic”与否。"
+      ],
+      "ChargeInteractions": [
+        "charge interaction**必须**具有system ID、charge1 ID、charge2 ID、q1、q2、x1、y1、z1、x2、y2、z2,且coulomb k。"
+      ],
+      "ForceVectors": [
+        "force vector**必须**具有interaction ID、force magnitude raw、DX、DY、DZ,且dist raw,并记录其是“Attractive Raw”与否。"
+      ],
+      "ElectricFieldPoints": [
+        "electric field point**必须**具有system ID、source charge ID、observation label、obs x、obs y、obs z、coulomb k、source q、src x、src y,且src z。"
+      ],
+      "InvariantChecks": [
+        "invariant check**必须**具有algebraic statement、natural language,且severity。"
+      ],
+      "SystemSummary": [
+        "system summary**必须**具有system ID。"
+      ]
+    },
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "Loops": "loop",

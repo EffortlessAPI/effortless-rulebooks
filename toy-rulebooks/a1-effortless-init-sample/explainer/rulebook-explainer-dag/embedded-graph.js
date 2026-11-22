@@ -16,7 +16,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -48,6 +63,546 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who"
+    }
+  },
+  "ar": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "حقل «introduction» في سجل «hello who» يُحسب على النحو الآتي: «Hello »، ثم حقل «name»، ثم «!!!».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hello \" يليه name) يليه \"!!!\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "في كل سجل «hello who»، **يجب أن** تُحدّد قيمة حقل «name»."
+      ]
+    },
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who"
+    }
+  },
+  "de": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "Ein Hello Who: Introduction wird berechnet als „Hello “, gefolgt von die Name, gefolgt von „!!!“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hello \" verbunden mit Name) verbunden mit \"!!!\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "Ein Hello Who **muss** eine Name haben."
+      ]
+    },
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "Hello Who"
+    }
+  },
+  "es": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "Un hello who: introduction se calcula como «Hello », seguido de el name, seguido de «!!!».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hello \" unido con name) unido con \"!!!\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "Un hello who **debe** tener un name."
+      ]
+    },
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who"
+    }
+  },
+  "fr": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "Un hello who : introduction est calculé comme « Hello », suivi de le name, suivi de « !!! ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hello \" joint à name) joint à \"!!!\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "Un hello who **doit** avoir un name."
+      ]
+    },
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who"
+    }
+  },
+  "hi": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "hello who का “introduction” “Hello ”, उसके बाद name, उसके बाद “!!!” के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hello \" name से जुड़ा हुआ) \"!!!\" से जुड़ा हुआ"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "hello who को name रखना **अनिवार्य** है।"
+      ]
+    },
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "HelloWhos": "hello who"
+    }
+  },
+  "id": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "Untuk setiap hello who, introduction dihitung sebagai “Hello ”, diikuti name, diikuti “!!!”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hello \" digabung dengan name) digabung dengan \"!!!\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "Setiap hello who **harus** memiliki name."
+      ]
+    },
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who"
+    }
+  },
+  "it": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "Un hello who: introduction è calcolato come «Hello », seguito da il name, seguito da «!!!».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hello \" unito a name) unito a \"!!!\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "Un hello who **deve** avere un name."
+      ]
+    },
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who"
+    }
+  },
+  "ja": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "hello whoの「introduction」は 「Hello 」、続いて name、続いて 「!!!」 として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hello \" と name を連結) と \"!!!\" を連結"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "hello whoは name を持た**なければなりません**。"
+      ]
+    },
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "HelloWhos": "hello who"
+    }
+  },
+  "ko": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "‘hello who’ 레코드의 ‘introduction’ 값은 다음과 같이 계산됩니다: “Hello ”, 이어서 ‘name’, 이어서 “!!!”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hello \" 뒤에 name 연결한 결과) 뒤에 \"!!!\" 연결한 결과"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "‘hello who’ 레코드는 ‘name’ 값을 포함**해야 합니다**."
+      ]
+    },
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who"
+    }
+  },
+  "nl": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "Een hello who: introduction wordt berekend als ‘Hello ’, gevolgd door de name, gevolgd door ‘!!!’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hello \" samengevoegd met name) samengevoegd met \"!!!\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "Een hello who **moet** een name hebben."
+      ]
+    },
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who"
+    }
+  },
+  "pt": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "Um hello who: introduction é calculado como “Hello ”, seguido de o name, seguido de “!!!”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hello \" unido a name) unido a \"!!!\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "Um hello who **deve** ter um name."
+      ]
+    },
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who"
+    }
+  },
+  "ru": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "Hello who: «introduction» вычисляется как «Hello », затем name, затем «!!!».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hello \" соединено с name) соединено с \"!!!\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "Hello who **обязан** иметь name."
+      ]
+    },
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who"
+    }
+  },
+  "tr": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "“hello who” kaydının “introduction” alanı, “Hello ”, ardından “name” alanı, ardından “!!!” olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hello \" ile name birleşimi) ile \"!!!\" birleşimi"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "“hello who” kaydı, “name” alanı dolu olmak **zorundadır**."
+      ]
+    },
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who"
+    }
+  },
+  "vi": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "Trường “introduction” của mỗi hello who được tính bằng “Hello ”, tiếp theo là name, tiếp theo là “!!!”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hello \" nối với name) nối với \"!!!\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "Mỗi hello who **phải** có name."
+      ]
+    },
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who"
+    }
+  },
+  "zh": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "hello who的“introduction”按 “Hello ”,接着是name,接着是“!!!” 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hello \"与name拼接)与\"!!!\"拼接"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "hello who**必须**具有name。"
+      ]
+    },
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "HelloWhos": "hello who"

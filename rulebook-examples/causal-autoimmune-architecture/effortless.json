@@ -14,7 +14,7 @@
       "RelativePath": "/rulespeak-english",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.08.30.1537",
+      "LastVersionUsed": "v2026.11.22.1524",
       "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-08-30-1537-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -23,7 +23,7 @@
       "RelativePath": "/postgres",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.07.0336",
+      "LastVersionUsed": "v2026.11.17.1626",
       "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-07-0336-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "_note": "TEMPORARY: pin shows v2026.06.14.1635 because the CLI version index hasn't yet propagated the upsert-fix release v2026.06.20.1746. A `-setUrl rulebook-to-postgres=<v1746 workload url>` override redirects the actual call to the published fix (ON CONFLICT DO UPDATE so the DB mirrors the rulebook). Re-pin to v2026.06.20.1746 and drop this note + the override once the index catches up."
     },
@@ -40,7 +40,7 @@
       "RelativePath": "/owl",
       "CommandLine": "rulebook-to-owl -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.07.08.0207",
+      "LastVersionUsed": "v2026.11.17.1018",
       "LastUrl": "https://effortless-rulebook-to-owl-v2026-07-08-0207-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "_note": "Uses [latest] (no pin, no -setUrl override). Latest emits ontology.owl + individuals.ttl + rules.shacl.ttl with the transition relation as an owl:TransitiveProperty. The owl-conformance step (owl/run-conformance.sh -> owl/reason.py) gates the build on OWL-RL closure == vw_state_transition_rules_closure."
     },
@@ -57,7 +57,7 @@
       "RelativePath": "/plan",
       "CommandLine": "json-hbars-transform -i ../effortless-rulebook/effortless-rulebook.json -i ./loop-plan.hbs",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.04.14.0155",
+      "LastVersionUsed": "v2026.10.05.0934",
       "LastUrl": "https://common-json-hbars-transform-v2026-04-14-0155-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -73,7 +73,7 @@
       "RelativePath": "/plan-features",
       "CommandLine": "json-hbars-transform -i ../effortless-rulebook/effortless-rulebook.json -i ./platform-features.hbs",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.04.14.0155",
+      "LastVersionUsed": "v2026.10.05.0934",
       "LastUrl": "https://common-json-hbars-transform-v2026-04-14-0155-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -89,8 +89,7 @@
       "RelativePath": "/admin-app/client/public",
       "CommandLine": "rulebook-to-explainer-dag -i ../../../effortless-rulebook/effortless-rulebook.json -o explainer-dag",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.08.31.0049",
-      "LastUrl": "https://effortless-rulebook-to-explainer-v2026-08-31-0049-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.11.22.1618"
     },
     {
       "IsSSoTTranspiler": false,
@@ -98,7 +97,7 @@
       "RelativePath": "/xlsx",
       "CommandLine": "rulebook-to-xlsx -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.02.1122",
+      "LastVersionUsed": "v2026.11.15.1835",
       "LastUrl": "https://effortless-rulebook-to-xlsx-v2026-09-02-1122-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -107,7 +106,7 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i effortless-rulebook.json -p rulebookPath=effortless-rulebook.json -p dockerfilePath=docker/Dockerfile",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.07.0138",
+      "LastVersionUsed": "v2026.11.22.0226",
       "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-07-0138-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ],

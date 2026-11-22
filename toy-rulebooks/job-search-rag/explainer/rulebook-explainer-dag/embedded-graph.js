@@ -1173,7 +1173,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -1728,6 +1743,8811 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "JobBoards": "job board",
+      "SearchUrls": "search URL",
+      "RoleArchetypes": "role archetype",
+      "RubricDimensions": "rubric dimension",
+      "Resumes": "resume",
+      "ResumeSections": "resume section",
+      "SearchRuns": "search run",
+      "JobListings": "job listing",
+      "ScoreResults": "score result",
+      "Decisions": "decision"
+    }
+  },
+  "ar": {
+    "fields": {
+      "JobBoards.JobListings": {
+        "table": "JobBoards",
+        "field": "JobListings",
+        "kind": "rollup",
+        "rule": "حقل «job listings» في سجل «job board» هو عدد سجلات «job listings» المرتبطة بسجل «job board».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «job listings» التي يتحقق فيها أنّ حقل «job board» يساوي job board ID"
+      },
+      "SearchUrls.JobBoardName": {
+        "table": "SearchUrls",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "حقل «job board name» في سجل «search URL» مأخوذ من السجل المرتبط به عبر حقل «job board».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchUrls",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «job board»"
+      },
+      "Resumes.ResumeSections": {
+        "table": "Resumes",
+        "field": "ResumeSections",
+        "kind": "rollup",
+        "rule": "حقل «resume sections» في سجل «resume» هو عدد سجلات «resume sections» المرتبطة بسجل «resume».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «resume sections» التي يتحقق فيها أنّ حقل «resume» يساوي resume ID"
+      },
+      "Resumes.SearchRuns": {
+        "table": "Resumes",
+        "field": "SearchRuns",
+        "kind": "rollup",
+        "rule": "حقل «search runs» في سجل «resume» هو عدد سجلات «search runs» المرتبطة بسجل «resume».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «search runs» التي يتحقق فيها أنّ حقل «resume» يساوي resume ID"
+      },
+      "ResumeSections.ResumeName": {
+        "table": "ResumeSections",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "حقل «resume name» في سجل «resume section» مأخوذ من السجل المرتبط به عبر حقل «resume».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «resume»"
+      },
+      "SearchRuns.ResumeName": {
+        "table": "SearchRuns",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "حقل «resume name» في سجل «search run» مأخوذ من السجل المرتبط به عبر حقل «resume».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «resume»"
+      },
+      "SearchRuns.ScoreResults": {
+        "table": "SearchRuns",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "حقل «score results» في سجل «search run» هو عدد سجلات «score results» المرتبطة بسجل «search run».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «score results» التي يتحقق فيها أنّ حقل «search run» يساوي search run ID"
+      },
+      "JobListings.JobBoardName": {
+        "table": "JobListings",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "حقل «job board name» في سجل «job listing» مأخوذ من السجل المرتبط به عبر حقل «job board».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «job board»"
+      },
+      "JobListings.ScoreResults": {
+        "table": "JobListings",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "حقل «score results» في سجل «job listing» هو عدد سجلات «score results» المرتبطة بسجل «job listing».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «score results» التي يتحقق فيها أنّ حقل «job listing» يساوي job listing ID"
+      },
+      "JobListings.Decisions": {
+        "table": "JobListings",
+        "field": "Decisions",
+        "kind": "rollup",
+        "rule": "حقل «decisions» في سجل «job listing» هو عدد سجلات «decisions» المرتبطة بسجل «job listing».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «decisions» التي يتحقق فيها أنّ حقل «job listing» يساوي job listing ID"
+      },
+      "ScoreResults.Name": {
+        "table": "ScoreResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «score result» يُحسب على النحو الآتي: حقل «job listing name»، ثم « - »، ثم حقل «search run name».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListingName",
+            "label": "job listing name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRunName",
+            "label": "search run name"
+          }
+        ],
+        "structure": null,
+        "plain": "Job listing name، ثم \" - \"، ثم search run name"
+      },
+      "ScoreResults.FinalScore": {
+        "table": "ScoreResults",
+        "field": "FinalScore",
+        "kind": "formula",
+        "rule": "حقل «final score» في سجل «score result» يتحدد وفق ترتيب الأولوية الآتي:\n1. 0، إذا تحقق أنّ علامة «disqualified» مفعّلة؛\n2. الأكبر من بين 0 وحقل «fit score» زائد حقل «archetype score» زائد حقل «history score» زائد حقل «comp score» زائد حقل «culture score» ناقص حقل «negative score»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "IsDisqualified",
+            "label": "is disqualified"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "FitScore",
+            "label": "fit score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "ArchetypeScore",
+            "label": "archetype score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "HistoryScore",
+            "label": "history score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CompScore",
+            "label": "comp score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CultureScore",
+            "label": "culture score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "NegativeScore",
+            "label": "negative score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «final score» في سجل «score result» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «disqualified» مفعّلة"
+              }
+            },
+            {
+              "value": "الأكبر من بين 0 وحقل «fit score» زائد حقل «archetype score» زائد حقل «history score» زائد حقل «comp score» زائد حقل «culture score» ناقص حقل «negative score»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ is disqualified فالناتج 0، وإلا فالناتج الأكبر من بين 0 و(((((fit score زائد archetype score) زائد history score) زائد comp score) زائد culture score) ناقص negative score)"
+      },
+      "ScoreResults.JobListingName": {
+        "table": "ScoreResults",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "حقل «job listing name» في سجل «score result» مأخوذ من السجل المرتبط به عبر حقل «job listing».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «job listing»"
+      },
+      "ScoreResults.SearchRunName": {
+        "table": "ScoreResults",
+        "field": "SearchRunName",
+        "kind": "lookup",
+        "rule": "حقل «search run name» في سجل «score result» مأخوذ من السجل المرتبط به عبر حقل «search run».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «search run»"
+      },
+      "ScoreResults.Company": {
+        "table": "ScoreResults",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "حقل «company» في سجل «score result» مأخوذ من السجل المرتبط به عبر حقل «job listing».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «company» من السجل المرتبط عبر «job listing»"
+      },
+      "Decisions.Name": {
+        "table": "Decisions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «decision» يُحسب على النحو الآتي: حقل «verdict» بأحرف كبيرة، ثم «: »، ثم حقل «job listing name».",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListingName",
+            "label": "job listing name"
+          }
+        ],
+        "structure": null,
+        "plain": "Verdict بأحرف كبيرة؛ ثم \": \"؛ ثم job listing name"
+      },
+      "Decisions.IsScoringSignal": {
+        "table": "Decisions",
+        "field": "IsScoringSignal",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «decision» على أنه «scoring signal» إذا تحقق أنّ حقل «verdict» يساوي «yes».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «is scoring signal» في سجل «decision» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "صحيح",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «verdict» يساوي «yes»"
+              }
+            },
+            {
+              "value": "خطأ",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ verdict هو \"yes\" فالناتج true()، وإلا فالناتج false()"
+      },
+      "Decisions.JobListingName": {
+        "table": "Decisions",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "حقل «job listing name» في سجل «decision» مأخوذ من السجل المرتبط به عبر حقل «job listing».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «job listing»"
+      },
+      "Decisions.Company": {
+        "table": "Decisions",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "حقل «company» في سجل «decision» مأخوذ من السجل المرتبط به عبر حقل «job listing».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «company» من السجل المرتبط عبر «job listing»"
+      },
+      "Decisions.Board": {
+        "table": "Decisions",
+        "field": "Board",
+        "kind": "lookup",
+        "rule": "حقل «board» في سجل «decision» يأخذ قيمة حقل «job board» من السجل المرتبط به عبر حقل «job listing».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «job board» من السجل المرتبط عبر «job listing»"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "JobBoards": [
+        "في كل سجل «job board»، **يجب أن** تُحدّد قيمة حقل «name» وحقل «max pages»، وأن يُسجّل ما إذا كان مصنّفًا على أنه «enabled» وما إذا كان مصنّفًا على أنه «headless»."
+      ],
+      "SearchUrls": [
+        "**يجب أن** يشير كل سجل «search URL» إلى سجل «job board» واحد فقط.",
+        "في كل سجل «search URL»، **يجب أن** تُحدّد قيمة حقل «name» وحقل «URL»، وأن يُسجّل ما إذا كان مصنّفًا على أنه «enabled»."
+      ],
+      "RoleArchetypes": [
+        "في كل سجل «role archetype»، **يجب أن** تُحدّد قيمة حقل «name» وحقل «description»."
+      ],
+      "RubricDimensions": [
+        "في كل سجل «rubric dimension»، **يجب أن** تُحدّد قيمة حقل «name»."
+      ],
+      "Resumes": [
+        "في كل سجل «resume»، **يجب أن** تُحدّد قيمة حقل «name» وحقل «file path»."
+      ],
+      "ResumeSections": [
+        "**يجب أن** يشير كل سجل «resume section» إلى سجل «resume» واحد فقط.",
+        "في كل سجل «resume section»، **يجب أن** تُحدّد قيمة حقل «name»، وحقل «section order»، وحقل «content»، وحقل «chroma doc ID»."
+      ],
+      "SearchRuns": [
+        "**يجب أن** يشير كل سجل «search run» إلى سجل «resume» واحد فقط.",
+        "في كل سجل «search run»، **يجب أن** تُحدّد قيمة حقل «name»، وحقل «run date»، وحقل «archetype weight»، وحقل «fit weight»، وحقل «history weight»، وحقل «comp weight»، وحقل «negative weight»، وحقل «culture weight»، وحقل «base salary»، وحقل «min score threshold»، وأن يُسجّل ما إذا كان موسومًا بعلامة «disqualify on llm flag»."
+      ],
+      "JobListings": [
+        "**يجب أن** يشير كل سجل «job listing» إلى سجل «job board» واحد فقط.",
+        "في كل سجل «job listing»، **يجب أن** تُحدّد قيمة حقل «name»، وحقل «external ID»، وحقل «company»، وحقل «URL»، وحقل «full text»."
+      ],
+      "ScoreResults": [
+        "**يجب أن** يشير كل سجل «score result» إلى سجل «job listing» واحد فقط.",
+        "**يجب أن** يشير كل سجل «score result» إلى سجل «search run» واحد فقط.",
+        "في كل سجل «score result»، **يجب أن** تُحدّد قيمة حقل «fit score»، وحقل «archetype score»، وحقل «history score»، وحقل «comp score»، وحقل «negative score»، وحقل «culture score»، وأن يُسجّل ما إذا كان مصنّفًا على أنه «disqualified»."
+      ],
+      "Decisions": [
+        "**يجب أن** يشير كل سجل «decision» إلى سجل «job listing» واحد فقط.",
+        "في كل سجل «decision»، **يجب أن** تُحدّد قيمة حقل «verdict» وحقل «recorded at»."
+      ]
+    },
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "JobBoards": "job board",
+      "SearchUrls": "search URL",
+      "RoleArchetypes": "role archetype",
+      "RubricDimensions": "rubric dimension",
+      "Resumes": "resume",
+      "ResumeSections": "resume section",
+      "SearchRuns": "search run",
+      "JobListings": "job listing",
+      "ScoreResults": "score result",
+      "Decisions": "decision"
+    }
+  },
+  "de": {
+    "fields": {
+      "JobBoards.JobListings": {
+        "table": "JobBoards",
+        "field": "JobListings",
+        "kind": "rollup",
+        "rule": "Ein Job Board: Job Listings ist die Anzahl der mit dem Job Board verbundenen Job Listings.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Job Listings, deren Job Board ist Job Board ID"
+      },
+      "SearchUrls.JobBoardName": {
+        "table": "SearchUrls",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "Ein Search Url: Job Board Name — aus dem zugehörigen Job Board übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchUrls",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Job Board"
+      },
+      "Resumes.ResumeSections": {
+        "table": "Resumes",
+        "field": "ResumeSections",
+        "kind": "rollup",
+        "rule": "Eine Resume: Resume Sections ist die Anzahl der mit der Resume verbundenen Resume Sections.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Resume Sections, deren Resume ist Resume ID"
+      },
+      "Resumes.SearchRuns": {
+        "table": "Resumes",
+        "field": "SearchRuns",
+        "kind": "rollup",
+        "rule": "Eine Resume: Search Runs ist die Anzahl der mit der Resume verbundenen Search Runs.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Search Runs, deren Resume ist Resume ID"
+      },
+      "ResumeSections.ResumeName": {
+        "table": "ResumeSections",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "Eine Resume Section: Resume Name — aus dem zugehörigen Resume übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Resume"
+      },
+      "SearchRuns.ResumeName": {
+        "table": "SearchRuns",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "Ein Search Run: Resume Name — aus dem zugehörigen Resume übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Resume"
+      },
+      "SearchRuns.ScoreResults": {
+        "table": "SearchRuns",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "Ein Search Run: Score Results ist die Anzahl der mit dem Search Run verbundenen Score Results.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Score Results, deren Search Run ist Search Run ID"
+      },
+      "JobListings.JobBoardName": {
+        "table": "JobListings",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "Ein Job Listing: Job Board Name — aus dem zugehörigen Job Board übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Job Board"
+      },
+      "JobListings.ScoreResults": {
+        "table": "JobListings",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "Ein Job Listing: Score Results ist die Anzahl der mit dem Job Listing verbundenen Score Results.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Score Results, deren Job Listing ist Job Listing ID"
+      },
+      "JobListings.Decisions": {
+        "table": "JobListings",
+        "field": "Decisions",
+        "kind": "rollup",
+        "rule": "Ein Job Listing: Decisions ist die Anzahl der mit dem Job Listing verbundenen Decisions.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Decisions, deren Job Listing ist Job Listing ID"
+      },
+      "ScoreResults.Name": {
+        "table": "ScoreResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Score Result: Name wird berechnet als die Job Listing Name, gefolgt von „ - “, gefolgt von die Search Run Name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListingName",
+            "label": "job listing name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRunName",
+            "label": "search run name"
+          }
+        ],
+        "structure": null,
+        "plain": "Job Listing Name, \" - \", verbunden mit Search Run Name"
+      },
+      "ScoreResults.FinalScore": {
+        "table": "ScoreResults",
+        "field": "FinalScore",
+        "kind": "formula",
+        "rule": "Das Feld „Final Score“ des Score Result wird nach folgender Priorität bestimmt:\n1. 0, wenn das Kennzeichen „Is Disqualified“ gesetzt ist;\n2. andernfalls das größte von 0 und die Fit Score plus die Archetype Score plus die History Score plus die Comp Score plus die Culture Score minus die Negative Score.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "IsDisqualified",
+            "label": "is disqualified"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "FitScore",
+            "label": "fit score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "ArchetypeScore",
+            "label": "archetype score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "HistoryScore",
+            "label": "history score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CompScore",
+            "label": "comp score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CultureScore",
+            "label": "culture score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "NegativeScore",
+            "label": "negative score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Final Score“ des Score Result wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Is Disqualified“ gesetzt ist"
+              }
+            },
+            {
+              "value": "das größte von 0 und die Fit Score plus die Archetype Score plus die History Score plus die Comp Score plus die Culture Score minus die Negative Score",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Is Disqualified, dann 0, andernfalls das größte von 0 und (((((Fit Score plus Archetype Score) plus History Score) plus Comp Score) plus Culture Score) minus Negative Score)"
+      },
+      "ScoreResults.JobListingName": {
+        "table": "ScoreResults",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "Ein Score Result: Job Listing Name — aus dem zugehörigen Job Listing übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Job Listing"
+      },
+      "ScoreResults.SearchRunName": {
+        "table": "ScoreResults",
+        "field": "SearchRunName",
+        "kind": "lookup",
+        "rule": "Ein Score Result: Search Run Name — aus dem zugehörigen Search Run übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Search Run"
+      },
+      "ScoreResults.Company": {
+        "table": "ScoreResults",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "Ein Score Result: Company — aus dem zugehörigen Job Listing übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Company des verknüpften Job Listing"
+      },
+      "Decisions.Name": {
+        "table": "Decisions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Decision: Name wird berechnet als das großgeschriebene Verdict, gefolgt von „: “, gefolgt von die Job Listing Name.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListingName",
+            "label": "job listing name"
+          }
+        ],
+        "structure": null,
+        "plain": "Verdict großgeschrieben, \": \", verbunden mit Job Listing Name"
+      },
+      "Decisions.IsScoringSignal": {
+        "table": "Decisions",
+        "field": "IsScoringSignal",
+        "kind": "formula",
+        "rule": "Eine Decision gilt als ein Scoring Signal, wenn der Verdict „yes“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Is Scoring Signal“ der Decision wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "wahr",
+              "when": {
+                "kind": "leaf",
+                "text": "der Verdict „yes“ ist"
+              }
+            },
+            {
+              "value": "falsch",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Verdict ist \"yes\", dann true(), andernfalls false()"
+      },
+      "Decisions.JobListingName": {
+        "table": "Decisions",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "Eine Decision: Job Listing Name — aus dem zugehörigen Job Listing übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Job Listing"
+      },
+      "Decisions.Company": {
+        "table": "Decisions",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "Eine Decision: Company — aus dem zugehörigen Job Listing übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Company des verknüpften Job Listing"
+      },
+      "Decisions.Board": {
+        "table": "Decisions",
+        "field": "Board",
+        "kind": "lookup",
+        "rule": "Eine Decision: Board ist der Job Board des zugehörigen Job Listing der Decision.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Job Board des verknüpften Job Listing"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "JobBoards": [
+        "Ein Job Board **muss** eine Name und ein Max Pages haben und erfassen, ob es ist enabled und ob es ist ein Headless."
+      ],
+      "SearchUrls": [
+        "Ein Search Url **muss** auf genau einen Job Board verweisen.",
+        "Ein Search Url **muss** eine Name und ein URL haben und erfassen, ob es ist enabled."
+      ],
+      "RoleArchetypes": [
+        "Eine Role Archetype **muss** eine Name und eine Description haben."
+      ],
+      "RubricDimensions": [
+        "Eine Rubric Dimension **muss** eine Name haben."
+      ],
+      "Resumes": [
+        "Eine Resume **muss** eine Name und ein File Path haben."
+      ],
+      "ResumeSections": [
+        "Eine Resume Section **muss** auf genau einen Resume verweisen.",
+        "Eine Resume Section **muss** eine Name; ein Section Order; ein Content; und ein Chroma Doc ID haben."
+      ],
+      "SearchRuns": [
+        "Ein Search Run **muss** auf genau einen Resume verweisen.",
+        "Ein Search Run **muss** eine Name; eine Run Date; ein Archetype Weight; ein Fit Weight; ein History Weight; ein Comp Weight; ein Negative Weight; ein Culture Weight; ein Base Salary; und ein Min Score Threshold haben und erfassen, ob es ist Disqualify on Llm Flag."
+      ],
+      "JobListings": [
+        "Ein Job Listing **muss** auf genau einen Job Board verweisen.",
+        "Ein Job Listing **muss** eine Name; ein External ID; ein Company; ein URL; und ein Full Text haben."
+      ],
+      "ScoreResults": [
+        "Ein Score Result **muss** auf genau einen Job Listing verweisen.",
+        "Ein Score Result **muss** auf genau einen Search Run verweisen.",
+        "Ein Score Result **muss** eine Fit Score; eine Archetype Score; eine History Score; eine Comp Score; eine Negative Score; und eine Culture Score haben und erfassen, ob es ist disqualified."
+      ],
+      "Decisions": [
+        "Eine Decision **muss** auf genau einen Job Listing verweisen.",
+        "Eine Decision **muss** ein Verdict und ein Recorded At haben."
+      ]
+    },
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "JobBoards": "Job Board",
+      "SearchUrls": "Search Url",
+      "RoleArchetypes": "Role Archetype",
+      "RubricDimensions": "Rubric Dimension",
+      "Resumes": "Resume",
+      "ResumeSections": "Resume Section",
+      "SearchRuns": "Search Run",
+      "JobListings": "Job Listing",
+      "ScoreResults": "Score Result",
+      "Decisions": "Decision"
+    }
+  },
+  "es": {
+    "fields": {
+      "JobBoards.JobListings": {
+        "table": "JobBoards",
+        "field": "JobListings",
+        "kind": "rollup",
+        "rule": "Un job board: job listings es el número de job listings relacionados con el job board.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de job listings cuyo job board es job board ID"
+      },
+      "SearchUrls.JobBoardName": {
+        "table": "SearchUrls",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "Un search URL: job board name — tomado del job board vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchUrls",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del job board vinculado"
+      },
+      "Resumes.ResumeSections": {
+        "table": "Resumes",
+        "field": "ResumeSections",
+        "kind": "rollup",
+        "rule": "Un resume: resume sections es el número de resume sections relacionados con el resume.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de resume sections cuyo resume es resume ID"
+      },
+      "Resumes.SearchRuns": {
+        "table": "Resumes",
+        "field": "SearchRuns",
+        "kind": "rollup",
+        "rule": "Un resume: search runs es el número de search runs relacionados con el resume.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de search runs cuyo resume es resume ID"
+      },
+      "ResumeSections.ResumeName": {
+        "table": "ResumeSections",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "Un resume section: resume name — tomado del resume vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del resume vinculado"
+      },
+      "SearchRuns.ResumeName": {
+        "table": "SearchRuns",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "Un search run: resume name — tomado del resume vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del resume vinculado"
+      },
+      "SearchRuns.ScoreResults": {
+        "table": "SearchRuns",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "Un search run: score results es el número de score results relacionados con el search run.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de score results cuyo search run es search run ID"
+      },
+      "JobListings.JobBoardName": {
+        "table": "JobListings",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "Un job listing: job board name — tomado del job board vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del job board vinculado"
+      },
+      "JobListings.ScoreResults": {
+        "table": "JobListings",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "Un job listing: score results es el número de score results relacionados con el job listing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de score results cuyo job listing es job listing ID"
+      },
+      "JobListings.Decisions": {
+        "table": "JobListings",
+        "field": "Decisions",
+        "kind": "rollup",
+        "rule": "Un job listing: decisions es el número de decisions relacionados con el job listing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de decisions cuyo job listing es job listing ID"
+      },
+      "ScoreResults.Name": {
+        "table": "ScoreResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un score result: name se calcula como el job listing name, seguido de « - », seguido de el search run name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListingName",
+            "label": "job listing name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRunName",
+            "label": "search run name"
+          }
+        ],
+        "structure": null,
+        "plain": "Job listing name, \" - \", unido con search run name"
+      },
+      "ScoreResults.FinalScore": {
+        "table": "ScoreResults",
+        "field": "FinalScore",
+        "kind": "formula",
+        "rule": "El campo «final score» del score result se determina según la siguiente prioridad:\n1. 0, si el indicador «disqualified» está activado;\n2. en todos los demás casos, el mayor de 0 y el fit score más el archetype score más el history score más el comp score más el culture score menos el negative score.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "IsDisqualified",
+            "label": "is disqualified"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "FitScore",
+            "label": "fit score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "ArchetypeScore",
+            "label": "archetype score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "HistoryScore",
+            "label": "history score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CompScore",
+            "label": "comp score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CultureScore",
+            "label": "culture score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "NegativeScore",
+            "label": "negative score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «final score» del score result se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «disqualified» está activado"
+              }
+            },
+            {
+              "value": "el mayor de 0 y el fit score más el archetype score más el history score más el comp score más el culture score menos el negative score",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is disqualified, entonces 0, de lo contrario el mayor de 0 y (((((fit score más archetype score) más history score) más comp score) más culture score) menos negative score)"
+      },
+      "ScoreResults.JobListingName": {
+        "table": "ScoreResults",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "Un score result: job listing name — tomado del job listing vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del job listing vinculado"
+      },
+      "ScoreResults.SearchRunName": {
+        "table": "ScoreResults",
+        "field": "SearchRunName",
+        "kind": "lookup",
+        "rule": "Un score result: search run name — tomado del search run vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del search run vinculado"
+      },
+      "ScoreResults.Company": {
+        "table": "ScoreResults",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "Un score result: company — tomado del job listing vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El company del job listing vinculado"
+      },
+      "Decisions.Name": {
+        "table": "Decisions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un decision: name se calcula como el verdict en mayúsculas, seguido de «: », seguido de el job listing name.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListingName",
+            "label": "job listing name"
+          }
+        ],
+        "structure": null,
+        "plain": "Verdict en mayúsculas, \": \", unido con job listing name"
+      },
+      "Decisions.IsScoringSignal": {
+        "table": "Decisions",
+        "field": "IsScoringSignal",
+        "kind": "formula",
+        "rule": "Un decision se considera un scoring signal si el verdict es «yes».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «is scoring signal» del decision se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "verdadero",
+              "when": {
+                "kind": "leaf",
+                "text": "el verdict es «yes»"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si verdict es \"yes\", entonces true(), de lo contrario false()"
+      },
+      "Decisions.JobListingName": {
+        "table": "Decisions",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "Un decision: job listing name — tomado del job listing vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del job listing vinculado"
+      },
+      "Decisions.Company": {
+        "table": "Decisions",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "Un decision: company — tomado del job listing vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El company del job listing vinculado"
+      },
+      "Decisions.Board": {
+        "table": "Decisions",
+        "field": "Board",
+        "kind": "lookup",
+        "rule": "Un decision: board es el job board del job listing vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El job board del job listing vinculado"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "JobBoards": [
+        "Un job board **debe** tener un name y un max pages, y registrar si es enabled y si es headless."
+      ],
+      "SearchUrls": [
+        "Un search URL **debe** referenciar exactamente un job board.",
+        "Un search URL **debe** tener un name y un URL, y registrar si es enabled."
+      ],
+      "RoleArchetypes": [
+        "Un role archetype **debe** tener un name y un description."
+      ],
+      "RubricDimensions": [
+        "Un rubric dimension **debe** tener un name."
+      ],
+      "Resumes": [
+        "Un resume **debe** tener un name y un file path."
+      ],
+      "ResumeSections": [
+        "Un resume section **debe** referenciar exactamente un resume.",
+        "Un resume section **debe** tener un name; un section order; un content; y un chroma doc ID."
+      ],
+      "SearchRuns": [
+        "Un search run **debe** referenciar exactamente un resume.",
+        "Un search run **debe** tener un name; un run date; un archetype weight; un fit weight; un history weight; un comp weight; un negative weight; un culture weight; un base salary; y un min score threshold, y registrar si es disqualify on llm flag."
+      ],
+      "JobListings": [
+        "Un job listing **debe** referenciar exactamente un job board.",
+        "Un job listing **debe** tener un name; un external ID; un company; un URL; y un full text."
+      ],
+      "ScoreResults": [
+        "Un score result **debe** referenciar exactamente un job listing.",
+        "Un score result **debe** referenciar exactamente un search run.",
+        "Un score result **debe** tener un fit score; un archetype score; un history score; un comp score; un negative score; y un culture score, y registrar si es disqualified."
+      ],
+      "Decisions": [
+        "Un decision **debe** referenciar exactamente un job listing.",
+        "Un decision **debe** tener un verdict y un recorded at."
+      ]
+    },
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "JobBoards": "job board",
+      "SearchUrls": "search URL",
+      "RoleArchetypes": "role archetype",
+      "RubricDimensions": "rubric dimension",
+      "Resumes": "resume",
+      "ResumeSections": "resume section",
+      "SearchRuns": "search run",
+      "JobListings": "job listing",
+      "ScoreResults": "score result",
+      "Decisions": "decision"
+    }
+  },
+  "fr": {
+    "fields": {
+      "JobBoards.JobListings": {
+        "table": "JobBoards",
+        "field": "JobListings",
+        "kind": "rollup",
+        "rule": "Un job board : job listings est le nombre de job listings liés à le job board.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des job listings dont job board est job board ID"
+      },
+      "SearchUrls.JobBoardName": {
+        "table": "SearchUrls",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "Un search URL : job board name — repris du job board lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchUrls",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du job board lié"
+      },
+      "Resumes.ResumeSections": {
+        "table": "Resumes",
+        "field": "ResumeSections",
+        "kind": "rollup",
+        "rule": "Un resume : resume sections est le nombre de resume sections liés à le resume.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des resume sections dont resume est resume ID"
+      },
+      "Resumes.SearchRuns": {
+        "table": "Resumes",
+        "field": "SearchRuns",
+        "kind": "rollup",
+        "rule": "Un resume : search runs est le nombre de search runs liés à le resume.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des search runs dont resume est resume ID"
+      },
+      "ResumeSections.ResumeName": {
+        "table": "ResumeSections",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "Une resume section : resume name — repris du resume lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du resume lié"
+      },
+      "SearchRuns.ResumeName": {
+        "table": "SearchRuns",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "Un search run : resume name — repris du resume lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du resume lié"
+      },
+      "SearchRuns.ScoreResults": {
+        "table": "SearchRuns",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "Un search run : score results est le nombre de score results liés à le search run.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des score results dont search run est search run ID"
+      },
+      "JobListings.JobBoardName": {
+        "table": "JobListings",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "Un job listing : job board name — repris du job board lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du job board lié"
+      },
+      "JobListings.ScoreResults": {
+        "table": "JobListings",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "Un job listing : score results est le nombre de score results liés à le job listing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des score results dont job listing est job listing ID"
+      },
+      "JobListings.Decisions": {
+        "table": "JobListings",
+        "field": "Decisions",
+        "kind": "rollup",
+        "rule": "Un job listing : decisions est le nombre de decisions liés à le job listing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des decisions dont job listing est job listing ID"
+      },
+      "ScoreResults.Name": {
+        "table": "ScoreResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un score result : name est calculé comme le job listing name, suivi de « - », suivi de le search run name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListingName",
+            "label": "job listing name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRunName",
+            "label": "search run name"
+          }
+        ],
+        "structure": null,
+        "plain": "Job listing name, \" - \", joint à search run name"
+      },
+      "ScoreResults.FinalScore": {
+        "table": "ScoreResults",
+        "field": "FinalScore",
+        "kind": "formula",
+        "rule": "Le champ « final score » du score result est déterminé selon la priorité suivante :\n1. 0, si l'indicateur « disqualified » est activé ;\n2. dans tous les autres cas, le plus grand de 0 et le fit score plus l'archetype score plus l'history score plus le comp score plus le culture score moins le negative score.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "IsDisqualified",
+            "label": "is disqualified"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "FitScore",
+            "label": "fit score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "ArchetypeScore",
+            "label": "archetype score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "HistoryScore",
+            "label": "history score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CompScore",
+            "label": "comp score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CultureScore",
+            "label": "culture score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "NegativeScore",
+            "label": "negative score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « final score » du score result est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « disqualified » est activé"
+              }
+            },
+            {
+              "value": "le plus grand de 0 et le fit score plus l'archetype score plus l'history score plus le comp score plus le culture score moins le negative score",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is disqualified, alors 0, sinon le plus grand de 0 et (((((fit score plus archetype score) plus history score) plus comp score) plus culture score) moins negative score)"
+      },
+      "ScoreResults.JobListingName": {
+        "table": "ScoreResults",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "Un score result : job listing name — repris du job listing lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du job listing lié"
+      },
+      "ScoreResults.SearchRunName": {
+        "table": "ScoreResults",
+        "field": "SearchRunName",
+        "kind": "lookup",
+        "rule": "Un score result : search run name — repris du search run lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du search run lié"
+      },
+      "ScoreResults.Company": {
+        "table": "ScoreResults",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "Un score result : company — repris du job listing lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le company du job listing lié"
+      },
+      "Decisions.Name": {
+        "table": "Decisions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Une decision : name est calculé comme le verdict en majuscules, suivi de « : », suivi de le job listing name.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListingName",
+            "label": "job listing name"
+          }
+        ],
+        "structure": null,
+        "plain": "Verdict en majuscules, \": \", joint à job listing name"
+      },
+      "Decisions.IsScoringSignal": {
+        "table": "Decisions",
+        "field": "IsScoringSignal",
+        "kind": "formula",
+        "rule": "Une decision est considéré comme un scoring signal si le verdict est « yes ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « is scoring signal » de la decision est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "vrai",
+              "when": {
+                "kind": "leaf",
+                "text": "le verdict est « yes »"
+              }
+            },
+            {
+              "value": "faux",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si verdict est \"yes\", alors true(), sinon false()"
+      },
+      "Decisions.JobListingName": {
+        "table": "Decisions",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "Une decision : job listing name — repris du job listing lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du job listing lié"
+      },
+      "Decisions.Company": {
+        "table": "Decisions",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "Une decision : company — repris du job listing lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le company du job listing lié"
+      },
+      "Decisions.Board": {
+        "table": "Decisions",
+        "field": "Board",
+        "kind": "lookup",
+        "rule": "Une decision : board est le job board du job listing lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le job board du job listing lié"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "JobBoards": [
+        "Un job board **doit** avoir un name et un max pages, et consigner si il est enabled et si il est headless."
+      ],
+      "SearchUrls": [
+        "Un search URL **doit** référencer exactement un job board.",
+        "Un search URL **doit** avoir un name et un URL, et consigner si il est enabled."
+      ],
+      "RoleArchetypes": [
+        "Un role archetype **doit** avoir un name et une description."
+      ],
+      "RubricDimensions": [
+        "Une rubric dimension **doit** avoir un name."
+      ],
+      "Resumes": [
+        "Un resume **doit** avoir un name et un file path."
+      ],
+      "ResumeSections": [
+        "Une resume section **doit** référencer exactement un resume.",
+        "Une resume section **doit** avoir un name; un section order; un content; et un chroma doc ID."
+      ],
+      "SearchRuns": [
+        "Un search run **doit** référencer exactement un resume.",
+        "Un search run **doit** avoir un name; un run date; un archetype weight; un fit weight; un history weight; un comp weight; un negative weight; un culture weight; un base salary; et un min score threshold, et consigner si il est disqualify on llm flag."
+      ],
+      "JobListings": [
+        "Un job listing **doit** référencer exactement un job board.",
+        "Un job listing **doit** avoir un name; un external ID; un company; un URL; et un full text."
+      ],
+      "ScoreResults": [
+        "Un score result **doit** référencer exactement un job listing.",
+        "Un score result **doit** référencer exactement un search run.",
+        "Un score result **doit** avoir un fit score; un archetype score; un history score; un comp score; un negative score; et un culture score, et consigner si il est disqualified."
+      ],
+      "Decisions": [
+        "Une decision **doit** référencer exactement un job listing.",
+        "Une decision **doit** avoir un verdict et un recorded at."
+      ]
+    },
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "JobBoards": "job board",
+      "SearchUrls": "search URL",
+      "RoleArchetypes": "role archetype",
+      "RubricDimensions": "rubric dimension",
+      "Resumes": "resume",
+      "ResumeSections": "resume section",
+      "SearchRuns": "search run",
+      "JobListings": "job listing",
+      "ScoreResults": "score result",
+      "Decisions": "decision"
+    }
+  },
+  "hi": {
+    "fields": {
+      "JobBoards.JobListings": {
+        "table": "JobBoards",
+        "field": "JobListings",
+        "kind": "rollup",
+        "rule": "job board का “job listings” job board से संबंधित “job listings” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “job listings” की संख्या, जिनका job board job board ID है"
+      },
+      "SearchUrls.JobBoardName": {
+        "table": "SearchUrls",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "search URL का “job board name” — लिंक किए गए “job board” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchUrls",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “job board” का name"
+      },
+      "Resumes.ResumeSections": {
+        "table": "Resumes",
+        "field": "ResumeSections",
+        "kind": "rollup",
+        "rule": "resume का “resume sections” resume से संबंधित “resume sections” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “resume sections” की संख्या, जिनका resume resume ID है"
+      },
+      "Resumes.SearchRuns": {
+        "table": "Resumes",
+        "field": "SearchRuns",
+        "kind": "rollup",
+        "rule": "resume का “search runs” resume से संबंधित “search runs” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “search runs” की संख्या, जिनका resume resume ID है"
+      },
+      "ResumeSections.ResumeName": {
+        "table": "ResumeSections",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "resume section का “resume name” — लिंक किए गए “resume” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “resume” का name"
+      },
+      "SearchRuns.ResumeName": {
+        "table": "SearchRuns",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "search run का “resume name” — लिंक किए गए “resume” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “resume” का name"
+      },
+      "SearchRuns.ScoreResults": {
+        "table": "SearchRuns",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "search run का “score results” search run से संबंधित “score results” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “score results” की संख्या, जिनका search run search run ID है"
+      },
+      "JobListings.JobBoardName": {
+        "table": "JobListings",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "job listing का “job board name” — लिंक किए गए “job board” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “job board” का name"
+      },
+      "JobListings.ScoreResults": {
+        "table": "JobListings",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "job listing का “score results” job listing से संबंधित “score results” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “score results” की संख्या, जिनका job listing job listing ID है"
+      },
+      "JobListings.Decisions": {
+        "table": "JobListings",
+        "field": "Decisions",
+        "kind": "rollup",
+        "rule": "job listing का “decisions” job listing से संबंधित “decisions” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “decisions” की संख्या, जिनका job listing job listing ID है"
+      },
+      "ScoreResults.Name": {
+        "table": "ScoreResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "score result का “name” job listing name, उसके बाद “ - ”, उसके बाद search run name के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListingName",
+            "label": "job listing name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRunName",
+            "label": "search run name"
+          }
+        ],
+        "structure": null,
+        "plain": "Job listing name, \" - \" से जुड़ा हुआ search run name"
+      },
+      "ScoreResults.FinalScore": {
+        "table": "ScoreResults",
+        "field": "FinalScore",
+        "kind": "formula",
+        "rule": "Score result का “final score” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. 0, यदि “disqualified” ध्वज लगा हुआ है;\n2. अन्य सभी स्थितियों में, 0 और fit score जोड़ archetype score जोड़ history score जोड़ comp score जोड़ culture score घटा negative score में से अधिकतम।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "IsDisqualified",
+            "label": "is disqualified"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "FitScore",
+            "label": "fit score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "ArchetypeScore",
+            "label": "archetype score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "HistoryScore",
+            "label": "history score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CompScore",
+            "label": "comp score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CultureScore",
+            "label": "culture score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "NegativeScore",
+            "label": "negative score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Score result का “final score” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "“disqualified” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "0 और fit score जोड़ archetype score जोड़ history score जोड़ comp score जोड़ culture score घटा negative score में से अधिकतम",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि is disqualified, तो 0, अन्यथा 0 और (((((fit score जोड़ archetype score) जोड़ history score) जोड़ comp score) जोड़ culture score) घटा negative score) में से अधिकतम"
+      },
+      "ScoreResults.JobListingName": {
+        "table": "ScoreResults",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "score result का “job listing name” — लिंक किए गए “job listing” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “job listing” का name"
+      },
+      "ScoreResults.SearchRunName": {
+        "table": "ScoreResults",
+        "field": "SearchRunName",
+        "kind": "lookup",
+        "rule": "score result का “search run name” — लिंक किए गए “search run” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “search run” का name"
+      },
+      "ScoreResults.Company": {
+        "table": "ScoreResults",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "score result का “company” — लिंक किए गए “job listing” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “job listing” का company"
+      },
+      "Decisions.Name": {
+        "table": "Decisions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "decision का “name” verdict बड़े अक्षरों में, उसके बाद “: ”, उसके बाद job listing name के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListingName",
+            "label": "job listing name"
+          }
+        ],
+        "structure": null,
+        "plain": "Verdict बड़े अक्षरों में, \": \" से जुड़ा हुआ job listing name"
+      },
+      "Decisions.IsScoringSignal": {
+        "table": "Decisions",
+        "field": "IsScoringSignal",
+        "kind": "formula",
+        "rule": "यदि verdict “yes” है, तो decision “scoring signal” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Decision का “is scoring signal” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "सत्य",
+              "when": {
+                "kind": "leaf",
+                "text": "verdict “yes” है"
+              }
+            },
+            {
+              "value": "असत्य",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि verdict \"yes\" है, तो true(), अन्यथा false()"
+      },
+      "Decisions.JobListingName": {
+        "table": "Decisions",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "decision का “job listing name” — लिंक किए गए “job listing” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “job listing” का name"
+      },
+      "Decisions.Company": {
+        "table": "Decisions",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "decision का “company” — लिंक किए गए “job listing” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “job listing” का company"
+      },
+      "Decisions.Board": {
+        "table": "Decisions",
+        "field": "Board",
+        "kind": "lookup",
+        "rule": "decision का “board” लिंक किए गए “job listing” का “job board” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “job listing” का job board"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "JobBoards": [
+        "job board को name और max pages रखना, तथा यह कि वह “enabled” है या नहीं और यह कि वह “headless” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ],
+      "SearchUrls": [
+        "search URL को ठीक एक “job board” का संदर्भ देना **अनिवार्य** है।",
+        "search URL को name और URL रखना, तथा यह कि वह “enabled” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ],
+      "RoleArchetypes": [
+        "role archetype को name और description रखना **अनिवार्य** है।"
+      ],
+      "RubricDimensions": [
+        "rubric dimension को name रखना **अनिवार्य** है।"
+      ],
+      "Resumes": [
+        "resume को name और file path रखना **अनिवार्य** है।"
+      ],
+      "ResumeSections": [
+        "resume section को ठीक एक “resume” का संदर्भ देना **अनिवार्य** है।",
+        "resume section को name, section order, content और chroma doc ID रखना **अनिवार्य** है।"
+      ],
+      "SearchRuns": [
+        "search run को ठीक एक “resume” का संदर्भ देना **अनिवार्य** है।",
+        "search run को name, run date, archetype weight, fit weight, history weight, comp weight, negative weight, culture weight, base salary और min score threshold रखना, तथा यह कि वह “disqualify on llm flag” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ],
+      "JobListings": [
+        "job listing को ठीक एक “job board” का संदर्भ देना **अनिवार्य** है।",
+        "job listing को name, external ID, company, URL और full text रखना **अनिवार्य** है।"
+      ],
+      "ScoreResults": [
+        "score result को ठीक एक “job listing” का संदर्भ देना **अनिवार्य** है।",
+        "score result को ठीक एक “search run” का संदर्भ देना **अनिवार्य** है।",
+        "score result को fit score, archetype score, history score, comp score, negative score और culture score रखना, तथा यह कि वह “disqualified” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ],
+      "Decisions": [
+        "decision को ठीक एक “job listing” का संदर्भ देना **अनिवार्य** है।",
+        "decision को verdict और recorded at रखना **अनिवार्य** है।"
+      ]
+    },
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "JobBoards": "job board",
+      "SearchUrls": "search URL",
+      "RoleArchetypes": "role archetype",
+      "RubricDimensions": "rubric dimension",
+      "Resumes": "resume",
+      "ResumeSections": "resume section",
+      "SearchRuns": "search run",
+      "JobListings": "job listing",
+      "ScoreResults": "score result",
+      "Decisions": "decision"
+    }
+  },
+  "id": {
+    "fields": {
+      "JobBoards.JobListings": {
+        "table": "JobBoards",
+        "field": "JobListings",
+        "kind": "rollup",
+        "rule": "Untuk setiap job board, job listings adalah jumlah job listings yang terkait dengan job board tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah job listings dengan syarat job board adalah job board ID"
+      },
+      "SearchUrls.JobBoardName": {
+        "table": "SearchUrls",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "Untuk setiap search URL, job board name diambil dari job board yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchUrls",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari job board yang tertaut"
+      },
+      "Resumes.ResumeSections": {
+        "table": "Resumes",
+        "field": "ResumeSections",
+        "kind": "rollup",
+        "rule": "Untuk setiap resume, resume sections adalah jumlah resume sections yang terkait dengan resume tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah resume sections dengan syarat resume adalah resume ID"
+      },
+      "Resumes.SearchRuns": {
+        "table": "Resumes",
+        "field": "SearchRuns",
+        "kind": "rollup",
+        "rule": "Untuk setiap resume, search runs adalah jumlah search runs yang terkait dengan resume tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah search runs dengan syarat resume adalah resume ID"
+      },
+      "ResumeSections.ResumeName": {
+        "table": "ResumeSections",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "Untuk setiap resume section, resume name diambil dari resume yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari resume yang tertaut"
+      },
+      "SearchRuns.ResumeName": {
+        "table": "SearchRuns",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "Untuk setiap search run, resume name diambil dari resume yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari resume yang tertaut"
+      },
+      "SearchRuns.ScoreResults": {
+        "table": "SearchRuns",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "Untuk setiap search run, score results adalah jumlah score results yang terkait dengan search run tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah score results dengan syarat search run adalah search run ID"
+      },
+      "JobListings.JobBoardName": {
+        "table": "JobListings",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "Untuk setiap job listing, job board name diambil dari job board yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari job board yang tertaut"
+      },
+      "JobListings.ScoreResults": {
+        "table": "JobListings",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "Untuk setiap job listing, score results adalah jumlah score results yang terkait dengan job listing tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah score results dengan syarat job listing adalah job listing ID"
+      },
+      "JobListings.Decisions": {
+        "table": "JobListings",
+        "field": "Decisions",
+        "kind": "rollup",
+        "rule": "Untuk setiap job listing, decisions adalah jumlah decisions yang terkait dengan job listing tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah decisions dengan syarat job listing adalah job listing ID"
+      },
+      "ScoreResults.Name": {
+        "table": "ScoreResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap score result, name dihitung sebagai job listing name, diikuti “ - ”, diikuti search run name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListingName",
+            "label": "job listing name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRunName",
+            "label": "search run name"
+          }
+        ],
+        "structure": null,
+        "plain": "Job listing name, \" - \", digabung dengan search run name"
+      },
+      "ScoreResults.FinalScore": {
+        "table": "ScoreResults",
+        "field": "FinalScore",
+        "kind": "formula",
+        "rule": "Untuk setiap score result, final score ditentukan menurut urutan prioritas berikut:\n1. 0, jika penanda “disqualified” aktif;\n2. dalam semua kasus lainnya, nilai terbesar dari 0 dan fit score ditambah archetype score ditambah history score ditambah comp score ditambah culture score dikurangi negative score.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "IsDisqualified",
+            "label": "is disqualified"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "FitScore",
+            "label": "fit score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "ArchetypeScore",
+            "label": "archetype score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "HistoryScore",
+            "label": "history score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CompScore",
+            "label": "comp score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CultureScore",
+            "label": "culture score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "NegativeScore",
+            "label": "negative score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap score result, final score ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “disqualified” aktif"
+              }
+            },
+            {
+              "value": "nilai terbesar dari 0 dan fit score ditambah archetype score ditambah history score ditambah comp score ditambah culture score dikurangi negative score",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika is disqualified maka 0, selain itu nilai terbesar dari 0 dan (((((fit score ditambah archetype score) ditambah history score) ditambah comp score) ditambah culture score) dikurangi negative score)"
+      },
+      "ScoreResults.JobListingName": {
+        "table": "ScoreResults",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "Untuk setiap score result, job listing name diambil dari job listing yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari job listing yang tertaut"
+      },
+      "ScoreResults.SearchRunName": {
+        "table": "ScoreResults",
+        "field": "SearchRunName",
+        "kind": "lookup",
+        "rule": "Untuk setiap score result, search run name diambil dari search run yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari search run yang tertaut"
+      },
+      "ScoreResults.Company": {
+        "table": "ScoreResults",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "Untuk setiap score result, company diambil dari job listing yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Company dari job listing yang tertaut"
+      },
+      "Decisions.Name": {
+        "table": "Decisions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap decision, name dihitung sebagai verdict dalam huruf kapital, diikuti “: ”, diikuti job listing name.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListingName",
+            "label": "job listing name"
+          }
+        ],
+        "structure": null,
+        "plain": "Verdict dalam huruf kapital, \": \", digabung dengan job listing name"
+      },
+      "Decisions.IsScoringSignal": {
+        "table": "Decisions",
+        "field": "IsScoringSignal",
+        "kind": "formula",
+        "rule": "Setiap decision dianggap “scoring signal” jika verdict adalah “yes”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap decision, is scoring signal ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "benar",
+              "when": {
+                "kind": "leaf",
+                "text": "verdict adalah “yes”"
+              }
+            },
+            {
+              "value": "salah",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika verdict adalah \"yes\" maka true(), selain itu false()"
+      },
+      "Decisions.JobListingName": {
+        "table": "Decisions",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "Untuk setiap decision, job listing name diambil dari job listing yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari job listing yang tertaut"
+      },
+      "Decisions.Company": {
+        "table": "Decisions",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "Untuk setiap decision, company diambil dari job listing yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Company dari job listing yang tertaut"
+      },
+      "Decisions.Board": {
+        "table": "Decisions",
+        "field": "Board",
+        "kind": "lookup",
+        "rule": "Untuk setiap decision, board adalah job board dari job listing yang tertaut pada decision tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Job board dari job listing yang tertaut"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "JobBoards": [
+        "Setiap job board **harus** memiliki name dan max pages, serta menyatakan apakah tergolong “enabled” dan apakah tergolong “headless”."
+      ],
+      "SearchUrls": [
+        "Setiap search URL **harus** merujuk pada tepat satu job board.",
+        "Setiap search URL **harus** memiliki name dan URL, serta menyatakan apakah tergolong “enabled”."
+      ],
+      "RoleArchetypes": [
+        "Setiap role archetype **harus** memiliki name dan description."
+      ],
+      "RubricDimensions": [
+        "Setiap rubric dimension **harus** memiliki name."
+      ],
+      "Resumes": [
+        "Setiap resume **harus** memiliki name dan file path."
+      ],
+      "ResumeSections": [
+        "Setiap resume section **harus** merujuk pada tepat satu resume.",
+        "Setiap resume section **harus** memiliki name, section order, content, dan chroma doc ID."
+      ],
+      "SearchRuns": [
+        "Setiap search run **harus** merujuk pada tepat satu resume.",
+        "Setiap search run **harus** memiliki name, run date, archetype weight, fit weight, history weight, comp weight, negative weight, culture weight, base salary, dan min score threshold, serta menyatakan apakah tergolong “disqualify on llm flag”."
+      ],
+      "JobListings": [
+        "Setiap job listing **harus** merujuk pada tepat satu job board.",
+        "Setiap job listing **harus** memiliki name, external ID, company, URL, dan full text."
+      ],
+      "ScoreResults": [
+        "Setiap score result **harus** merujuk pada tepat satu job listing.",
+        "Setiap score result **harus** merujuk pada tepat satu search run.",
+        "Setiap score result **harus** memiliki fit score, archetype score, history score, comp score, negative score, dan culture score, serta menyatakan apakah tergolong “disqualified”."
+      ],
+      "Decisions": [
+        "Setiap decision **harus** merujuk pada tepat satu job listing.",
+        "Setiap decision **harus** memiliki verdict dan recorded at."
+      ]
+    },
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "JobBoards": "job board",
+      "SearchUrls": "search URL",
+      "RoleArchetypes": "role archetype",
+      "RubricDimensions": "rubric dimension",
+      "Resumes": "resume",
+      "ResumeSections": "resume section",
+      "SearchRuns": "search run",
+      "JobListings": "job listing",
+      "ScoreResults": "score result",
+      "Decisions": "decision"
+    }
+  },
+  "it": {
+    "fields": {
+      "JobBoards.JobListings": {
+        "table": "JobBoards",
+        "field": "JobListings",
+        "kind": "rollup",
+        "rule": "Un job board: job listings è il numero di job listings collegati a il job board.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei job listings il cui job board è job board ID"
+      },
+      "SearchUrls.JobBoardName": {
+        "table": "SearchUrls",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "Un search URL: job board name — ripreso dal job board collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchUrls",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del job board collegato"
+      },
+      "Resumes.ResumeSections": {
+        "table": "Resumes",
+        "field": "ResumeSections",
+        "kind": "rollup",
+        "rule": "Un resume: resume sections è il numero di resume sections collegati a il resume.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei resume sections il cui resume è resume ID"
+      },
+      "Resumes.SearchRuns": {
+        "table": "Resumes",
+        "field": "SearchRuns",
+        "kind": "rollup",
+        "rule": "Un resume: search runs è il numero di search runs collegati a il resume.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei search runs il cui resume è resume ID"
+      },
+      "ResumeSections.ResumeName": {
+        "table": "ResumeSections",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "Un resume section: resume name — ripreso dal resume collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del resume collegato"
+      },
+      "SearchRuns.ResumeName": {
+        "table": "SearchRuns",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "Un search run: resume name — ripreso dal resume collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del resume collegato"
+      },
+      "SearchRuns.ScoreResults": {
+        "table": "SearchRuns",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "Un search run: score results è il numero di score results collegati a il search run.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei score results il cui search run è search run ID"
+      },
+      "JobListings.JobBoardName": {
+        "table": "JobListings",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "Un job listing: job board name — ripreso dal job board collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del job board collegato"
+      },
+      "JobListings.ScoreResults": {
+        "table": "JobListings",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "Un job listing: score results è il numero di score results collegati a il job listing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei score results il cui job listing è job listing ID"
+      },
+      "JobListings.Decisions": {
+        "table": "JobListings",
+        "field": "Decisions",
+        "kind": "rollup",
+        "rule": "Un job listing: decisions è il numero di decisions collegati a il job listing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei decisions il cui job listing è job listing ID"
+      },
+      "ScoreResults.Name": {
+        "table": "ScoreResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un score result: name è calcolato come il job listing name, seguito da « - », seguito da il search run name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListingName",
+            "label": "job listing name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRunName",
+            "label": "search run name"
+          }
+        ],
+        "structure": null,
+        "plain": "Job listing name, \" - \", unito a search run name"
+      },
+      "ScoreResults.FinalScore": {
+        "table": "ScoreResults",
+        "field": "FinalScore",
+        "kind": "formula",
+        "rule": "Il campo “final score” del score result è determinato secondo la seguente priorità:\n1. 0, se l'indicatore “disqualified” è attivo;\n2. in tutti gli altri casi, il maggiore tra 0 e il fit score più l'archetype score più il history score più il comp score più il culture score meno il negative score.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "IsDisqualified",
+            "label": "is disqualified"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "FitScore",
+            "label": "fit score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "ArchetypeScore",
+            "label": "archetype score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "HistoryScore",
+            "label": "history score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CompScore",
+            "label": "comp score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CultureScore",
+            "label": "culture score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "NegativeScore",
+            "label": "negative score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “final score” del score result è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “disqualified” è attivo"
+              }
+            },
+            {
+              "value": "il maggiore tra 0 e il fit score più l'archetype score più il history score più il comp score più il culture score meno il negative score",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is disqualified, allora 0, altrimenti il maggiore tra 0 e (((((fit score più archetype score) più history score) più comp score) più culture score) meno negative score)"
+      },
+      "ScoreResults.JobListingName": {
+        "table": "ScoreResults",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "Un score result: job listing name — ripreso dal job listing collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del job listing collegato"
+      },
+      "ScoreResults.SearchRunName": {
+        "table": "ScoreResults",
+        "field": "SearchRunName",
+        "kind": "lookup",
+        "rule": "Un score result: search run name — ripreso dal search run collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del search run collegato"
+      },
+      "ScoreResults.Company": {
+        "table": "ScoreResults",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "Un score result: company — ripreso dal job listing collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il company del job listing collegato"
+      },
+      "Decisions.Name": {
+        "table": "Decisions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un decision: name è calcolato come il verdict in maiuscolo, seguito da «: », seguito da il job listing name.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListingName",
+            "label": "job listing name"
+          }
+        ],
+        "structure": null,
+        "plain": "Verdict in maiuscolo, \": \", unito a job listing name"
+      },
+      "Decisions.IsScoringSignal": {
+        "table": "Decisions",
+        "field": "IsScoringSignal",
+        "kind": "formula",
+        "rule": "Un decision è considerato un scoring signal se il verdict è «yes».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “is scoring signal” del decision è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "vero",
+              "when": {
+                "kind": "leaf",
+                "text": "il verdict è «yes»"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se verdict è \"yes\", allora true(), altrimenti false()"
+      },
+      "Decisions.JobListingName": {
+        "table": "Decisions",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "Un decision: job listing name — ripreso dal job listing collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del job listing collegato"
+      },
+      "Decisions.Company": {
+        "table": "Decisions",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "Un decision: company — ripreso dal job listing collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il company del job listing collegato"
+      },
+      "Decisions.Board": {
+        "table": "Decisions",
+        "field": "Board",
+        "kind": "lookup",
+        "rule": "Un decision: board è il job board del job listing collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il job board del job listing collegato"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "JobBoards": [
+        "Un job board **deve** avere un name e un max pages, e registrare se è enabled e se è headless."
+      ],
+      "SearchUrls": [
+        "Un search URL **deve** referenziare esattamente un job board.",
+        "Un search URL **deve** avere un name e un URL, e registrare se è enabled."
+      ],
+      "RoleArchetypes": [
+        "Un role archetype **deve** avere un name e un description."
+      ],
+      "RubricDimensions": [
+        "Un rubric dimension **deve** avere un name."
+      ],
+      "Resumes": [
+        "Un resume **deve** avere un name e un file path."
+      ],
+      "ResumeSections": [
+        "Un resume section **deve** referenziare esattamente un resume.",
+        "Un resume section **deve** avere un name; un section order; un content; e un chroma doc ID."
+      ],
+      "SearchRuns": [
+        "Un search run **deve** referenziare esattamente un resume.",
+        "Un search run **deve** avere un name; un run date; un archetype weight; un fit weight; un history weight; un comp weight; un negative weight; un culture weight; un base salary; e un min score threshold, e registrare se è disqualify on llm flag."
+      ],
+      "JobListings": [
+        "Un job listing **deve** referenziare esattamente un job board.",
+        "Un job listing **deve** avere un name; un external ID; un company; un URL; e un full text."
+      ],
+      "ScoreResults": [
+        "Un score result **deve** referenziare esattamente un job listing.",
+        "Un score result **deve** referenziare esattamente un search run.",
+        "Un score result **deve** avere un fit score; un archetype score; un history score; un comp score; un negative score; e un culture score, e registrare se è disqualified."
+      ],
+      "Decisions": [
+        "Un decision **deve** referenziare esattamente un job listing.",
+        "Un decision **deve** avere un verdict e un recorded at."
+      ]
+    },
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "JobBoards": "job board",
+      "SearchUrls": "search URL",
+      "RoleArchetypes": "role archetype",
+      "RubricDimensions": "rubric dimension",
+      "Resumes": "resume",
+      "ResumeSections": "resume section",
+      "SearchRuns": "search run",
+      "JobListings": "job listing",
+      "ScoreResults": "score result",
+      "Decisions": "decision"
+    }
+  },
+  "ja": {
+    "fields": {
+      "JobBoards.JobListings": {
+        "table": "JobBoards",
+        "field": "JobListings",
+        "kind": "rollup",
+        "rule": "job boardの「job listings」は job boardに関連する「job listings」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Job board が job board ID である「job listings」の件数"
+      },
+      "SearchUrls.JobBoardName": {
+        "table": "SearchUrls",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "search URLの「job board name」— リンクされた「job board」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchUrls",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「job board」の name"
+      },
+      "Resumes.ResumeSections": {
+        "table": "Resumes",
+        "field": "ResumeSections",
+        "kind": "rollup",
+        "rule": "resumeの「resume sections」は resumeに関連する「resume sections」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Resume が resume ID である「resume sections」の件数"
+      },
+      "Resumes.SearchRuns": {
+        "table": "Resumes",
+        "field": "SearchRuns",
+        "kind": "rollup",
+        "rule": "resumeの「search runs」は resumeに関連する「search runs」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Resume が resume ID である「search runs」の件数"
+      },
+      "ResumeSections.ResumeName": {
+        "table": "ResumeSections",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "resume sectionの「resume name」— リンクされた「resume」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「resume」の name"
+      },
+      "SearchRuns.ResumeName": {
+        "table": "SearchRuns",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "search runの「resume name」— リンクされた「resume」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「resume」の name"
+      },
+      "SearchRuns.ScoreResults": {
+        "table": "SearchRuns",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "search runの「score results」は search runに関連する「score results」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Search run が search run ID である「score results」の件数"
+      },
+      "JobListings.JobBoardName": {
+        "table": "JobListings",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "job listingの「job board name」— リンクされた「job board」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「job board」の name"
+      },
+      "JobListings.ScoreResults": {
+        "table": "JobListings",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "job listingの「score results」は job listingに関連する「score results」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Job listing が job listing ID である「score results」の件数"
+      },
+      "JobListings.Decisions": {
+        "table": "JobListings",
+        "field": "Decisions",
+        "kind": "rollup",
+        "rule": "job listingの「decisions」は job listingに関連する「decisions」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Job listing が job listing ID である「decisions」の件数"
+      },
+      "ScoreResults.Name": {
+        "table": "ScoreResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "score resultの「name」は job listing name、続いて 「 - 」、続いて search run name として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListingName",
+            "label": "job listing name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRunName",
+            "label": "search run name"
+          }
+        ],
+        "structure": null,
+        "plain": "Job listing name、\" - \"、と連結してsearch run name"
+      },
+      "ScoreResults.FinalScore": {
+        "table": "ScoreResults",
+        "field": "FinalScore",
+        "kind": "formula",
+        "rule": "Score resultの「final score」は、次の優先順位で決まります:\n1. フラグ「disqualified」が設定されている場合は 0;\n2. それ以外の場合は 0およびfit score たす archetype score たす history score たす comp score たす culture score ひく negative score のうち最大のもの。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "IsDisqualified",
+            "label": "is disqualified"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "FitScore",
+            "label": "fit score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "ArchetypeScore",
+            "label": "archetype score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "HistoryScore",
+            "label": "history score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CompScore",
+            "label": "comp score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CultureScore",
+            "label": "culture score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "NegativeScore",
+            "label": "negative score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Score resultの「final score」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「disqualified」が設定されている"
+              }
+            },
+            {
+              "value": "0およびfit score たす archetype score たす history score たす comp score たす culture score ひく negative score のうち最大のもの",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is disqualifiedなら 0、そうでなければ 0および(((((fit score たす archetype score) たす history score) たす comp score) たす culture score) ひく negative score) のうち最大"
+      },
+      "ScoreResults.JobListingName": {
+        "table": "ScoreResults",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "score resultの「job listing name」— リンクされた「job listing」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「job listing」の name"
+      },
+      "ScoreResults.SearchRunName": {
+        "table": "ScoreResults",
+        "field": "SearchRunName",
+        "kind": "lookup",
+        "rule": "score resultの「search run name」— リンクされた「search run」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「search run」の name"
+      },
+      "ScoreResults.Company": {
+        "table": "ScoreResults",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "score resultの「company」— リンクされた「job listing」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「job listing」の company"
+      },
+      "Decisions.Name": {
+        "table": "Decisions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "decisionの「name」は verdict を大文字にしたもの、続いて 「: 」、続いて job listing name として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListingName",
+            "label": "job listing name"
+          }
+        ],
+        "structure": null,
+        "plain": "Verdict を大文字にしたもの、\": \"、と連結してjob listing name"
+      },
+      "Decisions.IsScoringSignal": {
+        "table": "Decisions",
+        "field": "IsScoringSignal",
+        "kind": "formula",
+        "rule": "verdict が 「yes」 である場合、decisionは「Scoring Signal」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Decisionの「is scoring signal」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "verdict が 「yes」 である"
+              }
+            },
+            {
+              "value": "偽",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Verdict は \"yes\"なら true()、そうでなければ false()"
+      },
+      "Decisions.JobListingName": {
+        "table": "Decisions",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "decisionの「job listing name」— リンクされた「job listing」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「job listing」の name"
+      },
+      "Decisions.Company": {
+        "table": "Decisions",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "decisionの「company」— リンクされた「job listing」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「job listing」の company"
+      },
+      "Decisions.Board": {
+        "table": "Decisions",
+        "field": "Board",
+        "kind": "lookup",
+        "rule": "decisionの「board」は、リンクされた「job listing」の「job board」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「job listing」の job board"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "JobBoards": [
+        "job boardは nameおよびmax pages を持た、かつ 「Enabled」であるかどうかおよび「Headless」であるかどうかを記録し**なければなりません**。"
+      ],
+      "SearchUrls": [
+        "search URLは「job board」をちょうど 1 件参照し**なければなりません**。",
+        "search URLは nameおよびURL を持た、かつ 「Enabled」であるかどうかを記録し**なければなりません**。"
+      ],
+      "RoleArchetypes": [
+        "role archetypeは nameおよびdescription を持た**なければなりません**。"
+      ],
+      "RubricDimensions": [
+        "rubric dimensionは name を持た**なければなりません**。"
+      ],
+      "Resumes": [
+        "resumeは nameおよびfile path を持た**なければなりません**。"
+      ],
+      "ResumeSections": [
+        "resume sectionは「resume」をちょうど 1 件参照し**なければなりません**。",
+        "resume sectionは name、section order、content、およびchroma doc ID を持た**なければなりません**。"
+      ],
+      "SearchRuns": [
+        "search runは「resume」をちょうど 1 件参照し**なければなりません**。",
+        "search runは name、run date、archetype weight、fit weight、history weight、comp weight、negative weight、culture weight、base salary、およびmin score threshold を持た、かつ 「Disqualify on Llm Flag」であるかどうかを記録し**なければなりません**。"
+      ],
+      "JobListings": [
+        "job listingは「job board」をちょうど 1 件参照し**なければなりません**。",
+        "job listingは name、external ID、company、URL、およびfull text を持た**なければなりません**。"
+      ],
+      "ScoreResults": [
+        "score resultは「job listing」をちょうど 1 件参照し**なければなりません**。",
+        "score resultは「search run」をちょうど 1 件参照し**なければなりません**。",
+        "score resultは fit score、archetype score、history score、comp score、negative score、およびculture score を持た、かつ 「Disqualified」であるかどうかを記録し**なければなりません**。"
+      ],
+      "Decisions": [
+        "decisionは「job listing」をちょうど 1 件参照し**なければなりません**。",
+        "decisionは verdictおよびrecorded at を持た**なければなりません**。"
+      ]
+    },
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "JobBoards": "job board",
+      "SearchUrls": "search URL",
+      "RoleArchetypes": "role archetype",
+      "RubricDimensions": "rubric dimension",
+      "Resumes": "resume",
+      "ResumeSections": "resume section",
+      "SearchRuns": "search run",
+      "JobListings": "job listing",
+      "ScoreResults": "score result",
+      "Decisions": "decision"
+    }
+  },
+  "ko": {
+    "fields": {
+      "JobBoards.JobListings": {
+        "table": "JobBoards",
+        "field": "JobListings",
+        "kind": "rollup",
+        "rule": "‘job board’ 레코드의 ‘job listings’ 값은 해당 ‘job board’ 레코드에 연결된 ‘job listings’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(job board 값이 job board ID임)에 맞는 job listings 레코드의 개수"
+      },
+      "SearchUrls.JobBoardName": {
+        "table": "SearchUrls",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "‘search URL’ 레코드의 ‘job board name’ 값은 연결된 ‘job board’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchUrls",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 job board 레코드의 name"
+      },
+      "Resumes.ResumeSections": {
+        "table": "Resumes",
+        "field": "ResumeSections",
+        "kind": "rollup",
+        "rule": "‘resume’ 레코드의 ‘resume sections’ 값은 해당 ‘resume’ 레코드에 연결된 ‘resume sections’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(resume 값이 resume ID임)에 맞는 resume sections 레코드의 개수"
+      },
+      "Resumes.SearchRuns": {
+        "table": "Resumes",
+        "field": "SearchRuns",
+        "kind": "rollup",
+        "rule": "‘resume’ 레코드의 ‘search runs’ 값은 해당 ‘resume’ 레코드에 연결된 ‘search runs’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(resume 값이 resume ID임)에 맞는 search runs 레코드의 개수"
+      },
+      "ResumeSections.ResumeName": {
+        "table": "ResumeSections",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "‘resume section’ 레코드의 ‘resume name’ 값은 연결된 ‘resume’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 resume 레코드의 name"
+      },
+      "SearchRuns.ResumeName": {
+        "table": "SearchRuns",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "‘search run’ 레코드의 ‘resume name’ 값은 연결된 ‘resume’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 resume 레코드의 name"
+      },
+      "SearchRuns.ScoreResults": {
+        "table": "SearchRuns",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "‘search run’ 레코드의 ‘score results’ 값은 해당 ‘search run’ 레코드에 연결된 ‘score results’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(search run 값이 search run ID임)에 맞는 score results 레코드의 개수"
+      },
+      "JobListings.JobBoardName": {
+        "table": "JobListings",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "‘job listing’ 레코드의 ‘job board name’ 값은 연결된 ‘job board’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 job board 레코드의 name"
+      },
+      "JobListings.ScoreResults": {
+        "table": "JobListings",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "‘job listing’ 레코드의 ‘score results’ 값은 해당 ‘job listing’ 레코드에 연결된 ‘score results’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(job listing 값이 job listing ID임)에 맞는 score results 레코드의 개수"
+      },
+      "JobListings.Decisions": {
+        "table": "JobListings",
+        "field": "Decisions",
+        "kind": "rollup",
+        "rule": "‘job listing’ 레코드의 ‘decisions’ 값은 해당 ‘job listing’ 레코드에 연결된 ‘decisions’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(job listing 값이 job listing ID임)에 맞는 decisions 레코드의 개수"
+      },
+      "ScoreResults.Name": {
+        "table": "ScoreResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘score result’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘job listing name’, 이어서 “ - ”, 이어서 ‘search run name’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListingName",
+            "label": "job listing name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRunName",
+            "label": "search run name"
+          }
+        ],
+        "structure": null,
+        "plain": "Job listing name 이어서 \" - \" 이어서 search run name"
+      },
+      "ScoreResults.FinalScore": {
+        "table": "ScoreResults",
+        "field": "FinalScore",
+        "kind": "formula",
+        "rule": "‘score result’ 레코드의 ‘final score’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘disqualified’ 플래그가 설정된 경우: 0\n2. 그 밖의 경우: 0 및 ‘fit score’ 더하기 ‘archetype score’ 더하기 ‘history score’ 더하기 ‘comp score’ 더하기 ‘culture score’ 빼기 ‘negative score’ 중 최대치.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "IsDisqualified",
+            "label": "is disqualified"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "FitScore",
+            "label": "fit score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "ArchetypeScore",
+            "label": "archetype score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "HistoryScore",
+            "label": "history score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CompScore",
+            "label": "comp score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CultureScore",
+            "label": "culture score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "NegativeScore",
+            "label": "negative score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘score result’ 레코드의 ‘final score’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "‘disqualified’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "0 및 ‘fit score’ 더하기 ‘archetype score’ 더하기 ‘history score’ 더하기 ‘comp score’ 더하기 ‘culture score’ 빼기 ‘negative score’ 중 최대치",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(is disqualified)이 성립하면 0, 그렇지 않으면 0 및 (((((fit score 더하기 archetype score) 더하기 history score) 더하기 comp score) 더하기 culture score) 빼기 negative score) 중 최대치"
+      },
+      "ScoreResults.JobListingName": {
+        "table": "ScoreResults",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "‘score result’ 레코드의 ‘job listing name’ 값은 연결된 ‘job listing’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 job listing 레코드의 name"
+      },
+      "ScoreResults.SearchRunName": {
+        "table": "ScoreResults",
+        "field": "SearchRunName",
+        "kind": "lookup",
+        "rule": "‘score result’ 레코드의 ‘search run name’ 값은 연결된 ‘search run’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 search run 레코드의 name"
+      },
+      "ScoreResults.Company": {
+        "table": "ScoreResults",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "‘score result’ 레코드의 ‘company’ 값은 연결된 ‘job listing’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 job listing 레코드의 company"
+      },
+      "Decisions.Name": {
+        "table": "Decisions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘decision’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘verdict’의 대문자 변환 결과, 이어서 “: ”, 이어서 ‘job listing name’.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListingName",
+            "label": "job listing name"
+          }
+        ],
+        "structure": null,
+        "plain": "Verdict의 대문자 변환 결과 이어서 \": \" 이어서 job listing name"
+      },
+      "Decisions.IsScoringSignal": {
+        "table": "Decisions",
+        "field": "IsScoringSignal",
+        "kind": "formula",
+        "rule": "‘verdict’ 값이 “yes”인 경우, ‘decision’ 레코드는 ‘scoring signal’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘decision’ 레코드의 ‘is scoring signal’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "참",
+              "when": {
+                "kind": "leaf",
+                "text": "‘verdict’ 값이 “yes”인 경우"
+              }
+            },
+            {
+              "value": "거짓",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(verdict 값이 \"yes\"임)이 성립하면 true(), 그렇지 않으면 false()"
+      },
+      "Decisions.JobListingName": {
+        "table": "Decisions",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "‘decision’ 레코드의 ‘job listing name’ 값은 연결된 ‘job listing’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 job listing 레코드의 name"
+      },
+      "Decisions.Company": {
+        "table": "Decisions",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "‘decision’ 레코드의 ‘company’ 값은 연결된 ‘job listing’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 job listing 레코드의 company"
+      },
+      "Decisions.Board": {
+        "table": "Decisions",
+        "field": "Board",
+        "kind": "lookup",
+        "rule": "‘decision’ 레코드의 ‘board’ 값은 연결된 ‘job listing’ 레코드의 ‘job board’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 job listing 레코드의 job board"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "JobBoards": [
+        "‘job board’ 레코드는 ‘name’ 및 ‘max pages’ 값을 포함하고, 해당 레코드가 ‘enabled’에 해당하는지 여부 및 해당 레코드가 ‘headless’에 해당하는지 여부를 기록**해야 합니다**."
+      ],
+      "SearchUrls": [
+        "‘search URL’ 레코드는 ‘job board’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘search URL’ 레코드는 ‘name’ 및 ‘URL’ 값을 포함하고, 해당 레코드가 ‘enabled’에 해당하는지 여부를 기록**해야 합니다**."
+      ],
+      "RoleArchetypes": [
+        "‘role archetype’ 레코드는 ‘name’ 및 ‘description’ 값을 포함**해야 합니다**."
+      ],
+      "RubricDimensions": [
+        "‘rubric dimension’ 레코드는 ‘name’ 값을 포함**해야 합니다**."
+      ],
+      "Resumes": [
+        "‘resume’ 레코드는 ‘name’ 및 ‘file path’ 값을 포함**해야 합니다**."
+      ],
+      "ResumeSections": [
+        "‘resume section’ 레코드는 ‘resume’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘resume section’ 레코드는 ‘name’, ‘section order’, ‘content’ 및 ‘chroma doc ID’ 값을 포함**해야 합니다**."
+      ],
+      "SearchRuns": [
+        "‘search run’ 레코드는 ‘resume’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘search run’ 레코드는 ‘name’, ‘run date’, ‘archetype weight’, ‘fit weight’, ‘history weight’, ‘comp weight’, ‘negative weight’, ‘culture weight’, ‘base salary’ 및 ‘min score threshold’ 값을 포함하고, 해당 레코드가 ‘disqualify on llm flag’에 해당하는지 여부를 기록**해야 합니다**."
+      ],
+      "JobListings": [
+        "‘job listing’ 레코드는 ‘job board’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘job listing’ 레코드는 ‘name’, ‘external ID’, ‘company’, ‘URL’ 및 ‘full text’ 값을 포함**해야 합니다**."
+      ],
+      "ScoreResults": [
+        "‘score result’ 레코드는 ‘job listing’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘score result’ 레코드는 ‘search run’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘score result’ 레코드는 ‘fit score’, ‘archetype score’, ‘history score’, ‘comp score’, ‘negative score’ 및 ‘culture score’ 값을 포함하고, 해당 레코드가 ‘disqualified’에 해당하는지 여부를 기록**해야 합니다**."
+      ],
+      "Decisions": [
+        "‘decision’ 레코드는 ‘job listing’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘decision’ 레코드는 ‘verdict’ 및 ‘recorded at’ 값을 포함**해야 합니다**."
+      ]
+    },
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "JobBoards": "job board",
+      "SearchUrls": "search URL",
+      "RoleArchetypes": "role archetype",
+      "RubricDimensions": "rubric dimension",
+      "Resumes": "resume",
+      "ResumeSections": "resume section",
+      "SearchRuns": "search run",
+      "JobListings": "job listing",
+      "ScoreResults": "score result",
+      "Decisions": "decision"
+    }
+  },
+  "nl": {
+    "fields": {
+      "JobBoards.JobListings": {
+        "table": "JobBoards",
+        "field": "JobListings",
+        "kind": "rollup",
+        "rule": "Een job board: job listings is het aantal job listings dat is gekoppeld aan de job board.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal job listings waarvan job board is job board ID"
+      },
+      "SearchUrls.JobBoardName": {
+        "table": "SearchUrls",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "Een search URL: job board name — overgenomen van de gekoppelde job board.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchUrls",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde job board"
+      },
+      "Resumes.ResumeSections": {
+        "table": "Resumes",
+        "field": "ResumeSections",
+        "kind": "rollup",
+        "rule": "Een resume: resume sections is het aantal resume sections dat is gekoppeld aan de resume.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal resume sections waarvan resume is resume ID"
+      },
+      "Resumes.SearchRuns": {
+        "table": "Resumes",
+        "field": "SearchRuns",
+        "kind": "rollup",
+        "rule": "Een resume: search runs is het aantal search runs dat is gekoppeld aan de resume.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal search runs waarvan resume is resume ID"
+      },
+      "ResumeSections.ResumeName": {
+        "table": "ResumeSections",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "Een resume section: resume name — overgenomen van de gekoppelde resume.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde resume"
+      },
+      "SearchRuns.ResumeName": {
+        "table": "SearchRuns",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "Een search run: resume name — overgenomen van de gekoppelde resume.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde resume"
+      },
+      "SearchRuns.ScoreResults": {
+        "table": "SearchRuns",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "Een search run: score results is het aantal score results dat is gekoppeld aan de search run.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal score results waarvan search run is search run ID"
+      },
+      "JobListings.JobBoardName": {
+        "table": "JobListings",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "Een job listing: job board name — overgenomen van de gekoppelde job board.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde job board"
+      },
+      "JobListings.ScoreResults": {
+        "table": "JobListings",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "Een job listing: score results is het aantal score results dat is gekoppeld aan de job listing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal score results waarvan job listing is job listing ID"
+      },
+      "JobListings.Decisions": {
+        "table": "JobListings",
+        "field": "Decisions",
+        "kind": "rollup",
+        "rule": "Een job listing: decisions is het aantal decisions dat is gekoppeld aan de job listing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal decisions waarvan job listing is job listing ID"
+      },
+      "ScoreResults.Name": {
+        "table": "ScoreResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een score result: name wordt berekend als de job listing name, gevolgd door ‘ - ’, gevolgd door de search run name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListingName",
+            "label": "job listing name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRunName",
+            "label": "search run name"
+          }
+        ],
+        "structure": null,
+        "plain": "Job listing name, \" - \", samengevoegd met search run name"
+      },
+      "ScoreResults.FinalScore": {
+        "table": "ScoreResults",
+        "field": "FinalScore",
+        "kind": "formula",
+        "rule": "Het veld ‘final score’ van de score result wordt bepaald volgens de volgende prioriteit:\n1. 0, als de vlag ‘disqualified’ is gezet;\n2. in alle andere gevallen de grootste van 0 en de fit score plus de archetype score plus de history score plus de comp score plus de culture score min de negative score.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "IsDisqualified",
+            "label": "is disqualified"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "FitScore",
+            "label": "fit score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "ArchetypeScore",
+            "label": "archetype score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "HistoryScore",
+            "label": "history score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CompScore",
+            "label": "comp score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CultureScore",
+            "label": "culture score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "NegativeScore",
+            "label": "negative score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘final score’ van de score result wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘disqualified’ is gezet"
+              }
+            },
+            {
+              "value": "de grootste van 0 en de fit score plus de archetype score plus de history score plus de comp score plus de culture score min de negative score",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als is disqualified, dan 0, anders de grootste van 0 en (((((fit score plus archetype score) plus history score) plus comp score) plus culture score) min negative score)"
+      },
+      "ScoreResults.JobListingName": {
+        "table": "ScoreResults",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "Een score result: job listing name — overgenomen van de gekoppelde job listing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde job listing"
+      },
+      "ScoreResults.SearchRunName": {
+        "table": "ScoreResults",
+        "field": "SearchRunName",
+        "kind": "lookup",
+        "rule": "Een score result: search run name — overgenomen van de gekoppelde search run.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde search run"
+      },
+      "ScoreResults.Company": {
+        "table": "ScoreResults",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "Een score result: company — overgenomen van de gekoppelde job listing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De company van de gekoppelde job listing"
+      },
+      "Decisions.Name": {
+        "table": "Decisions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een decision: name wordt berekend als de verdict in hoofdletters, gevolgd door ‘: ’, gevolgd door de job listing name.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListingName",
+            "label": "job listing name"
+          }
+        ],
+        "structure": null,
+        "plain": "Verdict in hoofdletters, \": \", samengevoegd met job listing name"
+      },
+      "Decisions.IsScoringSignal": {
+        "table": "Decisions",
+        "field": "IsScoringSignal",
+        "kind": "formula",
+        "rule": "Een decision geldt als een scoring signal als de verdict ‘yes’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘is scoring signal’ van de decision wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "waar",
+              "when": {
+                "kind": "leaf",
+                "text": "de verdict ‘yes’ is"
+              }
+            },
+            {
+              "value": "onwaar",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als verdict is \"yes\", dan true(), anders false()"
+      },
+      "Decisions.JobListingName": {
+        "table": "Decisions",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "Een decision: job listing name — overgenomen van de gekoppelde job listing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde job listing"
+      },
+      "Decisions.Company": {
+        "table": "Decisions",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "Een decision: company — overgenomen van de gekoppelde job listing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De company van de gekoppelde job listing"
+      },
+      "Decisions.Board": {
+        "table": "Decisions",
+        "field": "Board",
+        "kind": "lookup",
+        "rule": "Een decision: board is de job board van de gekoppelde job listing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De job board van de gekoppelde job listing"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "JobBoards": [
+        "Een job board **moet** een name en een max pages hebben, en vastleggen of het is enabled en of het is headless."
+      ],
+      "SearchUrls": [
+        "Een search URL **moet** naar precies één job board verwijzen.",
+        "Een search URL **moet** een name en een URL hebben, en vastleggen of het is enabled."
+      ],
+      "RoleArchetypes": [
+        "Een role archetype **moet** een name en een description hebben."
+      ],
+      "RubricDimensions": [
+        "Een rubric dimension **moet** een name hebben."
+      ],
+      "Resumes": [
+        "Een resume **moet** een name en een file path hebben."
+      ],
+      "ResumeSections": [
+        "Een resume section **moet** naar precies één resume verwijzen.",
+        "Een resume section **moet** een name; een section order; een content; en een chroma doc ID hebben."
+      ],
+      "SearchRuns": [
+        "Een search run **moet** naar precies één resume verwijzen.",
+        "Een search run **moet** een name; een run date; een archetype weight; een fit weight; een history weight; een comp weight; een negative weight; een culture weight; een base salary; en een min score threshold hebben, en vastleggen of het is disqualify on llm flag."
+      ],
+      "JobListings": [
+        "Een job listing **moet** naar precies één job board verwijzen.",
+        "Een job listing **moet** een name; een external ID; een company; een URL; en een full text hebben."
+      ],
+      "ScoreResults": [
+        "Een score result **moet** naar precies één job listing verwijzen.",
+        "Een score result **moet** naar precies één search run verwijzen.",
+        "Een score result **moet** een fit score; een archetype score; een history score; een comp score; een negative score; en een culture score hebben, en vastleggen of het is disqualified."
+      ],
+      "Decisions": [
+        "Een decision **moet** naar precies één job listing verwijzen.",
+        "Een decision **moet** een verdict en een recorded at hebben."
+      ]
+    },
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "JobBoards": "job board",
+      "SearchUrls": "search URL",
+      "RoleArchetypes": "role archetype",
+      "RubricDimensions": "rubric dimension",
+      "Resumes": "resume",
+      "ResumeSections": "resume section",
+      "SearchRuns": "search run",
+      "JobListings": "job listing",
+      "ScoreResults": "score result",
+      "Decisions": "decision"
+    }
+  },
+  "pt": {
+    "fields": {
+      "JobBoards.JobListings": {
+        "table": "JobBoards",
+        "field": "JobListings",
+        "kind": "rollup",
+        "rule": "Um job board: job listings é o número de job listings relacionados a o job board.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de job listings cujo job board é job board ID"
+      },
+      "SearchUrls.JobBoardName": {
+        "table": "SearchUrls",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "Um search URL: job board name — obtido do job board vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchUrls",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do job board vinculado"
+      },
+      "Resumes.ResumeSections": {
+        "table": "Resumes",
+        "field": "ResumeSections",
+        "kind": "rollup",
+        "rule": "Um resume: resume sections é o número de resume sections relacionados a o resume.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de resume sections cujo resume é resume ID"
+      },
+      "Resumes.SearchRuns": {
+        "table": "Resumes",
+        "field": "SearchRuns",
+        "kind": "rollup",
+        "rule": "Um resume: search runs é o número de search runs relacionados a o resume.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de search runs cujo resume é resume ID"
+      },
+      "ResumeSections.ResumeName": {
+        "table": "ResumeSections",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "Um resume section: resume name — obtido do resume vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do resume vinculado"
+      },
+      "SearchRuns.ResumeName": {
+        "table": "SearchRuns",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "Um search run: resume name — obtido do resume vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do resume vinculado"
+      },
+      "SearchRuns.ScoreResults": {
+        "table": "SearchRuns",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "Um search run: score results é o número de score results relacionados a o search run.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de score results cujo search run é search run ID"
+      },
+      "JobListings.JobBoardName": {
+        "table": "JobListings",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "Um job listing: job board name — obtido do job board vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do job board vinculado"
+      },
+      "JobListings.ScoreResults": {
+        "table": "JobListings",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "Um job listing: score results é o número de score results relacionados a o job listing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de score results cujo job listing é job listing ID"
+      },
+      "JobListings.Decisions": {
+        "table": "JobListings",
+        "field": "Decisions",
+        "kind": "rollup",
+        "rule": "Um job listing: decisions é o número de decisions relacionados a o job listing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de decisions cujo job listing é job listing ID"
+      },
+      "ScoreResults.Name": {
+        "table": "ScoreResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um score result: name é calculado como o job listing name, seguido de “ - ”, seguido de o search run name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListingName",
+            "label": "job listing name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRunName",
+            "label": "search run name"
+          }
+        ],
+        "structure": null,
+        "plain": "Job listing name, \" - \", unido a search run name"
+      },
+      "ScoreResults.FinalScore": {
+        "table": "ScoreResults",
+        "field": "FinalScore",
+        "kind": "formula",
+        "rule": "O campo “final score” do score result é determinado pela seguinte prioridade:\n1. 0, se o indicador “disqualified” está ativado;\n2. em todos os outros casos, o maior de 0 e o fit score mais o archetype score mais o history score mais o comp score mais o culture score menos o negative score.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "IsDisqualified",
+            "label": "is disqualified"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "FitScore",
+            "label": "fit score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "ArchetypeScore",
+            "label": "archetype score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "HistoryScore",
+            "label": "history score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CompScore",
+            "label": "comp score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CultureScore",
+            "label": "culture score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "NegativeScore",
+            "label": "negative score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “final score” do score result é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “disqualified” está ativado"
+              }
+            },
+            {
+              "value": "o maior de 0 e o fit score mais o archetype score mais o history score mais o comp score mais o culture score menos o negative score",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is disqualified, então 0, caso contrário o maior de 0 e (((((fit score mais archetype score) mais history score) mais comp score) mais culture score) menos negative score)"
+      },
+      "ScoreResults.JobListingName": {
+        "table": "ScoreResults",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "Um score result: job listing name — obtido do job listing vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do job listing vinculado"
+      },
+      "ScoreResults.SearchRunName": {
+        "table": "ScoreResults",
+        "field": "SearchRunName",
+        "kind": "lookup",
+        "rule": "Um score result: search run name — obtido do search run vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do search run vinculado"
+      },
+      "ScoreResults.Company": {
+        "table": "ScoreResults",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "Um score result: company — obtido do job listing vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O company do job listing vinculado"
+      },
+      "Decisions.Name": {
+        "table": "Decisions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um decision: name é calculado como o verdict em maiúsculas, seguido de “: ”, seguido de o job listing name.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListingName",
+            "label": "job listing name"
+          }
+        ],
+        "structure": null,
+        "plain": "Verdict em maiúsculas, \": \", unido a job listing name"
+      },
+      "Decisions.IsScoringSignal": {
+        "table": "Decisions",
+        "field": "IsScoringSignal",
+        "kind": "formula",
+        "rule": "Um decision é considerado um scoring signal se o verdict é “yes”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “is scoring signal” do decision é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "verdadeiro",
+              "when": {
+                "kind": "leaf",
+                "text": "o verdict é “yes”"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se verdict é \"yes\", então true(), caso contrário false()"
+      },
+      "Decisions.JobListingName": {
+        "table": "Decisions",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "Um decision: job listing name — obtido do job listing vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do job listing vinculado"
+      },
+      "Decisions.Company": {
+        "table": "Decisions",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "Um decision: company — obtido do job listing vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O company do job listing vinculado"
+      },
+      "Decisions.Board": {
+        "table": "Decisions",
+        "field": "Board",
+        "kind": "lookup",
+        "rule": "Um decision: board é o job board do job listing vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O job board do job listing vinculado"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "JobBoards": [
+        "Um job board **deve** ter um name e um max pages, e registrar se é enabled e se é headless."
+      ],
+      "SearchUrls": [
+        "Um search URL **deve** referenciar exatamente um job board.",
+        "Um search URL **deve** ter um name e um URL, e registrar se é enabled."
+      ],
+      "RoleArchetypes": [
+        "Um role archetype **deve** ter um name e um description."
+      ],
+      "RubricDimensions": [
+        "Um rubric dimension **deve** ter um name."
+      ],
+      "Resumes": [
+        "Um resume **deve** ter um name e um file path."
+      ],
+      "ResumeSections": [
+        "Um resume section **deve** referenciar exatamente um resume.",
+        "Um resume section **deve** ter um name; um section order; um content; e um chroma doc ID."
+      ],
+      "SearchRuns": [
+        "Um search run **deve** referenciar exatamente um resume.",
+        "Um search run **deve** ter um name; um run date; um archetype weight; um fit weight; um history weight; um comp weight; um negative weight; um culture weight; um base salary; e um min score threshold, e registrar se é disqualify on llm flag."
+      ],
+      "JobListings": [
+        "Um job listing **deve** referenciar exatamente um job board.",
+        "Um job listing **deve** ter um name; um external ID; um company; um URL; e um full text."
+      ],
+      "ScoreResults": [
+        "Um score result **deve** referenciar exatamente um job listing.",
+        "Um score result **deve** referenciar exatamente um search run.",
+        "Um score result **deve** ter um fit score; um archetype score; um history score; um comp score; um negative score; e um culture score, e registrar se é disqualified."
+      ],
+      "Decisions": [
+        "Um decision **deve** referenciar exatamente um job listing.",
+        "Um decision **deve** ter um verdict e um recorded at."
+      ]
+    },
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "JobBoards": "job board",
+      "SearchUrls": "search URL",
+      "RoleArchetypes": "role archetype",
+      "RubricDimensions": "rubric dimension",
+      "Resumes": "resume",
+      "ResumeSections": "resume section",
+      "SearchRuns": "search run",
+      "JobListings": "job listing",
+      "ScoreResults": "score result",
+      "Decisions": "decision"
+    }
+  },
+  "ru": {
+    "fields": {
+      "JobBoards.JobListings": {
+        "table": "JobBoards",
+        "field": "JobListings",
+        "kind": "rollup",
+        "rule": "Job board: «job listings» — это число записей «job listings», связанных с job board.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «job listings», у которых job board равно job board ID"
+      },
+      "SearchUrls.JobBoardName": {
+        "table": "SearchUrls",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "Search URL: «job board name» — берётся из связанного «job board».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchUrls",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «job board»"
+      },
+      "Resumes.ResumeSections": {
+        "table": "Resumes",
+        "field": "ResumeSections",
+        "kind": "rollup",
+        "rule": "Resume: «resume sections» — это число записей «resume sections», связанных с resume.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «resume sections», у которых resume равно resume ID"
+      },
+      "Resumes.SearchRuns": {
+        "table": "Resumes",
+        "field": "SearchRuns",
+        "kind": "rollup",
+        "rule": "Resume: «search runs» — это число записей «search runs», связанных с resume.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «search runs», у которых resume равно resume ID"
+      },
+      "ResumeSections.ResumeName": {
+        "table": "ResumeSections",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "Resume section: «resume name» — берётся из связанного «resume».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «resume»"
+      },
+      "SearchRuns.ResumeName": {
+        "table": "SearchRuns",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "Search run: «resume name» — берётся из связанного «resume».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «resume»"
+      },
+      "SearchRuns.ScoreResults": {
+        "table": "SearchRuns",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "Search run: «score results» — это число записей «score results», связанных с search run.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «score results», у которых search run равно search run ID"
+      },
+      "JobListings.JobBoardName": {
+        "table": "JobListings",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "Job listing: «job board name» — берётся из связанного «job board».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «job board»"
+      },
+      "JobListings.ScoreResults": {
+        "table": "JobListings",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "Job listing: «score results» — это число записей «score results», связанных с job listing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «score results», у которых job listing равно job listing ID"
+      },
+      "JobListings.Decisions": {
+        "table": "JobListings",
+        "field": "Decisions",
+        "kind": "rollup",
+        "rule": "Job listing: «decisions» — это число записей «decisions», связанных с job listing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «decisions», у которых job listing равно job listing ID"
+      },
+      "ScoreResults.Name": {
+        "table": "ScoreResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Score result: «name» вычисляется как job listing name, затем « - », затем search run name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListingName",
+            "label": "job listing name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRunName",
+            "label": "search run name"
+          }
+        ],
+        "structure": null,
+        "plain": "Job listing name, \" - \", соединено с search run name"
+      },
+      "ScoreResults.FinalScore": {
+        "table": "ScoreResults",
+        "field": "FinalScore",
+        "kind": "formula",
+        "rule": "Поле «final score» (Score result) определяется по следующему приоритету:\n1. 0, если признак «disqualified» установлен;\n2. во всех остальных случаях — наибольшее из 0 и fit score плюс archetype score плюс history score плюс comp score плюс culture score минус negative score.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "IsDisqualified",
+            "label": "is disqualified"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "FitScore",
+            "label": "fit score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "ArchetypeScore",
+            "label": "archetype score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "HistoryScore",
+            "label": "history score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CompScore",
+            "label": "comp score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CultureScore",
+            "label": "culture score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "NegativeScore",
+            "label": "negative score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «final score» (Score result) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «disqualified» установлен"
+              }
+            },
+            {
+              "value": "наибольшее из 0 и fit score плюс archetype score плюс history score плюс comp score плюс culture score минус negative score",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если is disqualified, то 0, иначе наибольшее из 0 и (((((fit score плюс archetype score) плюс history score) плюс comp score) плюс culture score) минус negative score)"
+      },
+      "ScoreResults.JobListingName": {
+        "table": "ScoreResults",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "Score result: «job listing name» — берётся из связанного «job listing».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «job listing»"
+      },
+      "ScoreResults.SearchRunName": {
+        "table": "ScoreResults",
+        "field": "SearchRunName",
+        "kind": "lookup",
+        "rule": "Score result: «search run name» — берётся из связанного «search run».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «search run»"
+      },
+      "ScoreResults.Company": {
+        "table": "ScoreResults",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "Score result: «company» — берётся из связанного «job listing».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Company связанного «job listing»"
+      },
+      "Decisions.Name": {
+        "table": "Decisions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Decision: «name» вычисляется как verdict в верхнем регистре, затем «: », затем job listing name.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListingName",
+            "label": "job listing name"
+          }
+        ],
+        "structure": null,
+        "plain": "Verdict в верхнем регистре, \": \", соединено с job listing name"
+      },
+      "Decisions.IsScoringSignal": {
+        "table": "Decisions",
+        "field": "IsScoringSignal",
+        "kind": "formula",
+        "rule": "Decision считается «scoring signal», если verdict равно «yes».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «is scoring signal» (Decision) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "истина",
+              "when": {
+                "kind": "leaf",
+                "text": "verdict равно «yes»"
+              }
+            },
+            {
+              "value": "ложь",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если verdict равно \"yes\", то true(), иначе false()"
+      },
+      "Decisions.JobListingName": {
+        "table": "Decisions",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "Decision: «job listing name» — берётся из связанного «job listing».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «job listing»"
+      },
+      "Decisions.Company": {
+        "table": "Decisions",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "Decision: «company» — берётся из связанного «job listing».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Company связанного «job listing»"
+      },
+      "Decisions.Board": {
+        "table": "Decisions",
+        "field": "Board",
+        "kind": "lookup",
+        "rule": "Decision: «board» — это «job board» связанного «job listing».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Job board связанного «job listing»"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "JobBoards": [
+        "Job board **обязан** иметь name и max pages, а также фиксировать то, он является «enabled» ли и то, он является «headless» ли."
+      ],
+      "SearchUrls": [
+        "Search URL **обязан** ссылаться ровно на один «job board».",
+        "Search URL **обязан** иметь name и URL, а также фиксировать то, он является «enabled» ли."
+      ],
+      "RoleArchetypes": [
+        "Role archetype **обязан** иметь name и description."
+      ],
+      "RubricDimensions": [
+        "Rubric dimension **обязан** иметь name."
+      ],
+      "Resumes": [
+        "Resume **обязан** иметь name и file path."
+      ],
+      "ResumeSections": [
+        "Resume section **обязан** ссылаться ровно на один «resume».",
+        "Resume section **обязан** иметь name; section order; content; и chroma doc ID."
+      ],
+      "SearchRuns": [
+        "Search run **обязан** ссылаться ровно на один «resume».",
+        "Search run **обязан** иметь name; run date; archetype weight; fit weight; history weight; comp weight; negative weight; culture weight; base salary; и min score threshold, а также фиксировать то, он является «disqualify on llm flag» ли."
+      ],
+      "JobListings": [
+        "Job listing **обязан** ссылаться ровно на один «job board».",
+        "Job listing **обязан** иметь name; external ID; company; URL; и full text."
+      ],
+      "ScoreResults": [
+        "Score result **обязан** ссылаться ровно на один «job listing».",
+        "Score result **обязан** ссылаться ровно на один «search run».",
+        "Score result **обязан** иметь fit score; archetype score; history score; comp score; negative score; и culture score, а также фиксировать то, он является «disqualified» ли."
+      ],
+      "Decisions": [
+        "Decision **обязан** ссылаться ровно на один «job listing».",
+        "Decision **обязан** иметь verdict и recorded at."
+      ]
+    },
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "JobBoards": "job board",
+      "SearchUrls": "search URL",
+      "RoleArchetypes": "role archetype",
+      "RubricDimensions": "rubric dimension",
+      "Resumes": "resume",
+      "ResumeSections": "resume section",
+      "SearchRuns": "search run",
+      "JobListings": "job listing",
+      "ScoreResults": "score result",
+      "Decisions": "decision"
+    }
+  },
+  "tr": {
+    "fields": {
+      "JobBoards.JobListings": {
+        "table": "JobBoards",
+        "field": "JobListings",
+        "kind": "rollup",
+        "rule": "“job board” kaydının “job listings” alanı, “job board” kaydıyla ilişkili “job listings” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Job board değeri job board ID olan job listings kayıtlarının sayısı"
+      },
+      "SearchUrls.JobBoardName": {
+        "table": "SearchUrls",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "“search URL” kaydının “job board name” alanı, “job board” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchUrls",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı job board kaydının name değeri"
+      },
+      "Resumes.ResumeSections": {
+        "table": "Resumes",
+        "field": "ResumeSections",
+        "kind": "rollup",
+        "rule": "“resume” kaydının “resume sections” alanı, “resume” kaydıyla ilişkili “resume sections” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Resume değeri resume ID olan resume sections kayıtlarının sayısı"
+      },
+      "Resumes.SearchRuns": {
+        "table": "Resumes",
+        "field": "SearchRuns",
+        "kind": "rollup",
+        "rule": "“resume” kaydının “search runs” alanı, “resume” kaydıyla ilişkili “search runs” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Resume değeri resume ID olan search runs kayıtlarının sayısı"
+      },
+      "ResumeSections.ResumeName": {
+        "table": "ResumeSections",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "“resume section” kaydının “resume name” alanı, “resume” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı resume kaydının name değeri"
+      },
+      "SearchRuns.ResumeName": {
+        "table": "SearchRuns",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "“search run” kaydının “resume name” alanı, “resume” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı resume kaydının name değeri"
+      },
+      "SearchRuns.ScoreResults": {
+        "table": "SearchRuns",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "“search run” kaydının “score results” alanı, “search run” kaydıyla ilişkili “score results” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Search run değeri search run ID olan score results kayıtlarının sayısı"
+      },
+      "JobListings.JobBoardName": {
+        "table": "JobListings",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "“job listing” kaydının “job board name” alanı, “job board” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı job board kaydının name değeri"
+      },
+      "JobListings.ScoreResults": {
+        "table": "JobListings",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "“job listing” kaydının “score results” alanı, “job listing” kaydıyla ilişkili “score results” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Job listing değeri job listing ID olan score results kayıtlarının sayısı"
+      },
+      "JobListings.Decisions": {
+        "table": "JobListings",
+        "field": "Decisions",
+        "kind": "rollup",
+        "rule": "“job listing” kaydının “decisions” alanı, “job listing” kaydıyla ilişkili “decisions” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Job listing değeri job listing ID olan decisions kayıtlarının sayısı"
+      },
+      "ScoreResults.Name": {
+        "table": "ScoreResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“score result” kaydının “name” alanı, “job listing name” alanı, ardından “ - ”, ardından “search run name” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListingName",
+            "label": "job listing name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRunName",
+            "label": "search run name"
+          }
+        ],
+        "structure": null,
+        "plain": "Job listing name, \" - \" ve ardından search run name"
+      },
+      "ScoreResults.FinalScore": {
+        "table": "ScoreResults",
+        "field": "FinalScore",
+        "kind": "formula",
+        "rule": "“score result” kaydının “final score” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “disqualified” bayrağı etkin ise 0;\n2. diğer tüm durumlarda 0 ve “fit score” alanı artı “archetype score” alanı artı “history score” alanı artı “comp score” alanı artı “culture score” alanı eksi “negative score” alanı değerlerinin en büyüğü.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "IsDisqualified",
+            "label": "is disqualified"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "FitScore",
+            "label": "fit score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "ArchetypeScore",
+            "label": "archetype score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "HistoryScore",
+            "label": "history score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CompScore",
+            "label": "comp score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CultureScore",
+            "label": "culture score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "NegativeScore",
+            "label": "negative score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“score result” kaydının “final score” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "“disqualified” bayrağı etkin"
+              }
+            },
+            {
+              "value": "0 ve “fit score” alanı artı “archetype score” alanı artı “history score” alanı artı “comp score” alanı artı “culture score” alanı eksi “negative score” alanı değerlerinin en büyüğü",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is disqualified ise 0, aksi takdirde 0 ve (((((fit score artı archetype score) artı history score) artı comp score) artı culture score) eksi negative score) değerlerinin en büyüğü"
+      },
+      "ScoreResults.JobListingName": {
+        "table": "ScoreResults",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "“score result” kaydının “job listing name” alanı, “job listing” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı job listing kaydının name değeri"
+      },
+      "ScoreResults.SearchRunName": {
+        "table": "ScoreResults",
+        "field": "SearchRunName",
+        "kind": "lookup",
+        "rule": "“score result” kaydının “search run name” alanı, “search run” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı search run kaydının name değeri"
+      },
+      "ScoreResults.Company": {
+        "table": "ScoreResults",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "“score result” kaydının “company” alanı, “job listing” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı job listing kaydının company değeri"
+      },
+      "Decisions.Name": {
+        "table": "Decisions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“decision” kaydının “name” alanı, büyük harfe çevrilmiş “verdict” alanı, ardından “: ”, ardından “job listing name” alanı olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListingName",
+            "label": "job listing name"
+          }
+        ],
+        "structure": null,
+        "plain": "Büyük harfe çevrilmiş verdict, \": \" ve ardından job listing name"
+      },
+      "Decisions.IsScoringSignal": {
+        "table": "Decisions",
+        "field": "IsScoringSignal",
+        "kind": "formula",
+        "rule": "“decision” kaydı, “verdict” alanı “yes” değerine eşit ise “scoring signal” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“decision” kaydının “is scoring signal” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "doğru",
+              "when": {
+                "kind": "leaf",
+                "text": "“verdict” alanı “yes” değerine eşit"
+              }
+            },
+            {
+              "value": "yanlış",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Verdict, \"yes\" değerine eşit ise true(), aksi takdirde false()"
+      },
+      "Decisions.JobListingName": {
+        "table": "Decisions",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "“decision” kaydının “job listing name” alanı, “job listing” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı job listing kaydının name değeri"
+      },
+      "Decisions.Company": {
+        "table": "Decisions",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "“decision” kaydının “company” alanı, “job listing” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı job listing kaydının company değeri"
+      },
+      "Decisions.Board": {
+        "table": "Decisions",
+        "field": "Board",
+        "kind": "lookup",
+        "rule": "“decision” kaydının “board” alanı, “job listing” alanı üzerinden bağlı kaydın “job board” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı job listing kaydının job board değeri"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "JobBoards": [
+        "“job board” kaydı, “name” alanı ve “max pages” alanı dolu olmak, ayrıca “enabled” olup olmadığı bilgisini ve “headless” olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ],
+      "SearchUrls": [
+        "“search URL” kaydı, tam olarak bir “job board” kaydına referans vermek **zorundadır**.",
+        "“search URL” kaydı, “name” alanı ve “URL” alanı dolu olmak, ayrıca “enabled” olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ],
+      "RoleArchetypes": [
+        "“role archetype” kaydı, “name” alanı ve “description” alanı dolu olmak **zorundadır**."
+      ],
+      "RubricDimensions": [
+        "“rubric dimension” kaydı, “name” alanı dolu olmak **zorundadır**."
+      ],
+      "Resumes": [
+        "“resume” kaydı, “name” alanı ve “file path” alanı dolu olmak **zorundadır**."
+      ],
+      "ResumeSections": [
+        "“resume section” kaydı, tam olarak bir “resume” kaydına referans vermek **zorundadır**.",
+        "“resume section” kaydı, “name” alanı, “section order” alanı, “content” alanı ve “chroma doc ID” alanı dolu olmak **zorundadır**."
+      ],
+      "SearchRuns": [
+        "“search run” kaydı, tam olarak bir “resume” kaydına referans vermek **zorundadır**.",
+        "“search run” kaydı, “name” alanı, “run date” alanı, “archetype weight” alanı, “fit weight” alanı, “history weight” alanı, “comp weight” alanı, “negative weight” alanı, “culture weight” alanı, “base salary” alanı ve “min score threshold” alanı dolu olmak, ayrıca “disqualify on llm flag” olarak işaretli olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ],
+      "JobListings": [
+        "“job listing” kaydı, tam olarak bir “job board” kaydına referans vermek **zorundadır**.",
+        "“job listing” kaydı, “name” alanı, “external ID” alanı, “company” alanı, “URL” alanı ve “full text” alanı dolu olmak **zorundadır**."
+      ],
+      "ScoreResults": [
+        "“score result” kaydı, tam olarak bir “job listing” kaydına referans vermek **zorundadır**.",
+        "“score result” kaydı, tam olarak bir “search run” kaydına referans vermek **zorundadır**.",
+        "“score result” kaydı, “fit score” alanı, “archetype score” alanı, “history score” alanı, “comp score” alanı, “negative score” alanı ve “culture score” alanı dolu olmak, ayrıca “disqualified” olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ],
+      "Decisions": [
+        "“decision” kaydı, tam olarak bir “job listing” kaydına referans vermek **zorundadır**.",
+        "“decision” kaydı, “verdict” alanı ve “recorded at” alanı dolu olmak **zorundadır**."
+      ]
+    },
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "JobBoards": "job board",
+      "SearchUrls": "search URL",
+      "RoleArchetypes": "role archetype",
+      "RubricDimensions": "rubric dimension",
+      "Resumes": "resume",
+      "ResumeSections": "resume section",
+      "SearchRuns": "search run",
+      "JobListings": "job listing",
+      "ScoreResults": "score result",
+      "Decisions": "decision"
+    }
+  },
+  "vi": {
+    "fields": {
+      "JobBoards.JobListings": {
+        "table": "JobBoards",
+        "field": "JobListings",
+        "kind": "rollup",
+        "rule": "Trường “job listings” của mỗi job board là số lượng job listings liên quan đến job board đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng job listings có job board là job board ID"
+      },
+      "SearchUrls.JobBoardName": {
+        "table": "SearchUrls",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "Trường “job board name” của mỗi search URL được lấy từ bản ghi liên kết qua trường “job board”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchUrls",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua job board"
+      },
+      "Resumes.ResumeSections": {
+        "table": "Resumes",
+        "field": "ResumeSections",
+        "kind": "rollup",
+        "rule": "Trường “resume sections” của mỗi resume là số lượng resume sections liên quan đến resume đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng resume sections có resume là resume ID"
+      },
+      "Resumes.SearchRuns": {
+        "table": "Resumes",
+        "field": "SearchRuns",
+        "kind": "rollup",
+        "rule": "Trường “search runs” của mỗi resume là số lượng search runs liên quan đến resume đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng search runs có resume là resume ID"
+      },
+      "ResumeSections.ResumeName": {
+        "table": "ResumeSections",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "Trường “resume name” của mỗi resume section được lấy từ bản ghi liên kết qua trường “resume”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua resume"
+      },
+      "SearchRuns.ResumeName": {
+        "table": "SearchRuns",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "Trường “resume name” của mỗi search run được lấy từ bản ghi liên kết qua trường “resume”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua resume"
+      },
+      "SearchRuns.ScoreResults": {
+        "table": "SearchRuns",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "Trường “score results” của mỗi search run là số lượng score results liên quan đến search run đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng score results có search run là search run ID"
+      },
+      "JobListings.JobBoardName": {
+        "table": "JobListings",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "Trường “job board name” của mỗi job listing được lấy từ bản ghi liên kết qua trường “job board”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua job board"
+      },
+      "JobListings.ScoreResults": {
+        "table": "JobListings",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "Trường “score results” của mỗi job listing là số lượng score results liên quan đến job listing đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng score results có job listing là job listing ID"
+      },
+      "JobListings.Decisions": {
+        "table": "JobListings",
+        "field": "Decisions",
+        "kind": "rollup",
+        "rule": "Trường “decisions” của mỗi job listing là số lượng decisions liên quan đến job listing đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng decisions có job listing là job listing ID"
+      },
+      "ScoreResults.Name": {
+        "table": "ScoreResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi score result được tính bằng job listing name, tiếp theo là “ - ”, tiếp theo là search run name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListingName",
+            "label": "job listing name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRunName",
+            "label": "search run name"
+          }
+        ],
+        "structure": null,
+        "plain": "Job listing name nối với \" - \" nối với search run name"
+      },
+      "ScoreResults.FinalScore": {
+        "table": "ScoreResults",
+        "field": "FinalScore",
+        "kind": "formula",
+        "rule": "Trường “final score” của mỗi score result được xác định theo thứ tự ưu tiên sau:\n1. 0, nếu cờ “disqualified” được bật;\n2. trong mọi trường hợp còn lại, giá trị lớn nhất trong số 0 và fit score cộng archetype score cộng history score cộng comp score cộng culture score trừ negative score.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "IsDisqualified",
+            "label": "is disqualified"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "FitScore",
+            "label": "fit score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "ArchetypeScore",
+            "label": "archetype score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "HistoryScore",
+            "label": "history score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CompScore",
+            "label": "comp score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CultureScore",
+            "label": "culture score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "NegativeScore",
+            "label": "negative score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “final score” của mỗi score result được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “disqualified” được bật"
+              }
+            },
+            {
+              "value": "giá trị lớn nhất trong số 0 và fit score cộng archetype score cộng history score cộng comp score cộng culture score trừ negative score",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu is disqualified thì 0, nếu không thì giá trị lớn nhất trong số 0 và (((((fit score cộng archetype score) cộng history score) cộng comp score) cộng culture score) trừ negative score)"
+      },
+      "ScoreResults.JobListingName": {
+        "table": "ScoreResults",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "Trường “job listing name” của mỗi score result được lấy từ bản ghi liên kết qua trường “job listing”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua job listing"
+      },
+      "ScoreResults.SearchRunName": {
+        "table": "ScoreResults",
+        "field": "SearchRunName",
+        "kind": "lookup",
+        "rule": "Trường “search run name” của mỗi score result được lấy từ bản ghi liên kết qua trường “search run”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua search run"
+      },
+      "ScoreResults.Company": {
+        "table": "ScoreResults",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "Trường “company” của mỗi score result được lấy từ bản ghi liên kết qua trường “job listing”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Company của bản ghi liên kết qua job listing"
+      },
+      "Decisions.Name": {
+        "table": "Decisions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi decision được tính bằng verdict viết bằng chữ hoa, tiếp theo là “: ”, tiếp theo là job listing name.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListingName",
+            "label": "job listing name"
+          }
+        ],
+        "structure": null,
+        "plain": "Verdict viết bằng chữ hoa nối với \": \" nối với job listing name"
+      },
+      "Decisions.IsScoringSignal": {
+        "table": "Decisions",
+        "field": "IsScoringSignal",
+        "kind": "formula",
+        "rule": "Mỗi decision được coi là “scoring signal” nếu verdict là “yes”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “is scoring signal” của mỗi decision được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "đúng",
+              "when": {
+                "kind": "leaf",
+                "text": "verdict là “yes”"
+              }
+            },
+            {
+              "value": "sai",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu verdict là \"yes\" thì true(), nếu không thì false()"
+      },
+      "Decisions.JobListingName": {
+        "table": "Decisions",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "Trường “job listing name” của mỗi decision được lấy từ bản ghi liên kết qua trường “job listing”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua job listing"
+      },
+      "Decisions.Company": {
+        "table": "Decisions",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "Trường “company” của mỗi decision được lấy từ bản ghi liên kết qua trường “job listing”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Company của bản ghi liên kết qua job listing"
+      },
+      "Decisions.Board": {
+        "table": "Decisions",
+        "field": "Board",
+        "kind": "lookup",
+        "rule": "Trường “board” của mỗi decision là trường “job board” của bản ghi liên kết qua trường “job listing”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Job board của bản ghi liên kết qua job listing"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "JobBoards": [
+        "Mỗi job board **phải** có name và max pages, đồng thời được ghi nhận rõ là “enabled” hay không và là “headless” hay không."
+      ],
+      "SearchUrls": [
+        "Mỗi search URL **phải** tham chiếu đến đúng một job board.",
+        "Mỗi search URL **phải** có name và URL, đồng thời được ghi nhận rõ là “enabled” hay không."
+      ],
+      "RoleArchetypes": [
+        "Mỗi role archetype **phải** có name và description."
+      ],
+      "RubricDimensions": [
+        "Mỗi rubric dimension **phải** có name."
+      ],
+      "Resumes": [
+        "Mỗi resume **phải** có name và file path."
+      ],
+      "ResumeSections": [
+        "Mỗi resume section **phải** tham chiếu đến đúng một resume.",
+        "Mỗi resume section **phải** có name, section order, content và chroma doc ID."
+      ],
+      "SearchRuns": [
+        "Mỗi search run **phải** tham chiếu đến đúng một resume.",
+        "Mỗi search run **phải** có name, run date, archetype weight, fit weight, history weight, comp weight, negative weight, culture weight, base salary và min score threshold, đồng thời được ghi nhận rõ là “disqualify on llm flag” hay không."
+      ],
+      "JobListings": [
+        "Mỗi job listing **phải** tham chiếu đến đúng một job board.",
+        "Mỗi job listing **phải** có name, external ID, company, URL và full text."
+      ],
+      "ScoreResults": [
+        "Mỗi score result **phải** tham chiếu đến đúng một job listing.",
+        "Mỗi score result **phải** tham chiếu đến đúng một search run.",
+        "Mỗi score result **phải** có fit score, archetype score, history score, comp score, negative score và culture score, đồng thời được ghi nhận rõ là “disqualified” hay không."
+      ],
+      "Decisions": [
+        "Mỗi decision **phải** tham chiếu đến đúng một job listing.",
+        "Mỗi decision **phải** có verdict và recorded at."
+      ]
+    },
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "JobBoards": "job board",
+      "SearchUrls": "search URL",
+      "RoleArchetypes": "role archetype",
+      "RubricDimensions": "rubric dimension",
+      "Resumes": "resume",
+      "ResumeSections": "resume section",
+      "SearchRuns": "search run",
+      "JobListings": "job listing",
+      "ScoreResults": "score result",
+      "Decisions": "decision"
+    }
+  },
+  "zh": {
+    "fields": {
+      "JobBoards.JobListings": {
+        "table": "JobBoards",
+        "field": "JobListings",
+        "kind": "rollup",
+        "rule": "job board的“job listings”为 与job board相关的“job listings”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Job board为job board ID的“job listings”的数量"
+      },
+      "SearchUrls.JobBoardName": {
+        "table": "SearchUrls",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "search URL的“job board name”——取自所关联的“job board”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchUrls",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“job board”的name"
+      },
+      "Resumes.ResumeSections": {
+        "table": "Resumes",
+        "field": "ResumeSections",
+        "kind": "rollup",
+        "rule": "resume的“resume sections”为 与resume相关的“resume sections”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Resume为resume ID的“resume sections”的数量"
+      },
+      "Resumes.SearchRuns": {
+        "table": "Resumes",
+        "field": "SearchRuns",
+        "kind": "rollup",
+        "rule": "resume的“search runs”为 与resume相关的“search runs”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Resume为resume ID的“search runs”的数量"
+      },
+      "ResumeSections.ResumeName": {
+        "table": "ResumeSections",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "resume section的“resume name”——取自所关联的“resume”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ResumeSections",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“resume”的name"
+      },
+      "SearchRuns.ResumeName": {
+        "table": "SearchRuns",
+        "field": "ResumeName",
+        "kind": "lookup",
+        "rule": "search run的“resume name”——取自所关联的“resume”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Resumes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "Resume",
+            "label": "resume"
+          },
+          {
+            "table": "Resumes",
+            "field": "ResumeId",
+            "label": "resume ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“resume”的name"
+      },
+      "SearchRuns.ScoreResults": {
+        "table": "SearchRuns",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "search run的“score results”为 与search run相关的“score results”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Search run为search run ID的“score results”的数量"
+      },
+      "JobListings.JobBoardName": {
+        "table": "JobListings",
+        "field": "JobBoardName",
+        "kind": "lookup",
+        "rule": "job listing的“job board name”——取自所关联的“job board”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobBoards",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "JobBoards",
+            "field": "JobBoardId",
+            "label": "job board ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“job board”的name"
+      },
+      "JobListings.ScoreResults": {
+        "table": "JobListings",
+        "field": "ScoreResults",
+        "kind": "rollup",
+        "rule": "job listing的“score results”为 与job listing相关的“score results”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Job listing为job listing ID的“score results”的数量"
+      },
+      "JobListings.Decisions": {
+        "table": "JobListings",
+        "field": "Decisions",
+        "kind": "rollup",
+        "rule": "job listing的“decisions”为 与job listing相关的“decisions”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Job listing为job listing ID的“decisions”的数量"
+      },
+      "ScoreResults.Name": {
+        "table": "ScoreResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "score result的“name”按 job listing name,接着是“ - ”,接着是search run name 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "JobListingName",
+            "label": "job listing name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRunName",
+            "label": "search run name"
+          }
+        ],
+        "structure": null,
+        "plain": "Job listing name、\" - \",拼接search run name"
+      },
+      "ScoreResults.FinalScore": {
+        "table": "ScoreResults",
+        "field": "FinalScore",
+        "kind": "formula",
+        "rule": "Score result的“final score”按以下优先级确定:\n1. 当标志“disqualified”已设置时,取 0;\n2. 其余情况取 0且fit score加archetype score加history score加comp score加culture score减negative score中的最大者。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScoreResults",
+            "field": "IsDisqualified",
+            "label": "is disqualified"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "FitScore",
+            "label": "fit score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "ArchetypeScore",
+            "label": "archetype score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "HistoryScore",
+            "label": "history score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CompScore",
+            "label": "comp score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "CultureScore",
+            "label": "culture score"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "NegativeScore",
+            "label": "negative score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Score result的“final score”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“disqualified”已设置"
+              }
+            },
+            {
+              "value": "0且fit score加archetype score加history score加comp score加culture score减negative score中的最大者",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若is disqualified,则0,否则0且(((((fit score加archetype score)加history score)加comp score)加culture score)减negative score)中的最大者"
+      },
+      "ScoreResults.JobListingName": {
+        "table": "ScoreResults",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "score result的“job listing name”——取自所关联的“job listing”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“job listing”的name"
+      },
+      "ScoreResults.SearchRunName": {
+        "table": "ScoreResults",
+        "field": "SearchRunName",
+        "kind": "lookup",
+        "rule": "score result的“search run name”——取自所关联的“search run”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SearchRuns",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "SearchRun",
+            "label": "search run"
+          },
+          {
+            "table": "SearchRuns",
+            "field": "SearchRunId",
+            "label": "search run ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“search run”的name"
+      },
+      "ScoreResults.Company": {
+        "table": "ScoreResults",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "score result的“company”——取自所关联的“job listing”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "ScoreResults",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“job listing”的company"
+      },
+      "Decisions.Name": {
+        "table": "Decisions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "decision的“name”按 转为大写的verdict,接着是“: ”,接着是job listing name 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListingName",
+            "label": "job listing name"
+          }
+        ],
+        "structure": null,
+        "plain": "转为大写的verdict、\": \",拼接job listing name"
+      },
+      "Decisions.IsScoringSignal": {
+        "table": "Decisions",
+        "field": "IsScoringSignal",
+        "kind": "formula",
+        "rule": "当verdict为“yes”时,decision被视为“Scoring Signal”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Decisions",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Decision的“is scoring signal”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "verdict为“yes”"
+              }
+            },
+            {
+              "value": "假",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若verdict为\"yes\",则true(),否则false()"
+      },
+      "Decisions.JobListingName": {
+        "table": "Decisions",
+        "field": "JobListingName",
+        "kind": "lookup",
+        "rule": "decision的“job listing name”——取自所关联的“job listing”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“job listing”的name"
+      },
+      "Decisions.Company": {
+        "table": "Decisions",
+        "field": "Company",
+        "kind": "lookup",
+        "rule": "decision的“company”——取自所关联的“job listing”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "Company",
+            "label": "company"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“job listing”的company"
+      },
+      "Decisions.Board": {
+        "table": "Decisions",
+        "field": "Board",
+        "kind": "lookup",
+        "rule": "decision的“board”是所关联的“job listing”的“job board”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JobListings",
+            "field": "JobBoard",
+            "label": "job board"
+          },
+          {
+            "table": "Decisions",
+            "field": "JobListing",
+            "label": "job listing"
+          },
+          {
+            "table": "JobListings",
+            "field": "JobListingId",
+            "label": "job listing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“job listing”的job board"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "JobBoards": [
+        "job board**必须**具有name且max pages,并记录其是“Enabled”与否且其是“Headless”与否。"
+      ],
+      "SearchUrls": [
+        "search URL**必须**恰好引用一个“job board”。",
+        "search URL**必须**具有name且URL,并记录其是“Enabled”与否。"
+      ],
+      "RoleArchetypes": [
+        "role archetype**必须**具有name且description。"
+      ],
+      "RubricDimensions": [
+        "rubric dimension**必须**具有name。"
+      ],
+      "Resumes": [
+        "resume**必须**具有name且file path。"
+      ],
+      "ResumeSections": [
+        "resume section**必须**恰好引用一个“resume”。",
+        "resume section**必须**具有name、section order、content,且chroma doc ID。"
+      ],
+      "SearchRuns": [
+        "search run**必须**恰好引用一个“resume”。",
+        "search run**必须**具有name、run date、archetype weight、fit weight、history weight、comp weight、negative weight、culture weight、base salary,且min score threshold,并记录其是“Disqualify on Llm Flag”与否。"
+      ],
+      "JobListings": [
+        "job listing**必须**恰好引用一个“job board”。",
+        "job listing**必须**具有name、external ID、company、URL,且full text。"
+      ],
+      "ScoreResults": [
+        "score result**必须**恰好引用一个“job listing”。",
+        "score result**必须**恰好引用一个“search run”。",
+        "score result**必须**具有fit score、archetype score、history score、comp score、negative score,且culture score,并记录其是“Disqualified”与否。"
+      ],
+      "Decisions": [
+        "decision**必须**恰好引用一个“job listing”。",
+        "decision**必须**具有verdict且recorded at。"
+      ]
+    },
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "JobBoards": "job board",

@@ -2415,7 +2415,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -4258,6 +4273,29031 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Businesses": "business",
+      "BeneficialOwners": "beneficial owner",
+      "Contacts": "contact",
+      "Accounts": "account",
+      "Loans": "loan",
+      "Covenants": "covenant",
+      "RiskRatingHistory": "risk rating history",
+      "Documents": "document",
+      "Interactions": "interaction"
+    }
+  },
+  "ar": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «user» يُحسب على النحو الآتي: حقل «full name» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name بأحرف صغيرة بعد وضع «-» مكان « »"
+      },
+      "Users.IsRM": {
+        "table": "Users",
+        "field": "IsRM",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «user» على أنه «RM» إذا تحقق أنّ حقل «role» يساوي «RM».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role هو \"RM\""
+      },
+      "Users.IsUnderwriter": {
+        "table": "Users",
+        "field": "IsUnderwriter",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «user» على أنه «underwriter» إذا تحقق أنّ حقل «role» يساوي «Underwriter».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role هو \"Underwriter\""
+      },
+      "Users.IsBranchBanker": {
+        "table": "Users",
+        "field": "IsBranchBanker",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «user» على أنه «branch banker» إذا تحقق أنّ حقل «role» يساوي «BranchBanker».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role هو \"BranchBanker\""
+      },
+      "Users.IsAdmin": {
+        "table": "Users",
+        "field": "IsAdmin",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «user» على أنه «admin» إذا تحقق أنّ حقل «role» يساوي «Admin».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role هو \"Admin\""
+      },
+      "Users.CountOfPortfolioBusinesses": {
+        "table": "Users",
+        "field": "CountOfPortfolioBusinesses",
+        "kind": "rollup",
+        "rule": "حقل «count of portfolio businesses» في سجل «user» هو عدد سجلات «businesses» المرتبطة بسجل «user».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «businesses» التي يتحقق فيها أنّ حقل «relationship manager» يساوي هذا السجل"
+      },
+      "Users.CountOfOriginatedLoans": {
+        "table": "Users",
+        "field": "CountOfOriginatedLoans",
+        "kind": "rollup",
+        "rule": "حقل «count of originated loans» في سجل «user» هو عدد سجلات «loans» المرتبطة بسجل «user».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «loans» التي يتحقق فيها أنّ حقل «originating RM» يساوي هذا السجل"
+      },
+      "Users.CountOfUnderwrittenLoans": {
+        "table": "Users",
+        "field": "CountOfUnderwrittenLoans",
+        "kind": "rollup",
+        "rule": "حقل «count of underwritten loans» في سجل «user» هو عدد سجلات «loans» المرتبطة بسجل «user».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «loans» التي يتحقق فيها أنّ حقل «underwriter» يساوي هذا السجل"
+      },
+      "Businesses.Name": {
+        "table": "Businesses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «business» يُحسب على النحو الآتي: حقل «legal name» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة بعد وضع نص فارغ مكان كل نقطة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name بأحرف صغيرة بعد وضع «-» مكان « » بعد وضع «» مكان «.»"
+      },
+      "Businesses.RelationshipManagerLabel": {
+        "table": "Businesses",
+        "field": "RelationshipManagerLabel",
+        "kind": "lookup",
+        "rule": "حقل «relationship manager label» في سجل «business» يأخذ قيمة حقل «full name» من السجل المرتبط به عبر حقل «relationship manager».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «full name» من السجل المرتبط عبر «relationship manager»"
+      },
+      "Businesses.IsCustomer": {
+        "table": "Businesses",
+        "field": "IsCustomer",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «business» على أنه «customer» إذا تحقق أنّ حقل «status» يساوي «Customer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status هو \"Customer\""
+      },
+      "Businesses.IsProspect": {
+        "table": "Businesses",
+        "field": "IsProspect",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «business» على أنه «prospect» إذا تحقق أنّ حقل «status» يساوي «Prospect».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status هو \"Prospect\""
+      },
+      "Businesses.WasReferred": {
+        "table": "Businesses",
+        "field": "WasReferred",
+        "kind": "formula",
+        "rule": "يُعدّ سجل «business» قد اتصف سابقًا بصفة «referred» إذا تحقق أنّ حقل «referral source» له قيمة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "ReferralSource",
+            "label": "referral source"
+          }
+        ],
+        "structure": null,
+        "plain": "الشرط (أول قيمة غير فارغة من بين referral source أو \"\" هو \"\") غير متحقق"
+      },
+      "Businesses.CountOfBeneficialOwners": {
+        "table": "Businesses",
+        "field": "CountOfBeneficialOwners",
+        "kind": "rollup",
+        "rule": "حقل «count of beneficial owners» في سجل «business» هو عدد سجلات «beneficial owners» المرتبطة بسجل «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «beneficial owners» التي يتحقق فيها أنّ حقل «business» يساوي هذا السجل"
+      },
+      "Businesses.CountOfContacts": {
+        "table": "Businesses",
+        "field": "CountOfContacts",
+        "kind": "rollup",
+        "rule": "حقل «count of contacts» في سجل «business» هو عدد سجلات «contacts» المرتبطة بسجل «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «contacts» التي يتحقق فيها أنّ حقل «business» يساوي هذا السجل"
+      },
+      "Businesses.CountOfAccounts": {
+        "table": "Businesses",
+        "field": "CountOfAccounts",
+        "kind": "rollup",
+        "rule": "حقل «count of accounts» في سجل «business» هو عدد سجلات «accounts» المرتبطة بسجل «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «accounts» التي يتحقق فيها أنّ حقل «business» يساوي هذا السجل"
+      },
+      "Businesses.CountOfLoans": {
+        "table": "Businesses",
+        "field": "CountOfLoans",
+        "kind": "rollup",
+        "rule": "حقل «count of loans» في سجل «business» هو عدد سجلات «loans» المرتبطة بسجل «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «loans» التي يتحقق فيها أنّ حقل «business» يساوي هذا السجل"
+      },
+      "Businesses.CountOfInteractions": {
+        "table": "Businesses",
+        "field": "CountOfInteractions",
+        "kind": "rollup",
+        "rule": "حقل «count of interactions» في سجل «business» هو عدد سجلات «interactions» المرتبطة بسجل «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «interactions» التي يتحقق فيها أنّ حقل «business» يساوي هذا السجل"
+      },
+      "Businesses.CountOfDocuments": {
+        "table": "Businesses",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "حقل «count of documents» في سجل «business» هو عدد سجلات «documents» المرتبطة بسجل «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «documents» التي يتحقق فيها أنّ حقل «business» يساوي هذا السجل"
+      },
+      "Businesses.TotalDepositBalanceUsd": {
+        "table": "Businesses",
+        "field": "TotalDepositBalanceUsd",
+        "kind": "rollup",
+        "rule": "حقل «total deposit balance USD» في سجل «business» هو مجموع قيم حقل «current balance USD» عبر سجلات «accounts» المرتبطة بسجل «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "CurrentBalanceUsd",
+            "label": "current balance USD"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «current balance USD» في جميع سجلات «accounts» التي يتحقق فيها أنّ حقل «business» يساوي هذا السجل"
+      },
+      "Businesses.TotalLoanPrincipalUsd": {
+        "table": "Businesses",
+        "field": "TotalLoanPrincipalUsd",
+        "kind": "rollup",
+        "rule": "حقل «total loan principal USD» في سجل «business» هو مجموع قيم حقل «principal USD» عبر سجلات «loans» المرتبطة بسجل «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "PrincipalUsd",
+            "label": "principal USD"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «principal USD» في جميع سجلات «loans» التي يتحقق فيها أنّ حقل «business» يساوي هذا السجل"
+      },
+      "Businesses.CountOfClassifiedLoans": {
+        "table": "Businesses",
+        "field": "CountOfClassifiedLoans",
+        "kind": "rollup",
+        "rule": "حقل «count of classified loans» في سجل «business» هو عدد سجلات «loans» المرتبطة بسجل «business» التي تُصنّف على أنها «classified asset».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «loans» التي يتحقق فيها أنّ حقل «business» يساوي هذا السجل وحقل «is classified asset» يساوي true()"
+      },
+      "Businesses.HasClassifiedLoan": {
+        "table": "Businesses",
+        "field": "HasClassifiedLoan",
+        "kind": "formula",
+        "rule": "يُعدّ سجل «business» حائزًا على «classified loan» إذا تحقق أنّ حقل «count of classified loans» أكبر من 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "CountOfClassifiedLoans",
+            "label": "count of classified loans"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of classified loans أكبر من 0"
+      },
+      "Businesses.BeneficialOwnersAtCddThreshold": {
+        "table": "Businesses",
+        "field": "BeneficialOwnersAtCddThreshold",
+        "kind": "rollup",
+        "rule": "حقل «beneficial owners at CDD threshold» في سجل «business» هو عدد سجلات «beneficial owners» المرتبطة بسجل «business» التي تحقق شرط «meets CDD threshold».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "MeetsCddThreshold",
+            "label": "meets CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «beneficial owners» التي يتحقق فيها أنّ حقل «business» يساوي هذا السجل وحقل «meets CDD threshold» يساوي true()"
+      },
+      "Businesses.MeetsCddRule": {
+        "table": "Businesses",
+        "field": "MeetsCddRule",
+        "kind": "formula",
+        "rule": "يُعدّ سجل «business» محققًا لشرط «meets CDD rule» إذا تحقق أنّ حقل «beneficial owners at CDD threshold» أكبر من 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "BeneficialOwnersAtCddThreshold",
+            "label": "beneficial owners at CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Beneficial owners at CDD threshold أكبر من 0"
+      },
+      "Businesses.PortfolioPriority": {
+        "table": "Businesses",
+        "field": "PortfolioPriority",
+        "kind": "formula",
+        "rule": "حقل «portfolio priority» في سجل «business» يتحدد وفق ترتيب الأولوية الآتي:\n1. «High»، إذا تحقق أنّ علامة «classified loan» مفعّلة؛\n2. «Medium»، إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: علامة «meets CDD rule» غير مفعّلة، أو علامة «prospect» مفعّلة، أو حقل «count of loans» يساوي 0؛\n3. «Low»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "HasClassifiedLoan",
+            "label": "has classified loan"
+          },
+          {
+            "table": "Businesses",
+            "field": "MeetsCddRule",
+            "label": "meets CDD rule"
+          },
+          {
+            "table": "Businesses",
+            "field": "IsProspect",
+            "label": "is prospect"
+          },
+          {
+            "table": "Businesses",
+            "field": "CountOfLoans",
+            "label": "count of loans"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «portfolio priority» في سجل «business» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«High»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «classified loan» مفعّلة"
+              }
+            },
+            {
+              "value": "«Medium»",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "علامة «meets CDD rule» غير مفعّلة"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "علامة «prospect» مفعّلة"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "حقل «count of loans» يساوي 0"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "«Low»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ has classified loan فالناتج \"High\"، وإلا فالناتج إذا تحقق أنّ الشرط (meets CDD rule) غير متحقق، أو is prospect، أو count of loans يساوي 0 فالناتج \"Medium\"، وإلا فالناتج \"Low\""
+      },
+      "BeneficialOwners.Name": {
+        "table": "BeneficialOwners",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «beneficial owner» يُحسب على النحو الآتي: حقل «business»، ثم شرطة، ثم حقل «full name» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "(business يليه \"-\") يليه full name بأحرف صغيرة بعد وضع «-» مكان « »"
+      },
+      "BeneficialOwners.BusinessLabel": {
+        "table": "BeneficialOwners",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "حقل «business label» في سجل «beneficial owner» يأخذ قيمة حقل «legal name» من السجل المرتبط به عبر حقل «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «legal name» من السجل المرتبط عبر «business»"
+      },
+      "BeneficialOwners.Meets25PercentThreshold": {
+        "table": "BeneficialOwners",
+        "field": "Meets25PercentThreshold",
+        "kind": "formula",
+        "rule": "يوسم سجل «beneficial owner» بعلامة «meets25 percent threshold» إذا تحقق أنّ حقل «ownership percentage» لا يقل عن 25.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "OwnershipPercentage",
+            "label": "ownership percentage"
+          }
+        ],
+        "structure": null,
+        "plain": "Ownership percentage لا يقل عن 25"
+      },
+      "BeneficialOwners.MeetsCddThreshold": {
+        "table": "BeneficialOwners",
+        "field": "MeetsCddThreshold",
+        "kind": "formula",
+        "rule": "يُعدّ سجل «beneficial owner» محققًا لشرط «meets CDD threshold» إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: علامة «meets25 percent threshold» مفعّلة أو علامة «control person» مفعّلة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Meets25PercentThreshold",
+            "label": "meets25 percent threshold"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "IsControlPerson",
+            "label": "is control person"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُعدّ سجل «beneficial owner» محققًا لشرط «meets CDD threshold» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "علامة «meets25 percent threshold» مفعّلة"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "علامة «control person» مفعّلة"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Meets25 percent threshold أو is control person"
+      },
+      "Contacts.Name": {
+        "table": "Contacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «contact» يُحسب على النحو الآتي: حقل «business»، ثم شرطة، ثم حقل «full name» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة، ثم شرطة، ثم حقل «title» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Contacts",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business يليه \"-\") يليه full name بأحرف صغيرة بعد وضع «-» مكان « ») يليه \"-\") يليه title بأحرف صغيرة بعد وضع «-» مكان « »"
+      },
+      "Contacts.BusinessLabel": {
+        "table": "Contacts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "حقل «business label» في سجل «contact» يأخذ قيمة حقل «legal name» من السجل المرتبط به عبر حقل «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «legal name» من السجل المرتبط عبر «business»"
+      },
+      "Contacts.IsOfficer": {
+        "table": "Contacts",
+        "field": "IsOfficer",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «contact» على أنه «officer» إذا تحقق أنّ حقل «contact type» يساوي «Officer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type هو \"Officer\""
+      },
+      "Contacts.IsApClerk": {
+        "table": "Contacts",
+        "field": "IsApClerk",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «contact» على أنه «AP clerk» إذا تحقق أنّ حقل «contact type» يساوي «APClerk».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type هو \"APClerk\""
+      },
+      "Accounts.Name": {
+        "table": "Accounts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «account» يُحسب على النحو الآتي: حقل «business»، ثم شرطة، ثم حقل «account type» بأحرف صغيرة، ثم شرطة، ثم حقل «account number last4».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountType",
+            "label": "account type"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountNumberLast4",
+            "label": "account number last4"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business يليه \"-\") يليه account type بأحرف صغيرة) يليه \"-\") يليه account number last4"
+      },
+      "Accounts.BusinessLabel": {
+        "table": "Accounts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "حقل «business label» في سجل «account» يأخذ قيمة حقل «legal name» من السجل المرتبط به عبر حقل «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «legal name» من السجل المرتبط عبر «business»"
+      },
+      "Accounts.TreasuryServiceCount": {
+        "table": "Accounts",
+        "field": "TreasuryServiceCount",
+        "kind": "formula",
+        "rule": "حقل «treasury service count» في سجل «account» يُحسب على النحو الآتي: عدد ما يتحقق من الشروط الآتية: علامة «ACH» مفعّلة، وعلامة «wire» مفعّلة، وعلامة «card» مفعّلة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "HasAch",
+            "label": "has ACH"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasWire",
+            "label": "has wire"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasCard",
+            "label": "has card"
+          }
+        ],
+        "structure": null,
+        "plain": "(إذا تحقق أنّ has ACH فالناتج 1، وإلا فالناتج 0 زائد إذا تحقق أنّ has wire فالناتج 1، وإلا فالناتج 0) زائد إذا تحقق أنّ has card فالناتج 1، وإلا فالناتج 0"
+      },
+      "Accounts.HasAnyTreasuryService": {
+        "table": "Accounts",
+        "field": "HasAnyTreasuryService",
+        "kind": "formula",
+        "rule": "يُعدّ سجل «account» حائزًا على «any treasury service» إذا تحقق أنّ حقل «treasury service count» أكبر من 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "TreasuryServiceCount",
+            "label": "treasury service count"
+          }
+        ],
+        "structure": null,
+        "plain": "Treasury service count أكبر من 0"
+      },
+      "Loans.Name": {
+        "table": "Loans",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «loan» يُحسب على النحو الآتي: حقل «loan number» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan number بأحرف صغيرة بعد وضع «-» مكان « »"
+      },
+      "Loans.BusinessLabel": {
+        "table": "Loans",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "حقل «business label» في سجل «loan» يأخذ قيمة حقل «legal name» من السجل المرتبط به عبر حقل «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «legal name» من السجل المرتبط عبر «business»"
+      },
+      "Loans.BusinessNaicsCode": {
+        "table": "Loans",
+        "field": "BusinessNaicsCode",
+        "kind": "lookup",
+        "rule": "حقل «business NAICS code» في سجل «loan» مأخوذ من السجل المرتبط به عبر حقل «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "NaicsCode",
+            "label": "NAICS code"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «NAICS code» من السجل المرتبط عبر «business»"
+      },
+      "Loans.OriginatingRmLabel": {
+        "table": "Loans",
+        "field": "OriginatingRmLabel",
+        "kind": "lookup",
+        "rule": "حقل «originating RM label» في سجل «loan» يأخذ قيمة حقل «full name» من السجل المرتبط به عبر حقل «originating RM».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «full name» من السجل المرتبط عبر «originating RM»"
+      },
+      "Loans.UnderwriterIsAdmin": {
+        "table": "Loans",
+        "field": "UnderwriterIsAdmin",
+        "kind": "lookup",
+        "rule": "حقل «underwriter is admin» في سجل «loan» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «underwriter» مصنّفًا على أنه «admin».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "IsAdmin",
+            "label": "is admin"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «is admin» من السجل المرتبط عبر «underwriter»"
+      },
+      "Loans.IsFunded": {
+        "table": "Loans",
+        "field": "IsFunded",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «loan» على أنه «funded» إذا تحقق أنّ حقل «underwriting stage» يساوي «Funded».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "UnderwritingStage",
+            "label": "underwriting stage"
+          }
+        ],
+        "structure": null,
+        "plain": "Underwriting stage هو \"Funded\""
+      },
+      "Loans.IsClassifiedAsset": {
+        "table": "Loans",
+        "field": "IsClassifiedAsset",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «loan» على أنه «classified asset» إذا تحقق أنّ حقل «risk rating» لا يقل عن 7.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "RiskRating",
+            "label": "risk rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Risk rating لا يقل عن 7"
+      },
+      "Loans.DscrInBand": {
+        "table": "Loans",
+        "field": "DscrInBand",
+        "kind": "formula",
+        "rule": "يوسم سجل «loan» بعلامة «DSCR in band» إذا تحقق أنّ حقل «DSCR» (وتُعدّ القيمة المفقودة 0) لا يقل عن 1.20.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Dscr",
+            "label": "DSCR"
+          }
+        ],
+        "structure": null,
+        "plain": "أول قيمة غير فارغة من بين DSCR أو 0 لا يقل عن 1.20"
+      },
+      "Loans.LtvInBand": {
+        "table": "Loans",
+        "field": "LtvInBand",
+        "kind": "formula",
+        "rule": "يوسم سجل «loan» بعلامة «LTV in band» إذا تحقق أنّ حقل «LTV» (وتُعدّ القيمة المفقودة 0) لا يزيد على 0.80.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Ltv",
+            "label": "LTV"
+          }
+        ],
+        "structure": null,
+        "plain": "أول قيمة غير فارغة من بين LTV أو 0 لا يزيد على 0.80"
+      },
+      "Loans.SegregationOfDutiesOk": {
+        "table": "Loans",
+        "field": "SegregationOfDutiesOk",
+        "kind": "formula",
+        "rule": "يوسم سجل «loan» بعلامة «segregation of duties ok» إذا تحقق أنّ الشرط الآتي غير متحقق: حقل «originating RM» يساوي حقل «underwriter».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          }
+        ],
+        "structure": null,
+        "plain": "الشرط (originating RM يساوي underwriter) غير متحقق"
+      },
+      "Loans.CountOfCovenants": {
+        "table": "Loans",
+        "field": "CountOfCovenants",
+        "kind": "rollup",
+        "rule": "حقل «count of covenants» في سجل «loan» هو عدد سجلات «covenants» المرتبطة بسجل «loan».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «covenants» التي يتحقق فيها أنّ حقل «loan» يساوي هذا السجل"
+      },
+      "Loans.CountOfBreachedCovenants": {
+        "table": "Loans",
+        "field": "CountOfBreachedCovenants",
+        "kind": "rollup",
+        "rule": "حقل «count of breached covenants» في سجل «loan» هو عدد سجلات «covenants» المرتبطة بسجل «loan» التي تُصنّف على أنها «breached».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Covenants",
+            "field": "IsBreached",
+            "label": "is breached"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «covenants» التي يتحقق فيها أنّ حقل «loan» يساوي هذا السجل وحقل «is breached» يساوي true()"
+      },
+      "Loans.CountOfRiskRatingHistory": {
+        "table": "Loans",
+        "field": "CountOfRiskRatingHistory",
+        "kind": "rollup",
+        "rule": "حقل «count of risk rating history» في سجل «loan» هو عدد سجلات «risk rating history» المرتبطة بسجل «loan».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «risk rating history» التي يتحقق فيها أنّ حقل «loan» يساوي هذا السجل"
+      },
+      "Loans.CountOfDocuments": {
+        "table": "Loans",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "حقل «count of documents» في سجل «loan» هو عدد سجلات «documents» المرتبطة بسجل «loan».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «documents» التي يتحقق فيها أنّ حقل «loan» يساوي هذا السجل"
+      },
+      "Loans.HasBreachedCovenant": {
+        "table": "Loans",
+        "field": "HasBreachedCovenant",
+        "kind": "formula",
+        "rule": "يُعدّ سجل «loan» حائزًا على «breached covenant» إذا تحقق أنّ حقل «count of breached covenants» أكبر من 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "CountOfBreachedCovenants",
+            "label": "count of breached covenants"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of breached covenants أكبر من 0"
+      },
+      "Loans.OnWatchlist": {
+        "table": "Loans",
+        "field": "OnWatchlist",
+        "kind": "formula",
+        "rule": "يوسم سجل «loan» بعلامة «on watchlist» إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: علامة «classified asset» مفعّلة أو علامة «breached covenant» مفعّلة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يوسم سجل «loan» بعلامة «on watchlist» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "علامة «classified asset» مفعّلة"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "علامة «breached covenant» مفعّلة"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is classified asset أو has breached covenant"
+      },
+      "Loans.HealthScore": {
+        "table": "Loans",
+        "field": "HealthScore",
+        "kind": "formula",
+        "rule": "حقل «health score» في سجل «loan» يُحسب على النحو الآتي: عدد ما يتحقق من الشروط الآتية: علامة «DSCR in band» مفعّلة، وعلامة «LTV in band» مفعّلة، وعلامة «classified asset» غير مفعّلة، وعلامة «breached covenant» غير مفعّلة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "DscrInBand",
+            "label": "DSCR in band"
+          },
+          {
+            "table": "Loans",
+            "field": "LtvInBand",
+            "label": "LTV in band"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": null,
+        "plain": "((إذا تحقق أنّ DSCR in band فالناتج 1، وإلا فالناتج 0 زائد إذا تحقق أنّ LTV in band فالناتج 1، وإلا فالناتج 0) زائد إذا تحقق أنّ is classified asset فالناتج 0، وإلا فالناتج 1) زائد إذا تحقق أنّ has breached covenant فالناتج 0، وإلا فالناتج 1"
+      },
+      "Covenants.Name": {
+        "table": "Covenants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «covenant» يُحسب على النحو الآتي: حقل «loan»، ثم شرطة، ثم حقل «covenant type» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Covenants",
+            "field": "CovenantType",
+            "label": "covenant type"
+          }
+        ],
+        "structure": null,
+        "plain": "(loan يليه \"-\") يليه covenant type بأحرف صغيرة بعد وضع «-» مكان « »"
+      },
+      "Covenants.LoanLabel": {
+        "table": "Covenants",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "حقل «loan label» في سجل «covenant» يأخذ قيمة حقل «loan number» من السجل المرتبط به عبر حقل «loan».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «loan number» من السجل المرتبط عبر «loan»"
+      },
+      "Covenants.LoanBusiness": {
+        "table": "Covenants",
+        "field": "LoanBusiness",
+        "kind": "lookup",
+        "rule": "حقل «loan business» في سجل «covenant» مأخوذ من السجل المرتبط به عبر حقل «loan».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «business» من السجل المرتبط عبر «loan»"
+      },
+      "Covenants.IsBreached": {
+        "table": "Covenants",
+        "field": "IsBreached",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «covenant» على أنه «breached» إذا تحقق أنّ حقل «status» يساوي «Breached».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status هو \"Breached\""
+      },
+      "Covenants.HasActiveWaiver": {
+        "table": "Covenants",
+        "field": "HasActiveWaiver",
+        "kind": "formula",
+        "rule": "يُعدّ سجل «covenant» حائزًا على «active waiver» إذا تحقق أنّ حقل «current waiver through» له قيمة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "CurrentWaiverThrough",
+            "label": "current waiver through"
+          }
+        ],
+        "structure": null,
+        "plain": "الشرط (current waiver through فارغ) غير متحقق"
+      },
+      "RiskRatingHistory.Name": {
+        "table": "RiskRatingHistory",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «risk rating history» يُحسب على النحو الآتي: حقل «loan»، ثم شرطة، ثم ناتج دالة «TEXT» مطبّقةً على حقل «effective date» و«yyyy-mm-dd»، ثم «-grade-»، ثم ناتج دالة «TEXT» مطبّقةً على حقل «new grade» و«0».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "EffectiveDate",
+            "label": "effective date"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": null,
+        "plain": "(((loan يليه \"-\") يليه text(effective date, \"yyyy-mm-dd\")) يليه \"-grade-\") يليه text(new grade, \"0\")"
+      },
+      "RiskRatingHistory.LoanLabel": {
+        "table": "RiskRatingHistory",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "حقل «loan label» في سجل «risk rating history» يأخذ قيمة حقل «loan number» من السجل المرتبط به عبر حقل «loan».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «loan number» من السجل المرتبط عبر «loan»"
+      },
+      "RiskRatingHistory.ChangedByUserLabel": {
+        "table": "RiskRatingHistory",
+        "field": "ChangedByUserLabel",
+        "kind": "lookup",
+        "rule": "حقل «changed by user label» في سجل «risk rating history» يأخذ قيمة حقل «full name» من السجل المرتبط به عبر حقل «changed by user».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "ChangedByUser",
+            "label": "changed by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «full name» من السجل المرتبط عبر «changed by user»"
+      },
+      "RiskRatingHistory.GradeDelta": {
+        "table": "RiskRatingHistory",
+        "field": "GradeDelta",
+        "kind": "formula",
+        "rule": "حقل «grade delta» في سجل «risk rating history» يُحسب على النحو الآتي: حقل «new grade» ناقص حقل «prior grade» (وتُعدّ القيمة المفقودة حقل «new grade»).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "New grade ناقص أول قيمة غير فارغة من بين prior grade أو new grade"
+      },
+      "RiskRatingHistory.IsDowngrade": {
+        "table": "RiskRatingHistory",
+        "field": "IsDowngrade",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «risk rating history» على أنه «downgrade» إذا تحقق أنّ حقل «grade delta» أكبر من 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "GradeDelta",
+            "label": "grade delta"
+          }
+        ],
+        "structure": null,
+        "plain": "Grade delta أكبر من 0"
+      },
+      "RiskRatingHistory.IsInitialRating": {
+        "table": "RiskRatingHistory",
+        "field": "IsInitialRating",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «risk rating history» على أنه «initial rating» إذا تحقق أنّ حقل «prior grade» (وتُعدّ القيمة المفقودة 0) يساوي 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "أول قيمة غير فارغة من بين prior grade أو 0 يساوي 0"
+      },
+      "RiskRatingHistory.CrossedClassifiedThreshold": {
+        "table": "RiskRatingHistory",
+        "field": "CrossedClassifiedThreshold",
+        "kind": "formula",
+        "rule": "يوسم سجل «risk rating history» بعلامة «crossed classified threshold» إذا تحقق أنّ جميع الشروط الآتية متحققة: حقل «prior grade» (وتُعدّ القيمة المفقودة 0) أقل من 7 وحقل «new grade» لا يقل عن 7.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يوسم سجل «risk rating history» بعلامة «crossed classified threshold» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "حقل «prior grade» (وتُعدّ القيمة المفقودة 0) أقل من 7"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "حقل «new grade» لا يقل عن 7"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "أول قيمة غير فارغة من بين prior grade أو 0 أقل من 7 وnew grade لا يقل عن 7"
+      },
+      "Documents.Name": {
+        "table": "Documents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «document» يُحسب على النحو الآتي: حقل «filename» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة بعد وضع شرطة مكان كل نقطة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Filename",
+            "label": "filename"
+          }
+        ],
+        "structure": null,
+        "plain": "Filename بأحرف صغيرة بعد وضع «-» مكان « » بعد وضع «-» مكان «.»"
+      },
+      "Documents.BusinessLabel": {
+        "table": "Documents",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "حقل «business label» في سجل «document» يأخذ قيمة حقل «legal name» من السجل المرتبط به عبر حقل «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «legal name» من السجل المرتبط عبر «business»"
+      },
+      "Documents.LoanLabel": {
+        "table": "Documents",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "حقل «loan label» في سجل «document» يأخذ قيمة حقل «loan number» من السجل المرتبط به عبر حقل «loan».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «loan number» من السجل المرتبط عبر «loan»"
+      },
+      "Documents.UploadedByUserLabel": {
+        "table": "Documents",
+        "field": "UploadedByUserLabel",
+        "kind": "lookup",
+        "rule": "حقل «uploaded by user label» في سجل «document» يأخذ قيمة حقل «full name» من السجل المرتبط به عبر حقل «uploaded by user».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Documents",
+            "field": "UploadedByUser",
+            "label": "uploaded by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «full name» من السجل المرتبط عبر «uploaded by user»"
+      },
+      "Documents.AttachedTo": {
+        "table": "Documents",
+        "field": "AttachedTo",
+        "kind": "formula",
+        "rule": "حقل «attached to» في سجل «document» يتحدد وفق ترتيب الأولوية الآتي:\n1. «Loan»، إذا تحقق أنّ حقل «loan» له قيمة؛\n2. «Business»، إذا تحقق أنّ حقل «business» له قيمة؛\n3. «Orphan»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «attached to» في سجل «document» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«Loan»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «loan» له قيمة"
+              }
+            },
+            {
+              "value": "«Business»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «business» له قيمة"
+              }
+            },
+            {
+              "value": "«Orphan»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ الشرط (أول قيمة غير فارغة من بين loan أو \"\" هو \"\") غير متحقق فالناتج \"Loan\"، وإلا فالناتج إذا تحقق أنّ الشرط (أول قيمة غير فارغة من بين business أو \"\" هو \"\") غير متحقق فالناتج \"Business\"، وإلا فالناتج \"Orphan\""
+      },
+      "Documents.FromCustomerPortal": {
+        "table": "Documents",
+        "field": "FromCustomerPortal",
+        "kind": "formula",
+        "rule": "يوسم سجل «document» بعلامة «from customer portal» إذا تحقق أنّ حقل «uploaded via» يساوي «BusinessClientPortal».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "UploadedVia",
+            "label": "uploaded via"
+          }
+        ],
+        "structure": null,
+        "plain": "Uploaded via هو \"BusinessClientPortal\""
+      },
+      "Interactions.Name": {
+        "table": "Interactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «interaction» يُحسب على النحو الآتي: حقل «business»، ثم شرطة، ثم ناتج دالة «TEXT» مطبّقةً على حقل «interaction date» و«yyyy-mm-dd»، ثم شرطة، ثم حقل «interaction type» بأحرف صغيرة، ثم شرطة، ثم حقل «subject» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionDate",
+            "label": "interaction date"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((business يليه \"-\") يليه text(interaction date, \"yyyy-mm-dd\")) يليه \"-\") يليه interaction type بأحرف صغيرة) يليه \"-\") يليه subject بأحرف صغيرة بعد وضع «-» مكان « »"
+      },
+      "Interactions.BusinessLabel": {
+        "table": "Interactions",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "حقل «business label» في سجل «interaction» يأخذ قيمة حقل «legal name» من السجل المرتبط به عبر حقل «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «legal name» من السجل المرتبط عبر «business»"
+      },
+      "Interactions.UserLabel": {
+        "table": "Interactions",
+        "field": "UserLabel",
+        "kind": "lookup",
+        "rule": "حقل «user label» في سجل «interaction» يأخذ قيمة حقل «full name» من السجل المرتبط به عبر حقل «user».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Interactions",
+            "field": "User",
+            "label": "user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «full name» من السجل المرتبط عبر «user»"
+      },
+      "Interactions.IsSystemEvent": {
+        "table": "Interactions",
+        "field": "IsSystemEvent",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «interaction» على أنه «system event» إذا تحقق أنّ حقل «interaction type» يساوي «SystemEvent».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type هو \"SystemEvent\""
+      },
+      "Interactions.IsTask": {
+        "table": "Interactions",
+        "field": "IsTask",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «interaction» على أنه «task» إذا تحقق أنّ حقل «interaction type» يساوي «Task».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type هو \"Task\""
+      },
+      "Interactions.FromCustomer": {
+        "table": "Interactions",
+        "field": "FromCustomer",
+        "kind": "formula",
+        "rule": "يوسم سجل «interaction» بعلامة «from customer» إذا تحقق أنّ حقل «source» يساوي «BusinessClientPortal».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Source",
+            "label": "source"
+          }
+        ],
+        "structure": null,
+        "plain": "Source هو \"BusinessClientPortal\""
+      },
+      "Interactions.IsCovenantEvent": {
+        "table": "Interactions",
+        "field": "IsCovenantEvent",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «interaction» على أنه «covenant event» إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «system event» مفعّلة وحقل «subject» يحتوي على «covenant breach».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "IsSystemEvent",
+            "label": "is system event"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُصنّف سجل «interaction» على أنه «covenant event» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "علامة «system event» مفعّلة"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "حقل «subject» يحتوي على «covenant breach»"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is system event؛ والشرط (find(\"covenant breach\", subject بأحرف صغيرة)، أو 0 إذا وقع خطأ يساوي 0) غير متحقق"
+      }
+    },
+    "obligations": [
+      {
+        "constraintKey": "loan-sod",
+        "entity": "Loan",
+        "predicate": "SegregationOfDutiesOk",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **loan-sod** *(إلزامي)* — A loan must not be funded by the same user who originated it: the originating relationship manager and the underwriter must be different users.\n  - _عند المخالفة:_ «The same user originated and underwrote this loan — segregation of duties is violated.»\n  - _المصدر:_ Internal Credit Policy §4.2"
+      },
+      {
+        "constraintKey": "biz-cdd",
+        "entity": "Business",
+        "predicate": "MeetsCddRule",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **biz-cdd** *(إلزامي)* — في كل سجل «business»، **يجب أن** يكون حقل «beneficial owners at CDD threshold» بقيمة أكبر من 0.\n  - _عند المخالفة:_ «Beneficial-ownership (CDD) collection is incomplete: no owner crosses the 25% threshold and no control person is designated.»\n  - _المصدر:_ FinCEN CDD Rule, 31 CFR 1010.230\n  - _يستند إلى:_ Meets CDD Rule (انظر DR-25)."
+      },
+      {
+        "constraintKey": "loan-dscr",
+        "entity": "Loan",
+        "predicate": "DscrInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-dscr** *(قابل للإعفاء)* — في كل سجل «loan»، **يجب أن** يكون حقل «DSCR» بقيمة لا تقل عن 1.20 *(يجوز الإعفاء منه بموافقة جهة مخوّلة)*.\n  - _عند المخالفة:_ «DSCR is below the 1.20 minimum; a credit-committee waiver is required to fund.»\n  - _المصدر:_ Internal Credit Policy §2.1 (DSCR floor)\n  - _يستند إلى:_ DSCR in Band (انظر DR-46)."
+      },
+      {
+        "constraintKey": "loan-ltv",
+        "entity": "Loan",
+        "predicate": "LtvInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-ltv** *(قابل للإعفاء)* — في كل سجل «loan»، **يجب أن** يكون حقل «LTV» بقيمة لا تزيد على 0.80 *(يجوز الإعفاء منه بموافقة جهة مخوّلة)*.\n  - _عند المخالفة:_ «LTV exceeds the 0.80 ceiling; a credit-committee waiver is required to fund.»\n  - _المصدر:_ Internal Credit Policy §2.2 (LTV ceiling)\n  - _يستند إلى:_ LTV in Band (انظر DR-47)."
+      },
+      {
+        "constraintKey": "loan-watchlist",
+        "entity": "Loan",
+        "predicate": "OnWatchlist",
+        "deontic": "ShouldBeTrue",
+        "severity": "soft",
+        "markdown": "- **loan-watchlist** *(إرشادي)* — في كل سجل «loan»، **ينبغي أن** يتحقق أنّ واحد على الأقل من الشروط الآتية متحقق: علامة «classified asset» مفعّلة أو علامة «breached covenant» مفعّلة.\n  - _عند المخالفة:_ «This loan is a classified asset or has a breached covenant but is not flagged on the watchlist.»\n  - _المصدر:_ Internal Portfolio Risk Procedure §6 (watchlist)\n  - _يستند إلى:_ On Watchlist (انظر DR-54)."
+      }
+    ],
+    "structural": {
+      "Users": [
+        "في كل سجل «user»، **يجب أن** تُحدّد قيمة حقل «full name»، وحقل «role»، وحقل «email»."
+      ],
+      "Businesses": [
+        "**يجب أن** يشير كل سجل «business» إلى سجل «user» واحد فقط عبر حقل «relationship manager».",
+        "في كل سجل «business»، **يجب أن** تُحدّد قيمة حقل «legal name»، وحقل «business structure»، وحقل «NAICS code»، وحقل «status»."
+      ],
+      "BeneficialOwners": [
+        "**يجب أن** يشير كل سجل «beneficial owner» إلى سجل «business» واحد فقط.",
+        "في كل سجل «beneficial owner»، **يجب أن** تُحدّد قيمة حقل «full name»، وحقل «date of birth»، وحقل «SSN»، وحقل «address»، وحقل «ownership percentage»، وأن يُسجّل ما إذا كان مصنّفًا على أنه «control person»."
+      ],
+      "Contacts": [
+        "**يجب أن** يشير كل سجل «contact» إلى سجل «business» واحد فقط.",
+        "في كل سجل «contact»، **يجب أن** تُحدّد قيمة حقل «full name»، وحقل «title»، وحقل «contact type»، وأن يُسجّل ما إذا كان مصنّفًا على أنه «authorized signer»."
+      ],
+      "Accounts": [
+        "**يجب أن** يشير كل سجل «account» إلى سجل «business» واحد فقط.",
+        "في كل سجل «account»، **يجب أن** تُحدّد قيمة حقل «account type»، وحقل «account number last4»، وحقل «current balance USD»، وحقل «opened at»، وأن يُسجّل ما إذا كان حائزًا على «ACH»، وما إذا كان حائزًا على «wire»، وما إذا كان حائزًا على «card»."
+      ],
+      "Loans": [
+        "**يجب أن** يشير كل سجل «loan» إلى سجل «business» واحد فقط.",
+        "**يجب أن** يشير كل سجل «loan» إلى سجل «user» واحد فقط عبر حقل «originating RM».",
+        "**يجب أن** يشير كل سجل «loan» إلى سجل «user» واحد فقط عبر حقل «underwriter».",
+        "في كل سجل «loan»، **يجب أن** تُحدّد قيمة حقل «loan number»، وحقل «loan purpose»، وحقل «principal USD»، وحقل «rate pct»، وحقل «term months»، وحقل «underwriting stage»، وحقل «risk rating»، وحقل «risk rating label»، وحقل «originated at»."
+      ],
+      "Covenants": [
+        "**يجب أن** يشير كل سجل «covenant» إلى سجل «loan» واحد فقط.",
+        "في كل سجل «covenant»، **يجب أن** تُحدّد قيمة حقل «covenant type»، وحقل «test frequency»، وحقل «next test date»، وحقل «status»."
+      ],
+      "RiskRatingHistory": [
+        "**يجب أن** يشير كل سجل «risk rating history» إلى سجل «loan» واحد فقط.",
+        "**يجب أن** يشير كل سجل «risk rating history» إلى سجل «user» واحد فقط عبر حقل «changed by user».",
+        "في كل سجل «risk rating history»، **يجب أن** تُحدّد قيمة حقل «effective date»، وحقل «new grade»، وحقل «reason»."
+      ],
+      "Documents": [
+        "في كل سجل «document»، **يجب أن** تُحدّد قيمة حقل «filename»، وحقل «document type»، وحقل «uploaded at»، وأن يُسجّل ما إذا كان موسومًا بعلامة «ocr indexed»."
+      ],
+      "Interactions": [
+        "**يجب أن** يشير كل سجل «interaction» إلى سجل «business» واحد فقط.",
+        "في كل سجل «interaction»، **يجب أن** تُحدّد قيمة حقل «interaction type»، وحقل «subject»، وحقل «interaction date»."
+      ]
+    },
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Businesses": "business",
+      "BeneficialOwners": "beneficial owner",
+      "Contacts": "contact",
+      "Accounts": "account",
+      "Loans": "loan",
+      "Covenants": "covenant",
+      "RiskRatingHistory": "risk rating history",
+      "Documents": "document",
+      "Interactions": "interaction"
+    }
+  },
+  "de": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein User: Name wird berechnet als das kleingeschriebene Full Name, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full Name kleingeschrieben, wobei „ “ durch „-“ ersetzt wird"
+      },
+      "Users.IsRM": {
+        "table": "Users",
+        "field": "IsRM",
+        "kind": "formula",
+        "rule": "Ein User gilt als ein RM, wenn die Role „RM“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role ist \"RM\""
+      },
+      "Users.IsUnderwriter": {
+        "table": "Users",
+        "field": "IsUnderwriter",
+        "kind": "formula",
+        "rule": "Ein User gilt als ein Underwriter, wenn die Role „Underwriter“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role ist \"Underwriter\""
+      },
+      "Users.IsBranchBanker": {
+        "table": "Users",
+        "field": "IsBranchBanker",
+        "kind": "formula",
+        "rule": "Ein User gilt als ein Branch Banker, wenn die Role „BranchBanker“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role ist \"BranchBanker\""
+      },
+      "Users.IsAdmin": {
+        "table": "Users",
+        "field": "IsAdmin",
+        "kind": "formula",
+        "rule": "Ein User gilt als ein Admin, wenn die Role „Admin“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role ist \"Admin\""
+      },
+      "Users.CountOfPortfolioBusinesses": {
+        "table": "Users",
+        "field": "CountOfPortfolioBusinesses",
+        "kind": "rollup",
+        "rule": "Ein User: Count of Portfolio Businesses ist die Anzahl der mit dem User verbundenen Businesses.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Businesses, deren Relationship Manager ist dieser hier"
+      },
+      "Users.CountOfOriginatedLoans": {
+        "table": "Users",
+        "field": "CountOfOriginatedLoans",
+        "kind": "rollup",
+        "rule": "Ein User: Count of Originated Loans ist die Anzahl der mit dem User verbundenen Loans.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Loans, deren Originating RM ist dieser hier"
+      },
+      "Users.CountOfUnderwrittenLoans": {
+        "table": "Users",
+        "field": "CountOfUnderwrittenLoans",
+        "kind": "rollup",
+        "rule": "Ein User: Count of Underwritten Loans ist die Anzahl der mit dem User verbundenen Loans.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Loans, deren Underwriter ist dieser hier"
+      },
+      "Businesses.Name": {
+        "table": "Businesses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Business: Name wird berechnet als das kleingeschriebene Legal Name, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird, wobei jedes ein Punkt durch eine leere Zeichenkette ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal Name kleingeschrieben, wobei „ “ durch „-“ ersetzt wird, wobei „.“ durch „“ ersetzt wird"
+      },
+      "Businesses.RelationshipManagerLabel": {
+        "table": "Businesses",
+        "field": "RelationshipManagerLabel",
+        "kind": "lookup",
+        "rule": "Ein Business: Relationship Manager Label ist der Full Name des zugehörigen Relationship Manager des Business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Full Name des verknüpften Relationship Manager"
+      },
+      "Businesses.IsCustomer": {
+        "table": "Businesses",
+        "field": "IsCustomer",
+        "kind": "formula",
+        "rule": "Ein Business gilt als ein Customer, wenn der Status „Customer“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status ist \"Customer\""
+      },
+      "Businesses.IsProspect": {
+        "table": "Businesses",
+        "field": "IsProspect",
+        "kind": "formula",
+        "rule": "Ein Business gilt als ein Prospect, wenn der Status „Prospect“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status ist \"Prospect\""
+      },
+      "Businesses.WasReferred": {
+        "table": "Businesses",
+        "field": "WasReferred",
+        "kind": "formula",
+        "rule": "Ein Business gilt als referred gewesen, wenn das Feld „Referral Source“ gesetzt ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "ReferralSource",
+            "label": "referral source"
+          }
+        ],
+        "structure": null,
+        "plain": "Nicht das erste von Referral Source oder \"\", das nicht leer ist ist \"\""
+      },
+      "Businesses.CountOfBeneficialOwners": {
+        "table": "Businesses",
+        "field": "CountOfBeneficialOwners",
+        "kind": "rollup",
+        "rule": "Ein Business: Count of Beneficial Owners ist die Anzahl der mit dem Business verbundenen Beneficial Owners.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Beneficial Owners, deren Business ist dieser hier"
+      },
+      "Businesses.CountOfContacts": {
+        "table": "Businesses",
+        "field": "CountOfContacts",
+        "kind": "rollup",
+        "rule": "Ein Business: Count of Contacts ist die Anzahl der mit dem Business verbundenen Contacts.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Contacts, deren Business ist dieser hier"
+      },
+      "Businesses.CountOfAccounts": {
+        "table": "Businesses",
+        "field": "CountOfAccounts",
+        "kind": "rollup",
+        "rule": "Ein Business: Count of Accounts ist die Anzahl der mit dem Business verbundenen Accounts.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Accounts, deren Business ist dieser hier"
+      },
+      "Businesses.CountOfLoans": {
+        "table": "Businesses",
+        "field": "CountOfLoans",
+        "kind": "rollup",
+        "rule": "Ein Business: Count of Loans ist die Anzahl der mit dem Business verbundenen Loans.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Loans, deren Business ist dieser hier"
+      },
+      "Businesses.CountOfInteractions": {
+        "table": "Businesses",
+        "field": "CountOfInteractions",
+        "kind": "rollup",
+        "rule": "Ein Business: Count of Interactions ist die Anzahl der mit dem Business verbundenen Interactions.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Interactions, deren Business ist dieser hier"
+      },
+      "Businesses.CountOfDocuments": {
+        "table": "Businesses",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "Ein Business: Count of Documents ist die Anzahl der mit dem Business verbundenen Documents.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Documents, deren Business ist dieser hier"
+      },
+      "Businesses.TotalDepositBalanceUsd": {
+        "table": "Businesses",
+        "field": "TotalDepositBalanceUsd",
+        "kind": "rollup",
+        "rule": "Ein Business: Total Deposit Balance USD ist die Gesamtsumme von Current Balance USD über die mit dem Business verbundenen Accounts.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "CurrentBalanceUsd",
+            "label": "current balance USD"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Current Balance USD über alle Accounts, deren Business ist dieser hier"
+      },
+      "Businesses.TotalLoanPrincipalUsd": {
+        "table": "Businesses",
+        "field": "TotalLoanPrincipalUsd",
+        "kind": "rollup",
+        "rule": "Ein Business: Total Loan Principal USD ist die Gesamtsumme von Principal USD über die mit dem Business verbundenen Loans.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "PrincipalUsd",
+            "label": "principal USD"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Principal USD über alle Loans, deren Business ist dieser hier"
+      },
+      "Businesses.CountOfClassifiedLoans": {
+        "table": "Businesses",
+        "field": "CountOfClassifiedLoans",
+        "kind": "rollup",
+        "rule": "Ein Business: Count of Classified Loans ist die Anzahl der Loans des Business, die classified asset sind.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Loans, deren Business ist dieser hier und Is Classified Asset ist true()"
+      },
+      "Businesses.HasClassifiedLoan": {
+        "table": "Businesses",
+        "field": "HasClassifiedLoan",
+        "kind": "formula",
+        "rule": "Ein Business gilt als über einen Classified Loan verfügend, wenn der Count of Classified Loans größer ist als 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "CountOfClassifiedLoans",
+            "label": "count of classified loans"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of Classified Loans größer als 0 ist"
+      },
+      "Businesses.BeneficialOwnersAtCddThreshold": {
+        "table": "Businesses",
+        "field": "BeneficialOwnersAtCddThreshold",
+        "kind": "rollup",
+        "rule": "Ein Business: Beneficial Owners At CDD Threshold ist die Anzahl der Beneficial Owners des Business, die CDD Threshold erfüllen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "MeetsCddThreshold",
+            "label": "meets CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Beneficial Owners, deren Business ist dieser hier und Meets CDD Threshold ist true()"
+      },
+      "Businesses.MeetsCddRule": {
+        "table": "Businesses",
+        "field": "MeetsCddRule",
+        "kind": "formula",
+        "rule": "Ein Business gilt als CDD Rule erfüllend, wenn der Beneficial Owners At CDD Threshold größer ist als 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "BeneficialOwnersAtCddThreshold",
+            "label": "beneficial owners at CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Beneficial Owners At CDD Threshold größer als 0 ist"
+      },
+      "Businesses.PortfolioPriority": {
+        "table": "Businesses",
+        "field": "PortfolioPriority",
+        "kind": "formula",
+        "rule": "Das Feld „Portfolio Priority“ des Business wird nach folgender Priorität bestimmt:\n1. „High“, wenn das Kennzeichen „Has Classified Loan“ gesetzt ist;\n2. „Medium“, wenn mindestens eines des Folgenden gilt: das Kennzeichen „Meets CDD Rule“ nicht gesetzt ist; das Kennzeichen „Is Prospect“ gesetzt ist; oder der Count of Loans 0 ist;\n3. andernfalls „Low“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "HasClassifiedLoan",
+            "label": "has classified loan"
+          },
+          {
+            "table": "Businesses",
+            "field": "MeetsCddRule",
+            "label": "meets CDD rule"
+          },
+          {
+            "table": "Businesses",
+            "field": "IsProspect",
+            "label": "is prospect"
+          },
+          {
+            "table": "Businesses",
+            "field": "CountOfLoans",
+            "label": "count of loans"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Portfolio Priority“ des Business wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„High“",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Has Classified Loan“ gesetzt ist"
+              }
+            },
+            {
+              "value": "„Medium“",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "das Kennzeichen „Meets CDD Rule“ nicht gesetzt ist"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "das Kennzeichen „Is Prospect“ gesetzt ist"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "der Count of Loans 0 ist"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "„Low“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Has Classified Loan, dann \"High\", andernfalls wenn nicht Meets CDD Rule, Is Prospect, oder Count of Loans gleich 0 ist, dann \"Medium\", andernfalls \"Low\""
+      },
+      "BeneficialOwners.Name": {
+        "table": "BeneficialOwners",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Beneficial Owner: Name wird berechnet als der Business, gefolgt von ein Bindestrich, gefolgt von das kleingeschriebene Full Name, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "(Business verbunden mit \"-\") verbunden mit Full Name kleingeschrieben, wobei „ “ durch „-“ ersetzt wird"
+      },
+      "BeneficialOwners.BusinessLabel": {
+        "table": "BeneficialOwners",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Ein Beneficial Owner: Business Label ist der Legal Name des zugehörigen Business des Beneficial Owner.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Legal Name des verknüpften Business"
+      },
+      "BeneficialOwners.Meets25PercentThreshold": {
+        "table": "BeneficialOwners",
+        "field": "Meets25PercentThreshold",
+        "kind": "formula",
+        "rule": "Ein Beneficial Owner ist markiert als Meets25 Percent Threshold, wenn die Ownership Percentage mindestens 25 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "OwnershipPercentage",
+            "label": "ownership percentage"
+          }
+        ],
+        "structure": null,
+        "plain": "Ownership Percentage mindestens 25 ist"
+      },
+      "BeneficialOwners.MeetsCddThreshold": {
+        "table": "BeneficialOwners",
+        "field": "MeetsCddThreshold",
+        "kind": "formula",
+        "rule": "Ein Beneficial Owner gilt als CDD Threshold erfüllend, wenn mindestens eines des Folgenden gilt: das Kennzeichen „Meets25 Percent Threshold“ gesetzt ist oder das Kennzeichen „Is Control Person“ gesetzt ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Meets25PercentThreshold",
+            "label": "meets25 percent threshold"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "IsControlPerson",
+            "label": "is control person"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Ein Beneficial Owner gilt als CDD Threshold erfüllend, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Meets25 Percent Threshold“ gesetzt ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Is Control Person“ gesetzt ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Meets25 Percent Threshold oder Is Control Person"
+      },
+      "Contacts.Name": {
+        "table": "Contacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Contact: Name wird berechnet als der Business, gefolgt von ein Bindestrich, gefolgt von das kleingeschriebene Full Name, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird, gefolgt von ein Bindestrich, gefolgt von das kleingeschriebene Title, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Contacts",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((Business verbunden mit \"-\") verbunden mit Full Name kleingeschrieben, wobei „ “ durch „-“ ersetzt wird) verbunden mit \"-\") verbunden mit Title kleingeschrieben, wobei „ “ durch „-“ ersetzt wird"
+      },
+      "Contacts.BusinessLabel": {
+        "table": "Contacts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Ein Contact: Business Label ist der Legal Name des zugehörigen Business des Contact.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Legal Name des verknüpften Business"
+      },
+      "Contacts.IsOfficer": {
+        "table": "Contacts",
+        "field": "IsOfficer",
+        "kind": "formula",
+        "rule": "Ein Contact gilt als ein Officer, wenn die Contact Type „Officer“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact Type ist \"Officer\""
+      },
+      "Contacts.IsApClerk": {
+        "table": "Contacts",
+        "field": "IsApClerk",
+        "kind": "formula",
+        "rule": "Ein Contact gilt als ein AP Clerk, wenn die Contact Type „APClerk“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact Type ist \"APClerk\""
+      },
+      "Accounts.Name": {
+        "table": "Accounts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Account: Name wird berechnet als der Business, gefolgt von ein Bindestrich, gefolgt von das kleingeschriebene Account Type, gefolgt von ein Bindestrich, gefolgt von der Account Number Last4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountType",
+            "label": "account type"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountNumberLast4",
+            "label": "account number last4"
+          }
+        ],
+        "structure": null,
+        "plain": "(((Business verbunden mit \"-\") verbunden mit Account Type kleingeschrieben) verbunden mit \"-\") verbunden mit Account Number Last4"
+      },
+      "Accounts.BusinessLabel": {
+        "table": "Accounts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Ein Account: Business Label ist der Legal Name des zugehörigen Business des Account.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Legal Name des verknüpften Business"
+      },
+      "Accounts.TreasuryServiceCount": {
+        "table": "Accounts",
+        "field": "TreasuryServiceCount",
+        "kind": "formula",
+        "rule": "Ein Account: Treasury Service Count wird berechnet als die Anzahl der folgenden zutreffenden Bedingungen: das Kennzeichen „Has ACH“ gesetzt ist; das Kennzeichen „Has Wire“ gesetzt ist; und das Kennzeichen „Has Card“ gesetzt ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "HasAch",
+            "label": "has ACH"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasWire",
+            "label": "has wire"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasCard",
+            "label": "has card"
+          }
+        ],
+        "structure": null,
+        "plain": "(wenn Has ACH, dann 1, andernfalls 0 plus wenn Has Wire, dann 1, andernfalls 0) plus wenn Has Card, dann 1, andernfalls 0"
+      },
+      "Accounts.HasAnyTreasuryService": {
+        "table": "Accounts",
+        "field": "HasAnyTreasuryService",
+        "kind": "formula",
+        "rule": "Ein Account gilt als über eine Any Treasury Service verfügend, wenn der Treasury Service Count größer ist als 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "TreasuryServiceCount",
+            "label": "treasury service count"
+          }
+        ],
+        "structure": null,
+        "plain": "Treasury Service Count größer als 0 ist"
+      },
+      "Loans.Name": {
+        "table": "Loans",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Loan: Name wird berechnet als das kleingeschriebene Loan Number, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan Number kleingeschrieben, wobei „ “ durch „-“ ersetzt wird"
+      },
+      "Loans.BusinessLabel": {
+        "table": "Loans",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Ein Loan: Business Label ist der Legal Name des zugehörigen Business des Loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Legal Name des verknüpften Business"
+      },
+      "Loans.BusinessNaicsCode": {
+        "table": "Loans",
+        "field": "BusinessNaicsCode",
+        "kind": "lookup",
+        "rule": "Ein Loan: Business NAICS Code — aus dem zugehörigen Business übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "NaicsCode",
+            "label": "NAICS code"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Der NAICS Code des verknüpften Business"
+      },
+      "Loans.OriginatingRmLabel": {
+        "table": "Loans",
+        "field": "OriginatingRmLabel",
+        "kind": "lookup",
+        "rule": "Ein Loan: Originating RM Label ist der Full Name des zugehörigen Originating RM des Loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Full Name des verknüpften Originating RM"
+      },
+      "Loans.UnderwriterIsAdmin": {
+        "table": "Loans",
+        "field": "UnderwriterIsAdmin",
+        "kind": "lookup",
+        "rule": "Ein Loan: Underwriter is Admin ist wahr, wenn der zugehörige Underwriter des Loan ist ein Admin.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "IsAdmin",
+            "label": "is admin"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Is Admin des verknüpften Underwriter"
+      },
+      "Loans.IsFunded": {
+        "table": "Loans",
+        "field": "IsFunded",
+        "kind": "formula",
+        "rule": "Ein Loan gilt als funded, wenn die Underwriting Stage „Funded“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "UnderwritingStage",
+            "label": "underwriting stage"
+          }
+        ],
+        "structure": null,
+        "plain": "Underwriting Stage ist \"Funded\""
+      },
+      "Loans.IsClassifiedAsset": {
+        "table": "Loans",
+        "field": "IsClassifiedAsset",
+        "kind": "formula",
+        "rule": "Ein Loan gilt als ein Classified Asset, wenn der Risk Rating mindestens 7 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "RiskRating",
+            "label": "risk rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Risk Rating mindestens 7 ist"
+      },
+      "Loans.DscrInBand": {
+        "table": "Loans",
+        "field": "DscrInBand",
+        "kind": "formula",
+        "rule": "Ein Loan ist markiert als DSCR in Band, wenn der DSCR (ein fehlender Wert zählt als 0) mindestens 1.20 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Dscr",
+            "label": "DSCR"
+          }
+        ],
+        "structure": null,
+        "plain": "Das erste von DSCR oder 0, das nicht leer ist mindestens 1.20 ist"
+      },
+      "Loans.LtvInBand": {
+        "table": "Loans",
+        "field": "LtvInBand",
+        "kind": "formula",
+        "rule": "Ein Loan ist markiert als LTV in Band, wenn der LTV (ein fehlender Wert zählt als 0) höchstens 0.80 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Ltv",
+            "label": "LTV"
+          }
+        ],
+        "structure": null,
+        "plain": "Das erste von LTV oder 0, das nicht leer ist höchstens 0.80 ist"
+      },
+      "Loans.SegregationOfDutiesOk": {
+        "table": "Loans",
+        "field": "SegregationOfDutiesOk",
+        "kind": "formula",
+        "rule": "Ein Loan ist markiert als Segregation of Duties Ok, wenn es nicht der Fall ist, dass der Originating RM der Underwriter ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          }
+        ],
+        "structure": null,
+        "plain": "Nicht Originating RM gleich Underwriter ist"
+      },
+      "Loans.CountOfCovenants": {
+        "table": "Loans",
+        "field": "CountOfCovenants",
+        "kind": "rollup",
+        "rule": "Ein Loan: Count of Covenants ist die Anzahl der mit dem Loan verbundenen Covenants.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Covenants, deren Loan ist dieser hier"
+      },
+      "Loans.CountOfBreachedCovenants": {
+        "table": "Loans",
+        "field": "CountOfBreachedCovenants",
+        "kind": "rollup",
+        "rule": "Ein Loan: Count of Breached Covenants ist die Anzahl der Covenants des Loan, die breached sind.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Covenants",
+            "field": "IsBreached",
+            "label": "is breached"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Covenants, deren Loan ist dieser hier und Is Breached ist true()"
+      },
+      "Loans.CountOfRiskRatingHistory": {
+        "table": "Loans",
+        "field": "CountOfRiskRatingHistory",
+        "kind": "rollup",
+        "rule": "Ein Loan: Count of Risk Rating History ist die Anzahl der mit dem Loan verbundenen Risk Rating History.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Risk Rating History, deren Loan ist dieser hier"
+      },
+      "Loans.CountOfDocuments": {
+        "table": "Loans",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "Ein Loan: Count of Documents ist die Anzahl der mit dem Loan verbundenen Documents.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Documents, deren Loan ist dieser hier"
+      },
+      "Loans.HasBreachedCovenant": {
+        "table": "Loans",
+        "field": "HasBreachedCovenant",
+        "kind": "formula",
+        "rule": "Ein Loan gilt als über einen Breached Covenant verfügend, wenn der Count of Breached Covenants größer ist als 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "CountOfBreachedCovenants",
+            "label": "count of breached covenants"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of Breached Covenants größer als 0 ist"
+      },
+      "Loans.OnWatchlist": {
+        "table": "Loans",
+        "field": "OnWatchlist",
+        "kind": "formula",
+        "rule": "Ein Loan ist markiert als On Watchlist, wenn mindestens eines des Folgenden gilt: das Kennzeichen „Is Classified Asset“ gesetzt ist oder das Kennzeichen „Has Breached Covenant“ gesetzt ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Ein Loan ist markiert als On Watchlist, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Is Classified Asset“ gesetzt ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Has Breached Covenant“ gesetzt ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is Classified Asset oder Has Breached Covenant"
+      },
+      "Loans.HealthScore": {
+        "table": "Loans",
+        "field": "HealthScore",
+        "kind": "formula",
+        "rule": "Ein Loan: Health Score wird berechnet als die Anzahl der folgenden zutreffenden Bedingungen: das Kennzeichen „DSCR in Band“ gesetzt ist; das Kennzeichen „LTV in Band“ gesetzt ist; das Kennzeichen „Is Classified Asset“ nicht gesetzt ist; und das Kennzeichen „Has Breached Covenant“ nicht gesetzt ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "DscrInBand",
+            "label": "DSCR in band"
+          },
+          {
+            "table": "Loans",
+            "field": "LtvInBand",
+            "label": "LTV in band"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": null,
+        "plain": "((wenn DSCR in Band, dann 1, andernfalls 0 plus wenn LTV in Band, dann 1, andernfalls 0) plus wenn Is Classified Asset, dann 0, andernfalls 1) plus wenn Has Breached Covenant, dann 0, andernfalls 1"
+      },
+      "Covenants.Name": {
+        "table": "Covenants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Covenant: Name wird berechnet als der Loan, gefolgt von ein Bindestrich, gefolgt von das kleingeschriebene Covenant Type, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Covenants",
+            "field": "CovenantType",
+            "label": "covenant type"
+          }
+        ],
+        "structure": null,
+        "plain": "(Loan verbunden mit \"-\") verbunden mit Covenant Type kleingeschrieben, wobei „ “ durch „-“ ersetzt wird"
+      },
+      "Covenants.LoanLabel": {
+        "table": "Covenants",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Ein Covenant: Loan Label ist der Loan Number des zugehörigen Loan des Covenant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Loan Number des verknüpften Loan"
+      },
+      "Covenants.LoanBusiness": {
+        "table": "Covenants",
+        "field": "LoanBusiness",
+        "kind": "lookup",
+        "rule": "Ein Covenant: Loan Business — aus dem zugehörigen Loan übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Business des verknüpften Loan"
+      },
+      "Covenants.IsBreached": {
+        "table": "Covenants",
+        "field": "IsBreached",
+        "kind": "formula",
+        "rule": "Ein Covenant gilt als breached, wenn der Status „Breached“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status ist \"Breached\""
+      },
+      "Covenants.HasActiveWaiver": {
+        "table": "Covenants",
+        "field": "HasActiveWaiver",
+        "kind": "formula",
+        "rule": "Ein Covenant gilt als über einen Active Waiver verfügend, wenn der Current Waiver Through einen Wert hat.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "CurrentWaiverThrough",
+            "label": "current waiver through"
+          }
+        ],
+        "structure": null,
+        "plain": "Nicht Current Waiver Through leer ist"
+      },
+      "RiskRatingHistory.Name": {
+        "table": "RiskRatingHistory",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Risk Rating History: Name wird berechnet als der Loan, gefolgt von ein Bindestrich, gefolgt von der TEXT von die Effective Date und „yyyy-mm-dd“, gefolgt von „-grade-“, gefolgt von der TEXT von die New Grade und „0“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "EffectiveDate",
+            "label": "effective date"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": null,
+        "plain": "(((Loan verbunden mit \"-\") verbunden mit text(Effective Date, \"yyyy-mm-dd\")) verbunden mit \"-grade-\") verbunden mit text(New Grade, \"0\")"
+      },
+      "RiskRatingHistory.LoanLabel": {
+        "table": "RiskRatingHistory",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Ein Risk Rating History: Loan Label ist der Loan Number des zugehörigen Loan des Risk Rating History.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Loan Number des verknüpften Loan"
+      },
+      "RiskRatingHistory.ChangedByUserLabel": {
+        "table": "RiskRatingHistory",
+        "field": "ChangedByUserLabel",
+        "kind": "lookup",
+        "rule": "Ein Risk Rating History: Changed by User Label ist der Full Name des zugehörigen Changed by User des Risk Rating History.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "ChangedByUser",
+            "label": "changed by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Full Name des verknüpften Changed by User"
+      },
+      "RiskRatingHistory.GradeDelta": {
+        "table": "RiskRatingHistory",
+        "field": "GradeDelta",
+        "kind": "formula",
+        "rule": "Ein Risk Rating History: Grade Delta wird berechnet als die New Grade minus die Prior Grade (ein fehlender Wert zählt als die New Grade).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "New Grade minus das erste von Prior Grade oder New Grade, das nicht leer ist"
+      },
+      "RiskRatingHistory.IsDowngrade": {
+        "table": "RiskRatingHistory",
+        "field": "IsDowngrade",
+        "kind": "formula",
+        "rule": "Ein Risk Rating History gilt als eine Downgrade, wenn der Grade Delta größer ist als 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "GradeDelta",
+            "label": "grade delta"
+          }
+        ],
+        "structure": null,
+        "plain": "Grade Delta größer als 0 ist"
+      },
+      "RiskRatingHistory.IsInitialRating": {
+        "table": "RiskRatingHistory",
+        "field": "IsInitialRating",
+        "kind": "formula",
+        "rule": "Ein Risk Rating History gilt als initial rating, wenn die Prior Grade (ein fehlender Wert zählt als 0) 0 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "Das erste von Prior Grade oder 0, das nicht leer ist gleich 0 ist"
+      },
+      "RiskRatingHistory.CrossedClassifiedThreshold": {
+        "table": "RiskRatingHistory",
+        "field": "CrossedClassifiedThreshold",
+        "kind": "formula",
+        "rule": "Ein Risk Rating History ist markiert als Crossed Classified Threshold, wenn alles Folgende gilt: die Prior Grade (ein fehlender Wert zählt als 0) kleiner ist als 7 und die New Grade mindestens 7 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Ein Risk Rating History ist markiert als Crossed Classified Threshold, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "die Prior Grade (ein fehlender Wert zählt als 0) kleiner ist als 7"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "die New Grade mindestens 7 ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Das erste von Prior Grade oder 0, das nicht leer ist kleiner als 7 ist und New Grade mindestens 7 ist"
+      },
+      "Documents.Name": {
+        "table": "Documents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Document: Name wird berechnet als das kleingeschriebene Filename, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird, wobei jedes ein Punkt durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Filename",
+            "label": "filename"
+          }
+        ],
+        "structure": null,
+        "plain": "Filename kleingeschrieben, wobei „ “ durch „-“ ersetzt wird, wobei „.“ durch „-“ ersetzt wird"
+      },
+      "Documents.BusinessLabel": {
+        "table": "Documents",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Ein Document: Business Label ist der Legal Name des zugehörigen Business des Document.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Legal Name des verknüpften Business"
+      },
+      "Documents.LoanLabel": {
+        "table": "Documents",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Ein Document: Loan Label ist der Loan Number des zugehörigen Loan des Document.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Loan Number des verknüpften Loan"
+      },
+      "Documents.UploadedByUserLabel": {
+        "table": "Documents",
+        "field": "UploadedByUserLabel",
+        "kind": "lookup",
+        "rule": "Ein Document: Uploaded by User Label ist der Full Name des zugehörigen Uploaded by User des Document.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Documents",
+            "field": "UploadedByUser",
+            "label": "uploaded by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Full Name des verknüpften Uploaded by User"
+      },
+      "Documents.AttachedTo": {
+        "table": "Documents",
+        "field": "AttachedTo",
+        "kind": "formula",
+        "rule": "Das Feld „Attached to“ des Document wird nach folgender Priorität bestimmt:\n1. „Loan“, wenn das Feld „Loan“ gesetzt ist;\n2. „Business“, wenn das Feld „Business“ gesetzt ist;\n3. andernfalls „Orphan“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Attached to“ des Document wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„Loan“",
+              "when": {
+                "kind": "leaf",
+                "text": "das Feld „Loan“ gesetzt ist"
+              }
+            },
+            {
+              "value": "„Business“",
+              "when": {
+                "kind": "leaf",
+                "text": "das Feld „Business“ gesetzt ist"
+              }
+            },
+            {
+              "value": "„Orphan“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn nicht das erste von Loan oder \"\", das nicht leer ist ist \"\", dann \"Loan\", andernfalls wenn nicht das erste von Business oder \"\", das nicht leer ist ist \"\", dann \"Business\", andernfalls \"Orphan\""
+      },
+      "Documents.FromCustomerPortal": {
+        "table": "Documents",
+        "field": "FromCustomerPortal",
+        "kind": "formula",
+        "rule": "Ein Document ist markiert als From Customer Portal, wenn der Uploaded Via „BusinessClientPortal“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "UploadedVia",
+            "label": "uploaded via"
+          }
+        ],
+        "structure": null,
+        "plain": "Uploaded Via ist \"BusinessClientPortal\""
+      },
+      "Interactions.Name": {
+        "table": "Interactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Interaction: Name wird berechnet als der Business, gefolgt von ein Bindestrich, gefolgt von der TEXT von die Interaction Date und „yyyy-mm-dd“, gefolgt von ein Bindestrich, gefolgt von das kleingeschriebene Interaction Type, gefolgt von ein Bindestrich, gefolgt von das kleingeschriebene Subject, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionDate",
+            "label": "interaction date"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((Business verbunden mit \"-\") verbunden mit text(Interaction Date, \"yyyy-mm-dd\")) verbunden mit \"-\") verbunden mit Interaction Type kleingeschrieben) verbunden mit \"-\") verbunden mit Subject kleingeschrieben, wobei „ “ durch „-“ ersetzt wird"
+      },
+      "Interactions.BusinessLabel": {
+        "table": "Interactions",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Eine Interaction: Business Label ist der Legal Name des zugehörigen Business der Interaction.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Legal Name des verknüpften Business"
+      },
+      "Interactions.UserLabel": {
+        "table": "Interactions",
+        "field": "UserLabel",
+        "kind": "lookup",
+        "rule": "Eine Interaction: User Label ist der Full Name des zugehörigen User der Interaction.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Interactions",
+            "field": "User",
+            "label": "user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Full Name des verknüpften User"
+      },
+      "Interactions.IsSystemEvent": {
+        "table": "Interactions",
+        "field": "IsSystemEvent",
+        "kind": "formula",
+        "rule": "Eine Interaction gilt als ein System Event, wenn die Interaction Type „SystemEvent“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction Type ist \"SystemEvent\""
+      },
+      "Interactions.IsTask": {
+        "table": "Interactions",
+        "field": "IsTask",
+        "kind": "formula",
+        "rule": "Eine Interaction gilt als ein Task, wenn die Interaction Type „Task“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction Type ist \"Task\""
+      },
+      "Interactions.FromCustomer": {
+        "table": "Interactions",
+        "field": "FromCustomer",
+        "kind": "formula",
+        "rule": "Eine Interaction ist markiert als From Customer, wenn die Source „BusinessClientPortal“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Source",
+            "label": "source"
+          }
+        ],
+        "structure": null,
+        "plain": "Source ist \"BusinessClientPortal\""
+      },
+      "Interactions.IsCovenantEvent": {
+        "table": "Interactions",
+        "field": "IsCovenantEvent",
+        "kind": "formula",
+        "rule": "Eine Interaction gilt als ein Covenant Event, wenn alles Folgende gilt: das Kennzeichen „Is System Event“ gesetzt ist und der Subject „covenant breach“ erwähnt.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "IsSystemEvent",
+            "label": "is system event"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Eine Interaction gilt als ein Covenant Event, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Is System Event“ gesetzt ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "der Subject „covenant breach“ erwähnt"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is System Event und nicht find(\"covenant breach\", Subject kleingeschrieben), oder 0, falls dies einen Fehler hat gleich 0 ist"
+      }
+    },
+    "obligations": [
+      {
+        "constraintKey": "loan-sod",
+        "entity": "Loan",
+        "predicate": "SegregationOfDutiesOk",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **loan-sod** *(hart)* — A loan must not be funded by the same user who originated it: the originating relationship manager and the underwriter must be different users.\n  - _Bei Verstoß:_ „The same user originated and underwrote this loan — segregation of duties is violated.“\n  - _Quelle:_ Internal Credit Policy §4.2"
+      },
+      {
+        "constraintKey": "biz-cdd",
+        "entity": "Business",
+        "predicate": "MeetsCddRule",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **biz-cdd** *(hart)* — Ein Business **muss** ein Beneficial Owners At CDD Threshold von mehr als 0 haben.\n  - _Bei Verstoß:_ „Beneficial-ownership (CDD) collection is incomplete: no owner crosses the 25% threshold and no control person is designated.“\n  - _Quelle:_ FinCEN CDD Rule, 31 CFR 1010.230\n  - _Stützt sich auf:_ Meets CDD Rule (siehe DR-25)."
+      },
+      {
+        "constraintKey": "loan-dscr",
+        "entity": "Loan",
+        "predicate": "DscrInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-dscr** *(aufhebbar)* — Ein Loan **muss** ein DSCR von mindestens 1.20 haben *(durch einen autorisierten Genehmiger aufhebbar)*.\n  - _Bei Verstoß:_ „DSCR is below the 1.20 minimum; a credit-committee waiver is required to fund.“\n  - _Quelle:_ Internal Credit Policy §2.1 (DSCR floor)\n  - _Stützt sich auf:_ DSCR in Band (siehe DR-46)."
+      },
+      {
+        "constraintKey": "loan-ltv",
+        "entity": "Loan",
+        "predicate": "LtvInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-ltv** *(aufhebbar)* — Ein Loan **muss** ein LTV von höchstens 0.80 haben *(durch einen autorisierten Genehmiger aufhebbar)*.\n  - _Bei Verstoß:_ „LTV exceeds the 0.80 ceiling; a credit-committee waiver is required to fund.“\n  - _Quelle:_ Internal Credit Policy §2.2 (LTV ceiling)\n  - _Stützt sich auf:_ LTV in Band (siehe DR-47)."
+      },
+      {
+        "constraintKey": "loan-watchlist",
+        "entity": "Loan",
+        "predicate": "OnWatchlist",
+        "deontic": "ShouldBeTrue",
+        "severity": "soft",
+        "markdown": "- **loan-watchlist** *(beratend)* — Ein Loan **sollte** erfüllen, dass mindestens eines des Folgenden gilt: das Kennzeichen „Is Classified Asset“ gesetzt ist oder das Kennzeichen „Has Breached Covenant“ gesetzt ist.\n  - _Bei Verstoß:_ „This loan is a classified asset or has a breached covenant but is not flagged on the watchlist.“\n  - _Quelle:_ Internal Portfolio Risk Procedure §6 (watchlist)\n  - _Stützt sich auf:_ On Watchlist (siehe DR-54)."
+      }
+    ],
+    "structural": {
+      "Users": [
+        "Ein User **muss** eine Full Name; eine Role; und ein Email haben."
+      ],
+      "Businesses": [
+        "Ein Business **muss** auf genau einen User als seinen Relationship Manager verweisen.",
+        "Ein Business **muss** eine Legal Name; eine Business Structure; eine NAICS Code; und ein Status haben."
+      ],
+      "BeneficialOwners": [
+        "Ein Beneficial Owner **muss** auf genau einen Business verweisen.",
+        "Ein Beneficial Owner **muss** eine Full Name; ein Date of Birth; ein SSN; ein Address; und eine Ownership Percentage haben und erfassen, ob es ist ein Control Person."
+      ],
+      "Contacts": [
+        "Ein Contact **muss** auf genau einen Business verweisen.",
+        "Ein Contact **muss** eine Full Name; eine Title; und eine Contact Type haben und erfassen, ob es ist ein Authorized Signer."
+      ],
+      "Accounts": [
+        "Ein Account **muss** auf genau einen Business verweisen.",
+        "Ein Account **muss** eine Account Type; ein Account Number Last4; ein Current Balance USD; und ein Opened At haben und erfassen, ob es hat einen ACH; ob es hat eine Wire; und ob es hat einen Card."
+      ],
+      "Loans": [
+        "Ein Loan **muss** auf genau einen Business verweisen.",
+        "Ein Loan **muss** auf genau einen User als seinen Originating RM verweisen.",
+        "Ein Loan **muss** auf genau einen User als seinen Underwriter verweisen.",
+        "Ein Loan **muss** ein Loan Number; eine Loan Purpose; ein Principal USD; ein Rate Pct; ein Term Months; eine Underwriting Stage; ein Risk Rating; ein Risk Rating Label; und ein Originated At haben."
+      ],
+      "Covenants": [
+        "Ein Covenant **muss** auf genau einen Loan verweisen.",
+        "Ein Covenant **muss** eine Covenant Type; ein Test Frequency; eine Next Test Date; und ein Status haben."
+      ],
+      "RiskRatingHistory": [
+        "Ein Risk Rating History **muss** auf genau einen Loan verweisen.",
+        "Ein Risk Rating History **muss** auf genau einen User als seinen Changed by User verweisen.",
+        "Ein Risk Rating History **muss** eine Effective Date; eine New Grade; und ein Reason haben."
+      ],
+      "Documents": [
+        "Ein Document **muss** eine Filename; eine Document Type; und ein Uploaded At haben und erfassen, ob es ist Ocr Indexed."
+      ],
+      "Interactions": [
+        "Eine Interaction **muss** auf genau einen Business verweisen.",
+        "Eine Interaction **muss** eine Interaction Type; ein Subject; und eine Interaction Date haben."
+      ]
+    },
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "User",
+      "Businesses": "Business",
+      "BeneficialOwners": "Beneficial Owner",
+      "Contacts": "Contact",
+      "Accounts": "Account",
+      "Loans": "Loan",
+      "Covenants": "Covenant",
+      "RiskRatingHistory": "Risk Rating History",
+      "Documents": "Document",
+      "Interactions": "Interaction"
+    }
+  },
+  "es": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un user: name se calcula como el full name en minúsculas con cada un espacio reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name en minúsculas con « » reemplazado por «-»"
+      },
+      "Users.IsRM": {
+        "table": "Users",
+        "field": "IsRM",
+        "kind": "formula",
+        "rule": "Un user se considera un RM si el role es «RM».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role es \"RM\""
+      },
+      "Users.IsUnderwriter": {
+        "table": "Users",
+        "field": "IsUnderwriter",
+        "kind": "formula",
+        "rule": "Un user se considera un underwriter si el role es «Underwriter».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role es \"Underwriter\""
+      },
+      "Users.IsBranchBanker": {
+        "table": "Users",
+        "field": "IsBranchBanker",
+        "kind": "formula",
+        "rule": "Un user se considera un branch banker si el role es «BranchBanker».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role es \"BranchBanker\""
+      },
+      "Users.IsAdmin": {
+        "table": "Users",
+        "field": "IsAdmin",
+        "kind": "formula",
+        "rule": "Un user se considera un admin si el role es «Admin».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role es \"Admin\""
+      },
+      "Users.CountOfPortfolioBusinesses": {
+        "table": "Users",
+        "field": "CountOfPortfolioBusinesses",
+        "kind": "rollup",
+        "rule": "Un user: count of portfolio businesses es el número de businesses relacionados con el user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de businesses cuyo relationship manager es este"
+      },
+      "Users.CountOfOriginatedLoans": {
+        "table": "Users",
+        "field": "CountOfOriginatedLoans",
+        "kind": "rollup",
+        "rule": "Un user: count of originated loans es el número de loans relacionados con el user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de loans cuyo originating RM es este"
+      },
+      "Users.CountOfUnderwrittenLoans": {
+        "table": "Users",
+        "field": "CountOfUnderwrittenLoans",
+        "kind": "rollup",
+        "rule": "Un user: count of underwritten loans es el número de loans relacionados con el user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de loans cuyo underwriter es este"
+      },
+      "Businesses.Name": {
+        "table": "Businesses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un business: name se calcula como el legal name en minúsculas con cada un espacio reemplazado por un guion con cada un punto reemplazado por una cadena vacía.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name en minúsculas con « » reemplazado por «-» con «.» reemplazado por «»"
+      },
+      "Businesses.RelationshipManagerLabel": {
+        "table": "Businesses",
+        "field": "RelationshipManagerLabel",
+        "kind": "lookup",
+        "rule": "Un business: relationship manager label es el full name del relationship manager vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "El full name del relationship manager vinculado"
+      },
+      "Businesses.IsCustomer": {
+        "table": "Businesses",
+        "field": "IsCustomer",
+        "kind": "formula",
+        "rule": "Un business se considera un customer si el status es «Customer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status es \"Customer\""
+      },
+      "Businesses.IsProspect": {
+        "table": "Businesses",
+        "field": "IsProspect",
+        "kind": "formula",
+        "rule": "Un business se considera un prospect si el status es «Prospect».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status es \"Prospect\""
+      },
+      "Businesses.WasReferred": {
+        "table": "Businesses",
+        "field": "WasReferred",
+        "kind": "formula",
+        "rule": "Un business se considera que fue referred si el campo «referral source» tiene valor.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "ReferralSource",
+            "label": "referral source"
+          }
+        ],
+        "structure": null,
+        "plain": "No el primero de referral source o \"\" que no esté vacío es \"\""
+      },
+      "Businesses.CountOfBeneficialOwners": {
+        "table": "Businesses",
+        "field": "CountOfBeneficialOwners",
+        "kind": "rollup",
+        "rule": "Un business: count of beneficial owners es el número de beneficial owners relacionados con el business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de beneficial owners cuyo business es este"
+      },
+      "Businesses.CountOfContacts": {
+        "table": "Businesses",
+        "field": "CountOfContacts",
+        "kind": "rollup",
+        "rule": "Un business: count of contacts es el número de contacts relacionados con el business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de contacts cuyo business es este"
+      },
+      "Businesses.CountOfAccounts": {
+        "table": "Businesses",
+        "field": "CountOfAccounts",
+        "kind": "rollup",
+        "rule": "Un business: count of accounts es el número de accounts relacionados con el business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de accounts cuyo business es este"
+      },
+      "Businesses.CountOfLoans": {
+        "table": "Businesses",
+        "field": "CountOfLoans",
+        "kind": "rollup",
+        "rule": "Un business: count of loans es el número de loans relacionados con el business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de loans cuyo business es este"
+      },
+      "Businesses.CountOfInteractions": {
+        "table": "Businesses",
+        "field": "CountOfInteractions",
+        "kind": "rollup",
+        "rule": "Un business: count of interactions es el número de interactions relacionados con el business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de interactions cuyo business es este"
+      },
+      "Businesses.CountOfDocuments": {
+        "table": "Businesses",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "Un business: count of documents es el número de documents relacionados con el business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de documents cuyo business es este"
+      },
+      "Businesses.TotalDepositBalanceUsd": {
+        "table": "Businesses",
+        "field": "TotalDepositBalanceUsd",
+        "kind": "rollup",
+        "rule": "Un business: total deposit balance USD es el total de current balance USD entre los accounts relacionados con el business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "CurrentBalanceUsd",
+            "label": "current balance USD"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de current balance USD entre todos los accounts cuyo business es este"
+      },
+      "Businesses.TotalLoanPrincipalUsd": {
+        "table": "Businesses",
+        "field": "TotalLoanPrincipalUsd",
+        "kind": "rollup",
+        "rule": "Un business: total loan principal USD es el total de principal USD entre los loans relacionados con el business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "PrincipalUsd",
+            "label": "principal USD"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de principal USD entre todos los loans cuyo business es este"
+      },
+      "Businesses.CountOfClassifiedLoans": {
+        "table": "Businesses",
+        "field": "CountOfClassifiedLoans",
+        "kind": "rollup",
+        "rule": "Un business: count of classified loans es el número de loans del business que son classified asset.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de loans cuyo business es este y is classified asset es true()"
+      },
+      "Businesses.HasClassifiedLoan": {
+        "table": "Businesses",
+        "field": "HasClassifiedLoan",
+        "kind": "formula",
+        "rule": "Un business se considera que tiene un classified loan si el count of classified loans es mayor que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "CountOfClassifiedLoans",
+            "label": "count of classified loans"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of classified loans es mayor que 0"
+      },
+      "Businesses.BeneficialOwnersAtCddThreshold": {
+        "table": "Businesses",
+        "field": "BeneficialOwnersAtCddThreshold",
+        "kind": "rollup",
+        "rule": "Un business: beneficial owners at CDD threshold es el número de beneficial owners del business que cumplen: CDD threshold.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "MeetsCddThreshold",
+            "label": "meets CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de beneficial owners cuyo business es este y meets CDD threshold es true()"
+      },
+      "Businesses.MeetsCddRule": {
+        "table": "Businesses",
+        "field": "MeetsCddRule",
+        "kind": "formula",
+        "rule": "Un business se considera que cumple: CDD rule si el beneficial owners at CDD threshold es mayor que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "BeneficialOwnersAtCddThreshold",
+            "label": "beneficial owners at CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Beneficial owners at CDD threshold es mayor que 0"
+      },
+      "Businesses.PortfolioPriority": {
+        "table": "Businesses",
+        "field": "PortfolioPriority",
+        "kind": "formula",
+        "rule": "El campo «portfolio priority» del business se determina según la siguiente prioridad:\n1. «High», si el indicador «classified loan» está activado;\n2. «Medium», si se cumple al menos una de las siguientes: el indicador «meets CDD rule» no está activado; el indicador «prospect» está activado; o el count of loans es 0;\n3. en todos los demás casos, «Low».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "HasClassifiedLoan",
+            "label": "has classified loan"
+          },
+          {
+            "table": "Businesses",
+            "field": "MeetsCddRule",
+            "label": "meets CDD rule"
+          },
+          {
+            "table": "Businesses",
+            "field": "IsProspect",
+            "label": "is prospect"
+          },
+          {
+            "table": "Businesses",
+            "field": "CountOfLoans",
+            "label": "count of loans"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «portfolio priority» del business se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«High»",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «classified loan» está activado"
+              }
+            },
+            {
+              "value": "«Medium»",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "el indicador «meets CDD rule» no está activado"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "el indicador «prospect» está activado"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "el count of loans es 0"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "«Low»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si has classified loan, entonces \"High\", de lo contrario si no meets CDD rule, is prospect, o count of loans es igual a 0, entonces \"Medium\", de lo contrario \"Low\""
+      },
+      "BeneficialOwners.Name": {
+        "table": "BeneficialOwners",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un beneficial owner: name se calcula como el business, seguido de un guion, seguido de el full name en minúsculas con cada un espacio reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "(business unido con \"-\") unido con full name en minúsculas con « » reemplazado por «-»"
+      },
+      "BeneficialOwners.BusinessLabel": {
+        "table": "BeneficialOwners",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Un beneficial owner: business label es el legal name del business vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "El legal name del business vinculado"
+      },
+      "BeneficialOwners.Meets25PercentThreshold": {
+        "table": "BeneficialOwners",
+        "field": "Meets25PercentThreshold",
+        "kind": "formula",
+        "rule": "Un beneficial owner está marcado como meets25 percent threshold si el ownership percentage es al menos 25.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "OwnershipPercentage",
+            "label": "ownership percentage"
+          }
+        ],
+        "structure": null,
+        "plain": "Ownership percentage es al menos 25"
+      },
+      "BeneficialOwners.MeetsCddThreshold": {
+        "table": "BeneficialOwners",
+        "field": "MeetsCddThreshold",
+        "kind": "formula",
+        "rule": "Un beneficial owner se considera que cumple: CDD threshold si se cumple al menos una de las siguientes: el indicador «meets25 percent threshold» está activado o el indicador «control person» está activado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Meets25PercentThreshold",
+            "label": "meets25 percent threshold"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "IsControlPerson",
+            "label": "is control person"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un beneficial owner se considera que cumple: CDD threshold si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «meets25 percent threshold» está activado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «control person» está activado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Meets25 percent threshold o is control person"
+      },
+      "Contacts.Name": {
+        "table": "Contacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un contact: name se calcula como el business, seguido de un guion, seguido de el full name en minúsculas con cada un espacio reemplazado por un guion, seguido de un guion, seguido de el title en minúsculas con cada un espacio reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Contacts",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business unido con \"-\") unido con full name en minúsculas con « » reemplazado por «-») unido con \"-\") unido con title en minúsculas con « » reemplazado por «-»"
+      },
+      "Contacts.BusinessLabel": {
+        "table": "Contacts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Un contact: business label es el legal name del business vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "El legal name del business vinculado"
+      },
+      "Contacts.IsOfficer": {
+        "table": "Contacts",
+        "field": "IsOfficer",
+        "kind": "formula",
+        "rule": "Un contact se considera un officer si el contact type es «Officer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type es \"Officer\""
+      },
+      "Contacts.IsApClerk": {
+        "table": "Contacts",
+        "field": "IsApClerk",
+        "kind": "formula",
+        "rule": "Un contact se considera un AP clerk si el contact type es «APClerk».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type es \"APClerk\""
+      },
+      "Accounts.Name": {
+        "table": "Accounts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un account: name se calcula como el business, seguido de un guion, seguido de el account type en minúsculas, seguido de un guion, seguido de el account number last4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountType",
+            "label": "account type"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountNumberLast4",
+            "label": "account number last4"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business unido con \"-\") unido con account type en minúsculas) unido con \"-\") unido con account number last4"
+      },
+      "Accounts.BusinessLabel": {
+        "table": "Accounts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Un account: business label es el legal name del business vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "El legal name del business vinculado"
+      },
+      "Accounts.TreasuryServiceCount": {
+        "table": "Accounts",
+        "field": "TreasuryServiceCount",
+        "kind": "formula",
+        "rule": "Un account: treasury service count se calcula como el número de las siguientes condiciones que se cumplen: el indicador «ACH» está activado; el indicador «wire» está activado; y el indicador «card» está activado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "HasAch",
+            "label": "has ACH"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasWire",
+            "label": "has wire"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasCard",
+            "label": "has card"
+          }
+        ],
+        "structure": null,
+        "plain": "(si has ACH, entonces 1, de lo contrario 0 más si has wire, entonces 1, de lo contrario 0) más si has card, entonces 1, de lo contrario 0"
+      },
+      "Accounts.HasAnyTreasuryService": {
+        "table": "Accounts",
+        "field": "HasAnyTreasuryService",
+        "kind": "formula",
+        "rule": "Un account se considera que tiene un any treasury service si el treasury service count es mayor que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "TreasuryServiceCount",
+            "label": "treasury service count"
+          }
+        ],
+        "structure": null,
+        "plain": "Treasury service count es mayor que 0"
+      },
+      "Loans.Name": {
+        "table": "Loans",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un loan: name se calcula como el loan number en minúsculas con cada un espacio reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan number en minúsculas con « » reemplazado por «-»"
+      },
+      "Loans.BusinessLabel": {
+        "table": "Loans",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Un loan: business label es el legal name del business vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "El legal name del business vinculado"
+      },
+      "Loans.BusinessNaicsCode": {
+        "table": "Loans",
+        "field": "BusinessNaicsCode",
+        "kind": "lookup",
+        "rule": "Un loan: business NAICS code — tomado del business vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "NaicsCode",
+            "label": "NAICS code"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "El NAICS code del business vinculado"
+      },
+      "Loans.OriginatingRmLabel": {
+        "table": "Loans",
+        "field": "OriginatingRmLabel",
+        "kind": "lookup",
+        "rule": "Un loan: originating RM label es el full name del originating RM vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "El full name del originating RM vinculado"
+      },
+      "Loans.UnderwriterIsAdmin": {
+        "table": "Loans",
+        "field": "UnderwriterIsAdmin",
+        "kind": "lookup",
+        "rule": "Un loan: underwriter is admin es verdadero cuando el underwriter vinculado es un admin.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "IsAdmin",
+            "label": "is admin"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "El is admin del underwriter vinculado"
+      },
+      "Loans.IsFunded": {
+        "table": "Loans",
+        "field": "IsFunded",
+        "kind": "formula",
+        "rule": "Un loan se considera funded si el underwriting stage es «Funded».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "UnderwritingStage",
+            "label": "underwriting stage"
+          }
+        ],
+        "structure": null,
+        "plain": "Underwriting stage es \"Funded\""
+      },
+      "Loans.IsClassifiedAsset": {
+        "table": "Loans",
+        "field": "IsClassifiedAsset",
+        "kind": "formula",
+        "rule": "Un loan se considera un classified asset si el risk rating es al menos 7.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "RiskRating",
+            "label": "risk rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Risk rating es al menos 7"
+      },
+      "Loans.DscrInBand": {
+        "table": "Loans",
+        "field": "DscrInBand",
+        "kind": "formula",
+        "rule": "Un loan está marcado como DSCR in band si el DSCR (un valor ausente cuenta como 0) es al menos 1.20.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Dscr",
+            "label": "DSCR"
+          }
+        ],
+        "structure": null,
+        "plain": "El primero de DSCR o 0 que no esté vacío es al menos 1.20"
+      },
+      "Loans.LtvInBand": {
+        "table": "Loans",
+        "field": "LtvInBand",
+        "kind": "formula",
+        "rule": "Un loan está marcado como LTV in band si el LTV (un valor ausente cuenta como 0) es como máximo 0.80.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Ltv",
+            "label": "LTV"
+          }
+        ],
+        "structure": null,
+        "plain": "El primero de LTV o 0 que no esté vacío es como máximo 0.80"
+      },
+      "Loans.SegregationOfDutiesOk": {
+        "table": "Loans",
+        "field": "SegregationOfDutiesOk",
+        "kind": "formula",
+        "rule": "Un loan está marcado como segregation of duties ok si no se da el caso de que el originating RM es el underwriter.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          }
+        ],
+        "structure": null,
+        "plain": "No originating RM es igual a underwriter"
+      },
+      "Loans.CountOfCovenants": {
+        "table": "Loans",
+        "field": "CountOfCovenants",
+        "kind": "rollup",
+        "rule": "Un loan: count of covenants es el número de covenants relacionados con el loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de covenants cuyo loan es este"
+      },
+      "Loans.CountOfBreachedCovenants": {
+        "table": "Loans",
+        "field": "CountOfBreachedCovenants",
+        "kind": "rollup",
+        "rule": "Un loan: count of breached covenants es el número de covenants del loan que son breached.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Covenants",
+            "field": "IsBreached",
+            "label": "is breached"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de covenants cuyo loan es este y is breached es true()"
+      },
+      "Loans.CountOfRiskRatingHistory": {
+        "table": "Loans",
+        "field": "CountOfRiskRatingHistory",
+        "kind": "rollup",
+        "rule": "Un loan: count of risk rating history es el número de risk rating history relacionados con el loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de risk rating history cuyo loan es este"
+      },
+      "Loans.CountOfDocuments": {
+        "table": "Loans",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "Un loan: count of documents es el número de documents relacionados con el loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de documents cuyo loan es este"
+      },
+      "Loans.HasBreachedCovenant": {
+        "table": "Loans",
+        "field": "HasBreachedCovenant",
+        "kind": "formula",
+        "rule": "Un loan se considera que tiene un breached covenant si el count of breached covenants es mayor que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "CountOfBreachedCovenants",
+            "label": "count of breached covenants"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of breached covenants es mayor que 0"
+      },
+      "Loans.OnWatchlist": {
+        "table": "Loans",
+        "field": "OnWatchlist",
+        "kind": "formula",
+        "rule": "Un loan está marcado como on watchlist si se cumple al menos una de las siguientes: el indicador «classified asset» está activado o el indicador «breached covenant» está activado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un loan está marcado como on watchlist si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «classified asset» está activado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «breached covenant» está activado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is classified asset o has breached covenant"
+      },
+      "Loans.HealthScore": {
+        "table": "Loans",
+        "field": "HealthScore",
+        "kind": "formula",
+        "rule": "Un loan: health score se calcula como el número de las siguientes condiciones que se cumplen: el indicador «DSCR in band» está activado; el indicador «LTV in band» está activado; el indicador «classified asset» no está activado; y el indicador «breached covenant» no está activado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "DscrInBand",
+            "label": "DSCR in band"
+          },
+          {
+            "table": "Loans",
+            "field": "LtvInBand",
+            "label": "LTV in band"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": null,
+        "plain": "((si DSCR in band, entonces 1, de lo contrario 0 más si LTV in band, entonces 1, de lo contrario 0) más si is classified asset, entonces 0, de lo contrario 1) más si has breached covenant, entonces 0, de lo contrario 1"
+      },
+      "Covenants.Name": {
+        "table": "Covenants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un covenant: name se calcula como el loan, seguido de un guion, seguido de el covenant type en minúsculas con cada un espacio reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Covenants",
+            "field": "CovenantType",
+            "label": "covenant type"
+          }
+        ],
+        "structure": null,
+        "plain": "(loan unido con \"-\") unido con covenant type en minúsculas con « » reemplazado por «-»"
+      },
+      "Covenants.LoanLabel": {
+        "table": "Covenants",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Un covenant: loan label es el loan number del loan vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "El loan number del loan vinculado"
+      },
+      "Covenants.LoanBusiness": {
+        "table": "Covenants",
+        "field": "LoanBusiness",
+        "kind": "lookup",
+        "rule": "Un covenant: loan business — tomado del loan vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "El business del loan vinculado"
+      },
+      "Covenants.IsBreached": {
+        "table": "Covenants",
+        "field": "IsBreached",
+        "kind": "formula",
+        "rule": "Un covenant se considera breached si el status es «Breached».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status es \"Breached\""
+      },
+      "Covenants.HasActiveWaiver": {
+        "table": "Covenants",
+        "field": "HasActiveWaiver",
+        "kind": "formula",
+        "rule": "Un covenant se considera que tiene un active waiver si el current waiver through tiene valor.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "CurrentWaiverThrough",
+            "label": "current waiver through"
+          }
+        ],
+        "structure": null,
+        "plain": "No current waiver through está vacío"
+      },
+      "RiskRatingHistory.Name": {
+        "table": "RiskRatingHistory",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un risk rating history: name se calcula como el loan, seguido de un guion, seguido de el TEXT de el effective date y «yyyy-mm-dd», seguido de «-grade-», seguido de el TEXT de el new grade y «0».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "EffectiveDate",
+            "label": "effective date"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": null,
+        "plain": "(((loan unido con \"-\") unido con text(effective date, \"yyyy-mm-dd\")) unido con \"-grade-\") unido con text(new grade, \"0\")"
+      },
+      "RiskRatingHistory.LoanLabel": {
+        "table": "RiskRatingHistory",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Un risk rating history: loan label es el loan number del loan vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "El loan number del loan vinculado"
+      },
+      "RiskRatingHistory.ChangedByUserLabel": {
+        "table": "RiskRatingHistory",
+        "field": "ChangedByUserLabel",
+        "kind": "lookup",
+        "rule": "Un risk rating history: changed by user label es el full name del changed by user vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "ChangedByUser",
+            "label": "changed by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "El full name del changed by user vinculado"
+      },
+      "RiskRatingHistory.GradeDelta": {
+        "table": "RiskRatingHistory",
+        "field": "GradeDelta",
+        "kind": "formula",
+        "rule": "Un risk rating history: grade delta se calcula como el new grade menos el prior grade (un valor ausente cuenta como el new grade).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "New grade menos el primero de prior grade o new grade que no esté vacío"
+      },
+      "RiskRatingHistory.IsDowngrade": {
+        "table": "RiskRatingHistory",
+        "field": "IsDowngrade",
+        "kind": "formula",
+        "rule": "Un risk rating history se considera un downgrade si la grade delta es mayor que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "GradeDelta",
+            "label": "grade delta"
+          }
+        ],
+        "structure": null,
+        "plain": "Grade delta es mayor que 0"
+      },
+      "RiskRatingHistory.IsInitialRating": {
+        "table": "RiskRatingHistory",
+        "field": "IsInitialRating",
+        "kind": "formula",
+        "rule": "Un risk rating history se considera initial rating si el prior grade (un valor ausente cuenta como 0) es 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "El primero de prior grade o 0 que no esté vacío es igual a 0"
+      },
+      "RiskRatingHistory.CrossedClassifiedThreshold": {
+        "table": "RiskRatingHistory",
+        "field": "CrossedClassifiedThreshold",
+        "kind": "formula",
+        "rule": "Un risk rating history está marcado como crossed classified threshold si se cumple todo lo siguiente: el prior grade (un valor ausente cuenta como 0) es menor que 7 y el new grade es al menos 7.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un risk rating history está marcado como crossed classified threshold si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el prior grade (un valor ausente cuenta como 0) es menor que 7"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el new grade es al menos 7"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "El primero de prior grade o 0 que no esté vacío es menor que 7 y new grade es al menos 7"
+      },
+      "Documents.Name": {
+        "table": "Documents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un document: name se calcula como el filename en minúsculas con cada un espacio reemplazado por un guion con cada un punto reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Filename",
+            "label": "filename"
+          }
+        ],
+        "structure": null,
+        "plain": "Filename en minúsculas con « » reemplazado por «-» con «.» reemplazado por «-»"
+      },
+      "Documents.BusinessLabel": {
+        "table": "Documents",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Un document: business label es el legal name del business vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "El legal name del business vinculado"
+      },
+      "Documents.LoanLabel": {
+        "table": "Documents",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Un document: loan label es el loan number del loan vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "El loan number del loan vinculado"
+      },
+      "Documents.UploadedByUserLabel": {
+        "table": "Documents",
+        "field": "UploadedByUserLabel",
+        "kind": "lookup",
+        "rule": "Un document: uploaded by user label es el full name del uploaded by user vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Documents",
+            "field": "UploadedByUser",
+            "label": "uploaded by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "El full name del uploaded by user vinculado"
+      },
+      "Documents.AttachedTo": {
+        "table": "Documents",
+        "field": "AttachedTo",
+        "kind": "formula",
+        "rule": "El campo «attached to» del document se determina según la siguiente prioridad:\n1. «Loan», si el campo «loan» tiene valor;\n2. «Business», si el campo «business» tiene valor;\n3. en todos los demás casos, «Orphan».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «attached to» del document se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«Loan»",
+              "when": {
+                "kind": "leaf",
+                "text": "el campo «loan» tiene valor"
+              }
+            },
+            {
+              "value": "«Business»",
+              "when": {
+                "kind": "leaf",
+                "text": "el campo «business» tiene valor"
+              }
+            },
+            {
+              "value": "«Orphan»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si no el primero de loan o \"\" que no esté vacío es \"\", entonces \"Loan\", de lo contrario si no el primero de business o \"\" que no esté vacío es \"\", entonces \"Business\", de lo contrario \"Orphan\""
+      },
+      "Documents.FromCustomerPortal": {
+        "table": "Documents",
+        "field": "FromCustomerPortal",
+        "kind": "formula",
+        "rule": "Un document está marcado como from customer portal si la uploaded via es «BusinessClientPortal».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "UploadedVia",
+            "label": "uploaded via"
+          }
+        ],
+        "structure": null,
+        "plain": "Uploaded via es \"BusinessClientPortal\""
+      },
+      "Interactions.Name": {
+        "table": "Interactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un interaction: name se calcula como el business, seguido de un guion, seguido de el TEXT de el interaction date y «yyyy-mm-dd», seguido de un guion, seguido de el interaction type en minúsculas, seguido de un guion, seguido de el subject en minúsculas con cada un espacio reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionDate",
+            "label": "interaction date"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((business unido con \"-\") unido con text(interaction date, \"yyyy-mm-dd\")) unido con \"-\") unido con interaction type en minúsculas) unido con \"-\") unido con subject en minúsculas con « » reemplazado por «-»"
+      },
+      "Interactions.BusinessLabel": {
+        "table": "Interactions",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Un interaction: business label es el legal name del business vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "El legal name del business vinculado"
+      },
+      "Interactions.UserLabel": {
+        "table": "Interactions",
+        "field": "UserLabel",
+        "kind": "lookup",
+        "rule": "Un interaction: user label es el full name del user vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Interactions",
+            "field": "User",
+            "label": "user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "El full name del user vinculado"
+      },
+      "Interactions.IsSystemEvent": {
+        "table": "Interactions",
+        "field": "IsSystemEvent",
+        "kind": "formula",
+        "rule": "Un interaction se considera un system event si el interaction type es «SystemEvent».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type es \"SystemEvent\""
+      },
+      "Interactions.IsTask": {
+        "table": "Interactions",
+        "field": "IsTask",
+        "kind": "formula",
+        "rule": "Un interaction se considera un task si el interaction type es «Task».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type es \"Task\""
+      },
+      "Interactions.FromCustomer": {
+        "table": "Interactions",
+        "field": "FromCustomer",
+        "kind": "formula",
+        "rule": "Un interaction está marcado como from customer si el source es «BusinessClientPortal».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Source",
+            "label": "source"
+          }
+        ],
+        "structure": null,
+        "plain": "Source es \"BusinessClientPortal\""
+      },
+      "Interactions.IsCovenantEvent": {
+        "table": "Interactions",
+        "field": "IsCovenantEvent",
+        "kind": "formula",
+        "rule": "Un interaction se considera un covenant event si se cumple todo lo siguiente: el indicador «system event» está activado y el subject menciona «covenant breach».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "IsSystemEvent",
+            "label": "is system event"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un interaction se considera un covenant event si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «system event» está activado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el subject menciona «covenant breach»"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is system event y no find(\"covenant breach\", subject en minúsculas), o 0 si eso da error es igual a 0"
+      }
+    },
+    "obligations": [
+      {
+        "constraintKey": "loan-sod",
+        "entity": "Loan",
+        "predicate": "SegregationOfDutiesOk",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **loan-sod** *(estricta)* — A loan must not be funded by the same user who originated it: the originating relationship manager and the underwriter must be different users.\n  - _En caso de infracción:_ «The same user originated and underwrote this loan — segregation of duties is violated.»\n  - _Fuente:_ Internal Credit Policy §4.2"
+      },
+      {
+        "constraintKey": "biz-cdd",
+        "entity": "Business",
+        "predicate": "MeetsCddRule",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **biz-cdd** *(estricta)* — Un business **debe** tener un beneficial owners at CDD threshold de más de 0.\n  - _En caso de infracción:_ «Beneficial-ownership (CDD) collection is incomplete: no owner crosses the 25% threshold and no control person is designated.»\n  - _Fuente:_ FinCEN CDD Rule, 31 CFR 1010.230\n  - _Se apoya en:_ Meets CDD Rule (véase DR-25)."
+      },
+      {
+        "constraintKey": "loan-dscr",
+        "entity": "Loan",
+        "predicate": "DscrInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-dscr** *(dispensable)* — Un loan **debe** tener un DSCR de al menos 1.20 *(dispensable por un aprobador autorizado)*.\n  - _En caso de infracción:_ «DSCR is below the 1.20 minimum; a credit-committee waiver is required to fund.»\n  - _Fuente:_ Internal Credit Policy §2.1 (DSCR floor)\n  - _Se apoya en:_ DSCR in Band (véase DR-46)."
+      },
+      {
+        "constraintKey": "loan-ltv",
+        "entity": "Loan",
+        "predicate": "LtvInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-ltv** *(dispensable)* — Un loan **debe** tener un LTV de como máximo 0.80 *(dispensable por un aprobador autorizado)*.\n  - _En caso de infracción:_ «LTV exceeds the 0.80 ceiling; a credit-committee waiver is required to fund.»\n  - _Fuente:_ Internal Credit Policy §2.2 (LTV ceiling)\n  - _Se apoya en:_ LTV in Band (véase DR-47)."
+      },
+      {
+        "constraintKey": "loan-watchlist",
+        "entity": "Loan",
+        "predicate": "OnWatchlist",
+        "deontic": "ShouldBeTrue",
+        "severity": "soft",
+        "markdown": "- **loan-watchlist** *(orientativa)* — Un loan **debería** cumplir que se cumple al menos una de las siguientes: el indicador «classified asset» está activado o el indicador «breached covenant» está activado.\n  - _En caso de infracción:_ «This loan is a classified asset or has a breached covenant but is not flagged on the watchlist.»\n  - _Fuente:_ Internal Portfolio Risk Procedure §6 (watchlist)\n  - _Se apoya en:_ On Watchlist (véase DR-54)."
+      }
+    ],
+    "structural": {
+      "Users": [
+        "Un user **debe** tener un full name; un role; y un email."
+      ],
+      "Businesses": [
+        "Un business **debe** referenciar exactamente un user como su relationship manager.",
+        "Un business **debe** tener un legal name; un business structure; un NAICS code; y un status."
+      ],
+      "BeneficialOwners": [
+        "Un beneficial owner **debe** referenciar exactamente un business.",
+        "Un beneficial owner **debe** tener un full name; un date of birth; un SSN; un address; y un ownership percentage, y registrar si es un control person."
+      ],
+      "Contacts": [
+        "Un contact **debe** referenciar exactamente un business.",
+        "Un contact **debe** tener un full name; un title; y un contact type, y registrar si es un authorized signer."
+      ],
+      "Accounts": [
+        "Un account **debe** referenciar exactamente un business.",
+        "Un account **debe** tener un account type; un account number last4; un current balance USD; y un opened at, y registrar si tiene un ACH; si tiene un wire; y si tiene un card."
+      ],
+      "Loans": [
+        "Un loan **debe** referenciar exactamente un business.",
+        "Un loan **debe** referenciar exactamente un user como su originating RM.",
+        "Un loan **debe** referenciar exactamente un user como su underwriter.",
+        "Un loan **debe** tener un loan number; un loan purpose; un principal USD; un rate pct; un term months; un underwriting stage; un risk rating; un risk rating label; y un originated at."
+      ],
+      "Covenants": [
+        "Un covenant **debe** referenciar exactamente un loan.",
+        "Un covenant **debe** tener un covenant type; un test frequency; un next test date; y un status."
+      ],
+      "RiskRatingHistory": [
+        "Un risk rating history **debe** referenciar exactamente un loan.",
+        "Un risk rating history **debe** referenciar exactamente un user como su changed by user.",
+        "Un risk rating history **debe** tener un effective date; un new grade; y un reason."
+      ],
+      "Documents": [
+        "Un document **debe** tener un filename; un document type; y un uploaded at, y registrar si es ocr indexed."
+      ],
+      "Interactions": [
+        "Un interaction **debe** referenciar exactamente un business.",
+        "Un interaction **debe** tener un interaction type; un subject; y un interaction date."
+      ]
+    },
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Businesses": "business",
+      "BeneficialOwners": "beneficial owner",
+      "Contacts": "contact",
+      "Accounts": "account",
+      "Loans": "loan",
+      "Covenants": "covenant",
+      "RiskRatingHistory": "risk rating history",
+      "Documents": "document",
+      "Interactions": "interaction"
+    }
+  },
+  "fr": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un user : name est calculé comme le full name en minuscules avec chaque une espace remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name en minuscules avec « » remplacé par « - »"
+      },
+      "Users.IsRM": {
+        "table": "Users",
+        "field": "IsRM",
+        "kind": "formula",
+        "rule": "Un user est considéré comme un RM si le role est « RM ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role est \"RM\""
+      },
+      "Users.IsUnderwriter": {
+        "table": "Users",
+        "field": "IsUnderwriter",
+        "kind": "formula",
+        "rule": "Un user est considéré comme un underwriter si le role est « Underwriter ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role est \"Underwriter\""
+      },
+      "Users.IsBranchBanker": {
+        "table": "Users",
+        "field": "IsBranchBanker",
+        "kind": "formula",
+        "rule": "Un user est considéré comme un branch banker si le role est « BranchBanker ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role est \"BranchBanker\""
+      },
+      "Users.IsAdmin": {
+        "table": "Users",
+        "field": "IsAdmin",
+        "kind": "formula",
+        "rule": "Un user est considéré comme un admin si le role est « Admin ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role est \"Admin\""
+      },
+      "Users.CountOfPortfolioBusinesses": {
+        "table": "Users",
+        "field": "CountOfPortfolioBusinesses",
+        "kind": "rollup",
+        "rule": "Un user : count of portfolio businesses est le nombre de businesses liés à l'user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des businesses dont relationship manager est celui-ci"
+      },
+      "Users.CountOfOriginatedLoans": {
+        "table": "Users",
+        "field": "CountOfOriginatedLoans",
+        "kind": "rollup",
+        "rule": "Un user : count of originated loans est le nombre de loans liés à l'user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des loans dont originating RM est celui-ci"
+      },
+      "Users.CountOfUnderwrittenLoans": {
+        "table": "Users",
+        "field": "CountOfUnderwrittenLoans",
+        "kind": "rollup",
+        "rule": "Un user : count of underwritten loans est le nombre de loans liés à l'user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des loans dont underwriter est celui-ci"
+      },
+      "Businesses.Name": {
+        "table": "Businesses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un business : name est calculé comme le legal name en minuscules avec chaque une espace remplacé par un trait d'union avec chaque un point remplacé par une chaîne vide.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name en minuscules avec « » remplacé par « - » avec « . » remplacé par « »"
+      },
+      "Businesses.RelationshipManagerLabel": {
+        "table": "Businesses",
+        "field": "RelationshipManagerLabel",
+        "kind": "lookup",
+        "rule": "Un business : relationship manager label est le full name du relationship manager lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Le full name du relationship manager lié"
+      },
+      "Businesses.IsCustomer": {
+        "table": "Businesses",
+        "field": "IsCustomer",
+        "kind": "formula",
+        "rule": "Un business est considéré comme un customer si le status est « Customer ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status est \"Customer\""
+      },
+      "Businesses.IsProspect": {
+        "table": "Businesses",
+        "field": "IsProspect",
+        "kind": "formula",
+        "rule": "Un business est considéré comme un prospect si le status est « Prospect ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status est \"Prospect\""
+      },
+      "Businesses.WasReferred": {
+        "table": "Businesses",
+        "field": "WasReferred",
+        "kind": "formula",
+        "rule": "Un business est considéré comme ayant été referred si le champ « referral source » est renseigné.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "ReferralSource",
+            "label": "referral source"
+          }
+        ],
+        "structure": null,
+        "plain": "Non le premier de referral source ou \"\" qui n'est pas vide est \"\""
+      },
+      "Businesses.CountOfBeneficialOwners": {
+        "table": "Businesses",
+        "field": "CountOfBeneficialOwners",
+        "kind": "rollup",
+        "rule": "Un business : count of beneficial owners est le nombre de beneficial owners liés à le business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des beneficial owners dont business est celui-ci"
+      },
+      "Businesses.CountOfContacts": {
+        "table": "Businesses",
+        "field": "CountOfContacts",
+        "kind": "rollup",
+        "rule": "Un business : count of contacts est le nombre de contacts liés à le business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des contacts dont business est celui-ci"
+      },
+      "Businesses.CountOfAccounts": {
+        "table": "Businesses",
+        "field": "CountOfAccounts",
+        "kind": "rollup",
+        "rule": "Un business : count of accounts est le nombre de accounts liés à le business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des accounts dont business est celui-ci"
+      },
+      "Businesses.CountOfLoans": {
+        "table": "Businesses",
+        "field": "CountOfLoans",
+        "kind": "rollup",
+        "rule": "Un business : count of loans est le nombre de loans liés à le business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des loans dont business est celui-ci"
+      },
+      "Businesses.CountOfInteractions": {
+        "table": "Businesses",
+        "field": "CountOfInteractions",
+        "kind": "rollup",
+        "rule": "Un business : count of interactions est le nombre de interactions liés à le business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des interactions dont business est celui-ci"
+      },
+      "Businesses.CountOfDocuments": {
+        "table": "Businesses",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "Un business : count of documents est le nombre de documents liés à le business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des documents dont business est celui-ci"
+      },
+      "Businesses.TotalDepositBalanceUsd": {
+        "table": "Businesses",
+        "field": "TotalDepositBalanceUsd",
+        "kind": "rollup",
+        "rule": "Un business : total deposit balance USD est le total de current balance USD sur les accounts liés à le business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "CurrentBalanceUsd",
+            "label": "current balance USD"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de current balance USD sur tous les accounts dont business est celui-ci"
+      },
+      "Businesses.TotalLoanPrincipalUsd": {
+        "table": "Businesses",
+        "field": "TotalLoanPrincipalUsd",
+        "kind": "rollup",
+        "rule": "Un business : total loan principal USD est le total de principal USD sur les loans liés à le business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "PrincipalUsd",
+            "label": "principal USD"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de principal USD sur tous les loans dont business est celui-ci"
+      },
+      "Businesses.CountOfClassifiedLoans": {
+        "table": "Businesses",
+        "field": "CountOfClassifiedLoans",
+        "kind": "rollup",
+        "rule": "Un business : count of classified loans est le nombre de loans du business qui sont classified asset.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des loans dont business est celui-ci et is classified asset est true()"
+      },
+      "Businesses.HasClassifiedLoan": {
+        "table": "Businesses",
+        "field": "HasClassifiedLoan",
+        "kind": "formula",
+        "rule": "Un business est considéré comme disposant de un classified loan si le count of classified loans est supérieur à 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "CountOfClassifiedLoans",
+            "label": "count of classified loans"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of classified loans est supérieur à 0"
+      },
+      "Businesses.BeneficialOwnersAtCddThreshold": {
+        "table": "Businesses",
+        "field": "BeneficialOwnersAtCddThreshold",
+        "kind": "rollup",
+        "rule": "Un business : beneficial owners at CDD threshold est le nombre de beneficial owners du business qui satisfont : CDD threshold.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "MeetsCddThreshold",
+            "label": "meets CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des beneficial owners dont business est celui-ci et meets CDD threshold est true()"
+      },
+      "Businesses.MeetsCddRule": {
+        "table": "Businesses",
+        "field": "MeetsCddRule",
+        "kind": "formula",
+        "rule": "Un business est considéré comme satisfaisant : CDD rule si le beneficial owners at CDD threshold est supérieur à 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "BeneficialOwnersAtCddThreshold",
+            "label": "beneficial owners at CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Beneficial owners at CDD threshold est supérieur à 0"
+      },
+      "Businesses.PortfolioPriority": {
+        "table": "Businesses",
+        "field": "PortfolioPriority",
+        "kind": "formula",
+        "rule": "Le champ « portfolio priority » du business est déterminé selon la priorité suivante :\n1. « High », si l'indicateur « classified loan » est activé ;\n2. « Medium », si au moins une des conditions suivantes est vraie : l'indicateur « meets CDD rule » n'est pas activé; l'indicateur « prospect » est activé; ou le count of loans est 0 ;\n3. dans tous les autres cas, « Low ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "HasClassifiedLoan",
+            "label": "has classified loan"
+          },
+          {
+            "table": "Businesses",
+            "field": "MeetsCddRule",
+            "label": "meets CDD rule"
+          },
+          {
+            "table": "Businesses",
+            "field": "IsProspect",
+            "label": "is prospect"
+          },
+          {
+            "table": "Businesses",
+            "field": "CountOfLoans",
+            "label": "count of loans"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « portfolio priority » du business est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« High »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « classified loan » est activé"
+              }
+            },
+            {
+              "value": "« Medium »",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "l'indicateur « meets CDD rule » n'est pas activé"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "l'indicateur « prospect » est activé"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "le count of loans est 0"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "« Low »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si has classified loan, alors \"High\", sinon si non meets CDD rule, is prospect, ou count of loans est égal à 0, alors \"Medium\", sinon \"Low\""
+      },
+      "BeneficialOwners.Name": {
+        "table": "BeneficialOwners",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un beneficial owner : name est calculé comme le business, suivi de un trait d'union, suivi de le full name en minuscules avec chaque une espace remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "(business joint à \"-\") joint à full name en minuscules avec « » remplacé par « - »"
+      },
+      "BeneficialOwners.BusinessLabel": {
+        "table": "BeneficialOwners",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Un beneficial owner : business label est le legal name du business lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Le legal name du business lié"
+      },
+      "BeneficialOwners.Meets25PercentThreshold": {
+        "table": "BeneficialOwners",
+        "field": "Meets25PercentThreshold",
+        "kind": "formula",
+        "rule": "Un beneficial owner est marqué comme meets25 percent threshold si l'ownership percentage est au moins 25.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "OwnershipPercentage",
+            "label": "ownership percentage"
+          }
+        ],
+        "structure": null,
+        "plain": "Ownership percentage est au moins 25"
+      },
+      "BeneficialOwners.MeetsCddThreshold": {
+        "table": "BeneficialOwners",
+        "field": "MeetsCddThreshold",
+        "kind": "formula",
+        "rule": "Un beneficial owner est considéré comme satisfaisant : CDD threshold si au moins une des conditions suivantes est vraie : l'indicateur « meets25 percent threshold » est activé ou l'indicateur « control person » est activé.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Meets25PercentThreshold",
+            "label": "meets25 percent threshold"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "IsControlPerson",
+            "label": "is control person"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un beneficial owner est considéré comme satisfaisant : CDD threshold si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « meets25 percent threshold » est activé"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « control person » est activé"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Meets25 percent threshold ou is control person"
+      },
+      "Contacts.Name": {
+        "table": "Contacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un contact : name est calculé comme le business, suivi de un trait d'union, suivi de le full name en minuscules avec chaque une espace remplacé par un trait d'union, suivi de un trait d'union, suivi de le title en minuscules avec chaque une espace remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Contacts",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business joint à \"-\") joint à full name en minuscules avec « » remplacé par « - ») joint à \"-\") joint à title en minuscules avec « » remplacé par « - »"
+      },
+      "Contacts.BusinessLabel": {
+        "table": "Contacts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Un contact : business label est le legal name du business lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Le legal name du business lié"
+      },
+      "Contacts.IsOfficer": {
+        "table": "Contacts",
+        "field": "IsOfficer",
+        "kind": "formula",
+        "rule": "Un contact est considéré comme un officer si le contact type est « Officer ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type est \"Officer\""
+      },
+      "Contacts.IsApClerk": {
+        "table": "Contacts",
+        "field": "IsApClerk",
+        "kind": "formula",
+        "rule": "Un contact est considéré comme un AP clerk si le contact type est « APClerk ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type est \"APClerk\""
+      },
+      "Accounts.Name": {
+        "table": "Accounts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un account : name est calculé comme le business, suivi de un trait d'union, suivi de le account type en minuscules, suivi de un trait d'union, suivi de l'account number last4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountType",
+            "label": "account type"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountNumberLast4",
+            "label": "account number last4"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business joint à \"-\") joint à account type en minuscules) joint à \"-\") joint à account number last4"
+      },
+      "Accounts.BusinessLabel": {
+        "table": "Accounts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Un account : business label est le legal name du business lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Le legal name du business lié"
+      },
+      "Accounts.TreasuryServiceCount": {
+        "table": "Accounts",
+        "field": "TreasuryServiceCount",
+        "kind": "formula",
+        "rule": "Un account : treasury service count est calculé comme le nombre des conditions suivantes qui sont remplies : l'indicateur « ACH » est activé; l'indicateur « wire » est activé; et l'indicateur « card » est activé.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "HasAch",
+            "label": "has ACH"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasWire",
+            "label": "has wire"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasCard",
+            "label": "has card"
+          }
+        ],
+        "structure": null,
+        "plain": "(si has ACH, alors 1, sinon 0 plus si has wire, alors 1, sinon 0) plus si has card, alors 1, sinon 0"
+      },
+      "Accounts.HasAnyTreasuryService": {
+        "table": "Accounts",
+        "field": "HasAnyTreasuryService",
+        "kind": "formula",
+        "rule": "Un account est considéré comme disposant de un any treasury service si le treasury service count est supérieur à 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "TreasuryServiceCount",
+            "label": "treasury service count"
+          }
+        ],
+        "structure": null,
+        "plain": "Treasury service count est supérieur à 0"
+      },
+      "Loans.Name": {
+        "table": "Loans",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un loan : name est calculé comme le loan number en minuscules avec chaque une espace remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan number en minuscules avec « » remplacé par « - »"
+      },
+      "Loans.BusinessLabel": {
+        "table": "Loans",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Un loan : business label est le legal name du business lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Le legal name du business lié"
+      },
+      "Loans.BusinessNaicsCode": {
+        "table": "Loans",
+        "field": "BusinessNaicsCode",
+        "kind": "lookup",
+        "rule": "Un loan : business NAICS code — repris du business lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "NaicsCode",
+            "label": "NAICS code"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Le NAICS code du business lié"
+      },
+      "Loans.OriginatingRmLabel": {
+        "table": "Loans",
+        "field": "OriginatingRmLabel",
+        "kind": "lookup",
+        "rule": "Un loan : originating RM label est le full name du originating RM lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Le full name du originating RM lié"
+      },
+      "Loans.UnderwriterIsAdmin": {
+        "table": "Loans",
+        "field": "UnderwriterIsAdmin",
+        "kind": "lookup",
+        "rule": "Un loan : underwriter is admin est vrai lorsque le underwriter lié est un admin.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "IsAdmin",
+            "label": "is admin"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Le is admin du underwriter lié"
+      },
+      "Loans.IsFunded": {
+        "table": "Loans",
+        "field": "IsFunded",
+        "kind": "formula",
+        "rule": "Un loan est considéré comme funded si l'underwriting stage est « Funded ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "UnderwritingStage",
+            "label": "underwriting stage"
+          }
+        ],
+        "structure": null,
+        "plain": "Underwriting stage est \"Funded\""
+      },
+      "Loans.IsClassifiedAsset": {
+        "table": "Loans",
+        "field": "IsClassifiedAsset",
+        "kind": "formula",
+        "rule": "Un loan est considéré comme un classified asset si le risk rating est au moins 7.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "RiskRating",
+            "label": "risk rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Risk rating est au moins 7"
+      },
+      "Loans.DscrInBand": {
+        "table": "Loans",
+        "field": "DscrInBand",
+        "kind": "formula",
+        "rule": "Un loan est marqué comme DSCR in band si le DSCR (une valeur manquante compte comme 0) est au moins 1.20.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Dscr",
+            "label": "DSCR"
+          }
+        ],
+        "structure": null,
+        "plain": "Le premier de DSCR ou 0 qui n'est pas vide est au moins 1.20"
+      },
+      "Loans.LtvInBand": {
+        "table": "Loans",
+        "field": "LtvInBand",
+        "kind": "formula",
+        "rule": "Un loan est marqué comme LTV in band si le LTV (une valeur manquante compte comme 0) est au plus 0.80.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Ltv",
+            "label": "LTV"
+          }
+        ],
+        "structure": null,
+        "plain": "Le premier de LTV ou 0 qui n'est pas vide est au plus 0.80"
+      },
+      "Loans.SegregationOfDutiesOk": {
+        "table": "Loans",
+        "field": "SegregationOfDutiesOk",
+        "kind": "formula",
+        "rule": "Un loan est marqué comme segregation of duties ok si il n'est pas vrai que l'originating RM est l'underwriter.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          }
+        ],
+        "structure": null,
+        "plain": "Non originating RM est égal à underwriter"
+      },
+      "Loans.CountOfCovenants": {
+        "table": "Loans",
+        "field": "CountOfCovenants",
+        "kind": "rollup",
+        "rule": "Un loan : count of covenants est le nombre de covenants liés à le loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des covenants dont loan est celui-ci"
+      },
+      "Loans.CountOfBreachedCovenants": {
+        "table": "Loans",
+        "field": "CountOfBreachedCovenants",
+        "kind": "rollup",
+        "rule": "Un loan : count of breached covenants est le nombre de covenants du loan qui sont breached.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Covenants",
+            "field": "IsBreached",
+            "label": "is breached"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des covenants dont loan est celui-ci et is breached est true()"
+      },
+      "Loans.CountOfRiskRatingHistory": {
+        "table": "Loans",
+        "field": "CountOfRiskRatingHistory",
+        "kind": "rollup",
+        "rule": "Un loan : count of risk rating history est le nombre de risk rating history liés à le loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des risk rating history dont loan est celui-ci"
+      },
+      "Loans.CountOfDocuments": {
+        "table": "Loans",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "Un loan : count of documents est le nombre de documents liés à le loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des documents dont loan est celui-ci"
+      },
+      "Loans.HasBreachedCovenant": {
+        "table": "Loans",
+        "field": "HasBreachedCovenant",
+        "kind": "formula",
+        "rule": "Un loan est considéré comme disposant de un breached covenant si le count of breached covenants est supérieur à 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "CountOfBreachedCovenants",
+            "label": "count of breached covenants"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of breached covenants est supérieur à 0"
+      },
+      "Loans.OnWatchlist": {
+        "table": "Loans",
+        "field": "OnWatchlist",
+        "kind": "formula",
+        "rule": "Un loan est marqué comme on watchlist si au moins une des conditions suivantes est vraie : l'indicateur « classified asset » est activé ou l'indicateur « breached covenant » est activé.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un loan est marqué comme on watchlist si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « classified asset » est activé"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « breached covenant » est activé"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is classified asset ou has breached covenant"
+      },
+      "Loans.HealthScore": {
+        "table": "Loans",
+        "field": "HealthScore",
+        "kind": "formula",
+        "rule": "Un loan : health score est calculé comme le nombre des conditions suivantes qui sont remplies : l'indicateur « DSCR in band » est activé; l'indicateur « LTV in band » est activé; l'indicateur « classified asset » n'est pas activé; et l'indicateur « breached covenant » n'est pas activé.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "DscrInBand",
+            "label": "DSCR in band"
+          },
+          {
+            "table": "Loans",
+            "field": "LtvInBand",
+            "label": "LTV in band"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": null,
+        "plain": "((si DSCR in band, alors 1, sinon 0 plus si LTV in band, alors 1, sinon 0) plus si is classified asset, alors 0, sinon 1) plus si has breached covenant, alors 0, sinon 1"
+      },
+      "Covenants.Name": {
+        "table": "Covenants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un covenant : name est calculé comme le loan, suivi de un trait d'union, suivi de le covenant type en minuscules avec chaque une espace remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Covenants",
+            "field": "CovenantType",
+            "label": "covenant type"
+          }
+        ],
+        "structure": null,
+        "plain": "(loan joint à \"-\") joint à covenant type en minuscules avec « » remplacé par « - »"
+      },
+      "Covenants.LoanLabel": {
+        "table": "Covenants",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Un covenant : loan label est le loan number du loan lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Le loan number du loan lié"
+      },
+      "Covenants.LoanBusiness": {
+        "table": "Covenants",
+        "field": "LoanBusiness",
+        "kind": "lookup",
+        "rule": "Un covenant : loan business — repris du loan lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Le business du loan lié"
+      },
+      "Covenants.IsBreached": {
+        "table": "Covenants",
+        "field": "IsBreached",
+        "kind": "formula",
+        "rule": "Un covenant est considéré comme breached si le status est « Breached ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status est \"Breached\""
+      },
+      "Covenants.HasActiveWaiver": {
+        "table": "Covenants",
+        "field": "HasActiveWaiver",
+        "kind": "formula",
+        "rule": "Un covenant est considéré comme disposant de un active waiver si le current waiver through a une valeur.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "CurrentWaiverThrough",
+            "label": "current waiver through"
+          }
+        ],
+        "structure": null,
+        "plain": "Non current waiver through est vide"
+      },
+      "RiskRatingHistory.Name": {
+        "table": "RiskRatingHistory",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un risk rating history : name est calculé comme le loan, suivi de un trait d'union, suivi de le TEXT de l'effective date et « yyyy-mm-dd », suivi de « -grade- », suivi de le TEXT de le new grade et « 0 ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "EffectiveDate",
+            "label": "effective date"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": null,
+        "plain": "(((loan joint à \"-\") joint à text(effective date, \"yyyy-mm-dd\")) joint à \"-grade-\") joint à text(new grade, \"0\")"
+      },
+      "RiskRatingHistory.LoanLabel": {
+        "table": "RiskRatingHistory",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Un risk rating history : loan label est le loan number du loan lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Le loan number du loan lié"
+      },
+      "RiskRatingHistory.ChangedByUserLabel": {
+        "table": "RiskRatingHistory",
+        "field": "ChangedByUserLabel",
+        "kind": "lookup",
+        "rule": "Un risk rating history : changed by user label est le full name du changed by user lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "ChangedByUser",
+            "label": "changed by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Le full name du changed by user lié"
+      },
+      "RiskRatingHistory.GradeDelta": {
+        "table": "RiskRatingHistory",
+        "field": "GradeDelta",
+        "kind": "formula",
+        "rule": "Un risk rating history : grade delta est calculé comme le new grade moins le prior grade (une valeur manquante compte comme le new grade).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "New grade moins le premier de prior grade ou new grade qui n'est pas vide"
+      },
+      "RiskRatingHistory.IsDowngrade": {
+        "table": "RiskRatingHistory",
+        "field": "IsDowngrade",
+        "kind": "formula",
+        "rule": "Un risk rating history est considéré comme un downgrade si le grade delta est supérieur à 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "GradeDelta",
+            "label": "grade delta"
+          }
+        ],
+        "structure": null,
+        "plain": "Grade delta est supérieur à 0"
+      },
+      "RiskRatingHistory.IsInitialRating": {
+        "table": "RiskRatingHistory",
+        "field": "IsInitialRating",
+        "kind": "formula",
+        "rule": "Un risk rating history est considéré comme initial rating si le prior grade (une valeur manquante compte comme 0) est 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "Le premier de prior grade ou 0 qui n'est pas vide est égal à 0"
+      },
+      "RiskRatingHistory.CrossedClassifiedThreshold": {
+        "table": "RiskRatingHistory",
+        "field": "CrossedClassifiedThreshold",
+        "kind": "formula",
+        "rule": "Un risk rating history est marqué comme crossed classified threshold si tout ce qui suit est vrai : le prior grade (une valeur manquante compte comme 0) est inférieur à 7 et le new grade est au moins 7.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un risk rating history est marqué comme crossed classified threshold si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "le prior grade (une valeur manquante compte comme 0) est inférieur à 7"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "le new grade est au moins 7"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Le premier de prior grade ou 0 qui n'est pas vide est inférieur à 7 et new grade est au moins 7"
+      },
+      "Documents.Name": {
+        "table": "Documents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un document : name est calculé comme le filename en minuscules avec chaque une espace remplacé par un trait d'union avec chaque un point remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Filename",
+            "label": "filename"
+          }
+        ],
+        "structure": null,
+        "plain": "Filename en minuscules avec « » remplacé par « - » avec « . » remplacé par « - »"
+      },
+      "Documents.BusinessLabel": {
+        "table": "Documents",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Un document : business label est le legal name du business lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Le legal name du business lié"
+      },
+      "Documents.LoanLabel": {
+        "table": "Documents",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Un document : loan label est le loan number du loan lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Le loan number du loan lié"
+      },
+      "Documents.UploadedByUserLabel": {
+        "table": "Documents",
+        "field": "UploadedByUserLabel",
+        "kind": "lookup",
+        "rule": "Un document : uploaded by user label est le full name du uploaded by user lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Documents",
+            "field": "UploadedByUser",
+            "label": "uploaded by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Le full name du uploaded by user lié"
+      },
+      "Documents.AttachedTo": {
+        "table": "Documents",
+        "field": "AttachedTo",
+        "kind": "formula",
+        "rule": "Le champ « attached to » du document est déterminé selon la priorité suivante :\n1. « Loan », si le champ « loan » est renseigné ;\n2. « Business », si le champ « business » est renseigné ;\n3. dans tous les autres cas, « Orphan ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « attached to » du document est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« Loan »",
+              "when": {
+                "kind": "leaf",
+                "text": "le champ « loan » est renseigné"
+              }
+            },
+            {
+              "value": "« Business »",
+              "when": {
+                "kind": "leaf",
+                "text": "le champ « business » est renseigné"
+              }
+            },
+            {
+              "value": "« Orphan »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si non le premier de loan ou \"\" qui n'est pas vide est \"\", alors \"Loan\", sinon si non le premier de business ou \"\" qui n'est pas vide est \"\", alors \"Business\", sinon \"Orphan\""
+      },
+      "Documents.FromCustomerPortal": {
+        "table": "Documents",
+        "field": "FromCustomerPortal",
+        "kind": "formula",
+        "rule": "Un document est marqué comme from customer portal si l'uploaded via est « BusinessClientPortal ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "UploadedVia",
+            "label": "uploaded via"
+          }
+        ],
+        "structure": null,
+        "plain": "Uploaded via est \"BusinessClientPortal\""
+      },
+      "Interactions.Name": {
+        "table": "Interactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Une interaction : name est calculé comme le business, suivi de un trait d'union, suivi de le TEXT de l'interaction date et « yyyy-mm-dd », suivi de un trait d'union, suivi de le interaction type en minuscules, suivi de un trait d'union, suivi de le subject en minuscules avec chaque une espace remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionDate",
+            "label": "interaction date"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((business joint à \"-\") joint à text(interaction date, \"yyyy-mm-dd\")) joint à \"-\") joint à interaction type en minuscules) joint à \"-\") joint à subject en minuscules avec « » remplacé par « - »"
+      },
+      "Interactions.BusinessLabel": {
+        "table": "Interactions",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Une interaction : business label est le legal name du business lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Le legal name du business lié"
+      },
+      "Interactions.UserLabel": {
+        "table": "Interactions",
+        "field": "UserLabel",
+        "kind": "lookup",
+        "rule": "Une interaction : user label est le full name du user lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Interactions",
+            "field": "User",
+            "label": "user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Le full name du user lié"
+      },
+      "Interactions.IsSystemEvent": {
+        "table": "Interactions",
+        "field": "IsSystemEvent",
+        "kind": "formula",
+        "rule": "Une interaction est considéré comme un system event si l'interaction type est « SystemEvent ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type est \"SystemEvent\""
+      },
+      "Interactions.IsTask": {
+        "table": "Interactions",
+        "field": "IsTask",
+        "kind": "formula",
+        "rule": "Une interaction est considéré comme un task si l'interaction type est « Task ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type est \"Task\""
+      },
+      "Interactions.FromCustomer": {
+        "table": "Interactions",
+        "field": "FromCustomer",
+        "kind": "formula",
+        "rule": "Une interaction est marqué comme from customer si le source est « BusinessClientPortal ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Source",
+            "label": "source"
+          }
+        ],
+        "structure": null,
+        "plain": "Source est \"BusinessClientPortal\""
+      },
+      "Interactions.IsCovenantEvent": {
+        "table": "Interactions",
+        "field": "IsCovenantEvent",
+        "kind": "formula",
+        "rule": "Une interaction est considéré comme un covenant event si tout ce qui suit est vrai : l'indicateur « system event » est activé et le subject mentionne « covenant breach ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "IsSystemEvent",
+            "label": "is system event"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Une interaction est considéré comme un covenant event si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « system event » est activé"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "le subject mentionne « covenant breach »"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is system event et non find(\"covenant breach\", subject en minuscules), ou 0 en cas d'erreur est égal à 0"
+      }
+    },
+    "obligations": [
+      {
+        "constraintKey": "loan-sod",
+        "entity": "Loan",
+        "predicate": "SegregationOfDutiesOk",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **loan-sod** *(stricte)* — A loan must not be funded by the same user who originated it: the originating relationship manager and the underwriter must be different users.\n  - _En cas de violation :_ « The same user originated and underwrote this loan — segregation of duties is violated. »\n  - _Source :_ Internal Credit Policy §4.2"
+      },
+      {
+        "constraintKey": "biz-cdd",
+        "entity": "Business",
+        "predicate": "MeetsCddRule",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **biz-cdd** *(stricte)* — Un business **doit** avoir un beneficial owners at CDD threshold de plus de 0.\n  - _En cas de violation :_ « Beneficial-ownership (CDD) collection is incomplete: no owner crosses the 25% threshold and no control person is designated. »\n  - _Source :_ FinCEN CDD Rule, 31 CFR 1010.230\n  - _S'appuie sur :_ Meets CDD Rule (voir DR-25)."
+      },
+      {
+        "constraintKey": "loan-dscr",
+        "entity": "Loan",
+        "predicate": "DscrInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-dscr** *(dérogeable)* — Un loan **doit** avoir un DSCR d'au moins 1.20 *(dérogeable par un approbateur autorisé)*.\n  - _En cas de violation :_ « DSCR is below the 1.20 minimum; a credit-committee waiver is required to fund. »\n  - _Source :_ Internal Credit Policy §2.1 (DSCR floor)\n  - _S'appuie sur :_ DSCR in Band (voir DR-46)."
+      },
+      {
+        "constraintKey": "loan-ltv",
+        "entity": "Loan",
+        "predicate": "LtvInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-ltv** *(dérogeable)* — Un loan **doit** avoir un LTV d'au plus 0.80 *(dérogeable par un approbateur autorisé)*.\n  - _En cas de violation :_ « LTV exceeds the 0.80 ceiling; a credit-committee waiver is required to fund. »\n  - _Source :_ Internal Credit Policy §2.2 (LTV ceiling)\n  - _S'appuie sur :_ LTV in Band (voir DR-47)."
+      },
+      {
+        "constraintKey": "loan-watchlist",
+        "entity": "Loan",
+        "predicate": "OnWatchlist",
+        "deontic": "ShouldBeTrue",
+        "severity": "soft",
+        "markdown": "- **loan-watchlist** *(indicative)* — Un loan **devrait** satisfaire que au moins une des conditions suivantes est vraie : l'indicateur « classified asset » est activé ou l'indicateur « breached covenant » est activé.\n  - _En cas de violation :_ « This loan is a classified asset or has a breached covenant but is not flagged on the watchlist. »\n  - _Source :_ Internal Portfolio Risk Procedure §6 (watchlist)\n  - _S'appuie sur :_ On Watchlist (voir DR-54)."
+      }
+    ],
+    "structural": {
+      "Users": [
+        "Un user **doit** avoir un full name; un role; et un email."
+      ],
+      "Businesses": [
+        "Un business **doit** référencer exactement un user comme son relationship manager.",
+        "Un business **doit** avoir un legal name; une business structure; un NAICS code; et un status."
+      ],
+      "BeneficialOwners": [
+        "Un beneficial owner **doit** référencer exactement un business.",
+        "Un beneficial owner **doit** avoir un full name; un date of birth; un SSN; un address; et un ownership percentage, et consigner si il est un control person."
+      ],
+      "Contacts": [
+        "Un contact **doit** référencer exactement un business.",
+        "Un contact **doit** avoir un full name; un title; et un contact type, et consigner si il est un authorized signer."
+      ],
+      "Accounts": [
+        "Un account **doit** référencer exactement un business.",
+        "Un account **doit** avoir un account type; un account number last4; un current balance USD; et un opened at, et consigner si il a un ACH; si il a un wire; et si il a un card."
+      ],
+      "Loans": [
+        "Un loan **doit** référencer exactement un business.",
+        "Un loan **doit** référencer exactement un user comme son originating RM.",
+        "Un loan **doit** référencer exactement un user comme son underwriter.",
+        "Un loan **doit** avoir un loan number; un loan purpose; un principal USD; un rate pct; un term months; un underwriting stage; un risk rating; un risk rating label; et un originated at."
+      ],
+      "Covenants": [
+        "Un covenant **doit** référencer exactement un loan.",
+        "Un covenant **doit** avoir un covenant type; un test frequency; un next test date; et un status."
+      ],
+      "RiskRatingHistory": [
+        "Un risk rating history **doit** référencer exactement un loan.",
+        "Un risk rating history **doit** référencer exactement un user comme son changed by user.",
+        "Un risk rating history **doit** avoir un effective date; un new grade; et un reason."
+      ],
+      "Documents": [
+        "Un document **doit** avoir un filename; un document type; et un uploaded at, et consigner si il est ocr indexed."
+      ],
+      "Interactions": [
+        "Une interaction **doit** référencer exactement un business.",
+        "Une interaction **doit** avoir un interaction type; un subject; et un interaction date."
+      ]
+    },
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Businesses": "business",
+      "BeneficialOwners": "beneficial owner",
+      "Contacts": "contact",
+      "Accounts": "account",
+      "Loans": "loan",
+      "Covenants": "covenant",
+      "RiskRatingHistory": "risk rating history",
+      "Documents": "document",
+      "Interactions": "interaction"
+    }
+  },
+  "hi": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "user का “name” full name छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो"
+      },
+      "Users.IsRM": {
+        "table": "Users",
+        "field": "IsRM",
+        "kind": "formula",
+        "rule": "यदि role “RM” है, तो user “RM” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role \"RM\" है"
+      },
+      "Users.IsUnderwriter": {
+        "table": "Users",
+        "field": "IsUnderwriter",
+        "kind": "formula",
+        "rule": "यदि role “Underwriter” है, तो user “underwriter” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role \"Underwriter\" है"
+      },
+      "Users.IsBranchBanker": {
+        "table": "Users",
+        "field": "IsBranchBanker",
+        "kind": "formula",
+        "rule": "यदि role “BranchBanker” है, तो user “branch banker” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role \"BranchBanker\" है"
+      },
+      "Users.IsAdmin": {
+        "table": "Users",
+        "field": "IsAdmin",
+        "kind": "formula",
+        "rule": "यदि role “Admin” है, तो user “admin” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role \"Admin\" है"
+      },
+      "Users.CountOfPortfolioBusinesses": {
+        "table": "Users",
+        "field": "CountOfPortfolioBusinesses",
+        "kind": "rollup",
+        "rule": "user का “count of portfolio businesses” user से संबंधित “businesses” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “businesses” की संख्या, जिनका relationship manager यह रिकॉर्ड है"
+      },
+      "Users.CountOfOriginatedLoans": {
+        "table": "Users",
+        "field": "CountOfOriginatedLoans",
+        "kind": "rollup",
+        "rule": "user का “count of originated loans” user से संबंधित “loans” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “loans” की संख्या, जिनका originating RM यह रिकॉर्ड है"
+      },
+      "Users.CountOfUnderwrittenLoans": {
+        "table": "Users",
+        "field": "CountOfUnderwrittenLoans",
+        "kind": "rollup",
+        "rule": "user का “count of underwritten loans” user से संबंधित “loans” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “loans” की संख्या, जिनका underwriter यह रिकॉर्ड है"
+      },
+      "Businesses.Name": {
+        "table": "Businesses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "business का “name” legal name छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो, जिसमें हर एक बिंदु को एक खाली स्ट्रिंग से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो, जिसमें “.” को “” से बदला गया हो"
+      },
+      "Businesses.RelationshipManagerLabel": {
+        "table": "Businesses",
+        "field": "RelationshipManagerLabel",
+        "kind": "lookup",
+        "rule": "business का “relationship manager label” लिंक किए गए “relationship manager” का “full name” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “relationship manager” का full name"
+      },
+      "Businesses.IsCustomer": {
+        "table": "Businesses",
+        "field": "IsCustomer",
+        "kind": "formula",
+        "rule": "यदि status “Customer” है, तो business “customer” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status \"Customer\" है"
+      },
+      "Businesses.IsProspect": {
+        "table": "Businesses",
+        "field": "IsProspect",
+        "kind": "formula",
+        "rule": "यदि status “Prospect” है, तो business “prospect” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status \"Prospect\" है"
+      },
+      "Businesses.WasReferred": {
+        "table": "Businesses",
+        "field": "WasReferred",
+        "kind": "formula",
+        "rule": "यदि “referral source” भरा हुआ है, तो business “referred” किया गया माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "ReferralSource",
+            "label": "referral source"
+          }
+        ],
+        "structure": null,
+        "plain": "Referral source या \"\" में से पहला जो खाली न हो \"\" है नहीं"
+      },
+      "Businesses.CountOfBeneficialOwners": {
+        "table": "Businesses",
+        "field": "CountOfBeneficialOwners",
+        "kind": "rollup",
+        "rule": "business का “count of beneficial owners” business से संबंधित “beneficial owners” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “beneficial owners” की संख्या, जिनका business यह रिकॉर्ड है"
+      },
+      "Businesses.CountOfContacts": {
+        "table": "Businesses",
+        "field": "CountOfContacts",
+        "kind": "rollup",
+        "rule": "business का “count of contacts” business से संबंधित “contacts” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “contacts” की संख्या, जिनका business यह रिकॉर्ड है"
+      },
+      "Businesses.CountOfAccounts": {
+        "table": "Businesses",
+        "field": "CountOfAccounts",
+        "kind": "rollup",
+        "rule": "business का “count of accounts” business से संबंधित “accounts” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “accounts” की संख्या, जिनका business यह रिकॉर्ड है"
+      },
+      "Businesses.CountOfLoans": {
+        "table": "Businesses",
+        "field": "CountOfLoans",
+        "kind": "rollup",
+        "rule": "business का “count of loans” business से संबंधित “loans” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “loans” की संख्या, जिनका business यह रिकॉर्ड है"
+      },
+      "Businesses.CountOfInteractions": {
+        "table": "Businesses",
+        "field": "CountOfInteractions",
+        "kind": "rollup",
+        "rule": "business का “count of interactions” business से संबंधित “interactions” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “interactions” की संख्या, जिनका business यह रिकॉर्ड है"
+      },
+      "Businesses.CountOfDocuments": {
+        "table": "Businesses",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "business का “count of documents” business से संबंधित “documents” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “documents” की संख्या, जिनका business यह रिकॉर्ड है"
+      },
+      "Businesses.TotalDepositBalanceUsd": {
+        "table": "Businesses",
+        "field": "TotalDepositBalanceUsd",
+        "kind": "rollup",
+        "rule": "business का “total deposit balance USD” business से संबंधित “accounts” पर कुल “current balance USD” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "CurrentBalanceUsd",
+            "label": "current balance USD"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “accounts” पर योग current balance USD, जिनका business यह रिकॉर्ड है"
+      },
+      "Businesses.TotalLoanPrincipalUsd": {
+        "table": "Businesses",
+        "field": "TotalLoanPrincipalUsd",
+        "kind": "rollup",
+        "rule": "business का “total loan principal USD” business से संबंधित “loans” पर कुल “principal USD” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "PrincipalUsd",
+            "label": "principal USD"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “loans” पर योग principal USD, जिनका business यह रिकॉर्ड है"
+      },
+      "Businesses.CountOfClassifiedLoans": {
+        "table": "Businesses",
+        "field": "CountOfClassifiedLoans",
+        "kind": "rollup",
+        "rule": "business का “count of classified loans” business के उन “loans” की संख्या, जो “classified asset” हैं है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “loans” की संख्या, जिनका business यह रिकॉर्ड है और is classified asset true() है"
+      },
+      "Businesses.HasClassifiedLoan": {
+        "table": "Businesses",
+        "field": "HasClassifiedLoan",
+        "kind": "formula",
+        "rule": "यदि count of classified loans 0 से अधिक है, तो business “classified loan” रखने वाला माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "CountOfClassifiedLoans",
+            "label": "count of classified loans"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of classified loans 0 से अधिक है"
+      },
+      "Businesses.BeneficialOwnersAtCddThreshold": {
+        "table": "Businesses",
+        "field": "BeneficialOwnersAtCddThreshold",
+        "kind": "rollup",
+        "rule": "business का “beneficial owners at CDD threshold” business के उन “beneficial owners” की संख्या, जो “CDD threshold” की शर्त पूरी करते हैं है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "MeetsCddThreshold",
+            "label": "meets CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “beneficial owners” की संख्या, जिनका business यह रिकॉर्ड है और meets CDD threshold true() है"
+      },
+      "Businesses.MeetsCddRule": {
+        "table": "Businesses",
+        "field": "MeetsCddRule",
+        "kind": "formula",
+        "rule": "यदि beneficial owners at CDD threshold 0 से अधिक है, तो business “CDD rule” की शर्त पूरी करने वाला माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "BeneficialOwnersAtCddThreshold",
+            "label": "beneficial owners at CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Beneficial owners at CDD threshold 0 से अधिक है"
+      },
+      "Businesses.PortfolioPriority": {
+        "table": "Businesses",
+        "field": "PortfolioPriority",
+        "kind": "formula",
+        "rule": "Business का “portfolio priority” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “High”, यदि “classified loan” ध्वज लगा हुआ है;\n2. “Medium”, यदि निम्नलिखित में से कम से कम एक सही है: “meets CDD rule” ध्वज लगा हुआ नहीं है, “prospect” ध्वज लगा हुआ है या count of loans 0 है;\n3. अन्य सभी स्थितियों में, “Low”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "HasClassifiedLoan",
+            "label": "has classified loan"
+          },
+          {
+            "table": "Businesses",
+            "field": "MeetsCddRule",
+            "label": "meets CDD rule"
+          },
+          {
+            "table": "Businesses",
+            "field": "IsProspect",
+            "label": "is prospect"
+          },
+          {
+            "table": "Businesses",
+            "field": "CountOfLoans",
+            "label": "count of loans"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Business का “portfolio priority” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“High”",
+              "when": {
+                "kind": "leaf",
+                "text": "“classified loan” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "“Medium”",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "“meets CDD rule” ध्वज लगा हुआ नहीं है"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "“prospect” ध्वज लगा हुआ है"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "count of loans 0 है"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Low”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि has classified loan, तो \"High\", अन्यथा यदि meets CDD rule नहीं, is prospect या count of loans 0 के बराबर है, तो \"Medium\", अन्यथा \"Low\""
+      },
+      "BeneficialOwners.Name": {
+        "table": "BeneficialOwners",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "beneficial owner का “name” business, उसके बाद एक योजक चिह्न, उसके बाद full name छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "(business \"-\" से जुड़ा हुआ) full name छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो से जुड़ा हुआ"
+      },
+      "BeneficialOwners.BusinessLabel": {
+        "table": "BeneficialOwners",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "beneficial owner का “business label” लिंक किए गए “business” का “legal name” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “business” का legal name"
+      },
+      "BeneficialOwners.Meets25PercentThreshold": {
+        "table": "BeneficialOwners",
+        "field": "Meets25PercentThreshold",
+        "kind": "formula",
+        "rule": "यदि ownership percentage कम से कम 25 है, तो beneficial owner “meets25 percent threshold” के रूप में दर्ज किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "OwnershipPercentage",
+            "label": "ownership percentage"
+          }
+        ],
+        "structure": null,
+        "plain": "Ownership percentage कम से कम 25 है"
+      },
+      "BeneficialOwners.MeetsCddThreshold": {
+        "table": "BeneficialOwners",
+        "field": "MeetsCddThreshold",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित में से कम से कम एक सही है: “meets25 percent threshold” ध्वज लगा हुआ है या “control person” ध्वज लगा हुआ है, तो beneficial owner “CDD threshold” की शर्त पूरी करने वाला माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Meets25PercentThreshold",
+            "label": "meets25 percent threshold"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "IsControlPerson",
+            "label": "is control person"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "beneficial owner “CDD threshold” की शर्त पूरी करने वाला माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“meets25 percent threshold” ध्वज लगा हुआ है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“control person” ध्वज लगा हुआ है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Meets25 percent threshold या is control person"
+      },
+      "Contacts.Name": {
+        "table": "Contacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "contact का “name” business, उसके बाद एक योजक चिह्न, उसके बाद full name छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो, उसके बाद एक योजक चिह्न, उसके बाद title छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Contacts",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business \"-\" से जुड़ा हुआ) full name छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो से जुड़ा हुआ) \"-\" से जुड़ा हुआ) title छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो से जुड़ा हुआ"
+      },
+      "Contacts.BusinessLabel": {
+        "table": "Contacts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "contact का “business label” लिंक किए गए “business” का “legal name” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “business” का legal name"
+      },
+      "Contacts.IsOfficer": {
+        "table": "Contacts",
+        "field": "IsOfficer",
+        "kind": "formula",
+        "rule": "यदि contact type “Officer” है, तो contact “officer” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type \"Officer\" है"
+      },
+      "Contacts.IsApClerk": {
+        "table": "Contacts",
+        "field": "IsApClerk",
+        "kind": "formula",
+        "rule": "यदि contact type “APClerk” है, तो contact “AP clerk” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type \"APClerk\" है"
+      },
+      "Accounts.Name": {
+        "table": "Accounts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "account का “name” business, उसके बाद एक योजक चिह्न, उसके बाद account type छोटे अक्षरों में, उसके बाद एक योजक चिह्न, उसके बाद account number last4 के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountType",
+            "label": "account type"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountNumberLast4",
+            "label": "account number last4"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business \"-\" से जुड़ा हुआ) account type छोटे अक्षरों में से जुड़ा हुआ) \"-\" से जुड़ा हुआ) account number last4 से जुड़ा हुआ"
+      },
+      "Accounts.BusinessLabel": {
+        "table": "Accounts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "account का “business label” लिंक किए गए “business” का “legal name” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “business” का legal name"
+      },
+      "Accounts.TreasuryServiceCount": {
+        "table": "Accounts",
+        "field": "TreasuryServiceCount",
+        "kind": "formula",
+        "rule": "account का “treasury service count” निम्नलिखित में से सही सिद्ध होने वालों की संख्या: “ACH” ध्वज लगा हुआ है, “wire” ध्वज लगा हुआ है और “card” ध्वज लगा हुआ है के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "HasAch",
+            "label": "has ACH"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasWire",
+            "label": "has wire"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasCard",
+            "label": "has card"
+          }
+        ],
+        "structure": null,
+        "plain": "(यदि has ACH, तो 1, अन्यथा 0 जोड़ यदि has wire, तो 1, अन्यथा 0) जोड़ यदि has card, तो 1, अन्यथा 0"
+      },
+      "Accounts.HasAnyTreasuryService": {
+        "table": "Accounts",
+        "field": "HasAnyTreasuryService",
+        "kind": "formula",
+        "rule": "यदि treasury service count 0 से अधिक है, तो account “any treasury service” रखने वाला माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "TreasuryServiceCount",
+            "label": "treasury service count"
+          }
+        ],
+        "structure": null,
+        "plain": "Treasury service count 0 से अधिक है"
+      },
+      "Loans.Name": {
+        "table": "Loans",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "loan का “name” loan number छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan number छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो"
+      },
+      "Loans.BusinessLabel": {
+        "table": "Loans",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "loan का “business label” लिंक किए गए “business” का “legal name” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “business” का legal name"
+      },
+      "Loans.BusinessNaicsCode": {
+        "table": "Loans",
+        "field": "BusinessNaicsCode",
+        "kind": "lookup",
+        "rule": "loan का “business NAICS code” — लिंक किए गए “business” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "NaicsCode",
+            "label": "NAICS code"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “business” का NAICS code"
+      },
+      "Loans.OriginatingRmLabel": {
+        "table": "Loans",
+        "field": "OriginatingRmLabel",
+        "kind": "lookup",
+        "rule": "loan का “originating RM label” लिंक किए गए “originating RM” का “full name” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “originating RM” का full name"
+      },
+      "Loans.UnderwriterIsAdmin": {
+        "table": "Loans",
+        "field": "UnderwriterIsAdmin",
+        "kind": "lookup",
+        "rule": "loan का “underwriter is admin” तब सत्य होता है, जब लिंक किए गए “underwriter” का “admin” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "IsAdmin",
+            "label": "is admin"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “underwriter” का is admin"
+      },
+      "Loans.IsFunded": {
+        "table": "Loans",
+        "field": "IsFunded",
+        "kind": "formula",
+        "rule": "यदि underwriting stage “Funded” है, तो loan “funded” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "UnderwritingStage",
+            "label": "underwriting stage"
+          }
+        ],
+        "structure": null,
+        "plain": "Underwriting stage \"Funded\" है"
+      },
+      "Loans.IsClassifiedAsset": {
+        "table": "Loans",
+        "field": "IsClassifiedAsset",
+        "kind": "formula",
+        "rule": "यदि risk rating कम से कम 7 है, तो loan “classified asset” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "RiskRating",
+            "label": "risk rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Risk rating कम से कम 7 है"
+      },
+      "Loans.DscrInBand": {
+        "table": "Loans",
+        "field": "DscrInBand",
+        "kind": "formula",
+        "rule": "यदि DSCR (अनुपस्थित मान को 0 गिना जाता है) कम से कम 1.20 है, तो loan “DSCR in band” के रूप में दर्ज किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Dscr",
+            "label": "DSCR"
+          }
+        ],
+        "structure": null,
+        "plain": "DSCR या 0 में से पहला जो खाली न हो कम से कम 1.20 है"
+      },
+      "Loans.LtvInBand": {
+        "table": "Loans",
+        "field": "LtvInBand",
+        "kind": "formula",
+        "rule": "यदि LTV (अनुपस्थित मान को 0 गिना जाता है) अधिक से अधिक 0.80 है, तो loan “LTV in band” के रूप में दर्ज किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Ltv",
+            "label": "LTV"
+          }
+        ],
+        "structure": null,
+        "plain": "LTV या 0 में से पहला जो खाली न हो अधिक से अधिक 0.80 है"
+      },
+      "Loans.SegregationOfDutiesOk": {
+        "table": "Loans",
+        "field": "SegregationOfDutiesOk",
+        "kind": "formula",
+        "rule": "यदि ऐसा नहीं है कि originating RM underwriter है, तो loan “segregation of duties ok” के रूप में दर्ज किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          }
+        ],
+        "structure": null,
+        "plain": "Originating RM underwriter के बराबर है नहीं"
+      },
+      "Loans.CountOfCovenants": {
+        "table": "Loans",
+        "field": "CountOfCovenants",
+        "kind": "rollup",
+        "rule": "loan का “count of covenants” loan से संबंधित “covenants” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “covenants” की संख्या, जिनका loan यह रिकॉर्ड है"
+      },
+      "Loans.CountOfBreachedCovenants": {
+        "table": "Loans",
+        "field": "CountOfBreachedCovenants",
+        "kind": "rollup",
+        "rule": "loan का “count of breached covenants” loan के उन “covenants” की संख्या, जो “breached” हैं है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Covenants",
+            "field": "IsBreached",
+            "label": "is breached"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “covenants” की संख्या, जिनका loan यह रिकॉर्ड है और is breached true() है"
+      },
+      "Loans.CountOfRiskRatingHistory": {
+        "table": "Loans",
+        "field": "CountOfRiskRatingHistory",
+        "kind": "rollup",
+        "rule": "loan का “count of risk rating history” loan से संबंधित “risk rating history” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “risk rating history” की संख्या, जिनका loan यह रिकॉर्ड है"
+      },
+      "Loans.CountOfDocuments": {
+        "table": "Loans",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "loan का “count of documents” loan से संबंधित “documents” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “documents” की संख्या, जिनका loan यह रिकॉर्ड है"
+      },
+      "Loans.HasBreachedCovenant": {
+        "table": "Loans",
+        "field": "HasBreachedCovenant",
+        "kind": "formula",
+        "rule": "यदि count of breached covenants 0 से अधिक है, तो loan “breached covenant” रखने वाला माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "CountOfBreachedCovenants",
+            "label": "count of breached covenants"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of breached covenants 0 से अधिक है"
+      },
+      "Loans.OnWatchlist": {
+        "table": "Loans",
+        "field": "OnWatchlist",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित में से कम से कम एक सही है: “classified asset” ध्वज लगा हुआ है या “breached covenant” ध्वज लगा हुआ है, तो loan “on watchlist” के रूप में दर्ज किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "loan “on watchlist” के रूप में दर्ज किया जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“classified asset” ध्वज लगा हुआ है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“breached covenant” ध्वज लगा हुआ है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is classified asset या has breached covenant"
+      },
+      "Loans.HealthScore": {
+        "table": "Loans",
+        "field": "HealthScore",
+        "kind": "formula",
+        "rule": "loan का “health score” निम्नलिखित में से सही सिद्ध होने वालों की संख्या: “DSCR in band” ध्वज लगा हुआ है, “LTV in band” ध्वज लगा हुआ है, “classified asset” ध्वज लगा हुआ नहीं है और “breached covenant” ध्वज लगा हुआ नहीं है के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "DscrInBand",
+            "label": "DSCR in band"
+          },
+          {
+            "table": "Loans",
+            "field": "LtvInBand",
+            "label": "LTV in band"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": null,
+        "plain": "((यदि DSCR in band, तो 1, अन्यथा 0 जोड़ यदि LTV in band, तो 1, अन्यथा 0) जोड़ यदि is classified asset, तो 0, अन्यथा 1) जोड़ यदि has breached covenant, तो 0, अन्यथा 1"
+      },
+      "Covenants.Name": {
+        "table": "Covenants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "covenant का “name” loan, उसके बाद एक योजक चिह्न, उसके बाद covenant type छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Covenants",
+            "field": "CovenantType",
+            "label": "covenant type"
+          }
+        ],
+        "structure": null,
+        "plain": "(loan \"-\" से जुड़ा हुआ) covenant type छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो से जुड़ा हुआ"
+      },
+      "Covenants.LoanLabel": {
+        "table": "Covenants",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "covenant का “loan label” लिंक किए गए “loan” का “loan number” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “loan” का loan number"
+      },
+      "Covenants.LoanBusiness": {
+        "table": "Covenants",
+        "field": "LoanBusiness",
+        "kind": "lookup",
+        "rule": "covenant का “loan business” — लिंक किए गए “loan” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “loan” का business"
+      },
+      "Covenants.IsBreached": {
+        "table": "Covenants",
+        "field": "IsBreached",
+        "kind": "formula",
+        "rule": "यदि status “Breached” है, तो covenant “breached” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status \"Breached\" है"
+      },
+      "Covenants.HasActiveWaiver": {
+        "table": "Covenants",
+        "field": "HasActiveWaiver",
+        "kind": "formula",
+        "rule": "यदि current waiver through में कोई मान है, तो covenant “active waiver” रखने वाला माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "CurrentWaiverThrough",
+            "label": "current waiver through"
+          }
+        ],
+        "structure": null,
+        "plain": "Current waiver through खाली है नहीं"
+      },
+      "RiskRatingHistory.Name": {
+        "table": "RiskRatingHistory",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "risk rating history का “name” loan, उसके बाद एक योजक चिह्न, उसके बाद effective date और “yyyy-mm-dd” का TEXT, उसके बाद “-grade-”, उसके बाद new grade और “0” का TEXT के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "EffectiveDate",
+            "label": "effective date"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": null,
+        "plain": "(((loan \"-\" से जुड़ा हुआ) text(effective date, \"yyyy-mm-dd\") से जुड़ा हुआ) \"-grade-\" से जुड़ा हुआ) text(new grade, \"0\") से जुड़ा हुआ"
+      },
+      "RiskRatingHistory.LoanLabel": {
+        "table": "RiskRatingHistory",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "risk rating history का “loan label” लिंक किए गए “loan” का “loan number” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “loan” का loan number"
+      },
+      "RiskRatingHistory.ChangedByUserLabel": {
+        "table": "RiskRatingHistory",
+        "field": "ChangedByUserLabel",
+        "kind": "lookup",
+        "rule": "risk rating history का “changed by user label” लिंक किए गए “changed by user” का “full name” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "ChangedByUser",
+            "label": "changed by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “changed by user” का full name"
+      },
+      "RiskRatingHistory.GradeDelta": {
+        "table": "RiskRatingHistory",
+        "field": "GradeDelta",
+        "kind": "formula",
+        "rule": "risk rating history का “grade delta” new grade घटा prior grade (अनुपस्थित मान को new grade गिना जाता है) के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "New grade घटा prior grade या new grade में से पहला जो खाली न हो"
+      },
+      "RiskRatingHistory.IsDowngrade": {
+        "table": "RiskRatingHistory",
+        "field": "IsDowngrade",
+        "kind": "formula",
+        "rule": "यदि grade delta 0 से अधिक है, तो risk rating history “downgrade” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "GradeDelta",
+            "label": "grade delta"
+          }
+        ],
+        "structure": null,
+        "plain": "Grade delta 0 से अधिक है"
+      },
+      "RiskRatingHistory.IsInitialRating": {
+        "table": "RiskRatingHistory",
+        "field": "IsInitialRating",
+        "kind": "formula",
+        "rule": "यदि prior grade (अनुपस्थित मान को 0 गिना जाता है) 0 है, तो risk rating history “initial rating” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "Prior grade या 0 में से पहला जो खाली न हो 0 के बराबर है"
+      },
+      "RiskRatingHistory.CrossedClassifiedThreshold": {
+        "table": "RiskRatingHistory",
+        "field": "CrossedClassifiedThreshold",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: prior grade (अनुपस्थित मान को 0 गिना जाता है) 7 से कम है और new grade कम से कम 7 है, तो risk rating history “crossed classified threshold” के रूप में दर्ज किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "risk rating history “crossed classified threshold” के रूप में दर्ज किया जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "prior grade (अनुपस्थित मान को 0 गिना जाता है) 7 से कम है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "new grade कम से कम 7 है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Prior grade या 0 में से पहला जो खाली न हो 7 से कम है और new grade कम से कम 7 है"
+      },
+      "Documents.Name": {
+        "table": "Documents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "document का “name” filename छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो, जिसमें हर एक बिंदु को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Filename",
+            "label": "filename"
+          }
+        ],
+        "structure": null,
+        "plain": "Filename छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो, जिसमें “.” को “-” से बदला गया हो"
+      },
+      "Documents.BusinessLabel": {
+        "table": "Documents",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "document का “business label” लिंक किए गए “business” का “legal name” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “business” का legal name"
+      },
+      "Documents.LoanLabel": {
+        "table": "Documents",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "document का “loan label” लिंक किए गए “loan” का “loan number” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “loan” का loan number"
+      },
+      "Documents.UploadedByUserLabel": {
+        "table": "Documents",
+        "field": "UploadedByUserLabel",
+        "kind": "lookup",
+        "rule": "document का “uploaded by user label” लिंक किए गए “uploaded by user” का “full name” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Documents",
+            "field": "UploadedByUser",
+            "label": "uploaded by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “uploaded by user” का full name"
+      },
+      "Documents.AttachedTo": {
+        "table": "Documents",
+        "field": "AttachedTo",
+        "kind": "formula",
+        "rule": "Document का “attached to” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “Loan”, यदि “loan” भरा हुआ है;\n2. “Business”, यदि “business” भरा हुआ है;\n3. अन्य सभी स्थितियों में, “Orphan”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Document का “attached to” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“Loan”",
+              "when": {
+                "kind": "leaf",
+                "text": "“loan” भरा हुआ है"
+              }
+            },
+            {
+              "value": "“Business”",
+              "when": {
+                "kind": "leaf",
+                "text": "“business” भरा हुआ है"
+              }
+            },
+            {
+              "value": "“Orphan”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि loan या \"\" में से पहला जो खाली न हो \"\" है नहीं, तो \"Loan\", अन्यथा यदि business या \"\" में से पहला जो खाली न हो \"\" है नहीं, तो \"Business\", अन्यथा \"Orphan\""
+      },
+      "Documents.FromCustomerPortal": {
+        "table": "Documents",
+        "field": "FromCustomerPortal",
+        "kind": "formula",
+        "rule": "यदि uploaded via “BusinessClientPortal” है, तो document “from customer portal” के रूप में दर्ज किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "UploadedVia",
+            "label": "uploaded via"
+          }
+        ],
+        "structure": null,
+        "plain": "Uploaded via \"BusinessClientPortal\" है"
+      },
+      "Interactions.Name": {
+        "table": "Interactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "interaction का “name” business, उसके बाद एक योजक चिह्न, उसके बाद interaction date और “yyyy-mm-dd” का TEXT, उसके बाद एक योजक चिह्न, उसके बाद interaction type छोटे अक्षरों में, उसके बाद एक योजक चिह्न, उसके बाद subject छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionDate",
+            "label": "interaction date"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((business \"-\" से जुड़ा हुआ) text(interaction date, \"yyyy-mm-dd\") से जुड़ा हुआ) \"-\" से जुड़ा हुआ) interaction type छोटे अक्षरों में से जुड़ा हुआ) \"-\" से जुड़ा हुआ) subject छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो से जुड़ा हुआ"
+      },
+      "Interactions.BusinessLabel": {
+        "table": "Interactions",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "interaction का “business label” लिंक किए गए “business” का “legal name” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “business” का legal name"
+      },
+      "Interactions.UserLabel": {
+        "table": "Interactions",
+        "field": "UserLabel",
+        "kind": "lookup",
+        "rule": "interaction का “user label” लिंक किए गए “user” का “full name” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Interactions",
+            "field": "User",
+            "label": "user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “user” का full name"
+      },
+      "Interactions.IsSystemEvent": {
+        "table": "Interactions",
+        "field": "IsSystemEvent",
+        "kind": "formula",
+        "rule": "यदि interaction type “SystemEvent” है, तो interaction “system event” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type \"SystemEvent\" है"
+      },
+      "Interactions.IsTask": {
+        "table": "Interactions",
+        "field": "IsTask",
+        "kind": "formula",
+        "rule": "यदि interaction type “Task” है, तो interaction “task” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type \"Task\" है"
+      },
+      "Interactions.FromCustomer": {
+        "table": "Interactions",
+        "field": "FromCustomer",
+        "kind": "formula",
+        "rule": "यदि source “BusinessClientPortal” है, तो interaction “from customer” के रूप में दर्ज किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Source",
+            "label": "source"
+          }
+        ],
+        "structure": null,
+        "plain": "Source \"BusinessClientPortal\" है"
+      },
+      "Interactions.IsCovenantEvent": {
+        "table": "Interactions",
+        "field": "IsCovenantEvent",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: “system event” ध्वज लगा हुआ है और subject में “covenant breach” का उल्लेख है, तो interaction “covenant event” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "IsSystemEvent",
+            "label": "is system event"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "interaction “covenant event” माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“system event” ध्वज लगा हुआ है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "subject में “covenant breach” का उल्लेख है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is system event और find(\"covenant breach\", subject छोटे अक्षरों में), या 0 यदि उसमें त्रुटि हो 0 के बराबर है नहीं"
+      }
+    },
+    "obligations": [
+      {
+        "constraintKey": "loan-sod",
+        "entity": "Loan",
+        "predicate": "SegregationOfDutiesOk",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **loan-sod** *(कठोर)* — A loan must not be funded by the same user who originated it: the originating relationship manager and the underwriter must be different users.\n  - _उल्लंघन होने पर:_ “The same user originated and underwrote this loan — segregation of duties is violated.”\n  - _स्रोत:_ Internal Credit Policy §4.2"
+      },
+      {
+        "constraintKey": "biz-cdd",
+        "entity": "Business",
+        "predicate": "MeetsCddRule",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **biz-cdd** *(कठोर)* — business को beneficial owners at CDD threshold 0 से अधिक रखना **अनिवार्य** है।\n  - _उल्लंघन होने पर:_ “Beneficial-ownership (CDD) collection is incomplete: no owner crosses the 25% threshold and no control person is designated.”\n  - _स्रोत:_ FinCEN CDD Rule, 31 CFR 1010.230\n  - _आधारित है:_ Meets CDD Rule (देखें DR-25)।"
+      },
+      {
+        "constraintKey": "loan-dscr",
+        "entity": "Loan",
+        "predicate": "DscrInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-dscr** *(शिथिल-योग्य)* — loan को DSCR 1.20 कम से कम रखना **अनिवार्य** है। *(अधिकृत अनुमोदक द्वारा शिथिल किया जा सकता है)*।\n  - _उल्लंघन होने पर:_ “DSCR is below the 1.20 minimum; a credit-committee waiver is required to fund.”\n  - _स्रोत:_ Internal Credit Policy §2.1 (DSCR floor)\n  - _आधारित है:_ DSCR in Band (देखें DR-46)।"
+      },
+      {
+        "constraintKey": "loan-ltv",
+        "entity": "Loan",
+        "predicate": "LtvInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-ltv** *(शिथिल-योग्य)* — loan को LTV 0.80 अधिक से अधिक रखना **अनिवार्य** है। *(अधिकृत अनुमोदक द्वारा शिथिल किया जा सकता है)*।\n  - _उल्लंघन होने पर:_ “LTV exceeds the 0.80 ceiling; a credit-committee waiver is required to fund.”\n  - _स्रोत:_ Internal Credit Policy §2.2 (LTV ceiling)\n  - _आधारित है:_ LTV in Band (देखें DR-47)।"
+      },
+      {
+        "constraintKey": "loan-watchlist",
+        "entity": "Loan",
+        "predicate": "OnWatchlist",
+        "deontic": "ShouldBeTrue",
+        "severity": "soft",
+        "markdown": "- **loan-watchlist** *(परामर्शी)* — loan को यह शर्त पूरी करना कि निम्नलिखित में से कम से कम एक सही है: “classified asset” ध्वज लगा हुआ है या “breached covenant” ध्वज लगा हुआ है **चाहिए**।\n  - _उल्लंघन होने पर:_ “This loan is a classified asset or has a breached covenant but is not flagged on the watchlist.”\n  - _स्रोत:_ Internal Portfolio Risk Procedure §6 (watchlist)\n  - _आधारित है:_ On Watchlist (देखें DR-54)।"
+      }
+    ],
+    "structural": {
+      "Users": [
+        "user को full name, role और email रखना **अनिवार्य** है।"
+      ],
+      "Businesses": [
+        "business को अपने “relationship manager” के रूप में ठीक एक “user” का संदर्भ देना **अनिवार्य** है।",
+        "business को legal name, business structure, NAICS code और status रखना **अनिवार्य** है।"
+      ],
+      "BeneficialOwners": [
+        "beneficial owner को ठीक एक “business” का संदर्भ देना **अनिवार्य** है।",
+        "beneficial owner को full name, date of birth, SSN, address और ownership percentage रखना, तथा यह कि वह “control person” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ],
+      "Contacts": [
+        "contact को ठीक एक “business” का संदर्भ देना **अनिवार्य** है।",
+        "contact को full name, title और contact type रखना, तथा यह कि वह “authorized signer” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ],
+      "Accounts": [
+        "account को ठीक एक “business” का संदर्भ देना **अनिवार्य** है।",
+        "account को account type, account number last4, current balance USD और opened at रखना, तथा यह कि वह “ACH” रखता है या नहीं, यह कि वह “wire” रखता है या नहीं और यह कि वह “card” रखता है या नहीं दर्ज करना **अनिवार्य** है।"
+      ],
+      "Loans": [
+        "loan को ठीक एक “business” का संदर्भ देना **अनिवार्य** है।",
+        "loan को अपने “originating RM” के रूप में ठीक एक “user” का संदर्भ देना **अनिवार्य** है।",
+        "loan को अपने “underwriter” के रूप में ठीक एक “user” का संदर्भ देना **अनिवार्य** है।",
+        "loan को loan number, loan purpose, principal USD, rate pct, term months, underwriting stage, risk rating, risk rating label और originated at रखना **अनिवार्य** है।"
+      ],
+      "Covenants": [
+        "covenant को ठीक एक “loan” का संदर्भ देना **अनिवार्य** है।",
+        "covenant को covenant type, test frequency, next test date और status रखना **अनिवार्य** है।"
+      ],
+      "RiskRatingHistory": [
+        "risk rating history को ठीक एक “loan” का संदर्भ देना **अनिवार्य** है।",
+        "risk rating history को अपने “changed by user” के रूप में ठीक एक “user” का संदर्भ देना **अनिवार्य** है।",
+        "risk rating history को effective date, new grade और reason रखना **अनिवार्य** है।"
+      ],
+      "Documents": [
+        "document को filename, document type और uploaded at रखना, तथा यह कि वह “ocr indexed” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ],
+      "Interactions": [
+        "interaction को ठीक एक “business” का संदर्भ देना **अनिवार्य** है।",
+        "interaction को interaction type, subject और interaction date रखना **अनिवार्य** है।"
+      ]
+    },
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "Users": "user",
+      "Businesses": "business",
+      "BeneficialOwners": "beneficial owner",
+      "Contacts": "contact",
+      "Accounts": "account",
+      "Loans": "loan",
+      "Covenants": "covenant",
+      "RiskRatingHistory": "risk rating history",
+      "Documents": "document",
+      "Interactions": "interaction"
+    }
+  },
+  "id": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap user, name dihitung sebagai full name dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name dalam huruf kecil dengan “ ” diganti dengan “-”"
+      },
+      "Users.IsRM": {
+        "table": "Users",
+        "field": "IsRM",
+        "kind": "formula",
+        "rule": "Setiap user dianggap “RM” jika role adalah “RM”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role adalah \"RM\""
+      },
+      "Users.IsUnderwriter": {
+        "table": "Users",
+        "field": "IsUnderwriter",
+        "kind": "formula",
+        "rule": "Setiap user dianggap “underwriter” jika role adalah “Underwriter”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role adalah \"Underwriter\""
+      },
+      "Users.IsBranchBanker": {
+        "table": "Users",
+        "field": "IsBranchBanker",
+        "kind": "formula",
+        "rule": "Setiap user dianggap “branch banker” jika role adalah “BranchBanker”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role adalah \"BranchBanker\""
+      },
+      "Users.IsAdmin": {
+        "table": "Users",
+        "field": "IsAdmin",
+        "kind": "formula",
+        "rule": "Setiap user dianggap “admin” jika role adalah “Admin”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role adalah \"Admin\""
+      },
+      "Users.CountOfPortfolioBusinesses": {
+        "table": "Users",
+        "field": "CountOfPortfolioBusinesses",
+        "kind": "rollup",
+        "rule": "Untuk setiap user, count of portfolio businesses adalah jumlah businesses yang terkait dengan user tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah businesses dengan syarat relationship manager adalah entri ini"
+      },
+      "Users.CountOfOriginatedLoans": {
+        "table": "Users",
+        "field": "CountOfOriginatedLoans",
+        "kind": "rollup",
+        "rule": "Untuk setiap user, count of originated loans adalah jumlah loans yang terkait dengan user tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah loans dengan syarat originating RM adalah entri ini"
+      },
+      "Users.CountOfUnderwrittenLoans": {
+        "table": "Users",
+        "field": "CountOfUnderwrittenLoans",
+        "kind": "rollup",
+        "rule": "Untuk setiap user, count of underwritten loans adalah jumlah loans yang terkait dengan user tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah loans dengan syarat underwriter adalah entri ini"
+      },
+      "Businesses.Name": {
+        "table": "Businesses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap business, name dihitung sebagai legal name dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung dengan setiap tanda titik diganti dengan teks kosong.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name dalam huruf kecil dengan “ ” diganti dengan “-” dengan “.” diganti dengan “”"
+      },
+      "Businesses.RelationshipManagerLabel": {
+        "table": "Businesses",
+        "field": "RelationshipManagerLabel",
+        "kind": "lookup",
+        "rule": "Untuk setiap business, relationship manager label adalah full name dari relationship manager yang tertaut pada business tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name dari relationship manager yang tertaut"
+      },
+      "Businesses.IsCustomer": {
+        "table": "Businesses",
+        "field": "IsCustomer",
+        "kind": "formula",
+        "rule": "Setiap business dianggap “customer” jika status adalah “Customer”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status adalah \"Customer\""
+      },
+      "Businesses.IsProspect": {
+        "table": "Businesses",
+        "field": "IsProspect",
+        "kind": "formula",
+        "rule": "Setiap business dianggap “prospect” jika status adalah “Prospect”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status adalah \"Prospect\""
+      },
+      "Businesses.WasReferred": {
+        "table": "Businesses",
+        "field": "WasReferred",
+        "kind": "formula",
+        "rule": "Setiap business dianggap telah “referred” jika kolom “referral source” terisi.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "ReferralSource",
+            "label": "referral source"
+          }
+        ],
+        "structure": null,
+        "plain": "Tidak benar bahwa nilai pertama yang tidak kosong dari referral source atau \"\" adalah \"\""
+      },
+      "Businesses.CountOfBeneficialOwners": {
+        "table": "Businesses",
+        "field": "CountOfBeneficialOwners",
+        "kind": "rollup",
+        "rule": "Untuk setiap business, count of beneficial owners adalah jumlah beneficial owners yang terkait dengan business tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah beneficial owners dengan syarat business adalah entri ini"
+      },
+      "Businesses.CountOfContacts": {
+        "table": "Businesses",
+        "field": "CountOfContacts",
+        "kind": "rollup",
+        "rule": "Untuk setiap business, count of contacts adalah jumlah contacts yang terkait dengan business tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah contacts dengan syarat business adalah entri ini"
+      },
+      "Businesses.CountOfAccounts": {
+        "table": "Businesses",
+        "field": "CountOfAccounts",
+        "kind": "rollup",
+        "rule": "Untuk setiap business, count of accounts adalah jumlah accounts yang terkait dengan business tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah accounts dengan syarat business adalah entri ini"
+      },
+      "Businesses.CountOfLoans": {
+        "table": "Businesses",
+        "field": "CountOfLoans",
+        "kind": "rollup",
+        "rule": "Untuk setiap business, count of loans adalah jumlah loans yang terkait dengan business tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah loans dengan syarat business adalah entri ini"
+      },
+      "Businesses.CountOfInteractions": {
+        "table": "Businesses",
+        "field": "CountOfInteractions",
+        "kind": "rollup",
+        "rule": "Untuk setiap business, count of interactions adalah jumlah interactions yang terkait dengan business tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah interactions dengan syarat business adalah entri ini"
+      },
+      "Businesses.CountOfDocuments": {
+        "table": "Businesses",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "Untuk setiap business, count of documents adalah jumlah documents yang terkait dengan business tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah documents dengan syarat business adalah entri ini"
+      },
+      "Businesses.TotalDepositBalanceUsd": {
+        "table": "Businesses",
+        "field": "TotalDepositBalanceUsd",
+        "kind": "rollup",
+        "rule": "Untuk setiap business, total deposit balance USD adalah nilai total current balance USD pada seluruh accounts yang terkait dengan business tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "CurrentBalanceUsd",
+            "label": "current balance USD"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Total current balance USD pada semua accounts dengan syarat business adalah entri ini"
+      },
+      "Businesses.TotalLoanPrincipalUsd": {
+        "table": "Businesses",
+        "field": "TotalLoanPrincipalUsd",
+        "kind": "rollup",
+        "rule": "Untuk setiap business, total loan principal USD adalah nilai total principal USD pada seluruh loans yang terkait dengan business tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "PrincipalUsd",
+            "label": "principal USD"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Total principal USD pada semua loans dengan syarat business adalah entri ini"
+      },
+      "Businesses.CountOfClassifiedLoans": {
+        "table": "Businesses",
+        "field": "CountOfClassifiedLoans",
+        "kind": "rollup",
+        "rule": "Untuk setiap business, count of classified loans adalah jumlah loans dari business tersebut yang tergolong “classified asset”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah loans dengan syarat business adalah entri ini dan is classified asset adalah true()"
+      },
+      "Businesses.HasClassifiedLoan": {
+        "table": "Businesses",
+        "field": "HasClassifiedLoan",
+        "kind": "formula",
+        "rule": "Setiap business dianggap memiliki “classified loan” jika count of classified loans lebih dari 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "CountOfClassifiedLoans",
+            "label": "count of classified loans"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of classified loans lebih dari 0"
+      },
+      "Businesses.BeneficialOwnersAtCddThreshold": {
+        "table": "Businesses",
+        "field": "BeneficialOwnersAtCddThreshold",
+        "kind": "rollup",
+        "rule": "Untuk setiap business, beneficial owners at CDD threshold adalah jumlah beneficial owners dari business tersebut yang memenuhi kondisi “meets CDD threshold”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "MeetsCddThreshold",
+            "label": "meets CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah beneficial owners dengan syarat business adalah entri ini dan meets CDD threshold adalah true()"
+      },
+      "Businesses.MeetsCddRule": {
+        "table": "Businesses",
+        "field": "MeetsCddRule",
+        "kind": "formula",
+        "rule": "Setiap business dianggap memenuhi kondisi “meets CDD rule” jika beneficial owners at CDD threshold lebih dari 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "BeneficialOwnersAtCddThreshold",
+            "label": "beneficial owners at CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Beneficial owners at CDD threshold lebih dari 0"
+      },
+      "Businesses.PortfolioPriority": {
+        "table": "Businesses",
+        "field": "PortfolioPriority",
+        "kind": "formula",
+        "rule": "Untuk setiap business, portfolio priority ditentukan menurut urutan prioritas berikut:\n1. “High”, jika penanda “classified loan” aktif;\n2. “Medium”, jika paling sedikit satu dari kondisi berikut terpenuhi: penanda “meets CDD rule” tidak aktif, penanda “prospect” aktif, atau count of loans adalah 0;\n3. dalam semua kasus lainnya, “Low”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "HasClassifiedLoan",
+            "label": "has classified loan"
+          },
+          {
+            "table": "Businesses",
+            "field": "MeetsCddRule",
+            "label": "meets CDD rule"
+          },
+          {
+            "table": "Businesses",
+            "field": "IsProspect",
+            "label": "is prospect"
+          },
+          {
+            "table": "Businesses",
+            "field": "CountOfLoans",
+            "label": "count of loans"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap business, portfolio priority ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“High”",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “classified loan” aktif"
+              }
+            },
+            {
+              "value": "“Medium”",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "penanda “meets CDD rule” tidak aktif"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "penanda “prospect” aktif"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "count of loans adalah 0"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Low”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika has classified loan maka \"High\", selain itu jika tidak benar bahwa meets CDD rule, is prospect, atau count of loans sama dengan 0 maka \"Medium\", selain itu \"Low\""
+      },
+      "BeneficialOwners.Name": {
+        "table": "BeneficialOwners",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap beneficial owner, name dihitung sebagai business, diikuti tanda hubung, diikuti full name dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "(business digabung dengan \"-\") digabung dengan full name dalam huruf kecil dengan “ ” diganti dengan “-”"
+      },
+      "BeneficialOwners.BusinessLabel": {
+        "table": "BeneficialOwners",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Untuk setiap beneficial owner, business label adalah legal name dari business yang tertaut pada beneficial owner tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name dari business yang tertaut"
+      },
+      "BeneficialOwners.Meets25PercentThreshold": {
+        "table": "BeneficialOwners",
+        "field": "Meets25PercentThreshold",
+        "kind": "formula",
+        "rule": "Setiap beneficial owner ditandai sebagai “meets25 percent threshold” jika ownership percentage tidak kurang dari 25.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "OwnershipPercentage",
+            "label": "ownership percentage"
+          }
+        ],
+        "structure": null,
+        "plain": "Ownership percentage tidak kurang dari 25"
+      },
+      "BeneficialOwners.MeetsCddThreshold": {
+        "table": "BeneficialOwners",
+        "field": "MeetsCddThreshold",
+        "kind": "formula",
+        "rule": "Setiap beneficial owner dianggap memenuhi kondisi “meets CDD threshold” jika paling sedikit satu dari kondisi berikut terpenuhi: penanda “meets25 percent threshold” aktif atau penanda “control person” aktif.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Meets25PercentThreshold",
+            "label": "meets25 percent threshold"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "IsControlPerson",
+            "label": "is control person"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap beneficial owner dianggap memenuhi kondisi “meets CDD threshold” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "penanda “meets25 percent threshold” aktif"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "penanda “control person” aktif"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Meets25 percent threshold atau is control person"
+      },
+      "Contacts.Name": {
+        "table": "Contacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap contact, name dihitung sebagai business, diikuti tanda hubung, diikuti full name dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung, diikuti tanda hubung, diikuti title dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Contacts",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business digabung dengan \"-\") digabung dengan full name dalam huruf kecil dengan “ ” diganti dengan “-”) digabung dengan \"-\") digabung dengan title dalam huruf kecil dengan “ ” diganti dengan “-”"
+      },
+      "Contacts.BusinessLabel": {
+        "table": "Contacts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Untuk setiap contact, business label adalah legal name dari business yang tertaut pada contact tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name dari business yang tertaut"
+      },
+      "Contacts.IsOfficer": {
+        "table": "Contacts",
+        "field": "IsOfficer",
+        "kind": "formula",
+        "rule": "Setiap contact dianggap “officer” jika contact type adalah “Officer”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type adalah \"Officer\""
+      },
+      "Contacts.IsApClerk": {
+        "table": "Contacts",
+        "field": "IsApClerk",
+        "kind": "formula",
+        "rule": "Setiap contact dianggap “AP clerk” jika contact type adalah “APClerk”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type adalah \"APClerk\""
+      },
+      "Accounts.Name": {
+        "table": "Accounts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap account, name dihitung sebagai business, diikuti tanda hubung, diikuti account type dalam huruf kecil, diikuti tanda hubung, diikuti account number last4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountType",
+            "label": "account type"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountNumberLast4",
+            "label": "account number last4"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business digabung dengan \"-\") digabung dengan account type dalam huruf kecil) digabung dengan \"-\") digabung dengan account number last4"
+      },
+      "Accounts.BusinessLabel": {
+        "table": "Accounts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Untuk setiap account, business label adalah legal name dari business yang tertaut pada account tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name dari business yang tertaut"
+      },
+      "Accounts.TreasuryServiceCount": {
+        "table": "Accounts",
+        "field": "TreasuryServiceCount",
+        "kind": "formula",
+        "rule": "Untuk setiap account, treasury service count dihitung sebagai jumlah kondisi berikut yang terpenuhi: penanda “ACH” aktif, penanda “wire” aktif, dan penanda “card” aktif.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "HasAch",
+            "label": "has ACH"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasWire",
+            "label": "has wire"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasCard",
+            "label": "has card"
+          }
+        ],
+        "structure": null,
+        "plain": "(jika has ACH maka 1, selain itu 0 ditambah jika has wire maka 1, selain itu 0) ditambah jika has card maka 1, selain itu 0"
+      },
+      "Accounts.HasAnyTreasuryService": {
+        "table": "Accounts",
+        "field": "HasAnyTreasuryService",
+        "kind": "formula",
+        "rule": "Setiap account dianggap memiliki “any treasury service” jika treasury service count lebih dari 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "TreasuryServiceCount",
+            "label": "treasury service count"
+          }
+        ],
+        "structure": null,
+        "plain": "Treasury service count lebih dari 0"
+      },
+      "Loans.Name": {
+        "table": "Loans",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap loan, name dihitung sebagai loan number dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan number dalam huruf kecil dengan “ ” diganti dengan “-”"
+      },
+      "Loans.BusinessLabel": {
+        "table": "Loans",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Untuk setiap loan, business label adalah legal name dari business yang tertaut pada loan tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name dari business yang tertaut"
+      },
+      "Loans.BusinessNaicsCode": {
+        "table": "Loans",
+        "field": "BusinessNaicsCode",
+        "kind": "lookup",
+        "rule": "Untuk setiap loan, business NAICS code diambil dari business yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "NaicsCode",
+            "label": "NAICS code"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "NAICS code dari business yang tertaut"
+      },
+      "Loans.OriginatingRmLabel": {
+        "table": "Loans",
+        "field": "OriginatingRmLabel",
+        "kind": "lookup",
+        "rule": "Untuk setiap loan, originating RM label adalah full name dari originating RM yang tertaut pada loan tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name dari originating RM yang tertaut"
+      },
+      "Loans.UnderwriterIsAdmin": {
+        "table": "Loans",
+        "field": "UnderwriterIsAdmin",
+        "kind": "lookup",
+        "rule": "Untuk setiap loan, underwriter is admin bernilai benar jika underwriter yang tertaut pada loan tersebut tergolong “admin”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "IsAdmin",
+            "label": "is admin"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Is admin dari underwriter yang tertaut"
+      },
+      "Loans.IsFunded": {
+        "table": "Loans",
+        "field": "IsFunded",
+        "kind": "formula",
+        "rule": "Setiap loan dianggap “funded” jika underwriting stage adalah “Funded”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "UnderwritingStage",
+            "label": "underwriting stage"
+          }
+        ],
+        "structure": null,
+        "plain": "Underwriting stage adalah \"Funded\""
+      },
+      "Loans.IsClassifiedAsset": {
+        "table": "Loans",
+        "field": "IsClassifiedAsset",
+        "kind": "formula",
+        "rule": "Setiap loan dianggap “classified asset” jika risk rating tidak kurang dari 7.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "RiskRating",
+            "label": "risk rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Risk rating tidak kurang dari 7"
+      },
+      "Loans.DscrInBand": {
+        "table": "Loans",
+        "field": "DscrInBand",
+        "kind": "formula",
+        "rule": "Setiap loan ditandai sebagai “DSCR in band” jika DSCR (nilai kosong dianggap sebagai 0) tidak kurang dari 1.20.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Dscr",
+            "label": "DSCR"
+          }
+        ],
+        "structure": null,
+        "plain": "Nilai pertama yang tidak kosong dari DSCR atau 0 tidak kurang dari 1.20"
+      },
+      "Loans.LtvInBand": {
+        "table": "Loans",
+        "field": "LtvInBand",
+        "kind": "formula",
+        "rule": "Setiap loan ditandai sebagai “LTV in band” jika LTV (nilai kosong dianggap sebagai 0) tidak lebih dari 0.80.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Ltv",
+            "label": "LTV"
+          }
+        ],
+        "structure": null,
+        "plain": "Nilai pertama yang tidak kosong dari LTV atau 0 tidak lebih dari 0.80"
+      },
+      "Loans.SegregationOfDutiesOk": {
+        "table": "Loans",
+        "field": "SegregationOfDutiesOk",
+        "kind": "formula",
+        "rule": "Setiap loan ditandai sebagai “segregation of duties ok” jika tidak benar bahwa originating RM adalah underwriter.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          }
+        ],
+        "structure": null,
+        "plain": "Tidak benar bahwa originating RM sama dengan underwriter"
+      },
+      "Loans.CountOfCovenants": {
+        "table": "Loans",
+        "field": "CountOfCovenants",
+        "kind": "rollup",
+        "rule": "Untuk setiap loan, count of covenants adalah jumlah covenants yang terkait dengan loan tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah covenants dengan syarat loan adalah entri ini"
+      },
+      "Loans.CountOfBreachedCovenants": {
+        "table": "Loans",
+        "field": "CountOfBreachedCovenants",
+        "kind": "rollup",
+        "rule": "Untuk setiap loan, count of breached covenants adalah jumlah covenants dari loan tersebut yang tergolong “breached”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Covenants",
+            "field": "IsBreached",
+            "label": "is breached"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah covenants dengan syarat loan adalah entri ini dan is breached adalah true()"
+      },
+      "Loans.CountOfRiskRatingHistory": {
+        "table": "Loans",
+        "field": "CountOfRiskRatingHistory",
+        "kind": "rollup",
+        "rule": "Untuk setiap loan, count of risk rating history adalah jumlah risk rating history yang terkait dengan loan tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah risk rating history dengan syarat loan adalah entri ini"
+      },
+      "Loans.CountOfDocuments": {
+        "table": "Loans",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "Untuk setiap loan, count of documents adalah jumlah documents yang terkait dengan loan tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah documents dengan syarat loan adalah entri ini"
+      },
+      "Loans.HasBreachedCovenant": {
+        "table": "Loans",
+        "field": "HasBreachedCovenant",
+        "kind": "formula",
+        "rule": "Setiap loan dianggap memiliki “breached covenant” jika count of breached covenants lebih dari 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "CountOfBreachedCovenants",
+            "label": "count of breached covenants"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of breached covenants lebih dari 0"
+      },
+      "Loans.OnWatchlist": {
+        "table": "Loans",
+        "field": "OnWatchlist",
+        "kind": "formula",
+        "rule": "Setiap loan ditandai sebagai “on watchlist” jika paling sedikit satu dari kondisi berikut terpenuhi: penanda “classified asset” aktif atau penanda “breached covenant” aktif.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap loan ditandai sebagai “on watchlist” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "penanda “classified asset” aktif"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "penanda “breached covenant” aktif"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is classified asset atau has breached covenant"
+      },
+      "Loans.HealthScore": {
+        "table": "Loans",
+        "field": "HealthScore",
+        "kind": "formula",
+        "rule": "Untuk setiap loan, health score dihitung sebagai jumlah kondisi berikut yang terpenuhi: penanda “DSCR in band” aktif, penanda “LTV in band” aktif, penanda “classified asset” tidak aktif, dan penanda “breached covenant” tidak aktif.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "DscrInBand",
+            "label": "DSCR in band"
+          },
+          {
+            "table": "Loans",
+            "field": "LtvInBand",
+            "label": "LTV in band"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": null,
+        "plain": "((jika DSCR in band maka 1, selain itu 0 ditambah jika LTV in band maka 1, selain itu 0) ditambah jika is classified asset maka 0, selain itu 1) ditambah jika has breached covenant maka 0, selain itu 1"
+      },
+      "Covenants.Name": {
+        "table": "Covenants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap covenant, name dihitung sebagai loan, diikuti tanda hubung, diikuti covenant type dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Covenants",
+            "field": "CovenantType",
+            "label": "covenant type"
+          }
+        ],
+        "structure": null,
+        "plain": "(loan digabung dengan \"-\") digabung dengan covenant type dalam huruf kecil dengan “ ” diganti dengan “-”"
+      },
+      "Covenants.LoanLabel": {
+        "table": "Covenants",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Untuk setiap covenant, loan label adalah loan number dari loan yang tertaut pada covenant tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan number dari loan yang tertaut"
+      },
+      "Covenants.LoanBusiness": {
+        "table": "Covenants",
+        "field": "LoanBusiness",
+        "kind": "lookup",
+        "rule": "Untuk setiap covenant, loan business diambil dari loan yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business dari loan yang tertaut"
+      },
+      "Covenants.IsBreached": {
+        "table": "Covenants",
+        "field": "IsBreached",
+        "kind": "formula",
+        "rule": "Setiap covenant dianggap “breached” jika status adalah “Breached”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status adalah \"Breached\""
+      },
+      "Covenants.HasActiveWaiver": {
+        "table": "Covenants",
+        "field": "HasActiveWaiver",
+        "kind": "formula",
+        "rule": "Setiap covenant dianggap memiliki “active waiver” jika current waiver through memiliki nilai.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "CurrentWaiverThrough",
+            "label": "current waiver through"
+          }
+        ],
+        "structure": null,
+        "plain": "Tidak benar bahwa current waiver through kosong"
+      },
+      "RiskRatingHistory.Name": {
+        "table": "RiskRatingHistory",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap risk rating history, name dihitung sebagai loan, diikuti tanda hubung, diikuti hasil fungsi TEXT atas effective date dan “yyyy-mm-dd”, diikuti “-grade-”, diikuti hasil fungsi TEXT atas new grade dan “0”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "EffectiveDate",
+            "label": "effective date"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": null,
+        "plain": "(((loan digabung dengan \"-\") digabung dengan text(effective date, \"yyyy-mm-dd\")) digabung dengan \"-grade-\") digabung dengan text(new grade, \"0\")"
+      },
+      "RiskRatingHistory.LoanLabel": {
+        "table": "RiskRatingHistory",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Untuk setiap risk rating history, loan label adalah loan number dari loan yang tertaut pada risk rating history tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan number dari loan yang tertaut"
+      },
+      "RiskRatingHistory.ChangedByUserLabel": {
+        "table": "RiskRatingHistory",
+        "field": "ChangedByUserLabel",
+        "kind": "lookup",
+        "rule": "Untuk setiap risk rating history, changed by user label adalah full name dari changed by user yang tertaut pada risk rating history tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "ChangedByUser",
+            "label": "changed by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name dari changed by user yang tertaut"
+      },
+      "RiskRatingHistory.GradeDelta": {
+        "table": "RiskRatingHistory",
+        "field": "GradeDelta",
+        "kind": "formula",
+        "rule": "Untuk setiap risk rating history, grade delta dihitung sebagai new grade dikurangi prior grade (nilai kosong dianggap sebagai new grade).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "New grade dikurangi nilai pertama yang tidak kosong dari prior grade atau new grade"
+      },
+      "RiskRatingHistory.IsDowngrade": {
+        "table": "RiskRatingHistory",
+        "field": "IsDowngrade",
+        "kind": "formula",
+        "rule": "Setiap risk rating history dianggap “downgrade” jika grade delta lebih dari 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "GradeDelta",
+            "label": "grade delta"
+          }
+        ],
+        "structure": null,
+        "plain": "Grade delta lebih dari 0"
+      },
+      "RiskRatingHistory.IsInitialRating": {
+        "table": "RiskRatingHistory",
+        "field": "IsInitialRating",
+        "kind": "formula",
+        "rule": "Setiap risk rating history dianggap “initial rating” jika prior grade (nilai kosong dianggap sebagai 0) adalah 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "Nilai pertama yang tidak kosong dari prior grade atau 0 sama dengan 0"
+      },
+      "RiskRatingHistory.CrossedClassifiedThreshold": {
+        "table": "RiskRatingHistory",
+        "field": "CrossedClassifiedThreshold",
+        "kind": "formula",
+        "rule": "Setiap risk rating history ditandai sebagai “crossed classified threshold” jika semua kondisi berikut terpenuhi: prior grade (nilai kosong dianggap sebagai 0) kurang dari 7 dan new grade tidak kurang dari 7.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap risk rating history ditandai sebagai “crossed classified threshold” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "prior grade (nilai kosong dianggap sebagai 0) kurang dari 7"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "new grade tidak kurang dari 7"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Nilai pertama yang tidak kosong dari prior grade atau 0 kurang dari 7 dan new grade tidak kurang dari 7"
+      },
+      "Documents.Name": {
+        "table": "Documents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap document, name dihitung sebagai filename dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung dengan setiap tanda titik diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Filename",
+            "label": "filename"
+          }
+        ],
+        "structure": null,
+        "plain": "Filename dalam huruf kecil dengan “ ” diganti dengan “-” dengan “.” diganti dengan “-”"
+      },
+      "Documents.BusinessLabel": {
+        "table": "Documents",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Untuk setiap document, business label adalah legal name dari business yang tertaut pada document tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name dari business yang tertaut"
+      },
+      "Documents.LoanLabel": {
+        "table": "Documents",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Untuk setiap document, loan label adalah loan number dari loan yang tertaut pada document tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan number dari loan yang tertaut"
+      },
+      "Documents.UploadedByUserLabel": {
+        "table": "Documents",
+        "field": "UploadedByUserLabel",
+        "kind": "lookup",
+        "rule": "Untuk setiap document, uploaded by user label adalah full name dari uploaded by user yang tertaut pada document tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Documents",
+            "field": "UploadedByUser",
+            "label": "uploaded by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name dari uploaded by user yang tertaut"
+      },
+      "Documents.AttachedTo": {
+        "table": "Documents",
+        "field": "AttachedTo",
+        "kind": "formula",
+        "rule": "Untuk setiap document, attached to ditentukan menurut urutan prioritas berikut:\n1. “Loan”, jika kolom “loan” terisi;\n2. “Business”, jika kolom “business” terisi;\n3. dalam semua kasus lainnya, “Orphan”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap document, attached to ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“Loan”",
+              "when": {
+                "kind": "leaf",
+                "text": "kolom “loan” terisi"
+              }
+            },
+            {
+              "value": "“Business”",
+              "when": {
+                "kind": "leaf",
+                "text": "kolom “business” terisi"
+              }
+            },
+            {
+              "value": "“Orphan”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika tidak benar bahwa nilai pertama yang tidak kosong dari loan atau \"\" adalah \"\" maka \"Loan\", selain itu jika tidak benar bahwa nilai pertama yang tidak kosong dari business atau \"\" adalah \"\" maka \"Business\", selain itu \"Orphan\""
+      },
+      "Documents.FromCustomerPortal": {
+        "table": "Documents",
+        "field": "FromCustomerPortal",
+        "kind": "formula",
+        "rule": "Setiap document ditandai sebagai “from customer portal” jika uploaded via adalah “BusinessClientPortal”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "UploadedVia",
+            "label": "uploaded via"
+          }
+        ],
+        "structure": null,
+        "plain": "Uploaded via adalah \"BusinessClientPortal\""
+      },
+      "Interactions.Name": {
+        "table": "Interactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap interaction, name dihitung sebagai business, diikuti tanda hubung, diikuti hasil fungsi TEXT atas interaction date dan “yyyy-mm-dd”, diikuti tanda hubung, diikuti interaction type dalam huruf kecil, diikuti tanda hubung, diikuti subject dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionDate",
+            "label": "interaction date"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((business digabung dengan \"-\") digabung dengan text(interaction date, \"yyyy-mm-dd\")) digabung dengan \"-\") digabung dengan interaction type dalam huruf kecil) digabung dengan \"-\") digabung dengan subject dalam huruf kecil dengan “ ” diganti dengan “-”"
+      },
+      "Interactions.BusinessLabel": {
+        "table": "Interactions",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Untuk setiap interaction, business label adalah legal name dari business yang tertaut pada interaction tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name dari business yang tertaut"
+      },
+      "Interactions.UserLabel": {
+        "table": "Interactions",
+        "field": "UserLabel",
+        "kind": "lookup",
+        "rule": "Untuk setiap interaction, user label adalah full name dari user yang tertaut pada interaction tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Interactions",
+            "field": "User",
+            "label": "user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name dari user yang tertaut"
+      },
+      "Interactions.IsSystemEvent": {
+        "table": "Interactions",
+        "field": "IsSystemEvent",
+        "kind": "formula",
+        "rule": "Setiap interaction dianggap “system event” jika interaction type adalah “SystemEvent”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type adalah \"SystemEvent\""
+      },
+      "Interactions.IsTask": {
+        "table": "Interactions",
+        "field": "IsTask",
+        "kind": "formula",
+        "rule": "Setiap interaction dianggap “task” jika interaction type adalah “Task”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type adalah \"Task\""
+      },
+      "Interactions.FromCustomer": {
+        "table": "Interactions",
+        "field": "FromCustomer",
+        "kind": "formula",
+        "rule": "Setiap interaction ditandai sebagai “from customer” jika source adalah “BusinessClientPortal”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Source",
+            "label": "source"
+          }
+        ],
+        "structure": null,
+        "plain": "Source adalah \"BusinessClientPortal\""
+      },
+      "Interactions.IsCovenantEvent": {
+        "table": "Interactions",
+        "field": "IsCovenantEvent",
+        "kind": "formula",
+        "rule": "Setiap interaction dianggap “covenant event” jika semua kondisi berikut terpenuhi: penanda “system event” aktif dan subject memuat “covenant breach”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "IsSystemEvent",
+            "label": "is system event"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap interaction dianggap “covenant event” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "penanda “system event” aktif"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "subject memuat “covenant breach”"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is system event dan tidak benar bahwa find(\"covenant breach\", subject dalam huruf kecil), atau 0 jika terjadi kesalahan sama dengan 0"
+      }
+    },
+    "obligations": [
+      {
+        "constraintKey": "loan-sod",
+        "entity": "Loan",
+        "predicate": "SegregationOfDutiesOk",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **loan-sod** *(wajib)* — A loan must not be funded by the same user who originated it: the originating relationship manager and the underwriter must be different users.\n  - _Jika dilanggar:_ “The same user originated and underwrote this loan — segregation of duties is violated.”\n  - _Sumber:_ Internal Credit Policy §4.2"
+      },
+      {
+        "constraintKey": "biz-cdd",
+        "entity": "Business",
+        "predicate": "MeetsCddRule",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **biz-cdd** *(wajib)* — Setiap business **harus** memiliki beneficial owners at CDD threshold lebih dari 0.\n  - _Jika dilanggar:_ “Beneficial-ownership (CDD) collection is incomplete: no owner crosses the 25% threshold and no control person is designated.”\n  - _Sumber:_ FinCEN CDD Rule, 31 CFR 1010.230\n  - _Didasarkan pada:_ Meets CDD Rule (lihat DR-25)."
+      },
+      {
+        "constraintKey": "loan-dscr",
+        "entity": "Loan",
+        "predicate": "DscrInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-dscr** *(dapat dikesampingkan)* — Setiap loan **harus** memiliki DSCR tidak kurang dari 1.20 *(dapat dikesampingkan oleh pemberi persetujuan yang berwenang)*.\n  - _Jika dilanggar:_ “DSCR is below the 1.20 minimum; a credit-committee waiver is required to fund.”\n  - _Sumber:_ Internal Credit Policy §2.1 (DSCR floor)\n  - _Didasarkan pada:_ DSCR in Band (lihat DR-46)."
+      },
+      {
+        "constraintKey": "loan-ltv",
+        "entity": "Loan",
+        "predicate": "LtvInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-ltv** *(dapat dikesampingkan)* — Setiap loan **harus** memiliki LTV tidak lebih dari 0.80 *(dapat dikesampingkan oleh pemberi persetujuan yang berwenang)*.\n  - _Jika dilanggar:_ “LTV exceeds the 0.80 ceiling; a credit-committee waiver is required to fund.”\n  - _Sumber:_ Internal Credit Policy §2.2 (LTV ceiling)\n  - _Didasarkan pada:_ LTV in Band (lihat DR-47)."
+      },
+      {
+        "constraintKey": "loan-watchlist",
+        "entity": "Loan",
+        "predicate": "OnWatchlist",
+        "deontic": "ShouldBeTrue",
+        "severity": "soft",
+        "markdown": "- **loan-watchlist** *(anjuran)* — Setiap loan **sebaiknya** memenuhi ketentuan bahwa paling sedikit satu dari kondisi berikut terpenuhi: penanda “classified asset” aktif atau penanda “breached covenant” aktif.\n  - _Jika dilanggar:_ “This loan is a classified asset or has a breached covenant but is not flagged on the watchlist.”\n  - _Sumber:_ Internal Portfolio Risk Procedure §6 (watchlist)\n  - _Didasarkan pada:_ On Watchlist (lihat DR-54)."
+      }
+    ],
+    "structural": {
+      "Users": [
+        "Setiap user **harus** memiliki full name, role, dan email."
+      ],
+      "Businesses": [
+        "Setiap business **harus** merujuk pada tepat satu user sebagai relationship manager.",
+        "Setiap business **harus** memiliki legal name, business structure, NAICS code, dan status."
+      ],
+      "BeneficialOwners": [
+        "Setiap beneficial owner **harus** merujuk pada tepat satu business.",
+        "Setiap beneficial owner **harus** memiliki full name, date of birth, SSN, address, dan ownership percentage, serta menyatakan apakah tergolong “control person”."
+      ],
+      "Contacts": [
+        "Setiap contact **harus** merujuk pada tepat satu business.",
+        "Setiap contact **harus** memiliki full name, title, dan contact type, serta menyatakan apakah tergolong “authorized signer”."
+      ],
+      "Accounts": [
+        "Setiap account **harus** merujuk pada tepat satu business.",
+        "Setiap account **harus** memiliki account type, account number last4, current balance USD, dan opened at, serta menyatakan apakah memiliki “ACH”, apakah memiliki “wire”, dan apakah memiliki “card”."
+      ],
+      "Loans": [
+        "Setiap loan **harus** merujuk pada tepat satu business.",
+        "Setiap loan **harus** merujuk pada tepat satu user sebagai originating RM.",
+        "Setiap loan **harus** merujuk pada tepat satu user sebagai underwriter.",
+        "Setiap loan **harus** memiliki loan number, loan purpose, principal USD, rate pct, term months, underwriting stage, risk rating, risk rating label, dan originated at."
+      ],
+      "Covenants": [
+        "Setiap covenant **harus** merujuk pada tepat satu loan.",
+        "Setiap covenant **harus** memiliki covenant type, test frequency, next test date, dan status."
+      ],
+      "RiskRatingHistory": [
+        "Setiap risk rating history **harus** merujuk pada tepat satu loan.",
+        "Setiap risk rating history **harus** merujuk pada tepat satu user sebagai changed by user.",
+        "Setiap risk rating history **harus** memiliki effective date, new grade, dan reason."
+      ],
+      "Documents": [
+        "Setiap document **harus** memiliki filename, document type, dan uploaded at, serta menyatakan apakah tergolong “ocr indexed”."
+      ],
+      "Interactions": [
+        "Setiap interaction **harus** merujuk pada tepat satu business.",
+        "Setiap interaction **harus** memiliki interaction type, subject, dan interaction date."
+      ]
+    },
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Businesses": "business",
+      "BeneficialOwners": "beneficial owner",
+      "Contacts": "contact",
+      "Accounts": "account",
+      "Loans": "loan",
+      "Covenants": "covenant",
+      "RiskRatingHistory": "risk rating history",
+      "Documents": "document",
+      "Interactions": "interaction"
+    }
+  },
+  "it": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un user: name è calcolato come il full name in minuscolo con ogni uno spazio sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name in minuscolo con « » sostituito da «-»"
+      },
+      "Users.IsRM": {
+        "table": "Users",
+        "field": "IsRM",
+        "kind": "formula",
+        "rule": "Un user è considerato un RM se il role è «RM».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role è \"RM\""
+      },
+      "Users.IsUnderwriter": {
+        "table": "Users",
+        "field": "IsUnderwriter",
+        "kind": "formula",
+        "rule": "Un user è considerato un underwriter se il role è «Underwriter».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role è \"Underwriter\""
+      },
+      "Users.IsBranchBanker": {
+        "table": "Users",
+        "field": "IsBranchBanker",
+        "kind": "formula",
+        "rule": "Un user è considerato un branch banker se il role è «BranchBanker».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role è \"BranchBanker\""
+      },
+      "Users.IsAdmin": {
+        "table": "Users",
+        "field": "IsAdmin",
+        "kind": "formula",
+        "rule": "Un user è considerato un admin se il role è «Admin».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role è \"Admin\""
+      },
+      "Users.CountOfPortfolioBusinesses": {
+        "table": "Users",
+        "field": "CountOfPortfolioBusinesses",
+        "kind": "rollup",
+        "rule": "Un user: count of portfolio businesses è il numero di businesses collegati a l'user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei businesses il cui relationship manager è questo"
+      },
+      "Users.CountOfOriginatedLoans": {
+        "table": "Users",
+        "field": "CountOfOriginatedLoans",
+        "kind": "rollup",
+        "rule": "Un user: count of originated loans è il numero di loans collegati a l'user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei loans il cui originating RM è questo"
+      },
+      "Users.CountOfUnderwrittenLoans": {
+        "table": "Users",
+        "field": "CountOfUnderwrittenLoans",
+        "kind": "rollup",
+        "rule": "Un user: count of underwritten loans è il numero di loans collegati a l'user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei loans il cui underwriter è questo"
+      },
+      "Businesses.Name": {
+        "table": "Businesses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un business: name è calcolato come il legal name in minuscolo con ogni uno spazio sostituito da un trattino con ogni un punto sostituito da una stringa vuota.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name in minuscolo con « » sostituito da «-» con «.» sostituito da «»"
+      },
+      "Businesses.RelationshipManagerLabel": {
+        "table": "Businesses",
+        "field": "RelationshipManagerLabel",
+        "kind": "lookup",
+        "rule": "Un business: relationship manager label è il full name del relationship manager collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Il full name del relationship manager collegato"
+      },
+      "Businesses.IsCustomer": {
+        "table": "Businesses",
+        "field": "IsCustomer",
+        "kind": "formula",
+        "rule": "Un business è considerato un customer se il status è «Customer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status è \"Customer\""
+      },
+      "Businesses.IsProspect": {
+        "table": "Businesses",
+        "field": "IsProspect",
+        "kind": "formula",
+        "rule": "Un business è considerato un prospect se il status è «Prospect».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status è \"Prospect\""
+      },
+      "Businesses.WasReferred": {
+        "table": "Businesses",
+        "field": "WasReferred",
+        "kind": "formula",
+        "rule": "Un business è considerato come essendo stato referred se il campo “referral source” è valorizzato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "ReferralSource",
+            "label": "referral source"
+          }
+        ],
+        "structure": null,
+        "plain": "Non il primo di referral source o \"\" che non è vuoto è \"\""
+      },
+      "Businesses.CountOfBeneficialOwners": {
+        "table": "Businesses",
+        "field": "CountOfBeneficialOwners",
+        "kind": "rollup",
+        "rule": "Un business: count of beneficial owners è il numero di beneficial owners collegati a il business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei beneficial owners il cui business è questo"
+      },
+      "Businesses.CountOfContacts": {
+        "table": "Businesses",
+        "field": "CountOfContacts",
+        "kind": "rollup",
+        "rule": "Un business: count of contacts è il numero di contacts collegati a il business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei contacts il cui business è questo"
+      },
+      "Businesses.CountOfAccounts": {
+        "table": "Businesses",
+        "field": "CountOfAccounts",
+        "kind": "rollup",
+        "rule": "Un business: count of accounts è il numero di accounts collegati a il business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei accounts il cui business è questo"
+      },
+      "Businesses.CountOfLoans": {
+        "table": "Businesses",
+        "field": "CountOfLoans",
+        "kind": "rollup",
+        "rule": "Un business: count of loans è il numero di loans collegati a il business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei loans il cui business è questo"
+      },
+      "Businesses.CountOfInteractions": {
+        "table": "Businesses",
+        "field": "CountOfInteractions",
+        "kind": "rollup",
+        "rule": "Un business: count of interactions è il numero di interactions collegati a il business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei interactions il cui business è questo"
+      },
+      "Businesses.CountOfDocuments": {
+        "table": "Businesses",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "Un business: count of documents è il numero di documents collegati a il business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei documents il cui business è questo"
+      },
+      "Businesses.TotalDepositBalanceUsd": {
+        "table": "Businesses",
+        "field": "TotalDepositBalanceUsd",
+        "kind": "rollup",
+        "rule": "Un business: total deposit balance USD è il totale di current balance USD tra i accounts collegati a il business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "CurrentBalanceUsd",
+            "label": "current balance USD"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di current balance USD su tutti i accounts il cui business è questo"
+      },
+      "Businesses.TotalLoanPrincipalUsd": {
+        "table": "Businesses",
+        "field": "TotalLoanPrincipalUsd",
+        "kind": "rollup",
+        "rule": "Un business: total loan principal USD è il totale di principal USD tra i loans collegati a il business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "PrincipalUsd",
+            "label": "principal USD"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di principal USD su tutti i loans il cui business è questo"
+      },
+      "Businesses.CountOfClassifiedLoans": {
+        "table": "Businesses",
+        "field": "CountOfClassifiedLoans",
+        "kind": "rollup",
+        "rule": "Un business: count of classified loans è il numero di loans del business che sono classified asset.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei loans il cui business è questo e is classified asset è true()"
+      },
+      "Businesses.HasClassifiedLoan": {
+        "table": "Businesses",
+        "field": "HasClassifiedLoan",
+        "kind": "formula",
+        "rule": "Un business è considerato come dotato di un classified loan se il count of classified loans è maggiore di 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "CountOfClassifiedLoans",
+            "label": "count of classified loans"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of classified loans è maggiore di 0"
+      },
+      "Businesses.BeneficialOwnersAtCddThreshold": {
+        "table": "Businesses",
+        "field": "BeneficialOwnersAtCddThreshold",
+        "kind": "rollup",
+        "rule": "Un business: beneficial owners at CDD threshold è il numero di beneficial owners del business che soddisfano: CDD threshold.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "MeetsCddThreshold",
+            "label": "meets CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei beneficial owners il cui business è questo e meets CDD threshold è true()"
+      },
+      "Businesses.MeetsCddRule": {
+        "table": "Businesses",
+        "field": "MeetsCddRule",
+        "kind": "formula",
+        "rule": "Un business è considerato come soddisfacente: CDD rule se il beneficial owners at CDD threshold è maggiore di 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "BeneficialOwnersAtCddThreshold",
+            "label": "beneficial owners at CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Beneficial owners at CDD threshold è maggiore di 0"
+      },
+      "Businesses.PortfolioPriority": {
+        "table": "Businesses",
+        "field": "PortfolioPriority",
+        "kind": "formula",
+        "rule": "Il campo “portfolio priority” del business è determinato secondo la seguente priorità:\n1. «High», se l'indicatore “classified loan” è attivo;\n2. «Medium», se vale almeno una delle seguenti: l'indicatore “meets CDD rule” non è attivo; l'indicatore “prospect” è attivo; o il count of loans è 0;\n3. in tutti gli altri casi, «Low».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "HasClassifiedLoan",
+            "label": "has classified loan"
+          },
+          {
+            "table": "Businesses",
+            "field": "MeetsCddRule",
+            "label": "meets CDD rule"
+          },
+          {
+            "table": "Businesses",
+            "field": "IsProspect",
+            "label": "is prospect"
+          },
+          {
+            "table": "Businesses",
+            "field": "CountOfLoans",
+            "label": "count of loans"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “portfolio priority” del business è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«High»",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “classified loan” è attivo"
+              }
+            },
+            {
+              "value": "«Medium»",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "l'indicatore “meets CDD rule” non è attivo"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "l'indicatore “prospect” è attivo"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "il count of loans è 0"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "«Low»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se has classified loan, allora \"High\", altrimenti se non meets CDD rule, is prospect, o count of loans è uguale a 0, allora \"Medium\", altrimenti \"Low\""
+      },
+      "BeneficialOwners.Name": {
+        "table": "BeneficialOwners",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un beneficial owner: name è calcolato come il business, seguito da un trattino, seguito da il full name in minuscolo con ogni uno spazio sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "(business unito a \"-\") unito a full name in minuscolo con « » sostituito da «-»"
+      },
+      "BeneficialOwners.BusinessLabel": {
+        "table": "BeneficialOwners",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Un beneficial owner: business label è il legal name del business collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Il legal name del business collegato"
+      },
+      "BeneficialOwners.Meets25PercentThreshold": {
+        "table": "BeneficialOwners",
+        "field": "Meets25PercentThreshold",
+        "kind": "formula",
+        "rule": "Un beneficial owner è contrassegnato come meets25 percent threshold se l'ownership percentage è almeno 25.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "OwnershipPercentage",
+            "label": "ownership percentage"
+          }
+        ],
+        "structure": null,
+        "plain": "Ownership percentage è almeno 25"
+      },
+      "BeneficialOwners.MeetsCddThreshold": {
+        "table": "BeneficialOwners",
+        "field": "MeetsCddThreshold",
+        "kind": "formula",
+        "rule": "Un beneficial owner è considerato come soddisfacente: CDD threshold se vale almeno una delle seguenti: l'indicatore “meets25 percent threshold” è attivo o l'indicatore “control person” è attivo.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Meets25PercentThreshold",
+            "label": "meets25 percent threshold"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "IsControlPerson",
+            "label": "is control person"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un beneficial owner è considerato come soddisfacente: CDD threshold se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “meets25 percent threshold” è attivo"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “control person” è attivo"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Meets25 percent threshold o is control person"
+      },
+      "Contacts.Name": {
+        "table": "Contacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un contact: name è calcolato come il business, seguito da un trattino, seguito da il full name in minuscolo con ogni uno spazio sostituito da un trattino, seguito da un trattino, seguito da il title in minuscolo con ogni uno spazio sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Contacts",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business unito a \"-\") unito a full name in minuscolo con « » sostituito da «-») unito a \"-\") unito a title in minuscolo con « » sostituito da «-»"
+      },
+      "Contacts.BusinessLabel": {
+        "table": "Contacts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Un contact: business label è il legal name del business collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Il legal name del business collegato"
+      },
+      "Contacts.IsOfficer": {
+        "table": "Contacts",
+        "field": "IsOfficer",
+        "kind": "formula",
+        "rule": "Un contact è considerato un officer se il contact type è «Officer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type è \"Officer\""
+      },
+      "Contacts.IsApClerk": {
+        "table": "Contacts",
+        "field": "IsApClerk",
+        "kind": "formula",
+        "rule": "Un contact è considerato un AP clerk se il contact type è «APClerk».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type è \"APClerk\""
+      },
+      "Accounts.Name": {
+        "table": "Accounts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un account: name è calcolato come il business, seguito da un trattino, seguito da il account type in minuscolo, seguito da un trattino, seguito da l'account number last4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountType",
+            "label": "account type"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountNumberLast4",
+            "label": "account number last4"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business unito a \"-\") unito a account type in minuscolo) unito a \"-\") unito a account number last4"
+      },
+      "Accounts.BusinessLabel": {
+        "table": "Accounts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Un account: business label è il legal name del business collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Il legal name del business collegato"
+      },
+      "Accounts.TreasuryServiceCount": {
+        "table": "Accounts",
+        "field": "TreasuryServiceCount",
+        "kind": "formula",
+        "rule": "Un account: treasury service count è calcolato come il numero delle seguenti condizioni soddisfatte: l'indicatore “ACH” è attivo; l'indicatore “wire” è attivo; e l'indicatore “card” è attivo.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "HasAch",
+            "label": "has ACH"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasWire",
+            "label": "has wire"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasCard",
+            "label": "has card"
+          }
+        ],
+        "structure": null,
+        "plain": "(se has ACH, allora 1, altrimenti 0 più se has wire, allora 1, altrimenti 0) più se has card, allora 1, altrimenti 0"
+      },
+      "Accounts.HasAnyTreasuryService": {
+        "table": "Accounts",
+        "field": "HasAnyTreasuryService",
+        "kind": "formula",
+        "rule": "Un account è considerato come dotato di un any treasury service se il treasury service count è maggiore di 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "TreasuryServiceCount",
+            "label": "treasury service count"
+          }
+        ],
+        "structure": null,
+        "plain": "Treasury service count è maggiore di 0"
+      },
+      "Loans.Name": {
+        "table": "Loans",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un loan: name è calcolato come il loan number in minuscolo con ogni uno spazio sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan number in minuscolo con « » sostituito da «-»"
+      },
+      "Loans.BusinessLabel": {
+        "table": "Loans",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Un loan: business label è il legal name del business collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Il legal name del business collegato"
+      },
+      "Loans.BusinessNaicsCode": {
+        "table": "Loans",
+        "field": "BusinessNaicsCode",
+        "kind": "lookup",
+        "rule": "Un loan: business NAICS code — ripreso dal business collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "NaicsCode",
+            "label": "NAICS code"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Il NAICS code del business collegato"
+      },
+      "Loans.OriginatingRmLabel": {
+        "table": "Loans",
+        "field": "OriginatingRmLabel",
+        "kind": "lookup",
+        "rule": "Un loan: originating RM label è il full name del originating RM collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Il full name del originating RM collegato"
+      },
+      "Loans.UnderwriterIsAdmin": {
+        "table": "Loans",
+        "field": "UnderwriterIsAdmin",
+        "kind": "lookup",
+        "rule": "Un loan: underwriter is admin è vero quando il underwriter collegato è un admin.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "IsAdmin",
+            "label": "is admin"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Il is admin del underwriter collegato"
+      },
+      "Loans.IsFunded": {
+        "table": "Loans",
+        "field": "IsFunded",
+        "kind": "formula",
+        "rule": "Un loan è considerato funded se l'underwriting stage è «Funded».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "UnderwritingStage",
+            "label": "underwriting stage"
+          }
+        ],
+        "structure": null,
+        "plain": "Underwriting stage è \"Funded\""
+      },
+      "Loans.IsClassifiedAsset": {
+        "table": "Loans",
+        "field": "IsClassifiedAsset",
+        "kind": "formula",
+        "rule": "Un loan è considerato un classified asset se il risk rating è almeno 7.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "RiskRating",
+            "label": "risk rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Risk rating è almeno 7"
+      },
+      "Loans.DscrInBand": {
+        "table": "Loans",
+        "field": "DscrInBand",
+        "kind": "formula",
+        "rule": "Un loan è contrassegnato come DSCR in band se il DSCR (un valore mancante conta come 0) è almeno 1.20.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Dscr",
+            "label": "DSCR"
+          }
+        ],
+        "structure": null,
+        "plain": "Il primo di DSCR o 0 che non è vuoto è almeno 1.20"
+      },
+      "Loans.LtvInBand": {
+        "table": "Loans",
+        "field": "LtvInBand",
+        "kind": "formula",
+        "rule": "Un loan è contrassegnato come LTV in band se il LTV (un valore mancante conta come 0) è al massimo 0.80.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Ltv",
+            "label": "LTV"
+          }
+        ],
+        "structure": null,
+        "plain": "Il primo di LTV o 0 che non è vuoto è al massimo 0.80"
+      },
+      "Loans.SegregationOfDutiesOk": {
+        "table": "Loans",
+        "field": "SegregationOfDutiesOk",
+        "kind": "formula",
+        "rule": "Un loan è contrassegnato come segregation of duties ok se non è il caso che l'originating RM è l'underwriter.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          }
+        ],
+        "structure": null,
+        "plain": "Non originating RM è uguale a underwriter"
+      },
+      "Loans.CountOfCovenants": {
+        "table": "Loans",
+        "field": "CountOfCovenants",
+        "kind": "rollup",
+        "rule": "Un loan: count of covenants è il numero di covenants collegati a il loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei covenants il cui loan è questo"
+      },
+      "Loans.CountOfBreachedCovenants": {
+        "table": "Loans",
+        "field": "CountOfBreachedCovenants",
+        "kind": "rollup",
+        "rule": "Un loan: count of breached covenants è il numero di covenants del loan che sono breached.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Covenants",
+            "field": "IsBreached",
+            "label": "is breached"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei covenants il cui loan è questo e is breached è true()"
+      },
+      "Loans.CountOfRiskRatingHistory": {
+        "table": "Loans",
+        "field": "CountOfRiskRatingHistory",
+        "kind": "rollup",
+        "rule": "Un loan: count of risk rating history è il numero di risk rating history collegati a il loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei risk rating history il cui loan è questo"
+      },
+      "Loans.CountOfDocuments": {
+        "table": "Loans",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "Un loan: count of documents è il numero di documents collegati a il loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei documents il cui loan è questo"
+      },
+      "Loans.HasBreachedCovenant": {
+        "table": "Loans",
+        "field": "HasBreachedCovenant",
+        "kind": "formula",
+        "rule": "Un loan è considerato come dotato di un breached covenant se il count of breached covenants è maggiore di 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "CountOfBreachedCovenants",
+            "label": "count of breached covenants"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of breached covenants è maggiore di 0"
+      },
+      "Loans.OnWatchlist": {
+        "table": "Loans",
+        "field": "OnWatchlist",
+        "kind": "formula",
+        "rule": "Un loan è contrassegnato come on watchlist se vale almeno una delle seguenti: l'indicatore “classified asset” è attivo o l'indicatore “breached covenant” è attivo.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un loan è contrassegnato come on watchlist se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “classified asset” è attivo"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “breached covenant” è attivo"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is classified asset o has breached covenant"
+      },
+      "Loans.HealthScore": {
+        "table": "Loans",
+        "field": "HealthScore",
+        "kind": "formula",
+        "rule": "Un loan: health score è calcolato come il numero delle seguenti condizioni soddisfatte: l'indicatore “DSCR in band” è attivo; l'indicatore “LTV in band” è attivo; l'indicatore “classified asset” non è attivo; e l'indicatore “breached covenant” non è attivo.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "DscrInBand",
+            "label": "DSCR in band"
+          },
+          {
+            "table": "Loans",
+            "field": "LtvInBand",
+            "label": "LTV in band"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": null,
+        "plain": "((se DSCR in band, allora 1, altrimenti 0 più se LTV in band, allora 1, altrimenti 0) più se is classified asset, allora 0, altrimenti 1) più se has breached covenant, allora 0, altrimenti 1"
+      },
+      "Covenants.Name": {
+        "table": "Covenants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un covenant: name è calcolato come il loan, seguito da un trattino, seguito da il covenant type in minuscolo con ogni uno spazio sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Covenants",
+            "field": "CovenantType",
+            "label": "covenant type"
+          }
+        ],
+        "structure": null,
+        "plain": "(loan unito a \"-\") unito a covenant type in minuscolo con « » sostituito da «-»"
+      },
+      "Covenants.LoanLabel": {
+        "table": "Covenants",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Un covenant: loan label è il loan number del loan collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Il loan number del loan collegato"
+      },
+      "Covenants.LoanBusiness": {
+        "table": "Covenants",
+        "field": "LoanBusiness",
+        "kind": "lookup",
+        "rule": "Un covenant: loan business — ripreso dal loan collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Il business del loan collegato"
+      },
+      "Covenants.IsBreached": {
+        "table": "Covenants",
+        "field": "IsBreached",
+        "kind": "formula",
+        "rule": "Un covenant è considerato breached se il status è «Breached».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status è \"Breached\""
+      },
+      "Covenants.HasActiveWaiver": {
+        "table": "Covenants",
+        "field": "HasActiveWaiver",
+        "kind": "formula",
+        "rule": "Un covenant è considerato come dotato di un active waiver se il current waiver through ha un valore.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "CurrentWaiverThrough",
+            "label": "current waiver through"
+          }
+        ],
+        "structure": null,
+        "plain": "Non current waiver through è vuoto"
+      },
+      "RiskRatingHistory.Name": {
+        "table": "RiskRatingHistory",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un risk rating history: name è calcolato come il loan, seguito da un trattino, seguito da il TEXT di l'effective date e «yyyy-mm-dd», seguito da «-grade-», seguito da il TEXT di il new grade e «0».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "EffectiveDate",
+            "label": "effective date"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": null,
+        "plain": "(((loan unito a \"-\") unito a text(effective date, \"yyyy-mm-dd\")) unito a \"-grade-\") unito a text(new grade, \"0\")"
+      },
+      "RiskRatingHistory.LoanLabel": {
+        "table": "RiskRatingHistory",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Un risk rating history: loan label è il loan number del loan collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Il loan number del loan collegato"
+      },
+      "RiskRatingHistory.ChangedByUserLabel": {
+        "table": "RiskRatingHistory",
+        "field": "ChangedByUserLabel",
+        "kind": "lookup",
+        "rule": "Un risk rating history: changed by user label è il full name del changed by user collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "ChangedByUser",
+            "label": "changed by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Il full name del changed by user collegato"
+      },
+      "RiskRatingHistory.GradeDelta": {
+        "table": "RiskRatingHistory",
+        "field": "GradeDelta",
+        "kind": "formula",
+        "rule": "Un risk rating history: grade delta è calcolato come il new grade meno il prior grade (un valore mancante conta come il new grade).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "New grade meno il primo di prior grade o new grade che non è vuoto"
+      },
+      "RiskRatingHistory.IsDowngrade": {
+        "table": "RiskRatingHistory",
+        "field": "IsDowngrade",
+        "kind": "formula",
+        "rule": "Un risk rating history è considerato un downgrade se la grade delta è maggiore di 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "GradeDelta",
+            "label": "grade delta"
+          }
+        ],
+        "structure": null,
+        "plain": "Grade delta è maggiore di 0"
+      },
+      "RiskRatingHistory.IsInitialRating": {
+        "table": "RiskRatingHistory",
+        "field": "IsInitialRating",
+        "kind": "formula",
+        "rule": "Un risk rating history è considerato initial rating se il prior grade (un valore mancante conta come 0) è 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "Il primo di prior grade o 0 che non è vuoto è uguale a 0"
+      },
+      "RiskRatingHistory.CrossedClassifiedThreshold": {
+        "table": "RiskRatingHistory",
+        "field": "CrossedClassifiedThreshold",
+        "kind": "formula",
+        "rule": "Un risk rating history è contrassegnato come crossed classified threshold se vale tutto quanto segue: il prior grade (un valore mancante conta come 0) è minore di 7 e il new grade è almeno 7.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un risk rating history è contrassegnato come crossed classified threshold se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "il prior grade (un valore mancante conta come 0) è minore di 7"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "il new grade è almeno 7"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Il primo di prior grade o 0 che non è vuoto è minore di 7 e new grade è almeno 7"
+      },
+      "Documents.Name": {
+        "table": "Documents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un document: name è calcolato come il filename in minuscolo con ogni uno spazio sostituito da un trattino con ogni un punto sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Filename",
+            "label": "filename"
+          }
+        ],
+        "structure": null,
+        "plain": "Filename in minuscolo con « » sostituito da «-» con «.» sostituito da «-»"
+      },
+      "Documents.BusinessLabel": {
+        "table": "Documents",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Un document: business label è il legal name del business collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Il legal name del business collegato"
+      },
+      "Documents.LoanLabel": {
+        "table": "Documents",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Un document: loan label è il loan number del loan collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Il loan number del loan collegato"
+      },
+      "Documents.UploadedByUserLabel": {
+        "table": "Documents",
+        "field": "UploadedByUserLabel",
+        "kind": "lookup",
+        "rule": "Un document: uploaded by user label è il full name del uploaded by user collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Documents",
+            "field": "UploadedByUser",
+            "label": "uploaded by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Il full name del uploaded by user collegato"
+      },
+      "Documents.AttachedTo": {
+        "table": "Documents",
+        "field": "AttachedTo",
+        "kind": "formula",
+        "rule": "Il campo “attached to” del document è determinato secondo la seguente priorità:\n1. «Loan», se il campo “loan” è valorizzato;\n2. «Business», se il campo “business” è valorizzato;\n3. in tutti gli altri casi, «Orphan».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “attached to” del document è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«Loan»",
+              "when": {
+                "kind": "leaf",
+                "text": "il campo “loan” è valorizzato"
+              }
+            },
+            {
+              "value": "«Business»",
+              "when": {
+                "kind": "leaf",
+                "text": "il campo “business” è valorizzato"
+              }
+            },
+            {
+              "value": "«Orphan»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se non il primo di loan o \"\" che non è vuoto è \"\", allora \"Loan\", altrimenti se non il primo di business o \"\" che non è vuoto è \"\", allora \"Business\", altrimenti \"Orphan\""
+      },
+      "Documents.FromCustomerPortal": {
+        "table": "Documents",
+        "field": "FromCustomerPortal",
+        "kind": "formula",
+        "rule": "Un document è contrassegnato come from customer portal se l'uploaded via è «BusinessClientPortal».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "UploadedVia",
+            "label": "uploaded via"
+          }
+        ],
+        "structure": null,
+        "plain": "Uploaded via è \"BusinessClientPortal\""
+      },
+      "Interactions.Name": {
+        "table": "Interactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un interaction: name è calcolato come il business, seguito da un trattino, seguito da il TEXT di l'interaction date e «yyyy-mm-dd», seguito da un trattino, seguito da il interaction type in minuscolo, seguito da un trattino, seguito da il subject in minuscolo con ogni uno spazio sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionDate",
+            "label": "interaction date"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((business unito a \"-\") unito a text(interaction date, \"yyyy-mm-dd\")) unito a \"-\") unito a interaction type in minuscolo) unito a \"-\") unito a subject in minuscolo con « » sostituito da «-»"
+      },
+      "Interactions.BusinessLabel": {
+        "table": "Interactions",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Un interaction: business label è il legal name del business collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Il legal name del business collegato"
+      },
+      "Interactions.UserLabel": {
+        "table": "Interactions",
+        "field": "UserLabel",
+        "kind": "lookup",
+        "rule": "Un interaction: user label è il full name del user collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Interactions",
+            "field": "User",
+            "label": "user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Il full name del user collegato"
+      },
+      "Interactions.IsSystemEvent": {
+        "table": "Interactions",
+        "field": "IsSystemEvent",
+        "kind": "formula",
+        "rule": "Un interaction è considerato un system event se l'interaction type è «SystemEvent».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type è \"SystemEvent\""
+      },
+      "Interactions.IsTask": {
+        "table": "Interactions",
+        "field": "IsTask",
+        "kind": "formula",
+        "rule": "Un interaction è considerato un task se l'interaction type è «Task».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type è \"Task\""
+      },
+      "Interactions.FromCustomer": {
+        "table": "Interactions",
+        "field": "FromCustomer",
+        "kind": "formula",
+        "rule": "Un interaction è contrassegnato come from customer se il source è «BusinessClientPortal».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Source",
+            "label": "source"
+          }
+        ],
+        "structure": null,
+        "plain": "Source è \"BusinessClientPortal\""
+      },
+      "Interactions.IsCovenantEvent": {
+        "table": "Interactions",
+        "field": "IsCovenantEvent",
+        "kind": "formula",
+        "rule": "Un interaction è considerato un covenant event se vale tutto quanto segue: l'indicatore “system event” è attivo e il subject menziona «covenant breach».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "IsSystemEvent",
+            "label": "is system event"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un interaction è considerato un covenant event se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “system event” è attivo"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "il subject menziona «covenant breach»"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is system event e non find(\"covenant breach\", subject in minuscolo), o 0 in caso di errore è uguale a 0"
+      }
+    },
+    "obligations": [
+      {
+        "constraintKey": "loan-sod",
+        "entity": "Loan",
+        "predicate": "SegregationOfDutiesOk",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **loan-sod** *(vincolante)* — A loan must not be funded by the same user who originated it: the originating relationship manager and the underwriter must be different users.\n  - _In caso di violazione:_ «The same user originated and underwrote this loan — segregation of duties is violated.»\n  - _Fonte:_ Internal Credit Policy §4.2"
+      },
+      {
+        "constraintKey": "biz-cdd",
+        "entity": "Business",
+        "predicate": "MeetsCddRule",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **biz-cdd** *(vincolante)* — Un business **deve** avere un beneficial owners at CDD threshold superiore a 0.\n  - _In caso di violazione:_ «Beneficial-ownership (CDD) collection is incomplete: no owner crosses the 25% threshold and no control person is designated.»\n  - _Fonte:_ FinCEN CDD Rule, 31 CFR 1010.230\n  - _Si basa su:_ Meets CDD Rule (vedi DR-25)."
+      },
+      {
+        "constraintKey": "loan-dscr",
+        "entity": "Loan",
+        "predicate": "DscrInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-dscr** *(derogabile)* — Un loan **deve** avere un DSCR di almeno 1.20 *(derogabile da un approvatore autorizzato)*.\n  - _In caso di violazione:_ «DSCR is below the 1.20 minimum; a credit-committee waiver is required to fund.»\n  - _Fonte:_ Internal Credit Policy §2.1 (DSCR floor)\n  - _Si basa su:_ DSCR in Band (vedi DR-46)."
+      },
+      {
+        "constraintKey": "loan-ltv",
+        "entity": "Loan",
+        "predicate": "LtvInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-ltv** *(derogabile)* — Un loan **deve** avere un LTV di al massimo 0.80 *(derogabile da un approvatore autorizzato)*.\n  - _In caso di violazione:_ «LTV exceeds the 0.80 ceiling; a credit-committee waiver is required to fund.»\n  - _Fonte:_ Internal Credit Policy §2.2 (LTV ceiling)\n  - _Si basa su:_ LTV in Band (vedi DR-47)."
+      },
+      {
+        "constraintKey": "loan-watchlist",
+        "entity": "Loan",
+        "predicate": "OnWatchlist",
+        "deontic": "ShouldBeTrue",
+        "severity": "soft",
+        "markdown": "- **loan-watchlist** *(indicativa)* — Un loan **dovrebbe** soddisfare che vale almeno una delle seguenti: l'indicatore “classified asset” è attivo o l'indicatore “breached covenant” è attivo.\n  - _In caso di violazione:_ «This loan is a classified asset or has a breached covenant but is not flagged on the watchlist.»\n  - _Fonte:_ Internal Portfolio Risk Procedure §6 (watchlist)\n  - _Si basa su:_ On Watchlist (vedi DR-54)."
+      }
+    ],
+    "structural": {
+      "Users": [
+        "Un user **deve** avere un full name; un role; e un email."
+      ],
+      "Businesses": [
+        "Un business **deve** referenziare esattamente un user come suo relationship manager.",
+        "Un business **deve** avere un legal name; un business structure; un NAICS code; e un status."
+      ],
+      "BeneficialOwners": [
+        "Un beneficial owner **deve** referenziare esattamente un business.",
+        "Un beneficial owner **deve** avere un full name; un date of birth; un SSN; un address; e un ownership percentage, e registrare se è un control person."
+      ],
+      "Contacts": [
+        "Un contact **deve** referenziare esattamente un business.",
+        "Un contact **deve** avere un full name; un title; e un contact type, e registrare se è un authorized signer."
+      ],
+      "Accounts": [
+        "Un account **deve** referenziare esattamente un business.",
+        "Un account **deve** avere un account type; un account number last4; un current balance USD; e un opened at, e registrare se ha un ACH; se ha un wire; e se ha un card."
+      ],
+      "Loans": [
+        "Un loan **deve** referenziare esattamente un business.",
+        "Un loan **deve** referenziare esattamente un user come suo originating RM.",
+        "Un loan **deve** referenziare esattamente un user come suo underwriter.",
+        "Un loan **deve** avere un loan number; un loan purpose; un principal USD; un rate pct; un term months; un underwriting stage; un risk rating; un risk rating label; e un originated at."
+      ],
+      "Covenants": [
+        "Un covenant **deve** referenziare esattamente un loan.",
+        "Un covenant **deve** avere un covenant type; un test frequency; un next test date; e un status."
+      ],
+      "RiskRatingHistory": [
+        "Un risk rating history **deve** referenziare esattamente un loan.",
+        "Un risk rating history **deve** referenziare esattamente un user come suo changed by user.",
+        "Un risk rating history **deve** avere un effective date; un new grade; e un reason."
+      ],
+      "Documents": [
+        "Un document **deve** avere un filename; un document type; e un uploaded at, e registrare se è ocr indexed."
+      ],
+      "Interactions": [
+        "Un interaction **deve** referenziare esattamente un business.",
+        "Un interaction **deve** avere un interaction type; un subject; e un interaction date."
+      ]
+    },
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Businesses": "business",
+      "BeneficialOwners": "beneficial owner",
+      "Contacts": "contact",
+      "Accounts": "account",
+      "Loans": "loan",
+      "Covenants": "covenant",
+      "RiskRatingHistory": "risk rating history",
+      "Documents": "document",
+      "Interactions": "interaction"
+    }
+  },
+  "ja": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "userの「name」は full name を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name を小文字にしたもの の「 」を「-」に置き換えたもの"
+      },
+      "Users.IsRM": {
+        "table": "Users",
+        "field": "IsRM",
+        "kind": "formula",
+        "rule": "role が 「RM」 である場合、userは「RM」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role は \"RM\""
+      },
+      "Users.IsUnderwriter": {
+        "table": "Users",
+        "field": "IsUnderwriter",
+        "kind": "formula",
+        "rule": "role が 「Underwriter」 である場合、userは「Underwriter」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role は \"Underwriter\""
+      },
+      "Users.IsBranchBanker": {
+        "table": "Users",
+        "field": "IsBranchBanker",
+        "kind": "formula",
+        "rule": "role が 「BranchBanker」 である場合、userは「Branch Banker」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role は \"BranchBanker\""
+      },
+      "Users.IsAdmin": {
+        "table": "Users",
+        "field": "IsAdmin",
+        "kind": "formula",
+        "rule": "role が 「Admin」 である場合、userは「Admin」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role は \"Admin\""
+      },
+      "Users.CountOfPortfolioBusinesses": {
+        "table": "Users",
+        "field": "CountOfPortfolioBusinesses",
+        "kind": "rollup",
+        "rule": "userの「count of portfolio businesses」は userに関連する「businesses」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Relationship manager が このレコード である「businesses」の件数"
+      },
+      "Users.CountOfOriginatedLoans": {
+        "table": "Users",
+        "field": "CountOfOriginatedLoans",
+        "kind": "rollup",
+        "rule": "userの「count of originated loans」は userに関連する「loans」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Originating RM が このレコード である「loans」の件数"
+      },
+      "Users.CountOfUnderwrittenLoans": {
+        "table": "Users",
+        "field": "CountOfUnderwrittenLoans",
+        "kind": "rollup",
+        "rule": "userの「count of underwritten loans」は userに関連する「loans」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Underwriter が このレコード である「loans」の件数"
+      },
+      "Businesses.Name": {
+        "table": "Businesses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "businessの「name」は legal name を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの の ピリオド をすべて 空文字列 に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name を小文字にしたもの の「 」を「-」に置き換えたもの の「.」を「」に置き換えたもの"
+      },
+      "Businesses.RelationshipManagerLabel": {
+        "table": "Businesses",
+        "field": "RelationshipManagerLabel",
+        "kind": "lookup",
+        "rule": "businessの「relationship manager label」は、リンクされた「relationship manager」の「full name」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「relationship manager」の full name"
+      },
+      "Businesses.IsCustomer": {
+        "table": "Businesses",
+        "field": "IsCustomer",
+        "kind": "formula",
+        "rule": "status が 「Customer」 である場合、businessは「Customer」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status は \"Customer\""
+      },
+      "Businesses.IsProspect": {
+        "table": "Businesses",
+        "field": "IsProspect",
+        "kind": "formula",
+        "rule": "status が 「Prospect」 である場合、businessは「Prospect」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status は \"Prospect\""
+      },
+      "Businesses.WasReferred": {
+        "table": "Businesses",
+        "field": "WasReferred",
+        "kind": "formula",
+        "rule": "「referral source」に値がある場合、businessは「Referred」されたと見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "ReferralSource",
+            "label": "referral source"
+          }
+        ],
+        "structure": null,
+        "plain": "Referral sourceまたは\"\" のうち最初に空でないもの は \"\" でない"
+      },
+      "Businesses.CountOfBeneficialOwners": {
+        "table": "Businesses",
+        "field": "CountOfBeneficialOwners",
+        "kind": "rollup",
+        "rule": "businessの「count of beneficial owners」は businessに関連する「beneficial owners」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business が このレコード である「beneficial owners」の件数"
+      },
+      "Businesses.CountOfContacts": {
+        "table": "Businesses",
+        "field": "CountOfContacts",
+        "kind": "rollup",
+        "rule": "businessの「count of contacts」は businessに関連する「contacts」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business が このレコード である「contacts」の件数"
+      },
+      "Businesses.CountOfAccounts": {
+        "table": "Businesses",
+        "field": "CountOfAccounts",
+        "kind": "rollup",
+        "rule": "businessの「count of accounts」は businessに関連する「accounts」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business が このレコード である「accounts」の件数"
+      },
+      "Businesses.CountOfLoans": {
+        "table": "Businesses",
+        "field": "CountOfLoans",
+        "kind": "rollup",
+        "rule": "businessの「count of loans」は businessに関連する「loans」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business が このレコード である「loans」の件数"
+      },
+      "Businesses.CountOfInteractions": {
+        "table": "Businesses",
+        "field": "CountOfInteractions",
+        "kind": "rollup",
+        "rule": "businessの「count of interactions」は businessに関連する「interactions」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business が このレコード である「interactions」の件数"
+      },
+      "Businesses.CountOfDocuments": {
+        "table": "Businesses",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "businessの「count of documents」は businessに関連する「documents」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business が このレコード である「documents」の件数"
+      },
+      "Businesses.TotalDepositBalanceUsd": {
+        "table": "Businesses",
+        "field": "TotalDepositBalanceUsd",
+        "kind": "rollup",
+        "rule": "businessの「total deposit balance USD」は businessに関連する「accounts」全体での「current balance USD」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "CurrentBalanceUsd",
+            "label": "current balance USD"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business が このレコード であるすべての「accounts」にわたる current balance USD の合計"
+      },
+      "Businesses.TotalLoanPrincipalUsd": {
+        "table": "Businesses",
+        "field": "TotalLoanPrincipalUsd",
+        "kind": "rollup",
+        "rule": "businessの「total loan principal USD」は businessに関連する「loans」全体での「principal USD」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "PrincipalUsd",
+            "label": "principal USD"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business が このレコード であるすべての「loans」にわたる principal USD の合計"
+      },
+      "Businesses.CountOfClassifiedLoans": {
+        "table": "Businesses",
+        "field": "CountOfClassifiedLoans",
+        "kind": "rollup",
+        "rule": "businessの「count of classified loans」は businessの「loans」のうち、「Classified Asset」であるものの件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          }
+        ],
+        "structure": null,
+        "plain": "Business が このレコードおよびis classified asset が true() である「loans」の件数"
+      },
+      "Businesses.HasClassifiedLoan": {
+        "table": "Businesses",
+        "field": "HasClassifiedLoan",
+        "kind": "formula",
+        "rule": "count of classified loans が 0 より大きい場合、businessは「Classified Loan」を持つと見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "CountOfClassifiedLoans",
+            "label": "count of classified loans"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of classified loans が 0 より大きい"
+      },
+      "Businesses.BeneficialOwnersAtCddThreshold": {
+        "table": "Businesses",
+        "field": "BeneficialOwnersAtCddThreshold",
+        "kind": "rollup",
+        "rule": "businessの「beneficial owners at CDD threshold」は businessの「beneficial owners」のうち、「CDD Threshold」を満たすものの件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "MeetsCddThreshold",
+            "label": "meets CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Business が このレコードおよびmeets CDD threshold が true() である「beneficial owners」の件数"
+      },
+      "Businesses.MeetsCddRule": {
+        "table": "Businesses",
+        "field": "MeetsCddRule",
+        "kind": "formula",
+        "rule": "beneficial owners at CDD threshold が 0 より大きい場合、businessは「CDD Rule」を満たすと見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "BeneficialOwnersAtCddThreshold",
+            "label": "beneficial owners at CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Beneficial owners at CDD threshold が 0 より大きい"
+      },
+      "Businesses.PortfolioPriority": {
+        "table": "Businesses",
+        "field": "PortfolioPriority",
+        "kind": "formula",
+        "rule": "Businessの「portfolio priority」は、次の優先順位で決まります:\n1. フラグ「classified loan」が設定されている場合は 「High」;\n2. 次のいずれかが成り立つ: フラグ「meets CDD rule」が設定されていない、フラグ「prospect」が設定されている、またはcount of loans が 0 である場合は 「Medium」;\n3. それ以外の場合は 「Low」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "HasClassifiedLoan",
+            "label": "has classified loan"
+          },
+          {
+            "table": "Businesses",
+            "field": "MeetsCddRule",
+            "label": "meets CDD rule"
+          },
+          {
+            "table": "Businesses",
+            "field": "IsProspect",
+            "label": "is prospect"
+          },
+          {
+            "table": "Businesses",
+            "field": "CountOfLoans",
+            "label": "count of loans"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Businessの「portfolio priority」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「High」",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「classified loan」が設定されている"
+              }
+            },
+            {
+              "value": "「Medium」",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "フラグ「meets CDD rule」が設定されていない"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "フラグ「prospect」が設定されている"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "count of loans が 0 である"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "「Low」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Has classified loanなら \"High\"、そうでなければ meets CDD rule でない、is prospect、またはcount of loans が 0 と等しいなら \"Medium\"、そうでなければ \"Low\""
+      },
+      "BeneficialOwners.Name": {
+        "table": "BeneficialOwners",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "beneficial ownerの「name」は business、続いて ハイフン、続いて full name を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "(business と \"-\" を連結) と full name を小文字にしたもの の「 」を「-」に置き換えたもの を連結"
+      },
+      "BeneficialOwners.BusinessLabel": {
+        "table": "BeneficialOwners",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "beneficial ownerの「business label」は、リンクされた「business」の「legal name」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「business」の legal name"
+      },
+      "BeneficialOwners.Meets25PercentThreshold": {
+        "table": "BeneficialOwners",
+        "field": "Meets25PercentThreshold",
+        "kind": "formula",
+        "rule": "ownership percentage が 25 以上である場合、beneficial ownerは「Meets25 Percent Threshold」と記録されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "OwnershipPercentage",
+            "label": "ownership percentage"
+          }
+        ],
+        "structure": null,
+        "plain": "Ownership percentage が 25 以上"
+      },
+      "BeneficialOwners.MeetsCddThreshold": {
+        "table": "BeneficialOwners",
+        "field": "MeetsCddThreshold",
+        "kind": "formula",
+        "rule": "次のいずれかが成り立つ: フラグ「meets25 percent threshold」が設定されているまたはフラグ「control person」が設定されている場合、beneficial ownerは「CDD Threshold」を満たすと見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Meets25PercentThreshold",
+            "label": "meets25 percent threshold"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "IsControlPerson",
+            "label": "is control person"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、beneficial ownerは「CDD Threshold」を満たすと見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「meets25 percent threshold」が設定されている"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「control person」が設定されている"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Meets25 percent thresholdまたはis control person"
+      },
+      "Contacts.Name": {
+        "table": "Contacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "contactの「name」は business、続いて ハイフン、続いて full name を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの、続いて ハイフン、続いて title を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Contacts",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business と \"-\" を連結) と full name を小文字にしたもの の「 」を「-」に置き換えたもの を連結) と \"-\" を連結) と title を小文字にしたもの の「 」を「-」に置き換えたもの を連結"
+      },
+      "Contacts.BusinessLabel": {
+        "table": "Contacts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "contactの「business label」は、リンクされた「business」の「legal name」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「business」の legal name"
+      },
+      "Contacts.IsOfficer": {
+        "table": "Contacts",
+        "field": "IsOfficer",
+        "kind": "formula",
+        "rule": "contact type が 「Officer」 である場合、contactは「Officer」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type は \"Officer\""
+      },
+      "Contacts.IsApClerk": {
+        "table": "Contacts",
+        "field": "IsApClerk",
+        "kind": "formula",
+        "rule": "contact type が 「APClerk」 である場合、contactは「AP Clerk」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type は \"APClerk\""
+      },
+      "Accounts.Name": {
+        "table": "Accounts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "accountの「name」は business、続いて ハイフン、続いて account type を小文字にしたもの、続いて ハイフン、続いて account number last4 として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountType",
+            "label": "account type"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountNumberLast4",
+            "label": "account number last4"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business と \"-\" を連結) と account type を小文字にしたもの を連結) と \"-\" を連結) と account number last4 を連結"
+      },
+      "Accounts.BusinessLabel": {
+        "table": "Accounts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "accountの「business label」は、リンクされた「business」の「legal name」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「business」の legal name"
+      },
+      "Accounts.TreasuryServiceCount": {
+        "table": "Accounts",
+        "field": "TreasuryServiceCount",
+        "kind": "formula",
+        "rule": "accountの「treasury service count」は 次の条件のうち成り立つものの数: フラグ「ACH」が設定されている、フラグ「wire」が設定されている、およびフラグ「card」が設定されている として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "HasAch",
+            "label": "has ACH"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasWire",
+            "label": "has wire"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasCard",
+            "label": "has card"
+          }
+        ],
+        "structure": null,
+        "plain": "(has ACHなら 1、そうでなければ 0 たす has wireなら 1、そうでなければ 0) たす has cardなら 1、そうでなければ 0"
+      },
+      "Accounts.HasAnyTreasuryService": {
+        "table": "Accounts",
+        "field": "HasAnyTreasuryService",
+        "kind": "formula",
+        "rule": "treasury service count が 0 より大きい場合、accountは「Any Treasury Service」を持つと見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "TreasuryServiceCount",
+            "label": "treasury service count"
+          }
+        ],
+        "structure": null,
+        "plain": "Treasury service count が 0 より大きい"
+      },
+      "Loans.Name": {
+        "table": "Loans",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "loanの「name」は loan number を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan number を小文字にしたもの の「 」を「-」に置き換えたもの"
+      },
+      "Loans.BusinessLabel": {
+        "table": "Loans",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "loanの「business label」は、リンクされた「business」の「legal name」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「business」の legal name"
+      },
+      "Loans.BusinessNaicsCode": {
+        "table": "Loans",
+        "field": "BusinessNaicsCode",
+        "kind": "lookup",
+        "rule": "loanの「business NAICS code」— リンクされた「business」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "NaicsCode",
+            "label": "NAICS code"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「business」の NAICS code"
+      },
+      "Loans.OriginatingRmLabel": {
+        "table": "Loans",
+        "field": "OriginatingRmLabel",
+        "kind": "lookup",
+        "rule": "loanの「originating RM label」は、リンクされた「originating RM」の「full name」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「originating RM」の full name"
+      },
+      "Loans.UnderwriterIsAdmin": {
+        "table": "Loans",
+        "field": "UnderwriterIsAdmin",
+        "kind": "lookup",
+        "rule": "loanの「underwriter is admin」は、リンクされた「underwriter」が「Admin」であるとき真になります。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "IsAdmin",
+            "label": "is admin"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「underwriter」の is admin"
+      },
+      "Loans.IsFunded": {
+        "table": "Loans",
+        "field": "IsFunded",
+        "kind": "formula",
+        "rule": "underwriting stage が 「Funded」 である場合、loanは「Funded」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "UnderwritingStage",
+            "label": "underwriting stage"
+          }
+        ],
+        "structure": null,
+        "plain": "Underwriting stage は \"Funded\""
+      },
+      "Loans.IsClassifiedAsset": {
+        "table": "Loans",
+        "field": "IsClassifiedAsset",
+        "kind": "formula",
+        "rule": "risk rating が 7 以上である場合、loanは「Classified Asset」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "RiskRating",
+            "label": "risk rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Risk rating が 7 以上"
+      },
+      "Loans.DscrInBand": {
+        "table": "Loans",
+        "field": "DscrInBand",
+        "kind": "formula",
+        "rule": "DSCR(欠損時は 0 と見なす) が 1.20 以上である場合、loanは「DSCR in Band」と記録されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Dscr",
+            "label": "DSCR"
+          }
+        ],
+        "structure": null,
+        "plain": "DSCRまたは0 のうち最初に空でないもの が 1.20 以上"
+      },
+      "Loans.LtvInBand": {
+        "table": "Loans",
+        "field": "LtvInBand",
+        "kind": "formula",
+        "rule": "LTV(欠損時は 0 と見なす) が 0.80 以下である場合、loanは「LTV in Band」と記録されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Ltv",
+            "label": "LTV"
+          }
+        ],
+        "structure": null,
+        "plain": "LTVまたは0 のうち最初に空でないもの が 0.80 以下"
+      },
+      "Loans.SegregationOfDutiesOk": {
+        "table": "Loans",
+        "field": "SegregationOfDutiesOk",
+        "kind": "formula",
+        "rule": "originating RM が underwriter であるということはない場合、loanは「Segregation of Duties Ok」と記録されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          }
+        ],
+        "structure": null,
+        "plain": "Originating RM が underwriter と等しい でない"
+      },
+      "Loans.CountOfCovenants": {
+        "table": "Loans",
+        "field": "CountOfCovenants",
+        "kind": "rollup",
+        "rule": "loanの「count of covenants」は loanに関連する「covenants」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan が このレコード である「covenants」の件数"
+      },
+      "Loans.CountOfBreachedCovenants": {
+        "table": "Loans",
+        "field": "CountOfBreachedCovenants",
+        "kind": "rollup",
+        "rule": "loanの「count of breached covenants」は loanの「covenants」のうち、「Breached」であるものの件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Covenants",
+            "field": "IsBreached",
+            "label": "is breached"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan が このレコードおよびis breached が true() である「covenants」の件数"
+      },
+      "Loans.CountOfRiskRatingHistory": {
+        "table": "Loans",
+        "field": "CountOfRiskRatingHistory",
+        "kind": "rollup",
+        "rule": "loanの「count of risk rating history」は loanに関連する「risk rating history」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan が このレコード である「risk rating history」の件数"
+      },
+      "Loans.CountOfDocuments": {
+        "table": "Loans",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "loanの「count of documents」は loanに関連する「documents」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan が このレコード である「documents」の件数"
+      },
+      "Loans.HasBreachedCovenant": {
+        "table": "Loans",
+        "field": "HasBreachedCovenant",
+        "kind": "formula",
+        "rule": "count of breached covenants が 0 より大きい場合、loanは「Breached Covenant」を持つと見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "CountOfBreachedCovenants",
+            "label": "count of breached covenants"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of breached covenants が 0 より大きい"
+      },
+      "Loans.OnWatchlist": {
+        "table": "Loans",
+        "field": "OnWatchlist",
+        "kind": "formula",
+        "rule": "次のいずれかが成り立つ: フラグ「classified asset」が設定されているまたはフラグ「breached covenant」が設定されている場合、loanは「On Watchlist」と記録されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、loanは「On Watchlist」と記録されます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「classified asset」が設定されている"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「breached covenant」が設定されている"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is classified assetまたはhas breached covenant"
+      },
+      "Loans.HealthScore": {
+        "table": "Loans",
+        "field": "HealthScore",
+        "kind": "formula",
+        "rule": "loanの「health score」は 次の条件のうち成り立つものの数: フラグ「DSCR in band」が設定されている、フラグ「LTV in band」が設定されている、フラグ「classified asset」が設定されていない、およびフラグ「breached covenant」が設定されていない として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "DscrInBand",
+            "label": "DSCR in band"
+          },
+          {
+            "table": "Loans",
+            "field": "LtvInBand",
+            "label": "LTV in band"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": null,
+        "plain": "((DSCR in bandなら 1、そうでなければ 0 たす LTV in bandなら 1、そうでなければ 0) たす is classified assetなら 0、そうでなければ 1) たす has breached covenantなら 0、そうでなければ 1"
+      },
+      "Covenants.Name": {
+        "table": "Covenants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "covenantの「name」は loan、続いて ハイフン、続いて covenant type を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Covenants",
+            "field": "CovenantType",
+            "label": "covenant type"
+          }
+        ],
+        "structure": null,
+        "plain": "(loan と \"-\" を連結) と covenant type を小文字にしたもの の「 」を「-」に置き換えたもの を連結"
+      },
+      "Covenants.LoanLabel": {
+        "table": "Covenants",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "covenantの「loan label」は、リンクされた「loan」の「loan number」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「loan」の loan number"
+      },
+      "Covenants.LoanBusiness": {
+        "table": "Covenants",
+        "field": "LoanBusiness",
+        "kind": "lookup",
+        "rule": "covenantの「loan business」— リンクされた「loan」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「loan」の business"
+      },
+      "Covenants.IsBreached": {
+        "table": "Covenants",
+        "field": "IsBreached",
+        "kind": "formula",
+        "rule": "status が 「Breached」 である場合、covenantは「Breached」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status は \"Breached\""
+      },
+      "Covenants.HasActiveWaiver": {
+        "table": "Covenants",
+        "field": "HasActiveWaiver",
+        "kind": "formula",
+        "rule": "current waiver through に値がある場合、covenantは「Active Waiver」を持つと見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "CurrentWaiverThrough",
+            "label": "current waiver through"
+          }
+        ],
+        "structure": null,
+        "plain": "Current waiver through が空 でない"
+      },
+      "RiskRatingHistory.Name": {
+        "table": "RiskRatingHistory",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "risk rating historyの「name」は loan、続いて ハイフン、続いて effective dateおよび「yyyy-mm-dd」 の TEXT、続いて 「-grade-」、続いて new gradeおよび「0」 の TEXT として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "EffectiveDate",
+            "label": "effective date"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": null,
+        "plain": "(((loan と \"-\" を連結) と text(effective date, \"yyyy-mm-dd\") を連結) と \"-grade-\" を連結) と text(new grade, \"0\") を連結"
+      },
+      "RiskRatingHistory.LoanLabel": {
+        "table": "RiskRatingHistory",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "risk rating historyの「loan label」は、リンクされた「loan」の「loan number」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「loan」の loan number"
+      },
+      "RiskRatingHistory.ChangedByUserLabel": {
+        "table": "RiskRatingHistory",
+        "field": "ChangedByUserLabel",
+        "kind": "lookup",
+        "rule": "risk rating historyの「changed by user label」は、リンクされた「changed by user」の「full name」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "ChangedByUser",
+            "label": "changed by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「changed by user」の full name"
+      },
+      "RiskRatingHistory.GradeDelta": {
+        "table": "RiskRatingHistory",
+        "field": "GradeDelta",
+        "kind": "formula",
+        "rule": "risk rating historyの「grade delta」は new grade ひく prior grade(欠損時は new grade と見なす) として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "New grade ひく prior gradeまたはnew grade のうち最初に空でないもの"
+      },
+      "RiskRatingHistory.IsDowngrade": {
+        "table": "RiskRatingHistory",
+        "field": "IsDowngrade",
+        "kind": "formula",
+        "rule": "grade delta が 0 より大きい場合、risk rating historyは「Downgrade」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "GradeDelta",
+            "label": "grade delta"
+          }
+        ],
+        "structure": null,
+        "plain": "Grade delta が 0 より大きい"
+      },
+      "RiskRatingHistory.IsInitialRating": {
+        "table": "RiskRatingHistory",
+        "field": "IsInitialRating",
+        "kind": "formula",
+        "rule": "prior grade(欠損時は 0 と見なす) が 0 である場合、risk rating historyは「Initial Rating」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "Prior gradeまたは0 のうち最初に空でないもの が 0 と等しい"
+      },
+      "RiskRatingHistory.CrossedClassifiedThreshold": {
+        "table": "RiskRatingHistory",
+        "field": "CrossedClassifiedThreshold",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: prior grade(欠損時は 0 と見なす) が 7 より小さいおよびnew grade が 7 以上である場合、risk rating historyは「Crossed Classified Threshold」と記録されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、risk rating historyは「Crossed Classified Threshold」と記録されます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "prior grade(欠損時は 0 と見なす) が 7 より小さい"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "new grade が 7 以上である"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Prior gradeまたは0 のうち最初に空でないもの が 7 より小さいおよびnew grade が 7 以上"
+      },
+      "Documents.Name": {
+        "table": "Documents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "documentの「name」は filename を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの の ピリオド をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Filename",
+            "label": "filename"
+          }
+        ],
+        "structure": null,
+        "plain": "Filename を小文字にしたもの の「 」を「-」に置き換えたもの の「.」を「-」に置き換えたもの"
+      },
+      "Documents.BusinessLabel": {
+        "table": "Documents",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "documentの「business label」は、リンクされた「business」の「legal name」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「business」の legal name"
+      },
+      "Documents.LoanLabel": {
+        "table": "Documents",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "documentの「loan label」は、リンクされた「loan」の「loan number」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「loan」の loan number"
+      },
+      "Documents.UploadedByUserLabel": {
+        "table": "Documents",
+        "field": "UploadedByUserLabel",
+        "kind": "lookup",
+        "rule": "documentの「uploaded by user label」は、リンクされた「uploaded by user」の「full name」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Documents",
+            "field": "UploadedByUser",
+            "label": "uploaded by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「uploaded by user」の full name"
+      },
+      "Documents.AttachedTo": {
+        "table": "Documents",
+        "field": "AttachedTo",
+        "kind": "formula",
+        "rule": "Documentの「attached to」は、次の優先順位で決まります:\n1. 「loan」に値がある場合は 「Loan」;\n2. 「business」に値がある場合は 「Business」;\n3. それ以外の場合は 「Orphan」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Documentの「attached to」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「Loan」",
+              "when": {
+                "kind": "leaf",
+                "text": "「loan」に値がある"
+              }
+            },
+            {
+              "value": "「Business」",
+              "when": {
+                "kind": "leaf",
+                "text": "「business」に値がある"
+              }
+            },
+            {
+              "value": "「Orphan」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Loanまたは\"\" のうち最初に空でないもの は \"\" でないなら \"Loan\"、そうでなければ businessまたは\"\" のうち最初に空でないもの は \"\" でないなら \"Business\"、そうでなければ \"Orphan\""
+      },
+      "Documents.FromCustomerPortal": {
+        "table": "Documents",
+        "field": "FromCustomerPortal",
+        "kind": "formula",
+        "rule": "uploaded via が 「BusinessClientPortal」 である場合、documentは「From Customer Portal」と記録されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "UploadedVia",
+            "label": "uploaded via"
+          }
+        ],
+        "structure": null,
+        "plain": "Uploaded via は \"BusinessClientPortal\""
+      },
+      "Interactions.Name": {
+        "table": "Interactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "interactionの「name」は business、続いて ハイフン、続いて interaction dateおよび「yyyy-mm-dd」 の TEXT、続いて ハイフン、続いて interaction type を小文字にしたもの、続いて ハイフン、続いて subject を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionDate",
+            "label": "interaction date"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((business と \"-\" を連結) と text(interaction date, \"yyyy-mm-dd\") を連結) と \"-\" を連結) と interaction type を小文字にしたもの を連結) と \"-\" を連結) と subject を小文字にしたもの の「 」を「-」に置き換えたもの を連結"
+      },
+      "Interactions.BusinessLabel": {
+        "table": "Interactions",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "interactionの「business label」は、リンクされた「business」の「legal name」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「business」の legal name"
+      },
+      "Interactions.UserLabel": {
+        "table": "Interactions",
+        "field": "UserLabel",
+        "kind": "lookup",
+        "rule": "interactionの「user label」は、リンクされた「user」の「full name」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Interactions",
+            "field": "User",
+            "label": "user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「user」の full name"
+      },
+      "Interactions.IsSystemEvent": {
+        "table": "Interactions",
+        "field": "IsSystemEvent",
+        "kind": "formula",
+        "rule": "interaction type が 「SystemEvent」 である場合、interactionは「System Event」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type は \"SystemEvent\""
+      },
+      "Interactions.IsTask": {
+        "table": "Interactions",
+        "field": "IsTask",
+        "kind": "formula",
+        "rule": "interaction type が 「Task」 である場合、interactionは「Task」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type は \"Task\""
+      },
+      "Interactions.FromCustomer": {
+        "table": "Interactions",
+        "field": "FromCustomer",
+        "kind": "formula",
+        "rule": "source が 「BusinessClientPortal」 である場合、interactionは「From Customer」と記録されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Source",
+            "label": "source"
+          }
+        ],
+        "structure": null,
+        "plain": "Source は \"BusinessClientPortal\""
+      },
+      "Interactions.IsCovenantEvent": {
+        "table": "Interactions",
+        "field": "IsCovenantEvent",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: フラグ「system event」が設定されているおよびsubject に 「covenant breach」 が含まれる場合、interactionは「Covenant Event」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "IsSystemEvent",
+            "label": "is system event"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、interactionは「Covenant Event」と見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「system event」が設定されている"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "subject に 「covenant breach」 が含まれる"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is system eventおよびfind(\"covenant breach\", subject を小文字にしたもの)(エラー時は 0) が 0 と等しい でない"
+      }
+    },
+    "obligations": [
+      {
+        "constraintKey": "loan-sod",
+        "entity": "Loan",
+        "predicate": "SegregationOfDutiesOk",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **loan-sod** *(必須)* — A loan must not be funded by the same user who originated it: the originating relationship manager and the underwriter must be different users.\n  - _違反時:_ 「The same user originated and underwrote this loan — segregation of duties is violated.」\n  - _出典:_ Internal Credit Policy §4.2"
+      },
+      {
+        "constraintKey": "biz-cdd",
+        "entity": "Business",
+        "predicate": "MeetsCddRule",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **biz-cdd** *(必須)* — businessは beneficial owners at CDD threshold が次を上回ること: 0 を満たす**なければなりません**。\n  - _違反時:_ 「Beneficial-ownership (CDD) collection is incomplete: no owner crosses the 25% threshold and no control person is designated.」\n  - _出典:_ FinCEN CDD Rule, 31 CFR 1010.230\n  - _根拠:_ Meets CDD Rule(DR-25 参照)。"
+      },
+      {
+        "constraintKey": "loan-dscr",
+        "entity": "Loan",
+        "predicate": "DscrInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-dscr** *(免除可)* — loanは DSCR が次以上であること: 1.20 を満たす**なければなりません**。 *(権限のある承認者により免除可能)*。\n  - _違反時:_ 「DSCR is below the 1.20 minimum; a credit-committee waiver is required to fund.」\n  - _出典:_ Internal Credit Policy §2.1 (DSCR floor)\n  - _根拠:_ DSCR in Band(DR-46 参照)。"
+      },
+      {
+        "constraintKey": "loan-ltv",
+        "entity": "Loan",
+        "predicate": "LtvInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-ltv** *(免除可)* — loanは LTV が次以下であること: 0.80 を満たす**なければなりません**。 *(権限のある承認者により免除可能)*。\n  - _違反時:_ 「LTV exceeds the 0.80 ceiling; a credit-committee waiver is required to fund.」\n  - _出典:_ Internal Credit Policy §2.2 (LTV ceiling)\n  - _根拠:_ LTV in Band(DR-47 参照)。"
+      },
+      {
+        "constraintKey": "loan-watchlist",
+        "entity": "Loan",
+        "predicate": "OnWatchlist",
+        "deontic": "ShouldBeTrue",
+        "severity": "soft",
+        "markdown": "- **loan-watchlist** *(推奨)* — loanは 次を満たす: 次のいずれかが成り立つ: フラグ「classified asset」が設定されているまたはフラグ「breached covenant」が設定されている**べきです**。\n  - _違反時:_ 「This loan is a classified asset or has a breached covenant but is not flagged on the watchlist.」\n  - _出典:_ Internal Portfolio Risk Procedure §6 (watchlist)\n  - _根拠:_ On Watchlist(DR-54 参照)。"
+      }
+    ],
+    "structural": {
+      "Users": [
+        "userは full name、role、およびemail を持た**なければなりません**。"
+      ],
+      "Businesses": [
+        "businessは、relationship managerとして「user」をちょうど 1 件参照し**なければなりません**。",
+        "businessは legal name、business structure、NAICS code、およびstatus を持た**なければなりません**。"
+      ],
+      "BeneficialOwners": [
+        "beneficial ownerは「business」をちょうど 1 件参照し**なければなりません**。",
+        "beneficial ownerは full name、date of birth、SSN、address、およびownership percentage を持た、かつ 「Control Person」であるかどうかを記録し**なければなりません**。"
+      ],
+      "Contacts": [
+        "contactは「business」をちょうど 1 件参照し**なければなりません**。",
+        "contactは full name、title、およびcontact type を持た、かつ 「Authorized Signer」であるかどうかを記録し**なければなりません**。"
+      ],
+      "Accounts": [
+        "accountは「business」をちょうど 1 件参照し**なければなりません**。",
+        "accountは account type、account number last4、current balance USD、およびopened at を持た、かつ 「ACH」を持つかどうか、「Wire」を持つかどうか、および「Card」を持つかどうかを記録し**なければなりません**。"
+      ],
+      "Loans": [
+        "loanは「business」をちょうど 1 件参照し**なければなりません**。",
+        "loanは、originating RMとして「user」をちょうど 1 件参照し**なければなりません**。",
+        "loanは、underwriterとして「user」をちょうど 1 件参照し**なければなりません**。",
+        "loanは loan number、loan purpose、principal USD、rate pct、term months、underwriting stage、risk rating、risk rating label、およびoriginated at を持た**なければなりません**。"
+      ],
+      "Covenants": [
+        "covenantは「loan」をちょうど 1 件参照し**なければなりません**。",
+        "covenantは covenant type、test frequency、next test date、およびstatus を持た**なければなりません**。"
+      ],
+      "RiskRatingHistory": [
+        "risk rating historyは「loan」をちょうど 1 件参照し**なければなりません**。",
+        "risk rating historyは、changed by userとして「user」をちょうど 1 件参照し**なければなりません**。",
+        "risk rating historyは effective date、new grade、およびreason を持た**なければなりません**。"
+      ],
+      "Documents": [
+        "documentは filename、document type、およびuploaded at を持た、かつ 「Ocr Indexed」であるかどうかを記録し**なければなりません**。"
+      ],
+      "Interactions": [
+        "interactionは「business」をちょうど 1 件参照し**なければなりません**。",
+        "interactionは interaction type、subject、およびinteraction date を持た**なければなりません**。"
+      ]
+    },
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "Users": "user",
+      "Businesses": "business",
+      "BeneficialOwners": "beneficial owner",
+      "Contacts": "contact",
+      "Accounts": "account",
+      "Loans": "loan",
+      "Covenants": "covenant",
+      "RiskRatingHistory": "risk rating history",
+      "Documents": "document",
+      "Interactions": "interaction"
+    }
+  },
+  "ko": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘user’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘full name’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과"
+      },
+      "Users.IsRM": {
+        "table": "Users",
+        "field": "IsRM",
+        "kind": "formula",
+        "rule": "‘role’ 값이 “RM”인 경우, ‘user’ 레코드는 ‘RM’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role 값이 \"RM\"임"
+      },
+      "Users.IsUnderwriter": {
+        "table": "Users",
+        "field": "IsUnderwriter",
+        "kind": "formula",
+        "rule": "‘role’ 값이 “Underwriter”인 경우, ‘user’ 레코드는 ‘underwriter’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role 값이 \"Underwriter\"임"
+      },
+      "Users.IsBranchBanker": {
+        "table": "Users",
+        "field": "IsBranchBanker",
+        "kind": "formula",
+        "rule": "‘role’ 값이 “BranchBanker”인 경우, ‘user’ 레코드는 ‘branch banker’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role 값이 \"BranchBanker\"임"
+      },
+      "Users.IsAdmin": {
+        "table": "Users",
+        "field": "IsAdmin",
+        "kind": "formula",
+        "rule": "‘role’ 값이 “Admin”인 경우, ‘user’ 레코드는 ‘admin’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role 값이 \"Admin\"임"
+      },
+      "Users.CountOfPortfolioBusinesses": {
+        "table": "Users",
+        "field": "CountOfPortfolioBusinesses",
+        "kind": "rollup",
+        "rule": "‘user’ 레코드의 ‘count of portfolio businesses’ 값은 해당 ‘user’ 레코드에 연결된 ‘businesses’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(relationship manager 값이 이 레코드임)에 맞는 businesses 레코드의 개수"
+      },
+      "Users.CountOfOriginatedLoans": {
+        "table": "Users",
+        "field": "CountOfOriginatedLoans",
+        "kind": "rollup",
+        "rule": "‘user’ 레코드의 ‘count of originated loans’ 값은 해당 ‘user’ 레코드에 연결된 ‘loans’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(originating RM 값이 이 레코드임)에 맞는 loans 레코드의 개수"
+      },
+      "Users.CountOfUnderwrittenLoans": {
+        "table": "Users",
+        "field": "CountOfUnderwrittenLoans",
+        "kind": "rollup",
+        "rule": "‘user’ 레코드의 ‘count of underwritten loans’ 값은 해당 ‘user’ 레코드에 연결된 ‘loans’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(underwriter 값이 이 레코드임)에 맞는 loans 레코드의 개수"
+      },
+      "Businesses.Name": {
+        "table": "Businesses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘business’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘legal name’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과의 마침표 부분을 모두 빈 문자열 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과의 “.” 부분을 “” 값으로 치환한 결과"
+      },
+      "Businesses.RelationshipManagerLabel": {
+        "table": "Businesses",
+        "field": "RelationshipManagerLabel",
+        "kind": "lookup",
+        "rule": "‘business’ 레코드의 ‘relationship manager label’ 값은 연결된 ‘relationship manager’ 레코드의 ‘full name’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 relationship manager 레코드의 full name"
+      },
+      "Businesses.IsCustomer": {
+        "table": "Businesses",
+        "field": "IsCustomer",
+        "kind": "formula",
+        "rule": "‘status’ 값이 “Customer”인 경우, ‘business’ 레코드는 ‘customer’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status 값이 \"Customer\"임"
+      },
+      "Businesses.IsProspect": {
+        "table": "Businesses",
+        "field": "IsProspect",
+        "kind": "formula",
+        "rule": "‘status’ 값이 “Prospect”인 경우, ‘business’ 레코드는 ‘prospect’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status 값이 \"Prospect\"임"
+      },
+      "Businesses.WasReferred": {
+        "table": "Businesses",
+        "field": "WasReferred",
+        "kind": "formula",
+        "rule": "‘referral source’ 값이 있는 경우, ‘business’ 레코드는 ‘referred’ 처리가 완료된 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "ReferralSource",
+            "label": "referral source"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(referral source 또는 \"\" 중 비어 있지 않은 첫 번째 항목 값이 \"\"임)이 성립하지 않음"
+      },
+      "Businesses.CountOfBeneficialOwners": {
+        "table": "Businesses",
+        "field": "CountOfBeneficialOwners",
+        "kind": "rollup",
+        "rule": "‘business’ 레코드의 ‘count of beneficial owners’ 값은 해당 ‘business’ 레코드에 연결된 ‘beneficial owners’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(business 값이 이 레코드임)에 맞는 beneficial owners 레코드의 개수"
+      },
+      "Businesses.CountOfContacts": {
+        "table": "Businesses",
+        "field": "CountOfContacts",
+        "kind": "rollup",
+        "rule": "‘business’ 레코드의 ‘count of contacts’ 값은 해당 ‘business’ 레코드에 연결된 ‘contacts’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(business 값이 이 레코드임)에 맞는 contacts 레코드의 개수"
+      },
+      "Businesses.CountOfAccounts": {
+        "table": "Businesses",
+        "field": "CountOfAccounts",
+        "kind": "rollup",
+        "rule": "‘business’ 레코드의 ‘count of accounts’ 값은 해당 ‘business’ 레코드에 연결된 ‘accounts’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(business 값이 이 레코드임)에 맞는 accounts 레코드의 개수"
+      },
+      "Businesses.CountOfLoans": {
+        "table": "Businesses",
+        "field": "CountOfLoans",
+        "kind": "rollup",
+        "rule": "‘business’ 레코드의 ‘count of loans’ 값은 해당 ‘business’ 레코드에 연결된 ‘loans’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(business 값이 이 레코드임)에 맞는 loans 레코드의 개수"
+      },
+      "Businesses.CountOfInteractions": {
+        "table": "Businesses",
+        "field": "CountOfInteractions",
+        "kind": "rollup",
+        "rule": "‘business’ 레코드의 ‘count of interactions’ 값은 해당 ‘business’ 레코드에 연결된 ‘interactions’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(business 값이 이 레코드임)에 맞는 interactions 레코드의 개수"
+      },
+      "Businesses.CountOfDocuments": {
+        "table": "Businesses",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "‘business’ 레코드의 ‘count of documents’ 값은 해당 ‘business’ 레코드에 연결된 ‘documents’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(business 값이 이 레코드임)에 맞는 documents 레코드의 개수"
+      },
+      "Businesses.TotalDepositBalanceUsd": {
+        "table": "Businesses",
+        "field": "TotalDepositBalanceUsd",
+        "kind": "rollup",
+        "rule": "‘business’ 레코드의 ‘total deposit balance USD’ 값은 해당 ‘business’ 레코드에 연결된 모든 ‘accounts’ 레코드의 총 ‘current balance USD’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "CurrentBalanceUsd",
+            "label": "current balance USD"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(business 값이 이 레코드임)에 맞는 모든 accounts 레코드의 current balance USD 합계"
+      },
+      "Businesses.TotalLoanPrincipalUsd": {
+        "table": "Businesses",
+        "field": "TotalLoanPrincipalUsd",
+        "kind": "rollup",
+        "rule": "‘business’ 레코드의 ‘total loan principal USD’ 값은 해당 ‘business’ 레코드에 연결된 모든 ‘loans’ 레코드의 총 ‘principal USD’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "PrincipalUsd",
+            "label": "principal USD"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(business 값이 이 레코드임)에 맞는 모든 loans 레코드의 principal USD 합계"
+      },
+      "Businesses.CountOfClassifiedLoans": {
+        "table": "Businesses",
+        "field": "CountOfClassifiedLoans",
+        "kind": "rollup",
+        "rule": "‘business’ 레코드의 ‘count of classified loans’ 값은 해당 ‘business’ 레코드에 연결된 ‘loans’ 레코드 중 ‘classified asset’에 해당하는 것의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(business 값이 이 레코드임 및 is classified asset 값이 true()임)에 맞는 loans 레코드의 개수"
+      },
+      "Businesses.HasClassifiedLoan": {
+        "table": "Businesses",
+        "field": "HasClassifiedLoan",
+        "kind": "formula",
+        "rule": "‘count of classified loans’ 값이 0보다 큰 경우, ‘business’ 레코드는 ‘classified loan’ 항목이 있는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "CountOfClassifiedLoans",
+            "label": "count of classified loans"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of classified loans 값이 0보다 큼"
+      },
+      "Businesses.BeneficialOwnersAtCddThreshold": {
+        "table": "Businesses",
+        "field": "BeneficialOwnersAtCddThreshold",
+        "kind": "rollup",
+        "rule": "‘business’ 레코드의 ‘beneficial owners at CDD threshold’ 값은 해당 ‘business’ 레코드에 연결된 ‘beneficial owners’ 레코드 중 ‘meets CDD threshold’ 조건에 해당하는 것의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "MeetsCddThreshold",
+            "label": "meets CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(business 값이 이 레코드임 및 meets CDD threshold 값이 true()임)에 맞는 beneficial owners 레코드의 개수"
+      },
+      "Businesses.MeetsCddRule": {
+        "table": "Businesses",
+        "field": "MeetsCddRule",
+        "kind": "formula",
+        "rule": "‘beneficial owners at CDD threshold’ 값이 0보다 큰 경우, ‘business’ 레코드는 ‘meets CDD rule’ 조건에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "BeneficialOwnersAtCddThreshold",
+            "label": "beneficial owners at CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Beneficial owners at CDD threshold 값이 0보다 큼"
+      },
+      "Businesses.PortfolioPriority": {
+        "table": "Businesses",
+        "field": "PortfolioPriority",
+        "kind": "formula",
+        "rule": "‘business’ 레코드의 ‘portfolio priority’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘classified loan’ 플래그가 설정된 경우: “High”\n2. 다음 중 하나 이상에 해당하는 경우(‘meets CDD rule’ 플래그가 설정되지 않은 경우, ‘prospect’ 플래그가 설정된 경우 또는 ‘count of loans’ 값이 0인 경우): “Medium”\n3. 그 밖의 경우: “Low”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "HasClassifiedLoan",
+            "label": "has classified loan"
+          },
+          {
+            "table": "Businesses",
+            "field": "MeetsCddRule",
+            "label": "meets CDD rule"
+          },
+          {
+            "table": "Businesses",
+            "field": "IsProspect",
+            "label": "is prospect"
+          },
+          {
+            "table": "Businesses",
+            "field": "CountOfLoans",
+            "label": "count of loans"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘business’ 레코드의 ‘portfolio priority’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“High”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘classified loan’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "“Medium”",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "‘meets CDD rule’ 플래그가 설정되지 않은 경우"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "‘prospect’ 플래그가 설정된 경우"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "‘count of loans’ 값이 0인 경우"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Low”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(has classified loan)이 성립하면 \"High\", 그렇지 않으면 조건(조건(meets CDD rule)이 성립하지 않음, is prospect 또는 count of loans 값이 0 값과 같음)이 성립하면 \"Medium\", 그렇지 않으면 \"Low\""
+      },
+      "BeneficialOwners.Name": {
+        "table": "BeneficialOwners",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘beneficial owner’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘business’, 이어서 하이픈, 이어서 ‘full name’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "(business 뒤에 \"-\" 연결한 결과) 뒤에 full name의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과 연결한 결과"
+      },
+      "BeneficialOwners.BusinessLabel": {
+        "table": "BeneficialOwners",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "‘beneficial owner’ 레코드의 ‘business label’ 값은 연결된 ‘business’ 레코드의 ‘legal name’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 business 레코드의 legal name"
+      },
+      "BeneficialOwners.Meets25PercentThreshold": {
+        "table": "BeneficialOwners",
+        "field": "Meets25PercentThreshold",
+        "kind": "formula",
+        "rule": "‘ownership percentage’ 값이 25 이상인 경우, ‘beneficial owner’ 레코드는 ‘meets25 percent threshold’에 해당하는 것으로 표시됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "OwnershipPercentage",
+            "label": "ownership percentage"
+          }
+        ],
+        "structure": null,
+        "plain": "Ownership percentage 값이 25 이상임"
+      },
+      "BeneficialOwners.MeetsCddThreshold": {
+        "table": "BeneficialOwners",
+        "field": "MeetsCddThreshold",
+        "kind": "formula",
+        "rule": "다음 중 하나 이상에 해당하는 경우(‘meets25 percent threshold’ 플래그가 설정된 경우 또는 ‘control person’ 플래그가 설정된 경우), ‘beneficial owner’ 레코드는 ‘meets CDD threshold’ 조건에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Meets25PercentThreshold",
+            "label": "meets25 percent threshold"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "IsControlPerson",
+            "label": "is control person"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘beneficial owner’ 레코드는 ‘meets CDD threshold’ 조건에 해당하는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘meets25 percent threshold’ 플래그가 설정된 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘control person’ 플래그가 설정된 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Meets25 percent threshold 또는 is control person"
+      },
+      "Contacts.Name": {
+        "table": "Contacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘contact’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘business’, 이어서 하이픈, 이어서 ‘full name’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과, 이어서 하이픈, 이어서 ‘title’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Contacts",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business 뒤에 \"-\" 연결한 결과) 뒤에 full name의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과 연결한 결과) 뒤에 \"-\" 연결한 결과) 뒤에 title의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과 연결한 결과"
+      },
+      "Contacts.BusinessLabel": {
+        "table": "Contacts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "‘contact’ 레코드의 ‘business label’ 값은 연결된 ‘business’ 레코드의 ‘legal name’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 business 레코드의 legal name"
+      },
+      "Contacts.IsOfficer": {
+        "table": "Contacts",
+        "field": "IsOfficer",
+        "kind": "formula",
+        "rule": "‘contact type’ 값이 “Officer”인 경우, ‘contact’ 레코드는 ‘officer’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type 값이 \"Officer\"임"
+      },
+      "Contacts.IsApClerk": {
+        "table": "Contacts",
+        "field": "IsApClerk",
+        "kind": "formula",
+        "rule": "‘contact type’ 값이 “APClerk”인 경우, ‘contact’ 레코드는 ‘AP clerk’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type 값이 \"APClerk\"임"
+      },
+      "Accounts.Name": {
+        "table": "Accounts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘account’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘business’, 이어서 하이픈, 이어서 ‘account type’의 소문자 변환 결과, 이어서 하이픈, 이어서 ‘account number last4’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountType",
+            "label": "account type"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountNumberLast4",
+            "label": "account number last4"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business 뒤에 \"-\" 연결한 결과) 뒤에 account type의 소문자 변환 결과 연결한 결과) 뒤에 \"-\" 연결한 결과) 뒤에 account number last4 연결한 결과"
+      },
+      "Accounts.BusinessLabel": {
+        "table": "Accounts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "‘account’ 레코드의 ‘business label’ 값은 연결된 ‘business’ 레코드의 ‘legal name’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 business 레코드의 legal name"
+      },
+      "Accounts.TreasuryServiceCount": {
+        "table": "Accounts",
+        "field": "TreasuryServiceCount",
+        "kind": "formula",
+        "rule": "‘account’ 레코드의 ‘treasury service count’ 값은 다음과 같이 계산됩니다: 다음 경우 중 해당하는 경우의 개수(‘ACH’ 플래그가 설정된 경우, ‘wire’ 플래그가 설정된 경우 및 ‘card’ 플래그가 설정된 경우).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "HasAch",
+            "label": "has ACH"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasWire",
+            "label": "has wire"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasCard",
+            "label": "has card"
+          }
+        ],
+        "structure": null,
+        "plain": "(조건(has ACH)이 성립하면 1, 그렇지 않으면 0 더하기 조건(has wire)이 성립하면 1, 그렇지 않으면 0) 더하기 조건(has card)이 성립하면 1, 그렇지 않으면 0"
+      },
+      "Accounts.HasAnyTreasuryService": {
+        "table": "Accounts",
+        "field": "HasAnyTreasuryService",
+        "kind": "formula",
+        "rule": "‘treasury service count’ 값이 0보다 큰 경우, ‘account’ 레코드는 ‘any treasury service’ 항목이 있는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "TreasuryServiceCount",
+            "label": "treasury service count"
+          }
+        ],
+        "structure": null,
+        "plain": "Treasury service count 값이 0보다 큼"
+      },
+      "Loans.Name": {
+        "table": "Loans",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘loan’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘loan number’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan number의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과"
+      },
+      "Loans.BusinessLabel": {
+        "table": "Loans",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "‘loan’ 레코드의 ‘business label’ 값은 연결된 ‘business’ 레코드의 ‘legal name’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 business 레코드의 legal name"
+      },
+      "Loans.BusinessNaicsCode": {
+        "table": "Loans",
+        "field": "BusinessNaicsCode",
+        "kind": "lookup",
+        "rule": "‘loan’ 레코드의 ‘business NAICS code’ 값은 연결된 ‘business’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "NaicsCode",
+            "label": "NAICS code"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 business 레코드의 NAICS code"
+      },
+      "Loans.OriginatingRmLabel": {
+        "table": "Loans",
+        "field": "OriginatingRmLabel",
+        "kind": "lookup",
+        "rule": "‘loan’ 레코드의 ‘originating RM label’ 값은 연결된 ‘originating RM’ 레코드의 ‘full name’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 originating RM 레코드의 full name"
+      },
+      "Loans.UnderwriterIsAdmin": {
+        "table": "Loans",
+        "field": "UnderwriterIsAdmin",
+        "kind": "lookup",
+        "rule": "‘loan’ 레코드의 ‘underwriter is admin’ 값은 연결된 ‘underwriter’ 레코드가 ‘admin’에 해당하는 경우에 참입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "IsAdmin",
+            "label": "is admin"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 underwriter 레코드의 is admin"
+      },
+      "Loans.IsFunded": {
+        "table": "Loans",
+        "field": "IsFunded",
+        "kind": "formula",
+        "rule": "‘underwriting stage’ 값이 “Funded”인 경우, ‘loan’ 레코드는 ‘funded’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "UnderwritingStage",
+            "label": "underwriting stage"
+          }
+        ],
+        "structure": null,
+        "plain": "Underwriting stage 값이 \"Funded\"임"
+      },
+      "Loans.IsClassifiedAsset": {
+        "table": "Loans",
+        "field": "IsClassifiedAsset",
+        "kind": "formula",
+        "rule": "‘risk rating’ 값이 7 이상인 경우, ‘loan’ 레코드는 ‘classified asset’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "RiskRating",
+            "label": "risk rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Risk rating 값이 7 이상임"
+      },
+      "Loans.DscrInBand": {
+        "table": "Loans",
+        "field": "DscrInBand",
+        "kind": "formula",
+        "rule": "‘DSCR’(값이 없는 경우에는 0) 값이 1.20 이상인 경우, ‘loan’ 레코드는 ‘DSCR in band’에 해당하는 것으로 표시됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Dscr",
+            "label": "DSCR"
+          }
+        ],
+        "structure": null,
+        "plain": "DSCR 또는 0 중 비어 있지 않은 첫 번째 항목 값이 1.20 이상임"
+      },
+      "Loans.LtvInBand": {
+        "table": "Loans",
+        "field": "LtvInBand",
+        "kind": "formula",
+        "rule": "‘LTV’(값이 없는 경우에는 0) 값이 0.80 이하인 경우, ‘loan’ 레코드는 ‘LTV in band’에 해당하는 것으로 표시됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Ltv",
+            "label": "LTV"
+          }
+        ],
+        "structure": null,
+        "plain": "LTV 또는 0 중 비어 있지 않은 첫 번째 항목 값이 0.80 이하임"
+      },
+      "Loans.SegregationOfDutiesOk": {
+        "table": "Loans",
+        "field": "SegregationOfDutiesOk",
+        "kind": "formula",
+        "rule": "다음이 사실이 아닌 경우(‘originating RM’ 값이 ‘underwriter’인 경우), ‘loan’ 레코드는 ‘segregation of duties ok’에 해당하는 것으로 표시됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(originating RM 값이 underwriter 값과 같음)이 성립하지 않음"
+      },
+      "Loans.CountOfCovenants": {
+        "table": "Loans",
+        "field": "CountOfCovenants",
+        "kind": "rollup",
+        "rule": "‘loan’ 레코드의 ‘count of covenants’ 값은 해당 ‘loan’ 레코드에 연결된 ‘covenants’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(loan 값이 이 레코드임)에 맞는 covenants 레코드의 개수"
+      },
+      "Loans.CountOfBreachedCovenants": {
+        "table": "Loans",
+        "field": "CountOfBreachedCovenants",
+        "kind": "rollup",
+        "rule": "‘loan’ 레코드의 ‘count of breached covenants’ 값은 해당 ‘loan’ 레코드에 연결된 ‘covenants’ 레코드 중 ‘breached’에 해당하는 것의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Covenants",
+            "field": "IsBreached",
+            "label": "is breached"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(loan 값이 이 레코드임 및 is breached 값이 true()임)에 맞는 covenants 레코드의 개수"
+      },
+      "Loans.CountOfRiskRatingHistory": {
+        "table": "Loans",
+        "field": "CountOfRiskRatingHistory",
+        "kind": "rollup",
+        "rule": "‘loan’ 레코드의 ‘count of risk rating history’ 값은 해당 ‘loan’ 레코드에 연결된 ‘risk rating history’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(loan 값이 이 레코드임)에 맞는 risk rating history 레코드의 개수"
+      },
+      "Loans.CountOfDocuments": {
+        "table": "Loans",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "‘loan’ 레코드의 ‘count of documents’ 값은 해당 ‘loan’ 레코드에 연결된 ‘documents’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(loan 값이 이 레코드임)에 맞는 documents 레코드의 개수"
+      },
+      "Loans.HasBreachedCovenant": {
+        "table": "Loans",
+        "field": "HasBreachedCovenant",
+        "kind": "formula",
+        "rule": "‘count of breached covenants’ 값이 0보다 큰 경우, ‘loan’ 레코드는 ‘breached covenant’ 항목이 있는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "CountOfBreachedCovenants",
+            "label": "count of breached covenants"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of breached covenants 값이 0보다 큼"
+      },
+      "Loans.OnWatchlist": {
+        "table": "Loans",
+        "field": "OnWatchlist",
+        "kind": "formula",
+        "rule": "다음 중 하나 이상에 해당하는 경우(‘classified asset’ 플래그가 설정된 경우 또는 ‘breached covenant’ 플래그가 설정된 경우), ‘loan’ 레코드는 ‘on watchlist’에 해당하는 것으로 표시됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘loan’ 레코드는 ‘on watchlist’에 해당하는 것으로 표시됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘classified asset’ 플래그가 설정된 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘breached covenant’ 플래그가 설정된 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is classified asset 또는 has breached covenant"
+      },
+      "Loans.HealthScore": {
+        "table": "Loans",
+        "field": "HealthScore",
+        "kind": "formula",
+        "rule": "‘loan’ 레코드의 ‘health score’ 값은 다음과 같이 계산됩니다: 다음 경우 중 해당하는 경우의 개수(‘DSCR in band’ 플래그가 설정된 경우, ‘LTV in band’ 플래그가 설정된 경우, ‘classified asset’ 플래그가 설정되지 않은 경우 및 ‘breached covenant’ 플래그가 설정되지 않은 경우).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "DscrInBand",
+            "label": "DSCR in band"
+          },
+          {
+            "table": "Loans",
+            "field": "LtvInBand",
+            "label": "LTV in band"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": null,
+        "plain": "((조건(DSCR in band)이 성립하면 1, 그렇지 않으면 0 더하기 조건(LTV in band)이 성립하면 1, 그렇지 않으면 0) 더하기 조건(is classified asset)이 성립하면 0, 그렇지 않으면 1) 더하기 조건(has breached covenant)이 성립하면 0, 그렇지 않으면 1"
+      },
+      "Covenants.Name": {
+        "table": "Covenants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘covenant’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘loan’, 이어서 하이픈, 이어서 ‘covenant type’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Covenants",
+            "field": "CovenantType",
+            "label": "covenant type"
+          }
+        ],
+        "structure": null,
+        "plain": "(loan 뒤에 \"-\" 연결한 결과) 뒤에 covenant type의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과 연결한 결과"
+      },
+      "Covenants.LoanLabel": {
+        "table": "Covenants",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "‘covenant’ 레코드의 ‘loan label’ 값은 연결된 ‘loan’ 레코드의 ‘loan number’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 loan 레코드의 loan number"
+      },
+      "Covenants.LoanBusiness": {
+        "table": "Covenants",
+        "field": "LoanBusiness",
+        "kind": "lookup",
+        "rule": "‘covenant’ 레코드의 ‘loan business’ 값은 연결된 ‘loan’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 loan 레코드의 business"
+      },
+      "Covenants.IsBreached": {
+        "table": "Covenants",
+        "field": "IsBreached",
+        "kind": "formula",
+        "rule": "‘status’ 값이 “Breached”인 경우, ‘covenant’ 레코드는 ‘breached’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status 값이 \"Breached\"임"
+      },
+      "Covenants.HasActiveWaiver": {
+        "table": "Covenants",
+        "field": "HasActiveWaiver",
+        "kind": "formula",
+        "rule": "‘current waiver through’ 값이 있는 경우, ‘covenant’ 레코드는 ‘active waiver’ 항목이 있는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "CurrentWaiverThrough",
+            "label": "current waiver through"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(current waiver through 값이 비어 있음)이 성립하지 않음"
+      },
+      "RiskRatingHistory.Name": {
+        "table": "RiskRatingHistory",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘risk rating history’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘loan’, 이어서 하이픈, 이어서 ‘effective date’ 및 “yyyy-mm-dd”에 대한 TEXT 함수의 결과, 이어서 “-grade-”, 이어서 ‘new grade’ 및 “0”에 대한 TEXT 함수의 결과.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "EffectiveDate",
+            "label": "effective date"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": null,
+        "plain": "(((loan 뒤에 \"-\" 연결한 결과) 뒤에 text(effective date, \"yyyy-mm-dd\") 연결한 결과) 뒤에 \"-grade-\" 연결한 결과) 뒤에 text(new grade, \"0\") 연결한 결과"
+      },
+      "RiskRatingHistory.LoanLabel": {
+        "table": "RiskRatingHistory",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "‘risk rating history’ 레코드의 ‘loan label’ 값은 연결된 ‘loan’ 레코드의 ‘loan number’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 loan 레코드의 loan number"
+      },
+      "RiskRatingHistory.ChangedByUserLabel": {
+        "table": "RiskRatingHistory",
+        "field": "ChangedByUserLabel",
+        "kind": "lookup",
+        "rule": "‘risk rating history’ 레코드의 ‘changed by user label’ 값은 연결된 ‘changed by user’ 레코드의 ‘full name’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "ChangedByUser",
+            "label": "changed by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 changed by user 레코드의 full name"
+      },
+      "RiskRatingHistory.GradeDelta": {
+        "table": "RiskRatingHistory",
+        "field": "GradeDelta",
+        "kind": "formula",
+        "rule": "‘risk rating history’ 레코드의 ‘grade delta’ 값은 다음과 같이 계산됩니다: ‘new grade’ 빼기 ‘prior grade’(값이 없는 경우에는 ‘new grade’).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "New grade 빼기 prior grade 또는 new grade 중 비어 있지 않은 첫 번째 항목"
+      },
+      "RiskRatingHistory.IsDowngrade": {
+        "table": "RiskRatingHistory",
+        "field": "IsDowngrade",
+        "kind": "formula",
+        "rule": "‘grade delta’ 값이 0보다 큰 경우, ‘risk rating history’ 레코드는 ‘downgrade’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "GradeDelta",
+            "label": "grade delta"
+          }
+        ],
+        "structure": null,
+        "plain": "Grade delta 값이 0보다 큼"
+      },
+      "RiskRatingHistory.IsInitialRating": {
+        "table": "RiskRatingHistory",
+        "field": "IsInitialRating",
+        "kind": "formula",
+        "rule": "‘prior grade’(값이 없는 경우에는 0) 값이 0인 경우, ‘risk rating history’ 레코드는 ‘initial rating’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "Prior grade 또는 0 중 비어 있지 않은 첫 번째 항목 값이 0 값과 같음"
+      },
+      "RiskRatingHistory.CrossedClassifiedThreshold": {
+        "table": "RiskRatingHistory",
+        "field": "CrossedClassifiedThreshold",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘prior grade’(값이 없는 경우에는 0) 값이 7보다 작은 경우 및 ‘new grade’ 값이 7 이상인 경우), ‘risk rating history’ 레코드는 ‘crossed classified threshold’에 해당하는 것으로 표시됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘risk rating history’ 레코드는 ‘crossed classified threshold’에 해당하는 것으로 표시됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘prior grade’(값이 없는 경우에는 0) 값이 7보다 작은 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘new grade’ 값이 7 이상인 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Prior grade 또는 0 중 비어 있지 않은 첫 번째 항목 값이 7보다 작음 및 new grade 값이 7 이상임"
+      },
+      "Documents.Name": {
+        "table": "Documents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘document’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘filename’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과의 마침표 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Filename",
+            "label": "filename"
+          }
+        ],
+        "structure": null,
+        "plain": "Filename의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과의 “.” 부분을 “-” 값으로 치환한 결과"
+      },
+      "Documents.BusinessLabel": {
+        "table": "Documents",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "‘document’ 레코드의 ‘business label’ 값은 연결된 ‘business’ 레코드의 ‘legal name’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 business 레코드의 legal name"
+      },
+      "Documents.LoanLabel": {
+        "table": "Documents",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "‘document’ 레코드의 ‘loan label’ 값은 연결된 ‘loan’ 레코드의 ‘loan number’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 loan 레코드의 loan number"
+      },
+      "Documents.UploadedByUserLabel": {
+        "table": "Documents",
+        "field": "UploadedByUserLabel",
+        "kind": "lookup",
+        "rule": "‘document’ 레코드의 ‘uploaded by user label’ 값은 연결된 ‘uploaded by user’ 레코드의 ‘full name’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Documents",
+            "field": "UploadedByUser",
+            "label": "uploaded by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 uploaded by user 레코드의 full name"
+      },
+      "Documents.AttachedTo": {
+        "table": "Documents",
+        "field": "AttachedTo",
+        "kind": "formula",
+        "rule": "‘document’ 레코드의 ‘attached to’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘loan’ 값이 있는 경우: “Loan”\n2. ‘business’ 값이 있는 경우: “Business”\n3. 그 밖의 경우: “Orphan”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘document’ 레코드의 ‘attached to’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“Loan”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘loan’ 값이 있는 경우"
+              }
+            },
+            {
+              "value": "“Business”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘business’ 값이 있는 경우"
+              }
+            },
+            {
+              "value": "“Orphan”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(조건(loan 또는 \"\" 중 비어 있지 않은 첫 번째 항목 값이 \"\"임)이 성립하지 않음)이 성립하면 \"Loan\", 그렇지 않으면 조건(조건(business 또는 \"\" 중 비어 있지 않은 첫 번째 항목 값이 \"\"임)이 성립하지 않음)이 성립하면 \"Business\", 그렇지 않으면 \"Orphan\""
+      },
+      "Documents.FromCustomerPortal": {
+        "table": "Documents",
+        "field": "FromCustomerPortal",
+        "kind": "formula",
+        "rule": "‘uploaded via’ 값이 “BusinessClientPortal”인 경우, ‘document’ 레코드는 ‘from customer portal’에 해당하는 것으로 표시됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "UploadedVia",
+            "label": "uploaded via"
+          }
+        ],
+        "structure": null,
+        "plain": "Uploaded via 값이 \"BusinessClientPortal\"임"
+      },
+      "Interactions.Name": {
+        "table": "Interactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘interaction’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘business’, 이어서 하이픈, 이어서 ‘interaction date’ 및 “yyyy-mm-dd”에 대한 TEXT 함수의 결과, 이어서 하이픈, 이어서 ‘interaction type’의 소문자 변환 결과, 이어서 하이픈, 이어서 ‘subject’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionDate",
+            "label": "interaction date"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((business 뒤에 \"-\" 연결한 결과) 뒤에 text(interaction date, \"yyyy-mm-dd\") 연결한 결과) 뒤에 \"-\" 연결한 결과) 뒤에 interaction type의 소문자 변환 결과 연결한 결과) 뒤에 \"-\" 연결한 결과) 뒤에 subject의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과 연결한 결과"
+      },
+      "Interactions.BusinessLabel": {
+        "table": "Interactions",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "‘interaction’ 레코드의 ‘business label’ 값은 연결된 ‘business’ 레코드의 ‘legal name’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 business 레코드의 legal name"
+      },
+      "Interactions.UserLabel": {
+        "table": "Interactions",
+        "field": "UserLabel",
+        "kind": "lookup",
+        "rule": "‘interaction’ 레코드의 ‘user label’ 값은 연결된 ‘user’ 레코드의 ‘full name’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Interactions",
+            "field": "User",
+            "label": "user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 user 레코드의 full name"
+      },
+      "Interactions.IsSystemEvent": {
+        "table": "Interactions",
+        "field": "IsSystemEvent",
+        "kind": "formula",
+        "rule": "‘interaction type’ 값이 “SystemEvent”인 경우, ‘interaction’ 레코드는 ‘system event’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type 값이 \"SystemEvent\"임"
+      },
+      "Interactions.IsTask": {
+        "table": "Interactions",
+        "field": "IsTask",
+        "kind": "formula",
+        "rule": "‘interaction type’ 값이 “Task”인 경우, ‘interaction’ 레코드는 ‘task’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type 값이 \"Task\"임"
+      },
+      "Interactions.FromCustomer": {
+        "table": "Interactions",
+        "field": "FromCustomer",
+        "kind": "formula",
+        "rule": "‘source’ 값이 “BusinessClientPortal”인 경우, ‘interaction’ 레코드는 ‘from customer’에 해당하는 것으로 표시됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Source",
+            "label": "source"
+          }
+        ],
+        "structure": null,
+        "plain": "Source 값이 \"BusinessClientPortal\"임"
+      },
+      "Interactions.IsCovenantEvent": {
+        "table": "Interactions",
+        "field": "IsCovenantEvent",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘system event’ 플래그가 설정된 경우 및 ‘subject’ 값에 “covenant breach” 문자열이 포함된 경우), ‘interaction’ 레코드는 ‘covenant event’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "IsSystemEvent",
+            "label": "is system event"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘interaction’ 레코드는 ‘covenant event’에 해당하는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘system event’ 플래그가 설정된 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘subject’ 값에 “covenant breach” 문자열이 포함된 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is system event 및 조건(find(\"covenant breach\", subject의 소문자 변환 결과)(오류가 있으면 0) 값이 0 값과 같음)이 성립하지 않음"
+      }
+    },
+    "obligations": [
+      {
+        "constraintKey": "loan-sod",
+        "entity": "Loan",
+        "predicate": "SegregationOfDutiesOk",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **loan-sod** *(필수)* — A loan must not be funded by the same user who originated it: the originating relationship manager and the underwriter must be different users.\n  - _위반 시:_ “The same user originated and underwrote this loan — segregation of duties is violated.”\n  - _출처:_ Internal Credit Policy §4.2"
+      },
+      {
+        "constraintKey": "biz-cdd",
+        "entity": "Business",
+        "predicate": "MeetsCddRule",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **biz-cdd** *(필수)* — ‘business’ 레코드는 ‘beneficial owners at CDD threshold’ 값이 0보다 큰 상태를 유지**해야 합니다**.\n  - _위반 시:_ “Beneficial-ownership (CDD) collection is incomplete: no owner crosses the 25% threshold and no control person is designated.”\n  - _출처:_ FinCEN CDD Rule, 31 CFR 1010.230\n  - _판단 기준:_ Meets CDD Rule(DR-25 참조)."
+      },
+      {
+        "constraintKey": "loan-dscr",
+        "entity": "Loan",
+        "predicate": "DscrInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-dscr** *(면제 가능)* — ‘loan’ 레코드는 ‘DSCR’ 값이 1.20 이상인 상태를 유지**해야 합니다** *(권한 있는 승인자가 면제할 수 있음)*.\n  - _위반 시:_ “DSCR is below the 1.20 minimum; a credit-committee waiver is required to fund.”\n  - _출처:_ Internal Credit Policy §2.1 (DSCR floor)\n  - _판단 기준:_ DSCR in Band(DR-46 참조)."
+      },
+      {
+        "constraintKey": "loan-ltv",
+        "entity": "Loan",
+        "predicate": "LtvInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-ltv** *(면제 가능)* — ‘loan’ 레코드는 ‘LTV’ 값이 0.80 이하인 상태를 유지**해야 합니다** *(권한 있는 승인자가 면제할 수 있음)*.\n  - _위반 시:_ “LTV exceeds the 0.80 ceiling; a credit-committee waiver is required to fund.”\n  - _출처:_ Internal Credit Policy §2.2 (LTV ceiling)\n  - _판단 기준:_ LTV in Band(DR-47 참조)."
+      },
+      {
+        "constraintKey": "loan-watchlist",
+        "entity": "Loan",
+        "predicate": "OnWatchlist",
+        "deontic": "ShouldBeTrue",
+        "severity": "soft",
+        "markdown": "- **loan-watchlist** *(권고)* — ‘loan’ 레코드는 다음 중 하나 이상에 해당하는 경우(‘classified asset’ 플래그가 설정된 경우 또는 ‘breached covenant’ 플래그가 설정된 경우)에 해당**하는 것이 좋습니다**.\n  - _위반 시:_ “This loan is a classified asset or has a breached covenant but is not flagged on the watchlist.”\n  - _출처:_ Internal Portfolio Risk Procedure §6 (watchlist)\n  - _판단 기준:_ On Watchlist(DR-54 참조)."
+      }
+    ],
+    "structural": {
+      "Users": [
+        "‘user’ 레코드는 ‘full name’, ‘role’ 및 ‘email’ 값을 포함**해야 합니다**."
+      ],
+      "Businesses": [
+        "‘business’ 레코드는 ‘relationship manager’ 필드를 통해 ‘user’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘business’ 레코드는 ‘legal name’, ‘business structure’, ‘NAICS code’ 및 ‘status’ 값을 포함**해야 합니다**."
+      ],
+      "BeneficialOwners": [
+        "‘beneficial owner’ 레코드는 ‘business’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘beneficial owner’ 레코드는 ‘full name’, ‘date of birth’, ‘SSN’, ‘address’ 및 ‘ownership percentage’ 값을 포함하고, 해당 레코드가 ‘control person’에 해당하는지 여부를 기록**해야 합니다**."
+      ],
+      "Contacts": [
+        "‘contact’ 레코드는 ‘business’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘contact’ 레코드는 ‘full name’, ‘title’ 및 ‘contact type’ 값을 포함하고, 해당 레코드가 ‘authorized signer’에 해당하는지 여부를 기록**해야 합니다**."
+      ],
+      "Accounts": [
+        "‘account’ 레코드는 ‘business’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘account’ 레코드는 ‘account type’, ‘account number last4’, ‘current balance USD’ 및 ‘opened at’ 값을 포함하고, 해당 레코드가 ‘ACH’ 항목이 있는지 여부, 해당 레코드가 ‘wire’ 항목이 있는지 여부 및 해당 레코드가 ‘card’ 항목이 있는지 여부를 기록**해야 합니다**."
+      ],
+      "Loans": [
+        "‘loan’ 레코드는 ‘business’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘loan’ 레코드는 ‘originating RM’ 필드를 통해 ‘user’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘loan’ 레코드는 ‘underwriter’ 필드를 통해 ‘user’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘loan’ 레코드는 ‘loan number’, ‘loan purpose’, ‘principal USD’, ‘rate pct’, ‘term months’, ‘underwriting stage’, ‘risk rating’, ‘risk rating label’ 및 ‘originated at’ 값을 포함**해야 합니다**."
+      ],
+      "Covenants": [
+        "‘covenant’ 레코드는 ‘loan’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘covenant’ 레코드는 ‘covenant type’, ‘test frequency’, ‘next test date’ 및 ‘status’ 값을 포함**해야 합니다**."
+      ],
+      "RiskRatingHistory": [
+        "‘risk rating history’ 레코드는 ‘loan’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘risk rating history’ 레코드는 ‘changed by user’ 필드를 통해 ‘user’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘risk rating history’ 레코드는 ‘effective date’, ‘new grade’ 및 ‘reason’ 값을 포함**해야 합니다**."
+      ],
+      "Documents": [
+        "‘document’ 레코드는 ‘filename’, ‘document type’ 및 ‘uploaded at’ 값을 포함하고, 해당 레코드가 ‘ocr indexed’에 해당하는지 여부를 기록**해야 합니다**."
+      ],
+      "Interactions": [
+        "‘interaction’ 레코드는 ‘business’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘interaction’ 레코드는 ‘interaction type’, ‘subject’ 및 ‘interaction date’ 값을 포함**해야 합니다**."
+      ]
+    },
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Businesses": "business",
+      "BeneficialOwners": "beneficial owner",
+      "Contacts": "contact",
+      "Accounts": "account",
+      "Loans": "loan",
+      "Covenants": "covenant",
+      "RiskRatingHistory": "risk rating history",
+      "Documents": "document",
+      "Interactions": "interaction"
+    }
+  },
+  "nl": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een user: name wordt berekend als de full name in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’"
+      },
+      "Users.IsRM": {
+        "table": "Users",
+        "field": "IsRM",
+        "kind": "formula",
+        "rule": "Een user geldt als een RM als de role ‘RM’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role is \"RM\""
+      },
+      "Users.IsUnderwriter": {
+        "table": "Users",
+        "field": "IsUnderwriter",
+        "kind": "formula",
+        "rule": "Een user geldt als een underwriter als de role ‘Underwriter’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role is \"Underwriter\""
+      },
+      "Users.IsBranchBanker": {
+        "table": "Users",
+        "field": "IsBranchBanker",
+        "kind": "formula",
+        "rule": "Een user geldt als een branch banker als de role ‘BranchBanker’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role is \"BranchBanker\""
+      },
+      "Users.IsAdmin": {
+        "table": "Users",
+        "field": "IsAdmin",
+        "kind": "formula",
+        "rule": "Een user geldt als een admin als de role ‘Admin’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role is \"Admin\""
+      },
+      "Users.CountOfPortfolioBusinesses": {
+        "table": "Users",
+        "field": "CountOfPortfolioBusinesses",
+        "kind": "rollup",
+        "rule": "Een user: count of portfolio businesses is het aantal businesses dat is gekoppeld aan de user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal businesses waarvan relationship manager is deze"
+      },
+      "Users.CountOfOriginatedLoans": {
+        "table": "Users",
+        "field": "CountOfOriginatedLoans",
+        "kind": "rollup",
+        "rule": "Een user: count of originated loans is het aantal loans dat is gekoppeld aan de user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal loans waarvan originating RM is deze"
+      },
+      "Users.CountOfUnderwrittenLoans": {
+        "table": "Users",
+        "field": "CountOfUnderwrittenLoans",
+        "kind": "rollup",
+        "rule": "Een user: count of underwritten loans is het aantal loans dat is gekoppeld aan de user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal loans waarvan underwriter is deze"
+      },
+      "Businesses.Name": {
+        "table": "Businesses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een business: name wordt berekend als de legal name in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken waarbij elke een punt wordt vervangen door een lege tekenreeks.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’ waarbij ‘.’ wordt vervangen door ‘’"
+      },
+      "Businesses.RelationshipManagerLabel": {
+        "table": "Businesses",
+        "field": "RelationshipManagerLabel",
+        "kind": "lookup",
+        "rule": "Een business: relationship manager label is de full name van de gekoppelde relationship manager.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "De full name van de gekoppelde relationship manager"
+      },
+      "Businesses.IsCustomer": {
+        "table": "Businesses",
+        "field": "IsCustomer",
+        "kind": "formula",
+        "rule": "Een business geldt als een customer als de status ‘Customer’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status is \"Customer\""
+      },
+      "Businesses.IsProspect": {
+        "table": "Businesses",
+        "field": "IsProspect",
+        "kind": "formula",
+        "rule": "Een business geldt als een prospect als de status ‘Prospect’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status is \"Prospect\""
+      },
+      "Businesses.WasReferred": {
+        "table": "Businesses",
+        "field": "WasReferred",
+        "kind": "formula",
+        "rule": "Een business geldt als referred geweest als het veld ‘referral source’ is ingevuld.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "ReferralSource",
+            "label": "referral source"
+          }
+        ],
+        "structure": null,
+        "plain": "Niet de eerste van referral source of \"\" die niet leeg is is \"\""
+      },
+      "Businesses.CountOfBeneficialOwners": {
+        "table": "Businesses",
+        "field": "CountOfBeneficialOwners",
+        "kind": "rollup",
+        "rule": "Een business: count of beneficial owners is het aantal beneficial owners dat is gekoppeld aan de business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal beneficial owners waarvan business is deze"
+      },
+      "Businesses.CountOfContacts": {
+        "table": "Businesses",
+        "field": "CountOfContacts",
+        "kind": "rollup",
+        "rule": "Een business: count of contacts is het aantal contacts dat is gekoppeld aan de business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal contacts waarvan business is deze"
+      },
+      "Businesses.CountOfAccounts": {
+        "table": "Businesses",
+        "field": "CountOfAccounts",
+        "kind": "rollup",
+        "rule": "Een business: count of accounts is het aantal accounts dat is gekoppeld aan de business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal accounts waarvan business is deze"
+      },
+      "Businesses.CountOfLoans": {
+        "table": "Businesses",
+        "field": "CountOfLoans",
+        "kind": "rollup",
+        "rule": "Een business: count of loans is het aantal loans dat is gekoppeld aan de business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal loans waarvan business is deze"
+      },
+      "Businesses.CountOfInteractions": {
+        "table": "Businesses",
+        "field": "CountOfInteractions",
+        "kind": "rollup",
+        "rule": "Een business: count of interactions is het aantal interactions dat is gekoppeld aan de business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal interactions waarvan business is deze"
+      },
+      "Businesses.CountOfDocuments": {
+        "table": "Businesses",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "Een business: count of documents is het aantal documents dat is gekoppeld aan de business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal documents waarvan business is deze"
+      },
+      "Businesses.TotalDepositBalanceUsd": {
+        "table": "Businesses",
+        "field": "TotalDepositBalanceUsd",
+        "kind": "rollup",
+        "rule": "Een business: total deposit balance USD is het totaal van current balance USD over de accounts gekoppeld aan de business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "CurrentBalanceUsd",
+            "label": "current balance USD"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van current balance USD over alle accounts waarvan business is deze"
+      },
+      "Businesses.TotalLoanPrincipalUsd": {
+        "table": "Businesses",
+        "field": "TotalLoanPrincipalUsd",
+        "kind": "rollup",
+        "rule": "Een business: total loan principal USD is het totaal van principal USD over de loans gekoppeld aan de business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "PrincipalUsd",
+            "label": "principal USD"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van principal USD over alle loans waarvan business is deze"
+      },
+      "Businesses.CountOfClassifiedLoans": {
+        "table": "Businesses",
+        "field": "CountOfClassifiedLoans",
+        "kind": "rollup",
+        "rule": "Een business: count of classified loans is het aantal loans van de business dat classified asset zijn.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal loans waarvan business is deze en is classified asset is true()"
+      },
+      "Businesses.HasClassifiedLoan": {
+        "table": "Businesses",
+        "field": "HasClassifiedLoan",
+        "kind": "formula",
+        "rule": "Een business geldt als beschikkend over een classified loan als de count of classified loans groter is dan 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "CountOfClassifiedLoans",
+            "label": "count of classified loans"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of classified loans is groter dan 0"
+      },
+      "Businesses.BeneficialOwnersAtCddThreshold": {
+        "table": "Businesses",
+        "field": "BeneficialOwnersAtCddThreshold",
+        "kind": "rollup",
+        "rule": "Een business: beneficial owners at CDD threshold is het aantal beneficial owners van de business dat voldoen aan: CDD threshold.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "MeetsCddThreshold",
+            "label": "meets CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal beneficial owners waarvan business is deze en meets CDD threshold is true()"
+      },
+      "Businesses.MeetsCddRule": {
+        "table": "Businesses",
+        "field": "MeetsCddRule",
+        "kind": "formula",
+        "rule": "Een business geldt als voldoend aan: CDD rule als de beneficial owners at CDD threshold groter is dan 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "BeneficialOwnersAtCddThreshold",
+            "label": "beneficial owners at CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Beneficial owners at CDD threshold is groter dan 0"
+      },
+      "Businesses.PortfolioPriority": {
+        "table": "Businesses",
+        "field": "PortfolioPriority",
+        "kind": "formula",
+        "rule": "Het veld ‘portfolio priority’ van de business wordt bepaald volgens de volgende prioriteit:\n1. ‘High’, als de vlag ‘classified loan’ is gezet;\n2. ‘Medium’, als ten minste één van het volgende geldt: de vlag ‘meets CDD rule’ niet is gezet; de vlag ‘prospect’ is gezet; of de count of loans 0 is;\n3. in alle andere gevallen ‘Low’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "HasClassifiedLoan",
+            "label": "has classified loan"
+          },
+          {
+            "table": "Businesses",
+            "field": "MeetsCddRule",
+            "label": "meets CDD rule"
+          },
+          {
+            "table": "Businesses",
+            "field": "IsProspect",
+            "label": "is prospect"
+          },
+          {
+            "table": "Businesses",
+            "field": "CountOfLoans",
+            "label": "count of loans"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘portfolio priority’ van de business wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘High’",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘classified loan’ is gezet"
+              }
+            },
+            {
+              "value": "‘Medium’",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "de vlag ‘meets CDD rule’ niet is gezet"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "de vlag ‘prospect’ is gezet"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "de count of loans 0 is"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "‘Low’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als has classified loan, dan \"High\", anders als niet meets CDD rule, is prospect, of count of loans is gelijk aan 0, dan \"Medium\", anders \"Low\""
+      },
+      "BeneficialOwners.Name": {
+        "table": "BeneficialOwners",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een beneficial owner: name wordt berekend als de business, gevolgd door een koppelteken, gevolgd door de full name in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "(business samengevoegd met \"-\") samengevoegd met full name in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’"
+      },
+      "BeneficialOwners.BusinessLabel": {
+        "table": "BeneficialOwners",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Een beneficial owner: business label is de legal name van de gekoppelde business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "De legal name van de gekoppelde business"
+      },
+      "BeneficialOwners.Meets25PercentThreshold": {
+        "table": "BeneficialOwners",
+        "field": "Meets25PercentThreshold",
+        "kind": "formula",
+        "rule": "Een beneficial owner is gemarkeerd als meets25 percent threshold als de ownership percentage ten minste 25 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "OwnershipPercentage",
+            "label": "ownership percentage"
+          }
+        ],
+        "structure": null,
+        "plain": "Ownership percentage is ten minste 25"
+      },
+      "BeneficialOwners.MeetsCddThreshold": {
+        "table": "BeneficialOwners",
+        "field": "MeetsCddThreshold",
+        "kind": "formula",
+        "rule": "Een beneficial owner geldt als voldoend aan: CDD threshold als ten minste één van het volgende geldt: de vlag ‘meets25 percent threshold’ is gezet of de vlag ‘control person’ is gezet.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Meets25PercentThreshold",
+            "label": "meets25 percent threshold"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "IsControlPerson",
+            "label": "is control person"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een beneficial owner geldt als voldoend aan: CDD threshold als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘meets25 percent threshold’ is gezet"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘control person’ is gezet"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Meets25 percent threshold of is control person"
+      },
+      "Contacts.Name": {
+        "table": "Contacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een contact: name wordt berekend als de business, gevolgd door een koppelteken, gevolgd door de full name in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken, gevolgd door een koppelteken, gevolgd door de title in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Contacts",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business samengevoegd met \"-\") samengevoegd met full name in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’) samengevoegd met \"-\") samengevoegd met title in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’"
+      },
+      "Contacts.BusinessLabel": {
+        "table": "Contacts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Een contact: business label is de legal name van de gekoppelde business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "De legal name van de gekoppelde business"
+      },
+      "Contacts.IsOfficer": {
+        "table": "Contacts",
+        "field": "IsOfficer",
+        "kind": "formula",
+        "rule": "Een contact geldt als een officer als de contact type ‘Officer’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type is \"Officer\""
+      },
+      "Contacts.IsApClerk": {
+        "table": "Contacts",
+        "field": "IsApClerk",
+        "kind": "formula",
+        "rule": "Een contact geldt als een AP clerk als de contact type ‘APClerk’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type is \"APClerk\""
+      },
+      "Accounts.Name": {
+        "table": "Accounts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een account: name wordt berekend als de business, gevolgd door een koppelteken, gevolgd door de account type in kleine letters, gevolgd door een koppelteken, gevolgd door de account number last4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountType",
+            "label": "account type"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountNumberLast4",
+            "label": "account number last4"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business samengevoegd met \"-\") samengevoegd met account type in kleine letters) samengevoegd met \"-\") samengevoegd met account number last4"
+      },
+      "Accounts.BusinessLabel": {
+        "table": "Accounts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Een account: business label is de legal name van de gekoppelde business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "De legal name van de gekoppelde business"
+      },
+      "Accounts.TreasuryServiceCount": {
+        "table": "Accounts",
+        "field": "TreasuryServiceCount",
+        "kind": "formula",
+        "rule": "Een account: treasury service count wordt berekend als het aantal van de volgende voorwaarden dat geldt: de vlag ‘ACH’ is gezet; de vlag ‘wire’ is gezet; en de vlag ‘card’ is gezet.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "HasAch",
+            "label": "has ACH"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasWire",
+            "label": "has wire"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasCard",
+            "label": "has card"
+          }
+        ],
+        "structure": null,
+        "plain": "(als has ACH, dan 1, anders 0 plus als has wire, dan 1, anders 0) plus als has card, dan 1, anders 0"
+      },
+      "Accounts.HasAnyTreasuryService": {
+        "table": "Accounts",
+        "field": "HasAnyTreasuryService",
+        "kind": "formula",
+        "rule": "Een account geldt als beschikkend over een any treasury service als de treasury service count groter is dan 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "TreasuryServiceCount",
+            "label": "treasury service count"
+          }
+        ],
+        "structure": null,
+        "plain": "Treasury service count is groter dan 0"
+      },
+      "Loans.Name": {
+        "table": "Loans",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een loan: name wordt berekend als de loan number in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan number in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’"
+      },
+      "Loans.BusinessLabel": {
+        "table": "Loans",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Een loan: business label is de legal name van de gekoppelde business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "De legal name van de gekoppelde business"
+      },
+      "Loans.BusinessNaicsCode": {
+        "table": "Loans",
+        "field": "BusinessNaicsCode",
+        "kind": "lookup",
+        "rule": "Een loan: business NAICS code — overgenomen van de gekoppelde business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "NaicsCode",
+            "label": "NAICS code"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "De NAICS code van de gekoppelde business"
+      },
+      "Loans.OriginatingRmLabel": {
+        "table": "Loans",
+        "field": "OriginatingRmLabel",
+        "kind": "lookup",
+        "rule": "Een loan: originating RM label is de full name van de gekoppelde originating RM.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "De full name van de gekoppelde originating RM"
+      },
+      "Loans.UnderwriterIsAdmin": {
+        "table": "Loans",
+        "field": "UnderwriterIsAdmin",
+        "kind": "lookup",
+        "rule": "Een loan: underwriter is admin is waar wanneer de gekoppelde underwriter is een admin.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "IsAdmin",
+            "label": "is admin"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "De is admin van de gekoppelde underwriter"
+      },
+      "Loans.IsFunded": {
+        "table": "Loans",
+        "field": "IsFunded",
+        "kind": "formula",
+        "rule": "Een loan geldt als funded als de underwriting stage ‘Funded’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "UnderwritingStage",
+            "label": "underwriting stage"
+          }
+        ],
+        "structure": null,
+        "plain": "Underwriting stage is \"Funded\""
+      },
+      "Loans.IsClassifiedAsset": {
+        "table": "Loans",
+        "field": "IsClassifiedAsset",
+        "kind": "formula",
+        "rule": "Een loan geldt als een classified asset als de risk rating ten minste 7 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "RiskRating",
+            "label": "risk rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Risk rating is ten minste 7"
+      },
+      "Loans.DscrInBand": {
+        "table": "Loans",
+        "field": "DscrInBand",
+        "kind": "formula",
+        "rule": "Een loan is gemarkeerd als DSCR in band als de DSCR (een ontbrekende waarde telt als 0) ten minste 1.20 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Dscr",
+            "label": "DSCR"
+          }
+        ],
+        "structure": null,
+        "plain": "De eerste van DSCR of 0 die niet leeg is is ten minste 1.20"
+      },
+      "Loans.LtvInBand": {
+        "table": "Loans",
+        "field": "LtvInBand",
+        "kind": "formula",
+        "rule": "Een loan is gemarkeerd als LTV in band als de LTV (een ontbrekende waarde telt als 0) ten hoogste 0.80 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Ltv",
+            "label": "LTV"
+          }
+        ],
+        "structure": null,
+        "plain": "De eerste van LTV of 0 die niet leeg is is ten hoogste 0.80"
+      },
+      "Loans.SegregationOfDutiesOk": {
+        "table": "Loans",
+        "field": "SegregationOfDutiesOk",
+        "kind": "formula",
+        "rule": "Een loan is gemarkeerd als segregation of duties ok als het niet het geval is dat de originating RM de underwriter is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          }
+        ],
+        "structure": null,
+        "plain": "Niet originating RM is gelijk aan underwriter"
+      },
+      "Loans.CountOfCovenants": {
+        "table": "Loans",
+        "field": "CountOfCovenants",
+        "kind": "rollup",
+        "rule": "Een loan: count of covenants is het aantal covenants dat is gekoppeld aan de loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal covenants waarvan loan is deze"
+      },
+      "Loans.CountOfBreachedCovenants": {
+        "table": "Loans",
+        "field": "CountOfBreachedCovenants",
+        "kind": "rollup",
+        "rule": "Een loan: count of breached covenants is het aantal covenants van de loan dat breached zijn.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Covenants",
+            "field": "IsBreached",
+            "label": "is breached"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal covenants waarvan loan is deze en is breached is true()"
+      },
+      "Loans.CountOfRiskRatingHistory": {
+        "table": "Loans",
+        "field": "CountOfRiskRatingHistory",
+        "kind": "rollup",
+        "rule": "Een loan: count of risk rating history is het aantal risk rating history dat is gekoppeld aan de loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal risk rating history waarvan loan is deze"
+      },
+      "Loans.CountOfDocuments": {
+        "table": "Loans",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "Een loan: count of documents is het aantal documents dat is gekoppeld aan de loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal documents waarvan loan is deze"
+      },
+      "Loans.HasBreachedCovenant": {
+        "table": "Loans",
+        "field": "HasBreachedCovenant",
+        "kind": "formula",
+        "rule": "Een loan geldt als beschikkend over een breached covenant als de count of breached covenants groter is dan 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "CountOfBreachedCovenants",
+            "label": "count of breached covenants"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of breached covenants is groter dan 0"
+      },
+      "Loans.OnWatchlist": {
+        "table": "Loans",
+        "field": "OnWatchlist",
+        "kind": "formula",
+        "rule": "Een loan is gemarkeerd als on watchlist als ten minste één van het volgende geldt: de vlag ‘classified asset’ is gezet of de vlag ‘breached covenant’ is gezet.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een loan is gemarkeerd als on watchlist als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘classified asset’ is gezet"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘breached covenant’ is gezet"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is classified asset of has breached covenant"
+      },
+      "Loans.HealthScore": {
+        "table": "Loans",
+        "field": "HealthScore",
+        "kind": "formula",
+        "rule": "Een loan: health score wordt berekend als het aantal van de volgende voorwaarden dat geldt: de vlag ‘DSCR in band’ is gezet; de vlag ‘LTV in band’ is gezet; de vlag ‘classified asset’ niet is gezet; en de vlag ‘breached covenant’ niet is gezet.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "DscrInBand",
+            "label": "DSCR in band"
+          },
+          {
+            "table": "Loans",
+            "field": "LtvInBand",
+            "label": "LTV in band"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": null,
+        "plain": "((als DSCR in band, dan 1, anders 0 plus als LTV in band, dan 1, anders 0) plus als is classified asset, dan 0, anders 1) plus als has breached covenant, dan 0, anders 1"
+      },
+      "Covenants.Name": {
+        "table": "Covenants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een covenant: name wordt berekend als de loan, gevolgd door een koppelteken, gevolgd door de covenant type in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Covenants",
+            "field": "CovenantType",
+            "label": "covenant type"
+          }
+        ],
+        "structure": null,
+        "plain": "(loan samengevoegd met \"-\") samengevoegd met covenant type in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’"
+      },
+      "Covenants.LoanLabel": {
+        "table": "Covenants",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Een covenant: loan label is de loan number van de gekoppelde loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "De loan number van de gekoppelde loan"
+      },
+      "Covenants.LoanBusiness": {
+        "table": "Covenants",
+        "field": "LoanBusiness",
+        "kind": "lookup",
+        "rule": "Een covenant: loan business — overgenomen van de gekoppelde loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "De business van de gekoppelde loan"
+      },
+      "Covenants.IsBreached": {
+        "table": "Covenants",
+        "field": "IsBreached",
+        "kind": "formula",
+        "rule": "Een covenant geldt als breached als de status ‘Breached’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status is \"Breached\""
+      },
+      "Covenants.HasActiveWaiver": {
+        "table": "Covenants",
+        "field": "HasActiveWaiver",
+        "kind": "formula",
+        "rule": "Een covenant geldt als beschikkend over een active waiver als de current waiver through een waarde heeft.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "CurrentWaiverThrough",
+            "label": "current waiver through"
+          }
+        ],
+        "structure": null,
+        "plain": "Niet current waiver through is leeg"
+      },
+      "RiskRatingHistory.Name": {
+        "table": "RiskRatingHistory",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een risk rating history: name wordt berekend als de loan, gevolgd door een koppelteken, gevolgd door de TEXT van de effective date en ‘yyyy-mm-dd’, gevolgd door ‘-grade-’, gevolgd door de TEXT van de new grade en ‘0’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "EffectiveDate",
+            "label": "effective date"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": null,
+        "plain": "(((loan samengevoegd met \"-\") samengevoegd met text(effective date, \"yyyy-mm-dd\")) samengevoegd met \"-grade-\") samengevoegd met text(new grade, \"0\")"
+      },
+      "RiskRatingHistory.LoanLabel": {
+        "table": "RiskRatingHistory",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Een risk rating history: loan label is de loan number van de gekoppelde loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "De loan number van de gekoppelde loan"
+      },
+      "RiskRatingHistory.ChangedByUserLabel": {
+        "table": "RiskRatingHistory",
+        "field": "ChangedByUserLabel",
+        "kind": "lookup",
+        "rule": "Een risk rating history: changed by user label is de full name van de gekoppelde changed by user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "ChangedByUser",
+            "label": "changed by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "De full name van de gekoppelde changed by user"
+      },
+      "RiskRatingHistory.GradeDelta": {
+        "table": "RiskRatingHistory",
+        "field": "GradeDelta",
+        "kind": "formula",
+        "rule": "Een risk rating history: grade delta wordt berekend als de new grade min de prior grade (een ontbrekende waarde telt als de new grade).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "New grade min de eerste van prior grade of new grade die niet leeg is"
+      },
+      "RiskRatingHistory.IsDowngrade": {
+        "table": "RiskRatingHistory",
+        "field": "IsDowngrade",
+        "kind": "formula",
+        "rule": "Een risk rating history geldt als een downgrade als de grade delta groter is dan 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "GradeDelta",
+            "label": "grade delta"
+          }
+        ],
+        "structure": null,
+        "plain": "Grade delta is groter dan 0"
+      },
+      "RiskRatingHistory.IsInitialRating": {
+        "table": "RiskRatingHistory",
+        "field": "IsInitialRating",
+        "kind": "formula",
+        "rule": "Een risk rating history geldt als initial rating als de prior grade (een ontbrekende waarde telt als 0) 0 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "De eerste van prior grade of 0 die niet leeg is is gelijk aan 0"
+      },
+      "RiskRatingHistory.CrossedClassifiedThreshold": {
+        "table": "RiskRatingHistory",
+        "field": "CrossedClassifiedThreshold",
+        "kind": "formula",
+        "rule": "Een risk rating history is gemarkeerd als crossed classified threshold als al het volgende geldt: de prior grade (een ontbrekende waarde telt als 0) kleiner is dan 7 en de new grade ten minste 7 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een risk rating history is gemarkeerd als crossed classified threshold als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de prior grade (een ontbrekende waarde telt als 0) kleiner is dan 7"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de new grade ten minste 7 is"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "De eerste van prior grade of 0 die niet leeg is is kleiner dan 7 en new grade is ten minste 7"
+      },
+      "Documents.Name": {
+        "table": "Documents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een document: name wordt berekend als de filename in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken waarbij elke een punt wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Filename",
+            "label": "filename"
+          }
+        ],
+        "structure": null,
+        "plain": "Filename in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’ waarbij ‘.’ wordt vervangen door ‘-’"
+      },
+      "Documents.BusinessLabel": {
+        "table": "Documents",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Een document: business label is de legal name van de gekoppelde business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "De legal name van de gekoppelde business"
+      },
+      "Documents.LoanLabel": {
+        "table": "Documents",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Een document: loan label is de loan number van de gekoppelde loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "De loan number van de gekoppelde loan"
+      },
+      "Documents.UploadedByUserLabel": {
+        "table": "Documents",
+        "field": "UploadedByUserLabel",
+        "kind": "lookup",
+        "rule": "Een document: uploaded by user label is de full name van de gekoppelde uploaded by user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Documents",
+            "field": "UploadedByUser",
+            "label": "uploaded by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "De full name van de gekoppelde uploaded by user"
+      },
+      "Documents.AttachedTo": {
+        "table": "Documents",
+        "field": "AttachedTo",
+        "kind": "formula",
+        "rule": "Het veld ‘attached to’ van het document wordt bepaald volgens de volgende prioriteit:\n1. ‘Loan’, als het veld ‘loan’ is ingevuld;\n2. ‘Business’, als het veld ‘business’ is ingevuld;\n3. in alle andere gevallen ‘Orphan’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘attached to’ van het document wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘Loan’",
+              "when": {
+                "kind": "leaf",
+                "text": "het veld ‘loan’ is ingevuld"
+              }
+            },
+            {
+              "value": "‘Business’",
+              "when": {
+                "kind": "leaf",
+                "text": "het veld ‘business’ is ingevuld"
+              }
+            },
+            {
+              "value": "‘Orphan’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als niet de eerste van loan of \"\" die niet leeg is is \"\", dan \"Loan\", anders als niet de eerste van business of \"\" die niet leeg is is \"\", dan \"Business\", anders \"Orphan\""
+      },
+      "Documents.FromCustomerPortal": {
+        "table": "Documents",
+        "field": "FromCustomerPortal",
+        "kind": "formula",
+        "rule": "Een document is gemarkeerd als from customer portal als de uploaded via ‘BusinessClientPortal’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "UploadedVia",
+            "label": "uploaded via"
+          }
+        ],
+        "structure": null,
+        "plain": "Uploaded via is \"BusinessClientPortal\""
+      },
+      "Interactions.Name": {
+        "table": "Interactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een interaction: name wordt berekend als de business, gevolgd door een koppelteken, gevolgd door de TEXT van de interaction date en ‘yyyy-mm-dd’, gevolgd door een koppelteken, gevolgd door de interaction type in kleine letters, gevolgd door een koppelteken, gevolgd door de subject in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionDate",
+            "label": "interaction date"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((business samengevoegd met \"-\") samengevoegd met text(interaction date, \"yyyy-mm-dd\")) samengevoegd met \"-\") samengevoegd met interaction type in kleine letters) samengevoegd met \"-\") samengevoegd met subject in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’"
+      },
+      "Interactions.BusinessLabel": {
+        "table": "Interactions",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Een interaction: business label is de legal name van de gekoppelde business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "De legal name van de gekoppelde business"
+      },
+      "Interactions.UserLabel": {
+        "table": "Interactions",
+        "field": "UserLabel",
+        "kind": "lookup",
+        "rule": "Een interaction: user label is de full name van de gekoppelde user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Interactions",
+            "field": "User",
+            "label": "user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "De full name van de gekoppelde user"
+      },
+      "Interactions.IsSystemEvent": {
+        "table": "Interactions",
+        "field": "IsSystemEvent",
+        "kind": "formula",
+        "rule": "Een interaction geldt als een system event als de interaction type ‘SystemEvent’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type is \"SystemEvent\""
+      },
+      "Interactions.IsTask": {
+        "table": "Interactions",
+        "field": "IsTask",
+        "kind": "formula",
+        "rule": "Een interaction geldt als een task als de interaction type ‘Task’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type is \"Task\""
+      },
+      "Interactions.FromCustomer": {
+        "table": "Interactions",
+        "field": "FromCustomer",
+        "kind": "formula",
+        "rule": "Een interaction is gemarkeerd als from customer als de source ‘BusinessClientPortal’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Source",
+            "label": "source"
+          }
+        ],
+        "structure": null,
+        "plain": "Source is \"BusinessClientPortal\""
+      },
+      "Interactions.IsCovenantEvent": {
+        "table": "Interactions",
+        "field": "IsCovenantEvent",
+        "kind": "formula",
+        "rule": "Een interaction geldt als een covenant event als al het volgende geldt: de vlag ‘system event’ is gezet en de subject ‘covenant breach’ vermeldt.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "IsSystemEvent",
+            "label": "is system event"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een interaction geldt als een covenant event als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘system event’ is gezet"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de subject ‘covenant breach’ vermeldt"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is system event en niet find(\"covenant breach\", subject in kleine letters), of 0 als dat een fout geeft is gelijk aan 0"
+      }
+    },
+    "obligations": [
+      {
+        "constraintKey": "loan-sod",
+        "entity": "Loan",
+        "predicate": "SegregationOfDutiesOk",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **loan-sod** *(hard)* — A loan must not be funded by the same user who originated it: the originating relationship manager and the underwriter must be different users.\n  - _Bij overtreding:_ ‘The same user originated and underwrote this loan — segregation of duties is violated.’\n  - _Bron:_ Internal Credit Policy §4.2"
+      },
+      {
+        "constraintKey": "biz-cdd",
+        "entity": "Business",
+        "predicate": "MeetsCddRule",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **biz-cdd** *(hard)* — Een business **moet** een beneficial owners at CDD threshold van meer dan 0 hebben.\n  - _Bij overtreding:_ ‘Beneficial-ownership (CDD) collection is incomplete: no owner crosses the 25% threshold and no control person is designated.’\n  - _Bron:_ FinCEN CDD Rule, 31 CFR 1010.230\n  - _Steunt op:_ Meets CDD Rule (zie DR-25)."
+      },
+      {
+        "constraintKey": "loan-dscr",
+        "entity": "Loan",
+        "predicate": "DscrInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-dscr** *(opheven mogelijk)* — Een loan **moet** een DSCR van ten minste 1.20 hebben *(op te heffen door een bevoegde goedkeurder)*.\n  - _Bij overtreding:_ ‘DSCR is below the 1.20 minimum; a credit-committee waiver is required to fund.’\n  - _Bron:_ Internal Credit Policy §2.1 (DSCR floor)\n  - _Steunt op:_ DSCR in Band (zie DR-46)."
+      },
+      {
+        "constraintKey": "loan-ltv",
+        "entity": "Loan",
+        "predicate": "LtvInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-ltv** *(opheven mogelijk)* — Een loan **moet** een LTV van ten hoogste 0.80 hebben *(op te heffen door een bevoegde goedkeurder)*.\n  - _Bij overtreding:_ ‘LTV exceeds the 0.80 ceiling; a credit-committee waiver is required to fund.’\n  - _Bron:_ Internal Credit Policy §2.2 (LTV ceiling)\n  - _Steunt op:_ LTV in Band (zie DR-47)."
+      },
+      {
+        "constraintKey": "loan-watchlist",
+        "entity": "Loan",
+        "predicate": "OnWatchlist",
+        "deontic": "ShouldBeTrue",
+        "severity": "soft",
+        "markdown": "- **loan-watchlist** *(adviserend)* — Een loan **zou** voldoen aan de eis dat ten minste één van het volgende geldt: de vlag ‘classified asset’ is gezet of de vlag ‘breached covenant’ is gezet **moeten**.\n  - _Bij overtreding:_ ‘This loan is a classified asset or has a breached covenant but is not flagged on the watchlist.’\n  - _Bron:_ Internal Portfolio Risk Procedure §6 (watchlist)\n  - _Steunt op:_ On Watchlist (zie DR-54)."
+      }
+    ],
+    "structural": {
+      "Users": [
+        "Een user **moet** een full name; een role; en een email hebben."
+      ],
+      "Businesses": [
+        "Een business **moet** naar precies één user verwijzen als zijn relationship manager.",
+        "Een business **moet** een legal name; een business structure; een NAICS code; en een status hebben."
+      ],
+      "BeneficialOwners": [
+        "Een beneficial owner **moet** naar precies één business verwijzen.",
+        "Een beneficial owner **moet** een full name; een date of birth; een SSN; een address; en een ownership percentage hebben, en vastleggen of het is een control person."
+      ],
+      "Contacts": [
+        "Een contact **moet** naar precies één business verwijzen.",
+        "Een contact **moet** een full name; een title; en een contact type hebben, en vastleggen of het is een authorized signer."
+      ],
+      "Accounts": [
+        "Een account **moet** naar precies één business verwijzen.",
+        "Een account **moet** een account type; een account number last4; een current balance USD; en een opened at hebben, en vastleggen of het heeft een ACH; of het heeft een wire; en of het heeft een card."
+      ],
+      "Loans": [
+        "Een loan **moet** naar precies één business verwijzen.",
+        "Een loan **moet** naar precies één user verwijzen als zijn originating RM.",
+        "Een loan **moet** naar precies één user verwijzen als zijn underwriter.",
+        "Een loan **moet** een loan number; een loan purpose; een principal USD; een rate pct; een term months; een underwriting stage; een risk rating; een risk rating label; en een originated at hebben."
+      ],
+      "Covenants": [
+        "Een covenant **moet** naar precies één loan verwijzen.",
+        "Een covenant **moet** een covenant type; een test frequency; een next test date; en een status hebben."
+      ],
+      "RiskRatingHistory": [
+        "Een risk rating history **moet** naar precies één loan verwijzen.",
+        "Een risk rating history **moet** naar precies één user verwijzen als zijn changed by user.",
+        "Een risk rating history **moet** een effective date; een new grade; en een reason hebben."
+      ],
+      "Documents": [
+        "Een document **moet** een filename; een document type; en een uploaded at hebben, en vastleggen of het is ocr indexed."
+      ],
+      "Interactions": [
+        "Een interaction **moet** naar precies één business verwijzen.",
+        "Een interaction **moet** een interaction type; een subject; en een interaction date hebben."
+      ]
+    },
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Businesses": "business",
+      "BeneficialOwners": "beneficial owner",
+      "Contacts": "contact",
+      "Accounts": "account",
+      "Loans": "loan",
+      "Covenants": "covenant",
+      "RiskRatingHistory": "risk rating history",
+      "Documents": "document",
+      "Interactions": "interaction"
+    }
+  },
+  "pt": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um user: name é calculado como o full name em minúsculas com cada um espaço substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name em minúsculas com “ ” substituído por “-”"
+      },
+      "Users.IsRM": {
+        "table": "Users",
+        "field": "IsRM",
+        "kind": "formula",
+        "rule": "Um user é considerado um RM se o role é “RM”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role é \"RM\""
+      },
+      "Users.IsUnderwriter": {
+        "table": "Users",
+        "field": "IsUnderwriter",
+        "kind": "formula",
+        "rule": "Um user é considerado um underwriter se o role é “Underwriter”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role é \"Underwriter\""
+      },
+      "Users.IsBranchBanker": {
+        "table": "Users",
+        "field": "IsBranchBanker",
+        "kind": "formula",
+        "rule": "Um user é considerado um branch banker se o role é “BranchBanker”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role é \"BranchBanker\""
+      },
+      "Users.IsAdmin": {
+        "table": "Users",
+        "field": "IsAdmin",
+        "kind": "formula",
+        "rule": "Um user é considerado um admin se o role é “Admin”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role é \"Admin\""
+      },
+      "Users.CountOfPortfolioBusinesses": {
+        "table": "Users",
+        "field": "CountOfPortfolioBusinesses",
+        "kind": "rollup",
+        "rule": "Um user: count of portfolio businesses é o número de businesses relacionados a o user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de businesses cujo relationship manager é este"
+      },
+      "Users.CountOfOriginatedLoans": {
+        "table": "Users",
+        "field": "CountOfOriginatedLoans",
+        "kind": "rollup",
+        "rule": "Um user: count of originated loans é o número de loans relacionados a o user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de loans cujo originating RM é este"
+      },
+      "Users.CountOfUnderwrittenLoans": {
+        "table": "Users",
+        "field": "CountOfUnderwrittenLoans",
+        "kind": "rollup",
+        "rule": "Um user: count of underwritten loans é o número de loans relacionados a o user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de loans cujo underwriter é este"
+      },
+      "Businesses.Name": {
+        "table": "Businesses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um business: name é calculado como o legal name em minúsculas com cada um espaço substituído por um hífen com cada um ponto substituído por uma cadeia vazia.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name em minúsculas com “ ” substituído por “-” com “.” substituído por “”"
+      },
+      "Businesses.RelationshipManagerLabel": {
+        "table": "Businesses",
+        "field": "RelationshipManagerLabel",
+        "kind": "lookup",
+        "rule": "Um business: relationship manager label é o full name do relationship manager vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "O full name do relationship manager vinculado"
+      },
+      "Businesses.IsCustomer": {
+        "table": "Businesses",
+        "field": "IsCustomer",
+        "kind": "formula",
+        "rule": "Um business é considerado um customer se o status é “Customer”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status é \"Customer\""
+      },
+      "Businesses.IsProspect": {
+        "table": "Businesses",
+        "field": "IsProspect",
+        "kind": "formula",
+        "rule": "Um business é considerado um prospect se o status é “Prospect”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status é \"Prospect\""
+      },
+      "Businesses.WasReferred": {
+        "table": "Businesses",
+        "field": "WasReferred",
+        "kind": "formula",
+        "rule": "Um business é considerado como tendo sido referred se o campo “referral source” está preenchido.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "ReferralSource",
+            "label": "referral source"
+          }
+        ],
+        "structure": null,
+        "plain": "Não o primeiro de referral source ou \"\" que não esteja vazio é \"\""
+      },
+      "Businesses.CountOfBeneficialOwners": {
+        "table": "Businesses",
+        "field": "CountOfBeneficialOwners",
+        "kind": "rollup",
+        "rule": "Um business: count of beneficial owners é o número de beneficial owners relacionados a o business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de beneficial owners cujo business é este"
+      },
+      "Businesses.CountOfContacts": {
+        "table": "Businesses",
+        "field": "CountOfContacts",
+        "kind": "rollup",
+        "rule": "Um business: count of contacts é o número de contacts relacionados a o business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de contacts cujo business é este"
+      },
+      "Businesses.CountOfAccounts": {
+        "table": "Businesses",
+        "field": "CountOfAccounts",
+        "kind": "rollup",
+        "rule": "Um business: count of accounts é o número de accounts relacionados a o business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de accounts cujo business é este"
+      },
+      "Businesses.CountOfLoans": {
+        "table": "Businesses",
+        "field": "CountOfLoans",
+        "kind": "rollup",
+        "rule": "Um business: count of loans é o número de loans relacionados a o business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de loans cujo business é este"
+      },
+      "Businesses.CountOfInteractions": {
+        "table": "Businesses",
+        "field": "CountOfInteractions",
+        "kind": "rollup",
+        "rule": "Um business: count of interactions é o número de interactions relacionados a o business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de interactions cujo business é este"
+      },
+      "Businesses.CountOfDocuments": {
+        "table": "Businesses",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "Um business: count of documents é o número de documents relacionados a o business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de documents cujo business é este"
+      },
+      "Businesses.TotalDepositBalanceUsd": {
+        "table": "Businesses",
+        "field": "TotalDepositBalanceUsd",
+        "kind": "rollup",
+        "rule": "Um business: total deposit balance USD é o total de current balance USD entre os accounts relacionados a o business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "CurrentBalanceUsd",
+            "label": "current balance USD"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de current balance USD entre todos os accounts cujo business é este"
+      },
+      "Businesses.TotalLoanPrincipalUsd": {
+        "table": "Businesses",
+        "field": "TotalLoanPrincipalUsd",
+        "kind": "rollup",
+        "rule": "Um business: total loan principal USD é o total de principal USD entre os loans relacionados a o business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "PrincipalUsd",
+            "label": "principal USD"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de principal USD entre todos os loans cujo business é este"
+      },
+      "Businesses.CountOfClassifiedLoans": {
+        "table": "Businesses",
+        "field": "CountOfClassifiedLoans",
+        "kind": "rollup",
+        "rule": "Um business: count of classified loans é o número de loans do business que são classified asset.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de loans cujo business é este e is classified asset é true()"
+      },
+      "Businesses.HasClassifiedLoan": {
+        "table": "Businesses",
+        "field": "HasClassifiedLoan",
+        "kind": "formula",
+        "rule": "Um business é considerado como tendo um classified loan se o count of classified loans é maior que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "CountOfClassifiedLoans",
+            "label": "count of classified loans"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of classified loans é maior que 0"
+      },
+      "Businesses.BeneficialOwnersAtCddThreshold": {
+        "table": "Businesses",
+        "field": "BeneficialOwnersAtCddThreshold",
+        "kind": "rollup",
+        "rule": "Um business: beneficial owners at CDD threshold é o número de beneficial owners do business que satisfazem: CDD threshold.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "MeetsCddThreshold",
+            "label": "meets CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de beneficial owners cujo business é este e meets CDD threshold é true()"
+      },
+      "Businesses.MeetsCddRule": {
+        "table": "Businesses",
+        "field": "MeetsCddRule",
+        "kind": "formula",
+        "rule": "Um business é considerado como satisfazendo: CDD rule se o beneficial owners at CDD threshold é maior que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "BeneficialOwnersAtCddThreshold",
+            "label": "beneficial owners at CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Beneficial owners at CDD threshold é maior que 0"
+      },
+      "Businesses.PortfolioPriority": {
+        "table": "Businesses",
+        "field": "PortfolioPriority",
+        "kind": "formula",
+        "rule": "O campo “portfolio priority” do business é determinado pela seguinte prioridade:\n1. “High”, se o indicador “classified loan” está ativado;\n2. “Medium”, se pelo menos uma das seguintes é verdadeira: o indicador “meets CDD rule” não está ativado; o indicador “prospect” está ativado; ou o count of loans é 0;\n3. em todos os outros casos, “Low”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "HasClassifiedLoan",
+            "label": "has classified loan"
+          },
+          {
+            "table": "Businesses",
+            "field": "MeetsCddRule",
+            "label": "meets CDD rule"
+          },
+          {
+            "table": "Businesses",
+            "field": "IsProspect",
+            "label": "is prospect"
+          },
+          {
+            "table": "Businesses",
+            "field": "CountOfLoans",
+            "label": "count of loans"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “portfolio priority” do business é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“High”",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “classified loan” está ativado"
+              }
+            },
+            {
+              "value": "“Medium”",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "o indicador “meets CDD rule” não está ativado"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "o indicador “prospect” está ativado"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "o count of loans é 0"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Low”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se has classified loan, então \"High\", caso contrário se não meets CDD rule, is prospect, ou count of loans é igual a 0, então \"Medium\", caso contrário \"Low\""
+      },
+      "BeneficialOwners.Name": {
+        "table": "BeneficialOwners",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um beneficial owner: name é calculado como o business, seguido de um hífen, seguido de o full name em minúsculas com cada um espaço substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "(business unido a \"-\") unido a full name em minúsculas com “ ” substituído por “-”"
+      },
+      "BeneficialOwners.BusinessLabel": {
+        "table": "BeneficialOwners",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Um beneficial owner: business label é o legal name do business vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "O legal name do business vinculado"
+      },
+      "BeneficialOwners.Meets25PercentThreshold": {
+        "table": "BeneficialOwners",
+        "field": "Meets25PercentThreshold",
+        "kind": "formula",
+        "rule": "Um beneficial owner está marcado como meets25 percent threshold se o ownership percentage é pelo menos 25.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "OwnershipPercentage",
+            "label": "ownership percentage"
+          }
+        ],
+        "structure": null,
+        "plain": "Ownership percentage é pelo menos 25"
+      },
+      "BeneficialOwners.MeetsCddThreshold": {
+        "table": "BeneficialOwners",
+        "field": "MeetsCddThreshold",
+        "kind": "formula",
+        "rule": "Um beneficial owner é considerado como satisfazendo: CDD threshold se pelo menos uma das seguintes é verdadeira: o indicador “meets25 percent threshold” está ativado ou o indicador “control person” está ativado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Meets25PercentThreshold",
+            "label": "meets25 percent threshold"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "IsControlPerson",
+            "label": "is control person"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um beneficial owner é considerado como satisfazendo: CDD threshold se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “meets25 percent threshold” está ativado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “control person” está ativado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Meets25 percent threshold ou is control person"
+      },
+      "Contacts.Name": {
+        "table": "Contacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um contact: name é calculado como o business, seguido de um hífen, seguido de o full name em minúsculas com cada um espaço substituído por um hífen, seguido de um hífen, seguido de o title em minúsculas com cada um espaço substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Contacts",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business unido a \"-\") unido a full name em minúsculas com “ ” substituído por “-”) unido a \"-\") unido a title em minúsculas com “ ” substituído por “-”"
+      },
+      "Contacts.BusinessLabel": {
+        "table": "Contacts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Um contact: business label é o legal name do business vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "O legal name do business vinculado"
+      },
+      "Contacts.IsOfficer": {
+        "table": "Contacts",
+        "field": "IsOfficer",
+        "kind": "formula",
+        "rule": "Um contact é considerado um officer se o contact type é “Officer”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type é \"Officer\""
+      },
+      "Contacts.IsApClerk": {
+        "table": "Contacts",
+        "field": "IsApClerk",
+        "kind": "formula",
+        "rule": "Um contact é considerado um AP clerk se o contact type é “APClerk”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type é \"APClerk\""
+      },
+      "Accounts.Name": {
+        "table": "Accounts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um account: name é calculado como o business, seguido de um hífen, seguido de o account type em minúsculas, seguido de um hífen, seguido de o account number last4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountType",
+            "label": "account type"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountNumberLast4",
+            "label": "account number last4"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business unido a \"-\") unido a account type em minúsculas) unido a \"-\") unido a account number last4"
+      },
+      "Accounts.BusinessLabel": {
+        "table": "Accounts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Um account: business label é o legal name do business vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "O legal name do business vinculado"
+      },
+      "Accounts.TreasuryServiceCount": {
+        "table": "Accounts",
+        "field": "TreasuryServiceCount",
+        "kind": "formula",
+        "rule": "Um account: treasury service count é calculado como o número das seguintes condições que se verificam: o indicador “ACH” está ativado; o indicador “wire” está ativado; e o indicador “card” está ativado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "HasAch",
+            "label": "has ACH"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasWire",
+            "label": "has wire"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasCard",
+            "label": "has card"
+          }
+        ],
+        "structure": null,
+        "plain": "(se has ACH, então 1, caso contrário 0 mais se has wire, então 1, caso contrário 0) mais se has card, então 1, caso contrário 0"
+      },
+      "Accounts.HasAnyTreasuryService": {
+        "table": "Accounts",
+        "field": "HasAnyTreasuryService",
+        "kind": "formula",
+        "rule": "Um account é considerado como tendo uma any treasury service se o treasury service count é maior que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "TreasuryServiceCount",
+            "label": "treasury service count"
+          }
+        ],
+        "structure": null,
+        "plain": "Treasury service count é maior que 0"
+      },
+      "Loans.Name": {
+        "table": "Loans",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um loan: name é calculado como o loan number em minúsculas com cada um espaço substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan number em minúsculas com “ ” substituído por “-”"
+      },
+      "Loans.BusinessLabel": {
+        "table": "Loans",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Um loan: business label é o legal name do business vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "O legal name do business vinculado"
+      },
+      "Loans.BusinessNaicsCode": {
+        "table": "Loans",
+        "field": "BusinessNaicsCode",
+        "kind": "lookup",
+        "rule": "Um loan: business NAICS code — obtido do business vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "NaicsCode",
+            "label": "NAICS code"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "O NAICS code do business vinculado"
+      },
+      "Loans.OriginatingRmLabel": {
+        "table": "Loans",
+        "field": "OriginatingRmLabel",
+        "kind": "lookup",
+        "rule": "Um loan: originating RM label é o full name do originating RM vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "O full name do originating RM vinculado"
+      },
+      "Loans.UnderwriterIsAdmin": {
+        "table": "Loans",
+        "field": "UnderwriterIsAdmin",
+        "kind": "lookup",
+        "rule": "Um loan: underwriter is admin é verdadeiro quando o underwriter vinculado é um admin.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "IsAdmin",
+            "label": "is admin"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "O is admin do underwriter vinculado"
+      },
+      "Loans.IsFunded": {
+        "table": "Loans",
+        "field": "IsFunded",
+        "kind": "formula",
+        "rule": "Um loan é considerado funded se o underwriting stage é “Funded”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "UnderwritingStage",
+            "label": "underwriting stage"
+          }
+        ],
+        "structure": null,
+        "plain": "Underwriting stage é \"Funded\""
+      },
+      "Loans.IsClassifiedAsset": {
+        "table": "Loans",
+        "field": "IsClassifiedAsset",
+        "kind": "formula",
+        "rule": "Um loan é considerado um classified asset se o risk rating é pelo menos 7.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "RiskRating",
+            "label": "risk rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Risk rating é pelo menos 7"
+      },
+      "Loans.DscrInBand": {
+        "table": "Loans",
+        "field": "DscrInBand",
+        "kind": "formula",
+        "rule": "Um loan está marcado como DSCR in band se o DSCR (um valor ausente conta como 0) é pelo menos 1.20.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Dscr",
+            "label": "DSCR"
+          }
+        ],
+        "structure": null,
+        "plain": "O primeiro de DSCR ou 0 que não esteja vazio é pelo menos 1.20"
+      },
+      "Loans.LtvInBand": {
+        "table": "Loans",
+        "field": "LtvInBand",
+        "kind": "formula",
+        "rule": "Um loan está marcado como LTV in band se o LTV (um valor ausente conta como 0) é no máximo 0.80.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Ltv",
+            "label": "LTV"
+          }
+        ],
+        "structure": null,
+        "plain": "O primeiro de LTV ou 0 que não esteja vazio é no máximo 0.80"
+      },
+      "Loans.SegregationOfDutiesOk": {
+        "table": "Loans",
+        "field": "SegregationOfDutiesOk",
+        "kind": "formula",
+        "rule": "Um loan está marcado como segregation of duties ok se não é o caso de que o originating RM é o underwriter.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          }
+        ],
+        "structure": null,
+        "plain": "Não originating RM é igual a underwriter"
+      },
+      "Loans.CountOfCovenants": {
+        "table": "Loans",
+        "field": "CountOfCovenants",
+        "kind": "rollup",
+        "rule": "Um loan: count of covenants é o número de covenants relacionados a o loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de covenants cujo loan é este"
+      },
+      "Loans.CountOfBreachedCovenants": {
+        "table": "Loans",
+        "field": "CountOfBreachedCovenants",
+        "kind": "rollup",
+        "rule": "Um loan: count of breached covenants é o número de covenants do loan que são breached.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Covenants",
+            "field": "IsBreached",
+            "label": "is breached"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de covenants cujo loan é este e is breached é true()"
+      },
+      "Loans.CountOfRiskRatingHistory": {
+        "table": "Loans",
+        "field": "CountOfRiskRatingHistory",
+        "kind": "rollup",
+        "rule": "Um loan: count of risk rating history é o número de risk rating history relacionados a o loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de risk rating history cujo loan é este"
+      },
+      "Loans.CountOfDocuments": {
+        "table": "Loans",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "Um loan: count of documents é o número de documents relacionados a o loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de documents cujo loan é este"
+      },
+      "Loans.HasBreachedCovenant": {
+        "table": "Loans",
+        "field": "HasBreachedCovenant",
+        "kind": "formula",
+        "rule": "Um loan é considerado como tendo um breached covenant se o count of breached covenants é maior que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "CountOfBreachedCovenants",
+            "label": "count of breached covenants"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of breached covenants é maior que 0"
+      },
+      "Loans.OnWatchlist": {
+        "table": "Loans",
+        "field": "OnWatchlist",
+        "kind": "formula",
+        "rule": "Um loan está marcado como on watchlist se pelo menos uma das seguintes é verdadeira: o indicador “classified asset” está ativado ou o indicador “breached covenant” está ativado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um loan está marcado como on watchlist se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “classified asset” está ativado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “breached covenant” está ativado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is classified asset ou has breached covenant"
+      },
+      "Loans.HealthScore": {
+        "table": "Loans",
+        "field": "HealthScore",
+        "kind": "formula",
+        "rule": "Um loan: health score é calculado como o número das seguintes condições que se verificam: o indicador “DSCR in band” está ativado; o indicador “LTV in band” está ativado; o indicador “classified asset” não está ativado; e o indicador “breached covenant” não está ativado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "DscrInBand",
+            "label": "DSCR in band"
+          },
+          {
+            "table": "Loans",
+            "field": "LtvInBand",
+            "label": "LTV in band"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": null,
+        "plain": "((se DSCR in band, então 1, caso contrário 0 mais se LTV in band, então 1, caso contrário 0) mais se is classified asset, então 0, caso contrário 1) mais se has breached covenant, então 0, caso contrário 1"
+      },
+      "Covenants.Name": {
+        "table": "Covenants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um covenant: name é calculado como o loan, seguido de um hífen, seguido de o covenant type em minúsculas com cada um espaço substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Covenants",
+            "field": "CovenantType",
+            "label": "covenant type"
+          }
+        ],
+        "structure": null,
+        "plain": "(loan unido a \"-\") unido a covenant type em minúsculas com “ ” substituído por “-”"
+      },
+      "Covenants.LoanLabel": {
+        "table": "Covenants",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Um covenant: loan label é o loan number do loan vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "O loan number do loan vinculado"
+      },
+      "Covenants.LoanBusiness": {
+        "table": "Covenants",
+        "field": "LoanBusiness",
+        "kind": "lookup",
+        "rule": "Um covenant: loan business — obtido do loan vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "O business do loan vinculado"
+      },
+      "Covenants.IsBreached": {
+        "table": "Covenants",
+        "field": "IsBreached",
+        "kind": "formula",
+        "rule": "Um covenant é considerado breached se o status é “Breached”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status é \"Breached\""
+      },
+      "Covenants.HasActiveWaiver": {
+        "table": "Covenants",
+        "field": "HasActiveWaiver",
+        "kind": "formula",
+        "rule": "Um covenant é considerado como tendo um active waiver se o current waiver through tem valor.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "CurrentWaiverThrough",
+            "label": "current waiver through"
+          }
+        ],
+        "structure": null,
+        "plain": "Não current waiver through está vazio"
+      },
+      "RiskRatingHistory.Name": {
+        "table": "RiskRatingHistory",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um risk rating history: name é calculado como o loan, seguido de um hífen, seguido de o TEXT de o effective date e “yyyy-mm-dd”, seguido de “-grade-”, seguido de o TEXT de o new grade e “0”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "EffectiveDate",
+            "label": "effective date"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": null,
+        "plain": "(((loan unido a \"-\") unido a text(effective date, \"yyyy-mm-dd\")) unido a \"-grade-\") unido a text(new grade, \"0\")"
+      },
+      "RiskRatingHistory.LoanLabel": {
+        "table": "RiskRatingHistory",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Um risk rating history: loan label é o loan number do loan vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "O loan number do loan vinculado"
+      },
+      "RiskRatingHistory.ChangedByUserLabel": {
+        "table": "RiskRatingHistory",
+        "field": "ChangedByUserLabel",
+        "kind": "lookup",
+        "rule": "Um risk rating history: changed by user label é o full name do changed by user vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "ChangedByUser",
+            "label": "changed by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "O full name do changed by user vinculado"
+      },
+      "RiskRatingHistory.GradeDelta": {
+        "table": "RiskRatingHistory",
+        "field": "GradeDelta",
+        "kind": "formula",
+        "rule": "Um risk rating history: grade delta é calculado como o new grade menos o prior grade (um valor ausente conta como o new grade).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "New grade menos o primeiro de prior grade ou new grade que não esteja vazio"
+      },
+      "RiskRatingHistory.IsDowngrade": {
+        "table": "RiskRatingHistory",
+        "field": "IsDowngrade",
+        "kind": "formula",
+        "rule": "Um risk rating history é considerado um downgrade se a grade delta é maior que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "GradeDelta",
+            "label": "grade delta"
+          }
+        ],
+        "structure": null,
+        "plain": "Grade delta é maior que 0"
+      },
+      "RiskRatingHistory.IsInitialRating": {
+        "table": "RiskRatingHistory",
+        "field": "IsInitialRating",
+        "kind": "formula",
+        "rule": "Um risk rating history é considerado initial rating se o prior grade (um valor ausente conta como 0) é 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "O primeiro de prior grade ou 0 que não esteja vazio é igual a 0"
+      },
+      "RiskRatingHistory.CrossedClassifiedThreshold": {
+        "table": "RiskRatingHistory",
+        "field": "CrossedClassifiedThreshold",
+        "kind": "formula",
+        "rule": "Um risk rating history está marcado como crossed classified threshold se tudo o que segue é verdadeiro: o prior grade (um valor ausente conta como 0) é menor que 7 e o new grade é pelo menos 7.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um risk rating history está marcado como crossed classified threshold se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o prior grade (um valor ausente conta como 0) é menor que 7"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o new grade é pelo menos 7"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "O primeiro de prior grade ou 0 que não esteja vazio é menor que 7 e new grade é pelo menos 7"
+      },
+      "Documents.Name": {
+        "table": "Documents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um document: name é calculado como o filename em minúsculas com cada um espaço substituído por um hífen com cada um ponto substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Filename",
+            "label": "filename"
+          }
+        ],
+        "structure": null,
+        "plain": "Filename em minúsculas com “ ” substituído por “-” com “.” substituído por “-”"
+      },
+      "Documents.BusinessLabel": {
+        "table": "Documents",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Um document: business label é o legal name do business vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "O legal name do business vinculado"
+      },
+      "Documents.LoanLabel": {
+        "table": "Documents",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Um document: loan label é o loan number do loan vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "O loan number do loan vinculado"
+      },
+      "Documents.UploadedByUserLabel": {
+        "table": "Documents",
+        "field": "UploadedByUserLabel",
+        "kind": "lookup",
+        "rule": "Um document: uploaded by user label é o full name do uploaded by user vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Documents",
+            "field": "UploadedByUser",
+            "label": "uploaded by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "O full name do uploaded by user vinculado"
+      },
+      "Documents.AttachedTo": {
+        "table": "Documents",
+        "field": "AttachedTo",
+        "kind": "formula",
+        "rule": "O campo “attached to” do document é determinado pela seguinte prioridade:\n1. “Loan”, se o campo “loan” está preenchido;\n2. “Business”, se o campo “business” está preenchido;\n3. em todos os outros casos, “Orphan”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “attached to” do document é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“Loan”",
+              "when": {
+                "kind": "leaf",
+                "text": "o campo “loan” está preenchido"
+              }
+            },
+            {
+              "value": "“Business”",
+              "when": {
+                "kind": "leaf",
+                "text": "o campo “business” está preenchido"
+              }
+            },
+            {
+              "value": "“Orphan”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se não o primeiro de loan ou \"\" que não esteja vazio é \"\", então \"Loan\", caso contrário se não o primeiro de business ou \"\" que não esteja vazio é \"\", então \"Business\", caso contrário \"Orphan\""
+      },
+      "Documents.FromCustomerPortal": {
+        "table": "Documents",
+        "field": "FromCustomerPortal",
+        "kind": "formula",
+        "rule": "Um document está marcado como from customer portal se a uploaded via é “BusinessClientPortal”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "UploadedVia",
+            "label": "uploaded via"
+          }
+        ],
+        "structure": null,
+        "plain": "Uploaded via é \"BusinessClientPortal\""
+      },
+      "Interactions.Name": {
+        "table": "Interactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um interaction: name é calculado como o business, seguido de um hífen, seguido de o TEXT de o interaction date e “yyyy-mm-dd”, seguido de um hífen, seguido de o interaction type em minúsculas, seguido de um hífen, seguido de o subject em minúsculas com cada um espaço substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionDate",
+            "label": "interaction date"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((business unido a \"-\") unido a text(interaction date, \"yyyy-mm-dd\")) unido a \"-\") unido a interaction type em minúsculas) unido a \"-\") unido a subject em minúsculas com “ ” substituído por “-”"
+      },
+      "Interactions.BusinessLabel": {
+        "table": "Interactions",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Um interaction: business label é o legal name do business vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "O legal name do business vinculado"
+      },
+      "Interactions.UserLabel": {
+        "table": "Interactions",
+        "field": "UserLabel",
+        "kind": "lookup",
+        "rule": "Um interaction: user label é o full name do user vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Interactions",
+            "field": "User",
+            "label": "user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "O full name do user vinculado"
+      },
+      "Interactions.IsSystemEvent": {
+        "table": "Interactions",
+        "field": "IsSystemEvent",
+        "kind": "formula",
+        "rule": "Um interaction é considerado um system event se o interaction type é “SystemEvent”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type é \"SystemEvent\""
+      },
+      "Interactions.IsTask": {
+        "table": "Interactions",
+        "field": "IsTask",
+        "kind": "formula",
+        "rule": "Um interaction é considerado um task se o interaction type é “Task”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type é \"Task\""
+      },
+      "Interactions.FromCustomer": {
+        "table": "Interactions",
+        "field": "FromCustomer",
+        "kind": "formula",
+        "rule": "Um interaction está marcado como from customer se o source é “BusinessClientPortal”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Source",
+            "label": "source"
+          }
+        ],
+        "structure": null,
+        "plain": "Source é \"BusinessClientPortal\""
+      },
+      "Interactions.IsCovenantEvent": {
+        "table": "Interactions",
+        "field": "IsCovenantEvent",
+        "kind": "formula",
+        "rule": "Um interaction é considerado um covenant event se tudo o que segue é verdadeiro: o indicador “system event” está ativado e o subject menciona “covenant breach”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "IsSystemEvent",
+            "label": "is system event"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um interaction é considerado um covenant event se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “system event” está ativado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o subject menciona “covenant breach”"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is system event e não find(\"covenant breach\", subject em minúsculas), ou 0 se isso der erro é igual a 0"
+      }
+    },
+    "obligations": [
+      {
+        "constraintKey": "loan-sod",
+        "entity": "Loan",
+        "predicate": "SegregationOfDutiesOk",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **loan-sod** *(estrita)* — A loan must not be funded by the same user who originated it: the originating relationship manager and the underwriter must be different users.\n  - _Em caso de violação:_ “The same user originated and underwrote this loan — segregation of duties is violated.”\n  - _Fonte:_ Internal Credit Policy §4.2"
+      },
+      {
+        "constraintKey": "biz-cdd",
+        "entity": "Business",
+        "predicate": "MeetsCddRule",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **biz-cdd** *(estrita)* — Um business **deve** ter um beneficial owners at CDD threshold de mais de 0.\n  - _Em caso de violação:_ “Beneficial-ownership (CDD) collection is incomplete: no owner crosses the 25% threshold and no control person is designated.”\n  - _Fonte:_ FinCEN CDD Rule, 31 CFR 1010.230\n  - _Baseia-se em:_ Meets CDD Rule (ver DR-25)."
+      },
+      {
+        "constraintKey": "loan-dscr",
+        "entity": "Loan",
+        "predicate": "DscrInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-dscr** *(dispensável)* — Um loan **deve** ter um DSCR de pelo menos 1.20 *(dispensável por um aprovador autorizado)*.\n  - _Em caso de violação:_ “DSCR is below the 1.20 minimum; a credit-committee waiver is required to fund.”\n  - _Fonte:_ Internal Credit Policy §2.1 (DSCR floor)\n  - _Baseia-se em:_ DSCR in Band (ver DR-46)."
+      },
+      {
+        "constraintKey": "loan-ltv",
+        "entity": "Loan",
+        "predicate": "LtvInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-ltv** *(dispensável)* — Um loan **deve** ter um LTV de no máximo 0.80 *(dispensável por um aprovador autorizado)*.\n  - _Em caso de violação:_ “LTV exceeds the 0.80 ceiling; a credit-committee waiver is required to fund.”\n  - _Fonte:_ Internal Credit Policy §2.2 (LTV ceiling)\n  - _Baseia-se em:_ LTV in Band (ver DR-47)."
+      },
+      {
+        "constraintKey": "loan-watchlist",
+        "entity": "Loan",
+        "predicate": "OnWatchlist",
+        "deontic": "ShouldBeTrue",
+        "severity": "soft",
+        "markdown": "- **loan-watchlist** *(orientativa)* — Um loan **deveria** satisfazer que pelo menos uma das seguintes é verdadeira: o indicador “classified asset” está ativado ou o indicador “breached covenant” está ativado.\n  - _Em caso de violação:_ “This loan is a classified asset or has a breached covenant but is not flagged on the watchlist.”\n  - _Fonte:_ Internal Portfolio Risk Procedure §6 (watchlist)\n  - _Baseia-se em:_ On Watchlist (ver DR-54)."
+      }
+    ],
+    "structural": {
+      "Users": [
+        "Um user **deve** ter um full name; um role; e um email."
+      ],
+      "Businesses": [
+        "Um business **deve** referenciar exatamente um user como seu relationship manager.",
+        "Um business **deve** ter um legal name; um business structure; um NAICS code; e um status."
+      ],
+      "BeneficialOwners": [
+        "Um beneficial owner **deve** referenciar exatamente um business.",
+        "Um beneficial owner **deve** ter um full name; um date of birth; um SSN; um address; e um ownership percentage, e registrar se é um control person."
+      ],
+      "Contacts": [
+        "Um contact **deve** referenciar exatamente um business.",
+        "Um contact **deve** ter um full name; um title; e um contact type, e registrar se é um authorized signer."
+      ],
+      "Accounts": [
+        "Um account **deve** referenciar exatamente um business.",
+        "Um account **deve** ter um account type; um account number last4; um current balance USD; e um opened at, e registrar se tem um ACH; se tem um wire; e se tem um card."
+      ],
+      "Loans": [
+        "Um loan **deve** referenciar exatamente um business.",
+        "Um loan **deve** referenciar exatamente um user como seu originating RM.",
+        "Um loan **deve** referenciar exatamente um user como seu underwriter.",
+        "Um loan **deve** ter um loan number; um loan purpose; um principal USD; um rate pct; um term months; um underwriting stage; um risk rating; um risk rating label; e um originated at."
+      ],
+      "Covenants": [
+        "Um covenant **deve** referenciar exatamente um loan.",
+        "Um covenant **deve** ter um covenant type; um test frequency; um next test date; e um status."
+      ],
+      "RiskRatingHistory": [
+        "Um risk rating history **deve** referenciar exatamente um loan.",
+        "Um risk rating history **deve** referenciar exatamente um user como seu changed by user.",
+        "Um risk rating history **deve** ter um effective date; um new grade; e um reason."
+      ],
+      "Documents": [
+        "Um document **deve** ter um filename; um document type; e um uploaded at, e registrar se é ocr indexed."
+      ],
+      "Interactions": [
+        "Um interaction **deve** referenciar exatamente um business.",
+        "Um interaction **deve** ter um interaction type; um subject; e um interaction date."
+      ]
+    },
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Businesses": "business",
+      "BeneficialOwners": "beneficial owner",
+      "Contacts": "contact",
+      "Accounts": "account",
+      "Loans": "loan",
+      "Covenants": "covenant",
+      "RiskRatingHistory": "risk rating history",
+      "Documents": "document",
+      "Interactions": "interaction"
+    }
+  },
+  "ru": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "User: «name» вычисляется как full name в нижнем регистре, где каждое пробел заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name в нижнем регистре, где « » заменено на «-»"
+      },
+      "Users.IsRM": {
+        "table": "Users",
+        "field": "IsRM",
+        "kind": "formula",
+        "rule": "User считается «RM», если role равно «RM».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role равно \"RM\""
+      },
+      "Users.IsUnderwriter": {
+        "table": "Users",
+        "field": "IsUnderwriter",
+        "kind": "formula",
+        "rule": "User считается «underwriter», если role равно «Underwriter».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role равно \"Underwriter\""
+      },
+      "Users.IsBranchBanker": {
+        "table": "Users",
+        "field": "IsBranchBanker",
+        "kind": "formula",
+        "rule": "User считается «branch banker», если role равно «BranchBanker».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role равно \"BranchBanker\""
+      },
+      "Users.IsAdmin": {
+        "table": "Users",
+        "field": "IsAdmin",
+        "kind": "formula",
+        "rule": "User считается «admin», если role равно «Admin».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role равно \"Admin\""
+      },
+      "Users.CountOfPortfolioBusinesses": {
+        "table": "Users",
+        "field": "CountOfPortfolioBusinesses",
+        "kind": "rollup",
+        "rule": "User: «count of portfolio businesses» — это число записей «businesses», связанных с user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «businesses», у которых relationship manager равно эта запись"
+      },
+      "Users.CountOfOriginatedLoans": {
+        "table": "Users",
+        "field": "CountOfOriginatedLoans",
+        "kind": "rollup",
+        "rule": "User: «count of originated loans» — это число записей «loans», связанных с user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «loans», у которых originating RM равно эта запись"
+      },
+      "Users.CountOfUnderwrittenLoans": {
+        "table": "Users",
+        "field": "CountOfUnderwrittenLoans",
+        "kind": "rollup",
+        "rule": "User: «count of underwritten loans» — это число записей «loans», связанных с user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «loans», у которых underwriter равно эта запись"
+      },
+      "Businesses.Name": {
+        "table": "Businesses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Business: «name» вычисляется как legal name в нижнем регистре, где каждое пробел заменено на дефис, где каждое точка заменено на пустая строка.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name в нижнем регистре, где « » заменено на «-», где «.» заменено на «»"
+      },
+      "Businesses.RelationshipManagerLabel": {
+        "table": "Businesses",
+        "field": "RelationshipManagerLabel",
+        "kind": "lookup",
+        "rule": "Business: «relationship manager label» — это «full name» связанного «relationship manager».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name связанного «relationship manager»"
+      },
+      "Businesses.IsCustomer": {
+        "table": "Businesses",
+        "field": "IsCustomer",
+        "kind": "formula",
+        "rule": "Business считается «customer», если status равно «Customer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status равно \"Customer\""
+      },
+      "Businesses.IsProspect": {
+        "table": "Businesses",
+        "field": "IsProspect",
+        "kind": "formula",
+        "rule": "Business считается «prospect», если status равно «Prospect».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status равно \"Prospect\""
+      },
+      "Businesses.WasReferred": {
+        "table": "Businesses",
+        "field": "WasReferred",
+        "kind": "formula",
+        "rule": "Business считается прошедшим «referred», если поле «referral source» заполнено.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "ReferralSource",
+            "label": "referral source"
+          }
+        ],
+        "structure": null,
+        "plain": "Не первое из referral source или \"\", которое не пусто равно \"\""
+      },
+      "Businesses.CountOfBeneficialOwners": {
+        "table": "Businesses",
+        "field": "CountOfBeneficialOwners",
+        "kind": "rollup",
+        "rule": "Business: «count of beneficial owners» — это число записей «beneficial owners», связанных с business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «beneficial owners», у которых business равно эта запись"
+      },
+      "Businesses.CountOfContacts": {
+        "table": "Businesses",
+        "field": "CountOfContacts",
+        "kind": "rollup",
+        "rule": "Business: «count of contacts» — это число записей «contacts», связанных с business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «contacts», у которых business равно эта запись"
+      },
+      "Businesses.CountOfAccounts": {
+        "table": "Businesses",
+        "field": "CountOfAccounts",
+        "kind": "rollup",
+        "rule": "Business: «count of accounts» — это число записей «accounts», связанных с business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «accounts», у которых business равно эта запись"
+      },
+      "Businesses.CountOfLoans": {
+        "table": "Businesses",
+        "field": "CountOfLoans",
+        "kind": "rollup",
+        "rule": "Business: «count of loans» — это число записей «loans», связанных с business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «loans», у которых business равно эта запись"
+      },
+      "Businesses.CountOfInteractions": {
+        "table": "Businesses",
+        "field": "CountOfInteractions",
+        "kind": "rollup",
+        "rule": "Business: «count of interactions» — это число записей «interactions», связанных с business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «interactions», у которых business равно эта запись"
+      },
+      "Businesses.CountOfDocuments": {
+        "table": "Businesses",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "Business: «count of documents» — это число записей «documents», связанных с business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «documents», у которых business равно эта запись"
+      },
+      "Businesses.TotalDepositBalanceUsd": {
+        "table": "Businesses",
+        "field": "TotalDepositBalanceUsd",
+        "kind": "rollup",
+        "rule": "Business: «total deposit balance USD» — это сумма «current balance USD» по записям «accounts», связанным с business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "CurrentBalanceUsd",
+            "label": "current balance USD"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма current balance USD по всем «accounts», у которых business равно эта запись"
+      },
+      "Businesses.TotalLoanPrincipalUsd": {
+        "table": "Businesses",
+        "field": "TotalLoanPrincipalUsd",
+        "kind": "rollup",
+        "rule": "Business: «total loan principal USD» — это сумма «principal USD» по записям «loans», связанным с business.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "PrincipalUsd",
+            "label": "principal USD"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма principal USD по всем «loans», у которых business равно эта запись"
+      },
+      "Businesses.CountOfClassifiedLoans": {
+        "table": "Businesses",
+        "field": "CountOfClassifiedLoans",
+        "kind": "rollup",
+        "rule": "Business: «count of classified loans» — это число записей «loans» (business), которые являются «classified asset».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «loans», у которых business равно эта запись и is classified asset равно true()"
+      },
+      "Businesses.HasClassifiedLoan": {
+        "table": "Businesses",
+        "field": "HasClassifiedLoan",
+        "kind": "formula",
+        "rule": "Business считается имеющим «classified loan», если count of classified loans больше 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "CountOfClassifiedLoans",
+            "label": "count of classified loans"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of classified loans больше 0"
+      },
+      "Businesses.BeneficialOwnersAtCddThreshold": {
+        "table": "Businesses",
+        "field": "BeneficialOwnersAtCddThreshold",
+        "kind": "rollup",
+        "rule": "Business: «beneficial owners at CDD threshold» — это число записей «beneficial owners» (business), которые удовлетворяют условию «CDD threshold».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "MeetsCddThreshold",
+            "label": "meets CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «beneficial owners», у которых business равно эта запись и meets CDD threshold равно true()"
+      },
+      "Businesses.MeetsCddRule": {
+        "table": "Businesses",
+        "field": "MeetsCddRule",
+        "kind": "formula",
+        "rule": "Business считается удовлетворяющим условию «CDD rule», если beneficial owners at CDD threshold больше 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "BeneficialOwnersAtCddThreshold",
+            "label": "beneficial owners at CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Beneficial owners at CDD threshold больше 0"
+      },
+      "Businesses.PortfolioPriority": {
+        "table": "Businesses",
+        "field": "PortfolioPriority",
+        "kind": "formula",
+        "rule": "Поле «portfolio priority» (Business) определяется по следующему приоритету:\n1. «High», если признак «classified loan» установлен;\n2. «Medium», если выполняется хотя бы одно из следующего: признак «meets CDD rule» не установлен; признак «prospect» установлен; или count of loans равно 0;\n3. во всех остальных случаях — «Low».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "HasClassifiedLoan",
+            "label": "has classified loan"
+          },
+          {
+            "table": "Businesses",
+            "field": "MeetsCddRule",
+            "label": "meets CDD rule"
+          },
+          {
+            "table": "Businesses",
+            "field": "IsProspect",
+            "label": "is prospect"
+          },
+          {
+            "table": "Businesses",
+            "field": "CountOfLoans",
+            "label": "count of loans"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «portfolio priority» (Business) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«High»",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «classified loan» установлен"
+              }
+            },
+            {
+              "value": "«Medium»",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "признак «meets CDD rule» не установлен"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "признак «prospect» установлен"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "count of loans равно 0"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "«Low»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если has classified loan, то \"High\", иначе если не meets CDD rule, is prospect, или count of loans равно 0, то \"Medium\", иначе \"Low\""
+      },
+      "BeneficialOwners.Name": {
+        "table": "BeneficialOwners",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Beneficial owner: «name» вычисляется как business, затем дефис, затем full name в нижнем регистре, где каждое пробел заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "(business соединено с \"-\") соединено с full name в нижнем регистре, где « » заменено на «-»"
+      },
+      "BeneficialOwners.BusinessLabel": {
+        "table": "BeneficialOwners",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Beneficial owner: «business label» — это «legal name» связанного «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name связанного «business»"
+      },
+      "BeneficialOwners.Meets25PercentThreshold": {
+        "table": "BeneficialOwners",
+        "field": "Meets25PercentThreshold",
+        "kind": "formula",
+        "rule": "Beneficial owner помечается как «meets25 percent threshold», если ownership percentage не меньше 25.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "OwnershipPercentage",
+            "label": "ownership percentage"
+          }
+        ],
+        "structure": null,
+        "plain": "Ownership percentage не меньше 25"
+      },
+      "BeneficialOwners.MeetsCddThreshold": {
+        "table": "BeneficialOwners",
+        "field": "MeetsCddThreshold",
+        "kind": "formula",
+        "rule": "Beneficial owner считается удовлетворяющим условию «CDD threshold», если выполняется хотя бы одно из следующего: признак «meets25 percent threshold» установлен или признак «control person» установлен.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Meets25PercentThreshold",
+            "label": "meets25 percent threshold"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "IsControlPerson",
+            "label": "is control person"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Beneficial owner считается удовлетворяющим условию «CDD threshold», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "признак «meets25 percent threshold» установлен"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "признак «control person» установлен"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Meets25 percent threshold или is control person"
+      },
+      "Contacts.Name": {
+        "table": "Contacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Contact: «name» вычисляется как business, затем дефис, затем full name в нижнем регистре, где каждое пробел заменено на дефис, затем дефис, затем title в нижнем регистре, где каждое пробел заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Contacts",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business соединено с \"-\") соединено с full name в нижнем регистре, где « » заменено на «-») соединено с \"-\") соединено с title в нижнем регистре, где « » заменено на «-»"
+      },
+      "Contacts.BusinessLabel": {
+        "table": "Contacts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Contact: «business label» — это «legal name» связанного «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name связанного «business»"
+      },
+      "Contacts.IsOfficer": {
+        "table": "Contacts",
+        "field": "IsOfficer",
+        "kind": "formula",
+        "rule": "Contact считается «officer», если contact type равно «Officer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type равно \"Officer\""
+      },
+      "Contacts.IsApClerk": {
+        "table": "Contacts",
+        "field": "IsApClerk",
+        "kind": "formula",
+        "rule": "Contact считается «AP clerk», если contact type равно «APClerk».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type равно \"APClerk\""
+      },
+      "Accounts.Name": {
+        "table": "Accounts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Account: «name» вычисляется как business, затем дефис, затем account type в нижнем регистре, затем дефис, затем account number last4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountType",
+            "label": "account type"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountNumberLast4",
+            "label": "account number last4"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business соединено с \"-\") соединено с account type в нижнем регистре) соединено с \"-\") соединено с account number last4"
+      },
+      "Accounts.BusinessLabel": {
+        "table": "Accounts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Account: «business label» — это «legal name» связанного «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name связанного «business»"
+      },
+      "Accounts.TreasuryServiceCount": {
+        "table": "Accounts",
+        "field": "TreasuryServiceCount",
+        "kind": "formula",
+        "rule": "Account: «treasury service count» вычисляется как число выполняющихся условий из следующих: признак «ACH» установлен; признак «wire» установлен; и признак «card» установлен.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "HasAch",
+            "label": "has ACH"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasWire",
+            "label": "has wire"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasCard",
+            "label": "has card"
+          }
+        ],
+        "structure": null,
+        "plain": "(если has ACH, то 1, иначе 0 плюс если has wire, то 1, иначе 0) плюс если has card, то 1, иначе 0"
+      },
+      "Accounts.HasAnyTreasuryService": {
+        "table": "Accounts",
+        "field": "HasAnyTreasuryService",
+        "kind": "formula",
+        "rule": "Account считается имеющим «any treasury service», если treasury service count больше 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "TreasuryServiceCount",
+            "label": "treasury service count"
+          }
+        ],
+        "structure": null,
+        "plain": "Treasury service count больше 0"
+      },
+      "Loans.Name": {
+        "table": "Loans",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Loan: «name» вычисляется как loan number в нижнем регистре, где каждое пробел заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan number в нижнем регистре, где « » заменено на «-»"
+      },
+      "Loans.BusinessLabel": {
+        "table": "Loans",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Loan: «business label» — это «legal name» связанного «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name связанного «business»"
+      },
+      "Loans.BusinessNaicsCode": {
+        "table": "Loans",
+        "field": "BusinessNaicsCode",
+        "kind": "lookup",
+        "rule": "Loan: «business NAICS code» — берётся из связанного «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "NaicsCode",
+            "label": "NAICS code"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "NAICS code связанного «business»"
+      },
+      "Loans.OriginatingRmLabel": {
+        "table": "Loans",
+        "field": "OriginatingRmLabel",
+        "kind": "lookup",
+        "rule": "Loan: «originating RM label» — это «full name» связанного «originating RM».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name связанного «originating RM»"
+      },
+      "Loans.UnderwriterIsAdmin": {
+        "table": "Loans",
+        "field": "UnderwriterIsAdmin",
+        "kind": "lookup",
+        "rule": "Loan: «underwriter is admin» истинно, когда связанный «underwriter» является «admin».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "IsAdmin",
+            "label": "is admin"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Is admin связанного «underwriter»"
+      },
+      "Loans.IsFunded": {
+        "table": "Loans",
+        "field": "IsFunded",
+        "kind": "formula",
+        "rule": "Loan считается «funded», если underwriting stage равно «Funded».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "UnderwritingStage",
+            "label": "underwriting stage"
+          }
+        ],
+        "structure": null,
+        "plain": "Underwriting stage равно \"Funded\""
+      },
+      "Loans.IsClassifiedAsset": {
+        "table": "Loans",
+        "field": "IsClassifiedAsset",
+        "kind": "formula",
+        "rule": "Loan считается «classified asset», если risk rating не меньше 7.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "RiskRating",
+            "label": "risk rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Risk rating не меньше 7"
+      },
+      "Loans.DscrInBand": {
+        "table": "Loans",
+        "field": "DscrInBand",
+        "kind": "formula",
+        "rule": "Loan помечается как «DSCR in band», если DSCR (отсутствующее значение считается как 0) не меньше 1.20.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Dscr",
+            "label": "DSCR"
+          }
+        ],
+        "structure": null,
+        "plain": "Первое из DSCR или 0, которое не пусто не меньше 1.20"
+      },
+      "Loans.LtvInBand": {
+        "table": "Loans",
+        "field": "LtvInBand",
+        "kind": "formula",
+        "rule": "Loan помечается как «LTV in band», если LTV (отсутствующее значение считается как 0) не больше 0.80.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Ltv",
+            "label": "LTV"
+          }
+        ],
+        "structure": null,
+        "plain": "Первое из LTV или 0, которое не пусто не больше 0.80"
+      },
+      "Loans.SegregationOfDutiesOk": {
+        "table": "Loans",
+        "field": "SegregationOfDutiesOk",
+        "kind": "formula",
+        "rule": "Loan помечается как «segregation of duties ok», если неверно, что originating RM равно underwriter.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          }
+        ],
+        "structure": null,
+        "plain": "Не originating RM равно underwriter"
+      },
+      "Loans.CountOfCovenants": {
+        "table": "Loans",
+        "field": "CountOfCovenants",
+        "kind": "rollup",
+        "rule": "Loan: «count of covenants» — это число записей «covenants», связанных с loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «covenants», у которых loan равно эта запись"
+      },
+      "Loans.CountOfBreachedCovenants": {
+        "table": "Loans",
+        "field": "CountOfBreachedCovenants",
+        "kind": "rollup",
+        "rule": "Loan: «count of breached covenants» — это число записей «covenants» (loan), которые являются «breached».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Covenants",
+            "field": "IsBreached",
+            "label": "is breached"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «covenants», у которых loan равно эта запись и is breached равно true()"
+      },
+      "Loans.CountOfRiskRatingHistory": {
+        "table": "Loans",
+        "field": "CountOfRiskRatingHistory",
+        "kind": "rollup",
+        "rule": "Loan: «count of risk rating history» — это число записей «risk rating history», связанных с loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «risk rating history», у которых loan равно эта запись"
+      },
+      "Loans.CountOfDocuments": {
+        "table": "Loans",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "Loan: «count of documents» — это число записей «documents», связанных с loan.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «documents», у которых loan равно эта запись"
+      },
+      "Loans.HasBreachedCovenant": {
+        "table": "Loans",
+        "field": "HasBreachedCovenant",
+        "kind": "formula",
+        "rule": "Loan считается имеющим «breached covenant», если count of breached covenants больше 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "CountOfBreachedCovenants",
+            "label": "count of breached covenants"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of breached covenants больше 0"
+      },
+      "Loans.OnWatchlist": {
+        "table": "Loans",
+        "field": "OnWatchlist",
+        "kind": "formula",
+        "rule": "Loan помечается как «on watchlist», если выполняется хотя бы одно из следующего: признак «classified asset» установлен или признак «breached covenant» установлен.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Loan помечается как «on watchlist», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "признак «classified asset» установлен"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "признак «breached covenant» установлен"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is classified asset или has breached covenant"
+      },
+      "Loans.HealthScore": {
+        "table": "Loans",
+        "field": "HealthScore",
+        "kind": "formula",
+        "rule": "Loan: «health score» вычисляется как число выполняющихся условий из следующих: признак «DSCR in band» установлен; признак «LTV in band» установлен; признак «classified asset» не установлен; и признак «breached covenant» не установлен.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "DscrInBand",
+            "label": "DSCR in band"
+          },
+          {
+            "table": "Loans",
+            "field": "LtvInBand",
+            "label": "LTV in band"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": null,
+        "plain": "((если DSCR in band, то 1, иначе 0 плюс если LTV in band, то 1, иначе 0) плюс если is classified asset, то 0, иначе 1) плюс если has breached covenant, то 0, иначе 1"
+      },
+      "Covenants.Name": {
+        "table": "Covenants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Covenant: «name» вычисляется как loan, затем дефис, затем covenant type в нижнем регистре, где каждое пробел заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Covenants",
+            "field": "CovenantType",
+            "label": "covenant type"
+          }
+        ],
+        "structure": null,
+        "plain": "(loan соединено с \"-\") соединено с covenant type в нижнем регистре, где « » заменено на «-»"
+      },
+      "Covenants.LoanLabel": {
+        "table": "Covenants",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Covenant: «loan label» — это «loan number» связанного «loan».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan number связанного «loan»"
+      },
+      "Covenants.LoanBusiness": {
+        "table": "Covenants",
+        "field": "LoanBusiness",
+        "kind": "lookup",
+        "rule": "Covenant: «loan business» — берётся из связанного «loan».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business связанного «loan»"
+      },
+      "Covenants.IsBreached": {
+        "table": "Covenants",
+        "field": "IsBreached",
+        "kind": "formula",
+        "rule": "Covenant считается «breached», если status равно «Breached».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status равно \"Breached\""
+      },
+      "Covenants.HasActiveWaiver": {
+        "table": "Covenants",
+        "field": "HasActiveWaiver",
+        "kind": "formula",
+        "rule": "Covenant считается имеющим «active waiver», если current waiver through имеет значение.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "CurrentWaiverThrough",
+            "label": "current waiver through"
+          }
+        ],
+        "structure": null,
+        "plain": "Не current waiver through пусто"
+      },
+      "RiskRatingHistory.Name": {
+        "table": "RiskRatingHistory",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Risk rating history: «name» вычисляется как loan, затем дефис, затем TEXT от effective date и «yyyy-mm-dd», затем «-grade-», затем TEXT от new grade и «0».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "EffectiveDate",
+            "label": "effective date"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": null,
+        "plain": "(((loan соединено с \"-\") соединено с text(effective date, \"yyyy-mm-dd\")) соединено с \"-grade-\") соединено с text(new grade, \"0\")"
+      },
+      "RiskRatingHistory.LoanLabel": {
+        "table": "RiskRatingHistory",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Risk rating history: «loan label» — это «loan number» связанного «loan».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan number связанного «loan»"
+      },
+      "RiskRatingHistory.ChangedByUserLabel": {
+        "table": "RiskRatingHistory",
+        "field": "ChangedByUserLabel",
+        "kind": "lookup",
+        "rule": "Risk rating history: «changed by user label» — это «full name» связанного «changed by user».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "ChangedByUser",
+            "label": "changed by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name связанного «changed by user»"
+      },
+      "RiskRatingHistory.GradeDelta": {
+        "table": "RiskRatingHistory",
+        "field": "GradeDelta",
+        "kind": "formula",
+        "rule": "Risk rating history: «grade delta» вычисляется как new grade минус prior grade (отсутствующее значение считается как new grade).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "New grade минус первое из prior grade или new grade, которое не пусто"
+      },
+      "RiskRatingHistory.IsDowngrade": {
+        "table": "RiskRatingHistory",
+        "field": "IsDowngrade",
+        "kind": "formula",
+        "rule": "Risk rating history считается «downgrade», если grade delta больше 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "GradeDelta",
+            "label": "grade delta"
+          }
+        ],
+        "structure": null,
+        "plain": "Grade delta больше 0"
+      },
+      "RiskRatingHistory.IsInitialRating": {
+        "table": "RiskRatingHistory",
+        "field": "IsInitialRating",
+        "kind": "formula",
+        "rule": "Risk rating history считается «initial rating», если prior grade (отсутствующее значение считается как 0) равно 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "Первое из prior grade или 0, которое не пусто равно 0"
+      },
+      "RiskRatingHistory.CrossedClassifiedThreshold": {
+        "table": "RiskRatingHistory",
+        "field": "CrossedClassifiedThreshold",
+        "kind": "formula",
+        "rule": "Risk rating history помечается как «crossed classified threshold», если выполняется всё следующее: prior grade (отсутствующее значение считается как 0) меньше 7 и new grade не меньше 7.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Risk rating history помечается как «crossed classified threshold», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "prior grade (отсутствующее значение считается как 0) меньше 7"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "new grade не меньше 7"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Первое из prior grade или 0, которое не пусто меньше 7 и new grade не меньше 7"
+      },
+      "Documents.Name": {
+        "table": "Documents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Document: «name» вычисляется как filename в нижнем регистре, где каждое пробел заменено на дефис, где каждое точка заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Filename",
+            "label": "filename"
+          }
+        ],
+        "structure": null,
+        "plain": "Filename в нижнем регистре, где « » заменено на «-», где «.» заменено на «-»"
+      },
+      "Documents.BusinessLabel": {
+        "table": "Documents",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Document: «business label» — это «legal name» связанного «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name связанного «business»"
+      },
+      "Documents.LoanLabel": {
+        "table": "Documents",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Document: «loan label» — это «loan number» связанного «loan».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan number связанного «loan»"
+      },
+      "Documents.UploadedByUserLabel": {
+        "table": "Documents",
+        "field": "UploadedByUserLabel",
+        "kind": "lookup",
+        "rule": "Document: «uploaded by user label» — это «full name» связанного «uploaded by user».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Documents",
+            "field": "UploadedByUser",
+            "label": "uploaded by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name связанного «uploaded by user»"
+      },
+      "Documents.AttachedTo": {
+        "table": "Documents",
+        "field": "AttachedTo",
+        "kind": "formula",
+        "rule": "Поле «attached to» (Document) определяется по следующему приоритету:\n1. «Loan», если поле «loan» заполнено;\n2. «Business», если поле «business» заполнено;\n3. во всех остальных случаях — «Orphan».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «attached to» (Document) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«Loan»",
+              "when": {
+                "kind": "leaf",
+                "text": "поле «loan» заполнено"
+              }
+            },
+            {
+              "value": "«Business»",
+              "when": {
+                "kind": "leaf",
+                "text": "поле «business» заполнено"
+              }
+            },
+            {
+              "value": "«Orphan»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если не первое из loan или \"\", которое не пусто равно \"\", то \"Loan\", иначе если не первое из business или \"\", которое не пусто равно \"\", то \"Business\", иначе \"Orphan\""
+      },
+      "Documents.FromCustomerPortal": {
+        "table": "Documents",
+        "field": "FromCustomerPortal",
+        "kind": "formula",
+        "rule": "Document помечается как «from customer portal», если uploaded via равно «BusinessClientPortal».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "UploadedVia",
+            "label": "uploaded via"
+          }
+        ],
+        "structure": null,
+        "plain": "Uploaded via равно \"BusinessClientPortal\""
+      },
+      "Interactions.Name": {
+        "table": "Interactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Interaction: «name» вычисляется как business, затем дефис, затем TEXT от interaction date и «yyyy-mm-dd», затем дефис, затем interaction type в нижнем регистре, затем дефис, затем subject в нижнем регистре, где каждое пробел заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionDate",
+            "label": "interaction date"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((business соединено с \"-\") соединено с text(interaction date, \"yyyy-mm-dd\")) соединено с \"-\") соединено с interaction type в нижнем регистре) соединено с \"-\") соединено с subject в нижнем регистре, где « » заменено на «-»"
+      },
+      "Interactions.BusinessLabel": {
+        "table": "Interactions",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Interaction: «business label» — это «legal name» связанного «business».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name связанного «business»"
+      },
+      "Interactions.UserLabel": {
+        "table": "Interactions",
+        "field": "UserLabel",
+        "kind": "lookup",
+        "rule": "Interaction: «user label» — это «full name» связанного «user».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Interactions",
+            "field": "User",
+            "label": "user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name связанного «user»"
+      },
+      "Interactions.IsSystemEvent": {
+        "table": "Interactions",
+        "field": "IsSystemEvent",
+        "kind": "formula",
+        "rule": "Interaction считается «system event», если interaction type равно «SystemEvent».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type равно \"SystemEvent\""
+      },
+      "Interactions.IsTask": {
+        "table": "Interactions",
+        "field": "IsTask",
+        "kind": "formula",
+        "rule": "Interaction считается «task», если interaction type равно «Task».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type равно \"Task\""
+      },
+      "Interactions.FromCustomer": {
+        "table": "Interactions",
+        "field": "FromCustomer",
+        "kind": "formula",
+        "rule": "Interaction помечается как «from customer», если source равно «BusinessClientPortal».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Source",
+            "label": "source"
+          }
+        ],
+        "structure": null,
+        "plain": "Source равно \"BusinessClientPortal\""
+      },
+      "Interactions.IsCovenantEvent": {
+        "table": "Interactions",
+        "field": "IsCovenantEvent",
+        "kind": "formula",
+        "rule": "Interaction считается «covenant event», если выполняется всё следующее: признак «system event» установлен и subject упоминает «covenant breach».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "IsSystemEvent",
+            "label": "is system event"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Interaction считается «covenant event», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "признак «system event» установлен"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "subject упоминает «covenant breach»"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is system event и не find(\"covenant breach\", subject в нижнем регистре), или 0, если возникает ошибка равно 0"
+      }
+    },
+    "obligations": [
+      {
+        "constraintKey": "loan-sod",
+        "entity": "Loan",
+        "predicate": "SegregationOfDutiesOk",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **loan-sod** *(жёсткое)* — A loan must not be funded by the same user who originated it: the originating relationship manager and the underwriter must be different users.\n  - _При нарушении:_ «The same user originated and underwrote this loan — segregation of duties is violated.»\n  - _Источник:_ Internal Credit Policy §4.2"
+      },
+      {
+        "constraintKey": "biz-cdd",
+        "entity": "Business",
+        "predicate": "MeetsCddRule",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **biz-cdd** *(жёсткое)* — Business **обязан** иметь beneficial owners at CDD threshold более 0.\n  - _При нарушении:_ «Beneficial-ownership (CDD) collection is incomplete: no owner crosses the 25% threshold and no control person is designated.»\n  - _Источник:_ FinCEN CDD Rule, 31 CFR 1010.230\n  - _Опирается на:_ Meets CDD Rule (см. DR-25)."
+      },
+      {
+        "constraintKey": "loan-dscr",
+        "entity": "Loan",
+        "predicate": "DscrInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-dscr** *(снимаемое)* — Loan **обязан** иметь DSCR не менее 1.20 *(может быть снято уполномоченным утверждающим)*.\n  - _При нарушении:_ «DSCR is below the 1.20 minimum; a credit-committee waiver is required to fund.»\n  - _Источник:_ Internal Credit Policy §2.1 (DSCR floor)\n  - _Опирается на:_ DSCR in Band (см. DR-46)."
+      },
+      {
+        "constraintKey": "loan-ltv",
+        "entity": "Loan",
+        "predicate": "LtvInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-ltv** *(снимаемое)* — Loan **обязан** иметь LTV не более 0.80 *(может быть снято уполномоченным утверждающим)*.\n  - _При нарушении:_ «LTV exceeds the 0.80 ceiling; a credit-committee waiver is required to fund.»\n  - _Источник:_ Internal Credit Policy §2.2 (LTV ceiling)\n  - _Опирается на:_ LTV in Band (см. DR-47)."
+      },
+      {
+        "constraintKey": "loan-watchlist",
+        "entity": "Loan",
+        "predicate": "OnWatchlist",
+        "deontic": "ShouldBeTrue",
+        "severity": "soft",
+        "markdown": "- **loan-watchlist** *(рекомендательное)* — Loan **следует** удовлетворять условию: выполняется хотя бы одно из следующего: признак «classified asset» установлен или признак «breached covenant» установлен.\n  - _При нарушении:_ «This loan is a classified asset or has a breached covenant but is not flagged on the watchlist.»\n  - _Источник:_ Internal Portfolio Risk Procedure §6 (watchlist)\n  - _Опирается на:_ On Watchlist (см. DR-54)."
+      }
+    ],
+    "structural": {
+      "Users": [
+        "User **обязан** иметь full name; role; и email."
+      ],
+      "Businesses": [
+        "Business **обязан** ссылаться ровно на один «user» в роли «relationship manager».",
+        "Business **обязан** иметь legal name; business structure; NAICS code; и status."
+      ],
+      "BeneficialOwners": [
+        "Beneficial owner **обязан** ссылаться ровно на один «business».",
+        "Beneficial owner **обязан** иметь full name; date of birth; SSN; address; и ownership percentage, а также фиксировать то, он является «control person» ли."
+      ],
+      "Contacts": [
+        "Contact **обязан** ссылаться ровно на один «business».",
+        "Contact **обязан** иметь full name; title; и contact type, а также фиксировать то, он является «authorized signer» ли."
+      ],
+      "Accounts": [
+        "Account **обязан** ссылаться ровно на один «business».",
+        "Account **обязан** иметь account type; account number last4; current balance USD; и opened at, а также фиксировать то, он имеет «ACH» ли; то, он имеет «wire» ли; и то, он имеет «card» ли."
+      ],
+      "Loans": [
+        "Loan **обязан** ссылаться ровно на один «business».",
+        "Loan **обязан** ссылаться ровно на один «user» в роли «originating RM».",
+        "Loan **обязан** ссылаться ровно на один «user» в роли «underwriter».",
+        "Loan **обязан** иметь loan number; loan purpose; principal USD; rate pct; term months; underwriting stage; risk rating; risk rating label; и originated at."
+      ],
+      "Covenants": [
+        "Covenant **обязан** ссылаться ровно на один «loan».",
+        "Covenant **обязан** иметь covenant type; test frequency; next test date; и status."
+      ],
+      "RiskRatingHistory": [
+        "Risk rating history **обязан** ссылаться ровно на один «loan».",
+        "Risk rating history **обязан** ссылаться ровно на один «user» в роли «changed by user».",
+        "Risk rating history **обязан** иметь effective date; new grade; и reason."
+      ],
+      "Documents": [
+        "Document **обязан** иметь filename; document type; и uploaded at, а также фиксировать то, он является «ocr indexed» ли."
+      ],
+      "Interactions": [
+        "Interaction **обязан** ссылаться ровно на один «business».",
+        "Interaction **обязан** иметь interaction type; subject; и interaction date."
+      ]
+    },
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Businesses": "business",
+      "BeneficialOwners": "beneficial owner",
+      "Contacts": "contact",
+      "Accounts": "account",
+      "Loans": "loan",
+      "Covenants": "covenant",
+      "RiskRatingHistory": "risk rating history",
+      "Documents": "document",
+      "Interactions": "interaction"
+    }
+  },
+  "tr": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“user” kaydının “name” alanı, küçük harfe çevrilmiş “full name” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş full name değerindeki her “ ” yerine “-” konularak elde edilen metin"
+      },
+      "Users.IsRM": {
+        "table": "Users",
+        "field": "IsRM",
+        "kind": "formula",
+        "rule": "“user” kaydı, “role” alanı “RM” değerine eşit ise “RM” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role, \"RM\" değerine eşit"
+      },
+      "Users.IsUnderwriter": {
+        "table": "Users",
+        "field": "IsUnderwriter",
+        "kind": "formula",
+        "rule": "“user” kaydı, “role” alanı “Underwriter” değerine eşit ise “underwriter” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role, \"Underwriter\" değerine eşit"
+      },
+      "Users.IsBranchBanker": {
+        "table": "Users",
+        "field": "IsBranchBanker",
+        "kind": "formula",
+        "rule": "“user” kaydı, “role” alanı “BranchBanker” değerine eşit ise “branch banker” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role, \"BranchBanker\" değerine eşit"
+      },
+      "Users.IsAdmin": {
+        "table": "Users",
+        "field": "IsAdmin",
+        "kind": "formula",
+        "rule": "“user” kaydı, “role” alanı “Admin” değerine eşit ise “admin” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role, \"Admin\" değerine eşit"
+      },
+      "Users.CountOfPortfolioBusinesses": {
+        "table": "Users",
+        "field": "CountOfPortfolioBusinesses",
+        "kind": "rollup",
+        "rule": "“user” kaydının “count of portfolio businesses” alanı, “user” kaydıyla ilişkili “businesses” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Relationship manager değeri bu kayıt olan businesses kayıtlarının sayısı"
+      },
+      "Users.CountOfOriginatedLoans": {
+        "table": "Users",
+        "field": "CountOfOriginatedLoans",
+        "kind": "rollup",
+        "rule": "“user” kaydının “count of originated loans” alanı, “user” kaydıyla ilişkili “loans” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Originating RM değeri bu kayıt olan loans kayıtlarının sayısı"
+      },
+      "Users.CountOfUnderwrittenLoans": {
+        "table": "Users",
+        "field": "CountOfUnderwrittenLoans",
+        "kind": "rollup",
+        "rule": "“user” kaydının “count of underwritten loans” alanı, “user” kaydıyla ilişkili “loans” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Underwriter değeri bu kayıt olan loans kayıtlarının sayısı"
+      },
+      "Businesses.Name": {
+        "table": "Businesses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“business” kaydının “name” alanı, küçük harfe çevrilmiş “legal name” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin değerindeki her bir nokta yerine boş metin konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş legal name değerindeki her “ ” yerine “-” konularak elde edilen metin değerindeki her “.” yerine “” konularak elde edilen metin"
+      },
+      "Businesses.RelationshipManagerLabel": {
+        "table": "Businesses",
+        "field": "RelationshipManagerLabel",
+        "kind": "lookup",
+        "rule": "“business” kaydının “relationship manager label” alanı, “relationship manager” alanı üzerinden bağlı kaydın “full name” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı relationship manager kaydının full name değeri"
+      },
+      "Businesses.IsCustomer": {
+        "table": "Businesses",
+        "field": "IsCustomer",
+        "kind": "formula",
+        "rule": "“business” kaydı, “status” alanı “Customer” değerine eşit ise “customer” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status, \"Customer\" değerine eşit"
+      },
+      "Businesses.IsProspect": {
+        "table": "Businesses",
+        "field": "IsProspect",
+        "kind": "formula",
+        "rule": "“business” kaydı, “status” alanı “Prospect” değerine eşit ise “prospect” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status, \"Prospect\" değerine eşit"
+      },
+      "Businesses.WasReferred": {
+        "table": "Businesses",
+        "field": "WasReferred",
+        "kind": "formula",
+        "rule": "“business” kaydı, “referral source” alanı dolu ise önceden “referred” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "ReferralSource",
+            "label": "referral source"
+          }
+        ],
+        "structure": null,
+        "plain": "(referral source veya \"\" değerlerinden boş olmayan ilki, \"\" değerine eşit) koşulu sağlanmıyor"
+      },
+      "Businesses.CountOfBeneficialOwners": {
+        "table": "Businesses",
+        "field": "CountOfBeneficialOwners",
+        "kind": "rollup",
+        "rule": "“business” kaydının “count of beneficial owners” alanı, “business” kaydıyla ilişkili “beneficial owners” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business değeri bu kayıt olan beneficial owners kayıtlarının sayısı"
+      },
+      "Businesses.CountOfContacts": {
+        "table": "Businesses",
+        "field": "CountOfContacts",
+        "kind": "rollup",
+        "rule": "“business” kaydının “count of contacts” alanı, “business” kaydıyla ilişkili “contacts” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business değeri bu kayıt olan contacts kayıtlarının sayısı"
+      },
+      "Businesses.CountOfAccounts": {
+        "table": "Businesses",
+        "field": "CountOfAccounts",
+        "kind": "rollup",
+        "rule": "“business” kaydının “count of accounts” alanı, “business” kaydıyla ilişkili “accounts” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business değeri bu kayıt olan accounts kayıtlarının sayısı"
+      },
+      "Businesses.CountOfLoans": {
+        "table": "Businesses",
+        "field": "CountOfLoans",
+        "kind": "rollup",
+        "rule": "“business” kaydının “count of loans” alanı, “business” kaydıyla ilişkili “loans” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business değeri bu kayıt olan loans kayıtlarının sayısı"
+      },
+      "Businesses.CountOfInteractions": {
+        "table": "Businesses",
+        "field": "CountOfInteractions",
+        "kind": "rollup",
+        "rule": "“business” kaydının “count of interactions” alanı, “business” kaydıyla ilişkili “interactions” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business değeri bu kayıt olan interactions kayıtlarının sayısı"
+      },
+      "Businesses.CountOfDocuments": {
+        "table": "Businesses",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "“business” kaydının “count of documents” alanı, “business” kaydıyla ilişkili “documents” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business değeri bu kayıt olan documents kayıtlarının sayısı"
+      },
+      "Businesses.TotalDepositBalanceUsd": {
+        "table": "Businesses",
+        "field": "TotalDepositBalanceUsd",
+        "kind": "rollup",
+        "rule": "“business” kaydının “total deposit balance USD” alanı, “business” kaydıyla ilişkili “accounts” kayıtları üzerinden hesaplanan toplam “current balance USD” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "CurrentBalanceUsd",
+            "label": "current balance USD"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business değeri bu kayıt olan tüm accounts kayıtlarındaki current balance USD değerlerinin toplamı"
+      },
+      "Businesses.TotalLoanPrincipalUsd": {
+        "table": "Businesses",
+        "field": "TotalLoanPrincipalUsd",
+        "kind": "rollup",
+        "rule": "“business” kaydının “total loan principal USD” alanı, “business” kaydıyla ilişkili “loans” kayıtları üzerinden hesaplanan toplam “principal USD” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "PrincipalUsd",
+            "label": "principal USD"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business değeri bu kayıt olan tüm loans kayıtlarındaki principal USD değerlerinin toplamı"
+      },
+      "Businesses.CountOfClassifiedLoans": {
+        "table": "Businesses",
+        "field": "CountOfClassifiedLoans",
+        "kind": "rollup",
+        "rule": "“business” kaydının “count of classified loans” alanı, “business” kaydıyla ilişkili, “classified asset” olan “loans” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          }
+        ],
+        "structure": null,
+        "plain": "Business değeri bu kayıt ve is classified asset değeri true() olan loans kayıtlarının sayısı"
+      },
+      "Businesses.HasClassifiedLoan": {
+        "table": "Businesses",
+        "field": "HasClassifiedLoan",
+        "kind": "formula",
+        "rule": "“business” kaydı, “count of classified loans” alanı 0 değerinden büyük ise “classified loan” sahibi sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "CountOfClassifiedLoans",
+            "label": "count of classified loans"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of classified loans, 0 değerinden büyük"
+      },
+      "Businesses.BeneficialOwnersAtCddThreshold": {
+        "table": "Businesses",
+        "field": "BeneficialOwnersAtCddThreshold",
+        "kind": "rollup",
+        "rule": "“business” kaydının “beneficial owners at CDD threshold” alanı, “business” kaydıyla ilişkili, “meets CDD threshold” koşulunu sağlayan “beneficial owners” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "MeetsCddThreshold",
+            "label": "meets CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Business değeri bu kayıt ve meets CDD threshold değeri true() olan beneficial owners kayıtlarının sayısı"
+      },
+      "Businesses.MeetsCddRule": {
+        "table": "Businesses",
+        "field": "MeetsCddRule",
+        "kind": "formula",
+        "rule": "“business” kaydı, “beneficial owners at CDD threshold” alanı 0 değerinden büyük ise “meets CDD rule” koşulunu sağlamış sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "BeneficialOwnersAtCddThreshold",
+            "label": "beneficial owners at CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Beneficial owners at CDD threshold, 0 değerinden büyük"
+      },
+      "Businesses.PortfolioPriority": {
+        "table": "Businesses",
+        "field": "PortfolioPriority",
+        "kind": "formula",
+        "rule": "“business” kaydının “portfolio priority” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “classified loan” bayrağı etkin ise “High”;\n2. “meets CDD rule” bayrağı etkin değil, “prospect” bayrağı etkin veya “count of loans” alanı 0 değerine eşit ise “Medium”;\n3. diğer tüm durumlarda “Low”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "HasClassifiedLoan",
+            "label": "has classified loan"
+          },
+          {
+            "table": "Businesses",
+            "field": "MeetsCddRule",
+            "label": "meets CDD rule"
+          },
+          {
+            "table": "Businesses",
+            "field": "IsProspect",
+            "label": "is prospect"
+          },
+          {
+            "table": "Businesses",
+            "field": "CountOfLoans",
+            "label": "count of loans"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“business” kaydının “portfolio priority” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“High”",
+              "when": {
+                "kind": "leaf",
+                "text": "“classified loan” bayrağı etkin"
+              }
+            },
+            {
+              "value": "“Medium”",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "“meets CDD rule” bayrağı etkin değil"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "“prospect” bayrağı etkin"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "“count of loans” alanı 0 değerine eşit"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Low”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Has classified loan ise \"High\", aksi takdirde (meets CDD rule) koşulu sağlanmıyor; is prospect veya count of loans, 0 değerine eşit ise \"Medium\", aksi takdirde \"Low\""
+      },
+      "BeneficialOwners.Name": {
+        "table": "BeneficialOwners",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“beneficial owner” kaydının “name” alanı, “business” alanı, ardından bir kısa çizgi, ardından küçük harfe çevrilmiş “full name” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "(business ile \"-\" birleşimi) ile küçük harfe çevrilmiş full name değerindeki her “ ” yerine “-” konularak elde edilen metin birleşimi"
+      },
+      "BeneficialOwners.BusinessLabel": {
+        "table": "BeneficialOwners",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "“beneficial owner” kaydının “business label” alanı, “business” alanı üzerinden bağlı kaydın “legal name” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı business kaydının legal name değeri"
+      },
+      "BeneficialOwners.Meets25PercentThreshold": {
+        "table": "BeneficialOwners",
+        "field": "Meets25PercentThreshold",
+        "kind": "formula",
+        "rule": "“beneficial owner” kaydı, “ownership percentage” alanı en az 25 değerinde ise “meets25 percent threshold” olarak işaretlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "OwnershipPercentage",
+            "label": "ownership percentage"
+          }
+        ],
+        "structure": null,
+        "plain": "Ownership percentage, en az 25 değerinde"
+      },
+      "BeneficialOwners.MeetsCddThreshold": {
+        "table": "BeneficialOwners",
+        "field": "MeetsCddThreshold",
+        "kind": "formula",
+        "rule": "“beneficial owner” kaydı, “meets25 percent threshold” bayrağı etkin veya “control person” bayrağı etkin ise “meets CDD threshold” koşulunu sağlamış sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Meets25PercentThreshold",
+            "label": "meets25 percent threshold"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "IsControlPerson",
+            "label": "is control person"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“beneficial owner” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “meets CDD threshold” koşulunu sağlamış sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“meets25 percent threshold” bayrağı etkin"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“control person” bayrağı etkin"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Meets25 percent threshold veya is control person"
+      },
+      "Contacts.Name": {
+        "table": "Contacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“contact” kaydının “name” alanı, “business” alanı, ardından bir kısa çizgi, ardından küçük harfe çevrilmiş “full name” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin, ardından bir kısa çizgi, ardından küçük harfe çevrilmiş “title” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Contacts",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business ile \"-\" birleşimi) ile küçük harfe çevrilmiş full name değerindeki her “ ” yerine “-” konularak elde edilen metin birleşimi) ile \"-\" birleşimi) ile küçük harfe çevrilmiş title değerindeki her “ ” yerine “-” konularak elde edilen metin birleşimi"
+      },
+      "Contacts.BusinessLabel": {
+        "table": "Contacts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "“contact” kaydının “business label” alanı, “business” alanı üzerinden bağlı kaydın “legal name” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı business kaydının legal name değeri"
+      },
+      "Contacts.IsOfficer": {
+        "table": "Contacts",
+        "field": "IsOfficer",
+        "kind": "formula",
+        "rule": "“contact” kaydı, “contact type” alanı “Officer” değerine eşit ise “officer” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type, \"Officer\" değerine eşit"
+      },
+      "Contacts.IsApClerk": {
+        "table": "Contacts",
+        "field": "IsApClerk",
+        "kind": "formula",
+        "rule": "“contact” kaydı, “contact type” alanı “APClerk” değerine eşit ise “AP clerk” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type, \"APClerk\" değerine eşit"
+      },
+      "Accounts.Name": {
+        "table": "Accounts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“account” kaydının “name” alanı, “business” alanı, ardından bir kısa çizgi, ardından küçük harfe çevrilmiş “account type” alanı, ardından bir kısa çizgi, ardından “account number last4” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountType",
+            "label": "account type"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountNumberLast4",
+            "label": "account number last4"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business ile \"-\" birleşimi) ile küçük harfe çevrilmiş account type birleşimi) ile \"-\" birleşimi) ile account number last4 birleşimi"
+      },
+      "Accounts.BusinessLabel": {
+        "table": "Accounts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "“account” kaydının “business label” alanı, “business” alanı üzerinden bağlı kaydın “legal name” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı business kaydının legal name değeri"
+      },
+      "Accounts.TreasuryServiceCount": {
+        "table": "Accounts",
+        "field": "TreasuryServiceCount",
+        "kind": "formula",
+        "rule": "“account” kaydının “treasury service count” alanı, (“ACH” bayrağı etkin, “wire” bayrağı etkin ve “card” bayrağı etkin) koşullarından sağlananların sayısı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "HasAch",
+            "label": "has ACH"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasWire",
+            "label": "has wire"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasCard",
+            "label": "has card"
+          }
+        ],
+        "structure": null,
+        "plain": "(has ACH ise 1, aksi takdirde 0 artı has wire ise 1, aksi takdirde 0) artı has card ise 1, aksi takdirde 0"
+      },
+      "Accounts.HasAnyTreasuryService": {
+        "table": "Accounts",
+        "field": "HasAnyTreasuryService",
+        "kind": "formula",
+        "rule": "“account” kaydı, “treasury service count” alanı 0 değerinden büyük ise “any treasury service” sahibi sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "TreasuryServiceCount",
+            "label": "treasury service count"
+          }
+        ],
+        "structure": null,
+        "plain": "Treasury service count, 0 değerinden büyük"
+      },
+      "Loans.Name": {
+        "table": "Loans",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“loan” kaydının “name” alanı, küçük harfe çevrilmiş “loan number” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş loan number değerindeki her “ ” yerine “-” konularak elde edilen metin"
+      },
+      "Loans.BusinessLabel": {
+        "table": "Loans",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "“loan” kaydının “business label” alanı, “business” alanı üzerinden bağlı kaydın “legal name” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı business kaydının legal name değeri"
+      },
+      "Loans.BusinessNaicsCode": {
+        "table": "Loans",
+        "field": "BusinessNaicsCode",
+        "kind": "lookup",
+        "rule": "“loan” kaydının “business NAICS code” alanı, “business” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "NaicsCode",
+            "label": "NAICS code"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı business kaydının NAICS code değeri"
+      },
+      "Loans.OriginatingRmLabel": {
+        "table": "Loans",
+        "field": "OriginatingRmLabel",
+        "kind": "lookup",
+        "rule": "“loan” kaydının “originating RM label” alanı, “originating RM” alanı üzerinden bağlı kaydın “full name” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı originating RM kaydının full name değeri"
+      },
+      "Loans.UnderwriterIsAdmin": {
+        "table": "Loans",
+        "field": "UnderwriterIsAdmin",
+        "kind": "lookup",
+        "rule": "“loan” kaydının “underwriter is admin” alanı, “underwriter” alanı üzerinden bağlı kayıt “admin” ise doğrudur.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "IsAdmin",
+            "label": "is admin"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı underwriter kaydının is admin değeri"
+      },
+      "Loans.IsFunded": {
+        "table": "Loans",
+        "field": "IsFunded",
+        "kind": "formula",
+        "rule": "“loan” kaydı, “underwriting stage” alanı “Funded” değerine eşit ise “funded” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "UnderwritingStage",
+            "label": "underwriting stage"
+          }
+        ],
+        "structure": null,
+        "plain": "Underwriting stage, \"Funded\" değerine eşit"
+      },
+      "Loans.IsClassifiedAsset": {
+        "table": "Loans",
+        "field": "IsClassifiedAsset",
+        "kind": "formula",
+        "rule": "“loan” kaydı, “risk rating” alanı en az 7 değerinde ise “classified asset” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "RiskRating",
+            "label": "risk rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Risk rating, en az 7 değerinde"
+      },
+      "Loans.DscrInBand": {
+        "table": "Loans",
+        "field": "DscrInBand",
+        "kind": "formula",
+        "rule": "“loan” kaydı, “DSCR” alanı (eksik değer 0 sayılır) en az 1.20 değerinde ise “DSCR in band” olarak işaretlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Dscr",
+            "label": "DSCR"
+          }
+        ],
+        "structure": null,
+        "plain": "DSCR veya 0 değerlerinden boş olmayan ilki, en az 1.20 değerinde"
+      },
+      "Loans.LtvInBand": {
+        "table": "Loans",
+        "field": "LtvInBand",
+        "kind": "formula",
+        "rule": "“loan” kaydı, “LTV” alanı (eksik değer 0 sayılır) en çok 0.80 değerinde ise “LTV in band” olarak işaretlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Ltv",
+            "label": "LTV"
+          }
+        ],
+        "structure": null,
+        "plain": "LTV veya 0 değerlerinden boş olmayan ilki, en çok 0.80 değerinde"
+      },
+      "Loans.SegregationOfDutiesOk": {
+        "table": "Loans",
+        "field": "SegregationOfDutiesOk",
+        "kind": "formula",
+        "rule": "“loan” kaydı, (“originating RM” alanı “underwriter” alanı değerine eşit) koşulu sağlanmıyor ise “segregation of duties ok” olarak işaretlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          }
+        ],
+        "structure": null,
+        "plain": "(originating RM, underwriter değerine eşit) koşulu sağlanmıyor"
+      },
+      "Loans.CountOfCovenants": {
+        "table": "Loans",
+        "field": "CountOfCovenants",
+        "kind": "rollup",
+        "rule": "“loan” kaydının “count of covenants” alanı, “loan” kaydıyla ilişkili “covenants” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan değeri bu kayıt olan covenants kayıtlarının sayısı"
+      },
+      "Loans.CountOfBreachedCovenants": {
+        "table": "Loans",
+        "field": "CountOfBreachedCovenants",
+        "kind": "rollup",
+        "rule": "“loan” kaydının “count of breached covenants” alanı, “loan” kaydıyla ilişkili, “breached” olan “covenants” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Covenants",
+            "field": "IsBreached",
+            "label": "is breached"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan değeri bu kayıt ve is breached değeri true() olan covenants kayıtlarının sayısı"
+      },
+      "Loans.CountOfRiskRatingHistory": {
+        "table": "Loans",
+        "field": "CountOfRiskRatingHistory",
+        "kind": "rollup",
+        "rule": "“loan” kaydının “count of risk rating history” alanı, “loan” kaydıyla ilişkili “risk rating history” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan değeri bu kayıt olan risk rating history kayıtlarının sayısı"
+      },
+      "Loans.CountOfDocuments": {
+        "table": "Loans",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "“loan” kaydının “count of documents” alanı, “loan” kaydıyla ilişkili “documents” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan değeri bu kayıt olan documents kayıtlarının sayısı"
+      },
+      "Loans.HasBreachedCovenant": {
+        "table": "Loans",
+        "field": "HasBreachedCovenant",
+        "kind": "formula",
+        "rule": "“loan” kaydı, “count of breached covenants” alanı 0 değerinden büyük ise “breached covenant” sahibi sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "CountOfBreachedCovenants",
+            "label": "count of breached covenants"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of breached covenants, 0 değerinden büyük"
+      },
+      "Loans.OnWatchlist": {
+        "table": "Loans",
+        "field": "OnWatchlist",
+        "kind": "formula",
+        "rule": "“loan” kaydı, “classified asset” bayrağı etkin veya “breached covenant” bayrağı etkin ise “on watchlist” olarak işaretlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“loan” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “on watchlist” olarak işaretlenir:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“classified asset” bayrağı etkin"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“breached covenant” bayrağı etkin"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is classified asset veya has breached covenant"
+      },
+      "Loans.HealthScore": {
+        "table": "Loans",
+        "field": "HealthScore",
+        "kind": "formula",
+        "rule": "“loan” kaydının “health score” alanı, (“DSCR in band” bayrağı etkin, “LTV in band” bayrağı etkin, “classified asset” bayrağı etkin değil ve “breached covenant” bayrağı etkin değil) koşullarından sağlananların sayısı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "DscrInBand",
+            "label": "DSCR in band"
+          },
+          {
+            "table": "Loans",
+            "field": "LtvInBand",
+            "label": "LTV in band"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": null,
+        "plain": "((DSCR in band ise 1, aksi takdirde 0 artı LTV in band ise 1, aksi takdirde 0) artı is classified asset ise 0, aksi takdirde 1) artı has breached covenant ise 0, aksi takdirde 1"
+      },
+      "Covenants.Name": {
+        "table": "Covenants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“covenant” kaydının “name” alanı, “loan” alanı, ardından bir kısa çizgi, ardından küçük harfe çevrilmiş “covenant type” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Covenants",
+            "field": "CovenantType",
+            "label": "covenant type"
+          }
+        ],
+        "structure": null,
+        "plain": "(loan ile \"-\" birleşimi) ile küçük harfe çevrilmiş covenant type değerindeki her “ ” yerine “-” konularak elde edilen metin birleşimi"
+      },
+      "Covenants.LoanLabel": {
+        "table": "Covenants",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "“covenant” kaydının “loan label” alanı, “loan” alanı üzerinden bağlı kaydın “loan number” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı loan kaydının loan number değeri"
+      },
+      "Covenants.LoanBusiness": {
+        "table": "Covenants",
+        "field": "LoanBusiness",
+        "kind": "lookup",
+        "rule": "“covenant” kaydının “loan business” alanı, “loan” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı loan kaydının business değeri"
+      },
+      "Covenants.IsBreached": {
+        "table": "Covenants",
+        "field": "IsBreached",
+        "kind": "formula",
+        "rule": "“covenant” kaydı, “status” alanı “Breached” değerine eşit ise “breached” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status, \"Breached\" değerine eşit"
+      },
+      "Covenants.HasActiveWaiver": {
+        "table": "Covenants",
+        "field": "HasActiveWaiver",
+        "kind": "formula",
+        "rule": "“covenant” kaydı, “current waiver through” alanı boş değil ise “active waiver” sahibi sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "CurrentWaiverThrough",
+            "label": "current waiver through"
+          }
+        ],
+        "structure": null,
+        "plain": "(current waiver through boş) koşulu sağlanmıyor"
+      },
+      "RiskRatingHistory.Name": {
+        "table": "RiskRatingHistory",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“risk rating history” kaydının “name” alanı, “loan” alanı, ardından bir kısa çizgi, ardından “TEXT” işlevinin “effective date” alanı ve “yyyy-mm-dd” için verdiği sonuç, ardından “-grade-”, ardından “TEXT” işlevinin “new grade” alanı ve “0” için verdiği sonuç olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "EffectiveDate",
+            "label": "effective date"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": null,
+        "plain": "(((loan ile \"-\" birleşimi) ile text(effective date, \"yyyy-mm-dd\") birleşimi) ile \"-grade-\" birleşimi) ile text(new grade, \"0\") birleşimi"
+      },
+      "RiskRatingHistory.LoanLabel": {
+        "table": "RiskRatingHistory",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "“risk rating history” kaydının “loan label” alanı, “loan” alanı üzerinden bağlı kaydın “loan number” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı loan kaydının loan number değeri"
+      },
+      "RiskRatingHistory.ChangedByUserLabel": {
+        "table": "RiskRatingHistory",
+        "field": "ChangedByUserLabel",
+        "kind": "lookup",
+        "rule": "“risk rating history” kaydının “changed by user label” alanı, “changed by user” alanı üzerinden bağlı kaydın “full name” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "ChangedByUser",
+            "label": "changed by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı changed by user kaydının full name değeri"
+      },
+      "RiskRatingHistory.GradeDelta": {
+        "table": "RiskRatingHistory",
+        "field": "GradeDelta",
+        "kind": "formula",
+        "rule": "“risk rating history” kaydının “grade delta” alanı, “new grade” alanı eksi “prior grade” alanı (eksik değer “new grade” alanı sayılır) olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "New grade eksi prior grade veya new grade değerlerinden boş olmayan ilki"
+      },
+      "RiskRatingHistory.IsDowngrade": {
+        "table": "RiskRatingHistory",
+        "field": "IsDowngrade",
+        "kind": "formula",
+        "rule": "“risk rating history” kaydı, “grade delta” alanı 0 değerinden büyük ise “downgrade” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "GradeDelta",
+            "label": "grade delta"
+          }
+        ],
+        "structure": null,
+        "plain": "Grade delta, 0 değerinden büyük"
+      },
+      "RiskRatingHistory.IsInitialRating": {
+        "table": "RiskRatingHistory",
+        "field": "IsInitialRating",
+        "kind": "formula",
+        "rule": "“risk rating history” kaydı, “prior grade” alanı (eksik değer 0 sayılır) 0 değerine eşit ise “initial rating” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "Prior grade veya 0 değerlerinden boş olmayan ilki, 0 değerine eşit"
+      },
+      "RiskRatingHistory.CrossedClassifiedThreshold": {
+        "table": "RiskRatingHistory",
+        "field": "CrossedClassifiedThreshold",
+        "kind": "formula",
+        "rule": "“risk rating history” kaydı, “prior grade” alanı (eksik değer 0 sayılır) 7 değerinden küçük ve “new grade” alanı en az 7 değerinde ise “crossed classified threshold” olarak işaretlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“risk rating history” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “crossed classified threshold” olarak işaretlenir:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“prior grade” alanı (eksik değer 0 sayılır) 7 değerinden küçük"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“new grade” alanı en az 7 değerinde"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "(prior grade veya 0 değerlerinden boş olmayan ilki, 7 değerinden küçük) ve new grade, en az 7 değerinde"
+      },
+      "Documents.Name": {
+        "table": "Documents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“document” kaydının “name” alanı, küçük harfe çevrilmiş “filename” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin değerindeki her bir nokta yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Filename",
+            "label": "filename"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş filename değerindeki her “ ” yerine “-” konularak elde edilen metin değerindeki her “.” yerine “-” konularak elde edilen metin"
+      },
+      "Documents.BusinessLabel": {
+        "table": "Documents",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "“document” kaydının “business label” alanı, “business” alanı üzerinden bağlı kaydın “legal name” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı business kaydının legal name değeri"
+      },
+      "Documents.LoanLabel": {
+        "table": "Documents",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "“document” kaydının “loan label” alanı, “loan” alanı üzerinden bağlı kaydın “loan number” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı loan kaydının loan number değeri"
+      },
+      "Documents.UploadedByUserLabel": {
+        "table": "Documents",
+        "field": "UploadedByUserLabel",
+        "kind": "lookup",
+        "rule": "“document” kaydının “uploaded by user label” alanı, “uploaded by user” alanı üzerinden bağlı kaydın “full name” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Documents",
+            "field": "UploadedByUser",
+            "label": "uploaded by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı uploaded by user kaydının full name değeri"
+      },
+      "Documents.AttachedTo": {
+        "table": "Documents",
+        "field": "AttachedTo",
+        "kind": "formula",
+        "rule": "“document” kaydının “attached to” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “loan” alanı dolu ise “Loan”;\n2. “business” alanı dolu ise “Business”;\n3. diğer tüm durumlarda “Orphan”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“document” kaydının “attached to” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“Loan”",
+              "when": {
+                "kind": "leaf",
+                "text": "“loan” alanı dolu"
+              }
+            },
+            {
+              "value": "“Business”",
+              "when": {
+                "kind": "leaf",
+                "text": "“business” alanı dolu"
+              }
+            },
+            {
+              "value": "“Orphan”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "(loan veya \"\" değerlerinden boş olmayan ilki, \"\" değerine eşit) koşulu sağlanmıyor ise \"Loan\", aksi takdirde (business veya \"\" değerlerinden boş olmayan ilki, \"\" değerine eşit) koşulu sağlanmıyor ise \"Business\", aksi takdirde \"Orphan\""
+      },
+      "Documents.FromCustomerPortal": {
+        "table": "Documents",
+        "field": "FromCustomerPortal",
+        "kind": "formula",
+        "rule": "“document” kaydı, “uploaded via” alanı “BusinessClientPortal” değerine eşit ise “from customer portal” olarak işaretlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "UploadedVia",
+            "label": "uploaded via"
+          }
+        ],
+        "structure": null,
+        "plain": "Uploaded via, \"BusinessClientPortal\" değerine eşit"
+      },
+      "Interactions.Name": {
+        "table": "Interactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“interaction” kaydının “name” alanı, “business” alanı, ardından bir kısa çizgi, ardından “TEXT” işlevinin “interaction date” alanı ve “yyyy-mm-dd” için verdiği sonuç, ardından bir kısa çizgi, ardından küçük harfe çevrilmiş “interaction type” alanı, ardından bir kısa çizgi, ardından küçük harfe çevrilmiş “subject” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionDate",
+            "label": "interaction date"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((business ile \"-\" birleşimi) ile text(interaction date, \"yyyy-mm-dd\") birleşimi) ile \"-\" birleşimi) ile küçük harfe çevrilmiş interaction type birleşimi) ile \"-\" birleşimi) ile küçük harfe çevrilmiş subject değerindeki her “ ” yerine “-” konularak elde edilen metin birleşimi"
+      },
+      "Interactions.BusinessLabel": {
+        "table": "Interactions",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "“interaction” kaydının “business label” alanı, “business” alanı üzerinden bağlı kaydın “legal name” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı business kaydının legal name değeri"
+      },
+      "Interactions.UserLabel": {
+        "table": "Interactions",
+        "field": "UserLabel",
+        "kind": "lookup",
+        "rule": "“interaction” kaydının “user label” alanı, “user” alanı üzerinden bağlı kaydın “full name” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Interactions",
+            "field": "User",
+            "label": "user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı user kaydının full name değeri"
+      },
+      "Interactions.IsSystemEvent": {
+        "table": "Interactions",
+        "field": "IsSystemEvent",
+        "kind": "formula",
+        "rule": "“interaction” kaydı, “interaction type” alanı “SystemEvent” değerine eşit ise “system event” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type, \"SystemEvent\" değerine eşit"
+      },
+      "Interactions.IsTask": {
+        "table": "Interactions",
+        "field": "IsTask",
+        "kind": "formula",
+        "rule": "“interaction” kaydı, “interaction type” alanı “Task” değerine eşit ise “task” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type, \"Task\" değerine eşit"
+      },
+      "Interactions.FromCustomer": {
+        "table": "Interactions",
+        "field": "FromCustomer",
+        "kind": "formula",
+        "rule": "“interaction” kaydı, “source” alanı “BusinessClientPortal” değerine eşit ise “from customer” olarak işaretlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Source",
+            "label": "source"
+          }
+        ],
+        "structure": null,
+        "plain": "Source, \"BusinessClientPortal\" değerine eşit"
+      },
+      "Interactions.IsCovenantEvent": {
+        "table": "Interactions",
+        "field": "IsCovenantEvent",
+        "kind": "formula",
+        "rule": "“interaction” kaydı, “system event” bayrağı etkin ve “subject” alanı “covenant breach” ifadesini içeriyor ise “covenant event” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "IsSystemEvent",
+            "label": "is system event"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“interaction” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “covenant event” sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“system event” bayrağı etkin"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“subject” alanı “covenant breach” ifadesini içeriyor"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is system event ve (find(\"covenant breach\", küçük harfe çevrilmiş subject), hata oluşursa 0, 0 değerine eşit) koşulu sağlanmıyor"
+      }
+    },
+    "obligations": [
+      {
+        "constraintKey": "loan-sod",
+        "entity": "Loan",
+        "predicate": "SegregationOfDutiesOk",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **loan-sod** *(zorunlu)* — A loan must not be funded by the same user who originated it: the originating relationship manager and the underwriter must be different users.\n  - _İhlal durumunda:_ “The same user originated and underwrote this loan — segregation of duties is violated.”\n  - _Kaynak:_ Internal Credit Policy §4.2"
+      },
+      {
+        "constraintKey": "biz-cdd",
+        "entity": "Business",
+        "predicate": "MeetsCddRule",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **biz-cdd** *(zorunlu)* — “business” kaydı, “beneficial owners at CDD threshold” alanı 0 değerinden büyük olmak **zorundadır**.\n  - _İhlal durumunda:_ “Beneficial-ownership (CDD) collection is incomplete: no owner crosses the 25% threshold and no control person is designated.”\n  - _Kaynak:_ FinCEN CDD Rule, 31 CFR 1010.230\n  - _Dayanak:_ Meets CDD Rule (bkz. DR-25)."
+      },
+      {
+        "constraintKey": "loan-dscr",
+        "entity": "Loan",
+        "predicate": "DscrInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-dscr** *(muaf tutulabilir)* — “loan” kaydı, “DSCR” alanı 1.20 değerinde veya daha büyük olmak **zorundadır** *(yetkili bir onaylayıcı tarafından muaf tutulabilir)*.\n  - _İhlal durumunda:_ “DSCR is below the 1.20 minimum; a credit-committee waiver is required to fund.”\n  - _Kaynak:_ Internal Credit Policy §2.1 (DSCR floor)\n  - _Dayanak:_ DSCR in Band (bkz. DR-46)."
+      },
+      {
+        "constraintKey": "loan-ltv",
+        "entity": "Loan",
+        "predicate": "LtvInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-ltv** *(muaf tutulabilir)* — “loan” kaydı, “LTV” alanı 0.80 değerinde veya daha küçük olmak **zorundadır** *(yetkili bir onaylayıcı tarafından muaf tutulabilir)*.\n  - _İhlal durumunda:_ “LTV exceeds the 0.80 ceiling; a credit-committee waiver is required to fund.”\n  - _Kaynak:_ Internal Credit Policy §2.2 (LTV ceiling)\n  - _Dayanak:_ LTV in Band (bkz. DR-47)."
+      },
+      {
+        "constraintKey": "loan-watchlist",
+        "entity": "Loan",
+        "predicate": "OnWatchlist",
+        "deontic": "ShouldBeTrue",
+        "severity": "soft",
+        "markdown": "- **loan-watchlist** *(tavsiye niteliğinde)* — “loan” kaydı için (“classified asset” bayrağı etkin veya “breached covenant” bayrağı etkin) koşulunu sağlamak **önerilir**.\n  - _İhlal durumunda:_ “This loan is a classified asset or has a breached covenant but is not flagged on the watchlist.”\n  - _Kaynak:_ Internal Portfolio Risk Procedure §6 (watchlist)\n  - _Dayanak:_ On Watchlist (bkz. DR-54)."
+      }
+    ],
+    "structural": {
+      "Users": [
+        "“user” kaydı, “full name” alanı, “role” alanı ve “email” alanı dolu olmak **zorundadır**."
+      ],
+      "Businesses": [
+        "“business” kaydı, “relationship manager” alanı aracılığıyla tam olarak bir “user” kaydına referans vermek **zorundadır**.",
+        "“business” kaydı, “legal name” alanı, “business structure” alanı, “NAICS code” alanı ve “status” alanı dolu olmak **zorundadır**."
+      ],
+      "BeneficialOwners": [
+        "“beneficial owner” kaydı, tam olarak bir “business” kaydına referans vermek **zorundadır**.",
+        "“beneficial owner” kaydı, “full name” alanı, “date of birth” alanı, “SSN” alanı, “address” alanı ve “ownership percentage” alanı dolu olmak, ayrıca “control person” olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ],
+      "Contacts": [
+        "“contact” kaydı, tam olarak bir “business” kaydına referans vermek **zorundadır**.",
+        "“contact” kaydı, “full name” alanı, “title” alanı ve “contact type” alanı dolu olmak, ayrıca “authorized signer” olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ],
+      "Accounts": [
+        "“account” kaydı, tam olarak bir “business” kaydına referans vermek **zorundadır**.",
+        "“account” kaydı, “account type” alanı, “account number last4” alanı, “current balance USD” alanı ve “opened at” alanı dolu olmak, ayrıca “ACH” sahibi olup olmadığı bilgisini, “wire” sahibi olup olmadığı bilgisini ve “card” sahibi olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ],
+      "Loans": [
+        "“loan” kaydı, tam olarak bir “business” kaydına referans vermek **zorundadır**.",
+        "“loan” kaydı, “originating RM” alanı aracılığıyla tam olarak bir “user” kaydına referans vermek **zorundadır**.",
+        "“loan” kaydı, “underwriter” alanı aracılığıyla tam olarak bir “user” kaydına referans vermek **zorundadır**.",
+        "“loan” kaydı, “loan number” alanı, “loan purpose” alanı, “principal USD” alanı, “rate pct” alanı, “term months” alanı, “underwriting stage” alanı, “risk rating” alanı, “risk rating label” alanı ve “originated at” alanı dolu olmak **zorundadır**."
+      ],
+      "Covenants": [
+        "“covenant” kaydı, tam olarak bir “loan” kaydına referans vermek **zorundadır**.",
+        "“covenant” kaydı, “covenant type” alanı, “test frequency” alanı, “next test date” alanı ve “status” alanı dolu olmak **zorundadır**."
+      ],
+      "RiskRatingHistory": [
+        "“risk rating history” kaydı, tam olarak bir “loan” kaydına referans vermek **zorundadır**.",
+        "“risk rating history” kaydı, “changed by user” alanı aracılığıyla tam olarak bir “user” kaydına referans vermek **zorundadır**.",
+        "“risk rating history” kaydı, “effective date” alanı, “new grade” alanı ve “reason” alanı dolu olmak **zorundadır**."
+      ],
+      "Documents": [
+        "“document” kaydı, “filename” alanı, “document type” alanı ve “uploaded at” alanı dolu olmak, ayrıca “ocr indexed” olarak işaretli olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ],
+      "Interactions": [
+        "“interaction” kaydı, tam olarak bir “business” kaydına referans vermek **zorundadır**.",
+        "“interaction” kaydı, “interaction type” alanı, “subject” alanı ve “interaction date” alanı dolu olmak **zorundadır**."
+      ]
+    },
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Businesses": "business",
+      "BeneficialOwners": "beneficial owner",
+      "Contacts": "contact",
+      "Accounts": "account",
+      "Loans": "loan",
+      "Covenants": "covenant",
+      "RiskRatingHistory": "risk rating history",
+      "Documents": "document",
+      "Interactions": "interaction"
+    }
+  },
+  "vi": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi user được tính bằng full name viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name viết bằng chữ thường sau khi thay “ ” bằng “-”"
+      },
+      "Users.IsRM": {
+        "table": "Users",
+        "field": "IsRM",
+        "kind": "formula",
+        "rule": "Mỗi user được coi là “RM” nếu role là “RM”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role là \"RM\""
+      },
+      "Users.IsUnderwriter": {
+        "table": "Users",
+        "field": "IsUnderwriter",
+        "kind": "formula",
+        "rule": "Mỗi user được coi là “underwriter” nếu role là “Underwriter”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role là \"Underwriter\""
+      },
+      "Users.IsBranchBanker": {
+        "table": "Users",
+        "field": "IsBranchBanker",
+        "kind": "formula",
+        "rule": "Mỗi user được coi là “branch banker” nếu role là “BranchBanker”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role là \"BranchBanker\""
+      },
+      "Users.IsAdmin": {
+        "table": "Users",
+        "field": "IsAdmin",
+        "kind": "formula",
+        "rule": "Mỗi user được coi là “admin” nếu role là “Admin”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role là \"Admin\""
+      },
+      "Users.CountOfPortfolioBusinesses": {
+        "table": "Users",
+        "field": "CountOfPortfolioBusinesses",
+        "kind": "rollup",
+        "rule": "Trường “count of portfolio businesses” của mỗi user là số lượng businesses liên quan đến user đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng businesses có relationship manager là bản ghi này"
+      },
+      "Users.CountOfOriginatedLoans": {
+        "table": "Users",
+        "field": "CountOfOriginatedLoans",
+        "kind": "rollup",
+        "rule": "Trường “count of originated loans” của mỗi user là số lượng loans liên quan đến user đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng loans có originating RM là bản ghi này"
+      },
+      "Users.CountOfUnderwrittenLoans": {
+        "table": "Users",
+        "field": "CountOfUnderwrittenLoans",
+        "kind": "rollup",
+        "rule": "Trường “count of underwritten loans” của mỗi user là số lượng loans liên quan đến user đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng loans có underwriter là bản ghi này"
+      },
+      "Businesses.Name": {
+        "table": "Businesses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi business được tính bằng legal name viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối sau khi thay mọi dấu chấm bằng chuỗi rỗng.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name viết bằng chữ thường sau khi thay “ ” bằng “-” sau khi thay “.” bằng “”"
+      },
+      "Businesses.RelationshipManagerLabel": {
+        "table": "Businesses",
+        "field": "RelationshipManagerLabel",
+        "kind": "lookup",
+        "rule": "Trường “relationship manager label” của mỗi business là trường “full name” của bản ghi liên kết qua trường “relationship manager”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name của bản ghi liên kết qua relationship manager"
+      },
+      "Businesses.IsCustomer": {
+        "table": "Businesses",
+        "field": "IsCustomer",
+        "kind": "formula",
+        "rule": "Mỗi business được coi là “customer” nếu status là “Customer”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status là \"Customer\""
+      },
+      "Businesses.IsProspect": {
+        "table": "Businesses",
+        "field": "IsProspect",
+        "kind": "formula",
+        "rule": "Mỗi business được coi là “prospect” nếu status là “Prospect”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status là \"Prospect\""
+      },
+      "Businesses.WasReferred": {
+        "table": "Businesses",
+        "field": "WasReferred",
+        "kind": "formula",
+        "rule": "Mỗi business được coi là đã “referred” nếu trường “referral source” đã có giá trị.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "ReferralSource",
+            "label": "referral source"
+          }
+        ],
+        "structure": null,
+        "plain": "Không phải giá trị đầu tiên không để trống trong số referral source hoặc \"\" là \"\""
+      },
+      "Businesses.CountOfBeneficialOwners": {
+        "table": "Businesses",
+        "field": "CountOfBeneficialOwners",
+        "kind": "rollup",
+        "rule": "Trường “count of beneficial owners” của mỗi business là số lượng beneficial owners liên quan đến business đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng beneficial owners có business là bản ghi này"
+      },
+      "Businesses.CountOfContacts": {
+        "table": "Businesses",
+        "field": "CountOfContacts",
+        "kind": "rollup",
+        "rule": "Trường “count of contacts” của mỗi business là số lượng contacts liên quan đến business đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng contacts có business là bản ghi này"
+      },
+      "Businesses.CountOfAccounts": {
+        "table": "Businesses",
+        "field": "CountOfAccounts",
+        "kind": "rollup",
+        "rule": "Trường “count of accounts” của mỗi business là số lượng accounts liên quan đến business đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng accounts có business là bản ghi này"
+      },
+      "Businesses.CountOfLoans": {
+        "table": "Businesses",
+        "field": "CountOfLoans",
+        "kind": "rollup",
+        "rule": "Trường “count of loans” của mỗi business là số lượng loans liên quan đến business đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng loans có business là bản ghi này"
+      },
+      "Businesses.CountOfInteractions": {
+        "table": "Businesses",
+        "field": "CountOfInteractions",
+        "kind": "rollup",
+        "rule": "Trường “count of interactions” của mỗi business là số lượng interactions liên quan đến business đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng interactions có business là bản ghi này"
+      },
+      "Businesses.CountOfDocuments": {
+        "table": "Businesses",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "Trường “count of documents” của mỗi business là số lượng documents liên quan đến business đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng documents có business là bản ghi này"
+      },
+      "Businesses.TotalDepositBalanceUsd": {
+        "table": "Businesses",
+        "field": "TotalDepositBalanceUsd",
+        "kind": "rollup",
+        "rule": "Trường “total deposit balance USD” của mỗi business là giá trị tổng cộng của trường “current balance USD” trên các accounts liên quan đến business đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "CurrentBalanceUsd",
+            "label": "current balance USD"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng current balance USD trên tất cả accounts có business là bản ghi này"
+      },
+      "Businesses.TotalLoanPrincipalUsd": {
+        "table": "Businesses",
+        "field": "TotalLoanPrincipalUsd",
+        "kind": "rollup",
+        "rule": "Trường “total loan principal USD” của mỗi business là giá trị tổng cộng của trường “principal USD” trên các loans liên quan đến business đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "PrincipalUsd",
+            "label": "principal USD"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng principal USD trên tất cả loans có business là bản ghi này"
+      },
+      "Businesses.CountOfClassifiedLoans": {
+        "table": "Businesses",
+        "field": "CountOfClassifiedLoans",
+        "kind": "rollup",
+        "rule": "Trường “count of classified loans” của mỗi business là số lượng loans liên quan đến business đó, chỉ tính các bản ghi là “classified asset”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng loans có business là bản ghi này và is classified asset là true()"
+      },
+      "Businesses.HasClassifiedLoan": {
+        "table": "Businesses",
+        "field": "HasClassifiedLoan",
+        "kind": "formula",
+        "rule": "Mỗi business được coi là có “classified loan” nếu count of classified loans lớn hơn 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "CountOfClassifiedLoans",
+            "label": "count of classified loans"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of classified loans lớn hơn 0"
+      },
+      "Businesses.BeneficialOwnersAtCddThreshold": {
+        "table": "Businesses",
+        "field": "BeneficialOwnersAtCddThreshold",
+        "kind": "rollup",
+        "rule": "Trường “beneficial owners at CDD threshold” của mỗi business là số lượng beneficial owners liên quan đến business đó, chỉ tính các bản ghi thỏa điều kiện “meets CDD threshold”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "MeetsCddThreshold",
+            "label": "meets CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng beneficial owners có business là bản ghi này và meets CDD threshold là true()"
+      },
+      "Businesses.MeetsCddRule": {
+        "table": "Businesses",
+        "field": "MeetsCddRule",
+        "kind": "formula",
+        "rule": "Mỗi business được coi là thỏa điều kiện “meets CDD rule” nếu beneficial owners at CDD threshold lớn hơn 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "BeneficialOwnersAtCddThreshold",
+            "label": "beneficial owners at CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Beneficial owners at CDD threshold lớn hơn 0"
+      },
+      "Businesses.PortfolioPriority": {
+        "table": "Businesses",
+        "field": "PortfolioPriority",
+        "kind": "formula",
+        "rule": "Trường “portfolio priority” của mỗi business được xác định theo thứ tự ưu tiên sau:\n1. “High”, nếu cờ “classified loan” được bật;\n2. “Medium”, nếu ít nhất một trong các điều kiện sau đúng: cờ “meets CDD rule” không được bật, cờ “prospect” được bật hoặc count of loans là 0;\n3. trong mọi trường hợp còn lại, “Low”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "HasClassifiedLoan",
+            "label": "has classified loan"
+          },
+          {
+            "table": "Businesses",
+            "field": "MeetsCddRule",
+            "label": "meets CDD rule"
+          },
+          {
+            "table": "Businesses",
+            "field": "IsProspect",
+            "label": "is prospect"
+          },
+          {
+            "table": "Businesses",
+            "field": "CountOfLoans",
+            "label": "count of loans"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “portfolio priority” của mỗi business được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“High”",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “classified loan” được bật"
+              }
+            },
+            {
+              "value": "“Medium”",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "cờ “meets CDD rule” không được bật"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "cờ “prospect” được bật"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "count of loans là 0"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Low”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu has classified loan thì \"High\", nếu không thì nếu không phải meets CDD rule, is prospect hoặc count of loans bằng 0 thì \"Medium\", nếu không thì \"Low\""
+      },
+      "BeneficialOwners.Name": {
+        "table": "BeneficialOwners",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi beneficial owner được tính bằng business, tiếp theo là dấu gạch nối, tiếp theo là full name viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "(business nối với \"-\") nối với full name viết bằng chữ thường sau khi thay “ ” bằng “-”"
+      },
+      "BeneficialOwners.BusinessLabel": {
+        "table": "BeneficialOwners",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Trường “business label” của mỗi beneficial owner là trường “legal name” của bản ghi liên kết qua trường “business”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name của bản ghi liên kết qua business"
+      },
+      "BeneficialOwners.Meets25PercentThreshold": {
+        "table": "BeneficialOwners",
+        "field": "Meets25PercentThreshold",
+        "kind": "formula",
+        "rule": "Mỗi beneficial owner được đánh dấu là “meets25 percent threshold” nếu ownership percentage không nhỏ hơn 25.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "OwnershipPercentage",
+            "label": "ownership percentage"
+          }
+        ],
+        "structure": null,
+        "plain": "Ownership percentage không nhỏ hơn 25"
+      },
+      "BeneficialOwners.MeetsCddThreshold": {
+        "table": "BeneficialOwners",
+        "field": "MeetsCddThreshold",
+        "kind": "formula",
+        "rule": "Mỗi beneficial owner được coi là thỏa điều kiện “meets CDD threshold” nếu ít nhất một trong các điều kiện sau đúng: cờ “meets25 percent threshold” được bật hoặc cờ “control person” được bật.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Meets25PercentThreshold",
+            "label": "meets25 percent threshold"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "IsControlPerson",
+            "label": "is control person"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi beneficial owner được coi là thỏa điều kiện “meets CDD threshold” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "cờ “meets25 percent threshold” được bật"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "cờ “control person” được bật"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Meets25 percent threshold hoặc is control person"
+      },
+      "Contacts.Name": {
+        "table": "Contacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi contact được tính bằng business, tiếp theo là dấu gạch nối, tiếp theo là full name viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối, tiếp theo là dấu gạch nối, tiếp theo là title viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Contacts",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business nối với \"-\") nối với full name viết bằng chữ thường sau khi thay “ ” bằng “-”) nối với \"-\") nối với title viết bằng chữ thường sau khi thay “ ” bằng “-”"
+      },
+      "Contacts.BusinessLabel": {
+        "table": "Contacts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Trường “business label” của mỗi contact là trường “legal name” của bản ghi liên kết qua trường “business”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name của bản ghi liên kết qua business"
+      },
+      "Contacts.IsOfficer": {
+        "table": "Contacts",
+        "field": "IsOfficer",
+        "kind": "formula",
+        "rule": "Mỗi contact được coi là “officer” nếu contact type là “Officer”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type là \"Officer\""
+      },
+      "Contacts.IsApClerk": {
+        "table": "Contacts",
+        "field": "IsApClerk",
+        "kind": "formula",
+        "rule": "Mỗi contact được coi là “AP clerk” nếu contact type là “APClerk”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type là \"APClerk\""
+      },
+      "Accounts.Name": {
+        "table": "Accounts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi account được tính bằng business, tiếp theo là dấu gạch nối, tiếp theo là account type viết bằng chữ thường, tiếp theo là dấu gạch nối, tiếp theo là account number last4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountType",
+            "label": "account type"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountNumberLast4",
+            "label": "account number last4"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business nối với \"-\") nối với account type viết bằng chữ thường) nối với \"-\") nối với account number last4"
+      },
+      "Accounts.BusinessLabel": {
+        "table": "Accounts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Trường “business label” của mỗi account là trường “legal name” của bản ghi liên kết qua trường “business”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name của bản ghi liên kết qua business"
+      },
+      "Accounts.TreasuryServiceCount": {
+        "table": "Accounts",
+        "field": "TreasuryServiceCount",
+        "kind": "formula",
+        "rule": "Trường “treasury service count” của mỗi account được tính bằng số điều kiện đúng trong các điều kiện sau: cờ “ACH” được bật, cờ “wire” được bật và cờ “card” được bật.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "HasAch",
+            "label": "has ACH"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasWire",
+            "label": "has wire"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasCard",
+            "label": "has card"
+          }
+        ],
+        "structure": null,
+        "plain": "(nếu has ACH thì 1, nếu không thì 0 cộng nếu has wire thì 1, nếu không thì 0) cộng nếu has card thì 1, nếu không thì 0"
+      },
+      "Accounts.HasAnyTreasuryService": {
+        "table": "Accounts",
+        "field": "HasAnyTreasuryService",
+        "kind": "formula",
+        "rule": "Mỗi account được coi là có “any treasury service” nếu treasury service count lớn hơn 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "TreasuryServiceCount",
+            "label": "treasury service count"
+          }
+        ],
+        "structure": null,
+        "plain": "Treasury service count lớn hơn 0"
+      },
+      "Loans.Name": {
+        "table": "Loans",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi loan được tính bằng loan number viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan number viết bằng chữ thường sau khi thay “ ” bằng “-”"
+      },
+      "Loans.BusinessLabel": {
+        "table": "Loans",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Trường “business label” của mỗi loan là trường “legal name” của bản ghi liên kết qua trường “business”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name của bản ghi liên kết qua business"
+      },
+      "Loans.BusinessNaicsCode": {
+        "table": "Loans",
+        "field": "BusinessNaicsCode",
+        "kind": "lookup",
+        "rule": "Trường “business NAICS code” của mỗi loan được lấy từ bản ghi liên kết qua trường “business”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "NaicsCode",
+            "label": "NAICS code"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "NAICS code của bản ghi liên kết qua business"
+      },
+      "Loans.OriginatingRmLabel": {
+        "table": "Loans",
+        "field": "OriginatingRmLabel",
+        "kind": "lookup",
+        "rule": "Trường “originating RM label” của mỗi loan là trường “full name” của bản ghi liên kết qua trường “originating RM”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name của bản ghi liên kết qua originating RM"
+      },
+      "Loans.UnderwriterIsAdmin": {
+        "table": "Loans",
+        "field": "UnderwriterIsAdmin",
+        "kind": "lookup",
+        "rule": "Trường “underwriter is admin” của mỗi loan có giá trị đúng khi bản ghi liên kết qua trường “underwriter” là “admin”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "IsAdmin",
+            "label": "is admin"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Is admin của bản ghi liên kết qua underwriter"
+      },
+      "Loans.IsFunded": {
+        "table": "Loans",
+        "field": "IsFunded",
+        "kind": "formula",
+        "rule": "Mỗi loan được coi là “funded” nếu underwriting stage là “Funded”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "UnderwritingStage",
+            "label": "underwriting stage"
+          }
+        ],
+        "structure": null,
+        "plain": "Underwriting stage là \"Funded\""
+      },
+      "Loans.IsClassifiedAsset": {
+        "table": "Loans",
+        "field": "IsClassifiedAsset",
+        "kind": "formula",
+        "rule": "Mỗi loan được coi là “classified asset” nếu risk rating không nhỏ hơn 7.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "RiskRating",
+            "label": "risk rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Risk rating không nhỏ hơn 7"
+      },
+      "Loans.DscrInBand": {
+        "table": "Loans",
+        "field": "DscrInBand",
+        "kind": "formula",
+        "rule": "Mỗi loan được đánh dấu là “DSCR in band” nếu DSCR (giá trị thiếu được tính là 0) không nhỏ hơn 1.20.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Dscr",
+            "label": "DSCR"
+          }
+        ],
+        "structure": null,
+        "plain": "Giá trị đầu tiên không để trống trong số DSCR hoặc 0 không nhỏ hơn 1.20"
+      },
+      "Loans.LtvInBand": {
+        "table": "Loans",
+        "field": "LtvInBand",
+        "kind": "formula",
+        "rule": "Mỗi loan được đánh dấu là “LTV in band” nếu LTV (giá trị thiếu được tính là 0) không lớn hơn 0.80.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Ltv",
+            "label": "LTV"
+          }
+        ],
+        "structure": null,
+        "plain": "Giá trị đầu tiên không để trống trong số LTV hoặc 0 không lớn hơn 0.80"
+      },
+      "Loans.SegregationOfDutiesOk": {
+        "table": "Loans",
+        "field": "SegregationOfDutiesOk",
+        "kind": "formula",
+        "rule": "Mỗi loan được đánh dấu là “segregation of duties ok” nếu không xảy ra việc originating RM là underwriter.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          }
+        ],
+        "structure": null,
+        "plain": "Không phải originating RM bằng underwriter"
+      },
+      "Loans.CountOfCovenants": {
+        "table": "Loans",
+        "field": "CountOfCovenants",
+        "kind": "rollup",
+        "rule": "Trường “count of covenants” của mỗi loan là số lượng covenants liên quan đến loan đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng covenants có loan là bản ghi này"
+      },
+      "Loans.CountOfBreachedCovenants": {
+        "table": "Loans",
+        "field": "CountOfBreachedCovenants",
+        "kind": "rollup",
+        "rule": "Trường “count of breached covenants” của mỗi loan là số lượng covenants liên quan đến loan đó, chỉ tính các bản ghi là “breached”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Covenants",
+            "field": "IsBreached",
+            "label": "is breached"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng covenants có loan là bản ghi này và is breached là true()"
+      },
+      "Loans.CountOfRiskRatingHistory": {
+        "table": "Loans",
+        "field": "CountOfRiskRatingHistory",
+        "kind": "rollup",
+        "rule": "Trường “count of risk rating history” của mỗi loan là số lượng risk rating history liên quan đến loan đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng risk rating history có loan là bản ghi này"
+      },
+      "Loans.CountOfDocuments": {
+        "table": "Loans",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "Trường “count of documents” của mỗi loan là số lượng documents liên quan đến loan đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng documents có loan là bản ghi này"
+      },
+      "Loans.HasBreachedCovenant": {
+        "table": "Loans",
+        "field": "HasBreachedCovenant",
+        "kind": "formula",
+        "rule": "Mỗi loan được coi là có “breached covenant” nếu count of breached covenants lớn hơn 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "CountOfBreachedCovenants",
+            "label": "count of breached covenants"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of breached covenants lớn hơn 0"
+      },
+      "Loans.OnWatchlist": {
+        "table": "Loans",
+        "field": "OnWatchlist",
+        "kind": "formula",
+        "rule": "Mỗi loan được đánh dấu là “on watchlist” nếu ít nhất một trong các điều kiện sau đúng: cờ “classified asset” được bật hoặc cờ “breached covenant” được bật.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi loan được đánh dấu là “on watchlist” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "cờ “classified asset” được bật"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "cờ “breached covenant” được bật"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is classified asset hoặc has breached covenant"
+      },
+      "Loans.HealthScore": {
+        "table": "Loans",
+        "field": "HealthScore",
+        "kind": "formula",
+        "rule": "Trường “health score” của mỗi loan được tính bằng số điều kiện đúng trong các điều kiện sau: cờ “DSCR in band” được bật, cờ “LTV in band” được bật, cờ “classified asset” không được bật và cờ “breached covenant” không được bật.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "DscrInBand",
+            "label": "DSCR in band"
+          },
+          {
+            "table": "Loans",
+            "field": "LtvInBand",
+            "label": "LTV in band"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": null,
+        "plain": "((nếu DSCR in band thì 1, nếu không thì 0 cộng nếu LTV in band thì 1, nếu không thì 0) cộng nếu is classified asset thì 0, nếu không thì 1) cộng nếu has breached covenant thì 0, nếu không thì 1"
+      },
+      "Covenants.Name": {
+        "table": "Covenants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi covenant được tính bằng loan, tiếp theo là dấu gạch nối, tiếp theo là covenant type viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Covenants",
+            "field": "CovenantType",
+            "label": "covenant type"
+          }
+        ],
+        "structure": null,
+        "plain": "(loan nối với \"-\") nối với covenant type viết bằng chữ thường sau khi thay “ ” bằng “-”"
+      },
+      "Covenants.LoanLabel": {
+        "table": "Covenants",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Trường “loan label” của mỗi covenant là trường “loan number” của bản ghi liên kết qua trường “loan”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan number của bản ghi liên kết qua loan"
+      },
+      "Covenants.LoanBusiness": {
+        "table": "Covenants",
+        "field": "LoanBusiness",
+        "kind": "lookup",
+        "rule": "Trường “loan business” của mỗi covenant được lấy từ bản ghi liên kết qua trường “loan”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business của bản ghi liên kết qua loan"
+      },
+      "Covenants.IsBreached": {
+        "table": "Covenants",
+        "field": "IsBreached",
+        "kind": "formula",
+        "rule": "Mỗi covenant được coi là “breached” nếu status là “Breached”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status là \"Breached\""
+      },
+      "Covenants.HasActiveWaiver": {
+        "table": "Covenants",
+        "field": "HasActiveWaiver",
+        "kind": "formula",
+        "rule": "Mỗi covenant được coi là có “active waiver” nếu current waiver through có giá trị.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "CurrentWaiverThrough",
+            "label": "current waiver through"
+          }
+        ],
+        "structure": null,
+        "plain": "Không phải current waiver through để trống"
+      },
+      "RiskRatingHistory.Name": {
+        "table": "RiskRatingHistory",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi risk rating history được tính bằng loan, tiếp theo là dấu gạch nối, tiếp theo là kết quả của hàm TEXT trên effective date và “yyyy-mm-dd”, tiếp theo là “-grade-”, tiếp theo là kết quả của hàm TEXT trên new grade và “0”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "EffectiveDate",
+            "label": "effective date"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": null,
+        "plain": "(((loan nối với \"-\") nối với text(effective date, \"yyyy-mm-dd\")) nối với \"-grade-\") nối với text(new grade, \"0\")"
+      },
+      "RiskRatingHistory.LoanLabel": {
+        "table": "RiskRatingHistory",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Trường “loan label” của mỗi risk rating history là trường “loan number” của bản ghi liên kết qua trường “loan”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan number của bản ghi liên kết qua loan"
+      },
+      "RiskRatingHistory.ChangedByUserLabel": {
+        "table": "RiskRatingHistory",
+        "field": "ChangedByUserLabel",
+        "kind": "lookup",
+        "rule": "Trường “changed by user label” của mỗi risk rating history là trường “full name” của bản ghi liên kết qua trường “changed by user”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "ChangedByUser",
+            "label": "changed by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name của bản ghi liên kết qua changed by user"
+      },
+      "RiskRatingHistory.GradeDelta": {
+        "table": "RiskRatingHistory",
+        "field": "GradeDelta",
+        "kind": "formula",
+        "rule": "Trường “grade delta” của mỗi risk rating history được tính bằng new grade trừ prior grade (giá trị thiếu được tính là new grade).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "New grade trừ giá trị đầu tiên không để trống trong số prior grade hoặc new grade"
+      },
+      "RiskRatingHistory.IsDowngrade": {
+        "table": "RiskRatingHistory",
+        "field": "IsDowngrade",
+        "kind": "formula",
+        "rule": "Mỗi risk rating history được coi là “downgrade” nếu grade delta lớn hơn 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "GradeDelta",
+            "label": "grade delta"
+          }
+        ],
+        "structure": null,
+        "plain": "Grade delta lớn hơn 0"
+      },
+      "RiskRatingHistory.IsInitialRating": {
+        "table": "RiskRatingHistory",
+        "field": "IsInitialRating",
+        "kind": "formula",
+        "rule": "Mỗi risk rating history được coi là “initial rating” nếu prior grade (giá trị thiếu được tính là 0) là 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "Giá trị đầu tiên không để trống trong số prior grade hoặc 0 bằng 0"
+      },
+      "RiskRatingHistory.CrossedClassifiedThreshold": {
+        "table": "RiskRatingHistory",
+        "field": "CrossedClassifiedThreshold",
+        "kind": "formula",
+        "rule": "Mỗi risk rating history được đánh dấu là “crossed classified threshold” nếu tất cả các điều kiện sau đều đúng: prior grade (giá trị thiếu được tính là 0) nhỏ hơn 7 và new grade không nhỏ hơn 7.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi risk rating history được đánh dấu là “crossed classified threshold” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "prior grade (giá trị thiếu được tính là 0) nhỏ hơn 7"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "new grade không nhỏ hơn 7"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Giá trị đầu tiên không để trống trong số prior grade hoặc 0 nhỏ hơn 7 và new grade không nhỏ hơn 7"
+      },
+      "Documents.Name": {
+        "table": "Documents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi document được tính bằng filename viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối sau khi thay mọi dấu chấm bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Filename",
+            "label": "filename"
+          }
+        ],
+        "structure": null,
+        "plain": "Filename viết bằng chữ thường sau khi thay “ ” bằng “-” sau khi thay “.” bằng “-”"
+      },
+      "Documents.BusinessLabel": {
+        "table": "Documents",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Trường “business label” của mỗi document là trường “legal name” của bản ghi liên kết qua trường “business”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name của bản ghi liên kết qua business"
+      },
+      "Documents.LoanLabel": {
+        "table": "Documents",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "Trường “loan label” của mỗi document là trường “loan number” của bản ghi liên kết qua trường “loan”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan number của bản ghi liên kết qua loan"
+      },
+      "Documents.UploadedByUserLabel": {
+        "table": "Documents",
+        "field": "UploadedByUserLabel",
+        "kind": "lookup",
+        "rule": "Trường “uploaded by user label” của mỗi document là trường “full name” của bản ghi liên kết qua trường “uploaded by user”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Documents",
+            "field": "UploadedByUser",
+            "label": "uploaded by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name của bản ghi liên kết qua uploaded by user"
+      },
+      "Documents.AttachedTo": {
+        "table": "Documents",
+        "field": "AttachedTo",
+        "kind": "formula",
+        "rule": "Trường “attached to” của mỗi document được xác định theo thứ tự ưu tiên sau:\n1. “Loan”, nếu trường “loan” đã có giá trị;\n2. “Business”, nếu trường “business” đã có giá trị;\n3. trong mọi trường hợp còn lại, “Orphan”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “attached to” của mỗi document được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“Loan”",
+              "when": {
+                "kind": "leaf",
+                "text": "trường “loan” đã có giá trị"
+              }
+            },
+            {
+              "value": "“Business”",
+              "when": {
+                "kind": "leaf",
+                "text": "trường “business” đã có giá trị"
+              }
+            },
+            {
+              "value": "“Orphan”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu không phải giá trị đầu tiên không để trống trong số loan hoặc \"\" là \"\" thì \"Loan\", nếu không thì nếu không phải giá trị đầu tiên không để trống trong số business hoặc \"\" là \"\" thì \"Business\", nếu không thì \"Orphan\""
+      },
+      "Documents.FromCustomerPortal": {
+        "table": "Documents",
+        "field": "FromCustomerPortal",
+        "kind": "formula",
+        "rule": "Mỗi document được đánh dấu là “from customer portal” nếu uploaded via là “BusinessClientPortal”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "UploadedVia",
+            "label": "uploaded via"
+          }
+        ],
+        "structure": null,
+        "plain": "Uploaded via là \"BusinessClientPortal\""
+      },
+      "Interactions.Name": {
+        "table": "Interactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi interaction được tính bằng business, tiếp theo là dấu gạch nối, tiếp theo là kết quả của hàm TEXT trên interaction date và “yyyy-mm-dd”, tiếp theo là dấu gạch nối, tiếp theo là interaction type viết bằng chữ thường, tiếp theo là dấu gạch nối, tiếp theo là subject viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionDate",
+            "label": "interaction date"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((business nối với \"-\") nối với text(interaction date, \"yyyy-mm-dd\")) nối với \"-\") nối với interaction type viết bằng chữ thường) nối với \"-\") nối với subject viết bằng chữ thường sau khi thay “ ” bằng “-”"
+      },
+      "Interactions.BusinessLabel": {
+        "table": "Interactions",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "Trường “business label” của mỗi interaction là trường “legal name” của bản ghi liên kết qua trường “business”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Legal name của bản ghi liên kết qua business"
+      },
+      "Interactions.UserLabel": {
+        "table": "Interactions",
+        "field": "UserLabel",
+        "kind": "lookup",
+        "rule": "Trường “user label” của mỗi interaction là trường “full name” của bản ghi liên kết qua trường “user”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Interactions",
+            "field": "User",
+            "label": "user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name của bản ghi liên kết qua user"
+      },
+      "Interactions.IsSystemEvent": {
+        "table": "Interactions",
+        "field": "IsSystemEvent",
+        "kind": "formula",
+        "rule": "Mỗi interaction được coi là “system event” nếu interaction type là “SystemEvent”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type là \"SystemEvent\""
+      },
+      "Interactions.IsTask": {
+        "table": "Interactions",
+        "field": "IsTask",
+        "kind": "formula",
+        "rule": "Mỗi interaction được coi là “task” nếu interaction type là “Task”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type là \"Task\""
+      },
+      "Interactions.FromCustomer": {
+        "table": "Interactions",
+        "field": "FromCustomer",
+        "kind": "formula",
+        "rule": "Mỗi interaction được đánh dấu là “from customer” nếu source là “BusinessClientPortal”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Source",
+            "label": "source"
+          }
+        ],
+        "structure": null,
+        "plain": "Source là \"BusinessClientPortal\""
+      },
+      "Interactions.IsCovenantEvent": {
+        "table": "Interactions",
+        "field": "IsCovenantEvent",
+        "kind": "formula",
+        "rule": "Mỗi interaction được coi là “covenant event” nếu tất cả các điều kiện sau đều đúng: cờ “system event” được bật và subject có chứa “covenant breach”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "IsSystemEvent",
+            "label": "is system event"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi interaction được coi là “covenant event” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "cờ “system event” được bật"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "subject có chứa “covenant breach”"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is system event và không phải find(\"covenant breach\", subject viết bằng chữ thường), hoặc 0 nếu biểu thức đó bị lỗi bằng 0"
+      }
+    },
+    "obligations": [
+      {
+        "constraintKey": "loan-sod",
+        "entity": "Loan",
+        "predicate": "SegregationOfDutiesOk",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **loan-sod** *(bắt buộc)* — A loan must not be funded by the same user who originated it: the originating relationship manager and the underwriter must be different users.\n  - _Khi vi phạm:_ “The same user originated and underwrote this loan — segregation of duties is violated.”\n  - _Nguồn:_ Internal Credit Policy §4.2"
+      },
+      {
+        "constraintKey": "biz-cdd",
+        "entity": "Business",
+        "predicate": "MeetsCddRule",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **biz-cdd** *(bắt buộc)* — Mỗi business **phải** có beneficial owners at CDD threshold lớn hơn 0.\n  - _Khi vi phạm:_ “Beneficial-ownership (CDD) collection is incomplete: no owner crosses the 25% threshold and no control person is designated.”\n  - _Nguồn:_ FinCEN CDD Rule, 31 CFR 1010.230\n  - _Căn cứ vào:_ Meets CDD Rule (xem DR-25)."
+      },
+      {
+        "constraintKey": "loan-dscr",
+        "entity": "Loan",
+        "predicate": "DscrInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-dscr** *(cho phép miễn trừ)* — Mỗi loan **phải** có DSCR không nhỏ hơn 1.20 *(được miễn trừ khi người phê duyệt có thẩm quyền chấp thuận)*.\n  - _Khi vi phạm:_ “DSCR is below the 1.20 minimum; a credit-committee waiver is required to fund.”\n  - _Nguồn:_ Internal Credit Policy §2.1 (DSCR floor)\n  - _Căn cứ vào:_ DSCR in Band (xem DR-46)."
+      },
+      {
+        "constraintKey": "loan-ltv",
+        "entity": "Loan",
+        "predicate": "LtvInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-ltv** *(cho phép miễn trừ)* — Mỗi loan **phải** có LTV không lớn hơn 0.80 *(được miễn trừ khi người phê duyệt có thẩm quyền chấp thuận)*.\n  - _Khi vi phạm:_ “LTV exceeds the 0.80 ceiling; a credit-committee waiver is required to fund.”\n  - _Nguồn:_ Internal Credit Policy §2.2 (LTV ceiling)\n  - _Căn cứ vào:_ LTV in Band (xem DR-47)."
+      },
+      {
+        "constraintKey": "loan-watchlist",
+        "entity": "Loan",
+        "predicate": "OnWatchlist",
+        "deontic": "ShouldBeTrue",
+        "severity": "soft",
+        "markdown": "- **loan-watchlist** *(khuyến nghị)* — Mỗi loan **nên** bảo đảm rằng ít nhất một trong các điều kiện sau đúng: cờ “classified asset” được bật hoặc cờ “breached covenant” được bật.\n  - _Khi vi phạm:_ “This loan is a classified asset or has a breached covenant but is not flagged on the watchlist.”\n  - _Nguồn:_ Internal Portfolio Risk Procedure §6 (watchlist)\n  - _Căn cứ vào:_ On Watchlist (xem DR-54)."
+      }
+    ],
+    "structural": {
+      "Users": [
+        "Mỗi user **phải** có full name, role và email."
+      ],
+      "Businesses": [
+        "Mỗi business **phải** tham chiếu đến đúng một user với vai trò relationship manager.",
+        "Mỗi business **phải** có legal name, business structure, NAICS code và status."
+      ],
+      "BeneficialOwners": [
+        "Mỗi beneficial owner **phải** tham chiếu đến đúng một business.",
+        "Mỗi beneficial owner **phải** có full name, date of birth, SSN, address và ownership percentage, đồng thời được ghi nhận rõ là “control person” hay không."
+      ],
+      "Contacts": [
+        "Mỗi contact **phải** tham chiếu đến đúng một business.",
+        "Mỗi contact **phải** có full name, title và contact type, đồng thời được ghi nhận rõ là “authorized signer” hay không."
+      ],
+      "Accounts": [
+        "Mỗi account **phải** tham chiếu đến đúng một business.",
+        "Mỗi account **phải** có account type, account number last4, current balance USD và opened at, đồng thời được ghi nhận rõ có “ACH” hay không, có “wire” hay không và có “card” hay không."
+      ],
+      "Loans": [
+        "Mỗi loan **phải** tham chiếu đến đúng một business.",
+        "Mỗi loan **phải** tham chiếu đến đúng một user với vai trò originating RM.",
+        "Mỗi loan **phải** tham chiếu đến đúng một user với vai trò underwriter.",
+        "Mỗi loan **phải** có loan number, loan purpose, principal USD, rate pct, term months, underwriting stage, risk rating, risk rating label và originated at."
+      ],
+      "Covenants": [
+        "Mỗi covenant **phải** tham chiếu đến đúng một loan.",
+        "Mỗi covenant **phải** có covenant type, test frequency, next test date và status."
+      ],
+      "RiskRatingHistory": [
+        "Mỗi risk rating history **phải** tham chiếu đến đúng một loan.",
+        "Mỗi risk rating history **phải** tham chiếu đến đúng một user với vai trò changed by user.",
+        "Mỗi risk rating history **phải** có effective date, new grade và reason."
+      ],
+      "Documents": [
+        "Mỗi document **phải** có filename, document type và uploaded at, đồng thời được ghi nhận rõ là “ocr indexed” hay không."
+      ],
+      "Interactions": [
+        "Mỗi interaction **phải** tham chiếu đến đúng một business.",
+        "Mỗi interaction **phải** có interaction type, subject và interaction date."
+      ]
+    },
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Businesses": "business",
+      "BeneficialOwners": "beneficial owner",
+      "Contacts": "contact",
+      "Accounts": "account",
+      "Loans": "loan",
+      "Covenants": "covenant",
+      "RiskRatingHistory": "risk rating history",
+      "Documents": "document",
+      "Interactions": "interaction"
+    }
+  },
+  "zh": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "user的“name”按 转为小写的full name中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的full name中“ ”替换为“-”后的结果"
+      },
+      "Users.IsRM": {
+        "table": "Users",
+        "field": "IsRM",
+        "kind": "formula",
+        "rule": "当role为“RM”时,user被视为“RM”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role为\"RM\""
+      },
+      "Users.IsUnderwriter": {
+        "table": "Users",
+        "field": "IsUnderwriter",
+        "kind": "formula",
+        "rule": "当role为“Underwriter”时,user被视为“Underwriter”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role为\"Underwriter\""
+      },
+      "Users.IsBranchBanker": {
+        "table": "Users",
+        "field": "IsBranchBanker",
+        "kind": "formula",
+        "rule": "当role为“BranchBanker”时,user被视为“Branch Banker”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role为\"BranchBanker\""
+      },
+      "Users.IsAdmin": {
+        "table": "Users",
+        "field": "IsAdmin",
+        "kind": "formula",
+        "rule": "当role为“Admin”时,user被视为“Admin”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Role",
+            "label": "role"
+          }
+        ],
+        "structure": null,
+        "plain": "Role为\"Admin\""
+      },
+      "Users.CountOfPortfolioBusinesses": {
+        "table": "Users",
+        "field": "CountOfPortfolioBusinesses",
+        "kind": "rollup",
+        "rule": "user的“count of portfolio businesses”为 与user相关的“businesses”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Relationship manager为本记录的“businesses”的数量"
+      },
+      "Users.CountOfOriginatedLoans": {
+        "table": "Users",
+        "field": "CountOfOriginatedLoans",
+        "kind": "rollup",
+        "rule": "user的“count of originated loans”为 与user相关的“loans”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Originating RM为本记录的“loans”的数量"
+      },
+      "Users.CountOfUnderwrittenLoans": {
+        "table": "Users",
+        "field": "CountOfUnderwrittenLoans",
+        "kind": "rollup",
+        "rule": "user的“count of underwritten loans”为 与user相关的“loans”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Underwriter为本记录的“loans”的数量"
+      },
+      "Businesses.Name": {
+        "table": "Businesses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "business的“name”按 转为小写的legal name中的每个一个空格替换为一个连字符后的结果中的每个一个句点替换为空字符串后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的legal name中“ ”替换为“-”后的结果中“.”替换为“”后的结果"
+      },
+      "Businesses.RelationshipManagerLabel": {
+        "table": "Businesses",
+        "field": "RelationshipManagerLabel",
+        "kind": "lookup",
+        "rule": "business的“relationship manager label”是所关联的“relationship manager”的“full name”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Businesses",
+            "field": "RelationshipManager",
+            "label": "relationship manager"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“relationship manager”的full name"
+      },
+      "Businesses.IsCustomer": {
+        "table": "Businesses",
+        "field": "IsCustomer",
+        "kind": "formula",
+        "rule": "当status为“Customer”时,business被视为“Customer”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status为\"Customer\""
+      },
+      "Businesses.IsProspect": {
+        "table": "Businesses",
+        "field": "IsProspect",
+        "kind": "formula",
+        "rule": "当status为“Prospect”时,business被视为“Prospect”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status为\"Prospect\""
+      },
+      "Businesses.WasReferred": {
+        "table": "Businesses",
+        "field": "WasReferred",
+        "kind": "formula",
+        "rule": "当字段“referral source”已填写时,business被视为已“Referred”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "ReferralSource",
+            "label": "referral source"
+          }
+        ],
+        "structure": null,
+        "plain": "并非referral source或\"\"中第一个非空的值为\"\""
+      },
+      "Businesses.CountOfBeneficialOwners": {
+        "table": "Businesses",
+        "field": "CountOfBeneficialOwners",
+        "kind": "rollup",
+        "rule": "business的“count of beneficial owners”为 与business相关的“beneficial owners”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business为本记录的“beneficial owners”的数量"
+      },
+      "Businesses.CountOfContacts": {
+        "table": "Businesses",
+        "field": "CountOfContacts",
+        "kind": "rollup",
+        "rule": "business的“count of contacts”为 与business相关的“contacts”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business为本记录的“contacts”的数量"
+      },
+      "Businesses.CountOfAccounts": {
+        "table": "Businesses",
+        "field": "CountOfAccounts",
+        "kind": "rollup",
+        "rule": "business的“count of accounts”为 与business相关的“accounts”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business为本记录的“accounts”的数量"
+      },
+      "Businesses.CountOfLoans": {
+        "table": "Businesses",
+        "field": "CountOfLoans",
+        "kind": "rollup",
+        "rule": "business的“count of loans”为 与business相关的“loans”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business为本记录的“loans”的数量"
+      },
+      "Businesses.CountOfInteractions": {
+        "table": "Businesses",
+        "field": "CountOfInteractions",
+        "kind": "rollup",
+        "rule": "business的“count of interactions”为 与business相关的“interactions”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business为本记录的“interactions”的数量"
+      },
+      "Businesses.CountOfDocuments": {
+        "table": "Businesses",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "business的“count of documents”为 与business相关的“documents”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Business为本记录的“documents”的数量"
+      },
+      "Businesses.TotalDepositBalanceUsd": {
+        "table": "Businesses",
+        "field": "TotalDepositBalanceUsd",
+        "kind": "rollup",
+        "rule": "business的“total deposit balance USD”为 与business相关的所有“accounts”的“current balance USD”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "CurrentBalanceUsd",
+            "label": "current balance USD"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所有business为本记录的“accounts”的current balance USD的总和"
+      },
+      "Businesses.TotalLoanPrincipalUsd": {
+        "table": "Businesses",
+        "field": "TotalLoanPrincipalUsd",
+        "kind": "rollup",
+        "rule": "business的“total loan principal USD”为 与business相关的所有“loans”的“principal USD”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "PrincipalUsd",
+            "label": "principal USD"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所有business为本记录的“loans”的principal USD的总和"
+      },
+      "Businesses.CountOfClassifiedLoans": {
+        "table": "Businesses",
+        "field": "CountOfClassifiedLoans",
+        "kind": "rollup",
+        "rule": "business的“count of classified loans”为 business的“loans”中是“Classified Asset”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          }
+        ],
+        "structure": null,
+        "plain": "Business为本记录且is classified asset为true()的“loans”的数量"
+      },
+      "Businesses.HasClassifiedLoan": {
+        "table": "Businesses",
+        "field": "HasClassifiedLoan",
+        "kind": "formula",
+        "rule": "当count of classified loans大于0时,business被视为具有“Classified Loan”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "CountOfClassifiedLoans",
+            "label": "count of classified loans"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of classified loans大于0"
+      },
+      "Businesses.BeneficialOwnersAtCddThreshold": {
+        "table": "Businesses",
+        "field": "BeneficialOwnersAtCddThreshold",
+        "kind": "rollup",
+        "rule": "business的“beneficial owners at CDD threshold”为 business的“beneficial owners”中满足“CDD Threshold”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "MeetsCddThreshold",
+            "label": "meets CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Business为本记录且meets CDD threshold为true()的“beneficial owners”的数量"
+      },
+      "Businesses.MeetsCddRule": {
+        "table": "Businesses",
+        "field": "MeetsCddRule",
+        "kind": "formula",
+        "rule": "当beneficial owners at CDD threshold大于0时,business被视为满足“CDD Rule”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "BeneficialOwnersAtCddThreshold",
+            "label": "beneficial owners at CDD threshold"
+          }
+        ],
+        "structure": null,
+        "plain": "Beneficial owners at CDD threshold大于0"
+      },
+      "Businesses.PortfolioPriority": {
+        "table": "Businesses",
+        "field": "PortfolioPriority",
+        "kind": "formula",
+        "rule": "Business的“portfolio priority”按以下优先级确定:\n1. 当标志“classified loan”已设置时,取 “High”;\n2. 当以下至少一项成立:标志“meets CDD rule”未设置、标志“prospect”已设置,或count of loans为0时,取 “Medium”;\n3. 其余情况取 “Low”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "HasClassifiedLoan",
+            "label": "has classified loan"
+          },
+          {
+            "table": "Businesses",
+            "field": "MeetsCddRule",
+            "label": "meets CDD rule"
+          },
+          {
+            "table": "Businesses",
+            "field": "IsProspect",
+            "label": "is prospect"
+          },
+          {
+            "table": "Businesses",
+            "field": "CountOfLoans",
+            "label": "count of loans"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Business的“portfolio priority”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“High”",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“classified loan”已设置"
+              }
+            },
+            {
+              "value": "“Medium”",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "标志“meets CDD rule”未设置"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "标志“prospect”已设置"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "count of loans为0"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Low”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若has classified loan,则\"High\",否则若并非meets CDD rule、is prospect,或count of loans等于0,则\"Medium\",否则\"Low\""
+      },
+      "BeneficialOwners.Name": {
+        "table": "BeneficialOwners",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "beneficial owner的“name”按 business,接着是一个连字符,接着是转为小写的full name中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "(business与\"-\"拼接)与转为小写的full name中“ ”替换为“-”后的结果拼接"
+      },
+      "BeneficialOwners.BusinessLabel": {
+        "table": "BeneficialOwners",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "beneficial owner的“business label”是所关联的“business”的“legal name”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“business”的legal name"
+      },
+      "BeneficialOwners.Meets25PercentThreshold": {
+        "table": "BeneficialOwners",
+        "field": "Meets25PercentThreshold",
+        "kind": "formula",
+        "rule": "当ownership percentage不小于25时,beneficial owner被标记为“Meets25 Percent Threshold”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "OwnershipPercentage",
+            "label": "ownership percentage"
+          }
+        ],
+        "structure": null,
+        "plain": "Ownership percentage不小于25"
+      },
+      "BeneficialOwners.MeetsCddThreshold": {
+        "table": "BeneficialOwners",
+        "field": "MeetsCddThreshold",
+        "kind": "formula",
+        "rule": "当以下至少一项成立:标志“meets25 percent threshold”已设置或标志“control person”已设置时,beneficial owner被视为满足“CDD Threshold”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "BeneficialOwners",
+            "field": "Meets25PercentThreshold",
+            "label": "meets25 percent threshold"
+          },
+          {
+            "table": "BeneficialOwners",
+            "field": "IsControlPerson",
+            "label": "is control person"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,beneficial owner被视为满足“CDD Threshold”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "标志“meets25 percent threshold”已设置"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "标志“control person”已设置"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Meets25 percent threshold或is control person"
+      },
+      "Contacts.Name": {
+        "table": "Contacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "contact的“name”按 business,接着是一个连字符,接着是转为小写的full name中的每个一个空格替换为一个连字符后的结果,接着是一个连字符,接着是转为小写的title中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Contacts",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business与\"-\"拼接)与转为小写的full name中“ ”替换为“-”后的结果拼接)与\"-\"拼接)与转为小写的title中“ ”替换为“-”后的结果拼接"
+      },
+      "Contacts.BusinessLabel": {
+        "table": "Contacts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "contact的“business label”是所关联的“business”的“legal name”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Contacts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“business”的legal name"
+      },
+      "Contacts.IsOfficer": {
+        "table": "Contacts",
+        "field": "IsOfficer",
+        "kind": "formula",
+        "rule": "当contact type为“Officer”时,contact被视为“Officer”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type为\"Officer\""
+      },
+      "Contacts.IsApClerk": {
+        "table": "Contacts",
+        "field": "IsApClerk",
+        "kind": "formula",
+        "rule": "当contact type为“APClerk”时,contact被视为“AP Clerk”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Contacts",
+            "field": "ContactType",
+            "label": "contact type"
+          }
+        ],
+        "structure": null,
+        "plain": "Contact type为\"APClerk\""
+      },
+      "Accounts.Name": {
+        "table": "Accounts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "account的“name”按 business,接着是一个连字符,接着是转为小写的account type,接着是一个连字符,接着是account number last4 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountType",
+            "label": "account type"
+          },
+          {
+            "table": "Accounts",
+            "field": "AccountNumberLast4",
+            "label": "account number last4"
+          }
+        ],
+        "structure": null,
+        "plain": "(((business与\"-\"拼接)与转为小写的account type拼接)与\"-\"拼接)与account number last4拼接"
+      },
+      "Accounts.BusinessLabel": {
+        "table": "Accounts",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "account的“business label”是所关联的“business”的“legal name”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Accounts",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“business”的legal name"
+      },
+      "Accounts.TreasuryServiceCount": {
+        "table": "Accounts",
+        "field": "TreasuryServiceCount",
+        "kind": "formula",
+        "rule": "account的“treasury service count”按 以下条件中成立的数量:标志“ACH”已设置、标志“wire”已设置,且标志“card”已设置 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "HasAch",
+            "label": "has ACH"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasWire",
+            "label": "has wire"
+          },
+          {
+            "table": "Accounts",
+            "field": "HasCard",
+            "label": "has card"
+          }
+        ],
+        "structure": null,
+        "plain": "(若has ACH,则1,否则0加若has wire,则1,否则0)加若has card,则1,否则0"
+      },
+      "Accounts.HasAnyTreasuryService": {
+        "table": "Accounts",
+        "field": "HasAnyTreasuryService",
+        "kind": "formula",
+        "rule": "当treasury service count大于0时,account被视为具有“Any Treasury Service”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Accounts",
+            "field": "TreasuryServiceCount",
+            "label": "treasury service count"
+          }
+        ],
+        "structure": null,
+        "plain": "Treasury service count大于0"
+      },
+      "Loans.Name": {
+        "table": "Loans",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "loan的“name”按 转为小写的loan number中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的loan number中“ ”替换为“-”后的结果"
+      },
+      "Loans.BusinessLabel": {
+        "table": "Loans",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "loan的“business label”是所关联的“business”的“legal name”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“business”的legal name"
+      },
+      "Loans.BusinessNaicsCode": {
+        "table": "Loans",
+        "field": "BusinessNaicsCode",
+        "kind": "lookup",
+        "rule": "loan的“business NAICS code”——取自所关联的“business”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "NaicsCode",
+            "label": "NAICS code"
+          },
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“business”的NAICS code"
+      },
+      "Loans.OriginatingRmLabel": {
+        "table": "Loans",
+        "field": "OriginatingRmLabel",
+        "kind": "lookup",
+        "rule": "loan的“originating RM label”是所关联的“originating RM”的“full name”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“originating RM”的full name"
+      },
+      "Loans.UnderwriterIsAdmin": {
+        "table": "Loans",
+        "field": "UnderwriterIsAdmin",
+        "kind": "lookup",
+        "rule": "loan的“underwriter is admin”在所关联的“underwriter”是“Admin”时为真。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "IsAdmin",
+            "label": "is admin"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“underwriter”的is admin"
+      },
+      "Loans.IsFunded": {
+        "table": "Loans",
+        "field": "IsFunded",
+        "kind": "formula",
+        "rule": "当underwriting stage为“Funded”时,loan被视为“Funded”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "UnderwritingStage",
+            "label": "underwriting stage"
+          }
+        ],
+        "structure": null,
+        "plain": "Underwriting stage为\"Funded\""
+      },
+      "Loans.IsClassifiedAsset": {
+        "table": "Loans",
+        "field": "IsClassifiedAsset",
+        "kind": "formula",
+        "rule": "当risk rating不小于7时,loan被视为“Classified Asset”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "RiskRating",
+            "label": "risk rating"
+          }
+        ],
+        "structure": null,
+        "plain": "Risk rating不小于7"
+      },
+      "Loans.DscrInBand": {
+        "table": "Loans",
+        "field": "DscrInBand",
+        "kind": "formula",
+        "rule": "当DSCR(缺失时按0计)不小于1.20时,loan被标记为“DSCR in Band”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Dscr",
+            "label": "DSCR"
+          }
+        ],
+        "structure": null,
+        "plain": "DSCR或0中第一个非空的值不小于1.20"
+      },
+      "Loans.LtvInBand": {
+        "table": "Loans",
+        "field": "LtvInBand",
+        "kind": "formula",
+        "rule": "当LTV(缺失时按0计)不大于0.80时,loan被标记为“LTV in Band”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Ltv",
+            "label": "LTV"
+          }
+        ],
+        "structure": null,
+        "plain": "LTV或0中第一个非空的值不大于0.80"
+      },
+      "Loans.SegregationOfDutiesOk": {
+        "table": "Loans",
+        "field": "SegregationOfDutiesOk",
+        "kind": "formula",
+        "rule": "当并非originating RM为underwriter时,loan被标记为“Segregation of Duties Ok”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "OriginatingRm",
+            "label": "originating RM"
+          },
+          {
+            "table": "Loans",
+            "field": "Underwriter",
+            "label": "underwriter"
+          }
+        ],
+        "structure": null,
+        "plain": "并非originating RM等于underwriter"
+      },
+      "Loans.CountOfCovenants": {
+        "table": "Loans",
+        "field": "CountOfCovenants",
+        "kind": "rollup",
+        "rule": "loan的“count of covenants”为 与loan相关的“covenants”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan为本记录的“covenants”的数量"
+      },
+      "Loans.CountOfBreachedCovenants": {
+        "table": "Loans",
+        "field": "CountOfBreachedCovenants",
+        "kind": "rollup",
+        "rule": "loan的“count of breached covenants”为 loan的“covenants”中是“Breached”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Covenants",
+            "field": "IsBreached",
+            "label": "is breached"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan为本记录且is breached为true()的“covenants”的数量"
+      },
+      "Loans.CountOfRiskRatingHistory": {
+        "table": "Loans",
+        "field": "CountOfRiskRatingHistory",
+        "kind": "rollup",
+        "rule": "loan的“count of risk rating history”为 与loan相关的“risk rating history”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan为本记录的“risk rating history”的数量"
+      },
+      "Loans.CountOfDocuments": {
+        "table": "Loans",
+        "field": "CountOfDocuments",
+        "kind": "rollup",
+        "rule": "loan的“count of documents”为 与loan相关的“documents”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Loan为本记录的“documents”的数量"
+      },
+      "Loans.HasBreachedCovenant": {
+        "table": "Loans",
+        "field": "HasBreachedCovenant",
+        "kind": "formula",
+        "rule": "当count of breached covenants大于0时,loan被视为具有“Breached Covenant”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "CountOfBreachedCovenants",
+            "label": "count of breached covenants"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of breached covenants大于0"
+      },
+      "Loans.OnWatchlist": {
+        "table": "Loans",
+        "field": "OnWatchlist",
+        "kind": "formula",
+        "rule": "当以下至少一项成立:标志“classified asset”已设置或标志“breached covenant”已设置时,loan被标记为“On Watchlist”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,loan被标记为“On Watchlist”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "标志“classified asset”已设置"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "标志“breached covenant”已设置"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is classified asset或has breached covenant"
+      },
+      "Loans.HealthScore": {
+        "table": "Loans",
+        "field": "HealthScore",
+        "kind": "formula",
+        "rule": "loan的“health score”按 以下条件中成立的数量:标志“DSCR in band”已设置、标志“LTV in band”已设置、标志“classified asset”未设置,且标志“breached covenant”未设置 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "DscrInBand",
+            "label": "DSCR in band"
+          },
+          {
+            "table": "Loans",
+            "field": "LtvInBand",
+            "label": "LTV in band"
+          },
+          {
+            "table": "Loans",
+            "field": "IsClassifiedAsset",
+            "label": "is classified asset"
+          },
+          {
+            "table": "Loans",
+            "field": "HasBreachedCovenant",
+            "label": "has breached covenant"
+          }
+        ],
+        "structure": null,
+        "plain": "((若DSCR in band,则1,否则0加若LTV in band,则1,否则0)加若is classified asset,则0,否则1)加若has breached covenant,则0,否则1"
+      },
+      "Covenants.Name": {
+        "table": "Covenants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "covenant的“name”按 loan,接着是一个连字符,接着是转为小写的covenant type中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Covenants",
+            "field": "CovenantType",
+            "label": "covenant type"
+          }
+        ],
+        "structure": null,
+        "plain": "(loan与\"-\"拼接)与转为小写的covenant type中“ ”替换为“-”后的结果拼接"
+      },
+      "Covenants.LoanLabel": {
+        "table": "Covenants",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "covenant的“loan label”是所关联的“loan”的“loan number”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“loan”的loan number"
+      },
+      "Covenants.LoanBusiness": {
+        "table": "Covenants",
+        "field": "LoanBusiness",
+        "kind": "lookup",
+        "rule": "covenant的“loan business”——取自所关联的“loan”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Covenants",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“loan”的business"
+      },
+      "Covenants.IsBreached": {
+        "table": "Covenants",
+        "field": "IsBreached",
+        "kind": "formula",
+        "rule": "当status为“Breached”时,covenant被视为“Breached”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null,
+        "plain": "Status为\"Breached\""
+      },
+      "Covenants.HasActiveWaiver": {
+        "table": "Covenants",
+        "field": "HasActiveWaiver",
+        "kind": "formula",
+        "rule": "当current waiver through有值时,covenant被视为具有“Active Waiver”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Covenants",
+            "field": "CurrentWaiverThrough",
+            "label": "current waiver through"
+          }
+        ],
+        "structure": null,
+        "plain": "并非current waiver through为空"
+      },
+      "RiskRatingHistory.Name": {
+        "table": "RiskRatingHistory",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "risk rating history的“name”按 loan,接着是一个连字符,接着是effective date且“yyyy-mm-dd”的TEXT,接着是“-grade-”,接着是new grade且“0”的TEXT 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "EffectiveDate",
+            "label": "effective date"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": null,
+        "plain": "(((loan与\"-\"拼接)与text(effective date, \"yyyy-mm-dd\")拼接)与\"-grade-\"拼接)与text(new grade, \"0\")拼接"
+      },
+      "RiskRatingHistory.LoanLabel": {
+        "table": "RiskRatingHistory",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "risk rating history的“loan label”是所关联的“loan”的“loan number”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“loan”的loan number"
+      },
+      "RiskRatingHistory.ChangedByUserLabel": {
+        "table": "RiskRatingHistory",
+        "field": "ChangedByUserLabel",
+        "kind": "lookup",
+        "rule": "risk rating history的“changed by user label”是所关联的“changed by user”的“full name”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "ChangedByUser",
+            "label": "changed by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“changed by user”的full name"
+      },
+      "RiskRatingHistory.GradeDelta": {
+        "table": "RiskRatingHistory",
+        "field": "GradeDelta",
+        "kind": "formula",
+        "rule": "risk rating history的“grade delta”按 new grade减prior grade(缺失时按new grade计) 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "New grade减prior grade或new grade中第一个非空的值"
+      },
+      "RiskRatingHistory.IsDowngrade": {
+        "table": "RiskRatingHistory",
+        "field": "IsDowngrade",
+        "kind": "formula",
+        "rule": "当grade delta大于0时,risk rating history被视为“Downgrade”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "GradeDelta",
+            "label": "grade delta"
+          }
+        ],
+        "structure": null,
+        "plain": "Grade delta大于0"
+      },
+      "RiskRatingHistory.IsInitialRating": {
+        "table": "RiskRatingHistory",
+        "field": "IsInitialRating",
+        "kind": "formula",
+        "rule": "当prior grade(缺失时按0计)为0时,risk rating history被视为“Initial Rating”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          }
+        ],
+        "structure": null,
+        "plain": "Prior grade或0中第一个非空的值等于0"
+      },
+      "RiskRatingHistory.CrossedClassifiedThreshold": {
+        "table": "RiskRatingHistory",
+        "field": "CrossedClassifiedThreshold",
+        "kind": "formula",
+        "rule": "当以下全部成立:prior grade(缺失时按0计)小于7且new grade不小于7时,risk rating history被标记为“Crossed Classified Threshold”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RiskRatingHistory",
+            "field": "PriorGrade",
+            "label": "prior grade"
+          },
+          {
+            "table": "RiskRatingHistory",
+            "field": "NewGrade",
+            "label": "new grade"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,risk rating history被标记为“Crossed Classified Threshold”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "prior grade(缺失时按0计)小于7"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "new grade不小于7"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Prior grade或0中第一个非空的值小于7且new grade不小于7"
+      },
+      "Documents.Name": {
+        "table": "Documents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "document的“name”按 转为小写的filename中的每个一个空格替换为一个连字符后的结果中的每个一个句点替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Filename",
+            "label": "filename"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的filename中“ ”替换为“-”后的结果中“.”替换为“-”后的结果"
+      },
+      "Documents.BusinessLabel": {
+        "table": "Documents",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "document的“business label”是所关联的“business”的“legal name”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“business”的legal name"
+      },
+      "Documents.LoanLabel": {
+        "table": "Documents",
+        "field": "LoanLabel",
+        "kind": "lookup",
+        "rule": "document的“loan label”是所关联的“loan”的“loan number”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loans",
+            "field": "LoanNumber",
+            "label": "loan number"
+          },
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Loans",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“loan”的loan number"
+      },
+      "Documents.UploadedByUserLabel": {
+        "table": "Documents",
+        "field": "UploadedByUserLabel",
+        "kind": "lookup",
+        "rule": "document的“uploaded by user label”是所关联的“uploaded by user”的“full name”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Documents",
+            "field": "UploadedByUser",
+            "label": "uploaded by user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“uploaded by user”的full name"
+      },
+      "Documents.AttachedTo": {
+        "table": "Documents",
+        "field": "AttachedTo",
+        "kind": "formula",
+        "rule": "Document的“attached to”按以下优先级确定:\n1. 当字段“loan”已填写时,取 “Loan”;\n2. 当字段“business”已填写时,取 “Business”;\n3. 其余情况取 “Orphan”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "Loan",
+            "label": "loan"
+          },
+          {
+            "table": "Documents",
+            "field": "Business",
+            "label": "business"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Document的“attached to”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“Loan”",
+              "when": {
+                "kind": "leaf",
+                "text": "字段“loan”已填写"
+              }
+            },
+            {
+              "value": "“Business”",
+              "when": {
+                "kind": "leaf",
+                "text": "字段“business”已填写"
+              }
+            },
+            {
+              "value": "“Orphan”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若并非loan或\"\"中第一个非空的值为\"\",则\"Loan\",否则若并非business或\"\"中第一个非空的值为\"\",则\"Business\",否则\"Orphan\""
+      },
+      "Documents.FromCustomerPortal": {
+        "table": "Documents",
+        "field": "FromCustomerPortal",
+        "kind": "formula",
+        "rule": "当uploaded via为“BusinessClientPortal”时,document被标记为“From Customer Portal”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Documents",
+            "field": "UploadedVia",
+            "label": "uploaded via"
+          }
+        ],
+        "structure": null,
+        "plain": "Uploaded via为\"BusinessClientPortal\""
+      },
+      "Interactions.Name": {
+        "table": "Interactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "interaction的“name”按 business,接着是一个连字符,接着是interaction date且“yyyy-mm-dd”的TEXT,接着是一个连字符,接着是转为小写的interaction type,接着是一个连字符,接着是转为小写的subject中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionDate",
+            "label": "interaction date"
+          },
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((business与\"-\"拼接)与text(interaction date, \"yyyy-mm-dd\")拼接)与\"-\"拼接)与转为小写的interaction type拼接)与\"-\"拼接)与转为小写的subject中“ ”替换为“-”后的结果拼接"
+      },
+      "Interactions.BusinessLabel": {
+        "table": "Interactions",
+        "field": "BusinessLabel",
+        "kind": "lookup",
+        "rule": "interaction的“business label”是所关联的“business”的“legal name”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Businesses",
+            "field": "LegalName",
+            "label": "legal name"
+          },
+          {
+            "table": "Interactions",
+            "field": "Business",
+            "label": "business"
+          },
+          {
+            "table": "Businesses",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“business”的legal name"
+      },
+      "Interactions.UserLabel": {
+        "table": "Interactions",
+        "field": "UserLabel",
+        "kind": "lookup",
+        "rule": "interaction的“user label”是所关联的“user”的“full name”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Interactions",
+            "field": "User",
+            "label": "user"
+          },
+          {
+            "table": "Users",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“user”的full name"
+      },
+      "Interactions.IsSystemEvent": {
+        "table": "Interactions",
+        "field": "IsSystemEvent",
+        "kind": "formula",
+        "rule": "当interaction type为“SystemEvent”时,interaction被视为“System Event”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type为\"SystemEvent\""
+      },
+      "Interactions.IsTask": {
+        "table": "Interactions",
+        "field": "IsTask",
+        "kind": "formula",
+        "rule": "当interaction type为“Task”时,interaction被视为“Task”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "InteractionType",
+            "label": "interaction type"
+          }
+        ],
+        "structure": null,
+        "plain": "Interaction type为\"Task\""
+      },
+      "Interactions.FromCustomer": {
+        "table": "Interactions",
+        "field": "FromCustomer",
+        "kind": "formula",
+        "rule": "当source为“BusinessClientPortal”时,interaction被标记为“From Customer”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "Source",
+            "label": "source"
+          }
+        ],
+        "structure": null,
+        "plain": "Source为\"BusinessClientPortal\""
+      },
+      "Interactions.IsCovenantEvent": {
+        "table": "Interactions",
+        "field": "IsCovenantEvent",
+        "kind": "formula",
+        "rule": "当以下全部成立:标志“system event”已设置且subject提及“covenant breach”时,interaction被视为“Covenant Event”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Interactions",
+            "field": "IsSystemEvent",
+            "label": "is system event"
+          },
+          {
+            "table": "Interactions",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,interaction被视为“Covenant Event”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "标志“system event”已设置"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "subject提及“covenant breach”"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is system event且并非find(\"covenant breach\", 转为小写的subject)(出错时取0)等于0"
+      }
+    },
+    "obligations": [
+      {
+        "constraintKey": "loan-sod",
+        "entity": "Loan",
+        "predicate": "SegregationOfDutiesOk",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **loan-sod** *(强制)* — A loan must not be funded by the same user who originated it: the originating relationship manager and the underwriter must be different users.\n  - _违反时:_“The same user originated and underwrote this loan — segregation of duties is violated.”\n  - _来源:_ Internal Credit Policy §4.2"
+      },
+      {
+        "constraintKey": "biz-cdd",
+        "entity": "Business",
+        "predicate": "MeetsCddRule",
+        "deontic": "MustBeTrue",
+        "severity": "hard",
+        "markdown": "- **biz-cdd** *(强制)* — business**必须**使beneficial owners at CDD threshold大于0。\n  - _违反时:_“Beneficial-ownership (CDD) collection is incomplete: no owner crosses the 25% threshold and no control person is designated.”\n  - _来源:_ FinCEN CDD Rule, 31 CFR 1010.230\n  - _依据:_ Meets CDD Rule(见 DR-25)。"
+      },
+      {
+        "constraintKey": "loan-dscr",
+        "entity": "Loan",
+        "predicate": "DscrInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-dscr** *(可豁免)* — loan**必须**使DSCR不小于1.20。 *(可由授权审批人豁免)*。\n  - _违反时:_“DSCR is below the 1.20 minimum; a credit-committee waiver is required to fund.”\n  - _来源:_ Internal Credit Policy §2.1 (DSCR floor)\n  - _依据:_ DSCR in Band(见 DR-46)。"
+      },
+      {
+        "constraintKey": "loan-ltv",
+        "entity": "Loan",
+        "predicate": "LtvInBand",
+        "deontic": "MustBeTrue",
+        "severity": "override",
+        "markdown": "- **loan-ltv** *(可豁免)* — loan**必须**使LTV不大于0.80。 *(可由授权审批人豁免)*。\n  - _违反时:_“LTV exceeds the 0.80 ceiling; a credit-committee waiver is required to fund.”\n  - _来源:_ Internal Credit Policy §2.2 (LTV ceiling)\n  - _依据:_ LTV in Band(见 DR-47)。"
+      },
+      {
+        "constraintKey": "loan-watchlist",
+        "entity": "Loan",
+        "predicate": "OnWatchlist",
+        "deontic": "ShouldBeTrue",
+        "severity": "soft",
+        "markdown": "- **loan-watchlist** *(建议)* — loan**应当**满足:以下至少一项成立:标志“classified asset”已设置或标志“breached covenant”已设置。\n  - _违反时:_“This loan is a classified asset or has a breached covenant but is not flagged on the watchlist.”\n  - _来源:_ Internal Portfolio Risk Procedure §6 (watchlist)\n  - _依据:_ On Watchlist(见 DR-54)。"
+      }
+    ],
+    "structural": {
+      "Users": [
+        "user**必须**具有full name、role,且email。"
+      ],
+      "Businesses": [
+        "business**必须**恰好引用一个“user”作为其relationship manager。",
+        "business**必须**具有legal name、business structure、NAICS code,且status。"
+      ],
+      "BeneficialOwners": [
+        "beneficial owner**必须**恰好引用一个“business”。",
+        "beneficial owner**必须**具有full name、date of birth、SSN、address,且ownership percentage,并记录其是“Control Person”与否。"
+      ],
+      "Contacts": [
+        "contact**必须**恰好引用一个“business”。",
+        "contact**必须**具有full name、title,且contact type,并记录其是“Authorized Signer”与否。"
+      ],
+      "Accounts": [
+        "account**必须**恰好引用一个“business”。",
+        "account**必须**具有account type、account number last4、current balance USD,且opened at,并记录其具有“ACH”与否、其具有“Wire”与否,且其具有“Card”与否。"
+      ],
+      "Loans": [
+        "loan**必须**恰好引用一个“business”。",
+        "loan**必须**恰好引用一个“user”作为其originating RM。",
+        "loan**必须**恰好引用一个“user”作为其underwriter。",
+        "loan**必须**具有loan number、loan purpose、principal USD、rate pct、term months、underwriting stage、risk rating、risk rating label,且originated at。"
+      ],
+      "Covenants": [
+        "covenant**必须**恰好引用一个“loan”。",
+        "covenant**必须**具有covenant type、test frequency、next test date,且status。"
+      ],
+      "RiskRatingHistory": [
+        "risk rating history**必须**恰好引用一个“loan”。",
+        "risk rating history**必须**恰好引用一个“user”作为其changed by user。",
+        "risk rating history**必须**具有effective date、new grade,且reason。"
+      ],
+      "Documents": [
+        "document**必须**具有filename、document type,且uploaded at,并记录其是“Ocr Indexed”与否。"
+      ],
+      "Interactions": [
+        "interaction**必须**恰好引用一个“business”。",
+        "interaction**必须**具有interaction type、subject,且interaction date。"
+      ]
+    },
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "Users": "user",

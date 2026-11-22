@@ -1903,7 +1903,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -2427,6 +2442,8406 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "Debaters": "debater",
+      "Worldviews": "worldview",
+      "Arguments": "argument",
+      "Premises": "premise",
+      "Evidence": "evidence",
+      "Concepts": "concept",
+      "Claims": "claim",
+      "Rebuttals": "rebuttal",
+      "Thinkers": "thinker",
+      "Quotations": "quotation"
+    }
+  },
+  "ar": {
+    "fields": {
+      "Debaters.Name": {
+        "table": "Debaters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «debater» يُحسب على النحو الآتي: حقل «label» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Debaters",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label بأحرف صغيرة بعد وضع «-» مكان « »"
+      },
+      "Debaters.ArgumentCount": {
+        "table": "Debaters",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "حقل «argument count» في سجل «debater» هو عدد سجلات «arguments» المرتبطة بسجل «debater».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "AdvancedBy",
+            "label": "advanced by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «arguments» التي يتحقق فيها أنّ حقل «advanced by» يساوي هذا السجل"
+      },
+      "Debaters.ClaimCount": {
+        "table": "Debaters",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "حقل «claim count» في سجل «debater» هو عدد سجلات «claims» المرتبطة بسجل «debater».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "MadeBy",
+            "label": "made by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «claims» التي يتحقق فيها أنّ حقل «made by» يساوي هذا السجل"
+      },
+      "Debaters.ThinkersCited": {
+        "table": "Debaters",
+        "field": "ThinkersCited",
+        "kind": "rollup",
+        "rule": "حقل «thinkers cited» في سجل «debater» هو عدد سجلات «thinkers» المرتبطة بسجل «debater».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "CitedBy",
+            "label": "cited by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «thinkers» التي يتحقق فيها أنّ حقل «cited by» يساوي هذا السجل"
+      },
+      "Worldviews.Name": {
+        "table": "Worldviews",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «worldview» يُحسب على النحو الآتي: حقل «label» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Worldviews",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label بأحرف صغيرة بعد وضع «-» مكان « »"
+      },
+      "Worldviews.ArgumentCount": {
+        "table": "Worldviews",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "حقل «argument count» في سجل «worldview» هو عدد سجلات «arguments» المرتبطة بسجل «worldview».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "FieldsWorldview",
+            "label": "fields worldview"
+          },
+          {
+            "table": "Worldviews",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «arguments» التي يتحقق فيها أنّ حقل «fields worldview» يساوي هذا السجل"
+      },
+      "Arguments.Name": {
+        "table": "Arguments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «argument» يُحسب على النحو الآتي: حقل «label» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label بأحرف صغيرة بعد وضع «-» مكان « »"
+      },
+      "Arguments.PremiseCount": {
+        "table": "Arguments",
+        "field": "PremiseCount",
+        "kind": "rollup",
+        "rule": "حقل «premise count» في سجل «argument» هو عدد سجلات «premises» المرتبطة بسجل «argument».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «premises» التي يتحقق فيها أنّ حقل «supports argument» يساوي هذا السجل"
+      },
+      "Arguments.EvidenceCount": {
+        "table": "Arguments",
+        "field": "EvidenceCount",
+        "kind": "rollup",
+        "rule": "حقل «evidence count» في سجل «argument» هو عدد سجلات «evidence» المرتبطة بسجل «argument».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «evidence» التي يتحقق فيها أنّ حقل «supports argument» يساوي هذا السجل"
+      },
+      "Arguments.ClaimCount": {
+        "table": "Arguments",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "حقل «claim count» في سجل «argument» هو عدد سجلات «claims» المرتبطة بسجل «argument».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «claims» التي يتحقق فيها أنّ حقل «supports argument» يساوي هذا السجل"
+      },
+      "Arguments.IsFullyDeveloped": {
+        "table": "Arguments",
+        "field": "IsFullyDeveloped",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «argument» على أنه «fully developed» إذا تحقق أنّ حقل «premise count» لا يقل عن 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "PremiseCount",
+            "label": "premise count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «is fully developed» في سجل «argument» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "صحيح",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «premise count» لا يقل عن 2"
+              }
+            },
+            {
+              "value": "خطأ",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ premise count لا يقل عن 2 فالناتج true()، وإلا فالناتج false()"
+      },
+      "Arguments.TotalRebuttals": {
+        "table": "Arguments",
+        "field": "TotalRebuttals",
+        "kind": "rollup",
+        "rule": "حقل «total rebuttals» في سجل «argument» هو مجموع قيم حقل «rebuttal count» عبر سجلات «claims» المرتبطة بسجل «argument».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          },
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «rebuttal count» في جميع سجلات «claims» التي يتحقق فيها أنّ حقل «supports argument» يساوي هذا السجل"
+      },
+      "Arguments.IsContested": {
+        "table": "Arguments",
+        "field": "IsContested",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «argument» على أنه «contested» إذا تحقق أنّ حقل «total rebuttals» أكبر من 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "TotalRebuttals",
+            "label": "total rebuttals"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «is contested» في سجل «argument» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "صحيح",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «total rebuttals» أكبر من 0"
+              }
+            },
+            {
+              "value": "خطأ",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ total rebuttals أكبر من 0 فالناتج true()، وإلا فالناتج false()"
+      },
+      "Premises.Name": {
+        "table": "Premises",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «premise» يُحسب على النحو الآتي: حقل «label» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label بأحرف صغيرة بعد وضع «-» مكان « »"
+      },
+      "Evidence.Name": {
+        "table": "Evidence",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «evidence» يُحسب على النحو الآتي: حقل «label» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label بأحرف صغيرة بعد وضع «-» مكان « »"
+      },
+      "Concepts.Name": {
+        "table": "Concepts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «concept» يُحسب على النحو الآتي: حقل «label» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Concepts",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label بأحرف صغيرة بعد وضع «-» مكان « »"
+      },
+      "Concepts.ClaimCount": {
+        "table": "Concepts",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "حقل «claim count» في سجل «concept» هو عدد سجلات «claims» المرتبطة بسجل «concept».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "TouchesConcept",
+            "label": "touches concept"
+          },
+          {
+            "table": "Concepts",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «claims» التي يتحقق فيها أنّ حقل «touches concept» يساوي هذا السجل"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «claim» يُحسب على النحو الآتي: حقل «label» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label بأحرف صغيرة بعد وضع «-» مكان « »"
+      },
+      "Claims.RebuttalCount": {
+        "table": "Claims",
+        "field": "RebuttalCount",
+        "kind": "rollup",
+        "rule": "حقل «rebuttal count» في سجل «claim» هو عدد سجلات «rebuttals» المرتبطة بسجل «claim».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "RebutsClaim",
+            "label": "rebuts claim"
+          },
+          {
+            "table": "Claims",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «rebuttals» التي يتحقق فيها أنّ حقل «rebuts claim» يساوي هذا السجل"
+      },
+      "Claims.IsRebutted": {
+        "table": "Claims",
+        "field": "IsRebutted",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «claim» على أنه «rebutted» إذا تحقق أنّ حقل «rebuttal count» أكبر من 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «is rebutted» في سجل «claim» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "صحيح",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «rebuttal count» أكبر من 0"
+              }
+            },
+            {
+              "value": "خطأ",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ rebuttal count أكبر من 0 فالناتج true()، وإلا فالناتج false()"
+      },
+      "Rebuttals.Name": {
+        "table": "Rebuttals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «rebuttal» يُحسب على النحو الآتي: حقل «label» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label بأحرف صغيرة بعد وضع «-» مكان « »"
+      },
+      "Thinkers.Name": {
+        "table": "Thinkers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «thinker» يُحسب على النحو الآتي: حقل «label» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label بأحرف صغيرة بعد وضع «-» مكان « »"
+      },
+      "Thinkers.QuotationCount": {
+        "table": "Thinkers",
+        "field": "QuotationCount",
+        "kind": "rollup",
+        "rule": "حقل «quotation count» في سجل «thinker» هو عدد سجلات «quotations» المرتبطة بسجل «thinker».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Speaker",
+            "label": "speaker"
+          },
+          {
+            "table": "Thinkers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «quotations» التي يتحقق فيها أنّ حقل «speaker» يساوي هذا السجل"
+      },
+      "Quotations.Name": {
+        "table": "Quotations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «quotation» يُحسب على النحو الآتي: حقل «label» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label بأحرف صغيرة بعد وضع «-» مكان « »"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Debaters": [
+        "في كل سجل «debater»، **يجب أن** تُحدّد قيمة حقل «label» وحقل «side»."
+      ],
+      "Worldviews": [
+        "في كل سجل «worldview»، **يجب أن** تُحدّد قيمة حقل «label»، وأن يُسجّل ما إذا كان موسومًا بعلامة «affirms god»."
+      ],
+      "Arguments": [
+        "**يجب أن** يشير كل سجل «argument» إلى سجل «debater» واحد فقط عبر حقل «advanced by».",
+        "**يجب أن** يشير كل سجل «argument» إلى سجل «worldview» واحد فقط عبر حقل «fields worldview».",
+        "في كل سجل «argument»، **يجب أن** تُحدّد قيمة حقل «label» وحقل «argument type»."
+      ],
+      "Premises": [
+        "**يجب أن** يشير كل سجل «premise» إلى سجل «argument» واحد فقط عبر حقل «supports argument».",
+        "في كل سجل «premise»، **يجب أن** تُحدّد قيمة حقل «label» وحقل «ordinal»."
+      ],
+      "Evidence": [
+        "**يجب أن** يشير كل سجل «evidence» إلى سجل «argument» واحد فقط عبر حقل «supports argument».",
+        "في كل سجل «evidence»، **يجب أن** تُحدّد قيمة حقل «label» وحقل «evidence kind»."
+      ],
+      "Concepts": [
+        "في كل سجل «concept»، **يجب أن** تُحدّد قيمة حقل «label» وحقل «category»."
+      ],
+      "Claims": [
+        "**يجب أن** يشير كل سجل «claim» إلى سجل «debater» واحد فقط عبر حقل «made by».",
+        "في كل سجل «claim»، **يجب أن** تُحدّد قيمة حقل «label» وحقل «phase»."
+      ],
+      "Rebuttals": [
+        "**يجب أن** يشير كل سجل «rebuttal» إلى سجل «debater» واحد فقط عبر حقل «made by».",
+        "**يجب أن** يشير كل سجل «rebuttal» إلى سجل «claim» واحد فقط عبر حقل «rebuts claim».",
+        "في كل سجل «rebuttal»، **يجب أن** تُحدّد قيمة حقل «label»."
+      ],
+      "Thinkers": [
+        "في كل سجل «thinker»، **يجب أن** تُحدّد قيمة حقل «label»، وأن يُسجّل ما إذا كان موسومًا بعلامة «cited as hostile witness»."
+      ],
+      "Quotations": [
+        "**يجب أن** يشير كل سجل «quotation» إلى سجل «thinker» واحد فقط عبر حقل «speaker».",
+        "**يجب أن** يشير كل سجل «quotation» إلى سجل «debater» واحد فقط عبر حقل «cited by».",
+        "في كل سجل «quotation»، **يجب أن** تُحدّد قيمة حقل «label»."
+      ]
+    },
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Debaters": "debater",
+      "Worldviews": "worldview",
+      "Arguments": "argument",
+      "Premises": "premise",
+      "Evidence": "evidence",
+      "Concepts": "concept",
+      "Claims": "claim",
+      "Rebuttals": "rebuttal",
+      "Thinkers": "thinker",
+      "Quotations": "quotation"
+    }
+  },
+  "de": {
+    "fields": {
+      "Debaters.Name": {
+        "table": "Debaters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Debater: Name wird berechnet als das kleingeschriebene Label, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Debaters",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label kleingeschrieben, wobei „ “ durch „-“ ersetzt wird"
+      },
+      "Debaters.ArgumentCount": {
+        "table": "Debaters",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "Ein Debater: Argument Count ist die Anzahl der mit dem Debater verbundenen Arguments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "AdvancedBy",
+            "label": "advanced by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Arguments, deren Advanced by ist dieser hier"
+      },
+      "Debaters.ClaimCount": {
+        "table": "Debaters",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Ein Debater: Claim Count ist die Anzahl der mit dem Debater verbundenen Claims.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "MadeBy",
+            "label": "made by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Claims, deren Made by ist dieser hier"
+      },
+      "Debaters.ThinkersCited": {
+        "table": "Debaters",
+        "field": "ThinkersCited",
+        "kind": "rollup",
+        "rule": "Ein Debater: Thinkers Cited ist die Anzahl der mit dem Debater verbundenen Thinkers.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "CitedBy",
+            "label": "cited by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Thinkers, deren Cited by ist dieser hier"
+      },
+      "Worldviews.Name": {
+        "table": "Worldviews",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Worldview: Name wird berechnet als das kleingeschriebene Label, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Worldviews",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label kleingeschrieben, wobei „ “ durch „-“ ersetzt wird"
+      },
+      "Worldviews.ArgumentCount": {
+        "table": "Worldviews",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "Ein Worldview: Argument Count ist die Anzahl der mit dem Worldview verbundenen Arguments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "FieldsWorldview",
+            "label": "fields worldview"
+          },
+          {
+            "table": "Worldviews",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Arguments, deren Fields Worldview ist dieser hier"
+      },
+      "Arguments.Name": {
+        "table": "Arguments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Argument: Name wird berechnet als das kleingeschriebene Label, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label kleingeschrieben, wobei „ “ durch „-“ ersetzt wird"
+      },
+      "Arguments.PremiseCount": {
+        "table": "Arguments",
+        "field": "PremiseCount",
+        "kind": "rollup",
+        "rule": "Ein Argument: Premise Count ist die Anzahl der mit dem Argument verbundenen Premises.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Premises, deren Supports Argument ist dieser hier"
+      },
+      "Arguments.EvidenceCount": {
+        "table": "Arguments",
+        "field": "EvidenceCount",
+        "kind": "rollup",
+        "rule": "Ein Argument: Evidence Count ist die Anzahl der mit dem Argument verbundenen Evidence.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Evidence, deren Supports Argument ist dieser hier"
+      },
+      "Arguments.ClaimCount": {
+        "table": "Arguments",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Ein Argument: Claim Count ist die Anzahl der mit dem Argument verbundenen Claims.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Claims, deren Supports Argument ist dieser hier"
+      },
+      "Arguments.IsFullyDeveloped": {
+        "table": "Arguments",
+        "field": "IsFullyDeveloped",
+        "kind": "formula",
+        "rule": "Ein Argument gilt als fully developed, wenn der Premise Count mindestens 2 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "PremiseCount",
+            "label": "premise count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Is Fully Developed“ des Argument wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "wahr",
+              "when": {
+                "kind": "leaf",
+                "text": "der Premise Count mindestens 2 ist"
+              }
+            },
+            {
+              "value": "falsch",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Premise Count mindestens 2 ist, dann true(), andernfalls false()"
+      },
+      "Arguments.TotalRebuttals": {
+        "table": "Arguments",
+        "field": "TotalRebuttals",
+        "kind": "rollup",
+        "rule": "Ein Argument: Total Rebuttals ist die Gesamtsumme von Rebuttal Count über die mit dem Argument verbundenen Claims.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          },
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Rebuttal Count über alle Claims, deren Supports Argument ist dieser hier"
+      },
+      "Arguments.IsContested": {
+        "table": "Arguments",
+        "field": "IsContested",
+        "kind": "formula",
+        "rule": "Ein Argument gilt als contested, wenn der Total Rebuttals größer ist als 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "TotalRebuttals",
+            "label": "total rebuttals"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Is Contested“ des Argument wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "wahr",
+              "when": {
+                "kind": "leaf",
+                "text": "der Total Rebuttals größer ist als 0"
+              }
+            },
+            {
+              "value": "falsch",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Total Rebuttals größer als 0 ist, dann true(), andernfalls false()"
+      },
+      "Premises.Name": {
+        "table": "Premises",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Premise: Name wird berechnet als das kleingeschriebene Label, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label kleingeschrieben, wobei „ “ durch „-“ ersetzt wird"
+      },
+      "Evidence.Name": {
+        "table": "Evidence",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Evidence: Name wird berechnet als das kleingeschriebene Label, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label kleingeschrieben, wobei „ “ durch „-“ ersetzt wird"
+      },
+      "Concepts.Name": {
+        "table": "Concepts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Concept: Name wird berechnet als das kleingeschriebene Label, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Concepts",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label kleingeschrieben, wobei „ “ durch „-“ ersetzt wird"
+      },
+      "Concepts.ClaimCount": {
+        "table": "Concepts",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Ein Concept: Claim Count ist die Anzahl der mit dem Concept verbundenen Claims.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "TouchesConcept",
+            "label": "touches concept"
+          },
+          {
+            "table": "Concepts",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Claims, deren Touches Concept ist dieser hier"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Claim: Name wird berechnet als das kleingeschriebene Label, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label kleingeschrieben, wobei „ “ durch „-“ ersetzt wird"
+      },
+      "Claims.RebuttalCount": {
+        "table": "Claims",
+        "field": "RebuttalCount",
+        "kind": "rollup",
+        "rule": "Ein Claim: Rebuttal Count ist die Anzahl der mit dem Claim verbundenen Rebuttals.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "RebutsClaim",
+            "label": "rebuts claim"
+          },
+          {
+            "table": "Claims",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Rebuttals, deren Rebuts Claim ist dieser hier"
+      },
+      "Claims.IsRebutted": {
+        "table": "Claims",
+        "field": "IsRebutted",
+        "kind": "formula",
+        "rule": "Ein Claim gilt als rebutted, wenn der Rebuttal Count größer ist als 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Is Rebutted“ des Claim wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "wahr",
+              "when": {
+                "kind": "leaf",
+                "text": "der Rebuttal Count größer ist als 0"
+              }
+            },
+            {
+              "value": "falsch",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Rebuttal Count größer als 0 ist, dann true(), andernfalls false()"
+      },
+      "Rebuttals.Name": {
+        "table": "Rebuttals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Rebuttal: Name wird berechnet als das kleingeschriebene Label, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label kleingeschrieben, wobei „ “ durch „-“ ersetzt wird"
+      },
+      "Thinkers.Name": {
+        "table": "Thinkers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Thinker: Name wird berechnet als das kleingeschriebene Label, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label kleingeschrieben, wobei „ “ durch „-“ ersetzt wird"
+      },
+      "Thinkers.QuotationCount": {
+        "table": "Thinkers",
+        "field": "QuotationCount",
+        "kind": "rollup",
+        "rule": "Ein Thinker: Quotation Count ist die Anzahl der mit dem Thinker verbundenen Quotations.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Speaker",
+            "label": "speaker"
+          },
+          {
+            "table": "Thinkers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Quotations, deren Speaker ist dieser hier"
+      },
+      "Quotations.Name": {
+        "table": "Quotations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Quotation: Name wird berechnet als das kleingeschriebene Label, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label kleingeschrieben, wobei „ “ durch „-“ ersetzt wird"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Debaters": [
+        "Ein Debater **muss** ein Label und eine Side haben."
+      ],
+      "Worldviews": [
+        "Ein Worldview **muss** ein Label haben und erfassen, ob es ist Affirms God."
+      ],
+      "Arguments": [
+        "Ein Argument **muss** auf genau einen Debater als seinen Advanced by verweisen.",
+        "Ein Argument **muss** auf genau einen Worldview als seinen Fields Worldview verweisen.",
+        "Ein Argument **muss** ein Label und eine Argument Type haben."
+      ],
+      "Premises": [
+        "Eine Premise **muss** auf genau einen Argument als seinen Supports Argument verweisen.",
+        "Eine Premise **muss** ein Label und ein Ordinal haben."
+      ],
+      "Evidence": [
+        "Eine Evidence **muss** auf genau einen Argument als seinen Supports Argument verweisen.",
+        "Eine Evidence **muss** ein Label und ein Evidence Kind haben."
+      ],
+      "Concepts": [
+        "Ein Concept **muss** ein Label und ein Category haben."
+      ],
+      "Claims": [
+        "Ein Claim **muss** auf genau einen Debater als seinen Made by verweisen.",
+        "Ein Claim **muss** ein Label und eine Phase haben."
+      ],
+      "Rebuttals": [
+        "Ein Rebuttal **muss** auf genau einen Debater als seinen Made by verweisen.",
+        "Ein Rebuttal **muss** auf genau einen Claim als seinen Rebuts Claim verweisen.",
+        "Ein Rebuttal **muss** ein Label haben."
+      ],
+      "Thinkers": [
+        "Ein Thinker **muss** ein Label haben und erfassen, ob es ist Cited As Hostile Witness."
+      ],
+      "Quotations": [
+        "Eine Quotation **muss** auf genau einen Thinker als seinen Speaker verweisen.",
+        "Eine Quotation **muss** auf genau einen Debater als seinen Cited by verweisen.",
+        "Eine Quotation **muss** ein Label haben."
+      ]
+    },
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Debaters": "Debater",
+      "Worldviews": "Worldview",
+      "Arguments": "Argument",
+      "Premises": "Premise",
+      "Evidence": "Evidence",
+      "Concepts": "Concept",
+      "Claims": "Claim",
+      "Rebuttals": "Rebuttal",
+      "Thinkers": "Thinker",
+      "Quotations": "Quotation"
+    }
+  },
+  "es": {
+    "fields": {
+      "Debaters.Name": {
+        "table": "Debaters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un debater: name se calcula como el label en minúsculas con cada un espacio reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Debaters",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label en minúsculas con « » reemplazado por «-»"
+      },
+      "Debaters.ArgumentCount": {
+        "table": "Debaters",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "Un debater: argument count es el número de arguments relacionados con el debater.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "AdvancedBy",
+            "label": "advanced by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de arguments cuyo advanced by es este"
+      },
+      "Debaters.ClaimCount": {
+        "table": "Debaters",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Un debater: claim count es el número de claims relacionados con el debater.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "MadeBy",
+            "label": "made by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de claims cuyo made by es este"
+      },
+      "Debaters.ThinkersCited": {
+        "table": "Debaters",
+        "field": "ThinkersCited",
+        "kind": "rollup",
+        "rule": "Un debater: thinkers cited es el número de thinkers relacionados con el debater.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "CitedBy",
+            "label": "cited by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de thinkers cuyo cited by es este"
+      },
+      "Worldviews.Name": {
+        "table": "Worldviews",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un worldview: name se calcula como el label en minúsculas con cada un espacio reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Worldviews",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label en minúsculas con « » reemplazado por «-»"
+      },
+      "Worldviews.ArgumentCount": {
+        "table": "Worldviews",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "Un worldview: argument count es el número de arguments relacionados con el worldview.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "FieldsWorldview",
+            "label": "fields worldview"
+          },
+          {
+            "table": "Worldviews",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de arguments cuyo fields worldview es este"
+      },
+      "Arguments.Name": {
+        "table": "Arguments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un argument: name se calcula como el label en minúsculas con cada un espacio reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label en minúsculas con « » reemplazado por «-»"
+      },
+      "Arguments.PremiseCount": {
+        "table": "Arguments",
+        "field": "PremiseCount",
+        "kind": "rollup",
+        "rule": "Un argument: premise count es el número de premises relacionados con el argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de premises cuyo supports argument es este"
+      },
+      "Arguments.EvidenceCount": {
+        "table": "Arguments",
+        "field": "EvidenceCount",
+        "kind": "rollup",
+        "rule": "Un argument: evidence count es el número de evidence relacionados con el argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de evidence cuyo supports argument es este"
+      },
+      "Arguments.ClaimCount": {
+        "table": "Arguments",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Un argument: claim count es el número de claims relacionados con el argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de claims cuyo supports argument es este"
+      },
+      "Arguments.IsFullyDeveloped": {
+        "table": "Arguments",
+        "field": "IsFullyDeveloped",
+        "kind": "formula",
+        "rule": "Un argument se considera fully developed si el premise count es al menos 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "PremiseCount",
+            "label": "premise count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «is fully developed» del argument se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "verdadero",
+              "when": {
+                "kind": "leaf",
+                "text": "el premise count es al menos 2"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si premise count es al menos 2, entonces true(), de lo contrario false()"
+      },
+      "Arguments.TotalRebuttals": {
+        "table": "Arguments",
+        "field": "TotalRebuttals",
+        "kind": "rollup",
+        "rule": "Un argument: total rebuttals es el total de rebuttal count entre los claims relacionados con el argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          },
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de rebuttal count entre todos los claims cuyo supports argument es este"
+      },
+      "Arguments.IsContested": {
+        "table": "Arguments",
+        "field": "IsContested",
+        "kind": "formula",
+        "rule": "Un argument se considera contested si el total rebuttals es mayor que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "TotalRebuttals",
+            "label": "total rebuttals"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «is contested» del argument se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "verdadero",
+              "when": {
+                "kind": "leaf",
+                "text": "el total rebuttals es mayor que 0"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si total rebuttals es mayor que 0, entonces true(), de lo contrario false()"
+      },
+      "Premises.Name": {
+        "table": "Premises",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un premise: name se calcula como el label en minúsculas con cada un espacio reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label en minúsculas con « » reemplazado por «-»"
+      },
+      "Evidence.Name": {
+        "table": "Evidence",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un evidence: name se calcula como el label en minúsculas con cada un espacio reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label en minúsculas con « » reemplazado por «-»"
+      },
+      "Concepts.Name": {
+        "table": "Concepts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un concept: name se calcula como el label en minúsculas con cada un espacio reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Concepts",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label en minúsculas con « » reemplazado por «-»"
+      },
+      "Concepts.ClaimCount": {
+        "table": "Concepts",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Un concept: claim count es el número de claims relacionados con el concept.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "TouchesConcept",
+            "label": "touches concept"
+          },
+          {
+            "table": "Concepts",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de claims cuyo touches concept es este"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un claim: name se calcula como el label en minúsculas con cada un espacio reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label en minúsculas con « » reemplazado por «-»"
+      },
+      "Claims.RebuttalCount": {
+        "table": "Claims",
+        "field": "RebuttalCount",
+        "kind": "rollup",
+        "rule": "Un claim: rebuttal count es el número de rebuttals relacionados con el claim.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "RebutsClaim",
+            "label": "rebuts claim"
+          },
+          {
+            "table": "Claims",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de rebuttals cuyo rebuts claim es este"
+      },
+      "Claims.IsRebutted": {
+        "table": "Claims",
+        "field": "IsRebutted",
+        "kind": "formula",
+        "rule": "Un claim se considera rebutted si el rebuttal count es mayor que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «is rebutted» del claim se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "verdadero",
+              "when": {
+                "kind": "leaf",
+                "text": "el rebuttal count es mayor que 0"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si rebuttal count es mayor que 0, entonces true(), de lo contrario false()"
+      },
+      "Rebuttals.Name": {
+        "table": "Rebuttals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un rebuttal: name se calcula como el label en minúsculas con cada un espacio reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label en minúsculas con « » reemplazado por «-»"
+      },
+      "Thinkers.Name": {
+        "table": "Thinkers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un thinker: name se calcula como el label en minúsculas con cada un espacio reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label en minúsculas con « » reemplazado por «-»"
+      },
+      "Thinkers.QuotationCount": {
+        "table": "Thinkers",
+        "field": "QuotationCount",
+        "kind": "rollup",
+        "rule": "Un thinker: quotation count es el número de quotations relacionados con el thinker.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Speaker",
+            "label": "speaker"
+          },
+          {
+            "table": "Thinkers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de quotations cuyo speaker es este"
+      },
+      "Quotations.Name": {
+        "table": "Quotations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un quotation: name se calcula como el label en minúsculas con cada un espacio reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label en minúsculas con « » reemplazado por «-»"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Debaters": [
+        "Un debater **debe** tener un label y un side."
+      ],
+      "Worldviews": [
+        "Un worldview **debe** tener un label, y registrar si es affirms god."
+      ],
+      "Arguments": [
+        "Un argument **debe** referenciar exactamente un debater como su advanced by.",
+        "Un argument **debe** referenciar exactamente un worldview como su fields worldview.",
+        "Un argument **debe** tener un label y un argument type."
+      ],
+      "Premises": [
+        "Un premise **debe** referenciar exactamente un argument como su supports argument.",
+        "Un premise **debe** tener un label y un ordinal."
+      ],
+      "Evidence": [
+        "Un evidence **debe** referenciar exactamente un argument como su supports argument.",
+        "Un evidence **debe** tener un label y un evidence kind."
+      ],
+      "Concepts": [
+        "Un concept **debe** tener un label y un category."
+      ],
+      "Claims": [
+        "Un claim **debe** referenciar exactamente un debater como su made by.",
+        "Un claim **debe** tener un label y un phase."
+      ],
+      "Rebuttals": [
+        "Un rebuttal **debe** referenciar exactamente un debater como su made by.",
+        "Un rebuttal **debe** referenciar exactamente un claim como su rebuts claim.",
+        "Un rebuttal **debe** tener un label."
+      ],
+      "Thinkers": [
+        "Un thinker **debe** tener un label, y registrar si es cited as hostile witness."
+      ],
+      "Quotations": [
+        "Un quotation **debe** referenciar exactamente un thinker como su speaker.",
+        "Un quotation **debe** referenciar exactamente un debater como su cited by.",
+        "Un quotation **debe** tener un label."
+      ]
+    },
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Debaters": "debater",
+      "Worldviews": "worldview",
+      "Arguments": "argument",
+      "Premises": "premise",
+      "Evidence": "evidence",
+      "Concepts": "concept",
+      "Claims": "claim",
+      "Rebuttals": "rebuttal",
+      "Thinkers": "thinker",
+      "Quotations": "quotation"
+    }
+  },
+  "fr": {
+    "fields": {
+      "Debaters.Name": {
+        "table": "Debaters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un debater : name est calculé comme le label en minuscules avec chaque une espace remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Debaters",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label en minuscules avec « » remplacé par « - »"
+      },
+      "Debaters.ArgumentCount": {
+        "table": "Debaters",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "Un debater : argument count est le nombre de arguments liés à le debater.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "AdvancedBy",
+            "label": "advanced by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des arguments dont advanced by est celui-ci"
+      },
+      "Debaters.ClaimCount": {
+        "table": "Debaters",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Un debater : claim count est le nombre de claims liés à le debater.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "MadeBy",
+            "label": "made by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des claims dont made by est celui-ci"
+      },
+      "Debaters.ThinkersCited": {
+        "table": "Debaters",
+        "field": "ThinkersCited",
+        "kind": "rollup",
+        "rule": "Un debater : thinkers cited est le nombre de thinkers liés à le debater.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "CitedBy",
+            "label": "cited by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des thinkers dont cited by est celui-ci"
+      },
+      "Worldviews.Name": {
+        "table": "Worldviews",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un worldview : name est calculé comme le label en minuscules avec chaque une espace remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Worldviews",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label en minuscules avec « » remplacé par « - »"
+      },
+      "Worldviews.ArgumentCount": {
+        "table": "Worldviews",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "Un worldview : argument count est le nombre de arguments liés à le worldview.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "FieldsWorldview",
+            "label": "fields worldview"
+          },
+          {
+            "table": "Worldviews",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des arguments dont fields worldview est celui-ci"
+      },
+      "Arguments.Name": {
+        "table": "Arguments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un argument : name est calculé comme le label en minuscules avec chaque une espace remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label en minuscules avec « » remplacé par « - »"
+      },
+      "Arguments.PremiseCount": {
+        "table": "Arguments",
+        "field": "PremiseCount",
+        "kind": "rollup",
+        "rule": "Un argument : premise count est le nombre de premises liés à l'argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des premises dont supports argument est celui-ci"
+      },
+      "Arguments.EvidenceCount": {
+        "table": "Arguments",
+        "field": "EvidenceCount",
+        "kind": "rollup",
+        "rule": "Un argument : evidence count est le nombre de evidence liés à l'argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des evidence dont supports argument est celui-ci"
+      },
+      "Arguments.ClaimCount": {
+        "table": "Arguments",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Un argument : claim count est le nombre de claims liés à l'argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des claims dont supports argument est celui-ci"
+      },
+      "Arguments.IsFullyDeveloped": {
+        "table": "Arguments",
+        "field": "IsFullyDeveloped",
+        "kind": "formula",
+        "rule": "Un argument est considéré comme fully developed si le premise count est au moins 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "PremiseCount",
+            "label": "premise count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « is fully developed » de l'argument est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "vrai",
+              "when": {
+                "kind": "leaf",
+                "text": "le premise count est au moins 2"
+              }
+            },
+            {
+              "value": "faux",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si premise count est au moins 2, alors true(), sinon false()"
+      },
+      "Arguments.TotalRebuttals": {
+        "table": "Arguments",
+        "field": "TotalRebuttals",
+        "kind": "rollup",
+        "rule": "Un argument : total rebuttals est le total de rebuttal count sur les claims liés à l'argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          },
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de rebuttal count sur tous les claims dont supports argument est celui-ci"
+      },
+      "Arguments.IsContested": {
+        "table": "Arguments",
+        "field": "IsContested",
+        "kind": "formula",
+        "rule": "Un argument est considéré comme contested si le total rebuttals est supérieur à 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "TotalRebuttals",
+            "label": "total rebuttals"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « is contested » de l'argument est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "vrai",
+              "when": {
+                "kind": "leaf",
+                "text": "le total rebuttals est supérieur à 0"
+              }
+            },
+            {
+              "value": "faux",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si total rebuttals est supérieur à 0, alors true(), sinon false()"
+      },
+      "Premises.Name": {
+        "table": "Premises",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un premise : name est calculé comme le label en minuscules avec chaque une espace remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label en minuscules avec « » remplacé par « - »"
+      },
+      "Evidence.Name": {
+        "table": "Evidence",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Une evidence : name est calculé comme le label en minuscules avec chaque une espace remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label en minuscules avec « » remplacé par « - »"
+      },
+      "Concepts.Name": {
+        "table": "Concepts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un concept : name est calculé comme le label en minuscules avec chaque une espace remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Concepts",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label en minuscules avec « » remplacé par « - »"
+      },
+      "Concepts.ClaimCount": {
+        "table": "Concepts",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Un concept : claim count est le nombre de claims liés à le concept.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "TouchesConcept",
+            "label": "touches concept"
+          },
+          {
+            "table": "Concepts",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des claims dont touches concept est celui-ci"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un claim : name est calculé comme le label en minuscules avec chaque une espace remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label en minuscules avec « » remplacé par « - »"
+      },
+      "Claims.RebuttalCount": {
+        "table": "Claims",
+        "field": "RebuttalCount",
+        "kind": "rollup",
+        "rule": "Un claim : rebuttal count est le nombre de rebuttals liés à le claim.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "RebutsClaim",
+            "label": "rebuts claim"
+          },
+          {
+            "table": "Claims",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des rebuttals dont rebuts claim est celui-ci"
+      },
+      "Claims.IsRebutted": {
+        "table": "Claims",
+        "field": "IsRebutted",
+        "kind": "formula",
+        "rule": "Un claim est considéré comme rebutted si le rebuttal count est supérieur à 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « is rebutted » du claim est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "vrai",
+              "when": {
+                "kind": "leaf",
+                "text": "le rebuttal count est supérieur à 0"
+              }
+            },
+            {
+              "value": "faux",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si rebuttal count est supérieur à 0, alors true(), sinon false()"
+      },
+      "Rebuttals.Name": {
+        "table": "Rebuttals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un rebuttal : name est calculé comme le label en minuscules avec chaque une espace remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label en minuscules avec « » remplacé par « - »"
+      },
+      "Thinkers.Name": {
+        "table": "Thinkers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un thinker : name est calculé comme le label en minuscules avec chaque une espace remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label en minuscules avec « » remplacé par « - »"
+      },
+      "Thinkers.QuotationCount": {
+        "table": "Thinkers",
+        "field": "QuotationCount",
+        "kind": "rollup",
+        "rule": "Un thinker : quotation count est le nombre de quotations liés à le thinker.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Speaker",
+            "label": "speaker"
+          },
+          {
+            "table": "Thinkers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des quotations dont speaker est celui-ci"
+      },
+      "Quotations.Name": {
+        "table": "Quotations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Une quotation : name est calculé comme le label en minuscules avec chaque une espace remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label en minuscules avec « » remplacé par « - »"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Debaters": [
+        "Un debater **doit** avoir un label et un side."
+      ],
+      "Worldviews": [
+        "Un worldview **doit** avoir un label, et consigner si il est affirms god."
+      ],
+      "Arguments": [
+        "Un argument **doit** référencer exactement un debater comme son advanced by.",
+        "Un argument **doit** référencer exactement un worldview comme son fields worldview.",
+        "Un argument **doit** avoir un label et un argument type."
+      ],
+      "Premises": [
+        "Un premise **doit** référencer exactement un argument comme son supports argument.",
+        "Un premise **doit** avoir un label et un ordinal."
+      ],
+      "Evidence": [
+        "Une evidence **doit** référencer exactement un argument comme son supports argument.",
+        "Une evidence **doit** avoir un label et un evidence kind."
+      ],
+      "Concepts": [
+        "Un concept **doit** avoir un label et un category."
+      ],
+      "Claims": [
+        "Un claim **doit** référencer exactement un debater comme son made by.",
+        "Un claim **doit** avoir un label et un phase."
+      ],
+      "Rebuttals": [
+        "Un rebuttal **doit** référencer exactement un debater comme son made by.",
+        "Un rebuttal **doit** référencer exactement un claim comme son rebuts claim.",
+        "Un rebuttal **doit** avoir un label."
+      ],
+      "Thinkers": [
+        "Un thinker **doit** avoir un label, et consigner si il est cited as hostile witness."
+      ],
+      "Quotations": [
+        "Une quotation **doit** référencer exactement un thinker comme son speaker.",
+        "Une quotation **doit** référencer exactement un debater comme son cited by.",
+        "Une quotation **doit** avoir un label."
+      ]
+    },
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Debaters": "debater",
+      "Worldviews": "worldview",
+      "Arguments": "argument",
+      "Premises": "premise",
+      "Evidence": "evidence",
+      "Concepts": "concept",
+      "Claims": "claim",
+      "Rebuttals": "rebuttal",
+      "Thinkers": "thinker",
+      "Quotations": "quotation"
+    }
+  },
+  "hi": {
+    "fields": {
+      "Debaters.Name": {
+        "table": "Debaters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "debater का “name” label छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Debaters",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो"
+      },
+      "Debaters.ArgumentCount": {
+        "table": "Debaters",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "debater का “argument count” debater से संबंधित “arguments” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "AdvancedBy",
+            "label": "advanced by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “arguments” की संख्या, जिनका advanced by यह रिकॉर्ड है"
+      },
+      "Debaters.ClaimCount": {
+        "table": "Debaters",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "debater का “claim count” debater से संबंधित “claims” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "MadeBy",
+            "label": "made by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “claims” की संख्या, जिनका made by यह रिकॉर्ड है"
+      },
+      "Debaters.ThinkersCited": {
+        "table": "Debaters",
+        "field": "ThinkersCited",
+        "kind": "rollup",
+        "rule": "debater का “thinkers cited” debater से संबंधित “thinkers” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "CitedBy",
+            "label": "cited by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “thinkers” की संख्या, जिनका cited by यह रिकॉर्ड है"
+      },
+      "Worldviews.Name": {
+        "table": "Worldviews",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "worldview का “name” label छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Worldviews",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो"
+      },
+      "Worldviews.ArgumentCount": {
+        "table": "Worldviews",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "worldview का “argument count” worldview से संबंधित “arguments” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "FieldsWorldview",
+            "label": "fields worldview"
+          },
+          {
+            "table": "Worldviews",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “arguments” की संख्या, जिनका fields worldview यह रिकॉर्ड है"
+      },
+      "Arguments.Name": {
+        "table": "Arguments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "argument का “name” label छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो"
+      },
+      "Arguments.PremiseCount": {
+        "table": "Arguments",
+        "field": "PremiseCount",
+        "kind": "rollup",
+        "rule": "argument का “premise count” argument से संबंधित “premises” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “premises” की संख्या, जिनका supports argument यह रिकॉर्ड है"
+      },
+      "Arguments.EvidenceCount": {
+        "table": "Arguments",
+        "field": "EvidenceCount",
+        "kind": "rollup",
+        "rule": "argument का “evidence count” argument से संबंधित “evidence” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “evidence” की संख्या, जिनका supports argument यह रिकॉर्ड है"
+      },
+      "Arguments.ClaimCount": {
+        "table": "Arguments",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "argument का “claim count” argument से संबंधित “claims” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “claims” की संख्या, जिनका supports argument यह रिकॉर्ड है"
+      },
+      "Arguments.IsFullyDeveloped": {
+        "table": "Arguments",
+        "field": "IsFullyDeveloped",
+        "kind": "formula",
+        "rule": "यदि premise count कम से कम 2 है, तो argument “fully developed” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "PremiseCount",
+            "label": "premise count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Argument का “is fully developed” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "सत्य",
+              "when": {
+                "kind": "leaf",
+                "text": "premise count कम से कम 2 है"
+              }
+            },
+            {
+              "value": "असत्य",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि premise count कम से कम 2 है, तो true(), अन्यथा false()"
+      },
+      "Arguments.TotalRebuttals": {
+        "table": "Arguments",
+        "field": "TotalRebuttals",
+        "kind": "rollup",
+        "rule": "argument का “total rebuttals” argument से संबंधित “claims” पर कुल “rebuttal count” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          },
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “claims” पर योग rebuttal count, जिनका supports argument यह रिकॉर्ड है"
+      },
+      "Arguments.IsContested": {
+        "table": "Arguments",
+        "field": "IsContested",
+        "kind": "formula",
+        "rule": "यदि total rebuttals 0 से अधिक है, तो argument “contested” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "TotalRebuttals",
+            "label": "total rebuttals"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Argument का “is contested” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "सत्य",
+              "when": {
+                "kind": "leaf",
+                "text": "total rebuttals 0 से अधिक है"
+              }
+            },
+            {
+              "value": "असत्य",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि total rebuttals 0 से अधिक है, तो true(), अन्यथा false()"
+      },
+      "Premises.Name": {
+        "table": "Premises",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "premise का “name” label छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो"
+      },
+      "Evidence.Name": {
+        "table": "Evidence",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "evidence का “name” label छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो"
+      },
+      "Concepts.Name": {
+        "table": "Concepts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "concept का “name” label छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Concepts",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो"
+      },
+      "Concepts.ClaimCount": {
+        "table": "Concepts",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "concept का “claim count” concept से संबंधित “claims” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "TouchesConcept",
+            "label": "touches concept"
+          },
+          {
+            "table": "Concepts",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “claims” की संख्या, जिनका touches concept यह रिकॉर्ड है"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "claim का “name” label छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो"
+      },
+      "Claims.RebuttalCount": {
+        "table": "Claims",
+        "field": "RebuttalCount",
+        "kind": "rollup",
+        "rule": "claim का “rebuttal count” claim से संबंधित “rebuttals” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "RebutsClaim",
+            "label": "rebuts claim"
+          },
+          {
+            "table": "Claims",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “rebuttals” की संख्या, जिनका rebuts claim यह रिकॉर्ड है"
+      },
+      "Claims.IsRebutted": {
+        "table": "Claims",
+        "field": "IsRebutted",
+        "kind": "formula",
+        "rule": "यदि rebuttal count 0 से अधिक है, तो claim “rebutted” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Claim का “is rebutted” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "सत्य",
+              "when": {
+                "kind": "leaf",
+                "text": "rebuttal count 0 से अधिक है"
+              }
+            },
+            {
+              "value": "असत्य",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि rebuttal count 0 से अधिक है, तो true(), अन्यथा false()"
+      },
+      "Rebuttals.Name": {
+        "table": "Rebuttals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "rebuttal का “name” label छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो"
+      },
+      "Thinkers.Name": {
+        "table": "Thinkers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "thinker का “name” label छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो"
+      },
+      "Thinkers.QuotationCount": {
+        "table": "Thinkers",
+        "field": "QuotationCount",
+        "kind": "rollup",
+        "rule": "thinker का “quotation count” thinker से संबंधित “quotations” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Speaker",
+            "label": "speaker"
+          },
+          {
+            "table": "Thinkers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “quotations” की संख्या, जिनका speaker यह रिकॉर्ड है"
+      },
+      "Quotations.Name": {
+        "table": "Quotations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "quotation का “name” label छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Debaters": [
+        "debater को label और side रखना **अनिवार्य** है।"
+      ],
+      "Worldviews": [
+        "worldview को label रखना, तथा यह कि वह “affirms god” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ],
+      "Arguments": [
+        "argument को अपने “advanced by” के रूप में ठीक एक “debater” का संदर्भ देना **अनिवार्य** है।",
+        "argument को अपने “fields worldview” के रूप में ठीक एक “worldview” का संदर्भ देना **अनिवार्य** है।",
+        "argument को label और argument type रखना **अनिवार्य** है।"
+      ],
+      "Premises": [
+        "premise को अपने “supports argument” के रूप में ठीक एक “argument” का संदर्भ देना **अनिवार्य** है।",
+        "premise को label और ordinal रखना **अनिवार्य** है।"
+      ],
+      "Evidence": [
+        "evidence को अपने “supports argument” के रूप में ठीक एक “argument” का संदर्भ देना **अनिवार्य** है।",
+        "evidence को label और evidence kind रखना **अनिवार्य** है।"
+      ],
+      "Concepts": [
+        "concept को label और category रखना **अनिवार्य** है।"
+      ],
+      "Claims": [
+        "claim को अपने “made by” के रूप में ठीक एक “debater” का संदर्भ देना **अनिवार्य** है।",
+        "claim को label और phase रखना **अनिवार्य** है।"
+      ],
+      "Rebuttals": [
+        "rebuttal को अपने “made by” के रूप में ठीक एक “debater” का संदर्भ देना **अनिवार्य** है।",
+        "rebuttal को अपने “rebuts claim” के रूप में ठीक एक “claim” का संदर्भ देना **अनिवार्य** है।",
+        "rebuttal को label रखना **अनिवार्य** है।"
+      ],
+      "Thinkers": [
+        "thinker को label रखना, तथा यह कि वह “cited as hostile witness” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ],
+      "Quotations": [
+        "quotation को अपने “speaker” के रूप में ठीक एक “thinker” का संदर्भ देना **अनिवार्य** है।",
+        "quotation को अपने “cited by” के रूप में ठीक एक “debater” का संदर्भ देना **अनिवार्य** है।",
+        "quotation को label रखना **अनिवार्य** है।"
+      ]
+    },
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "Debaters": "debater",
+      "Worldviews": "worldview",
+      "Arguments": "argument",
+      "Premises": "premise",
+      "Evidence": "evidence",
+      "Concepts": "concept",
+      "Claims": "claim",
+      "Rebuttals": "rebuttal",
+      "Thinkers": "thinker",
+      "Quotations": "quotation"
+    }
+  },
+  "id": {
+    "fields": {
+      "Debaters.Name": {
+        "table": "Debaters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap debater, name dihitung sebagai label dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Debaters",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label dalam huruf kecil dengan “ ” diganti dengan “-”"
+      },
+      "Debaters.ArgumentCount": {
+        "table": "Debaters",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap debater, argument count adalah jumlah arguments yang terkait dengan debater tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "AdvancedBy",
+            "label": "advanced by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah arguments dengan syarat advanced by adalah entri ini"
+      },
+      "Debaters.ClaimCount": {
+        "table": "Debaters",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap debater, claim count adalah jumlah claims yang terkait dengan debater tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "MadeBy",
+            "label": "made by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah claims dengan syarat made by adalah entri ini"
+      },
+      "Debaters.ThinkersCited": {
+        "table": "Debaters",
+        "field": "ThinkersCited",
+        "kind": "rollup",
+        "rule": "Untuk setiap debater, thinkers cited adalah jumlah thinkers yang terkait dengan debater tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "CitedBy",
+            "label": "cited by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah thinkers dengan syarat cited by adalah entri ini"
+      },
+      "Worldviews.Name": {
+        "table": "Worldviews",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap worldview, name dihitung sebagai label dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Worldviews",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label dalam huruf kecil dengan “ ” diganti dengan “-”"
+      },
+      "Worldviews.ArgumentCount": {
+        "table": "Worldviews",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap worldview, argument count adalah jumlah arguments yang terkait dengan worldview tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "FieldsWorldview",
+            "label": "fields worldview"
+          },
+          {
+            "table": "Worldviews",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah arguments dengan syarat fields worldview adalah entri ini"
+      },
+      "Arguments.Name": {
+        "table": "Arguments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap argument, name dihitung sebagai label dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label dalam huruf kecil dengan “ ” diganti dengan “-”"
+      },
+      "Arguments.PremiseCount": {
+        "table": "Arguments",
+        "field": "PremiseCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap argument, premise count adalah jumlah premises yang terkait dengan argument tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah premises dengan syarat supports argument adalah entri ini"
+      },
+      "Arguments.EvidenceCount": {
+        "table": "Arguments",
+        "field": "EvidenceCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap argument, evidence count adalah jumlah evidence yang terkait dengan argument tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah evidence dengan syarat supports argument adalah entri ini"
+      },
+      "Arguments.ClaimCount": {
+        "table": "Arguments",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap argument, claim count adalah jumlah claims yang terkait dengan argument tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah claims dengan syarat supports argument adalah entri ini"
+      },
+      "Arguments.IsFullyDeveloped": {
+        "table": "Arguments",
+        "field": "IsFullyDeveloped",
+        "kind": "formula",
+        "rule": "Setiap argument dianggap “fully developed” jika premise count tidak kurang dari 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "PremiseCount",
+            "label": "premise count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap argument, is fully developed ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "benar",
+              "when": {
+                "kind": "leaf",
+                "text": "premise count tidak kurang dari 2"
+              }
+            },
+            {
+              "value": "salah",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika premise count tidak kurang dari 2 maka true(), selain itu false()"
+      },
+      "Arguments.TotalRebuttals": {
+        "table": "Arguments",
+        "field": "TotalRebuttals",
+        "kind": "rollup",
+        "rule": "Untuk setiap argument, total rebuttals adalah nilai total rebuttal count pada seluruh claims yang terkait dengan argument tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          },
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Total rebuttal count pada semua claims dengan syarat supports argument adalah entri ini"
+      },
+      "Arguments.IsContested": {
+        "table": "Arguments",
+        "field": "IsContested",
+        "kind": "formula",
+        "rule": "Setiap argument dianggap “contested” jika total rebuttals lebih dari 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "TotalRebuttals",
+            "label": "total rebuttals"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap argument, is contested ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "benar",
+              "when": {
+                "kind": "leaf",
+                "text": "total rebuttals lebih dari 0"
+              }
+            },
+            {
+              "value": "salah",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika total rebuttals lebih dari 0 maka true(), selain itu false()"
+      },
+      "Premises.Name": {
+        "table": "Premises",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap premise, name dihitung sebagai label dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label dalam huruf kecil dengan “ ” diganti dengan “-”"
+      },
+      "Evidence.Name": {
+        "table": "Evidence",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap evidence, name dihitung sebagai label dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label dalam huruf kecil dengan “ ” diganti dengan “-”"
+      },
+      "Concepts.Name": {
+        "table": "Concepts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap concept, name dihitung sebagai label dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Concepts",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label dalam huruf kecil dengan “ ” diganti dengan “-”"
+      },
+      "Concepts.ClaimCount": {
+        "table": "Concepts",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap concept, claim count adalah jumlah claims yang terkait dengan concept tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "TouchesConcept",
+            "label": "touches concept"
+          },
+          {
+            "table": "Concepts",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah claims dengan syarat touches concept adalah entri ini"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap claim, name dihitung sebagai label dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label dalam huruf kecil dengan “ ” diganti dengan “-”"
+      },
+      "Claims.RebuttalCount": {
+        "table": "Claims",
+        "field": "RebuttalCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap claim, rebuttal count adalah jumlah rebuttals yang terkait dengan claim tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "RebutsClaim",
+            "label": "rebuts claim"
+          },
+          {
+            "table": "Claims",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah rebuttals dengan syarat rebuts claim adalah entri ini"
+      },
+      "Claims.IsRebutted": {
+        "table": "Claims",
+        "field": "IsRebutted",
+        "kind": "formula",
+        "rule": "Setiap claim dianggap “rebutted” jika rebuttal count lebih dari 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap claim, is rebutted ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "benar",
+              "when": {
+                "kind": "leaf",
+                "text": "rebuttal count lebih dari 0"
+              }
+            },
+            {
+              "value": "salah",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika rebuttal count lebih dari 0 maka true(), selain itu false()"
+      },
+      "Rebuttals.Name": {
+        "table": "Rebuttals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap rebuttal, name dihitung sebagai label dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label dalam huruf kecil dengan “ ” diganti dengan “-”"
+      },
+      "Thinkers.Name": {
+        "table": "Thinkers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap thinker, name dihitung sebagai label dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label dalam huruf kecil dengan “ ” diganti dengan “-”"
+      },
+      "Thinkers.QuotationCount": {
+        "table": "Thinkers",
+        "field": "QuotationCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap thinker, quotation count adalah jumlah quotations yang terkait dengan thinker tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Speaker",
+            "label": "speaker"
+          },
+          {
+            "table": "Thinkers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah quotations dengan syarat speaker adalah entri ini"
+      },
+      "Quotations.Name": {
+        "table": "Quotations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap quotation, name dihitung sebagai label dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label dalam huruf kecil dengan “ ” diganti dengan “-”"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Debaters": [
+        "Setiap debater **harus** memiliki label dan side."
+      ],
+      "Worldviews": [
+        "Setiap worldview **harus** memiliki label, serta menyatakan apakah memenuhi kondisi “affirms god”."
+      ],
+      "Arguments": [
+        "Setiap argument **harus** merujuk pada tepat satu debater sebagai advanced by.",
+        "Setiap argument **harus** merujuk pada tepat satu worldview sebagai fields worldview.",
+        "Setiap argument **harus** memiliki label dan argument type."
+      ],
+      "Premises": [
+        "Setiap premise **harus** merujuk pada tepat satu argument sebagai supports argument.",
+        "Setiap premise **harus** memiliki label dan ordinal."
+      ],
+      "Evidence": [
+        "Setiap evidence **harus** merujuk pada tepat satu argument sebagai supports argument.",
+        "Setiap evidence **harus** memiliki label dan evidence kind."
+      ],
+      "Concepts": [
+        "Setiap concept **harus** memiliki label dan category."
+      ],
+      "Claims": [
+        "Setiap claim **harus** merujuk pada tepat satu debater sebagai made by.",
+        "Setiap claim **harus** memiliki label dan phase."
+      ],
+      "Rebuttals": [
+        "Setiap rebuttal **harus** merujuk pada tepat satu debater sebagai made by.",
+        "Setiap rebuttal **harus** merujuk pada tepat satu claim sebagai rebuts claim.",
+        "Setiap rebuttal **harus** memiliki label."
+      ],
+      "Thinkers": [
+        "Setiap thinker **harus** memiliki label, serta menyatakan apakah tergolong “cited as hostile witness”."
+      ],
+      "Quotations": [
+        "Setiap quotation **harus** merujuk pada tepat satu thinker sebagai speaker.",
+        "Setiap quotation **harus** merujuk pada tepat satu debater sebagai cited by.",
+        "Setiap quotation **harus** memiliki label."
+      ]
+    },
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Debaters": "debater",
+      "Worldviews": "worldview",
+      "Arguments": "argument",
+      "Premises": "premise",
+      "Evidence": "evidence",
+      "Concepts": "concept",
+      "Claims": "claim",
+      "Rebuttals": "rebuttal",
+      "Thinkers": "thinker",
+      "Quotations": "quotation"
+    }
+  },
+  "it": {
+    "fields": {
+      "Debaters.Name": {
+        "table": "Debaters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un debater: name è calcolato come il label in minuscolo con ogni uno spazio sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Debaters",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label in minuscolo con « » sostituito da «-»"
+      },
+      "Debaters.ArgumentCount": {
+        "table": "Debaters",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "Un debater: argument count è il numero di arguments collegati a il debater.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "AdvancedBy",
+            "label": "advanced by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei arguments il cui advanced by è questo"
+      },
+      "Debaters.ClaimCount": {
+        "table": "Debaters",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Un debater: claim count è il numero di claims collegati a il debater.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "MadeBy",
+            "label": "made by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei claims il cui made by è questo"
+      },
+      "Debaters.ThinkersCited": {
+        "table": "Debaters",
+        "field": "ThinkersCited",
+        "kind": "rollup",
+        "rule": "Un debater: thinkers cited è il numero di thinkers collegati a il debater.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "CitedBy",
+            "label": "cited by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei thinkers il cui cited by è questo"
+      },
+      "Worldviews.Name": {
+        "table": "Worldviews",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un worldview: name è calcolato come il label in minuscolo con ogni uno spazio sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Worldviews",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label in minuscolo con « » sostituito da «-»"
+      },
+      "Worldviews.ArgumentCount": {
+        "table": "Worldviews",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "Un worldview: argument count è il numero di arguments collegati a il worldview.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "FieldsWorldview",
+            "label": "fields worldview"
+          },
+          {
+            "table": "Worldviews",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei arguments il cui fields worldview è questo"
+      },
+      "Arguments.Name": {
+        "table": "Arguments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un argument: name è calcolato come il label in minuscolo con ogni uno spazio sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label in minuscolo con « » sostituito da «-»"
+      },
+      "Arguments.PremiseCount": {
+        "table": "Arguments",
+        "field": "PremiseCount",
+        "kind": "rollup",
+        "rule": "Un argument: premise count è il numero di premises collegati a l'argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei premises il cui supports argument è questo"
+      },
+      "Arguments.EvidenceCount": {
+        "table": "Arguments",
+        "field": "EvidenceCount",
+        "kind": "rollup",
+        "rule": "Un argument: evidence count è il numero di evidence collegati a l'argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei evidence il cui supports argument è questo"
+      },
+      "Arguments.ClaimCount": {
+        "table": "Arguments",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Un argument: claim count è il numero di claims collegati a l'argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei claims il cui supports argument è questo"
+      },
+      "Arguments.IsFullyDeveloped": {
+        "table": "Arguments",
+        "field": "IsFullyDeveloped",
+        "kind": "formula",
+        "rule": "Un argument è considerato fully developed se il premise count è almeno 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "PremiseCount",
+            "label": "premise count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “is fully developed” dell'argument è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "vero",
+              "when": {
+                "kind": "leaf",
+                "text": "il premise count è almeno 2"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se premise count è almeno 2, allora true(), altrimenti false()"
+      },
+      "Arguments.TotalRebuttals": {
+        "table": "Arguments",
+        "field": "TotalRebuttals",
+        "kind": "rollup",
+        "rule": "Un argument: total rebuttals è il totale di rebuttal count tra i claims collegati a l'argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          },
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di rebuttal count su tutti i claims il cui supports argument è questo"
+      },
+      "Arguments.IsContested": {
+        "table": "Arguments",
+        "field": "IsContested",
+        "kind": "formula",
+        "rule": "Un argument è considerato contested se il total rebuttals è maggiore di 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "TotalRebuttals",
+            "label": "total rebuttals"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “is contested” dell'argument è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "vero",
+              "when": {
+                "kind": "leaf",
+                "text": "il total rebuttals è maggiore di 0"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se total rebuttals è maggiore di 0, allora true(), altrimenti false()"
+      },
+      "Premises.Name": {
+        "table": "Premises",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un premise: name è calcolato come il label in minuscolo con ogni uno spazio sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label in minuscolo con « » sostituito da «-»"
+      },
+      "Evidence.Name": {
+        "table": "Evidence",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un evidence: name è calcolato come il label in minuscolo con ogni uno spazio sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label in minuscolo con « » sostituito da «-»"
+      },
+      "Concepts.Name": {
+        "table": "Concepts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un concept: name è calcolato come il label in minuscolo con ogni uno spazio sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Concepts",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label in minuscolo con « » sostituito da «-»"
+      },
+      "Concepts.ClaimCount": {
+        "table": "Concepts",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Un concept: claim count è il numero di claims collegati a il concept.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "TouchesConcept",
+            "label": "touches concept"
+          },
+          {
+            "table": "Concepts",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei claims il cui touches concept è questo"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un claim: name è calcolato come il label in minuscolo con ogni uno spazio sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label in minuscolo con « » sostituito da «-»"
+      },
+      "Claims.RebuttalCount": {
+        "table": "Claims",
+        "field": "RebuttalCount",
+        "kind": "rollup",
+        "rule": "Un claim: rebuttal count è il numero di rebuttals collegati a il claim.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "RebutsClaim",
+            "label": "rebuts claim"
+          },
+          {
+            "table": "Claims",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei rebuttals il cui rebuts claim è questo"
+      },
+      "Claims.IsRebutted": {
+        "table": "Claims",
+        "field": "IsRebutted",
+        "kind": "formula",
+        "rule": "Un claim è considerato rebutted se il rebuttal count è maggiore di 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “is rebutted” del claim è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "vero",
+              "when": {
+                "kind": "leaf",
+                "text": "il rebuttal count è maggiore di 0"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se rebuttal count è maggiore di 0, allora true(), altrimenti false()"
+      },
+      "Rebuttals.Name": {
+        "table": "Rebuttals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un rebuttal: name è calcolato come il label in minuscolo con ogni uno spazio sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label in minuscolo con « » sostituito da «-»"
+      },
+      "Thinkers.Name": {
+        "table": "Thinkers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un thinker: name è calcolato come il label in minuscolo con ogni uno spazio sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label in minuscolo con « » sostituito da «-»"
+      },
+      "Thinkers.QuotationCount": {
+        "table": "Thinkers",
+        "field": "QuotationCount",
+        "kind": "rollup",
+        "rule": "Un thinker: quotation count è il numero di quotations collegati a il thinker.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Speaker",
+            "label": "speaker"
+          },
+          {
+            "table": "Thinkers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei quotations il cui speaker è questo"
+      },
+      "Quotations.Name": {
+        "table": "Quotations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un quotation: name è calcolato come il label in minuscolo con ogni uno spazio sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label in minuscolo con « » sostituito da «-»"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Debaters": [
+        "Un debater **deve** avere un label e un side."
+      ],
+      "Worldviews": [
+        "Un worldview **deve** avere un label, e registrare se è affirms god."
+      ],
+      "Arguments": [
+        "Un argument **deve** referenziare esattamente un debater come suo advanced by.",
+        "Un argument **deve** referenziare esattamente un worldview come suo fields worldview.",
+        "Un argument **deve** avere un label e un argument type."
+      ],
+      "Premises": [
+        "Un premise **deve** referenziare esattamente un argument come suo supports argument.",
+        "Un premise **deve** avere un label e un ordinal."
+      ],
+      "Evidence": [
+        "Un evidence **deve** referenziare esattamente un argument come suo supports argument.",
+        "Un evidence **deve** avere un label e un evidence kind."
+      ],
+      "Concepts": [
+        "Un concept **deve** avere un label e un category."
+      ],
+      "Claims": [
+        "Un claim **deve** referenziare esattamente un debater come suo made by.",
+        "Un claim **deve** avere un label e un phase."
+      ],
+      "Rebuttals": [
+        "Un rebuttal **deve** referenziare esattamente un debater come suo made by.",
+        "Un rebuttal **deve** referenziare esattamente un claim come suo rebuts claim.",
+        "Un rebuttal **deve** avere un label."
+      ],
+      "Thinkers": [
+        "Un thinker **deve** avere un label, e registrare se è cited as hostile witness."
+      ],
+      "Quotations": [
+        "Un quotation **deve** referenziare esattamente un thinker come suo speaker.",
+        "Un quotation **deve** referenziare esattamente un debater come suo cited by.",
+        "Un quotation **deve** avere un label."
+      ]
+    },
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Debaters": "debater",
+      "Worldviews": "worldview",
+      "Arguments": "argument",
+      "Premises": "premise",
+      "Evidence": "evidence",
+      "Concepts": "concept",
+      "Claims": "claim",
+      "Rebuttals": "rebuttal",
+      "Thinkers": "thinker",
+      "Quotations": "quotation"
+    }
+  },
+  "ja": {
+    "fields": {
+      "Debaters.Name": {
+        "table": "Debaters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "debaterの「name」は label を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Debaters",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label を小文字にしたもの の「 」を「-」に置き換えたもの"
+      },
+      "Debaters.ArgumentCount": {
+        "table": "Debaters",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "debaterの「argument count」は debaterに関連する「arguments」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "AdvancedBy",
+            "label": "advanced by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Advanced by が このレコード である「arguments」の件数"
+      },
+      "Debaters.ClaimCount": {
+        "table": "Debaters",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "debaterの「claim count」は debaterに関連する「claims」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "MadeBy",
+            "label": "made by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Made by が このレコード である「claims」の件数"
+      },
+      "Debaters.ThinkersCited": {
+        "table": "Debaters",
+        "field": "ThinkersCited",
+        "kind": "rollup",
+        "rule": "debaterの「thinkers cited」は debaterに関連する「thinkers」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "CitedBy",
+            "label": "cited by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Cited by が このレコード である「thinkers」の件数"
+      },
+      "Worldviews.Name": {
+        "table": "Worldviews",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "worldviewの「name」は label を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Worldviews",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label を小文字にしたもの の「 」を「-」に置き換えたもの"
+      },
+      "Worldviews.ArgumentCount": {
+        "table": "Worldviews",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "worldviewの「argument count」は worldviewに関連する「arguments」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "FieldsWorldview",
+            "label": "fields worldview"
+          },
+          {
+            "table": "Worldviews",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Fields worldview が このレコード である「arguments」の件数"
+      },
+      "Arguments.Name": {
+        "table": "Arguments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "argumentの「name」は label を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label を小文字にしたもの の「 」を「-」に置き換えたもの"
+      },
+      "Arguments.PremiseCount": {
+        "table": "Arguments",
+        "field": "PremiseCount",
+        "kind": "rollup",
+        "rule": "argumentの「premise count」は argumentに関連する「premises」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Supports argument が このレコード である「premises」の件数"
+      },
+      "Arguments.EvidenceCount": {
+        "table": "Arguments",
+        "field": "EvidenceCount",
+        "kind": "rollup",
+        "rule": "argumentの「evidence count」は argumentに関連する「evidence」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Supports argument が このレコード である「evidence」の件数"
+      },
+      "Arguments.ClaimCount": {
+        "table": "Arguments",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "argumentの「claim count」は argumentに関連する「claims」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Supports argument が このレコード である「claims」の件数"
+      },
+      "Arguments.IsFullyDeveloped": {
+        "table": "Arguments",
+        "field": "IsFullyDeveloped",
+        "kind": "formula",
+        "rule": "premise count が 2 以上である場合、argumentは「Fully Developed」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "PremiseCount",
+            "label": "premise count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Argumentの「is fully developed」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "premise count が 2 以上である"
+              }
+            },
+            {
+              "value": "偽",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Premise count が 2 以上なら true()、そうでなければ false()"
+      },
+      "Arguments.TotalRebuttals": {
+        "table": "Arguments",
+        "field": "TotalRebuttals",
+        "kind": "rollup",
+        "rule": "argumentの「total rebuttals」は argumentに関連する「claims」全体での「rebuttal count」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          },
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Supports argument が このレコード であるすべての「claims」にわたる rebuttal count の合計"
+      },
+      "Arguments.IsContested": {
+        "table": "Arguments",
+        "field": "IsContested",
+        "kind": "formula",
+        "rule": "total rebuttals が 0 より大きい場合、argumentは「Contested」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "TotalRebuttals",
+            "label": "total rebuttals"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Argumentの「is contested」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "total rebuttals が 0 より大きい"
+              }
+            },
+            {
+              "value": "偽",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Total rebuttals が 0 より大きいなら true()、そうでなければ false()"
+      },
+      "Premises.Name": {
+        "table": "Premises",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "premiseの「name」は label を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label を小文字にしたもの の「 」を「-」に置き換えたもの"
+      },
+      "Evidence.Name": {
+        "table": "Evidence",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "evidenceの「name」は label を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label を小文字にしたもの の「 」を「-」に置き換えたもの"
+      },
+      "Concepts.Name": {
+        "table": "Concepts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "conceptの「name」は label を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Concepts",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label を小文字にしたもの の「 」を「-」に置き換えたもの"
+      },
+      "Concepts.ClaimCount": {
+        "table": "Concepts",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "conceptの「claim count」は conceptに関連する「claims」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "TouchesConcept",
+            "label": "touches concept"
+          },
+          {
+            "table": "Concepts",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Touches concept が このレコード である「claims」の件数"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "claimの「name」は label を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label を小文字にしたもの の「 」を「-」に置き換えたもの"
+      },
+      "Claims.RebuttalCount": {
+        "table": "Claims",
+        "field": "RebuttalCount",
+        "kind": "rollup",
+        "rule": "claimの「rebuttal count」は claimに関連する「rebuttals」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "RebutsClaim",
+            "label": "rebuts claim"
+          },
+          {
+            "table": "Claims",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Rebuts claim が このレコード である「rebuttals」の件数"
+      },
+      "Claims.IsRebutted": {
+        "table": "Claims",
+        "field": "IsRebutted",
+        "kind": "formula",
+        "rule": "rebuttal count が 0 より大きい場合、claimは「Rebutted」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Claimの「is rebutted」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "rebuttal count が 0 より大きい"
+              }
+            },
+            {
+              "value": "偽",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Rebuttal count が 0 より大きいなら true()、そうでなければ false()"
+      },
+      "Rebuttals.Name": {
+        "table": "Rebuttals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "rebuttalの「name」は label を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label を小文字にしたもの の「 」を「-」に置き換えたもの"
+      },
+      "Thinkers.Name": {
+        "table": "Thinkers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "thinkerの「name」は label を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label を小文字にしたもの の「 」を「-」に置き換えたもの"
+      },
+      "Thinkers.QuotationCount": {
+        "table": "Thinkers",
+        "field": "QuotationCount",
+        "kind": "rollup",
+        "rule": "thinkerの「quotation count」は thinkerに関連する「quotations」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Speaker",
+            "label": "speaker"
+          },
+          {
+            "table": "Thinkers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker が このレコード である「quotations」の件数"
+      },
+      "Quotations.Name": {
+        "table": "Quotations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "quotationの「name」は label を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label を小文字にしたもの の「 」を「-」に置き換えたもの"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Debaters": [
+        "debaterは labelおよびside を持た**なければなりません**。"
+      ],
+      "Worldviews": [
+        "worldviewは label を持た、かつ 「Affirms God」であるかどうかを記録し**なければなりません**。"
+      ],
+      "Arguments": [
+        "argumentは、advanced byとして「debater」をちょうど 1 件参照し**なければなりません**。",
+        "argumentは、fields worldviewとして「worldview」をちょうど 1 件参照し**なければなりません**。",
+        "argumentは labelおよびargument type を持た**なければなりません**。"
+      ],
+      "Premises": [
+        "premiseは、supports argumentとして「argument」をちょうど 1 件参照し**なければなりません**。",
+        "premiseは labelおよびordinal を持た**なければなりません**。"
+      ],
+      "Evidence": [
+        "evidenceは、supports argumentとして「argument」をちょうど 1 件参照し**なければなりません**。",
+        "evidenceは labelおよびevidence kind を持た**なければなりません**。"
+      ],
+      "Concepts": [
+        "conceptは labelおよびcategory を持た**なければなりません**。"
+      ],
+      "Claims": [
+        "claimは、made byとして「debater」をちょうど 1 件参照し**なければなりません**。",
+        "claimは labelおよびphase を持た**なければなりません**。"
+      ],
+      "Rebuttals": [
+        "rebuttalは、made byとして「debater」をちょうど 1 件参照し**なければなりません**。",
+        "rebuttalは、rebuts claimとして「claim」をちょうど 1 件参照し**なければなりません**。",
+        "rebuttalは label を持た**なければなりません**。"
+      ],
+      "Thinkers": [
+        "thinkerは label を持た、かつ 「Cited As Hostile Witness」であるかどうかを記録し**なければなりません**。"
+      ],
+      "Quotations": [
+        "quotationは、speakerとして「thinker」をちょうど 1 件参照し**なければなりません**。",
+        "quotationは、cited byとして「debater」をちょうど 1 件参照し**なければなりません**。",
+        "quotationは label を持た**なければなりません**。"
+      ]
+    },
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "Debaters": "debater",
+      "Worldviews": "worldview",
+      "Arguments": "argument",
+      "Premises": "premise",
+      "Evidence": "evidence",
+      "Concepts": "concept",
+      "Claims": "claim",
+      "Rebuttals": "rebuttal",
+      "Thinkers": "thinker",
+      "Quotations": "quotation"
+    }
+  },
+  "ko": {
+    "fields": {
+      "Debaters.Name": {
+        "table": "Debaters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘debater’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘label’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Debaters",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과"
+      },
+      "Debaters.ArgumentCount": {
+        "table": "Debaters",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "‘debater’ 레코드의 ‘argument count’ 값은 해당 ‘debater’ 레코드에 연결된 ‘arguments’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "AdvancedBy",
+            "label": "advanced by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(advanced by 값이 이 레코드임)에 맞는 arguments 레코드의 개수"
+      },
+      "Debaters.ClaimCount": {
+        "table": "Debaters",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "‘debater’ 레코드의 ‘claim count’ 값은 해당 ‘debater’ 레코드에 연결된 ‘claims’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "MadeBy",
+            "label": "made by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(made by 값이 이 레코드임)에 맞는 claims 레코드의 개수"
+      },
+      "Debaters.ThinkersCited": {
+        "table": "Debaters",
+        "field": "ThinkersCited",
+        "kind": "rollup",
+        "rule": "‘debater’ 레코드의 ‘thinkers cited’ 값은 해당 ‘debater’ 레코드에 연결된 ‘thinkers’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "CitedBy",
+            "label": "cited by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(cited by 값이 이 레코드임)에 맞는 thinkers 레코드의 개수"
+      },
+      "Worldviews.Name": {
+        "table": "Worldviews",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘worldview’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘label’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Worldviews",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과"
+      },
+      "Worldviews.ArgumentCount": {
+        "table": "Worldviews",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "‘worldview’ 레코드의 ‘argument count’ 값은 해당 ‘worldview’ 레코드에 연결된 ‘arguments’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "FieldsWorldview",
+            "label": "fields worldview"
+          },
+          {
+            "table": "Worldviews",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(fields worldview 값이 이 레코드임)에 맞는 arguments 레코드의 개수"
+      },
+      "Arguments.Name": {
+        "table": "Arguments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘argument’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘label’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과"
+      },
+      "Arguments.PremiseCount": {
+        "table": "Arguments",
+        "field": "PremiseCount",
+        "kind": "rollup",
+        "rule": "‘argument’ 레코드의 ‘premise count’ 값은 해당 ‘argument’ 레코드에 연결된 ‘premises’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(supports argument 값이 이 레코드임)에 맞는 premises 레코드의 개수"
+      },
+      "Arguments.EvidenceCount": {
+        "table": "Arguments",
+        "field": "EvidenceCount",
+        "kind": "rollup",
+        "rule": "‘argument’ 레코드의 ‘evidence count’ 값은 해당 ‘argument’ 레코드에 연결된 ‘evidence’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(supports argument 값이 이 레코드임)에 맞는 evidence 레코드의 개수"
+      },
+      "Arguments.ClaimCount": {
+        "table": "Arguments",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "‘argument’ 레코드의 ‘claim count’ 값은 해당 ‘argument’ 레코드에 연결된 ‘claims’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(supports argument 값이 이 레코드임)에 맞는 claims 레코드의 개수"
+      },
+      "Arguments.IsFullyDeveloped": {
+        "table": "Arguments",
+        "field": "IsFullyDeveloped",
+        "kind": "formula",
+        "rule": "‘premise count’ 값이 2 이상인 경우, ‘argument’ 레코드는 ‘fully developed’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "PremiseCount",
+            "label": "premise count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘argument’ 레코드의 ‘is fully developed’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "참",
+              "when": {
+                "kind": "leaf",
+                "text": "‘premise count’ 값이 2 이상인 경우"
+              }
+            },
+            {
+              "value": "거짓",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(premise count 값이 2 이상임)이 성립하면 true(), 그렇지 않으면 false()"
+      },
+      "Arguments.TotalRebuttals": {
+        "table": "Arguments",
+        "field": "TotalRebuttals",
+        "kind": "rollup",
+        "rule": "‘argument’ 레코드의 ‘total rebuttals’ 값은 해당 ‘argument’ 레코드에 연결된 모든 ‘claims’ 레코드의 총 ‘rebuttal count’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          },
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(supports argument 값이 이 레코드임)에 맞는 모든 claims 레코드의 rebuttal count 합계"
+      },
+      "Arguments.IsContested": {
+        "table": "Arguments",
+        "field": "IsContested",
+        "kind": "formula",
+        "rule": "‘total rebuttals’ 값이 0보다 큰 경우, ‘argument’ 레코드는 ‘contested’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "TotalRebuttals",
+            "label": "total rebuttals"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘argument’ 레코드의 ‘is contested’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "참",
+              "when": {
+                "kind": "leaf",
+                "text": "‘total rebuttals’ 값이 0보다 큰 경우"
+              }
+            },
+            {
+              "value": "거짓",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(total rebuttals 값이 0보다 큼)이 성립하면 true(), 그렇지 않으면 false()"
+      },
+      "Premises.Name": {
+        "table": "Premises",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘premise’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘label’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과"
+      },
+      "Evidence.Name": {
+        "table": "Evidence",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘evidence’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘label’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과"
+      },
+      "Concepts.Name": {
+        "table": "Concepts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘concept’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘label’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Concepts",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과"
+      },
+      "Concepts.ClaimCount": {
+        "table": "Concepts",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "‘concept’ 레코드의 ‘claim count’ 값은 해당 ‘concept’ 레코드에 연결된 ‘claims’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "TouchesConcept",
+            "label": "touches concept"
+          },
+          {
+            "table": "Concepts",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(touches concept 값이 이 레코드임)에 맞는 claims 레코드의 개수"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘claim’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘label’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과"
+      },
+      "Claims.RebuttalCount": {
+        "table": "Claims",
+        "field": "RebuttalCount",
+        "kind": "rollup",
+        "rule": "‘claim’ 레코드의 ‘rebuttal count’ 값은 해당 ‘claim’ 레코드에 연결된 ‘rebuttals’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "RebutsClaim",
+            "label": "rebuts claim"
+          },
+          {
+            "table": "Claims",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(rebuts claim 값이 이 레코드임)에 맞는 rebuttals 레코드의 개수"
+      },
+      "Claims.IsRebutted": {
+        "table": "Claims",
+        "field": "IsRebutted",
+        "kind": "formula",
+        "rule": "‘rebuttal count’ 값이 0보다 큰 경우, ‘claim’ 레코드는 ‘rebutted’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘claim’ 레코드의 ‘is rebutted’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "참",
+              "when": {
+                "kind": "leaf",
+                "text": "‘rebuttal count’ 값이 0보다 큰 경우"
+              }
+            },
+            {
+              "value": "거짓",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(rebuttal count 값이 0보다 큼)이 성립하면 true(), 그렇지 않으면 false()"
+      },
+      "Rebuttals.Name": {
+        "table": "Rebuttals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘rebuttal’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘label’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과"
+      },
+      "Thinkers.Name": {
+        "table": "Thinkers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘thinker’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘label’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과"
+      },
+      "Thinkers.QuotationCount": {
+        "table": "Thinkers",
+        "field": "QuotationCount",
+        "kind": "rollup",
+        "rule": "‘thinker’ 레코드의 ‘quotation count’ 값은 해당 ‘thinker’ 레코드에 연결된 ‘quotations’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Speaker",
+            "label": "speaker"
+          },
+          {
+            "table": "Thinkers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(speaker 값이 이 레코드임)에 맞는 quotations 레코드의 개수"
+      },
+      "Quotations.Name": {
+        "table": "Quotations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘quotation’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘label’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Debaters": [
+        "‘debater’ 레코드는 ‘label’ 및 ‘side’ 값을 포함**해야 합니다**."
+      ],
+      "Worldviews": [
+        "‘worldview’ 레코드는 ‘label’ 값을 포함하고, 해당 레코드가 ‘affirms god’에 해당하는지 여부를 기록**해야 합니다**."
+      ],
+      "Arguments": [
+        "‘argument’ 레코드는 ‘advanced by’ 필드를 통해 ‘debater’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘argument’ 레코드는 ‘fields worldview’ 필드를 통해 ‘worldview’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘argument’ 레코드는 ‘label’ 및 ‘argument type’ 값을 포함**해야 합니다**."
+      ],
+      "Premises": [
+        "‘premise’ 레코드는 ‘supports argument’ 필드를 통해 ‘argument’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘premise’ 레코드는 ‘label’ 및 ‘ordinal’ 값을 포함**해야 합니다**."
+      ],
+      "Evidence": [
+        "‘evidence’ 레코드는 ‘supports argument’ 필드를 통해 ‘argument’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘evidence’ 레코드는 ‘label’ 및 ‘evidence kind’ 값을 포함**해야 합니다**."
+      ],
+      "Concepts": [
+        "‘concept’ 레코드는 ‘label’ 및 ‘category’ 값을 포함**해야 합니다**."
+      ],
+      "Claims": [
+        "‘claim’ 레코드는 ‘made by’ 필드를 통해 ‘debater’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘claim’ 레코드는 ‘label’ 및 ‘phase’ 값을 포함**해야 합니다**."
+      ],
+      "Rebuttals": [
+        "‘rebuttal’ 레코드는 ‘made by’ 필드를 통해 ‘debater’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘rebuttal’ 레코드는 ‘rebuts claim’ 필드를 통해 ‘claim’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘rebuttal’ 레코드는 ‘label’ 값을 포함**해야 합니다**."
+      ],
+      "Thinkers": [
+        "‘thinker’ 레코드는 ‘label’ 값을 포함하고, 해당 레코드가 ‘cited as hostile witness’에 해당하는지 여부를 기록**해야 합니다**."
+      ],
+      "Quotations": [
+        "‘quotation’ 레코드는 ‘speaker’ 필드를 통해 ‘thinker’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘quotation’ 레코드는 ‘cited by’ 필드를 통해 ‘debater’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘quotation’ 레코드는 ‘label’ 값을 포함**해야 합니다**."
+      ]
+    },
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Debaters": "debater",
+      "Worldviews": "worldview",
+      "Arguments": "argument",
+      "Premises": "premise",
+      "Evidence": "evidence",
+      "Concepts": "concept",
+      "Claims": "claim",
+      "Rebuttals": "rebuttal",
+      "Thinkers": "thinker",
+      "Quotations": "quotation"
+    }
+  },
+  "nl": {
+    "fields": {
+      "Debaters.Name": {
+        "table": "Debaters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een debater: name wordt berekend als de label in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Debaters",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’"
+      },
+      "Debaters.ArgumentCount": {
+        "table": "Debaters",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "Een debater: argument count is het aantal arguments dat is gekoppeld aan de debater.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "AdvancedBy",
+            "label": "advanced by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal arguments waarvan advanced by is deze"
+      },
+      "Debaters.ClaimCount": {
+        "table": "Debaters",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Een debater: claim count is het aantal claims dat is gekoppeld aan de debater.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "MadeBy",
+            "label": "made by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal claims waarvan made by is deze"
+      },
+      "Debaters.ThinkersCited": {
+        "table": "Debaters",
+        "field": "ThinkersCited",
+        "kind": "rollup",
+        "rule": "Een debater: thinkers cited is het aantal thinkers dat is gekoppeld aan de debater.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "CitedBy",
+            "label": "cited by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal thinkers waarvan cited by is deze"
+      },
+      "Worldviews.Name": {
+        "table": "Worldviews",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een worldview: name wordt berekend als de label in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Worldviews",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’"
+      },
+      "Worldviews.ArgumentCount": {
+        "table": "Worldviews",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "Een worldview: argument count is het aantal arguments dat is gekoppeld aan de worldview.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "FieldsWorldview",
+            "label": "fields worldview"
+          },
+          {
+            "table": "Worldviews",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal arguments waarvan fields worldview is deze"
+      },
+      "Arguments.Name": {
+        "table": "Arguments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een argument: name wordt berekend als de label in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’"
+      },
+      "Arguments.PremiseCount": {
+        "table": "Arguments",
+        "field": "PremiseCount",
+        "kind": "rollup",
+        "rule": "Een argument: premise count is het aantal premises dat is gekoppeld aan het argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal premises waarvan supports argument is deze"
+      },
+      "Arguments.EvidenceCount": {
+        "table": "Arguments",
+        "field": "EvidenceCount",
+        "kind": "rollup",
+        "rule": "Een argument: evidence count is het aantal evidence dat is gekoppeld aan het argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal evidence waarvan supports argument is deze"
+      },
+      "Arguments.ClaimCount": {
+        "table": "Arguments",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Een argument: claim count is het aantal claims dat is gekoppeld aan het argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal claims waarvan supports argument is deze"
+      },
+      "Arguments.IsFullyDeveloped": {
+        "table": "Arguments",
+        "field": "IsFullyDeveloped",
+        "kind": "formula",
+        "rule": "Een argument geldt als fully developed als de premise count ten minste 2 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "PremiseCount",
+            "label": "premise count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘is fully developed’ van het argument wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "waar",
+              "when": {
+                "kind": "leaf",
+                "text": "de premise count ten minste 2 is"
+              }
+            },
+            {
+              "value": "onwaar",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als premise count is ten minste 2, dan true(), anders false()"
+      },
+      "Arguments.TotalRebuttals": {
+        "table": "Arguments",
+        "field": "TotalRebuttals",
+        "kind": "rollup",
+        "rule": "Een argument: total rebuttals is het totaal van rebuttal count over de claims gekoppeld aan het argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          },
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van rebuttal count over alle claims waarvan supports argument is deze"
+      },
+      "Arguments.IsContested": {
+        "table": "Arguments",
+        "field": "IsContested",
+        "kind": "formula",
+        "rule": "Een argument geldt als contested als de total rebuttals groter is dan 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "TotalRebuttals",
+            "label": "total rebuttals"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘is contested’ van het argument wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "waar",
+              "when": {
+                "kind": "leaf",
+                "text": "de total rebuttals groter is dan 0"
+              }
+            },
+            {
+              "value": "onwaar",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als total rebuttals is groter dan 0, dan true(), anders false()"
+      },
+      "Premises.Name": {
+        "table": "Premises",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een premise: name wordt berekend als de label in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’"
+      },
+      "Evidence.Name": {
+        "table": "Evidence",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een evidence: name wordt berekend als de label in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’"
+      },
+      "Concepts.Name": {
+        "table": "Concepts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een concept: name wordt berekend als de label in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Concepts",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’"
+      },
+      "Concepts.ClaimCount": {
+        "table": "Concepts",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Een concept: claim count is het aantal claims dat is gekoppeld aan de concept.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "TouchesConcept",
+            "label": "touches concept"
+          },
+          {
+            "table": "Concepts",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal claims waarvan touches concept is deze"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een claim: name wordt berekend als de label in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’"
+      },
+      "Claims.RebuttalCount": {
+        "table": "Claims",
+        "field": "RebuttalCount",
+        "kind": "rollup",
+        "rule": "Een claim: rebuttal count is het aantal rebuttals dat is gekoppeld aan de claim.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "RebutsClaim",
+            "label": "rebuts claim"
+          },
+          {
+            "table": "Claims",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal rebuttals waarvan rebuts claim is deze"
+      },
+      "Claims.IsRebutted": {
+        "table": "Claims",
+        "field": "IsRebutted",
+        "kind": "formula",
+        "rule": "Een claim geldt als rebutted als de rebuttal count groter is dan 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘is rebutted’ van de claim wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "waar",
+              "when": {
+                "kind": "leaf",
+                "text": "de rebuttal count groter is dan 0"
+              }
+            },
+            {
+              "value": "onwaar",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als rebuttal count is groter dan 0, dan true(), anders false()"
+      },
+      "Rebuttals.Name": {
+        "table": "Rebuttals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een rebuttal: name wordt berekend als de label in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’"
+      },
+      "Thinkers.Name": {
+        "table": "Thinkers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een thinker: name wordt berekend als de label in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’"
+      },
+      "Thinkers.QuotationCount": {
+        "table": "Thinkers",
+        "field": "QuotationCount",
+        "kind": "rollup",
+        "rule": "Een thinker: quotation count is het aantal quotations dat is gekoppeld aan de thinker.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Speaker",
+            "label": "speaker"
+          },
+          {
+            "table": "Thinkers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal quotations waarvan speaker is deze"
+      },
+      "Quotations.Name": {
+        "table": "Quotations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een quotation: name wordt berekend als de label in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Debaters": [
+        "Een debater **moet** een label en een side hebben."
+      ],
+      "Worldviews": [
+        "Een worldview **moet** een label hebben, en vastleggen of het is affirms god."
+      ],
+      "Arguments": [
+        "Een argument **moet** naar precies één debater verwijzen als zijn advanced by.",
+        "Een argument **moet** naar precies één worldview verwijzen als zijn fields worldview.",
+        "Een argument **moet** een label en een argument type hebben."
+      ],
+      "Premises": [
+        "Een premise **moet** naar precies één argument verwijzen als zijn supports argument.",
+        "Een premise **moet** een label en een ordinal hebben."
+      ],
+      "Evidence": [
+        "Een evidence **moet** naar precies één argument verwijzen als zijn supports argument.",
+        "Een evidence **moet** een label en een evidence kind hebben."
+      ],
+      "Concepts": [
+        "Een concept **moet** een label en een category hebben."
+      ],
+      "Claims": [
+        "Een claim **moet** naar precies één debater verwijzen als zijn made by.",
+        "Een claim **moet** een label en een phase hebben."
+      ],
+      "Rebuttals": [
+        "Een rebuttal **moet** naar precies één debater verwijzen als zijn made by.",
+        "Een rebuttal **moet** naar precies één claim verwijzen als zijn rebuts claim.",
+        "Een rebuttal **moet** een label hebben."
+      ],
+      "Thinkers": [
+        "Een thinker **moet** een label hebben, en vastleggen of het is cited as hostile witness."
+      ],
+      "Quotations": [
+        "Een quotation **moet** naar precies één thinker verwijzen als zijn speaker.",
+        "Een quotation **moet** naar precies één debater verwijzen als zijn cited by.",
+        "Een quotation **moet** een label hebben."
+      ]
+    },
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Debaters": "debater",
+      "Worldviews": "worldview",
+      "Arguments": "argument",
+      "Premises": "premise",
+      "Evidence": "evidence",
+      "Concepts": "concept",
+      "Claims": "claim",
+      "Rebuttals": "rebuttal",
+      "Thinkers": "thinker",
+      "Quotations": "quotation"
+    }
+  },
+  "pt": {
+    "fields": {
+      "Debaters.Name": {
+        "table": "Debaters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um debater: name é calculado como o label em minúsculas com cada um espaço substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Debaters",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label em minúsculas com “ ” substituído por “-”"
+      },
+      "Debaters.ArgumentCount": {
+        "table": "Debaters",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "Um debater: argument count é o número de arguments relacionados a o debater.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "AdvancedBy",
+            "label": "advanced by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de arguments cujo advanced by é este"
+      },
+      "Debaters.ClaimCount": {
+        "table": "Debaters",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Um debater: claim count é o número de claims relacionados a o debater.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "MadeBy",
+            "label": "made by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de claims cujo made by é este"
+      },
+      "Debaters.ThinkersCited": {
+        "table": "Debaters",
+        "field": "ThinkersCited",
+        "kind": "rollup",
+        "rule": "Um debater: thinkers cited é o número de thinkers relacionados a o debater.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "CitedBy",
+            "label": "cited by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de thinkers cujo cited by é este"
+      },
+      "Worldviews.Name": {
+        "table": "Worldviews",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um worldview: name é calculado como o label em minúsculas com cada um espaço substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Worldviews",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label em minúsculas com “ ” substituído por “-”"
+      },
+      "Worldviews.ArgumentCount": {
+        "table": "Worldviews",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "Um worldview: argument count é o número de arguments relacionados a o worldview.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "FieldsWorldview",
+            "label": "fields worldview"
+          },
+          {
+            "table": "Worldviews",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de arguments cujo fields worldview é este"
+      },
+      "Arguments.Name": {
+        "table": "Arguments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um argument: name é calculado como o label em minúsculas com cada um espaço substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label em minúsculas com “ ” substituído por “-”"
+      },
+      "Arguments.PremiseCount": {
+        "table": "Arguments",
+        "field": "PremiseCount",
+        "kind": "rollup",
+        "rule": "Um argument: premise count é o número de premises relacionados a o argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de premises cujo supports argument é este"
+      },
+      "Arguments.EvidenceCount": {
+        "table": "Arguments",
+        "field": "EvidenceCount",
+        "kind": "rollup",
+        "rule": "Um argument: evidence count é o número de evidence relacionados a o argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de evidence cujo supports argument é este"
+      },
+      "Arguments.ClaimCount": {
+        "table": "Arguments",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Um argument: claim count é o número de claims relacionados a o argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de claims cujo supports argument é este"
+      },
+      "Arguments.IsFullyDeveloped": {
+        "table": "Arguments",
+        "field": "IsFullyDeveloped",
+        "kind": "formula",
+        "rule": "Um argument é considerado fully developed se o premise count é pelo menos 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "PremiseCount",
+            "label": "premise count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “is fully developed” do argument é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "verdadeiro",
+              "when": {
+                "kind": "leaf",
+                "text": "o premise count é pelo menos 2"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se premise count é pelo menos 2, então true(), caso contrário false()"
+      },
+      "Arguments.TotalRebuttals": {
+        "table": "Arguments",
+        "field": "TotalRebuttals",
+        "kind": "rollup",
+        "rule": "Um argument: total rebuttals é o total de rebuttal count entre os claims relacionados a o argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          },
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de rebuttal count entre todos os claims cujo supports argument é este"
+      },
+      "Arguments.IsContested": {
+        "table": "Arguments",
+        "field": "IsContested",
+        "kind": "formula",
+        "rule": "Um argument é considerado contested se o total rebuttals é maior que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "TotalRebuttals",
+            "label": "total rebuttals"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “is contested” do argument é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "verdadeiro",
+              "when": {
+                "kind": "leaf",
+                "text": "o total rebuttals é maior que 0"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se total rebuttals é maior que 0, então true(), caso contrário false()"
+      },
+      "Premises.Name": {
+        "table": "Premises",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um premise: name é calculado como o label em minúsculas com cada um espaço substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label em minúsculas com “ ” substituído por “-”"
+      },
+      "Evidence.Name": {
+        "table": "Evidence",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um evidence: name é calculado como o label em minúsculas com cada um espaço substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label em minúsculas com “ ” substituído por “-”"
+      },
+      "Concepts.Name": {
+        "table": "Concepts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um concept: name é calculado como o label em minúsculas com cada um espaço substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Concepts",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label em minúsculas com “ ” substituído por “-”"
+      },
+      "Concepts.ClaimCount": {
+        "table": "Concepts",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Um concept: claim count é o número de claims relacionados a o concept.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "TouchesConcept",
+            "label": "touches concept"
+          },
+          {
+            "table": "Concepts",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de claims cujo touches concept é este"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um claim: name é calculado como o label em minúsculas com cada um espaço substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label em minúsculas com “ ” substituído por “-”"
+      },
+      "Claims.RebuttalCount": {
+        "table": "Claims",
+        "field": "RebuttalCount",
+        "kind": "rollup",
+        "rule": "Um claim: rebuttal count é o número de rebuttals relacionados a o claim.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "RebutsClaim",
+            "label": "rebuts claim"
+          },
+          {
+            "table": "Claims",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de rebuttals cujo rebuts claim é este"
+      },
+      "Claims.IsRebutted": {
+        "table": "Claims",
+        "field": "IsRebutted",
+        "kind": "formula",
+        "rule": "Um claim é considerado rebutted se o rebuttal count é maior que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “is rebutted” do claim é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "verdadeiro",
+              "when": {
+                "kind": "leaf",
+                "text": "o rebuttal count é maior que 0"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se rebuttal count é maior que 0, então true(), caso contrário false()"
+      },
+      "Rebuttals.Name": {
+        "table": "Rebuttals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um rebuttal: name é calculado como o label em minúsculas com cada um espaço substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label em minúsculas com “ ” substituído por “-”"
+      },
+      "Thinkers.Name": {
+        "table": "Thinkers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um thinker: name é calculado como o label em minúsculas com cada um espaço substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label em minúsculas com “ ” substituído por “-”"
+      },
+      "Thinkers.QuotationCount": {
+        "table": "Thinkers",
+        "field": "QuotationCount",
+        "kind": "rollup",
+        "rule": "Um thinker: quotation count é o número de quotations relacionados a o thinker.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Speaker",
+            "label": "speaker"
+          },
+          {
+            "table": "Thinkers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de quotations cujo speaker é este"
+      },
+      "Quotations.Name": {
+        "table": "Quotations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um quotation: name é calculado como o label em minúsculas com cada um espaço substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label em minúsculas com “ ” substituído por “-”"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Debaters": [
+        "Um debater **deve** ter um label e um side."
+      ],
+      "Worldviews": [
+        "Um worldview **deve** ter um label, e registrar se é affirms god."
+      ],
+      "Arguments": [
+        "Um argument **deve** referenciar exatamente um debater como seu advanced by.",
+        "Um argument **deve** referenciar exatamente um worldview como seu fields worldview.",
+        "Um argument **deve** ter um label e um argument type."
+      ],
+      "Premises": [
+        "Um premise **deve** referenciar exatamente um argument como seu supports argument.",
+        "Um premise **deve** ter um label e um ordinal."
+      ],
+      "Evidence": [
+        "Um evidence **deve** referenciar exatamente um argument como seu supports argument.",
+        "Um evidence **deve** ter um label e um evidence kind."
+      ],
+      "Concepts": [
+        "Um concept **deve** ter um label e um category."
+      ],
+      "Claims": [
+        "Um claim **deve** referenciar exatamente um debater como seu made by.",
+        "Um claim **deve** ter um label e um phase."
+      ],
+      "Rebuttals": [
+        "Um rebuttal **deve** referenciar exatamente um debater como seu made by.",
+        "Um rebuttal **deve** referenciar exatamente um claim como seu rebuts claim.",
+        "Um rebuttal **deve** ter um label."
+      ],
+      "Thinkers": [
+        "Um thinker **deve** ter um label, e registrar se é cited as hostile witness."
+      ],
+      "Quotations": [
+        "Um quotation **deve** referenciar exatamente um thinker como seu speaker.",
+        "Um quotation **deve** referenciar exatamente um debater como seu cited by.",
+        "Um quotation **deve** ter um label."
+      ]
+    },
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Debaters": "debater",
+      "Worldviews": "worldview",
+      "Arguments": "argument",
+      "Premises": "premise",
+      "Evidence": "evidence",
+      "Concepts": "concept",
+      "Claims": "claim",
+      "Rebuttals": "rebuttal",
+      "Thinkers": "thinker",
+      "Quotations": "quotation"
+    }
+  },
+  "ru": {
+    "fields": {
+      "Debaters.Name": {
+        "table": "Debaters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Debater: «name» вычисляется как label в нижнем регистре, где каждое пробел заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Debaters",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label в нижнем регистре, где « » заменено на «-»"
+      },
+      "Debaters.ArgumentCount": {
+        "table": "Debaters",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "Debater: «argument count» — это число записей «arguments», связанных с debater.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "AdvancedBy",
+            "label": "advanced by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «arguments», у которых advanced by равно эта запись"
+      },
+      "Debaters.ClaimCount": {
+        "table": "Debaters",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Debater: «claim count» — это число записей «claims», связанных с debater.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "MadeBy",
+            "label": "made by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «claims», у которых made by равно эта запись"
+      },
+      "Debaters.ThinkersCited": {
+        "table": "Debaters",
+        "field": "ThinkersCited",
+        "kind": "rollup",
+        "rule": "Debater: «thinkers cited» — это число записей «thinkers», связанных с debater.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "CitedBy",
+            "label": "cited by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «thinkers», у которых cited by равно эта запись"
+      },
+      "Worldviews.Name": {
+        "table": "Worldviews",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Worldview: «name» вычисляется как label в нижнем регистре, где каждое пробел заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Worldviews",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label в нижнем регистре, где « » заменено на «-»"
+      },
+      "Worldviews.ArgumentCount": {
+        "table": "Worldviews",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "Worldview: «argument count» — это число записей «arguments», связанных с worldview.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "FieldsWorldview",
+            "label": "fields worldview"
+          },
+          {
+            "table": "Worldviews",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «arguments», у которых fields worldview равно эта запись"
+      },
+      "Arguments.Name": {
+        "table": "Arguments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Argument: «name» вычисляется как label в нижнем регистре, где каждое пробел заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label в нижнем регистре, где « » заменено на «-»"
+      },
+      "Arguments.PremiseCount": {
+        "table": "Arguments",
+        "field": "PremiseCount",
+        "kind": "rollup",
+        "rule": "Argument: «premise count» — это число записей «premises», связанных с argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «premises», у которых supports argument равно эта запись"
+      },
+      "Arguments.EvidenceCount": {
+        "table": "Arguments",
+        "field": "EvidenceCount",
+        "kind": "rollup",
+        "rule": "Argument: «evidence count» — это число записей «evidence», связанных с argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «evidence», у которых supports argument равно эта запись"
+      },
+      "Arguments.ClaimCount": {
+        "table": "Arguments",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Argument: «claim count» — это число записей «claims», связанных с argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «claims», у которых supports argument равно эта запись"
+      },
+      "Arguments.IsFullyDeveloped": {
+        "table": "Arguments",
+        "field": "IsFullyDeveloped",
+        "kind": "formula",
+        "rule": "Argument считается «fully developed», если premise count не меньше 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "PremiseCount",
+            "label": "premise count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «is fully developed» (Argument) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "истина",
+              "when": {
+                "kind": "leaf",
+                "text": "premise count не меньше 2"
+              }
+            },
+            {
+              "value": "ложь",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если premise count не меньше 2, то true(), иначе false()"
+      },
+      "Arguments.TotalRebuttals": {
+        "table": "Arguments",
+        "field": "TotalRebuttals",
+        "kind": "rollup",
+        "rule": "Argument: «total rebuttals» — это сумма «rebuttal count» по записям «claims», связанным с argument.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          },
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма rebuttal count по всем «claims», у которых supports argument равно эта запись"
+      },
+      "Arguments.IsContested": {
+        "table": "Arguments",
+        "field": "IsContested",
+        "kind": "formula",
+        "rule": "Argument считается «contested», если total rebuttals больше 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "TotalRebuttals",
+            "label": "total rebuttals"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «is contested» (Argument) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "истина",
+              "when": {
+                "kind": "leaf",
+                "text": "total rebuttals больше 0"
+              }
+            },
+            {
+              "value": "ложь",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если total rebuttals больше 0, то true(), иначе false()"
+      },
+      "Premises.Name": {
+        "table": "Premises",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Premise: «name» вычисляется как label в нижнем регистре, где каждое пробел заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label в нижнем регистре, где « » заменено на «-»"
+      },
+      "Evidence.Name": {
+        "table": "Evidence",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Evidence: «name» вычисляется как label в нижнем регистре, где каждое пробел заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label в нижнем регистре, где « » заменено на «-»"
+      },
+      "Concepts.Name": {
+        "table": "Concepts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Concept: «name» вычисляется как label в нижнем регистре, где каждое пробел заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Concepts",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label в нижнем регистре, где « » заменено на «-»"
+      },
+      "Concepts.ClaimCount": {
+        "table": "Concepts",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Concept: «claim count» — это число записей «claims», связанных с concept.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "TouchesConcept",
+            "label": "touches concept"
+          },
+          {
+            "table": "Concepts",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «claims», у которых touches concept равно эта запись"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Claim: «name» вычисляется как label в нижнем регистре, где каждое пробел заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label в нижнем регистре, где « » заменено на «-»"
+      },
+      "Claims.RebuttalCount": {
+        "table": "Claims",
+        "field": "RebuttalCount",
+        "kind": "rollup",
+        "rule": "Claim: «rebuttal count» — это число записей «rebuttals», связанных с claim.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "RebutsClaim",
+            "label": "rebuts claim"
+          },
+          {
+            "table": "Claims",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «rebuttals», у которых rebuts claim равно эта запись"
+      },
+      "Claims.IsRebutted": {
+        "table": "Claims",
+        "field": "IsRebutted",
+        "kind": "formula",
+        "rule": "Claim считается «rebutted», если rebuttal count больше 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «is rebutted» (Claim) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "истина",
+              "when": {
+                "kind": "leaf",
+                "text": "rebuttal count больше 0"
+              }
+            },
+            {
+              "value": "ложь",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если rebuttal count больше 0, то true(), иначе false()"
+      },
+      "Rebuttals.Name": {
+        "table": "Rebuttals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Rebuttal: «name» вычисляется как label в нижнем регистре, где каждое пробел заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label в нижнем регистре, где « » заменено на «-»"
+      },
+      "Thinkers.Name": {
+        "table": "Thinkers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Thinker: «name» вычисляется как label в нижнем регистре, где каждое пробел заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label в нижнем регистре, где « » заменено на «-»"
+      },
+      "Thinkers.QuotationCount": {
+        "table": "Thinkers",
+        "field": "QuotationCount",
+        "kind": "rollup",
+        "rule": "Thinker: «quotation count» — это число записей «quotations», связанных с thinker.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Speaker",
+            "label": "speaker"
+          },
+          {
+            "table": "Thinkers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «quotations», у которых speaker равно эта запись"
+      },
+      "Quotations.Name": {
+        "table": "Quotations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Quotation: «name» вычисляется как label в нижнем регистре, где каждое пробел заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label в нижнем регистре, где « » заменено на «-»"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Debaters": [
+        "Debater **обязан** иметь label и side."
+      ],
+      "Worldviews": [
+        "Worldview **обязан** иметь label, а также фиксировать то, он является «affirms god» ли."
+      ],
+      "Arguments": [
+        "Argument **обязан** ссылаться ровно на один «debater» в роли «advanced by».",
+        "Argument **обязан** ссылаться ровно на один «worldview» в роли «fields worldview».",
+        "Argument **обязан** иметь label и argument type."
+      ],
+      "Premises": [
+        "Premise **обязан** ссылаться ровно на один «argument» в роли «supports argument».",
+        "Premise **обязан** иметь label и ordinal."
+      ],
+      "Evidence": [
+        "Evidence **обязан** ссылаться ровно на один «argument» в роли «supports argument».",
+        "Evidence **обязан** иметь label и evidence kind."
+      ],
+      "Concepts": [
+        "Concept **обязан** иметь label и category."
+      ],
+      "Claims": [
+        "Claim **обязан** ссылаться ровно на один «debater» в роли «made by».",
+        "Claim **обязан** иметь label и phase."
+      ],
+      "Rebuttals": [
+        "Rebuttal **обязан** ссылаться ровно на один «debater» в роли «made by».",
+        "Rebuttal **обязан** ссылаться ровно на один «claim» в роли «rebuts claim».",
+        "Rebuttal **обязан** иметь label."
+      ],
+      "Thinkers": [
+        "Thinker **обязан** иметь label, а также фиксировать то, он является «cited as hostile witness» ли."
+      ],
+      "Quotations": [
+        "Quotation **обязан** ссылаться ровно на один «thinker» в роли «speaker».",
+        "Quotation **обязан** ссылаться ровно на один «debater» в роли «cited by».",
+        "Quotation **обязан** иметь label."
+      ]
+    },
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Debaters": "debater",
+      "Worldviews": "worldview",
+      "Arguments": "argument",
+      "Premises": "premise",
+      "Evidence": "evidence",
+      "Concepts": "concept",
+      "Claims": "claim",
+      "Rebuttals": "rebuttal",
+      "Thinkers": "thinker",
+      "Quotations": "quotation"
+    }
+  },
+  "tr": {
+    "fields": {
+      "Debaters.Name": {
+        "table": "Debaters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“debater” kaydının “name” alanı, küçük harfe çevrilmiş “label” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Debaters",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş label değerindeki her “ ” yerine “-” konularak elde edilen metin"
+      },
+      "Debaters.ArgumentCount": {
+        "table": "Debaters",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "“debater” kaydının “argument count” alanı, “debater” kaydıyla ilişkili “arguments” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "AdvancedBy",
+            "label": "advanced by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Advanced by değeri bu kayıt olan arguments kayıtlarının sayısı"
+      },
+      "Debaters.ClaimCount": {
+        "table": "Debaters",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "“debater” kaydının “claim count” alanı, “debater” kaydıyla ilişkili “claims” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "MadeBy",
+            "label": "made by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Made by değeri bu kayıt olan claims kayıtlarının sayısı"
+      },
+      "Debaters.ThinkersCited": {
+        "table": "Debaters",
+        "field": "ThinkersCited",
+        "kind": "rollup",
+        "rule": "“debater” kaydının “thinkers cited” alanı, “debater” kaydıyla ilişkili “thinkers” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "CitedBy",
+            "label": "cited by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Cited by değeri bu kayıt olan thinkers kayıtlarının sayısı"
+      },
+      "Worldviews.Name": {
+        "table": "Worldviews",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“worldview” kaydının “name” alanı, küçük harfe çevrilmiş “label” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Worldviews",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş label değerindeki her “ ” yerine “-” konularak elde edilen metin"
+      },
+      "Worldviews.ArgumentCount": {
+        "table": "Worldviews",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "“worldview” kaydının “argument count” alanı, “worldview” kaydıyla ilişkili “arguments” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "FieldsWorldview",
+            "label": "fields worldview"
+          },
+          {
+            "table": "Worldviews",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Fields worldview değeri bu kayıt olan arguments kayıtlarının sayısı"
+      },
+      "Arguments.Name": {
+        "table": "Arguments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“argument” kaydının “name” alanı, küçük harfe çevrilmiş “label” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş label değerindeki her “ ” yerine “-” konularak elde edilen metin"
+      },
+      "Arguments.PremiseCount": {
+        "table": "Arguments",
+        "field": "PremiseCount",
+        "kind": "rollup",
+        "rule": "“argument” kaydının “premise count” alanı, “argument” kaydıyla ilişkili “premises” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Supports argument değeri bu kayıt olan premises kayıtlarının sayısı"
+      },
+      "Arguments.EvidenceCount": {
+        "table": "Arguments",
+        "field": "EvidenceCount",
+        "kind": "rollup",
+        "rule": "“argument” kaydının “evidence count” alanı, “argument” kaydıyla ilişkili “evidence” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Supports argument değeri bu kayıt olan evidence kayıtlarının sayısı"
+      },
+      "Arguments.ClaimCount": {
+        "table": "Arguments",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "“argument” kaydının “claim count” alanı, “argument” kaydıyla ilişkili “claims” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Supports argument değeri bu kayıt olan claims kayıtlarının sayısı"
+      },
+      "Arguments.IsFullyDeveloped": {
+        "table": "Arguments",
+        "field": "IsFullyDeveloped",
+        "kind": "formula",
+        "rule": "“argument” kaydı, “premise count” alanı en az 2 değerinde ise “fully developed” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "PremiseCount",
+            "label": "premise count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“argument” kaydının “is fully developed” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "doğru",
+              "when": {
+                "kind": "leaf",
+                "text": "“premise count” alanı en az 2 değerinde"
+              }
+            },
+            {
+              "value": "yanlış",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Premise count, en az 2 değerinde ise true(), aksi takdirde false()"
+      },
+      "Arguments.TotalRebuttals": {
+        "table": "Arguments",
+        "field": "TotalRebuttals",
+        "kind": "rollup",
+        "rule": "“argument” kaydının “total rebuttals” alanı, “argument” kaydıyla ilişkili “claims” kayıtları üzerinden hesaplanan toplam “rebuttal count” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          },
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Supports argument değeri bu kayıt olan tüm claims kayıtlarındaki rebuttal count değerlerinin toplamı"
+      },
+      "Arguments.IsContested": {
+        "table": "Arguments",
+        "field": "IsContested",
+        "kind": "formula",
+        "rule": "“argument” kaydı, “total rebuttals” alanı 0 değerinden büyük ise “contested” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "TotalRebuttals",
+            "label": "total rebuttals"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“argument” kaydının “is contested” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "doğru",
+              "when": {
+                "kind": "leaf",
+                "text": "“total rebuttals” alanı 0 değerinden büyük"
+              }
+            },
+            {
+              "value": "yanlış",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Total rebuttals, 0 değerinden büyük ise true(), aksi takdirde false()"
+      },
+      "Premises.Name": {
+        "table": "Premises",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“premise” kaydının “name” alanı, küçük harfe çevrilmiş “label” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş label değerindeki her “ ” yerine “-” konularak elde edilen metin"
+      },
+      "Evidence.Name": {
+        "table": "Evidence",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“evidence” kaydının “name” alanı, küçük harfe çevrilmiş “label” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş label değerindeki her “ ” yerine “-” konularak elde edilen metin"
+      },
+      "Concepts.Name": {
+        "table": "Concepts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“concept” kaydının “name” alanı, küçük harfe çevrilmiş “label” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Concepts",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş label değerindeki her “ ” yerine “-” konularak elde edilen metin"
+      },
+      "Concepts.ClaimCount": {
+        "table": "Concepts",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "“concept” kaydının “claim count” alanı, “concept” kaydıyla ilişkili “claims” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "TouchesConcept",
+            "label": "touches concept"
+          },
+          {
+            "table": "Concepts",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Touches concept değeri bu kayıt olan claims kayıtlarının sayısı"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“claim” kaydının “name” alanı, küçük harfe çevrilmiş “label” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş label değerindeki her “ ” yerine “-” konularak elde edilen metin"
+      },
+      "Claims.RebuttalCount": {
+        "table": "Claims",
+        "field": "RebuttalCount",
+        "kind": "rollup",
+        "rule": "“claim” kaydının “rebuttal count” alanı, “claim” kaydıyla ilişkili “rebuttals” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "RebutsClaim",
+            "label": "rebuts claim"
+          },
+          {
+            "table": "Claims",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Rebuts claim değeri bu kayıt olan rebuttals kayıtlarının sayısı"
+      },
+      "Claims.IsRebutted": {
+        "table": "Claims",
+        "field": "IsRebutted",
+        "kind": "formula",
+        "rule": "“claim” kaydı, “rebuttal count” alanı 0 değerinden büyük ise “rebutted” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“claim” kaydının “is rebutted” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "doğru",
+              "when": {
+                "kind": "leaf",
+                "text": "“rebuttal count” alanı 0 değerinden büyük"
+              }
+            },
+            {
+              "value": "yanlış",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Rebuttal count, 0 değerinden büyük ise true(), aksi takdirde false()"
+      },
+      "Rebuttals.Name": {
+        "table": "Rebuttals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“rebuttal” kaydının “name” alanı, küçük harfe çevrilmiş “label” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş label değerindeki her “ ” yerine “-” konularak elde edilen metin"
+      },
+      "Thinkers.Name": {
+        "table": "Thinkers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“thinker” kaydının “name” alanı, küçük harfe çevrilmiş “label” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş label değerindeki her “ ” yerine “-” konularak elde edilen metin"
+      },
+      "Thinkers.QuotationCount": {
+        "table": "Thinkers",
+        "field": "QuotationCount",
+        "kind": "rollup",
+        "rule": "“thinker” kaydının “quotation count” alanı, “thinker” kaydıyla ilişkili “quotations” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Speaker",
+            "label": "speaker"
+          },
+          {
+            "table": "Thinkers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker değeri bu kayıt olan quotations kayıtlarının sayısı"
+      },
+      "Quotations.Name": {
+        "table": "Quotations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“quotation” kaydının “name” alanı, küçük harfe çevrilmiş “label” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş label değerindeki her “ ” yerine “-” konularak elde edilen metin"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Debaters": [
+        "“debater” kaydı, “label” alanı ve “side” alanı dolu olmak **zorundadır**."
+      ],
+      "Worldviews": [
+        "“worldview” kaydı, “label” alanı dolu olmak, ayrıca “affirms god” olarak işaretli olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ],
+      "Arguments": [
+        "“argument” kaydı, “advanced by” alanı aracılığıyla tam olarak bir “debater” kaydına referans vermek **zorundadır**.",
+        "“argument” kaydı, “fields worldview” alanı aracılığıyla tam olarak bir “worldview” kaydına referans vermek **zorundadır**.",
+        "“argument” kaydı, “label” alanı ve “argument type” alanı dolu olmak **zorundadır**."
+      ],
+      "Premises": [
+        "“premise” kaydı, “supports argument” alanı aracılığıyla tam olarak bir “argument” kaydına referans vermek **zorundadır**.",
+        "“premise” kaydı, “label” alanı ve “ordinal” alanı dolu olmak **zorundadır**."
+      ],
+      "Evidence": [
+        "“evidence” kaydı, “supports argument” alanı aracılığıyla tam olarak bir “argument” kaydına referans vermek **zorundadır**.",
+        "“evidence” kaydı, “label” alanı ve “evidence kind” alanı dolu olmak **zorundadır**."
+      ],
+      "Concepts": [
+        "“concept” kaydı, “label” alanı ve “category” alanı dolu olmak **zorundadır**."
+      ],
+      "Claims": [
+        "“claim” kaydı, “made by” alanı aracılığıyla tam olarak bir “debater” kaydına referans vermek **zorundadır**.",
+        "“claim” kaydı, “label” alanı ve “phase” alanı dolu olmak **zorundadır**."
+      ],
+      "Rebuttals": [
+        "“rebuttal” kaydı, “made by” alanı aracılığıyla tam olarak bir “debater” kaydına referans vermek **zorundadır**.",
+        "“rebuttal” kaydı, “rebuts claim” alanı aracılığıyla tam olarak bir “claim” kaydına referans vermek **zorundadır**.",
+        "“rebuttal” kaydı, “label” alanı dolu olmak **zorundadır**."
+      ],
+      "Thinkers": [
+        "“thinker” kaydı, “label” alanı dolu olmak, ayrıca “cited as hostile witness” olarak işaretli olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ],
+      "Quotations": [
+        "“quotation” kaydı, “speaker” alanı aracılığıyla tam olarak bir “thinker” kaydına referans vermek **zorundadır**.",
+        "“quotation” kaydı, “cited by” alanı aracılığıyla tam olarak bir “debater” kaydına referans vermek **zorundadır**.",
+        "“quotation” kaydı, “label” alanı dolu olmak **zorundadır**."
+      ]
+    },
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Debaters": "debater",
+      "Worldviews": "worldview",
+      "Arguments": "argument",
+      "Premises": "premise",
+      "Evidence": "evidence",
+      "Concepts": "concept",
+      "Claims": "claim",
+      "Rebuttals": "rebuttal",
+      "Thinkers": "thinker",
+      "Quotations": "quotation"
+    }
+  },
+  "vi": {
+    "fields": {
+      "Debaters.Name": {
+        "table": "Debaters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi debater được tính bằng label viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Debaters",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label viết bằng chữ thường sau khi thay “ ” bằng “-”"
+      },
+      "Debaters.ArgumentCount": {
+        "table": "Debaters",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "Trường “argument count” của mỗi debater là số lượng arguments liên quan đến debater đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "AdvancedBy",
+            "label": "advanced by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng arguments có advanced by là bản ghi này"
+      },
+      "Debaters.ClaimCount": {
+        "table": "Debaters",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Trường “claim count” của mỗi debater là số lượng claims liên quan đến debater đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "MadeBy",
+            "label": "made by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng claims có made by là bản ghi này"
+      },
+      "Debaters.ThinkersCited": {
+        "table": "Debaters",
+        "field": "ThinkersCited",
+        "kind": "rollup",
+        "rule": "Trường “thinkers cited” của mỗi debater là số lượng thinkers liên quan đến debater đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "CitedBy",
+            "label": "cited by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng thinkers có cited by là bản ghi này"
+      },
+      "Worldviews.Name": {
+        "table": "Worldviews",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi worldview được tính bằng label viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Worldviews",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label viết bằng chữ thường sau khi thay “ ” bằng “-”"
+      },
+      "Worldviews.ArgumentCount": {
+        "table": "Worldviews",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "Trường “argument count” của mỗi worldview là số lượng arguments liên quan đến worldview đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "FieldsWorldview",
+            "label": "fields worldview"
+          },
+          {
+            "table": "Worldviews",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng arguments có fields worldview là bản ghi này"
+      },
+      "Arguments.Name": {
+        "table": "Arguments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi argument được tính bằng label viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label viết bằng chữ thường sau khi thay “ ” bằng “-”"
+      },
+      "Arguments.PremiseCount": {
+        "table": "Arguments",
+        "field": "PremiseCount",
+        "kind": "rollup",
+        "rule": "Trường “premise count” của mỗi argument là số lượng premises liên quan đến argument đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng premises có supports argument là bản ghi này"
+      },
+      "Arguments.EvidenceCount": {
+        "table": "Arguments",
+        "field": "EvidenceCount",
+        "kind": "rollup",
+        "rule": "Trường “evidence count” của mỗi argument là số lượng evidence liên quan đến argument đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng evidence có supports argument là bản ghi này"
+      },
+      "Arguments.ClaimCount": {
+        "table": "Arguments",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Trường “claim count” của mỗi argument là số lượng claims liên quan đến argument đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng claims có supports argument là bản ghi này"
+      },
+      "Arguments.IsFullyDeveloped": {
+        "table": "Arguments",
+        "field": "IsFullyDeveloped",
+        "kind": "formula",
+        "rule": "Mỗi argument được coi là “fully developed” nếu premise count không nhỏ hơn 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "PremiseCount",
+            "label": "premise count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “is fully developed” của mỗi argument được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "đúng",
+              "when": {
+                "kind": "leaf",
+                "text": "premise count không nhỏ hơn 2"
+              }
+            },
+            {
+              "value": "sai",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu premise count không nhỏ hơn 2 thì true(), nếu không thì false()"
+      },
+      "Arguments.TotalRebuttals": {
+        "table": "Arguments",
+        "field": "TotalRebuttals",
+        "kind": "rollup",
+        "rule": "Trường “total rebuttals” của mỗi argument là giá trị tổng cộng của trường “rebuttal count” trên các claims liên quan đến argument đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          },
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng rebuttal count trên tất cả claims có supports argument là bản ghi này"
+      },
+      "Arguments.IsContested": {
+        "table": "Arguments",
+        "field": "IsContested",
+        "kind": "formula",
+        "rule": "Mỗi argument được coi là “contested” nếu total rebuttals lớn hơn 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "TotalRebuttals",
+            "label": "total rebuttals"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “is contested” của mỗi argument được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "đúng",
+              "when": {
+                "kind": "leaf",
+                "text": "total rebuttals lớn hơn 0"
+              }
+            },
+            {
+              "value": "sai",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu total rebuttals lớn hơn 0 thì true(), nếu không thì false()"
+      },
+      "Premises.Name": {
+        "table": "Premises",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi premise được tính bằng label viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label viết bằng chữ thường sau khi thay “ ” bằng “-”"
+      },
+      "Evidence.Name": {
+        "table": "Evidence",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi evidence được tính bằng label viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label viết bằng chữ thường sau khi thay “ ” bằng “-”"
+      },
+      "Concepts.Name": {
+        "table": "Concepts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi concept được tính bằng label viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Concepts",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label viết bằng chữ thường sau khi thay “ ” bằng “-”"
+      },
+      "Concepts.ClaimCount": {
+        "table": "Concepts",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "Trường “claim count” của mỗi concept là số lượng claims liên quan đến concept đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "TouchesConcept",
+            "label": "touches concept"
+          },
+          {
+            "table": "Concepts",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng claims có touches concept là bản ghi này"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi claim được tính bằng label viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label viết bằng chữ thường sau khi thay “ ” bằng “-”"
+      },
+      "Claims.RebuttalCount": {
+        "table": "Claims",
+        "field": "RebuttalCount",
+        "kind": "rollup",
+        "rule": "Trường “rebuttal count” của mỗi claim là số lượng rebuttals liên quan đến claim đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "RebutsClaim",
+            "label": "rebuts claim"
+          },
+          {
+            "table": "Claims",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng rebuttals có rebuts claim là bản ghi này"
+      },
+      "Claims.IsRebutted": {
+        "table": "Claims",
+        "field": "IsRebutted",
+        "kind": "formula",
+        "rule": "Mỗi claim được coi là “rebutted” nếu rebuttal count lớn hơn 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “is rebutted” của mỗi claim được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "đúng",
+              "when": {
+                "kind": "leaf",
+                "text": "rebuttal count lớn hơn 0"
+              }
+            },
+            {
+              "value": "sai",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu rebuttal count lớn hơn 0 thì true(), nếu không thì false()"
+      },
+      "Rebuttals.Name": {
+        "table": "Rebuttals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi rebuttal được tính bằng label viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label viết bằng chữ thường sau khi thay “ ” bằng “-”"
+      },
+      "Thinkers.Name": {
+        "table": "Thinkers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi thinker được tính bằng label viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label viết bằng chữ thường sau khi thay “ ” bằng “-”"
+      },
+      "Thinkers.QuotationCount": {
+        "table": "Thinkers",
+        "field": "QuotationCount",
+        "kind": "rollup",
+        "rule": "Trường “quotation count” của mỗi thinker là số lượng quotations liên quan đến thinker đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Speaker",
+            "label": "speaker"
+          },
+          {
+            "table": "Thinkers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng quotations có speaker là bản ghi này"
+      },
+      "Quotations.Name": {
+        "table": "Quotations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi quotation được tính bằng label viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label viết bằng chữ thường sau khi thay “ ” bằng “-”"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Debaters": [
+        "Mỗi debater **phải** có label và side."
+      ],
+      "Worldviews": [
+        "Mỗi worldview **phải** có label, đồng thời được ghi nhận rõ thỏa điều kiện “affirms god” hay không."
+      ],
+      "Arguments": [
+        "Mỗi argument **phải** tham chiếu đến đúng một debater với vai trò advanced by.",
+        "Mỗi argument **phải** tham chiếu đến đúng một worldview với vai trò fields worldview.",
+        "Mỗi argument **phải** có label và argument type."
+      ],
+      "Premises": [
+        "Mỗi premise **phải** tham chiếu đến đúng một argument với vai trò supports argument.",
+        "Mỗi premise **phải** có label và ordinal."
+      ],
+      "Evidence": [
+        "Mỗi evidence **phải** tham chiếu đến đúng một argument với vai trò supports argument.",
+        "Mỗi evidence **phải** có label và evidence kind."
+      ],
+      "Concepts": [
+        "Mỗi concept **phải** có label và category."
+      ],
+      "Claims": [
+        "Mỗi claim **phải** tham chiếu đến đúng một debater với vai trò made by.",
+        "Mỗi claim **phải** có label và phase."
+      ],
+      "Rebuttals": [
+        "Mỗi rebuttal **phải** tham chiếu đến đúng một debater với vai trò made by.",
+        "Mỗi rebuttal **phải** tham chiếu đến đúng một claim với vai trò rebuts claim.",
+        "Mỗi rebuttal **phải** có label."
+      ],
+      "Thinkers": [
+        "Mỗi thinker **phải** có label, đồng thời được ghi nhận rõ là “cited as hostile witness” hay không."
+      ],
+      "Quotations": [
+        "Mỗi quotation **phải** tham chiếu đến đúng một thinker với vai trò speaker.",
+        "Mỗi quotation **phải** tham chiếu đến đúng một debater với vai trò cited by.",
+        "Mỗi quotation **phải** có label."
+      ]
+    },
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Debaters": "debater",
+      "Worldviews": "worldview",
+      "Arguments": "argument",
+      "Premises": "premise",
+      "Evidence": "evidence",
+      "Concepts": "concept",
+      "Claims": "claim",
+      "Rebuttals": "rebuttal",
+      "Thinkers": "thinker",
+      "Quotations": "quotation"
+    }
+  },
+  "zh": {
+    "fields": {
+      "Debaters.Name": {
+        "table": "Debaters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "debater的“name”按 转为小写的label中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Debaters",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的label中“ ”替换为“-”后的结果"
+      },
+      "Debaters.ArgumentCount": {
+        "table": "Debaters",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "debater的“argument count”为 与debater相关的“arguments”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "AdvancedBy",
+            "label": "advanced by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Advanced by为本记录的“arguments”的数量"
+      },
+      "Debaters.ClaimCount": {
+        "table": "Debaters",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "debater的“claim count”为 与debater相关的“claims”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "MadeBy",
+            "label": "made by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Made by为本记录的“claims”的数量"
+      },
+      "Debaters.ThinkersCited": {
+        "table": "Debaters",
+        "field": "ThinkersCited",
+        "kind": "rollup",
+        "rule": "debater的“thinkers cited”为 与debater相关的“thinkers”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "CitedBy",
+            "label": "cited by"
+          },
+          {
+            "table": "Debaters",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Cited by为本记录的“thinkers”的数量"
+      },
+      "Worldviews.Name": {
+        "table": "Worldviews",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "worldview的“name”按 转为小写的label中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Worldviews",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的label中“ ”替换为“-”后的结果"
+      },
+      "Worldviews.ArgumentCount": {
+        "table": "Worldviews",
+        "field": "ArgumentCount",
+        "kind": "rollup",
+        "rule": "worldview的“argument count”为 与worldview相关的“arguments”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "FieldsWorldview",
+            "label": "fields worldview"
+          },
+          {
+            "table": "Worldviews",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Fields worldview为本记录的“arguments”的数量"
+      },
+      "Arguments.Name": {
+        "table": "Arguments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "argument的“name”按 转为小写的label中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的label中“ ”替换为“-”后的结果"
+      },
+      "Arguments.PremiseCount": {
+        "table": "Arguments",
+        "field": "PremiseCount",
+        "kind": "rollup",
+        "rule": "argument的“premise count”为 与argument相关的“premises”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Supports argument为本记录的“premises”的数量"
+      },
+      "Arguments.EvidenceCount": {
+        "table": "Arguments",
+        "field": "EvidenceCount",
+        "kind": "rollup",
+        "rule": "argument的“evidence count”为 与argument相关的“evidence”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Supports argument为本记录的“evidence”的数量"
+      },
+      "Arguments.ClaimCount": {
+        "table": "Arguments",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "argument的“claim count”为 与argument相关的“claims”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Supports argument为本记录的“claims”的数量"
+      },
+      "Arguments.IsFullyDeveloped": {
+        "table": "Arguments",
+        "field": "IsFullyDeveloped",
+        "kind": "formula",
+        "rule": "当premise count不小于2时,argument被视为“Fully Developed”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "PremiseCount",
+            "label": "premise count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Argument的“is fully developed”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "premise count不小于2"
+              }
+            },
+            {
+              "value": "假",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若premise count不小于2,则true(),否则false()"
+      },
+      "Arguments.TotalRebuttals": {
+        "table": "Arguments",
+        "field": "TotalRebuttals",
+        "kind": "rollup",
+        "rule": "argument的“total rebuttals”为 与argument相关的所有“claims”的“rebuttal count”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          },
+          {
+            "table": "Claims",
+            "field": "SupportsArgument",
+            "label": "supports argument"
+          },
+          {
+            "table": "Arguments",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所有supports argument为本记录的“claims”的rebuttal count的总和"
+      },
+      "Arguments.IsContested": {
+        "table": "Arguments",
+        "field": "IsContested",
+        "kind": "formula",
+        "rule": "当total rebuttals大于0时,argument被视为“Contested”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Arguments",
+            "field": "TotalRebuttals",
+            "label": "total rebuttals"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Argument的“is contested”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "total rebuttals大于0"
+              }
+            },
+            {
+              "value": "假",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若total rebuttals大于0,则true(),否则false()"
+      },
+      "Premises.Name": {
+        "table": "Premises",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "premise的“name”按 转为小写的label中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Premises",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的label中“ ”替换为“-”后的结果"
+      },
+      "Evidence.Name": {
+        "table": "Evidence",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "evidence的“name”按 转为小写的label中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Evidence",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的label中“ ”替换为“-”后的结果"
+      },
+      "Concepts.Name": {
+        "table": "Concepts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "concept的“name”按 转为小写的label中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Concepts",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的label中“ ”替换为“-”后的结果"
+      },
+      "Concepts.ClaimCount": {
+        "table": "Concepts",
+        "field": "ClaimCount",
+        "kind": "rollup",
+        "rule": "concept的“claim count”为 与concept相关的“claims”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "TouchesConcept",
+            "label": "touches concept"
+          },
+          {
+            "table": "Concepts",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Touches concept为本记录的“claims”的数量"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "claim的“name”按 转为小写的label中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的label中“ ”替换为“-”后的结果"
+      },
+      "Claims.RebuttalCount": {
+        "table": "Claims",
+        "field": "RebuttalCount",
+        "kind": "rollup",
+        "rule": "claim的“rebuttal count”为 与claim相关的“rebuttals”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "RebutsClaim",
+            "label": "rebuts claim"
+          },
+          {
+            "table": "Claims",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Rebuts claim为本记录的“rebuttals”的数量"
+      },
+      "Claims.IsRebutted": {
+        "table": "Claims",
+        "field": "IsRebutted",
+        "kind": "formula",
+        "rule": "当rebuttal count大于0时,claim被视为“Rebutted”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "RebuttalCount",
+            "label": "rebuttal count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Claim的“is rebutted”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "rebuttal count大于0"
+              }
+            },
+            {
+              "value": "假",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若rebuttal count大于0,则true(),否则false()"
+      },
+      "Rebuttals.Name": {
+        "table": "Rebuttals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "rebuttal的“name”按 转为小写的label中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Rebuttals",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的label中“ ”替换为“-”后的结果"
+      },
+      "Thinkers.Name": {
+        "table": "Thinkers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "thinker的“name”按 转为小写的label中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Thinkers",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的label中“ ”替换为“-”后的结果"
+      },
+      "Thinkers.QuotationCount": {
+        "table": "Thinkers",
+        "field": "QuotationCount",
+        "kind": "rollup",
+        "rule": "thinker的“quotation count”为 与thinker相关的“quotations”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Speaker",
+            "label": "speaker"
+          },
+          {
+            "table": "Thinkers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Speaker为本记录的“quotations”的数量"
+      },
+      "Quotations.Name": {
+        "table": "Quotations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "quotation的“name”按 转为小写的label中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Quotations",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的label中“ ”替换为“-”后的结果"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Debaters": [
+        "debater**必须**具有label且side。"
+      ],
+      "Worldviews": [
+        "worldview**必须**具有label,并记录其是“Affirms God”与否。"
+      ],
+      "Arguments": [
+        "argument**必须**恰好引用一个“debater”作为其advanced by。",
+        "argument**必须**恰好引用一个“worldview”作为其fields worldview。",
+        "argument**必须**具有label且argument type。"
+      ],
+      "Premises": [
+        "premise**必须**恰好引用一个“argument”作为其supports argument。",
+        "premise**必须**具有label且ordinal。"
+      ],
+      "Evidence": [
+        "evidence**必须**恰好引用一个“argument”作为其supports argument。",
+        "evidence**必须**具有label且evidence kind。"
+      ],
+      "Concepts": [
+        "concept**必须**具有label且category。"
+      ],
+      "Claims": [
+        "claim**必须**恰好引用一个“debater”作为其made by。",
+        "claim**必须**具有label且phase。"
+      ],
+      "Rebuttals": [
+        "rebuttal**必须**恰好引用一个“debater”作为其made by。",
+        "rebuttal**必须**恰好引用一个“claim”作为其rebuts claim。",
+        "rebuttal**必须**具有label。"
+      ],
+      "Thinkers": [
+        "thinker**必须**具有label,并记录其是“Cited As Hostile Witness”与否。"
+      ],
+      "Quotations": [
+        "quotation**必须**恰好引用一个“thinker”作为其speaker。",
+        "quotation**必须**恰好引用一个“debater”作为其cited by。",
+        "quotation**必须**具有label。"
+      ]
+    },
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "Debaters": "debater",

@@ -852,7 +852,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -1690,6 +1705,13176 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Trainers": "trainer",
+      "Clients": "client",
+      "Invoices": "invoice",
+      "Sessions": "session"
+    }
+  },
+  "ar": {
+    "fields": {
+      "Trainers.TotalSessions": {
+        "table": "Trainers",
+        "field": "TotalSessions",
+        "kind": "rollup",
+        "rule": "حقل «total sessions» في سجل «trainer» هو عدد سجلات «sessions» المرتبطة بسجل «trainer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «sessions» التي يتحقق فيها أنّ حقل «trainer» يساوي trainer ID"
+      },
+      "Trainers.TotalBilled": {
+        "table": "Trainers",
+        "field": "TotalBilled",
+        "kind": "rollup",
+        "rule": "حقل «total billed» في سجل «trainer» هو حقل «total» عبر سجلات «invoices» المرتبطة بسجل «trainer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «total» في جميع سجلات «invoices» التي يتحقق فيها أنّ حقل «trainer» يساوي trainer ID"
+      },
+      "Trainers.TotalOutstanding": {
+        "table": "Trainers",
+        "field": "TotalOutstanding",
+        "kind": "rollup",
+        "rule": "حقل «total outstanding» في سجل «trainer» هو مجموع قيم حقل «balance» عبر سجلات «invoices» المرتبطة بسجل «trainer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «balance» في جميع سجلات «invoices» التي يتحقق فيها أنّ حقل «trainer» يساوي trainer ID"
+      },
+      "Clients.TrainerName": {
+        "table": "Clients",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "حقل «trainer name» في سجل «client» يأخذ قيمة حقل «full name» من السجل المرتبط به عبر حقل «trainer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «full name» من السجل المرتبط عبر «trainer»"
+      },
+      "Clients.TrainerEmail": {
+        "table": "Clients",
+        "field": "TrainerEmail",
+        "kind": "lookup",
+        "rule": "حقل «trainer email» في سجل «client» مأخوذ من السجل المرتبط به عبر حقل «trainer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «email» من السجل المرتبط عبر «trainer»"
+      },
+      "Clients.TrainerHourlyRate": {
+        "table": "Clients",
+        "field": "TrainerHourlyRate",
+        "kind": "lookup",
+        "rule": "حقل «trainer hourly rate» في سجل «client» مأخوذ من السجل المرتبط به عبر حقل «trainer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "HourlyRate",
+            "label": "hourly rate"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «hourly rate» من السجل المرتبط عبر «trainer»"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "حقل «session count» في سجل «client» هو عدد سجلات «sessions» المرتبطة بسجل «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «sessions» التي يتحقق فيها أنّ حقل «client» يساوي client ID"
+      },
+      "Clients.TotalInvoiced": {
+        "table": "Clients",
+        "field": "TotalInvoiced",
+        "kind": "rollup",
+        "rule": "حقل «total invoiced» في سجل «client» هو حقل «total» عبر سجلات «invoices» المرتبطة بسجل «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «total» في جميع سجلات «invoices» التي يتحقق فيها أنّ حقل «client» يساوي client ID"
+      },
+      "Clients.OutstandingBalance": {
+        "table": "Clients",
+        "field": "OutstandingBalance",
+        "kind": "rollup",
+        "rule": "حقل «outstanding balance» في سجل «client» هو مجموع قيم حقل «balance» عبر سجلات «invoices» المرتبطة بسجل «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «balance» في جميع سجلات «invoices» التي يتحقق فيها أنّ حقل «client» يساوي client ID"
+      },
+      "Clients.OverdueCount": {
+        "table": "Clients",
+        "field": "OverdueCount",
+        "kind": "rollup",
+        "rule": "حقل «overdue count» في سجل «client» هو عدد سجلات «invoices» المرتبطة بسجل «client» التي تُصنّف على أنها «overdue».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «invoices» التي يتحقق فيها أنّ حقل «client» يساوي client ID وحقل «is overdue» يساوي true()"
+      },
+      "Clients.Status": {
+        "table": "Clients",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "حقل «status» في سجل «client» يتحدد وفق ترتيب الأولوية الآتي:\n1. «Overdue»، إذا تحقق أنّ حقل «overdue count» أكبر من 0؛\n2. «Has Balance»، إذا تحقق أنّ حقل «outstanding balance» أكبر من 0؛\n3. «Paid Up»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "OverdueCount",
+            "label": "overdue count"
+          },
+          {
+            "table": "Clients",
+            "field": "OutstandingBalance",
+            "label": "outstanding balance"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «status» في سجل «client» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«Overdue»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «overdue count» أكبر من 0"
+              }
+            },
+            {
+              "value": "«Has Balance»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «outstanding balance» أكبر من 0"
+              }
+            },
+            {
+              "value": "«Paid Up»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ overdue count أكبر من 0 فالناتج \"Overdue\"، وإلا فالناتج إذا تحقق أنّ outstanding balance أكبر من 0 فالناتج \"Has Balance\"، وإلا فالناتج \"Paid Up\""
+      },
+      "Invoices.ClientName": {
+        "table": "Invoices",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "حقل «client name» في سجل «invoice» يأخذ قيمة حقل «full name» من السجل المرتبط به عبر حقل «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «full name» من السجل المرتبط عبر «client»"
+      },
+      "Invoices.ClientEmail": {
+        "table": "Invoices",
+        "field": "ClientEmail",
+        "kind": "lookup",
+        "rule": "حقل «client email» في سجل «invoice» مأخوذ من السجل المرتبط به عبر حقل «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «email» من السجل المرتبط عبر «client»"
+      },
+      "Invoices.Trainer": {
+        "table": "Invoices",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "حقل «trainer» في سجل «invoice» مأخوذ من السجل المرتبط به عبر حقل «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «trainer» من السجل المرتبط عبر «client»"
+      },
+      "Invoices.TrainerName": {
+        "table": "Invoices",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "حقل «trainer name» في سجل «invoice» مأخوذ من السجل المرتبط به عبر حقل «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerName",
+            "label": "trainer name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «trainer name» من السجل المرتبط عبر «client»"
+      },
+      "Invoices.Subtotal": {
+        "table": "Invoices",
+        "field": "Subtotal",
+        "kind": "rollup",
+        "rule": "حقل «subtotal» في سجل «invoice» هو مجموع قيم حقل «line total» عبر سجلات «sessions» المرتبطة بسجل «invoice».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «line total» في جميع سجلات «sessions» التي يتحقق فيها أنّ حقل «invoice» يساوي invoice ID"
+      },
+      "Invoices.TaxAmount": {
+        "table": "Invoices",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "حقل «tax amount» في سجل «invoice» يُحسب على النحو الآتي: حقل «subtotal» مضروبًا في حقل «tax rate».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Subtotal ضرب tax rate"
+      },
+      "Invoices.GraceDays": {
+        "table": "Invoices",
+        "field": "GraceDays",
+        "kind": "formula",
+        "rule": "حقل «grace days» في سجل «invoice» يُحسب على النحو الآتي: 45.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "45"
+      },
+      "Invoices.DaysSinceDueDate": {
+        "table": "Invoices",
+        "field": "DaysSinceDueDate",
+        "kind": "formula",
+        "rule": "حقل «days since due date» في سجل «invoice» يُحسب على النحو الآتي: عدد الأيام من حقل «due date» إلى التاريخ والوقت الحاليان.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DueDate",
+            "label": "due date"
+          }
+        ],
+        "structure": null,
+        "plain": "Datetime_diff(الآن, due date, \"day\")"
+      },
+      "Invoices.DaysPastDue": {
+        "table": "Invoices",
+        "field": "DaysPastDue",
+        "kind": "formula",
+        "rule": "حقل «days past due» في سجل «invoice» يُحسب على النحو الآتي: الأكبر من بين 0 وحقل «days since due date» ناقص حقل «grace days».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysSinceDueDate",
+            "label": "days since due date"
+          },
+          {
+            "table": "Invoices",
+            "field": "GraceDays",
+            "label": "grace days"
+          }
+        ],
+        "structure": null,
+        "plain": "الأكبر من بين 0 و(days since due date ناقص grace days)"
+      },
+      "Invoices.LateFee": {
+        "table": "Invoices",
+        "field": "LateFee",
+        "kind": "formula",
+        "rule": "حقل «late fee» في سجل «invoice» يتحدد وفق ترتيب الأولوية الآتي:\n1. 15، إذا تحقق أنّ حقل «days past due» أكبر من 0؛\n2. 0، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «late fee» في سجل «invoice» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "15",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «days past due» أكبر من 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ days past due أكبر من 0 فالناتج 15، وإلا فالناتج 0"
+      },
+      "Invoices.Total": {
+        "table": "Invoices",
+        "field": "Total",
+        "kind": "formula",
+        "rule": "حقل «total» في سجل «invoice» يُحسب على النحو الآتي: حقل «subtotal» زائد حقل «tax amount» زائد حقل «late fee» ناقص حقل «discount amount».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          },
+          {
+            "table": "Invoices",
+            "field": "LateFee",
+            "label": "late fee"
+          },
+          {
+            "table": "Invoices",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "((subtotal زائد tax amount) زائد late fee) ناقص discount amount"
+      },
+      "Invoices.Balance": {
+        "table": "Invoices",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "حقل «balance» في سجل «invoice» يُحسب على النحو الآتي: حقل «total» ناقص حقل «paid amount».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "PaidAmount",
+            "label": "paid amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Total ناقص paid amount"
+      },
+      "Invoices.IsPaid": {
+        "table": "Invoices",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «invoice» على أنه «paid» إذا تحقق أنّ حقل «balance» لا يزيد على 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance لا يزيد على 0"
+      },
+      "Invoices.IsOverdue": {
+        "table": "Invoices",
+        "field": "IsOverdue",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «invoice» على أنه «overdue» إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «paid» غير مفعّلة وحقل «days past due» أكبر من 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُصنّف سجل «invoice» على أنه «overdue» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "علامة «paid» غير مفعّلة"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "حقل «days past due» أكبر من 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "الشرط (is paid) غير متحقق وdays past due أكبر من 0"
+      },
+      "Invoices.Status": {
+        "table": "Invoices",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "حقل «status» في سجل «invoice» يتحدد وفق ترتيب الأولوية الآتي:\n1. «Paid»، إذا تحقق أنّ علامة «paid» مفعّلة؛\n2. «Overdue»، إذا تحقق أنّ علامة «overdue» مفعّلة؛\n3. «Open»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «status» في سجل «invoice» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«Paid»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «paid» مفعّلة"
+              }
+            },
+            {
+              "value": "«Overdue»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «overdue» مفعّلة"
+              }
+            },
+            {
+              "value": "«Open»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ is paid فالناتج \"Paid\"، وإلا فالناتج إذا تحقق أنّ is overdue فالناتج \"Overdue\"، وإلا فالناتج \"Open\""
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "حقل «client name» في سجل «session» يأخذ قيمة حقل «full name» من السجل المرتبط به عبر حقل «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «full name» من السجل المرتبط عبر «client»"
+      },
+      "Sessions.Trainer": {
+        "table": "Sessions",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "حقل «trainer» في سجل «session» مأخوذ من السجل المرتبط به عبر حقل «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «trainer» من السجل المرتبط عبر «client»"
+      },
+      "Sessions.ClientHourlyRate": {
+        "table": "Sessions",
+        "field": "ClientHourlyRate",
+        "kind": "lookup",
+        "rule": "حقل «client hourly rate» في سجل «session» يأخذ قيمة حقل «trainer hourly rate» من السجل المرتبط به عبر حقل «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerHourlyRate",
+            "label": "trainer hourly rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «trainer hourly rate» من السجل المرتبط عبر «client»"
+      },
+      "Sessions.EffectiveRate": {
+        "table": "Sessions",
+        "field": "EffectiveRate",
+        "kind": "formula",
+        "rule": "حقل «effective rate» في سجل «session» يتحدد وفق ترتيب الأولوية الآتي:\n1. حقل «rate override»، إذا تحقق أنّ حقل «rate override» أكبر من 0؛\n2. حقل «client hourly rate»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "RateOverride",
+            "label": "rate override"
+          },
+          {
+            "table": "Sessions",
+            "field": "ClientHourlyRate",
+            "label": "client hourly rate"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «effective rate» في سجل «session» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "حقل «rate override»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «rate override» أكبر من 0"
+              }
+            },
+            {
+              "value": "حقل «client hourly rate»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ rate override أكبر من 0 فالناتج rate override، وإلا فالناتج client hourly rate"
+      },
+      "Sessions.LineTotal": {
+        "table": "Sessions",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "حقل «line total» في سجل «session» يُحسب على النحو الآتي: حقل «effective rate» مضروبًا في حقل «duration hours».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "EffectiveRate",
+            "label": "effective rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "DurationHours",
+            "label": "duration hours"
+          }
+        ],
+        "structure": null,
+        "plain": "Effective rate ضرب duration hours"
+      },
+      "Sessions.InvoiceName": {
+        "table": "Sessions",
+        "field": "InvoiceName",
+        "kind": "lookup",
+        "rule": "حقل «invoice name» في سجل «session» مأخوذ من السجل المرتبط به عبر حقل «invoice».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «invoice»"
+      },
+      "Sessions.IsBilled": {
+        "table": "Sessions",
+        "field": "IsBilled",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «session» على أنه «billed» إذا تحقق أنّ حقل «invoice» له قيمة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          }
+        ],
+        "structure": null,
+        "plain": "الشرط (invoice فارغ) غير متحقق"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Trainers": "trainer",
+      "Clients": "client",
+      "Invoices": "invoice",
+      "Sessions": "session"
+    }
+  },
+  "de": {
+    "fields": {
+      "Trainers.TotalSessions": {
+        "table": "Trainers",
+        "field": "TotalSessions",
+        "kind": "rollup",
+        "rule": "Ein Trainer: Total Sessions ist die Anzahl der mit dem Trainer verbundenen Sessions.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Sessions, deren Trainer ist Trainer ID"
+      },
+      "Trainers.TotalBilled": {
+        "table": "Trainers",
+        "field": "TotalBilled",
+        "kind": "rollup",
+        "rule": "Ein Trainer: Total Billed ist von Total über die mit dem Trainer verbundenen Invoices.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Total über alle Invoices, deren Trainer ist Trainer ID"
+      },
+      "Trainers.TotalOutstanding": {
+        "table": "Trainers",
+        "field": "TotalOutstanding",
+        "kind": "rollup",
+        "rule": "Ein Trainer: Total Outstanding ist die Gesamtsumme von Balance über die mit dem Trainer verbundenen Invoices.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Balance über alle Invoices, deren Trainer ist Trainer ID"
+      },
+      "Clients.TrainerName": {
+        "table": "Clients",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "Ein Client: Trainer Name ist der Full Name des zugehörigen Trainer des Client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Full Name des verknüpften Trainer"
+      },
+      "Clients.TrainerEmail": {
+        "table": "Clients",
+        "field": "TrainerEmail",
+        "kind": "lookup",
+        "rule": "Ein Client: Trainer Email — aus dem zugehörigen Trainer übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Email des verknüpften Trainer"
+      },
+      "Clients.TrainerHourlyRate": {
+        "table": "Clients",
+        "field": "TrainerHourlyRate",
+        "kind": "lookup",
+        "rule": "Ein Client: Trainer Hourly Rate — aus dem zugehörigen Trainer übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "HourlyRate",
+            "label": "hourly rate"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Hourly Rate des verknüpften Trainer"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "Ein Client: Session Count ist die Anzahl der mit dem Client verbundenen Sessions.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Sessions, deren Client ist Client ID"
+      },
+      "Clients.TotalInvoiced": {
+        "table": "Clients",
+        "field": "TotalInvoiced",
+        "kind": "rollup",
+        "rule": "Ein Client: Total Invoiced ist von Total über die mit dem Client verbundenen Invoices.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Total über alle Invoices, deren Client ist Client ID"
+      },
+      "Clients.OutstandingBalance": {
+        "table": "Clients",
+        "field": "OutstandingBalance",
+        "kind": "rollup",
+        "rule": "Ein Client: Outstanding Balance ist die Gesamtsumme von Balance über die mit dem Client verbundenen Invoices.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Balance über alle Invoices, deren Client ist Client ID"
+      },
+      "Clients.OverdueCount": {
+        "table": "Clients",
+        "field": "OverdueCount",
+        "kind": "rollup",
+        "rule": "Ein Client: Overdue Count ist die Anzahl der Invoices des Client, die overdue sind.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Invoices, deren Client ist Client ID und Is Overdue ist true()"
+      },
+      "Clients.Status": {
+        "table": "Clients",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "Das Feld „Status“ des Client wird nach folgender Priorität bestimmt:\n1. „Overdue“, wenn der Overdue Count größer ist als 0;\n2. „Has Balance“, wenn die Outstanding Balance größer ist als 0;\n3. andernfalls „Paid Up“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "OverdueCount",
+            "label": "overdue count"
+          },
+          {
+            "table": "Clients",
+            "field": "OutstandingBalance",
+            "label": "outstanding balance"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Status“ des Client wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„Overdue“",
+              "when": {
+                "kind": "leaf",
+                "text": "der Overdue Count größer ist als 0"
+              }
+            },
+            {
+              "value": "„Has Balance“",
+              "when": {
+                "kind": "leaf",
+                "text": "die Outstanding Balance größer ist als 0"
+              }
+            },
+            {
+              "value": "„Paid Up“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Overdue Count größer als 0 ist, dann \"Overdue\", andernfalls wenn Outstanding Balance größer als 0 ist, dann \"Has Balance\", andernfalls \"Paid Up\""
+      },
+      "Invoices.ClientName": {
+        "table": "Invoices",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Eine Invoice: Client Name ist der Full Name des zugehörigen Client der Invoice.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Full Name des verknüpften Client"
+      },
+      "Invoices.ClientEmail": {
+        "table": "Invoices",
+        "field": "ClientEmail",
+        "kind": "lookup",
+        "rule": "Eine Invoice: Client Email — aus dem zugehörigen Client übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Email des verknüpften Client"
+      },
+      "Invoices.Trainer": {
+        "table": "Invoices",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "Eine Invoice: Trainer — aus dem zugehörigen Client übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Trainer des verknüpften Client"
+      },
+      "Invoices.TrainerName": {
+        "table": "Invoices",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "Eine Invoice: Trainer Name — aus dem zugehörigen Client übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerName",
+            "label": "trainer name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Trainer Name des verknüpften Client"
+      },
+      "Invoices.Subtotal": {
+        "table": "Invoices",
+        "field": "Subtotal",
+        "kind": "rollup",
+        "rule": "Eine Invoice: Subtotal ist die Gesamtsumme von Line Total über die mit der Invoice verbundenen Sessions.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Line Total über alle Sessions, deren Invoice ist Invoice ID"
+      },
+      "Invoices.TaxAmount": {
+        "table": "Invoices",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "Eine Invoice: Tax Amount wird berechnet als der Subtotal mal die Tax Rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Subtotal mal Tax Rate"
+      },
+      "Invoices.GraceDays": {
+        "table": "Invoices",
+        "field": "GraceDays",
+        "kind": "formula",
+        "rule": "Eine Invoice: Grace Days wird berechnet als 45.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "45"
+      },
+      "Invoices.DaysSinceDueDate": {
+        "table": "Invoices",
+        "field": "DaysSinceDueDate",
+        "kind": "formula",
+        "rule": "Eine Invoice: Days Since Due Date wird berechnet als die Anzahl der Tage von die Due Date bis das aktuelle Datum und die aktuelle Uhrzeit.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DueDate",
+            "label": "due date"
+          }
+        ],
+        "structure": null,
+        "plain": "Datetime_diff(jetzt, Due Date, \"day\")"
+      },
+      "Invoices.DaysPastDue": {
+        "table": "Invoices",
+        "field": "DaysPastDue",
+        "kind": "formula",
+        "rule": "Eine Invoice: Days Past Due wird berechnet als das größte von 0 und die Days Since Due Date minus der Grace Days.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysSinceDueDate",
+            "label": "days since due date"
+          },
+          {
+            "table": "Invoices",
+            "field": "GraceDays",
+            "label": "grace days"
+          }
+        ],
+        "structure": null,
+        "plain": "Das größte von 0 und (Days Since Due Date minus Grace Days)"
+      },
+      "Invoices.LateFee": {
+        "table": "Invoices",
+        "field": "LateFee",
+        "kind": "formula",
+        "rule": "Das Feld „Late Fee“ der Invoice wird nach folgender Priorität bestimmt:\n1. 15, wenn die Days Past Due größer ist als 0;\n2. andernfalls 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Late Fee“ der Invoice wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "15",
+              "when": {
+                "kind": "leaf",
+                "text": "die Days Past Due größer ist als 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Days Past Due größer als 0 ist, dann 15, andernfalls 0"
+      },
+      "Invoices.Total": {
+        "table": "Invoices",
+        "field": "Total",
+        "kind": "formula",
+        "rule": "Eine Invoice: Total wird berechnet als der Subtotal plus der Tax Amount plus die Late Fee minus der Discount Amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          },
+          {
+            "table": "Invoices",
+            "field": "LateFee",
+            "label": "late fee"
+          },
+          {
+            "table": "Invoices",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "((Subtotal plus Tax Amount) plus Late Fee) minus Discount Amount"
+      },
+      "Invoices.Balance": {
+        "table": "Invoices",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "Eine Invoice: Balance wird berechnet als der Total minus der Paid Amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "PaidAmount",
+            "label": "paid amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Total minus Paid Amount"
+      },
+      "Invoices.IsPaid": {
+        "table": "Invoices",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "Eine Invoice gilt als ein Paid, wenn die Balance höchstens 0 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance höchstens 0 ist"
+      },
+      "Invoices.IsOverdue": {
+        "table": "Invoices",
+        "field": "IsOverdue",
+        "kind": "formula",
+        "rule": "Eine Invoice gilt als eine Overdue, wenn alles Folgende gilt: das Kennzeichen „Is Paid“ nicht gesetzt ist und die Days Past Due größer ist als 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Eine Invoice gilt als eine Overdue, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Is Paid“ nicht gesetzt ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "die Days Past Due größer ist als 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Nicht Is Paid und Days Past Due größer als 0 ist"
+      },
+      "Invoices.Status": {
+        "table": "Invoices",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "Das Feld „Status“ der Invoice wird nach folgender Priorität bestimmt:\n1. „Paid“, wenn das Kennzeichen „Is Paid“ gesetzt ist;\n2. „Overdue“, wenn das Kennzeichen „Is Overdue“ gesetzt ist;\n3. andernfalls „Open“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Status“ der Invoice wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„Paid“",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Is Paid“ gesetzt ist"
+              }
+            },
+            {
+              "value": "„Overdue“",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Is Overdue“ gesetzt ist"
+              }
+            },
+            {
+              "value": "„Open“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Is Paid, dann \"Paid\", andernfalls wenn Is Overdue, dann \"Overdue\", andernfalls \"Open\""
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Eine Session: Client Name ist der Full Name des zugehörigen Client der Session.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Full Name des verknüpften Client"
+      },
+      "Sessions.Trainer": {
+        "table": "Sessions",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "Eine Session: Trainer — aus dem zugehörigen Client übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Trainer des verknüpften Client"
+      },
+      "Sessions.ClientHourlyRate": {
+        "table": "Sessions",
+        "field": "ClientHourlyRate",
+        "kind": "lookup",
+        "rule": "Eine Session: Client Hourly Rate ist der Trainer Hourly Rate des zugehörigen Client der Session.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerHourlyRate",
+            "label": "trainer hourly rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Trainer Hourly Rate des verknüpften Client"
+      },
+      "Sessions.EffectiveRate": {
+        "table": "Sessions",
+        "field": "EffectiveRate",
+        "kind": "formula",
+        "rule": "Das Feld „Effective Rate“ der Session wird nach folgender Priorität bestimmt:\n1. die Rate Override, wenn die Rate Override größer ist als 0;\n2. andernfalls die Client Hourly Rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "RateOverride",
+            "label": "rate override"
+          },
+          {
+            "table": "Sessions",
+            "field": "ClientHourlyRate",
+            "label": "client hourly rate"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Effective Rate“ der Session wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "die Rate Override",
+              "when": {
+                "kind": "leaf",
+                "text": "die Rate Override größer ist als 0"
+              }
+            },
+            {
+              "value": "die Client Hourly Rate",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Rate Override größer als 0 ist, dann Rate Override, andernfalls Client Hourly Rate"
+      },
+      "Sessions.LineTotal": {
+        "table": "Sessions",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "Eine Session: Line Total wird berechnet als die Effective Rate mal der Duration Hours.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "EffectiveRate",
+            "label": "effective rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "DurationHours",
+            "label": "duration hours"
+          }
+        ],
+        "structure": null,
+        "plain": "Effective Rate mal Duration Hours"
+      },
+      "Sessions.InvoiceName": {
+        "table": "Sessions",
+        "field": "InvoiceName",
+        "kind": "lookup",
+        "rule": "Eine Session: Invoice Name — aus dem zugehörigen Invoice übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Invoice"
+      },
+      "Sessions.IsBilled": {
+        "table": "Sessions",
+        "field": "IsBilled",
+        "kind": "formula",
+        "rule": "Eine Session gilt als billed, wenn die Invoice einen Wert hat.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          }
+        ],
+        "structure": null,
+        "plain": "Nicht Invoice leer ist"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "User",
+      "Trainers": "Trainer",
+      "Clients": "Client",
+      "Invoices": "Invoice",
+      "Sessions": "Session"
+    }
+  },
+  "es": {
+    "fields": {
+      "Trainers.TotalSessions": {
+        "table": "Trainers",
+        "field": "TotalSessions",
+        "kind": "rollup",
+        "rule": "Un trainer: total sessions es el número de sessions relacionados con el trainer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de sessions cuyo trainer es trainer ID"
+      },
+      "Trainers.TotalBilled": {
+        "table": "Trainers",
+        "field": "TotalBilled",
+        "kind": "rollup",
+        "rule": "Un trainer: total billed es de total entre los invoices relacionados con el trainer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de total entre todos los invoices cuyo trainer es trainer ID"
+      },
+      "Trainers.TotalOutstanding": {
+        "table": "Trainers",
+        "field": "TotalOutstanding",
+        "kind": "rollup",
+        "rule": "Un trainer: total outstanding es el total de balance entre los invoices relacionados con el trainer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de balance entre todos los invoices cuyo trainer es trainer ID"
+      },
+      "Clients.TrainerName": {
+        "table": "Clients",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "Un client: trainer name es el full name del trainer vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El full name del trainer vinculado"
+      },
+      "Clients.TrainerEmail": {
+        "table": "Clients",
+        "field": "TrainerEmail",
+        "kind": "lookup",
+        "rule": "Un client: trainer email — tomado del trainer vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El email del trainer vinculado"
+      },
+      "Clients.TrainerHourlyRate": {
+        "table": "Clients",
+        "field": "TrainerHourlyRate",
+        "kind": "lookup",
+        "rule": "Un client: trainer hourly rate — tomado del trainer vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "HourlyRate",
+            "label": "hourly rate"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El hourly rate del trainer vinculado"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "Un client: session count es el número de sessions relacionados con el client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de sessions cuyo client es client ID"
+      },
+      "Clients.TotalInvoiced": {
+        "table": "Clients",
+        "field": "TotalInvoiced",
+        "kind": "rollup",
+        "rule": "Un client: total invoiced es de total entre los invoices relacionados con el client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de total entre todos los invoices cuyo client es client ID"
+      },
+      "Clients.OutstandingBalance": {
+        "table": "Clients",
+        "field": "OutstandingBalance",
+        "kind": "rollup",
+        "rule": "Un client: outstanding balance es el total de balance entre los invoices relacionados con el client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de balance entre todos los invoices cuyo client es client ID"
+      },
+      "Clients.OverdueCount": {
+        "table": "Clients",
+        "field": "OverdueCount",
+        "kind": "rollup",
+        "rule": "Un client: overdue count es el número de invoices del client que son overdue.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de invoices cuyo client es client ID y is overdue es true()"
+      },
+      "Clients.Status": {
+        "table": "Clients",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "El campo «status» del client se determina según la siguiente prioridad:\n1. «Overdue», si el overdue count es mayor que 0;\n2. «Has Balance», si el outstanding balance es mayor que 0;\n3. en todos los demás casos, «Paid Up».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "OverdueCount",
+            "label": "overdue count"
+          },
+          {
+            "table": "Clients",
+            "field": "OutstandingBalance",
+            "label": "outstanding balance"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «status» del client se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«Overdue»",
+              "when": {
+                "kind": "leaf",
+                "text": "el overdue count es mayor que 0"
+              }
+            },
+            {
+              "value": "«Has Balance»",
+              "when": {
+                "kind": "leaf",
+                "text": "el outstanding balance es mayor que 0"
+              }
+            },
+            {
+              "value": "«Paid Up»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si overdue count es mayor que 0, entonces \"Overdue\", de lo contrario si outstanding balance es mayor que 0, entonces \"Has Balance\", de lo contrario \"Paid Up\""
+      },
+      "Invoices.ClientName": {
+        "table": "Invoices",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Un invoice: client name es el full name del client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El full name del client vinculado"
+      },
+      "Invoices.ClientEmail": {
+        "table": "Invoices",
+        "field": "ClientEmail",
+        "kind": "lookup",
+        "rule": "Un invoice: client email — tomado del client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El email del client vinculado"
+      },
+      "Invoices.Trainer": {
+        "table": "Invoices",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "Un invoice: trainer — tomado del client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El trainer del client vinculado"
+      },
+      "Invoices.TrainerName": {
+        "table": "Invoices",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "Un invoice: trainer name — tomado del client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerName",
+            "label": "trainer name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El trainer name del client vinculado"
+      },
+      "Invoices.Subtotal": {
+        "table": "Invoices",
+        "field": "Subtotal",
+        "kind": "rollup",
+        "rule": "Un invoice: subtotal es el total de line total entre los sessions relacionados con el invoice.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de line total entre todos los sessions cuyo invoice es invoice ID"
+      },
+      "Invoices.TaxAmount": {
+        "table": "Invoices",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "Un invoice: tax amount se calcula como el subtotal por el tax rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Subtotal por tax rate"
+      },
+      "Invoices.GraceDays": {
+        "table": "Invoices",
+        "field": "GraceDays",
+        "kind": "formula",
+        "rule": "Un invoice: grace days se calcula como 45.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "45"
+      },
+      "Invoices.DaysSinceDueDate": {
+        "table": "Invoices",
+        "field": "DaysSinceDueDate",
+        "kind": "formula",
+        "rule": "Un invoice: days since due date se calcula como el número de días desde el due date hasta la fecha y hora actuales.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DueDate",
+            "label": "due date"
+          }
+        ],
+        "structure": null,
+        "plain": "Datetime_diff(ahora, due date, \"day\")"
+      },
+      "Invoices.DaysPastDue": {
+        "table": "Invoices",
+        "field": "DaysPastDue",
+        "kind": "formula",
+        "rule": "Un invoice: days past due se calcula como el mayor de 0 y el days since due date menos el grace days.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysSinceDueDate",
+            "label": "days since due date"
+          },
+          {
+            "table": "Invoices",
+            "field": "GraceDays",
+            "label": "grace days"
+          }
+        ],
+        "structure": null,
+        "plain": "El mayor de 0 y (days since due date menos grace days)"
+      },
+      "Invoices.LateFee": {
+        "table": "Invoices",
+        "field": "LateFee",
+        "kind": "formula",
+        "rule": "El campo «late fee» del invoice se determina según la siguiente prioridad:\n1. 15, si el days past due es mayor que 0;\n2. en todos los demás casos, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «late fee» del invoice se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "15",
+              "when": {
+                "kind": "leaf",
+                "text": "el days past due es mayor que 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si days past due es mayor que 0, entonces 15, de lo contrario 0"
+      },
+      "Invoices.Total": {
+        "table": "Invoices",
+        "field": "Total",
+        "kind": "formula",
+        "rule": "Un invoice: total se calcula como el subtotal más el tax amount más el late fee menos el discount amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          },
+          {
+            "table": "Invoices",
+            "field": "LateFee",
+            "label": "late fee"
+          },
+          {
+            "table": "Invoices",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "((subtotal más tax amount) más late fee) menos discount amount"
+      },
+      "Invoices.Balance": {
+        "table": "Invoices",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "Un invoice: balance se calcula como el total menos el paid amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "PaidAmount",
+            "label": "paid amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Total menos paid amount"
+      },
+      "Invoices.IsPaid": {
+        "table": "Invoices",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "Un invoice se considera un paid si el balance es como máximo 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance es como máximo 0"
+      },
+      "Invoices.IsOverdue": {
+        "table": "Invoices",
+        "field": "IsOverdue",
+        "kind": "formula",
+        "rule": "Un invoice se considera un overdue si se cumple todo lo siguiente: el indicador «paid» no está activado y el days past due es mayor que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un invoice se considera un overdue si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «paid» no está activado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el days past due es mayor que 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "No is paid y days past due es mayor que 0"
+      },
+      "Invoices.Status": {
+        "table": "Invoices",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "El campo «status» del invoice se determina según la siguiente prioridad:\n1. «Paid», si el indicador «paid» está activado;\n2. «Overdue», si el indicador «overdue» está activado;\n3. en todos los demás casos, «Open».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «status» del invoice se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«Paid»",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «paid» está activado"
+              }
+            },
+            {
+              "value": "«Overdue»",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «overdue» está activado"
+              }
+            },
+            {
+              "value": "«Open»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is paid, entonces \"Paid\", de lo contrario si is overdue, entonces \"Overdue\", de lo contrario \"Open\""
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Un session: client name es el full name del client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El full name del client vinculado"
+      },
+      "Sessions.Trainer": {
+        "table": "Sessions",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "Un session: trainer — tomado del client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El trainer del client vinculado"
+      },
+      "Sessions.ClientHourlyRate": {
+        "table": "Sessions",
+        "field": "ClientHourlyRate",
+        "kind": "lookup",
+        "rule": "Un session: client hourly rate es el trainer hourly rate del client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerHourlyRate",
+            "label": "trainer hourly rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El trainer hourly rate del client vinculado"
+      },
+      "Sessions.EffectiveRate": {
+        "table": "Sessions",
+        "field": "EffectiveRate",
+        "kind": "formula",
+        "rule": "El campo «effective rate» del session se determina según la siguiente prioridad:\n1. el rate override, si el rate override es mayor que 0;\n2. en todos los demás casos, el client hourly rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "RateOverride",
+            "label": "rate override"
+          },
+          {
+            "table": "Sessions",
+            "field": "ClientHourlyRate",
+            "label": "client hourly rate"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «effective rate» del session se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "el rate override",
+              "when": {
+                "kind": "leaf",
+                "text": "el rate override es mayor que 0"
+              }
+            },
+            {
+              "value": "el client hourly rate",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si rate override es mayor que 0, entonces rate override, de lo contrario client hourly rate"
+      },
+      "Sessions.LineTotal": {
+        "table": "Sessions",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "Un session: line total se calcula como el effective rate por el duration hours.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "EffectiveRate",
+            "label": "effective rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "DurationHours",
+            "label": "duration hours"
+          }
+        ],
+        "structure": null,
+        "plain": "Effective rate por duration hours"
+      },
+      "Sessions.InvoiceName": {
+        "table": "Sessions",
+        "field": "InvoiceName",
+        "kind": "lookup",
+        "rule": "Un session: invoice name — tomado del invoice vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del invoice vinculado"
+      },
+      "Sessions.IsBilled": {
+        "table": "Sessions",
+        "field": "IsBilled",
+        "kind": "formula",
+        "rule": "Un session se considera billed si el invoice tiene valor.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          }
+        ],
+        "structure": null,
+        "plain": "No invoice está vacío"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Trainers": "trainer",
+      "Clients": "client",
+      "Invoices": "invoice",
+      "Sessions": "session"
+    }
+  },
+  "fr": {
+    "fields": {
+      "Trainers.TotalSessions": {
+        "table": "Trainers",
+        "field": "TotalSessions",
+        "kind": "rollup",
+        "rule": "Un trainer : total sessions est le nombre de sessions liés à le trainer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des sessions dont trainer est trainer ID"
+      },
+      "Trainers.TotalBilled": {
+        "table": "Trainers",
+        "field": "TotalBilled",
+        "kind": "rollup",
+        "rule": "Un trainer : total billed est de total sur les invoices liés à le trainer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de total sur tous les invoices dont trainer est trainer ID"
+      },
+      "Trainers.TotalOutstanding": {
+        "table": "Trainers",
+        "field": "TotalOutstanding",
+        "kind": "rollup",
+        "rule": "Un trainer : total outstanding est le total de balance sur les invoices liés à le trainer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de balance sur tous les invoices dont trainer est trainer ID"
+      },
+      "Clients.TrainerName": {
+        "table": "Clients",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "Un client : trainer name est le full name du trainer lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le full name du trainer lié"
+      },
+      "Clients.TrainerEmail": {
+        "table": "Clients",
+        "field": "TrainerEmail",
+        "kind": "lookup",
+        "rule": "Un client : trainer email — repris du trainer lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le email du trainer lié"
+      },
+      "Clients.TrainerHourlyRate": {
+        "table": "Clients",
+        "field": "TrainerHourlyRate",
+        "kind": "lookup",
+        "rule": "Un client : trainer hourly rate — repris du trainer lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "HourlyRate",
+            "label": "hourly rate"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le hourly rate du trainer lié"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "Un client : session count est le nombre de sessions liés à le client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des sessions dont client est client ID"
+      },
+      "Clients.TotalInvoiced": {
+        "table": "Clients",
+        "field": "TotalInvoiced",
+        "kind": "rollup",
+        "rule": "Un client : total invoiced est de total sur les invoices liés à le client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de total sur tous les invoices dont client est client ID"
+      },
+      "Clients.OutstandingBalance": {
+        "table": "Clients",
+        "field": "OutstandingBalance",
+        "kind": "rollup",
+        "rule": "Un client : outstanding balance est le total de balance sur les invoices liés à le client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de balance sur tous les invoices dont client est client ID"
+      },
+      "Clients.OverdueCount": {
+        "table": "Clients",
+        "field": "OverdueCount",
+        "kind": "rollup",
+        "rule": "Un client : overdue count est le nombre de invoices du client qui sont overdue.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des invoices dont client est client ID et is overdue est true()"
+      },
+      "Clients.Status": {
+        "table": "Clients",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "Le champ « status » du client est déterminé selon la priorité suivante :\n1. « Overdue », si l'overdue count est supérieur à 0 ;\n2. « Has Balance », si l'outstanding balance est supérieur à 0 ;\n3. dans tous les autres cas, « Paid Up ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "OverdueCount",
+            "label": "overdue count"
+          },
+          {
+            "table": "Clients",
+            "field": "OutstandingBalance",
+            "label": "outstanding balance"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « status » du client est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« Overdue »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'overdue count est supérieur à 0"
+              }
+            },
+            {
+              "value": "« Has Balance »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'outstanding balance est supérieur à 0"
+              }
+            },
+            {
+              "value": "« Paid Up »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si overdue count est supérieur à 0, alors \"Overdue\", sinon si outstanding balance est supérieur à 0, alors \"Has Balance\", sinon \"Paid Up\""
+      },
+      "Invoices.ClientName": {
+        "table": "Invoices",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Un invoice : client name est le full name du client lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le full name du client lié"
+      },
+      "Invoices.ClientEmail": {
+        "table": "Invoices",
+        "field": "ClientEmail",
+        "kind": "lookup",
+        "rule": "Un invoice : client email — repris du client lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le email du client lié"
+      },
+      "Invoices.Trainer": {
+        "table": "Invoices",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "Un invoice : trainer — repris du client lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le trainer du client lié"
+      },
+      "Invoices.TrainerName": {
+        "table": "Invoices",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "Un invoice : trainer name — repris du client lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerName",
+            "label": "trainer name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le trainer name du client lié"
+      },
+      "Invoices.Subtotal": {
+        "table": "Invoices",
+        "field": "Subtotal",
+        "kind": "rollup",
+        "rule": "Un invoice : subtotal est le total de line total sur les sessions liés à l'invoice.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de line total sur tous les sessions dont invoice est invoice ID"
+      },
+      "Invoices.TaxAmount": {
+        "table": "Invoices",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "Un invoice : tax amount est calculé comme le subtotal multiplié par le tax rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Subtotal fois tax rate"
+      },
+      "Invoices.GraceDays": {
+        "table": "Invoices",
+        "field": "GraceDays",
+        "kind": "formula",
+        "rule": "Un invoice : grace days est calculé comme 45.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "45"
+      },
+      "Invoices.DaysSinceDueDate": {
+        "table": "Invoices",
+        "field": "DaysSinceDueDate",
+        "kind": "formula",
+        "rule": "Un invoice : days since due date est calculé comme le nombre de jours de le due date à la date et l'heure actuelles.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DueDate",
+            "label": "due date"
+          }
+        ],
+        "structure": null,
+        "plain": "Datetime_diff(maintenant, due date, \"day\")"
+      },
+      "Invoices.DaysPastDue": {
+        "table": "Invoices",
+        "field": "DaysPastDue",
+        "kind": "formula",
+        "rule": "Un invoice : days past due est calculé comme le plus grand de 0 et le days since due date moins le grace days.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysSinceDueDate",
+            "label": "days since due date"
+          },
+          {
+            "table": "Invoices",
+            "field": "GraceDays",
+            "label": "grace days"
+          }
+        ],
+        "structure": null,
+        "plain": "Le plus grand de 0 et (days since due date moins grace days)"
+      },
+      "Invoices.LateFee": {
+        "table": "Invoices",
+        "field": "LateFee",
+        "kind": "formula",
+        "rule": "Le champ « late fee » de l'invoice est déterminé selon la priorité suivante :\n1. 15, si le days past due est supérieur à 0 ;\n2. dans tous les autres cas, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « late fee » de l'invoice est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "15",
+              "when": {
+                "kind": "leaf",
+                "text": "le days past due est supérieur à 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si days past due est supérieur à 0, alors 15, sinon 0"
+      },
+      "Invoices.Total": {
+        "table": "Invoices",
+        "field": "Total",
+        "kind": "formula",
+        "rule": "Un invoice : total est calculé comme le subtotal plus le tax amount plus le late fee moins le discount amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          },
+          {
+            "table": "Invoices",
+            "field": "LateFee",
+            "label": "late fee"
+          },
+          {
+            "table": "Invoices",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "((subtotal plus tax amount) plus late fee) moins discount amount"
+      },
+      "Invoices.Balance": {
+        "table": "Invoices",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "Un invoice : balance est calculé comme le total moins le paid amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "PaidAmount",
+            "label": "paid amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Total moins paid amount"
+      },
+      "Invoices.IsPaid": {
+        "table": "Invoices",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "Un invoice est considéré comme un paid si la balance est au plus 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance est au plus 0"
+      },
+      "Invoices.IsOverdue": {
+        "table": "Invoices",
+        "field": "IsOverdue",
+        "kind": "formula",
+        "rule": "Un invoice est considéré comme un overdue si tout ce qui suit est vrai : l'indicateur « paid » n'est pas activé et le days past due est supérieur à 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un invoice est considéré comme un overdue si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « paid » n'est pas activé"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "le days past due est supérieur à 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Non is paid et days past due est supérieur à 0"
+      },
+      "Invoices.Status": {
+        "table": "Invoices",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "Le champ « status » de l'invoice est déterminé selon la priorité suivante :\n1. « Paid », si l'indicateur « paid » est activé ;\n2. « Overdue », si l'indicateur « overdue » est activé ;\n3. dans tous les autres cas, « Open ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « status » de l'invoice est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« Paid »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « paid » est activé"
+              }
+            },
+            {
+              "value": "« Overdue »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « overdue » est activé"
+              }
+            },
+            {
+              "value": "« Open »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is paid, alors \"Paid\", sinon si is overdue, alors \"Overdue\", sinon \"Open\""
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Une session : client name est le full name du client lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le full name du client lié"
+      },
+      "Sessions.Trainer": {
+        "table": "Sessions",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "Une session : trainer — repris du client lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le trainer du client lié"
+      },
+      "Sessions.ClientHourlyRate": {
+        "table": "Sessions",
+        "field": "ClientHourlyRate",
+        "kind": "lookup",
+        "rule": "Une session : client hourly rate est le trainer hourly rate du client lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerHourlyRate",
+            "label": "trainer hourly rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le trainer hourly rate du client lié"
+      },
+      "Sessions.EffectiveRate": {
+        "table": "Sessions",
+        "field": "EffectiveRate",
+        "kind": "formula",
+        "rule": "Le champ « effective rate » de la session est déterminé selon la priorité suivante :\n1. le rate override, si le rate override est supérieur à 0 ;\n2. dans tous les autres cas, le client hourly rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "RateOverride",
+            "label": "rate override"
+          },
+          {
+            "table": "Sessions",
+            "field": "ClientHourlyRate",
+            "label": "client hourly rate"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « effective rate » de la session est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "le rate override",
+              "when": {
+                "kind": "leaf",
+                "text": "le rate override est supérieur à 0"
+              }
+            },
+            {
+              "value": "le client hourly rate",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si rate override est supérieur à 0, alors rate override, sinon client hourly rate"
+      },
+      "Sessions.LineTotal": {
+        "table": "Sessions",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "Une session : line total est calculé comme l'effective rate multiplié par le duration hours.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "EffectiveRate",
+            "label": "effective rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "DurationHours",
+            "label": "duration hours"
+          }
+        ],
+        "structure": null,
+        "plain": "Effective rate fois duration hours"
+      },
+      "Sessions.InvoiceName": {
+        "table": "Sessions",
+        "field": "InvoiceName",
+        "kind": "lookup",
+        "rule": "Une session : invoice name — repris du invoice lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du invoice lié"
+      },
+      "Sessions.IsBilled": {
+        "table": "Sessions",
+        "field": "IsBilled",
+        "kind": "formula",
+        "rule": "Une session est considéré comme billed si l'invoice a une valeur.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          }
+        ],
+        "structure": null,
+        "plain": "Non invoice est vide"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Trainers": "trainer",
+      "Clients": "client",
+      "Invoices": "invoice",
+      "Sessions": "session"
+    }
+  },
+  "hi": {
+    "fields": {
+      "Trainers.TotalSessions": {
+        "table": "Trainers",
+        "field": "TotalSessions",
+        "kind": "rollup",
+        "rule": "trainer का “total sessions” trainer से संबंधित “sessions” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “sessions” की संख्या, जिनका trainer trainer ID है"
+      },
+      "Trainers.TotalBilled": {
+        "table": "Trainers",
+        "field": "TotalBilled",
+        "kind": "rollup",
+        "rule": "trainer का “total billed” trainer से संबंधित “invoices” पर “total” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “invoices” पर योग total, जिनका trainer trainer ID है"
+      },
+      "Trainers.TotalOutstanding": {
+        "table": "Trainers",
+        "field": "TotalOutstanding",
+        "kind": "rollup",
+        "rule": "trainer का “total outstanding” trainer से संबंधित “invoices” पर कुल “balance” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “invoices” पर योग balance, जिनका trainer trainer ID है"
+      },
+      "Clients.TrainerName": {
+        "table": "Clients",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "client का “trainer name” लिंक किए गए “trainer” का “full name” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “trainer” का full name"
+      },
+      "Clients.TrainerEmail": {
+        "table": "Clients",
+        "field": "TrainerEmail",
+        "kind": "lookup",
+        "rule": "client का “trainer email” — लिंक किए गए “trainer” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “trainer” का email"
+      },
+      "Clients.TrainerHourlyRate": {
+        "table": "Clients",
+        "field": "TrainerHourlyRate",
+        "kind": "lookup",
+        "rule": "client का “trainer hourly rate” — लिंक किए गए “trainer” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "HourlyRate",
+            "label": "hourly rate"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “trainer” का hourly rate"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "client का “session count” client से संबंधित “sessions” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “sessions” की संख्या, जिनका client client ID है"
+      },
+      "Clients.TotalInvoiced": {
+        "table": "Clients",
+        "field": "TotalInvoiced",
+        "kind": "rollup",
+        "rule": "client का “total invoiced” client से संबंधित “invoices” पर “total” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “invoices” पर योग total, जिनका client client ID है"
+      },
+      "Clients.OutstandingBalance": {
+        "table": "Clients",
+        "field": "OutstandingBalance",
+        "kind": "rollup",
+        "rule": "client का “outstanding balance” client से संबंधित “invoices” पर कुल “balance” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “invoices” पर योग balance, जिनका client client ID है"
+      },
+      "Clients.OverdueCount": {
+        "table": "Clients",
+        "field": "OverdueCount",
+        "kind": "rollup",
+        "rule": "client का “overdue count” client के उन “invoices” की संख्या, जो “overdue” हैं है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “invoices” की संख्या, जिनका client client ID है और is overdue true() है"
+      },
+      "Clients.Status": {
+        "table": "Clients",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "Client का “status” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “Overdue”, यदि overdue count 0 से अधिक है;\n2. “Has Balance”, यदि outstanding balance 0 से अधिक है;\n3. अन्य सभी स्थितियों में, “Paid Up”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "OverdueCount",
+            "label": "overdue count"
+          },
+          {
+            "table": "Clients",
+            "field": "OutstandingBalance",
+            "label": "outstanding balance"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Client का “status” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“Overdue”",
+              "when": {
+                "kind": "leaf",
+                "text": "overdue count 0 से अधिक है"
+              }
+            },
+            {
+              "value": "“Has Balance”",
+              "when": {
+                "kind": "leaf",
+                "text": "outstanding balance 0 से अधिक है"
+              }
+            },
+            {
+              "value": "“Paid Up”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि overdue count 0 से अधिक है, तो \"Overdue\", अन्यथा यदि outstanding balance 0 से अधिक है, तो \"Has Balance\", अन्यथा \"Paid Up\""
+      },
+      "Invoices.ClientName": {
+        "table": "Invoices",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "invoice का “client name” लिंक किए गए “client” का “full name” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “client” का full name"
+      },
+      "Invoices.ClientEmail": {
+        "table": "Invoices",
+        "field": "ClientEmail",
+        "kind": "lookup",
+        "rule": "invoice का “client email” — लिंक किए गए “client” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “client” का email"
+      },
+      "Invoices.Trainer": {
+        "table": "Invoices",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "invoice का “trainer” — लिंक किए गए “client” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “client” का trainer"
+      },
+      "Invoices.TrainerName": {
+        "table": "Invoices",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "invoice का “trainer name” — लिंक किए गए “client” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerName",
+            "label": "trainer name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “client” का trainer name"
+      },
+      "Invoices.Subtotal": {
+        "table": "Invoices",
+        "field": "Subtotal",
+        "kind": "rollup",
+        "rule": "invoice का “subtotal” invoice से संबंधित “sessions” पर कुल “line total” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “sessions” पर योग line total, जिनका invoice invoice ID है"
+      },
+      "Invoices.TaxAmount": {
+        "table": "Invoices",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "invoice का “tax amount” subtotal गुणा tax rate के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Subtotal गुणा tax rate"
+      },
+      "Invoices.GraceDays": {
+        "table": "Invoices",
+        "field": "GraceDays",
+        "kind": "formula",
+        "rule": "invoice का “grace days” 45 के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "45"
+      },
+      "Invoices.DaysSinceDueDate": {
+        "table": "Invoices",
+        "field": "DaysSinceDueDate",
+        "kind": "formula",
+        "rule": "invoice का “days since due date” due date से वर्तमान तारीख और समय तक दिनों की संख्या के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DueDate",
+            "label": "due date"
+          }
+        ],
+        "structure": null,
+        "plain": "Datetime_diff(अभी, due date, \"day\")"
+      },
+      "Invoices.DaysPastDue": {
+        "table": "Invoices",
+        "field": "DaysPastDue",
+        "kind": "formula",
+        "rule": "invoice का “days past due” 0 और days since due date घटा grace days में से अधिकतम के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysSinceDueDate",
+            "label": "days since due date"
+          },
+          {
+            "table": "Invoices",
+            "field": "GraceDays",
+            "label": "grace days"
+          }
+        ],
+        "structure": null,
+        "plain": "0 और (days since due date घटा grace days) में से अधिकतम"
+      },
+      "Invoices.LateFee": {
+        "table": "Invoices",
+        "field": "LateFee",
+        "kind": "formula",
+        "rule": "Invoice का “late fee” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. 15, यदि days past due 0 से अधिक है;\n2. अन्य सभी स्थितियों में, 0।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Invoice का “late fee” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "15",
+              "when": {
+                "kind": "leaf",
+                "text": "days past due 0 से अधिक है"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि days past due 0 से अधिक है, तो 15, अन्यथा 0"
+      },
+      "Invoices.Total": {
+        "table": "Invoices",
+        "field": "Total",
+        "kind": "formula",
+        "rule": "invoice का “total” subtotal जोड़ tax amount जोड़ late fee घटा discount amount के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          },
+          {
+            "table": "Invoices",
+            "field": "LateFee",
+            "label": "late fee"
+          },
+          {
+            "table": "Invoices",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "((subtotal जोड़ tax amount) जोड़ late fee) घटा discount amount"
+      },
+      "Invoices.Balance": {
+        "table": "Invoices",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "invoice का “balance” total घटा paid amount के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "PaidAmount",
+            "label": "paid amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Total घटा paid amount"
+      },
+      "Invoices.IsPaid": {
+        "table": "Invoices",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "यदि balance अधिक से अधिक 0 है, तो invoice “paid” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance अधिक से अधिक 0 है"
+      },
+      "Invoices.IsOverdue": {
+        "table": "Invoices",
+        "field": "IsOverdue",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: “paid” ध्वज लगा हुआ नहीं है और days past due 0 से अधिक है, तो invoice “overdue” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "invoice “overdue” माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“paid” ध्वज लगा हुआ नहीं है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "days past due 0 से अधिक है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is paid नहीं और days past due 0 से अधिक है"
+      },
+      "Invoices.Status": {
+        "table": "Invoices",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "Invoice का “status” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “Paid”, यदि “paid” ध्वज लगा हुआ है;\n2. “Overdue”, यदि “overdue” ध्वज लगा हुआ है;\n3. अन्य सभी स्थितियों में, “Open”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Invoice का “status” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“Paid”",
+              "when": {
+                "kind": "leaf",
+                "text": "“paid” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "“Overdue”",
+              "when": {
+                "kind": "leaf",
+                "text": "“overdue” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "“Open”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि is paid, तो \"Paid\", अन्यथा यदि is overdue, तो \"Overdue\", अन्यथा \"Open\""
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "session का “client name” लिंक किए गए “client” का “full name” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “client” का full name"
+      },
+      "Sessions.Trainer": {
+        "table": "Sessions",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "session का “trainer” — लिंक किए गए “client” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “client” का trainer"
+      },
+      "Sessions.ClientHourlyRate": {
+        "table": "Sessions",
+        "field": "ClientHourlyRate",
+        "kind": "lookup",
+        "rule": "session का “client hourly rate” लिंक किए गए “client” का “trainer hourly rate” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerHourlyRate",
+            "label": "trainer hourly rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “client” का trainer hourly rate"
+      },
+      "Sessions.EffectiveRate": {
+        "table": "Sessions",
+        "field": "EffectiveRate",
+        "kind": "formula",
+        "rule": "Session का “effective rate” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. rate override, यदि rate override 0 से अधिक है;\n2. अन्य सभी स्थितियों में, client hourly rate।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "RateOverride",
+            "label": "rate override"
+          },
+          {
+            "table": "Sessions",
+            "field": "ClientHourlyRate",
+            "label": "client hourly rate"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Session का “effective rate” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "rate override",
+              "when": {
+                "kind": "leaf",
+                "text": "rate override 0 से अधिक है"
+              }
+            },
+            {
+              "value": "client hourly rate",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि rate override 0 से अधिक है, तो rate override, अन्यथा client hourly rate"
+      },
+      "Sessions.LineTotal": {
+        "table": "Sessions",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "session का “line total” effective rate गुणा duration hours के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "EffectiveRate",
+            "label": "effective rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "DurationHours",
+            "label": "duration hours"
+          }
+        ],
+        "structure": null,
+        "plain": "Effective rate गुणा duration hours"
+      },
+      "Sessions.InvoiceName": {
+        "table": "Sessions",
+        "field": "InvoiceName",
+        "kind": "lookup",
+        "rule": "session का “invoice name” — लिंक किए गए “invoice” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “invoice” का name"
+      },
+      "Sessions.IsBilled": {
+        "table": "Sessions",
+        "field": "IsBilled",
+        "kind": "formula",
+        "rule": "यदि invoice में कोई मान है, तो session “billed” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          }
+        ],
+        "structure": null,
+        "plain": "Invoice खाली है नहीं"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "Users": "user",
+      "Trainers": "trainer",
+      "Clients": "client",
+      "Invoices": "invoice",
+      "Sessions": "session"
+    }
+  },
+  "id": {
+    "fields": {
+      "Trainers.TotalSessions": {
+        "table": "Trainers",
+        "field": "TotalSessions",
+        "kind": "rollup",
+        "rule": "Untuk setiap trainer, total sessions adalah jumlah sessions yang terkait dengan trainer tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah sessions dengan syarat trainer adalah trainer ID"
+      },
+      "Trainers.TotalBilled": {
+        "table": "Trainers",
+        "field": "TotalBilled",
+        "kind": "rollup",
+        "rule": "Untuk setiap trainer, total billed adalah nilai total pada seluruh invoices yang terkait dengan trainer tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total total pada semua invoices dengan syarat trainer adalah trainer ID"
+      },
+      "Trainers.TotalOutstanding": {
+        "table": "Trainers",
+        "field": "TotalOutstanding",
+        "kind": "rollup",
+        "rule": "Untuk setiap trainer, total outstanding adalah nilai total balance pada seluruh invoices yang terkait dengan trainer tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total balance pada semua invoices dengan syarat trainer adalah trainer ID"
+      },
+      "Clients.TrainerName": {
+        "table": "Clients",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "Untuk setiap client, trainer name adalah full name dari trainer yang tertaut pada client tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name dari trainer yang tertaut"
+      },
+      "Clients.TrainerEmail": {
+        "table": "Clients",
+        "field": "TrainerEmail",
+        "kind": "lookup",
+        "rule": "Untuk setiap client, trainer email diambil dari trainer yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Email dari trainer yang tertaut"
+      },
+      "Clients.TrainerHourlyRate": {
+        "table": "Clients",
+        "field": "TrainerHourlyRate",
+        "kind": "lookup",
+        "rule": "Untuk setiap client, trainer hourly rate diambil dari trainer yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "HourlyRate",
+            "label": "hourly rate"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Hourly rate dari trainer yang tertaut"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap client, session count adalah jumlah sessions yang terkait dengan client tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah sessions dengan syarat client adalah client ID"
+      },
+      "Clients.TotalInvoiced": {
+        "table": "Clients",
+        "field": "TotalInvoiced",
+        "kind": "rollup",
+        "rule": "Untuk setiap client, total invoiced adalah nilai total pada seluruh invoices yang terkait dengan client tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total total pada semua invoices dengan syarat client adalah client ID"
+      },
+      "Clients.OutstandingBalance": {
+        "table": "Clients",
+        "field": "OutstandingBalance",
+        "kind": "rollup",
+        "rule": "Untuk setiap client, outstanding balance adalah nilai total balance pada seluruh invoices yang terkait dengan client tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total balance pada semua invoices dengan syarat client adalah client ID"
+      },
+      "Clients.OverdueCount": {
+        "table": "Clients",
+        "field": "OverdueCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap client, overdue count adalah jumlah invoices dari client tersebut yang tergolong “overdue”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah invoices dengan syarat client adalah client ID dan is overdue adalah true()"
+      },
+      "Clients.Status": {
+        "table": "Clients",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "Untuk setiap client, status ditentukan menurut urutan prioritas berikut:\n1. “Overdue”, jika overdue count lebih dari 0;\n2. “Has Balance”, jika outstanding balance lebih dari 0;\n3. dalam semua kasus lainnya, “Paid Up”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "OverdueCount",
+            "label": "overdue count"
+          },
+          {
+            "table": "Clients",
+            "field": "OutstandingBalance",
+            "label": "outstanding balance"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap client, status ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“Overdue”",
+              "when": {
+                "kind": "leaf",
+                "text": "overdue count lebih dari 0"
+              }
+            },
+            {
+              "value": "“Has Balance”",
+              "when": {
+                "kind": "leaf",
+                "text": "outstanding balance lebih dari 0"
+              }
+            },
+            {
+              "value": "“Paid Up”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika overdue count lebih dari 0 maka \"Overdue\", selain itu jika outstanding balance lebih dari 0 maka \"Has Balance\", selain itu \"Paid Up\""
+      },
+      "Invoices.ClientName": {
+        "table": "Invoices",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Untuk setiap invoice, client name adalah full name dari client yang tertaut pada invoice tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name dari client yang tertaut"
+      },
+      "Invoices.ClientEmail": {
+        "table": "Invoices",
+        "field": "ClientEmail",
+        "kind": "lookup",
+        "rule": "Untuk setiap invoice, client email diambil dari client yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Email dari client yang tertaut"
+      },
+      "Invoices.Trainer": {
+        "table": "Invoices",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "Untuk setiap invoice, trainer diambil dari client yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Trainer dari client yang tertaut"
+      },
+      "Invoices.TrainerName": {
+        "table": "Invoices",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "Untuk setiap invoice, trainer name diambil dari client yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerName",
+            "label": "trainer name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Trainer name dari client yang tertaut"
+      },
+      "Invoices.Subtotal": {
+        "table": "Invoices",
+        "field": "Subtotal",
+        "kind": "rollup",
+        "rule": "Untuk setiap invoice, subtotal adalah nilai total line total pada seluruh sessions yang terkait dengan invoice tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total line total pada semua sessions dengan syarat invoice adalah invoice ID"
+      },
+      "Invoices.TaxAmount": {
+        "table": "Invoices",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "Untuk setiap invoice, tax amount dihitung sebagai subtotal dikali tax rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Subtotal dikali tax rate"
+      },
+      "Invoices.GraceDays": {
+        "table": "Invoices",
+        "field": "GraceDays",
+        "kind": "formula",
+        "rule": "Untuk setiap invoice, grace days dihitung sebagai 45.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "45"
+      },
+      "Invoices.DaysSinceDueDate": {
+        "table": "Invoices",
+        "field": "DaysSinceDueDate",
+        "kind": "formula",
+        "rule": "Untuk setiap invoice, days since due date dihitung sebagai jumlah hari dari due date hingga tanggal dan waktu saat ini.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DueDate",
+            "label": "due date"
+          }
+        ],
+        "structure": null,
+        "plain": "Datetime_diff(saat ini, due date, \"day\")"
+      },
+      "Invoices.DaysPastDue": {
+        "table": "Invoices",
+        "field": "DaysPastDue",
+        "kind": "formula",
+        "rule": "Untuk setiap invoice, days past due dihitung sebagai nilai terbesar dari 0 dan days since due date dikurangi grace days.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysSinceDueDate",
+            "label": "days since due date"
+          },
+          {
+            "table": "Invoices",
+            "field": "GraceDays",
+            "label": "grace days"
+          }
+        ],
+        "structure": null,
+        "plain": "Nilai terbesar dari 0 dan (days since due date dikurangi grace days)"
+      },
+      "Invoices.LateFee": {
+        "table": "Invoices",
+        "field": "LateFee",
+        "kind": "formula",
+        "rule": "Untuk setiap invoice, late fee ditentukan menurut urutan prioritas berikut:\n1. 15, jika days past due lebih dari 0;\n2. dalam semua kasus lainnya, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap invoice, late fee ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "15",
+              "when": {
+                "kind": "leaf",
+                "text": "days past due lebih dari 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika days past due lebih dari 0 maka 15, selain itu 0"
+      },
+      "Invoices.Total": {
+        "table": "Invoices",
+        "field": "Total",
+        "kind": "formula",
+        "rule": "Untuk setiap invoice, total dihitung sebagai subtotal ditambah tax amount ditambah late fee dikurangi discount amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          },
+          {
+            "table": "Invoices",
+            "field": "LateFee",
+            "label": "late fee"
+          },
+          {
+            "table": "Invoices",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "((subtotal ditambah tax amount) ditambah late fee) dikurangi discount amount"
+      },
+      "Invoices.Balance": {
+        "table": "Invoices",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "Untuk setiap invoice, balance dihitung sebagai total dikurangi paid amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "PaidAmount",
+            "label": "paid amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Total dikurangi paid amount"
+      },
+      "Invoices.IsPaid": {
+        "table": "Invoices",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "Setiap invoice dianggap “paid” jika balance tidak lebih dari 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance tidak lebih dari 0"
+      },
+      "Invoices.IsOverdue": {
+        "table": "Invoices",
+        "field": "IsOverdue",
+        "kind": "formula",
+        "rule": "Setiap invoice dianggap “overdue” jika semua kondisi berikut terpenuhi: penanda “paid” tidak aktif dan days past due lebih dari 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap invoice dianggap “overdue” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "penanda “paid” tidak aktif"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "days past due lebih dari 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Tidak benar bahwa is paid dan days past due lebih dari 0"
+      },
+      "Invoices.Status": {
+        "table": "Invoices",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "Untuk setiap invoice, status ditentukan menurut urutan prioritas berikut:\n1. “Paid”, jika penanda “paid” aktif;\n2. “Overdue”, jika penanda “overdue” aktif;\n3. dalam semua kasus lainnya, “Open”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap invoice, status ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“Paid”",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “paid” aktif"
+              }
+            },
+            {
+              "value": "“Overdue”",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “overdue” aktif"
+              }
+            },
+            {
+              "value": "“Open”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika is paid maka \"Paid\", selain itu jika is overdue maka \"Overdue\", selain itu \"Open\""
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Untuk setiap session, client name adalah full name dari client yang tertaut pada session tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name dari client yang tertaut"
+      },
+      "Sessions.Trainer": {
+        "table": "Sessions",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "Untuk setiap session, trainer diambil dari client yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Trainer dari client yang tertaut"
+      },
+      "Sessions.ClientHourlyRate": {
+        "table": "Sessions",
+        "field": "ClientHourlyRate",
+        "kind": "lookup",
+        "rule": "Untuk setiap session, client hourly rate adalah trainer hourly rate dari client yang tertaut pada session tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerHourlyRate",
+            "label": "trainer hourly rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Trainer hourly rate dari client yang tertaut"
+      },
+      "Sessions.EffectiveRate": {
+        "table": "Sessions",
+        "field": "EffectiveRate",
+        "kind": "formula",
+        "rule": "Untuk setiap session, effective rate ditentukan menurut urutan prioritas berikut:\n1. rate override, jika rate override lebih dari 0;\n2. dalam semua kasus lainnya, client hourly rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "RateOverride",
+            "label": "rate override"
+          },
+          {
+            "table": "Sessions",
+            "field": "ClientHourlyRate",
+            "label": "client hourly rate"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap session, effective rate ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "rate override",
+              "when": {
+                "kind": "leaf",
+                "text": "rate override lebih dari 0"
+              }
+            },
+            {
+              "value": "client hourly rate",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika rate override lebih dari 0 maka rate override, selain itu client hourly rate"
+      },
+      "Sessions.LineTotal": {
+        "table": "Sessions",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "Untuk setiap session, line total dihitung sebagai effective rate dikali duration hours.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "EffectiveRate",
+            "label": "effective rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "DurationHours",
+            "label": "duration hours"
+          }
+        ],
+        "structure": null,
+        "plain": "Effective rate dikali duration hours"
+      },
+      "Sessions.InvoiceName": {
+        "table": "Sessions",
+        "field": "InvoiceName",
+        "kind": "lookup",
+        "rule": "Untuk setiap session, invoice name diambil dari invoice yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari invoice yang tertaut"
+      },
+      "Sessions.IsBilled": {
+        "table": "Sessions",
+        "field": "IsBilled",
+        "kind": "formula",
+        "rule": "Setiap session dianggap “billed” jika invoice memiliki nilai.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          }
+        ],
+        "structure": null,
+        "plain": "Tidak benar bahwa invoice kosong"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Trainers": "trainer",
+      "Clients": "client",
+      "Invoices": "invoice",
+      "Sessions": "session"
+    }
+  },
+  "it": {
+    "fields": {
+      "Trainers.TotalSessions": {
+        "table": "Trainers",
+        "field": "TotalSessions",
+        "kind": "rollup",
+        "rule": "Un trainer: total sessions è il numero di sessions collegati a il trainer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei sessions il cui trainer è trainer ID"
+      },
+      "Trainers.TotalBilled": {
+        "table": "Trainers",
+        "field": "TotalBilled",
+        "kind": "rollup",
+        "rule": "Un trainer: total billed è di total tra i invoices collegati a il trainer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di total su tutti i invoices il cui trainer è trainer ID"
+      },
+      "Trainers.TotalOutstanding": {
+        "table": "Trainers",
+        "field": "TotalOutstanding",
+        "kind": "rollup",
+        "rule": "Un trainer: total outstanding è il totale di balance tra i invoices collegati a il trainer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di balance su tutti i invoices il cui trainer è trainer ID"
+      },
+      "Clients.TrainerName": {
+        "table": "Clients",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "Un client: trainer name è il full name del trainer collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il full name del trainer collegato"
+      },
+      "Clients.TrainerEmail": {
+        "table": "Clients",
+        "field": "TrainerEmail",
+        "kind": "lookup",
+        "rule": "Un client: trainer email — ripreso dal trainer collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il email del trainer collegato"
+      },
+      "Clients.TrainerHourlyRate": {
+        "table": "Clients",
+        "field": "TrainerHourlyRate",
+        "kind": "lookup",
+        "rule": "Un client: trainer hourly rate — ripreso dal trainer collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "HourlyRate",
+            "label": "hourly rate"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il hourly rate del trainer collegato"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "Un client: session count è il numero di sessions collegati a il client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei sessions il cui client è client ID"
+      },
+      "Clients.TotalInvoiced": {
+        "table": "Clients",
+        "field": "TotalInvoiced",
+        "kind": "rollup",
+        "rule": "Un client: total invoiced è di total tra i invoices collegati a il client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di total su tutti i invoices il cui client è client ID"
+      },
+      "Clients.OutstandingBalance": {
+        "table": "Clients",
+        "field": "OutstandingBalance",
+        "kind": "rollup",
+        "rule": "Un client: outstanding balance è il totale di balance tra i invoices collegati a il client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di balance su tutti i invoices il cui client è client ID"
+      },
+      "Clients.OverdueCount": {
+        "table": "Clients",
+        "field": "OverdueCount",
+        "kind": "rollup",
+        "rule": "Un client: overdue count è il numero di invoices del client che sono overdue.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei invoices il cui client è client ID e is overdue è true()"
+      },
+      "Clients.Status": {
+        "table": "Clients",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "Il campo “status” del client è determinato secondo la seguente priorità:\n1. «Overdue», se l'overdue count è maggiore di 0;\n2. «Has Balance», se l'outstanding balance è maggiore di 0;\n3. in tutti gli altri casi, «Paid Up».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "OverdueCount",
+            "label": "overdue count"
+          },
+          {
+            "table": "Clients",
+            "field": "OutstandingBalance",
+            "label": "outstanding balance"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “status” del client è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«Overdue»",
+              "when": {
+                "kind": "leaf",
+                "text": "l'overdue count è maggiore di 0"
+              }
+            },
+            {
+              "value": "«Has Balance»",
+              "when": {
+                "kind": "leaf",
+                "text": "l'outstanding balance è maggiore di 0"
+              }
+            },
+            {
+              "value": "«Paid Up»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se overdue count è maggiore di 0, allora \"Overdue\", altrimenti se outstanding balance è maggiore di 0, allora \"Has Balance\", altrimenti \"Paid Up\""
+      },
+      "Invoices.ClientName": {
+        "table": "Invoices",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Un invoice: client name è il full name del client collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il full name del client collegato"
+      },
+      "Invoices.ClientEmail": {
+        "table": "Invoices",
+        "field": "ClientEmail",
+        "kind": "lookup",
+        "rule": "Un invoice: client email — ripreso dal client collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il email del client collegato"
+      },
+      "Invoices.Trainer": {
+        "table": "Invoices",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "Un invoice: trainer — ripreso dal client collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il trainer del client collegato"
+      },
+      "Invoices.TrainerName": {
+        "table": "Invoices",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "Un invoice: trainer name — ripreso dal client collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerName",
+            "label": "trainer name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il trainer name del client collegato"
+      },
+      "Invoices.Subtotal": {
+        "table": "Invoices",
+        "field": "Subtotal",
+        "kind": "rollup",
+        "rule": "Un invoice: subtotal è il totale di line total tra i sessions collegati a l'invoice.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di line total su tutti i sessions il cui invoice è invoice ID"
+      },
+      "Invoices.TaxAmount": {
+        "table": "Invoices",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "Un invoice: tax amount è calcolato come il subtotal per il tax rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Subtotal per tax rate"
+      },
+      "Invoices.GraceDays": {
+        "table": "Invoices",
+        "field": "GraceDays",
+        "kind": "formula",
+        "rule": "Un invoice: grace days è calcolato come 45.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "45"
+      },
+      "Invoices.DaysSinceDueDate": {
+        "table": "Invoices",
+        "field": "DaysSinceDueDate",
+        "kind": "formula",
+        "rule": "Un invoice: days since due date è calcolato come il numero di giorni da il due date a la data e l'ora correnti.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DueDate",
+            "label": "due date"
+          }
+        ],
+        "structure": null,
+        "plain": "Datetime_diff(adesso, due date, \"day\")"
+      },
+      "Invoices.DaysPastDue": {
+        "table": "Invoices",
+        "field": "DaysPastDue",
+        "kind": "formula",
+        "rule": "Un invoice: days past due è calcolato come il maggiore tra 0 e il days since due date meno il grace days.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysSinceDueDate",
+            "label": "days since due date"
+          },
+          {
+            "table": "Invoices",
+            "field": "GraceDays",
+            "label": "grace days"
+          }
+        ],
+        "structure": null,
+        "plain": "Il maggiore tra 0 e (days since due date meno grace days)"
+      },
+      "Invoices.LateFee": {
+        "table": "Invoices",
+        "field": "LateFee",
+        "kind": "formula",
+        "rule": "Il campo “late fee” dell'invoice è determinato secondo la seguente priorità:\n1. 15, se il days past due è maggiore di 0;\n2. in tutti gli altri casi, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “late fee” dell'invoice è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "15",
+              "when": {
+                "kind": "leaf",
+                "text": "il days past due è maggiore di 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se days past due è maggiore di 0, allora 15, altrimenti 0"
+      },
+      "Invoices.Total": {
+        "table": "Invoices",
+        "field": "Total",
+        "kind": "formula",
+        "rule": "Un invoice: total è calcolato come il subtotal più il tax amount più il late fee meno il discount amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          },
+          {
+            "table": "Invoices",
+            "field": "LateFee",
+            "label": "late fee"
+          },
+          {
+            "table": "Invoices",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "((subtotal più tax amount) più late fee) meno discount amount"
+      },
+      "Invoices.Balance": {
+        "table": "Invoices",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "Un invoice: balance è calcolato come il total meno il paid amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "PaidAmount",
+            "label": "paid amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Total meno paid amount"
+      },
+      "Invoices.IsPaid": {
+        "table": "Invoices",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "Un invoice è considerato un paid se il balance è al massimo 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance è al massimo 0"
+      },
+      "Invoices.IsOverdue": {
+        "table": "Invoices",
+        "field": "IsOverdue",
+        "kind": "formula",
+        "rule": "Un invoice è considerato un overdue se vale tutto quanto segue: l'indicatore “paid” non è attivo e il days past due è maggiore di 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un invoice è considerato un overdue se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “paid” non è attivo"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "il days past due è maggiore di 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Non is paid e days past due è maggiore di 0"
+      },
+      "Invoices.Status": {
+        "table": "Invoices",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "Il campo “status” dell'invoice è determinato secondo la seguente priorità:\n1. «Paid», se l'indicatore “paid” è attivo;\n2. «Overdue», se l'indicatore “overdue” è attivo;\n3. in tutti gli altri casi, «Open».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “status” dell'invoice è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«Paid»",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “paid” è attivo"
+              }
+            },
+            {
+              "value": "«Overdue»",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “overdue” è attivo"
+              }
+            },
+            {
+              "value": "«Open»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is paid, allora \"Paid\", altrimenti se is overdue, allora \"Overdue\", altrimenti \"Open\""
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Un session: client name è il full name del client collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il full name del client collegato"
+      },
+      "Sessions.Trainer": {
+        "table": "Sessions",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "Un session: trainer — ripreso dal client collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il trainer del client collegato"
+      },
+      "Sessions.ClientHourlyRate": {
+        "table": "Sessions",
+        "field": "ClientHourlyRate",
+        "kind": "lookup",
+        "rule": "Un session: client hourly rate è il trainer hourly rate del client collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerHourlyRate",
+            "label": "trainer hourly rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il trainer hourly rate del client collegato"
+      },
+      "Sessions.EffectiveRate": {
+        "table": "Sessions",
+        "field": "EffectiveRate",
+        "kind": "formula",
+        "rule": "Il campo “effective rate” del session è determinato secondo la seguente priorità:\n1. il rate override, se il rate override è maggiore di 0;\n2. in tutti gli altri casi, il client hourly rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "RateOverride",
+            "label": "rate override"
+          },
+          {
+            "table": "Sessions",
+            "field": "ClientHourlyRate",
+            "label": "client hourly rate"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “effective rate” del session è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "il rate override",
+              "when": {
+                "kind": "leaf",
+                "text": "il rate override è maggiore di 0"
+              }
+            },
+            {
+              "value": "il client hourly rate",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se rate override è maggiore di 0, allora rate override, altrimenti client hourly rate"
+      },
+      "Sessions.LineTotal": {
+        "table": "Sessions",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "Un session: line total è calcolato come l'effective rate per il duration hours.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "EffectiveRate",
+            "label": "effective rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "DurationHours",
+            "label": "duration hours"
+          }
+        ],
+        "structure": null,
+        "plain": "Effective rate per duration hours"
+      },
+      "Sessions.InvoiceName": {
+        "table": "Sessions",
+        "field": "InvoiceName",
+        "kind": "lookup",
+        "rule": "Un session: invoice name — ripreso dal invoice collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del invoice collegato"
+      },
+      "Sessions.IsBilled": {
+        "table": "Sessions",
+        "field": "IsBilled",
+        "kind": "formula",
+        "rule": "Un session è considerato billed se l'invoice ha un valore.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          }
+        ],
+        "structure": null,
+        "plain": "Non invoice è vuoto"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Trainers": "trainer",
+      "Clients": "client",
+      "Invoices": "invoice",
+      "Sessions": "session"
+    }
+  },
+  "ja": {
+    "fields": {
+      "Trainers.TotalSessions": {
+        "table": "Trainers",
+        "field": "TotalSessions",
+        "kind": "rollup",
+        "rule": "trainerの「total sessions」は trainerに関連する「sessions」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Trainer が trainer ID である「sessions」の件数"
+      },
+      "Trainers.TotalBilled": {
+        "table": "Trainers",
+        "field": "TotalBilled",
+        "kind": "rollup",
+        "rule": "trainerの「total billed」は trainerに関連する「invoices」全体での「total」の です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Trainer が trainer ID であるすべての「invoices」にわたる total の合計"
+      },
+      "Trainers.TotalOutstanding": {
+        "table": "Trainers",
+        "field": "TotalOutstanding",
+        "kind": "rollup",
+        "rule": "trainerの「total outstanding」は trainerに関連する「invoices」全体での「balance」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Trainer が trainer ID であるすべての「invoices」にわたる balance の合計"
+      },
+      "Clients.TrainerName": {
+        "table": "Clients",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "clientの「trainer name」は、リンクされた「trainer」の「full name」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「trainer」の full name"
+      },
+      "Clients.TrainerEmail": {
+        "table": "Clients",
+        "field": "TrainerEmail",
+        "kind": "lookup",
+        "rule": "clientの「trainer email」— リンクされた「trainer」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「trainer」の email"
+      },
+      "Clients.TrainerHourlyRate": {
+        "table": "Clients",
+        "field": "TrainerHourlyRate",
+        "kind": "lookup",
+        "rule": "clientの「trainer hourly rate」— リンクされた「trainer」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "HourlyRate",
+            "label": "hourly rate"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「trainer」の hourly rate"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "clientの「session count」は clientに関連する「sessions」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client が client ID である「sessions」の件数"
+      },
+      "Clients.TotalInvoiced": {
+        "table": "Clients",
+        "field": "TotalInvoiced",
+        "kind": "rollup",
+        "rule": "clientの「total invoiced」は clientに関連する「invoices」全体での「total」の です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client が client ID であるすべての「invoices」にわたる total の合計"
+      },
+      "Clients.OutstandingBalance": {
+        "table": "Clients",
+        "field": "OutstandingBalance",
+        "kind": "rollup",
+        "rule": "clientの「outstanding balance」は clientに関連する「invoices」全体での「balance」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client が client ID であるすべての「invoices」にわたる balance の合計"
+      },
+      "Clients.OverdueCount": {
+        "table": "Clients",
+        "field": "OverdueCount",
+        "kind": "rollup",
+        "rule": "clientの「overdue count」は clientの「invoices」のうち、「Overdue」であるものの件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": null,
+        "plain": "Client が client IDおよびis overdue が true() である「invoices」の件数"
+      },
+      "Clients.Status": {
+        "table": "Clients",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "Clientの「status」は、次の優先順位で決まります:\n1. overdue count が 0 より大きい場合は 「Overdue」;\n2. outstanding balance が 0 より大きい場合は 「Has Balance」;\n3. それ以外の場合は 「Paid Up」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "OverdueCount",
+            "label": "overdue count"
+          },
+          {
+            "table": "Clients",
+            "field": "OutstandingBalance",
+            "label": "outstanding balance"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Clientの「status」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「Overdue」",
+              "when": {
+                "kind": "leaf",
+                "text": "overdue count が 0 より大きい"
+              }
+            },
+            {
+              "value": "「Has Balance」",
+              "when": {
+                "kind": "leaf",
+                "text": "outstanding balance が 0 より大きい"
+              }
+            },
+            {
+              "value": "「Paid Up」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Overdue count が 0 より大きいなら \"Overdue\"、そうでなければ outstanding balance が 0 より大きいなら \"Has Balance\"、そうでなければ \"Paid Up\""
+      },
+      "Invoices.ClientName": {
+        "table": "Invoices",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "invoiceの「client name」は、リンクされた「client」の「full name」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「client」の full name"
+      },
+      "Invoices.ClientEmail": {
+        "table": "Invoices",
+        "field": "ClientEmail",
+        "kind": "lookup",
+        "rule": "invoiceの「client email」— リンクされた「client」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「client」の email"
+      },
+      "Invoices.Trainer": {
+        "table": "Invoices",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "invoiceの「trainer」— リンクされた「client」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「client」の trainer"
+      },
+      "Invoices.TrainerName": {
+        "table": "Invoices",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "invoiceの「trainer name」— リンクされた「client」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerName",
+            "label": "trainer name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「client」の trainer name"
+      },
+      "Invoices.Subtotal": {
+        "table": "Invoices",
+        "field": "Subtotal",
+        "kind": "rollup",
+        "rule": "invoiceの「subtotal」は invoiceに関連する「sessions」全体での「line total」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Invoice が invoice ID であるすべての「sessions」にわたる line total の合計"
+      },
+      "Invoices.TaxAmount": {
+        "table": "Invoices",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "invoiceの「tax amount」は subtotal かける tax rate として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Subtotal かける tax rate"
+      },
+      "Invoices.GraceDays": {
+        "table": "Invoices",
+        "field": "GraceDays",
+        "kind": "formula",
+        "rule": "invoiceの「grace days」は 45 として計算されます。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "45"
+      },
+      "Invoices.DaysSinceDueDate": {
+        "table": "Invoices",
+        "field": "DaysSinceDueDate",
+        "kind": "formula",
+        "rule": "invoiceの「days since due date」は due date から 現在の日時 までの日数 として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DueDate",
+            "label": "due date"
+          }
+        ],
+        "structure": null,
+        "plain": "Datetime_diff(現在, due date, \"day\")"
+      },
+      "Invoices.DaysPastDue": {
+        "table": "Invoices",
+        "field": "DaysPastDue",
+        "kind": "formula",
+        "rule": "invoiceの「days past due」は 0およびdays since due date ひく grace days のうち最大のもの として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysSinceDueDate",
+            "label": "days since due date"
+          },
+          {
+            "table": "Invoices",
+            "field": "GraceDays",
+            "label": "grace days"
+          }
+        ],
+        "structure": null,
+        "plain": "0および(days since due date ひく grace days) のうち最大"
+      },
+      "Invoices.LateFee": {
+        "table": "Invoices",
+        "field": "LateFee",
+        "kind": "formula",
+        "rule": "Invoiceの「late fee」は、次の優先順位で決まります:\n1. days past due が 0 より大きい場合は 15;\n2. それ以外の場合は 0。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Invoiceの「late fee」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "15",
+              "when": {
+                "kind": "leaf",
+                "text": "days past due が 0 より大きい"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Days past due が 0 より大きいなら 15、そうでなければ 0"
+      },
+      "Invoices.Total": {
+        "table": "Invoices",
+        "field": "Total",
+        "kind": "formula",
+        "rule": "invoiceの「total」は subtotal たす tax amount たす late fee ひく discount amount として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          },
+          {
+            "table": "Invoices",
+            "field": "LateFee",
+            "label": "late fee"
+          },
+          {
+            "table": "Invoices",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "((subtotal たす tax amount) たす late fee) ひく discount amount"
+      },
+      "Invoices.Balance": {
+        "table": "Invoices",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "invoiceの「balance」は total ひく paid amount として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "PaidAmount",
+            "label": "paid amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Total ひく paid amount"
+      },
+      "Invoices.IsPaid": {
+        "table": "Invoices",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "balance が 0 以下である場合、invoiceは「Paid」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance が 0 以下"
+      },
+      "Invoices.IsOverdue": {
+        "table": "Invoices",
+        "field": "IsOverdue",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: フラグ「paid」が設定されていないおよびdays past due が 0 より大きい場合、invoiceは「Overdue」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、invoiceは「Overdue」と見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「paid」が設定されていない"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "days past due が 0 より大きい"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is paid でないおよびdays past due が 0 より大きい"
+      },
+      "Invoices.Status": {
+        "table": "Invoices",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "Invoiceの「status」は、次の優先順位で決まります:\n1. フラグ「paid」が設定されている場合は 「Paid」;\n2. フラグ「overdue」が設定されている場合は 「Overdue」;\n3. それ以外の場合は 「Open」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Invoiceの「status」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「Paid」",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「paid」が設定されている"
+              }
+            },
+            {
+              "value": "「Overdue」",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「overdue」が設定されている"
+              }
+            },
+            {
+              "value": "「Open」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is paidなら \"Paid\"、そうでなければ is overdueなら \"Overdue\"、そうでなければ \"Open\""
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "sessionの「client name」は、リンクされた「client」の「full name」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「client」の full name"
+      },
+      "Sessions.Trainer": {
+        "table": "Sessions",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "sessionの「trainer」— リンクされた「client」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「client」の trainer"
+      },
+      "Sessions.ClientHourlyRate": {
+        "table": "Sessions",
+        "field": "ClientHourlyRate",
+        "kind": "lookup",
+        "rule": "sessionの「client hourly rate」は、リンクされた「client」の「trainer hourly rate」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerHourlyRate",
+            "label": "trainer hourly rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「client」の trainer hourly rate"
+      },
+      "Sessions.EffectiveRate": {
+        "table": "Sessions",
+        "field": "EffectiveRate",
+        "kind": "formula",
+        "rule": "Sessionの「effective rate」は、次の優先順位で決まります:\n1. rate override が 0 より大きい場合は rate override;\n2. それ以外の場合は client hourly rate。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "RateOverride",
+            "label": "rate override"
+          },
+          {
+            "table": "Sessions",
+            "field": "ClientHourlyRate",
+            "label": "client hourly rate"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Sessionの「effective rate」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "rate override",
+              "when": {
+                "kind": "leaf",
+                "text": "rate override が 0 より大きい"
+              }
+            },
+            {
+              "value": "client hourly rate",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Rate override が 0 より大きいなら rate override、そうでなければ client hourly rate"
+      },
+      "Sessions.LineTotal": {
+        "table": "Sessions",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "sessionの「line total」は effective rate かける duration hours として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "EffectiveRate",
+            "label": "effective rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "DurationHours",
+            "label": "duration hours"
+          }
+        ],
+        "structure": null,
+        "plain": "Effective rate かける duration hours"
+      },
+      "Sessions.InvoiceName": {
+        "table": "Sessions",
+        "field": "InvoiceName",
+        "kind": "lookup",
+        "rule": "sessionの「invoice name」— リンクされた「invoice」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「invoice」の name"
+      },
+      "Sessions.IsBilled": {
+        "table": "Sessions",
+        "field": "IsBilled",
+        "kind": "formula",
+        "rule": "invoice に値がある場合、sessionは「Billed」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          }
+        ],
+        "structure": null,
+        "plain": "Invoice が空 でない"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "Users": "user",
+      "Trainers": "trainer",
+      "Clients": "client",
+      "Invoices": "invoice",
+      "Sessions": "session"
+    }
+  },
+  "ko": {
+    "fields": {
+      "Trainers.TotalSessions": {
+        "table": "Trainers",
+        "field": "TotalSessions",
+        "kind": "rollup",
+        "rule": "‘trainer’ 레코드의 ‘total sessions’ 값은 해당 ‘trainer’ 레코드에 연결된 ‘sessions’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(trainer 값이 trainer ID임)에 맞는 sessions 레코드의 개수"
+      },
+      "Trainers.TotalBilled": {
+        "table": "Trainers",
+        "field": "TotalBilled",
+        "kind": "rollup",
+        "rule": "‘trainer’ 레코드의 ‘total billed’ 값은 해당 ‘trainer’ 레코드에 연결된 모든 ‘invoices’ 레코드의 ‘total’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(trainer 값이 trainer ID임)에 맞는 모든 invoices 레코드의 total 합계"
+      },
+      "Trainers.TotalOutstanding": {
+        "table": "Trainers",
+        "field": "TotalOutstanding",
+        "kind": "rollup",
+        "rule": "‘trainer’ 레코드의 ‘total outstanding’ 값은 해당 ‘trainer’ 레코드에 연결된 모든 ‘invoices’ 레코드의 총 ‘balance’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(trainer 값이 trainer ID임)에 맞는 모든 invoices 레코드의 balance 합계"
+      },
+      "Clients.TrainerName": {
+        "table": "Clients",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "‘client’ 레코드의 ‘trainer name’ 값은 연결된 ‘trainer’ 레코드의 ‘full name’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 trainer 레코드의 full name"
+      },
+      "Clients.TrainerEmail": {
+        "table": "Clients",
+        "field": "TrainerEmail",
+        "kind": "lookup",
+        "rule": "‘client’ 레코드의 ‘trainer email’ 값은 연결된 ‘trainer’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 trainer 레코드의 email"
+      },
+      "Clients.TrainerHourlyRate": {
+        "table": "Clients",
+        "field": "TrainerHourlyRate",
+        "kind": "lookup",
+        "rule": "‘client’ 레코드의 ‘trainer hourly rate’ 값은 연결된 ‘trainer’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "HourlyRate",
+            "label": "hourly rate"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 trainer 레코드의 hourly rate"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "‘client’ 레코드의 ‘session count’ 값은 해당 ‘client’ 레코드에 연결된 ‘sessions’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(client 값이 client ID임)에 맞는 sessions 레코드의 개수"
+      },
+      "Clients.TotalInvoiced": {
+        "table": "Clients",
+        "field": "TotalInvoiced",
+        "kind": "rollup",
+        "rule": "‘client’ 레코드의 ‘total invoiced’ 값은 해당 ‘client’ 레코드에 연결된 모든 ‘invoices’ 레코드의 ‘total’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(client 값이 client ID임)에 맞는 모든 invoices 레코드의 total 합계"
+      },
+      "Clients.OutstandingBalance": {
+        "table": "Clients",
+        "field": "OutstandingBalance",
+        "kind": "rollup",
+        "rule": "‘client’ 레코드의 ‘outstanding balance’ 값은 해당 ‘client’ 레코드에 연결된 모든 ‘invoices’ 레코드의 총 ‘balance’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(client 값이 client ID임)에 맞는 모든 invoices 레코드의 balance 합계"
+      },
+      "Clients.OverdueCount": {
+        "table": "Clients",
+        "field": "OverdueCount",
+        "kind": "rollup",
+        "rule": "‘client’ 레코드의 ‘overdue count’ 값은 해당 ‘client’ 레코드에 연결된 ‘invoices’ 레코드 중 ‘overdue’에 해당하는 것의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(client 값이 client ID임 및 is overdue 값이 true()임)에 맞는 invoices 레코드의 개수"
+      },
+      "Clients.Status": {
+        "table": "Clients",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "‘client’ 레코드의 ‘status’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘overdue count’ 값이 0보다 큰 경우: “Overdue”\n2. ‘outstanding balance’ 값이 0보다 큰 경우: “Has Balance”\n3. 그 밖의 경우: “Paid Up”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "OverdueCount",
+            "label": "overdue count"
+          },
+          {
+            "table": "Clients",
+            "field": "OutstandingBalance",
+            "label": "outstanding balance"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘client’ 레코드의 ‘status’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“Overdue”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘overdue count’ 값이 0보다 큰 경우"
+              }
+            },
+            {
+              "value": "“Has Balance”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘outstanding balance’ 값이 0보다 큰 경우"
+              }
+            },
+            {
+              "value": "“Paid Up”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(overdue count 값이 0보다 큼)이 성립하면 \"Overdue\", 그렇지 않으면 조건(outstanding balance 값이 0보다 큼)이 성립하면 \"Has Balance\", 그렇지 않으면 \"Paid Up\""
+      },
+      "Invoices.ClientName": {
+        "table": "Invoices",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "‘invoice’ 레코드의 ‘client name’ 값은 연결된 ‘client’ 레코드의 ‘full name’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 client 레코드의 full name"
+      },
+      "Invoices.ClientEmail": {
+        "table": "Invoices",
+        "field": "ClientEmail",
+        "kind": "lookup",
+        "rule": "‘invoice’ 레코드의 ‘client email’ 값은 연결된 ‘client’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 client 레코드의 email"
+      },
+      "Invoices.Trainer": {
+        "table": "Invoices",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "‘invoice’ 레코드의 ‘trainer’ 값은 연결된 ‘client’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 client 레코드의 trainer"
+      },
+      "Invoices.TrainerName": {
+        "table": "Invoices",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "‘invoice’ 레코드의 ‘trainer name’ 값은 연결된 ‘client’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerName",
+            "label": "trainer name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 client 레코드의 trainer name"
+      },
+      "Invoices.Subtotal": {
+        "table": "Invoices",
+        "field": "Subtotal",
+        "kind": "rollup",
+        "rule": "‘invoice’ 레코드의 ‘subtotal’ 값은 해당 ‘invoice’ 레코드에 연결된 모든 ‘sessions’ 레코드의 총 ‘line total’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(invoice 값이 invoice ID임)에 맞는 모든 sessions 레코드의 line total 합계"
+      },
+      "Invoices.TaxAmount": {
+        "table": "Invoices",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "‘invoice’ 레코드의 ‘tax amount’ 값은 다음과 같이 계산됩니다: ‘subtotal’ 곱하기 ‘tax rate’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Subtotal 곱하기 tax rate"
+      },
+      "Invoices.GraceDays": {
+        "table": "Invoices",
+        "field": "GraceDays",
+        "kind": "formula",
+        "rule": "‘invoice’ 레코드의 ‘grace days’ 값은 다음과 같이 계산됩니다: 45.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "45"
+      },
+      "Invoices.DaysSinceDueDate": {
+        "table": "Invoices",
+        "field": "DaysSinceDueDate",
+        "kind": "formula",
+        "rule": "‘invoice’ 레코드의 ‘days since due date’ 값은 다음과 같이 계산됩니다: ‘due date’부터 현재 날짜 및 시각까지의 기간(일 단위).",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DueDate",
+            "label": "due date"
+          }
+        ],
+        "structure": null,
+        "plain": "Datetime_diff(현재 시각, due date, \"day\")"
+      },
+      "Invoices.DaysPastDue": {
+        "table": "Invoices",
+        "field": "DaysPastDue",
+        "kind": "formula",
+        "rule": "‘invoice’ 레코드의 ‘days past due’ 값은 다음과 같이 계산됩니다: 0 및 ‘days since due date’ 빼기 ‘grace days’ 중 최대치.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysSinceDueDate",
+            "label": "days since due date"
+          },
+          {
+            "table": "Invoices",
+            "field": "GraceDays",
+            "label": "grace days"
+          }
+        ],
+        "structure": null,
+        "plain": "0 및 (days since due date 빼기 grace days) 중 최대치"
+      },
+      "Invoices.LateFee": {
+        "table": "Invoices",
+        "field": "LateFee",
+        "kind": "formula",
+        "rule": "‘invoice’ 레코드의 ‘late fee’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘days past due’ 값이 0보다 큰 경우: 15\n2. 그 밖의 경우: 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘invoice’ 레코드의 ‘late fee’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "15",
+              "when": {
+                "kind": "leaf",
+                "text": "‘days past due’ 값이 0보다 큰 경우"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(days past due 값이 0보다 큼)이 성립하면 15, 그렇지 않으면 0"
+      },
+      "Invoices.Total": {
+        "table": "Invoices",
+        "field": "Total",
+        "kind": "formula",
+        "rule": "‘invoice’ 레코드의 ‘total’ 값은 다음과 같이 계산됩니다: ‘subtotal’ 더하기 ‘tax amount’ 더하기 ‘late fee’ 빼기 ‘discount amount’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          },
+          {
+            "table": "Invoices",
+            "field": "LateFee",
+            "label": "late fee"
+          },
+          {
+            "table": "Invoices",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "((subtotal 더하기 tax amount) 더하기 late fee) 빼기 discount amount"
+      },
+      "Invoices.Balance": {
+        "table": "Invoices",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "‘invoice’ 레코드의 ‘balance’ 값은 다음과 같이 계산됩니다: ‘total’ 빼기 ‘paid amount’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "PaidAmount",
+            "label": "paid amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Total 빼기 paid amount"
+      },
+      "Invoices.IsPaid": {
+        "table": "Invoices",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "‘balance’ 값이 0 이하인 경우, ‘invoice’ 레코드는 ‘paid’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance 값이 0 이하임"
+      },
+      "Invoices.IsOverdue": {
+        "table": "Invoices",
+        "field": "IsOverdue",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘paid’ 플래그가 설정되지 않은 경우 및 ‘days past due’ 값이 0보다 큰 경우), ‘invoice’ 레코드는 ‘overdue’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘invoice’ 레코드는 ‘overdue’에 해당하는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘paid’ 플래그가 설정되지 않은 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘days past due’ 값이 0보다 큰 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "조건(is paid)이 성립하지 않음 및 days past due 값이 0보다 큼"
+      },
+      "Invoices.Status": {
+        "table": "Invoices",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "‘invoice’ 레코드의 ‘status’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘paid’ 플래그가 설정된 경우: “Paid”\n2. ‘overdue’ 플래그가 설정된 경우: “Overdue”\n3. 그 밖의 경우: “Open”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘invoice’ 레코드의 ‘status’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“Paid”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘paid’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "“Overdue”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘overdue’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "“Open”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(is paid)이 성립하면 \"Paid\", 그렇지 않으면 조건(is overdue)이 성립하면 \"Overdue\", 그렇지 않으면 \"Open\""
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "‘session’ 레코드의 ‘client name’ 값은 연결된 ‘client’ 레코드의 ‘full name’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 client 레코드의 full name"
+      },
+      "Sessions.Trainer": {
+        "table": "Sessions",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "‘session’ 레코드의 ‘trainer’ 값은 연결된 ‘client’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 client 레코드의 trainer"
+      },
+      "Sessions.ClientHourlyRate": {
+        "table": "Sessions",
+        "field": "ClientHourlyRate",
+        "kind": "lookup",
+        "rule": "‘session’ 레코드의 ‘client hourly rate’ 값은 연결된 ‘client’ 레코드의 ‘trainer hourly rate’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerHourlyRate",
+            "label": "trainer hourly rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 client 레코드의 trainer hourly rate"
+      },
+      "Sessions.EffectiveRate": {
+        "table": "Sessions",
+        "field": "EffectiveRate",
+        "kind": "formula",
+        "rule": "‘session’ 레코드의 ‘effective rate’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘rate override’ 값이 0보다 큰 경우: ‘rate override’\n2. 그 밖의 경우: ‘client hourly rate’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "RateOverride",
+            "label": "rate override"
+          },
+          {
+            "table": "Sessions",
+            "field": "ClientHourlyRate",
+            "label": "client hourly rate"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘session’ 레코드의 ‘effective rate’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "‘rate override’",
+              "when": {
+                "kind": "leaf",
+                "text": "‘rate override’ 값이 0보다 큰 경우"
+              }
+            },
+            {
+              "value": "‘client hourly rate’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(rate override 값이 0보다 큼)이 성립하면 rate override, 그렇지 않으면 client hourly rate"
+      },
+      "Sessions.LineTotal": {
+        "table": "Sessions",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "‘session’ 레코드의 ‘line total’ 값은 다음과 같이 계산됩니다: ‘effective rate’ 곱하기 ‘duration hours’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "EffectiveRate",
+            "label": "effective rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "DurationHours",
+            "label": "duration hours"
+          }
+        ],
+        "structure": null,
+        "plain": "Effective rate 곱하기 duration hours"
+      },
+      "Sessions.InvoiceName": {
+        "table": "Sessions",
+        "field": "InvoiceName",
+        "kind": "lookup",
+        "rule": "‘session’ 레코드의 ‘invoice name’ 값은 연결된 ‘invoice’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 invoice 레코드의 name"
+      },
+      "Sessions.IsBilled": {
+        "table": "Sessions",
+        "field": "IsBilled",
+        "kind": "formula",
+        "rule": "‘invoice’ 값이 있는 경우, ‘session’ 레코드는 ‘billed’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(invoice 값이 비어 있음)이 성립하지 않음"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Trainers": "trainer",
+      "Clients": "client",
+      "Invoices": "invoice",
+      "Sessions": "session"
+    }
+  },
+  "nl": {
+    "fields": {
+      "Trainers.TotalSessions": {
+        "table": "Trainers",
+        "field": "TotalSessions",
+        "kind": "rollup",
+        "rule": "Een trainer: total sessions is het aantal sessions dat is gekoppeld aan de trainer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal sessions waarvan trainer is trainer ID"
+      },
+      "Trainers.TotalBilled": {
+        "table": "Trainers",
+        "field": "TotalBilled",
+        "kind": "rollup",
+        "rule": "Een trainer: total billed is van total over de invoices gekoppeld aan de trainer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van total over alle invoices waarvan trainer is trainer ID"
+      },
+      "Trainers.TotalOutstanding": {
+        "table": "Trainers",
+        "field": "TotalOutstanding",
+        "kind": "rollup",
+        "rule": "Een trainer: total outstanding is het totaal van balance over de invoices gekoppeld aan de trainer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van balance over alle invoices waarvan trainer is trainer ID"
+      },
+      "Clients.TrainerName": {
+        "table": "Clients",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "Een client: trainer name is de full name van de gekoppelde trainer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De full name van de gekoppelde trainer"
+      },
+      "Clients.TrainerEmail": {
+        "table": "Clients",
+        "field": "TrainerEmail",
+        "kind": "lookup",
+        "rule": "Een client: trainer email — overgenomen van de gekoppelde trainer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De email van de gekoppelde trainer"
+      },
+      "Clients.TrainerHourlyRate": {
+        "table": "Clients",
+        "field": "TrainerHourlyRate",
+        "kind": "lookup",
+        "rule": "Een client: trainer hourly rate — overgenomen van de gekoppelde trainer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "HourlyRate",
+            "label": "hourly rate"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De hourly rate van de gekoppelde trainer"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "Een client: session count is het aantal sessions dat is gekoppeld aan de client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal sessions waarvan client is client ID"
+      },
+      "Clients.TotalInvoiced": {
+        "table": "Clients",
+        "field": "TotalInvoiced",
+        "kind": "rollup",
+        "rule": "Een client: total invoiced is van total over de invoices gekoppeld aan de client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van total over alle invoices waarvan client is client ID"
+      },
+      "Clients.OutstandingBalance": {
+        "table": "Clients",
+        "field": "OutstandingBalance",
+        "kind": "rollup",
+        "rule": "Een client: outstanding balance is het totaal van balance over de invoices gekoppeld aan de client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van balance over alle invoices waarvan client is client ID"
+      },
+      "Clients.OverdueCount": {
+        "table": "Clients",
+        "field": "OverdueCount",
+        "kind": "rollup",
+        "rule": "Een client: overdue count is het aantal invoices van de client dat overdue zijn.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal invoices waarvan client is client ID en is overdue is true()"
+      },
+      "Clients.Status": {
+        "table": "Clients",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "Het veld ‘status’ van de client wordt bepaald volgens de volgende prioriteit:\n1. ‘Overdue’, als de overdue count groter is dan 0;\n2. ‘Has Balance’, als de outstanding balance groter is dan 0;\n3. in alle andere gevallen ‘Paid Up’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "OverdueCount",
+            "label": "overdue count"
+          },
+          {
+            "table": "Clients",
+            "field": "OutstandingBalance",
+            "label": "outstanding balance"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘status’ van de client wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘Overdue’",
+              "when": {
+                "kind": "leaf",
+                "text": "de overdue count groter is dan 0"
+              }
+            },
+            {
+              "value": "‘Has Balance’",
+              "when": {
+                "kind": "leaf",
+                "text": "de outstanding balance groter is dan 0"
+              }
+            },
+            {
+              "value": "‘Paid Up’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als overdue count is groter dan 0, dan \"Overdue\", anders als outstanding balance is groter dan 0, dan \"Has Balance\", anders \"Paid Up\""
+      },
+      "Invoices.ClientName": {
+        "table": "Invoices",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Een invoice: client name is de full name van de gekoppelde client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De full name van de gekoppelde client"
+      },
+      "Invoices.ClientEmail": {
+        "table": "Invoices",
+        "field": "ClientEmail",
+        "kind": "lookup",
+        "rule": "Een invoice: client email — overgenomen van de gekoppelde client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De email van de gekoppelde client"
+      },
+      "Invoices.Trainer": {
+        "table": "Invoices",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "Een invoice: trainer — overgenomen van de gekoppelde client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De trainer van de gekoppelde client"
+      },
+      "Invoices.TrainerName": {
+        "table": "Invoices",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "Een invoice: trainer name — overgenomen van de gekoppelde client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerName",
+            "label": "trainer name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De trainer name van de gekoppelde client"
+      },
+      "Invoices.Subtotal": {
+        "table": "Invoices",
+        "field": "Subtotal",
+        "kind": "rollup",
+        "rule": "Een invoice: subtotal is het totaal van line total over de sessions gekoppeld aan de invoice.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van line total over alle sessions waarvan invoice is invoice ID"
+      },
+      "Invoices.TaxAmount": {
+        "table": "Invoices",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "Een invoice: tax amount wordt berekend als de subtotal maal de tax rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Subtotal maal tax rate"
+      },
+      "Invoices.GraceDays": {
+        "table": "Invoices",
+        "field": "GraceDays",
+        "kind": "formula",
+        "rule": "Een invoice: grace days wordt berekend als 45.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "45"
+      },
+      "Invoices.DaysSinceDueDate": {
+        "table": "Invoices",
+        "field": "DaysSinceDueDate",
+        "kind": "formula",
+        "rule": "Een invoice: days since due date wordt berekend als het aantal dagen van de due date tot de huidige datum en tijd.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DueDate",
+            "label": "due date"
+          }
+        ],
+        "structure": null,
+        "plain": "Datetime_diff(nu, due date, \"day\")"
+      },
+      "Invoices.DaysPastDue": {
+        "table": "Invoices",
+        "field": "DaysPastDue",
+        "kind": "formula",
+        "rule": "Een invoice: days past due wordt berekend als de grootste van 0 en de days since due date min de grace days.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysSinceDueDate",
+            "label": "days since due date"
+          },
+          {
+            "table": "Invoices",
+            "field": "GraceDays",
+            "label": "grace days"
+          }
+        ],
+        "structure": null,
+        "plain": "De grootste van 0 en (days since due date min grace days)"
+      },
+      "Invoices.LateFee": {
+        "table": "Invoices",
+        "field": "LateFee",
+        "kind": "formula",
+        "rule": "Het veld ‘late fee’ van de invoice wordt bepaald volgens de volgende prioriteit:\n1. 15, als de days past due groter is dan 0;\n2. in alle andere gevallen 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘late fee’ van de invoice wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "15",
+              "when": {
+                "kind": "leaf",
+                "text": "de days past due groter is dan 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als days past due is groter dan 0, dan 15, anders 0"
+      },
+      "Invoices.Total": {
+        "table": "Invoices",
+        "field": "Total",
+        "kind": "formula",
+        "rule": "Een invoice: total wordt berekend als de subtotal plus de tax amount plus de late fee min de discount amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          },
+          {
+            "table": "Invoices",
+            "field": "LateFee",
+            "label": "late fee"
+          },
+          {
+            "table": "Invoices",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "((subtotal plus tax amount) plus late fee) min discount amount"
+      },
+      "Invoices.Balance": {
+        "table": "Invoices",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "Een invoice: balance wordt berekend als de total min de paid amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "PaidAmount",
+            "label": "paid amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Total min paid amount"
+      },
+      "Invoices.IsPaid": {
+        "table": "Invoices",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "Een invoice geldt als een paid als de balance ten hoogste 0 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance is ten hoogste 0"
+      },
+      "Invoices.IsOverdue": {
+        "table": "Invoices",
+        "field": "IsOverdue",
+        "kind": "formula",
+        "rule": "Een invoice geldt als een overdue als al het volgende geldt: de vlag ‘paid’ niet is gezet en de days past due groter is dan 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een invoice geldt als een overdue als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘paid’ niet is gezet"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de days past due groter is dan 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Niet is paid en days past due is groter dan 0"
+      },
+      "Invoices.Status": {
+        "table": "Invoices",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "Het veld ‘status’ van de invoice wordt bepaald volgens de volgende prioriteit:\n1. ‘Paid’, als de vlag ‘paid’ is gezet;\n2. ‘Overdue’, als de vlag ‘overdue’ is gezet;\n3. in alle andere gevallen ‘Open’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘status’ van de invoice wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘Paid’",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘paid’ is gezet"
+              }
+            },
+            {
+              "value": "‘Overdue’",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘overdue’ is gezet"
+              }
+            },
+            {
+              "value": "‘Open’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als is paid, dan \"Paid\", anders als is overdue, dan \"Overdue\", anders \"Open\""
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Een session: client name is de full name van de gekoppelde client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De full name van de gekoppelde client"
+      },
+      "Sessions.Trainer": {
+        "table": "Sessions",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "Een session: trainer — overgenomen van de gekoppelde client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De trainer van de gekoppelde client"
+      },
+      "Sessions.ClientHourlyRate": {
+        "table": "Sessions",
+        "field": "ClientHourlyRate",
+        "kind": "lookup",
+        "rule": "Een session: client hourly rate is de trainer hourly rate van de gekoppelde client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerHourlyRate",
+            "label": "trainer hourly rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De trainer hourly rate van de gekoppelde client"
+      },
+      "Sessions.EffectiveRate": {
+        "table": "Sessions",
+        "field": "EffectiveRate",
+        "kind": "formula",
+        "rule": "Het veld ‘effective rate’ van de session wordt bepaald volgens de volgende prioriteit:\n1. de rate override, als de rate override groter is dan 0;\n2. in alle andere gevallen de client hourly rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "RateOverride",
+            "label": "rate override"
+          },
+          {
+            "table": "Sessions",
+            "field": "ClientHourlyRate",
+            "label": "client hourly rate"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘effective rate’ van de session wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "de rate override",
+              "when": {
+                "kind": "leaf",
+                "text": "de rate override groter is dan 0"
+              }
+            },
+            {
+              "value": "de client hourly rate",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als rate override is groter dan 0, dan rate override, anders client hourly rate"
+      },
+      "Sessions.LineTotal": {
+        "table": "Sessions",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "Een session: line total wordt berekend als de effective rate maal de duration hours.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "EffectiveRate",
+            "label": "effective rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "DurationHours",
+            "label": "duration hours"
+          }
+        ],
+        "structure": null,
+        "plain": "Effective rate maal duration hours"
+      },
+      "Sessions.InvoiceName": {
+        "table": "Sessions",
+        "field": "InvoiceName",
+        "kind": "lookup",
+        "rule": "Een session: invoice name — overgenomen van de gekoppelde invoice.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde invoice"
+      },
+      "Sessions.IsBilled": {
+        "table": "Sessions",
+        "field": "IsBilled",
+        "kind": "formula",
+        "rule": "Een session geldt als billed als de invoice een waarde heeft.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          }
+        ],
+        "structure": null,
+        "plain": "Niet invoice is leeg"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Trainers": "trainer",
+      "Clients": "client",
+      "Invoices": "invoice",
+      "Sessions": "session"
+    }
+  },
+  "pt": {
+    "fields": {
+      "Trainers.TotalSessions": {
+        "table": "Trainers",
+        "field": "TotalSessions",
+        "kind": "rollup",
+        "rule": "Um trainer: total sessions é o número de sessions relacionados a o trainer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de sessions cujo trainer é trainer ID"
+      },
+      "Trainers.TotalBilled": {
+        "table": "Trainers",
+        "field": "TotalBilled",
+        "kind": "rollup",
+        "rule": "Um trainer: total billed é de total entre os invoices relacionados a o trainer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de total entre todos os invoices cujo trainer é trainer ID"
+      },
+      "Trainers.TotalOutstanding": {
+        "table": "Trainers",
+        "field": "TotalOutstanding",
+        "kind": "rollup",
+        "rule": "Um trainer: total outstanding é o total de balance entre os invoices relacionados a o trainer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de balance entre todos os invoices cujo trainer é trainer ID"
+      },
+      "Clients.TrainerName": {
+        "table": "Clients",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "Um client: trainer name é o full name do trainer vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O full name do trainer vinculado"
+      },
+      "Clients.TrainerEmail": {
+        "table": "Clients",
+        "field": "TrainerEmail",
+        "kind": "lookup",
+        "rule": "Um client: trainer email — obtido do trainer vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O email do trainer vinculado"
+      },
+      "Clients.TrainerHourlyRate": {
+        "table": "Clients",
+        "field": "TrainerHourlyRate",
+        "kind": "lookup",
+        "rule": "Um client: trainer hourly rate — obtido do trainer vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "HourlyRate",
+            "label": "hourly rate"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O hourly rate do trainer vinculado"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "Um client: session count é o número de sessions relacionados a o client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de sessions cujo client é client ID"
+      },
+      "Clients.TotalInvoiced": {
+        "table": "Clients",
+        "field": "TotalInvoiced",
+        "kind": "rollup",
+        "rule": "Um client: total invoiced é de total entre os invoices relacionados a o client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de total entre todos os invoices cujo client é client ID"
+      },
+      "Clients.OutstandingBalance": {
+        "table": "Clients",
+        "field": "OutstandingBalance",
+        "kind": "rollup",
+        "rule": "Um client: outstanding balance é o total de balance entre os invoices relacionados a o client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de balance entre todos os invoices cujo client é client ID"
+      },
+      "Clients.OverdueCount": {
+        "table": "Clients",
+        "field": "OverdueCount",
+        "kind": "rollup",
+        "rule": "Um client: overdue count é o número de invoices do client que são overdue.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de invoices cujo client é client ID e is overdue é true()"
+      },
+      "Clients.Status": {
+        "table": "Clients",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "O campo “status” do client é determinado pela seguinte prioridade:\n1. “Overdue”, se o overdue count é maior que 0;\n2. “Has Balance”, se o outstanding balance é maior que 0;\n3. em todos os outros casos, “Paid Up”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "OverdueCount",
+            "label": "overdue count"
+          },
+          {
+            "table": "Clients",
+            "field": "OutstandingBalance",
+            "label": "outstanding balance"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “status” do client é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“Overdue”",
+              "when": {
+                "kind": "leaf",
+                "text": "o overdue count é maior que 0"
+              }
+            },
+            {
+              "value": "“Has Balance”",
+              "when": {
+                "kind": "leaf",
+                "text": "o outstanding balance é maior que 0"
+              }
+            },
+            {
+              "value": "“Paid Up”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se overdue count é maior que 0, então \"Overdue\", caso contrário se outstanding balance é maior que 0, então \"Has Balance\", caso contrário \"Paid Up\""
+      },
+      "Invoices.ClientName": {
+        "table": "Invoices",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Uma invoice: client name é o full name do client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O full name do client vinculado"
+      },
+      "Invoices.ClientEmail": {
+        "table": "Invoices",
+        "field": "ClientEmail",
+        "kind": "lookup",
+        "rule": "Uma invoice: client email — obtido do client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O email do client vinculado"
+      },
+      "Invoices.Trainer": {
+        "table": "Invoices",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "Uma invoice: trainer — obtido do client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O trainer do client vinculado"
+      },
+      "Invoices.TrainerName": {
+        "table": "Invoices",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "Uma invoice: trainer name — obtido do client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerName",
+            "label": "trainer name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O trainer name do client vinculado"
+      },
+      "Invoices.Subtotal": {
+        "table": "Invoices",
+        "field": "Subtotal",
+        "kind": "rollup",
+        "rule": "Uma invoice: subtotal é o total de line total entre os sessions relacionados a a invoice.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de line total entre todos os sessions cujo invoice é invoice ID"
+      },
+      "Invoices.TaxAmount": {
+        "table": "Invoices",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "Uma invoice: tax amount é calculado como o subtotal vezes o tax rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Subtotal vezes tax rate"
+      },
+      "Invoices.GraceDays": {
+        "table": "Invoices",
+        "field": "GraceDays",
+        "kind": "formula",
+        "rule": "Uma invoice: grace days é calculado como 45.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "45"
+      },
+      "Invoices.DaysSinceDueDate": {
+        "table": "Invoices",
+        "field": "DaysSinceDueDate",
+        "kind": "formula",
+        "rule": "Uma invoice: days since due date é calculado como o número de dias de o due date até a data e hora atuais.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DueDate",
+            "label": "due date"
+          }
+        ],
+        "structure": null,
+        "plain": "Datetime_diff(agora, due date, \"day\")"
+      },
+      "Invoices.DaysPastDue": {
+        "table": "Invoices",
+        "field": "DaysPastDue",
+        "kind": "formula",
+        "rule": "Uma invoice: days past due é calculado como o maior de 0 e o days since due date menos o grace days.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysSinceDueDate",
+            "label": "days since due date"
+          },
+          {
+            "table": "Invoices",
+            "field": "GraceDays",
+            "label": "grace days"
+          }
+        ],
+        "structure": null,
+        "plain": "O maior de 0 e (days since due date menos grace days)"
+      },
+      "Invoices.LateFee": {
+        "table": "Invoices",
+        "field": "LateFee",
+        "kind": "formula",
+        "rule": "O campo “late fee” da invoice é determinado pela seguinte prioridade:\n1. 15, se o days past due é maior que 0;\n2. em todos os outros casos, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “late fee” da invoice é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "15",
+              "when": {
+                "kind": "leaf",
+                "text": "o days past due é maior que 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se days past due é maior que 0, então 15, caso contrário 0"
+      },
+      "Invoices.Total": {
+        "table": "Invoices",
+        "field": "Total",
+        "kind": "formula",
+        "rule": "Uma invoice: total é calculado como o subtotal mais o tax amount mais o late fee menos o discount amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          },
+          {
+            "table": "Invoices",
+            "field": "LateFee",
+            "label": "late fee"
+          },
+          {
+            "table": "Invoices",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "((subtotal mais tax amount) mais late fee) menos discount amount"
+      },
+      "Invoices.Balance": {
+        "table": "Invoices",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "Uma invoice: balance é calculado como o total menos o paid amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "PaidAmount",
+            "label": "paid amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Total menos paid amount"
+      },
+      "Invoices.IsPaid": {
+        "table": "Invoices",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "Uma invoice é considerado um paid se o balance é no máximo 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance é no máximo 0"
+      },
+      "Invoices.IsOverdue": {
+        "table": "Invoices",
+        "field": "IsOverdue",
+        "kind": "formula",
+        "rule": "Uma invoice é considerado um overdue se tudo o que segue é verdadeiro: o indicador “paid” não está ativado e o days past due é maior que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Uma invoice é considerado um overdue se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “paid” não está ativado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o days past due é maior que 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Não is paid e days past due é maior que 0"
+      },
+      "Invoices.Status": {
+        "table": "Invoices",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "O campo “status” da invoice é determinado pela seguinte prioridade:\n1. “Paid”, se o indicador “paid” está ativado;\n2. “Overdue”, se o indicador “overdue” está ativado;\n3. em todos os outros casos, “Open”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “status” da invoice é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“Paid”",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “paid” está ativado"
+              }
+            },
+            {
+              "value": "“Overdue”",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “overdue” está ativado"
+              }
+            },
+            {
+              "value": "“Open”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is paid, então \"Paid\", caso contrário se is overdue, então \"Overdue\", caso contrário \"Open\""
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Um session: client name é o full name do client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O full name do client vinculado"
+      },
+      "Sessions.Trainer": {
+        "table": "Sessions",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "Um session: trainer — obtido do client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O trainer do client vinculado"
+      },
+      "Sessions.ClientHourlyRate": {
+        "table": "Sessions",
+        "field": "ClientHourlyRate",
+        "kind": "lookup",
+        "rule": "Um session: client hourly rate é o trainer hourly rate do client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerHourlyRate",
+            "label": "trainer hourly rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O trainer hourly rate do client vinculado"
+      },
+      "Sessions.EffectiveRate": {
+        "table": "Sessions",
+        "field": "EffectiveRate",
+        "kind": "formula",
+        "rule": "O campo “effective rate” do session é determinado pela seguinte prioridade:\n1. o rate override, se o rate override é maior que 0;\n2. em todos os outros casos, o client hourly rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "RateOverride",
+            "label": "rate override"
+          },
+          {
+            "table": "Sessions",
+            "field": "ClientHourlyRate",
+            "label": "client hourly rate"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “effective rate” do session é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "o rate override",
+              "when": {
+                "kind": "leaf",
+                "text": "o rate override é maior que 0"
+              }
+            },
+            {
+              "value": "o client hourly rate",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se rate override é maior que 0, então rate override, caso contrário client hourly rate"
+      },
+      "Sessions.LineTotal": {
+        "table": "Sessions",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "Um session: line total é calculado como o effective rate vezes o duration hours.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "EffectiveRate",
+            "label": "effective rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "DurationHours",
+            "label": "duration hours"
+          }
+        ],
+        "structure": null,
+        "plain": "Effective rate vezes duration hours"
+      },
+      "Sessions.InvoiceName": {
+        "table": "Sessions",
+        "field": "InvoiceName",
+        "kind": "lookup",
+        "rule": "Um session: invoice name — obtido do invoice vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do invoice vinculado"
+      },
+      "Sessions.IsBilled": {
+        "table": "Sessions",
+        "field": "IsBilled",
+        "kind": "formula",
+        "rule": "Um session é considerado billed se a invoice tem valor.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          }
+        ],
+        "structure": null,
+        "plain": "Não invoice está vazio"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Trainers": "trainer",
+      "Clients": "client",
+      "Invoices": "invoice",
+      "Sessions": "session"
+    }
+  },
+  "ru": {
+    "fields": {
+      "Trainers.TotalSessions": {
+        "table": "Trainers",
+        "field": "TotalSessions",
+        "kind": "rollup",
+        "rule": "Trainer: «total sessions» — это число записей «sessions», связанных с trainer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «sessions», у которых trainer равно trainer ID"
+      },
+      "Trainers.TotalBilled": {
+        "table": "Trainers",
+        "field": "TotalBilled",
+        "kind": "rollup",
+        "rule": "Trainer: «total billed» — это «total» по записям «invoices», связанным с trainer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма total по всем «invoices», у которых trainer равно trainer ID"
+      },
+      "Trainers.TotalOutstanding": {
+        "table": "Trainers",
+        "field": "TotalOutstanding",
+        "kind": "rollup",
+        "rule": "Trainer: «total outstanding» — это сумма «balance» по записям «invoices», связанным с trainer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма balance по всем «invoices», у которых trainer равно trainer ID"
+      },
+      "Clients.TrainerName": {
+        "table": "Clients",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "Client: «trainer name» — это «full name» связанного «trainer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name связанного «trainer»"
+      },
+      "Clients.TrainerEmail": {
+        "table": "Clients",
+        "field": "TrainerEmail",
+        "kind": "lookup",
+        "rule": "Client: «trainer email» — берётся из связанного «trainer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Email связанного «trainer»"
+      },
+      "Clients.TrainerHourlyRate": {
+        "table": "Clients",
+        "field": "TrainerHourlyRate",
+        "kind": "lookup",
+        "rule": "Client: «trainer hourly rate» — берётся из связанного «trainer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "HourlyRate",
+            "label": "hourly rate"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Hourly rate связанного «trainer»"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "Client: «session count» — это число записей «sessions», связанных с client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «sessions», у которых client равно client ID"
+      },
+      "Clients.TotalInvoiced": {
+        "table": "Clients",
+        "field": "TotalInvoiced",
+        "kind": "rollup",
+        "rule": "Client: «total invoiced» — это «total» по записям «invoices», связанным с client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма total по всем «invoices», у которых client равно client ID"
+      },
+      "Clients.OutstandingBalance": {
+        "table": "Clients",
+        "field": "OutstandingBalance",
+        "kind": "rollup",
+        "rule": "Client: «outstanding balance» — это сумма «balance» по записям «invoices», связанным с client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма balance по всем «invoices», у которых client равно client ID"
+      },
+      "Clients.OverdueCount": {
+        "table": "Clients",
+        "field": "OverdueCount",
+        "kind": "rollup",
+        "rule": "Client: «overdue count» — это число записей «invoices» (client), которые являются «overdue».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «invoices», у которых client равно client ID и is overdue равно true()"
+      },
+      "Clients.Status": {
+        "table": "Clients",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "Поле «status» (Client) определяется по следующему приоритету:\n1. «Overdue», если overdue count больше 0;\n2. «Has Balance», если outstanding balance больше 0;\n3. во всех остальных случаях — «Paid Up».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "OverdueCount",
+            "label": "overdue count"
+          },
+          {
+            "table": "Clients",
+            "field": "OutstandingBalance",
+            "label": "outstanding balance"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «status» (Client) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«Overdue»",
+              "when": {
+                "kind": "leaf",
+                "text": "overdue count больше 0"
+              }
+            },
+            {
+              "value": "«Has Balance»",
+              "when": {
+                "kind": "leaf",
+                "text": "outstanding balance больше 0"
+              }
+            },
+            {
+              "value": "«Paid Up»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если overdue count больше 0, то \"Overdue\", иначе если outstanding balance больше 0, то \"Has Balance\", иначе \"Paid Up\""
+      },
+      "Invoices.ClientName": {
+        "table": "Invoices",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Invoice: «client name» — это «full name» связанного «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name связанного «client»"
+      },
+      "Invoices.ClientEmail": {
+        "table": "Invoices",
+        "field": "ClientEmail",
+        "kind": "lookup",
+        "rule": "Invoice: «client email» — берётся из связанного «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Email связанного «client»"
+      },
+      "Invoices.Trainer": {
+        "table": "Invoices",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "Invoice: «trainer» — берётся из связанного «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Trainer связанного «client»"
+      },
+      "Invoices.TrainerName": {
+        "table": "Invoices",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "Invoice: «trainer name» — берётся из связанного «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerName",
+            "label": "trainer name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Trainer name связанного «client»"
+      },
+      "Invoices.Subtotal": {
+        "table": "Invoices",
+        "field": "Subtotal",
+        "kind": "rollup",
+        "rule": "Invoice: «subtotal» — это сумма «line total» по записям «sessions», связанным с invoice.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма line total по всем «sessions», у которых invoice равно invoice ID"
+      },
+      "Invoices.TaxAmount": {
+        "table": "Invoices",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "Invoice: «tax amount» вычисляется как subtotal умножить на tax rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Subtotal умножить на tax rate"
+      },
+      "Invoices.GraceDays": {
+        "table": "Invoices",
+        "field": "GraceDays",
+        "kind": "formula",
+        "rule": "Invoice: «grace days» вычисляется как 45.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "45"
+      },
+      "Invoices.DaysSinceDueDate": {
+        "table": "Invoices",
+        "field": "DaysSinceDueDate",
+        "kind": "formula",
+        "rule": "Invoice: «days since due date» вычисляется как число дней от due date до текущие дата и время.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DueDate",
+            "label": "due date"
+          }
+        ],
+        "structure": null,
+        "plain": "Datetime_diff(сейчас, due date, \"day\")"
+      },
+      "Invoices.DaysPastDue": {
+        "table": "Invoices",
+        "field": "DaysPastDue",
+        "kind": "formula",
+        "rule": "Invoice: «days past due» вычисляется как наибольшее из 0 и days since due date минус grace days.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysSinceDueDate",
+            "label": "days since due date"
+          },
+          {
+            "table": "Invoices",
+            "field": "GraceDays",
+            "label": "grace days"
+          }
+        ],
+        "structure": null,
+        "plain": "Наибольшее из 0 и (days since due date минус grace days)"
+      },
+      "Invoices.LateFee": {
+        "table": "Invoices",
+        "field": "LateFee",
+        "kind": "formula",
+        "rule": "Поле «late fee» (Invoice) определяется по следующему приоритету:\n1. 15, если days past due больше 0;\n2. во всех остальных случаях — 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «late fee» (Invoice) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "15",
+              "when": {
+                "kind": "leaf",
+                "text": "days past due больше 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если days past due больше 0, то 15, иначе 0"
+      },
+      "Invoices.Total": {
+        "table": "Invoices",
+        "field": "Total",
+        "kind": "formula",
+        "rule": "Invoice: «total» вычисляется как subtotal плюс tax amount плюс late fee минус discount amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          },
+          {
+            "table": "Invoices",
+            "field": "LateFee",
+            "label": "late fee"
+          },
+          {
+            "table": "Invoices",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "((subtotal плюс tax amount) плюс late fee) минус discount amount"
+      },
+      "Invoices.Balance": {
+        "table": "Invoices",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "Invoice: «balance» вычисляется как total минус paid amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "PaidAmount",
+            "label": "paid amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Total минус paid amount"
+      },
+      "Invoices.IsPaid": {
+        "table": "Invoices",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "Invoice считается «paid», если balance не больше 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance не больше 0"
+      },
+      "Invoices.IsOverdue": {
+        "table": "Invoices",
+        "field": "IsOverdue",
+        "kind": "formula",
+        "rule": "Invoice считается «overdue», если выполняется всё следующее: признак «paid» не установлен и days past due больше 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Invoice считается «overdue», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "признак «paid» не установлен"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "days past due больше 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Не is paid и days past due больше 0"
+      },
+      "Invoices.Status": {
+        "table": "Invoices",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "Поле «status» (Invoice) определяется по следующему приоритету:\n1. «Paid», если признак «paid» установлен;\n2. «Overdue», если признак «overdue» установлен;\n3. во всех остальных случаях — «Open».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «status» (Invoice) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«Paid»",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «paid» установлен"
+              }
+            },
+            {
+              "value": "«Overdue»",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «overdue» установлен"
+              }
+            },
+            {
+              "value": "«Open»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если is paid, то \"Paid\", иначе если is overdue, то \"Overdue\", иначе \"Open\""
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Session: «client name» — это «full name» связанного «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name связанного «client»"
+      },
+      "Sessions.Trainer": {
+        "table": "Sessions",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "Session: «trainer» — берётся из связанного «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Trainer связанного «client»"
+      },
+      "Sessions.ClientHourlyRate": {
+        "table": "Sessions",
+        "field": "ClientHourlyRate",
+        "kind": "lookup",
+        "rule": "Session: «client hourly rate» — это «trainer hourly rate» связанного «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerHourlyRate",
+            "label": "trainer hourly rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Trainer hourly rate связанного «client»"
+      },
+      "Sessions.EffectiveRate": {
+        "table": "Sessions",
+        "field": "EffectiveRate",
+        "kind": "formula",
+        "rule": "Поле «effective rate» (Session) определяется по следующему приоритету:\n1. rate override, если rate override больше 0;\n2. во всех остальных случаях — client hourly rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "RateOverride",
+            "label": "rate override"
+          },
+          {
+            "table": "Sessions",
+            "field": "ClientHourlyRate",
+            "label": "client hourly rate"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «effective rate» (Session) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "rate override",
+              "when": {
+                "kind": "leaf",
+                "text": "rate override больше 0"
+              }
+            },
+            {
+              "value": "client hourly rate",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если rate override больше 0, то rate override, иначе client hourly rate"
+      },
+      "Sessions.LineTotal": {
+        "table": "Sessions",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "Session: «line total» вычисляется как effective rate умножить на duration hours.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "EffectiveRate",
+            "label": "effective rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "DurationHours",
+            "label": "duration hours"
+          }
+        ],
+        "structure": null,
+        "plain": "Effective rate умножить на duration hours"
+      },
+      "Sessions.InvoiceName": {
+        "table": "Sessions",
+        "field": "InvoiceName",
+        "kind": "lookup",
+        "rule": "Session: «invoice name» — берётся из связанного «invoice».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «invoice»"
+      },
+      "Sessions.IsBilled": {
+        "table": "Sessions",
+        "field": "IsBilled",
+        "kind": "formula",
+        "rule": "Session считается «billed», если invoice имеет значение.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          }
+        ],
+        "structure": null,
+        "plain": "Не invoice пусто"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Trainers": "trainer",
+      "Clients": "client",
+      "Invoices": "invoice",
+      "Sessions": "session"
+    }
+  },
+  "tr": {
+    "fields": {
+      "Trainers.TotalSessions": {
+        "table": "Trainers",
+        "field": "TotalSessions",
+        "kind": "rollup",
+        "rule": "“trainer” kaydının “total sessions” alanı, “trainer” kaydıyla ilişkili “sessions” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Trainer değeri trainer ID olan sessions kayıtlarının sayısı"
+      },
+      "Trainers.TotalBilled": {
+        "table": "Trainers",
+        "field": "TotalBilled",
+        "kind": "rollup",
+        "rule": "“trainer” kaydının “total billed” alanı, “trainer” kaydıyla ilişkili “invoices” kayıtları üzerinden hesaplanan “total” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Trainer değeri trainer ID olan tüm invoices kayıtlarındaki total değerlerinin toplamı"
+      },
+      "Trainers.TotalOutstanding": {
+        "table": "Trainers",
+        "field": "TotalOutstanding",
+        "kind": "rollup",
+        "rule": "“trainer” kaydının “total outstanding” alanı, “trainer” kaydıyla ilişkili “invoices” kayıtları üzerinden hesaplanan toplam “balance” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Trainer değeri trainer ID olan tüm invoices kayıtlarındaki balance değerlerinin toplamı"
+      },
+      "Clients.TrainerName": {
+        "table": "Clients",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "“client” kaydının “trainer name” alanı, “trainer” alanı üzerinden bağlı kaydın “full name” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı trainer kaydının full name değeri"
+      },
+      "Clients.TrainerEmail": {
+        "table": "Clients",
+        "field": "TrainerEmail",
+        "kind": "lookup",
+        "rule": "“client” kaydının “trainer email” alanı, “trainer” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı trainer kaydının email değeri"
+      },
+      "Clients.TrainerHourlyRate": {
+        "table": "Clients",
+        "field": "TrainerHourlyRate",
+        "kind": "lookup",
+        "rule": "“client” kaydının “trainer hourly rate” alanı, “trainer” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "HourlyRate",
+            "label": "hourly rate"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı trainer kaydının hourly rate değeri"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "“client” kaydının “session count” alanı, “client” kaydıyla ilişkili “sessions” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client değeri client ID olan sessions kayıtlarının sayısı"
+      },
+      "Clients.TotalInvoiced": {
+        "table": "Clients",
+        "field": "TotalInvoiced",
+        "kind": "rollup",
+        "rule": "“client” kaydının “total invoiced” alanı, “client” kaydıyla ilişkili “invoices” kayıtları üzerinden hesaplanan “total” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client değeri client ID olan tüm invoices kayıtlarındaki total değerlerinin toplamı"
+      },
+      "Clients.OutstandingBalance": {
+        "table": "Clients",
+        "field": "OutstandingBalance",
+        "kind": "rollup",
+        "rule": "“client” kaydının “outstanding balance” alanı, “client” kaydıyla ilişkili “invoices” kayıtları üzerinden hesaplanan toplam “balance” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client değeri client ID olan tüm invoices kayıtlarındaki balance değerlerinin toplamı"
+      },
+      "Clients.OverdueCount": {
+        "table": "Clients",
+        "field": "OverdueCount",
+        "kind": "rollup",
+        "rule": "“client” kaydının “overdue count” alanı, “client” kaydıyla ilişkili, “overdue” olan “invoices” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": null,
+        "plain": "Client değeri client ID ve is overdue değeri true() olan invoices kayıtlarının sayısı"
+      },
+      "Clients.Status": {
+        "table": "Clients",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "“client” kaydının “status” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “overdue count” alanı 0 değerinden büyük ise “Overdue”;\n2. “outstanding balance” alanı 0 değerinden büyük ise “Has Balance”;\n3. diğer tüm durumlarda “Paid Up”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "OverdueCount",
+            "label": "overdue count"
+          },
+          {
+            "table": "Clients",
+            "field": "OutstandingBalance",
+            "label": "outstanding balance"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“client” kaydının “status” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“Overdue”",
+              "when": {
+                "kind": "leaf",
+                "text": "“overdue count” alanı 0 değerinden büyük"
+              }
+            },
+            {
+              "value": "“Has Balance”",
+              "when": {
+                "kind": "leaf",
+                "text": "“outstanding balance” alanı 0 değerinden büyük"
+              }
+            },
+            {
+              "value": "“Paid Up”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Overdue count, 0 değerinden büyük ise \"Overdue\", aksi takdirde outstanding balance, 0 değerinden büyük ise \"Has Balance\", aksi takdirde \"Paid Up\""
+      },
+      "Invoices.ClientName": {
+        "table": "Invoices",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "“invoice” kaydının “client name” alanı, “client” alanı üzerinden bağlı kaydın “full name” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı client kaydının full name değeri"
+      },
+      "Invoices.ClientEmail": {
+        "table": "Invoices",
+        "field": "ClientEmail",
+        "kind": "lookup",
+        "rule": "“invoice” kaydının “client email” alanı, “client” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı client kaydının email değeri"
+      },
+      "Invoices.Trainer": {
+        "table": "Invoices",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "“invoice” kaydının “trainer” alanı, “client” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı client kaydının trainer değeri"
+      },
+      "Invoices.TrainerName": {
+        "table": "Invoices",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "“invoice” kaydının “trainer name” alanı, “client” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerName",
+            "label": "trainer name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı client kaydının trainer name değeri"
+      },
+      "Invoices.Subtotal": {
+        "table": "Invoices",
+        "field": "Subtotal",
+        "kind": "rollup",
+        "rule": "“invoice” kaydının “subtotal” alanı, “invoice” kaydıyla ilişkili “sessions” kayıtları üzerinden hesaplanan toplam “line total” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Invoice değeri invoice ID olan tüm sessions kayıtlarındaki line total değerlerinin toplamı"
+      },
+      "Invoices.TaxAmount": {
+        "table": "Invoices",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "“invoice” kaydının “tax amount” alanı, “subtotal” alanı çarpı “tax rate” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Subtotal çarpı tax rate"
+      },
+      "Invoices.GraceDays": {
+        "table": "Invoices",
+        "field": "GraceDays",
+        "kind": "formula",
+        "rule": "“invoice” kaydının “grace days” alanı, 45 olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "45"
+      },
+      "Invoices.DaysSinceDueDate": {
+        "table": "Invoices",
+        "field": "DaysSinceDueDate",
+        "kind": "formula",
+        "rule": "“invoice” kaydının “days since due date” alanı, “due date” alanı ile geçerli tarih ve saat arasındaki gün sayısı olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DueDate",
+            "label": "due date"
+          }
+        ],
+        "structure": null,
+        "plain": "Datetime_diff(şimdi, due date, \"day\")"
+      },
+      "Invoices.DaysPastDue": {
+        "table": "Invoices",
+        "field": "DaysPastDue",
+        "kind": "formula",
+        "rule": "“invoice” kaydının “days past due” alanı, 0 ve “days since due date” alanı eksi “grace days” alanı değerlerinin en büyüğü olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysSinceDueDate",
+            "label": "days since due date"
+          },
+          {
+            "table": "Invoices",
+            "field": "GraceDays",
+            "label": "grace days"
+          }
+        ],
+        "structure": null,
+        "plain": "0 ve (days since due date eksi grace days) değerlerinin en büyüğü"
+      },
+      "Invoices.LateFee": {
+        "table": "Invoices",
+        "field": "LateFee",
+        "kind": "formula",
+        "rule": "“invoice” kaydının “late fee” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “days past due” alanı 0 değerinden büyük ise 15;\n2. diğer tüm durumlarda 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“invoice” kaydının “late fee” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "15",
+              "when": {
+                "kind": "leaf",
+                "text": "“days past due” alanı 0 değerinden büyük"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Days past due, 0 değerinden büyük ise 15, aksi takdirde 0"
+      },
+      "Invoices.Total": {
+        "table": "Invoices",
+        "field": "Total",
+        "kind": "formula",
+        "rule": "“invoice” kaydının “total” alanı, “subtotal” alanı artı “tax amount” alanı artı “late fee” alanı eksi “discount amount” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          },
+          {
+            "table": "Invoices",
+            "field": "LateFee",
+            "label": "late fee"
+          },
+          {
+            "table": "Invoices",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "((subtotal artı tax amount) artı late fee) eksi discount amount"
+      },
+      "Invoices.Balance": {
+        "table": "Invoices",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "“invoice” kaydının “balance” alanı, “total” alanı eksi “paid amount” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "PaidAmount",
+            "label": "paid amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Total eksi paid amount"
+      },
+      "Invoices.IsPaid": {
+        "table": "Invoices",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "“invoice” kaydı, “balance” alanı en çok 0 değerinde ise “paid” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance, en çok 0 değerinde"
+      },
+      "Invoices.IsOverdue": {
+        "table": "Invoices",
+        "field": "IsOverdue",
+        "kind": "formula",
+        "rule": "“invoice” kaydı, “paid” bayrağı etkin değil ve “days past due” alanı 0 değerinden büyük ise “overdue” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“invoice” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “overdue” sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“paid” bayrağı etkin değil"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“days past due” alanı 0 değerinden büyük"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "(is paid) koşulu sağlanmıyor ve days past due, 0 değerinden büyük"
+      },
+      "Invoices.Status": {
+        "table": "Invoices",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "“invoice” kaydının “status” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “paid” bayrağı etkin ise “Paid”;\n2. “overdue” bayrağı etkin ise “Overdue”;\n3. diğer tüm durumlarda “Open”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“invoice” kaydının “status” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“Paid”",
+              "when": {
+                "kind": "leaf",
+                "text": "“paid” bayrağı etkin"
+              }
+            },
+            {
+              "value": "“Overdue”",
+              "when": {
+                "kind": "leaf",
+                "text": "“overdue” bayrağı etkin"
+              }
+            },
+            {
+              "value": "“Open”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is paid ise \"Paid\", aksi takdirde is overdue ise \"Overdue\", aksi takdirde \"Open\""
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "“session” kaydının “client name” alanı, “client” alanı üzerinden bağlı kaydın “full name” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı client kaydının full name değeri"
+      },
+      "Sessions.Trainer": {
+        "table": "Sessions",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "“session” kaydının “trainer” alanı, “client” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı client kaydının trainer değeri"
+      },
+      "Sessions.ClientHourlyRate": {
+        "table": "Sessions",
+        "field": "ClientHourlyRate",
+        "kind": "lookup",
+        "rule": "“session” kaydının “client hourly rate” alanı, “client” alanı üzerinden bağlı kaydın “trainer hourly rate” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerHourlyRate",
+            "label": "trainer hourly rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı client kaydının trainer hourly rate değeri"
+      },
+      "Sessions.EffectiveRate": {
+        "table": "Sessions",
+        "field": "EffectiveRate",
+        "kind": "formula",
+        "rule": "“session” kaydının “effective rate” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “rate override” alanı 0 değerinden büyük ise “rate override” alanı;\n2. diğer tüm durumlarda “client hourly rate” alanı.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "RateOverride",
+            "label": "rate override"
+          },
+          {
+            "table": "Sessions",
+            "field": "ClientHourlyRate",
+            "label": "client hourly rate"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“session” kaydının “effective rate” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“rate override” alanı",
+              "when": {
+                "kind": "leaf",
+                "text": "“rate override” alanı 0 değerinden büyük"
+              }
+            },
+            {
+              "value": "“client hourly rate” alanı",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Rate override, 0 değerinden büyük ise rate override, aksi takdirde client hourly rate"
+      },
+      "Sessions.LineTotal": {
+        "table": "Sessions",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "“session” kaydının “line total” alanı, “effective rate” alanı çarpı “duration hours” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "EffectiveRate",
+            "label": "effective rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "DurationHours",
+            "label": "duration hours"
+          }
+        ],
+        "structure": null,
+        "plain": "Effective rate çarpı duration hours"
+      },
+      "Sessions.InvoiceName": {
+        "table": "Sessions",
+        "field": "InvoiceName",
+        "kind": "lookup",
+        "rule": "“session” kaydının “invoice name” alanı, “invoice” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı invoice kaydının name değeri"
+      },
+      "Sessions.IsBilled": {
+        "table": "Sessions",
+        "field": "IsBilled",
+        "kind": "formula",
+        "rule": "“session” kaydı, “invoice” alanı boş değil ise “billed” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          }
+        ],
+        "structure": null,
+        "plain": "(invoice boş) koşulu sağlanmıyor"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Trainers": "trainer",
+      "Clients": "client",
+      "Invoices": "invoice",
+      "Sessions": "session"
+    }
+  },
+  "vi": {
+    "fields": {
+      "Trainers.TotalSessions": {
+        "table": "Trainers",
+        "field": "TotalSessions",
+        "kind": "rollup",
+        "rule": "Trường “total sessions” của mỗi trainer là số lượng sessions liên quan đến trainer đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng sessions có trainer là trainer ID"
+      },
+      "Trainers.TotalBilled": {
+        "table": "Trainers",
+        "field": "TotalBilled",
+        "kind": "rollup",
+        "rule": "Trường “total billed” của mỗi trainer là giá trị của trường “total” trên các invoices liên quan đến trainer đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng total trên tất cả invoices có trainer là trainer ID"
+      },
+      "Trainers.TotalOutstanding": {
+        "table": "Trainers",
+        "field": "TotalOutstanding",
+        "kind": "rollup",
+        "rule": "Trường “total outstanding” của mỗi trainer là giá trị tổng cộng của trường “balance” trên các invoices liên quan đến trainer đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng balance trên tất cả invoices có trainer là trainer ID"
+      },
+      "Clients.TrainerName": {
+        "table": "Clients",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "Trường “trainer name” của mỗi client là trường “full name” của bản ghi liên kết qua trường “trainer”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name của bản ghi liên kết qua trainer"
+      },
+      "Clients.TrainerEmail": {
+        "table": "Clients",
+        "field": "TrainerEmail",
+        "kind": "lookup",
+        "rule": "Trường “trainer email” của mỗi client được lấy từ bản ghi liên kết qua trường “trainer”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Email của bản ghi liên kết qua trainer"
+      },
+      "Clients.TrainerHourlyRate": {
+        "table": "Clients",
+        "field": "TrainerHourlyRate",
+        "kind": "lookup",
+        "rule": "Trường “trainer hourly rate” của mỗi client được lấy từ bản ghi liên kết qua trường “trainer”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "HourlyRate",
+            "label": "hourly rate"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Hourly rate của bản ghi liên kết qua trainer"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "Trường “session count” của mỗi client là số lượng sessions liên quan đến client đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng sessions có client là client ID"
+      },
+      "Clients.TotalInvoiced": {
+        "table": "Clients",
+        "field": "TotalInvoiced",
+        "kind": "rollup",
+        "rule": "Trường “total invoiced” của mỗi client là giá trị của trường “total” trên các invoices liên quan đến client đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng total trên tất cả invoices có client là client ID"
+      },
+      "Clients.OutstandingBalance": {
+        "table": "Clients",
+        "field": "OutstandingBalance",
+        "kind": "rollup",
+        "rule": "Trường “outstanding balance” của mỗi client là giá trị tổng cộng của trường “balance” trên các invoices liên quan đến client đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng balance trên tất cả invoices có client là client ID"
+      },
+      "Clients.OverdueCount": {
+        "table": "Clients",
+        "field": "OverdueCount",
+        "kind": "rollup",
+        "rule": "Trường “overdue count” của mỗi client là số lượng invoices liên quan đến client đó, chỉ tính các bản ghi là “overdue”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng invoices có client là client ID và is overdue là true()"
+      },
+      "Clients.Status": {
+        "table": "Clients",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "Trường “status” của mỗi client được xác định theo thứ tự ưu tiên sau:\n1. “Overdue”, nếu overdue count lớn hơn 0;\n2. “Has Balance”, nếu outstanding balance lớn hơn 0;\n3. trong mọi trường hợp còn lại, “Paid Up”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "OverdueCount",
+            "label": "overdue count"
+          },
+          {
+            "table": "Clients",
+            "field": "OutstandingBalance",
+            "label": "outstanding balance"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “status” của mỗi client được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“Overdue”",
+              "when": {
+                "kind": "leaf",
+                "text": "overdue count lớn hơn 0"
+              }
+            },
+            {
+              "value": "“Has Balance”",
+              "when": {
+                "kind": "leaf",
+                "text": "outstanding balance lớn hơn 0"
+              }
+            },
+            {
+              "value": "“Paid Up”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu overdue count lớn hơn 0 thì \"Overdue\", nếu không thì nếu outstanding balance lớn hơn 0 thì \"Has Balance\", nếu không thì \"Paid Up\""
+      },
+      "Invoices.ClientName": {
+        "table": "Invoices",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Trường “client name” của mỗi invoice là trường “full name” của bản ghi liên kết qua trường “client”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name của bản ghi liên kết qua client"
+      },
+      "Invoices.ClientEmail": {
+        "table": "Invoices",
+        "field": "ClientEmail",
+        "kind": "lookup",
+        "rule": "Trường “client email” của mỗi invoice được lấy từ bản ghi liên kết qua trường “client”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Email của bản ghi liên kết qua client"
+      },
+      "Invoices.Trainer": {
+        "table": "Invoices",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "Trường “trainer” của mỗi invoice được lấy từ bản ghi liên kết qua trường “client”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Trainer của bản ghi liên kết qua client"
+      },
+      "Invoices.TrainerName": {
+        "table": "Invoices",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "Trường “trainer name” của mỗi invoice được lấy từ bản ghi liên kết qua trường “client”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerName",
+            "label": "trainer name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Trainer name của bản ghi liên kết qua client"
+      },
+      "Invoices.Subtotal": {
+        "table": "Invoices",
+        "field": "Subtotal",
+        "kind": "rollup",
+        "rule": "Trường “subtotal” của mỗi invoice là giá trị tổng cộng của trường “line total” trên các sessions liên quan đến invoice đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng line total trên tất cả sessions có invoice là invoice ID"
+      },
+      "Invoices.TaxAmount": {
+        "table": "Invoices",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "Trường “tax amount” của mỗi invoice được tính bằng subtotal nhân tax rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Subtotal nhân tax rate"
+      },
+      "Invoices.GraceDays": {
+        "table": "Invoices",
+        "field": "GraceDays",
+        "kind": "formula",
+        "rule": "Trường “grace days” của mỗi invoice được tính bằng 45.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "45"
+      },
+      "Invoices.DaysSinceDueDate": {
+        "table": "Invoices",
+        "field": "DaysSinceDueDate",
+        "kind": "formula",
+        "rule": "Trường “days since due date” của mỗi invoice được tính bằng số ngày tính từ due date đến ngày giờ hiện tại.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DueDate",
+            "label": "due date"
+          }
+        ],
+        "structure": null,
+        "plain": "Datetime_diff(thời điểm hiện tại, due date, \"day\")"
+      },
+      "Invoices.DaysPastDue": {
+        "table": "Invoices",
+        "field": "DaysPastDue",
+        "kind": "formula",
+        "rule": "Trường “days past due” của mỗi invoice được tính bằng giá trị lớn nhất trong số 0 và days since due date trừ grace days.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysSinceDueDate",
+            "label": "days since due date"
+          },
+          {
+            "table": "Invoices",
+            "field": "GraceDays",
+            "label": "grace days"
+          }
+        ],
+        "structure": null,
+        "plain": "Giá trị lớn nhất trong số 0 và (days since due date trừ grace days)"
+      },
+      "Invoices.LateFee": {
+        "table": "Invoices",
+        "field": "LateFee",
+        "kind": "formula",
+        "rule": "Trường “late fee” của mỗi invoice được xác định theo thứ tự ưu tiên sau:\n1. 15, nếu days past due lớn hơn 0;\n2. trong mọi trường hợp còn lại, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “late fee” của mỗi invoice được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "15",
+              "when": {
+                "kind": "leaf",
+                "text": "days past due lớn hơn 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu days past due lớn hơn 0 thì 15, nếu không thì 0"
+      },
+      "Invoices.Total": {
+        "table": "Invoices",
+        "field": "Total",
+        "kind": "formula",
+        "rule": "Trường “total” của mỗi invoice được tính bằng subtotal cộng tax amount cộng late fee trừ discount amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          },
+          {
+            "table": "Invoices",
+            "field": "LateFee",
+            "label": "late fee"
+          },
+          {
+            "table": "Invoices",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "((subtotal cộng tax amount) cộng late fee) trừ discount amount"
+      },
+      "Invoices.Balance": {
+        "table": "Invoices",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "Trường “balance” của mỗi invoice được tính bằng total trừ paid amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "PaidAmount",
+            "label": "paid amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Total trừ paid amount"
+      },
+      "Invoices.IsPaid": {
+        "table": "Invoices",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "Mỗi invoice được coi là “paid” nếu balance không lớn hơn 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance không lớn hơn 0"
+      },
+      "Invoices.IsOverdue": {
+        "table": "Invoices",
+        "field": "IsOverdue",
+        "kind": "formula",
+        "rule": "Mỗi invoice được coi là “overdue” nếu tất cả các điều kiện sau đều đúng: cờ “paid” không được bật và days past due lớn hơn 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi invoice được coi là “overdue” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "cờ “paid” không được bật"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "days past due lớn hơn 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Không phải is paid và days past due lớn hơn 0"
+      },
+      "Invoices.Status": {
+        "table": "Invoices",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "Trường “status” của mỗi invoice được xác định theo thứ tự ưu tiên sau:\n1. “Paid”, nếu cờ “paid” được bật;\n2. “Overdue”, nếu cờ “overdue” được bật;\n3. trong mọi trường hợp còn lại, “Open”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “status” của mỗi invoice được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“Paid”",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “paid” được bật"
+              }
+            },
+            {
+              "value": "“Overdue”",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “overdue” được bật"
+              }
+            },
+            {
+              "value": "“Open”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu is paid thì \"Paid\", nếu không thì nếu is overdue thì \"Overdue\", nếu không thì \"Open\""
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Trường “client name” của mỗi session là trường “full name” của bản ghi liên kết qua trường “client”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name của bản ghi liên kết qua client"
+      },
+      "Sessions.Trainer": {
+        "table": "Sessions",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "Trường “trainer” của mỗi session được lấy từ bản ghi liên kết qua trường “client”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Trainer của bản ghi liên kết qua client"
+      },
+      "Sessions.ClientHourlyRate": {
+        "table": "Sessions",
+        "field": "ClientHourlyRate",
+        "kind": "lookup",
+        "rule": "Trường “client hourly rate” của mỗi session là trường “trainer hourly rate” của bản ghi liên kết qua trường “client”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerHourlyRate",
+            "label": "trainer hourly rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Trainer hourly rate của bản ghi liên kết qua client"
+      },
+      "Sessions.EffectiveRate": {
+        "table": "Sessions",
+        "field": "EffectiveRate",
+        "kind": "formula",
+        "rule": "Trường “effective rate” của mỗi session được xác định theo thứ tự ưu tiên sau:\n1. rate override, nếu rate override lớn hơn 0;\n2. trong mọi trường hợp còn lại, client hourly rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "RateOverride",
+            "label": "rate override"
+          },
+          {
+            "table": "Sessions",
+            "field": "ClientHourlyRate",
+            "label": "client hourly rate"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “effective rate” của mỗi session được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "rate override",
+              "when": {
+                "kind": "leaf",
+                "text": "rate override lớn hơn 0"
+              }
+            },
+            {
+              "value": "client hourly rate",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu rate override lớn hơn 0 thì rate override, nếu không thì client hourly rate"
+      },
+      "Sessions.LineTotal": {
+        "table": "Sessions",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "Trường “line total” của mỗi session được tính bằng effective rate nhân duration hours.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "EffectiveRate",
+            "label": "effective rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "DurationHours",
+            "label": "duration hours"
+          }
+        ],
+        "structure": null,
+        "plain": "Effective rate nhân duration hours"
+      },
+      "Sessions.InvoiceName": {
+        "table": "Sessions",
+        "field": "InvoiceName",
+        "kind": "lookup",
+        "rule": "Trường “invoice name” của mỗi session được lấy từ bản ghi liên kết qua trường “invoice”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua invoice"
+      },
+      "Sessions.IsBilled": {
+        "table": "Sessions",
+        "field": "IsBilled",
+        "kind": "formula",
+        "rule": "Mỗi session được coi là “billed” nếu invoice có giá trị.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          }
+        ],
+        "structure": null,
+        "plain": "Không phải invoice để trống"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Trainers": "trainer",
+      "Clients": "client",
+      "Invoices": "invoice",
+      "Sessions": "session"
+    }
+  },
+  "zh": {
+    "fields": {
+      "Trainers.TotalSessions": {
+        "table": "Trainers",
+        "field": "TotalSessions",
+        "kind": "rollup",
+        "rule": "trainer的“total sessions”为 与trainer相关的“sessions”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Trainer为trainer ID的“sessions”的数量"
+      },
+      "Trainers.TotalBilled": {
+        "table": "Trainers",
+        "field": "TotalBilled",
+        "kind": "rollup",
+        "rule": "trainer的“total billed”为 与trainer相关的所有“invoices”的“total”的。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有trainer为trainer ID的“invoices”的total的总和"
+      },
+      "Trainers.TotalOutstanding": {
+        "table": "Trainers",
+        "field": "TotalOutstanding",
+        "kind": "rollup",
+        "rule": "trainer的“total outstanding”为 与trainer相关的所有“invoices”的“balance”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有trainer为trainer ID的“invoices”的balance的总和"
+      },
+      "Clients.TrainerName": {
+        "table": "Clients",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "client的“trainer name”是所关联的“trainer”的“full name”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“trainer”的full name"
+      },
+      "Clients.TrainerEmail": {
+        "table": "Clients",
+        "field": "TrainerEmail",
+        "kind": "lookup",
+        "rule": "client的“trainer email”——取自所关联的“trainer”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“trainer”的email"
+      },
+      "Clients.TrainerHourlyRate": {
+        "table": "Clients",
+        "field": "TrainerHourlyRate",
+        "kind": "lookup",
+        "rule": "client的“trainer hourly rate”——取自所关联的“trainer”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Trainers",
+            "field": "HourlyRate",
+            "label": "hourly rate"
+          },
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Trainers",
+            "field": "TrainerId",
+            "label": "trainer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“trainer”的hourly rate"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "client的“session count”为 与client相关的“sessions”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client为client ID的“sessions”的数量"
+      },
+      "Clients.TotalInvoiced": {
+        "table": "Clients",
+        "field": "TotalInvoiced",
+        "kind": "rollup",
+        "rule": "client的“total invoiced”为 与client相关的所有“invoices”的“total”的。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有client为client ID的“invoices”的total的总和"
+      },
+      "Clients.OutstandingBalance": {
+        "table": "Clients",
+        "field": "OutstandingBalance",
+        "kind": "rollup",
+        "rule": "client的“outstanding balance”为 与client相关的所有“invoices”的“balance”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有client为client ID的“invoices”的balance的总和"
+      },
+      "Clients.OverdueCount": {
+        "table": "Clients",
+        "field": "OverdueCount",
+        "kind": "rollup",
+        "rule": "client的“overdue count”为 client的“invoices”中是“Overdue”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": null,
+        "plain": "Client为client ID且is overdue为true()的“invoices”的数量"
+      },
+      "Clients.Status": {
+        "table": "Clients",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "Client的“status”按以下优先级确定:\n1. 当overdue count大于0时,取 “Overdue”;\n2. 当outstanding balance大于0时,取 “Has Balance”;\n3. 其余情况取 “Paid Up”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "OverdueCount",
+            "label": "overdue count"
+          },
+          {
+            "table": "Clients",
+            "field": "OutstandingBalance",
+            "label": "outstanding balance"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Client的“status”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“Overdue”",
+              "when": {
+                "kind": "leaf",
+                "text": "overdue count大于0"
+              }
+            },
+            {
+              "value": "“Has Balance”",
+              "when": {
+                "kind": "leaf",
+                "text": "outstanding balance大于0"
+              }
+            },
+            {
+              "value": "“Paid Up”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若overdue count大于0,则\"Overdue\",否则若outstanding balance大于0,则\"Has Balance\",否则\"Paid Up\""
+      },
+      "Invoices.ClientName": {
+        "table": "Invoices",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "invoice的“client name”是所关联的“client”的“full name”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“client”的full name"
+      },
+      "Invoices.ClientEmail": {
+        "table": "Invoices",
+        "field": "ClientEmail",
+        "kind": "lookup",
+        "rule": "invoice的“client email”——取自所关联的“client”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“client”的email"
+      },
+      "Invoices.Trainer": {
+        "table": "Invoices",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "invoice的“trainer”——取自所关联的“client”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“client”的trainer"
+      },
+      "Invoices.TrainerName": {
+        "table": "Invoices",
+        "field": "TrainerName",
+        "kind": "lookup",
+        "rule": "invoice的“trainer name”——取自所关联的“client”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerName",
+            "label": "trainer name"
+          },
+          {
+            "table": "Invoices",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“client”的trainer name"
+      },
+      "Invoices.Subtotal": {
+        "table": "Invoices",
+        "field": "Subtotal",
+        "kind": "rollup",
+        "rule": "invoice的“subtotal”为 与invoice相关的所有“sessions”的“line total”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有invoice为invoice ID的“sessions”的line total的总和"
+      },
+      "Invoices.TaxAmount": {
+        "table": "Invoices",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "invoice的“tax amount”按 subtotal乘tax rate 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Subtotal乘tax rate"
+      },
+      "Invoices.GraceDays": {
+        "table": "Invoices",
+        "field": "GraceDays",
+        "kind": "formula",
+        "rule": "invoice的“grace days”按 45 计算。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "45"
+      },
+      "Invoices.DaysSinceDueDate": {
+        "table": "Invoices",
+        "field": "DaysSinceDueDate",
+        "kind": "formula",
+        "rule": "invoice的“days since due date”按 从due date到当前日期和时间的天数 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DueDate",
+            "label": "due date"
+          }
+        ],
+        "structure": null,
+        "plain": "Datetime_diff(现在, due date, \"day\")"
+      },
+      "Invoices.DaysPastDue": {
+        "table": "Invoices",
+        "field": "DaysPastDue",
+        "kind": "formula",
+        "rule": "invoice的“days past due”按 0且days since due date减grace days中的最大者 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysSinceDueDate",
+            "label": "days since due date"
+          },
+          {
+            "table": "Invoices",
+            "field": "GraceDays",
+            "label": "grace days"
+          }
+        ],
+        "structure": null,
+        "plain": "0且(days since due date减grace days)中的最大者"
+      },
+      "Invoices.LateFee": {
+        "table": "Invoices",
+        "field": "LateFee",
+        "kind": "formula",
+        "rule": "Invoice的“late fee”按以下优先级确定:\n1. 当days past due大于0时,取 15;\n2. 其余情况取 0。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Invoice的“late fee”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "15",
+              "when": {
+                "kind": "leaf",
+                "text": "days past due大于0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若days past due大于0,则15,否则0"
+      },
+      "Invoices.Total": {
+        "table": "Invoices",
+        "field": "Total",
+        "kind": "formula",
+        "rule": "invoice的“total”按 subtotal加tax amount加late fee减discount amount 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Subtotal",
+            "label": "subtotal"
+          },
+          {
+            "table": "Invoices",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          },
+          {
+            "table": "Invoices",
+            "field": "LateFee",
+            "label": "late fee"
+          },
+          {
+            "table": "Invoices",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "((subtotal加tax amount)加late fee)减discount amount"
+      },
+      "Invoices.Balance": {
+        "table": "Invoices",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "invoice的“balance”按 total减paid amount 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Invoices",
+            "field": "PaidAmount",
+            "label": "paid amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Total减paid amount"
+      },
+      "Invoices.IsPaid": {
+        "table": "Invoices",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "当balance不大于0时,invoice被视为“Paid”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance不大于0"
+      },
+      "Invoices.IsOverdue": {
+        "table": "Invoices",
+        "field": "IsOverdue",
+        "kind": "formula",
+        "rule": "当以下全部成立:标志“paid”未设置且days past due大于0时,invoice被视为“Overdue”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "DaysPastDue",
+            "label": "days past due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,invoice被视为“Overdue”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "标志“paid”未设置"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "days past due大于0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "并非is paid且days past due大于0"
+      },
+      "Invoices.Status": {
+        "table": "Invoices",
+        "field": "Status",
+        "kind": "formula",
+        "rule": "Invoice的“status”按以下优先级确定:\n1. 当标志“paid”已设置时,取 “Paid”;\n2. 当标志“overdue”已设置时,取 “Overdue”;\n3. 其余情况取 “Open”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Invoices",
+            "field": "IsOverdue",
+            "label": "is overdue"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Invoice的“status”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“Paid”",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“paid”已设置"
+              }
+            },
+            {
+              "value": "“Overdue”",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“overdue”已设置"
+              }
+            },
+            {
+              "value": "“Open”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若is paid,则\"Paid\",否则若is overdue,则\"Overdue\",否则\"Open\""
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "session的“client name”是所关联的“client”的“full name”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“client”的full name"
+      },
+      "Sessions.Trainer": {
+        "table": "Sessions",
+        "field": "Trainer",
+        "kind": "lookup",
+        "rule": "session的“trainer”——取自所关联的“client”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Trainer",
+            "label": "trainer"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“client”的trainer"
+      },
+      "Sessions.ClientHourlyRate": {
+        "table": "Sessions",
+        "field": "ClientHourlyRate",
+        "kind": "lookup",
+        "rule": "session的“client hourly rate”是所关联的“client”的“trainer hourly rate”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "TrainerHourlyRate",
+            "label": "trainer hourly rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientId",
+            "label": "client ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“client”的trainer hourly rate"
+      },
+      "Sessions.EffectiveRate": {
+        "table": "Sessions",
+        "field": "EffectiveRate",
+        "kind": "formula",
+        "rule": "Session的“effective rate”按以下优先级确定:\n1. 当rate override大于0时,取 rate override;\n2. 其余情况取 client hourly rate。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "RateOverride",
+            "label": "rate override"
+          },
+          {
+            "table": "Sessions",
+            "field": "ClientHourlyRate",
+            "label": "client hourly rate"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Session的“effective rate”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "rate override",
+              "when": {
+                "kind": "leaf",
+                "text": "rate override大于0"
+              }
+            },
+            {
+              "value": "client hourly rate",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若rate override大于0,则rate override,否则client hourly rate"
+      },
+      "Sessions.LineTotal": {
+        "table": "Sessions",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "session的“line total”按 effective rate乘duration hours 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "EffectiveRate",
+            "label": "effective rate"
+          },
+          {
+            "table": "Sessions",
+            "field": "DurationHours",
+            "label": "duration hours"
+          }
+        ],
+        "structure": null,
+        "plain": "Effective rate乘duration hours"
+      },
+      "Sessions.InvoiceName": {
+        "table": "Sessions",
+        "field": "InvoiceName",
+        "kind": "lookup",
+        "rule": "session的“invoice name”——取自所关联的“invoice”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Invoices",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          },
+          {
+            "table": "Invoices",
+            "field": "InvoiceId",
+            "label": "invoice ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“invoice”的name"
+      },
+      "Sessions.IsBilled": {
+        "table": "Sessions",
+        "field": "IsBilled",
+        "kind": "formula",
+        "rule": "当invoice有值时,session被视为“Billed”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Invoice",
+            "label": "invoice"
+          }
+        ],
+        "structure": null,
+        "plain": "并非invoice为空"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "Users": "user",

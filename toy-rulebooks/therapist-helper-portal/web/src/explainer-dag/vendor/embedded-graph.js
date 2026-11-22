@@ -1052,7 +1052,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -1858,6 +1873,12696 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Clients": "client",
+      "Goals": "goal",
+      "Sessions": "session",
+      "GoalUpdates": "goal update"
+    }
+  },
+  "ar": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «user» يطابق حقل «users ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Users ID"
+      },
+      "Users.ClientCount": {
+        "table": "Users",
+        "field": "ClientCount",
+        "kind": "rollup",
+        "rule": "حقل «client count» في سجل «user» هو عدد سجلات «clients» المرتبطة بسجل «user».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(therapist, users ID)"
+      },
+      "Clients.TherapistName": {
+        "table": "Clients",
+        "field": "TherapistName",
+        "kind": "lookup",
+        "rule": "حقل «therapist name» في سجل «client» يأخذ قيمة حقل «full name» من السجل المرتبط به عبر حقل «therapist».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «full name» من السجل المرتبط عبر «therapist»"
+      },
+      "Clients.Name": {
+        "table": "Clients",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «client» يطابق حقل «clients ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Clients ID"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "حقل «session count» في سجل «client» هو عدد سجلات «sessions» المرتبطة بسجل «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgMoodRating": {
+        "table": "Clients",
+        "field": "AvgMoodRating",
+        "kind": "rollup",
+        "rule": "حقل «avg mood rating» في سجل «client» هو متوسط قيم حقل «mood rating» عبر سجلات «sessions» المرتبطة بسجل «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "MoodRating",
+            "label": "mood rating"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "متوسط «mood rating» في جميع سجلات «sessions» التي يتحقق فيها أنّ حقل «client» يساوي clients ID"
+      },
+      "Clients.GoalCount": {
+        "table": "Clients",
+        "field": "GoalCount",
+        "kind": "rollup",
+        "rule": "حقل «goal count» في سجل «client» هو عدد سجلات «goals» المرتبطة بسجل «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgGoalProgress": {
+        "table": "Clients",
+        "field": "AvgGoalProgress",
+        "kind": "rollup",
+        "rule": "حقل «avg goal progress» في سجل «client» هو متوسط قيم حقل «progress pct» عبر سجلات «goals» المرتبطة بسجل «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "متوسط «progress pct» في جميع سجلات «goals» التي يتحقق فيها أنّ حقل «client» يساوي clients ID"
+      },
+      "Clients.LastSessionLabel": {
+        "table": "Clients",
+        "field": "LastSessionLabel",
+        "kind": "rollup",
+        "rule": "حقل «last session label» في سجل «client» هو أكبر قيم حقل «session label» عبر سجلات «sessions» المرتبطة بسجل «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "أكبر قيم «session label» في جميع سجلات «sessions» التي يتحقق فيها أنّ حقل «client» يساوي clients ID"
+      },
+      "Clients.IsAtRisk": {
+        "table": "Clients",
+        "field": "IsAtRisk",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «client» على أنه «at risk» إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: حقل «avg mood rating» أقل من 5 أو حقل «avg goal progress» أقل من 50.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "AvgMoodRating",
+            "label": "avg mood rating"
+          },
+          {
+            "table": "Clients",
+            "field": "AvgGoalProgress",
+            "label": "avg goal progress"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُصنّف سجل «client» على أنه «at risk» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "حقل «avg mood rating» أقل من 5"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "حقل «avg goal progress» أقل من 50"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Avg mood rating أقل من 5 أو avg goal progress أقل من 50"
+      },
+      "Clients.StatusLabel": {
+        "table": "Clients",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "حقل «status label» في سجل «client» يتحدد وفق ترتيب الأولوية الآتي:\n1. «At risk»، إذا تحقق أنّ علامة «at risk» مفعّلة؛\n2. «On track»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "IsAtRisk",
+            "label": "is at risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «status label» في سجل «client» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«At risk»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «at risk» مفعّلة"
+              }
+            },
+            {
+              "value": "«On track»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ is at risk فالناتج \"At risk\"، وإلا فالناتج \"On track\""
+      },
+      "Goals.ClientName": {
+        "table": "Goals",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "حقل «client name» في سجل «goal» مأخوذ من السجل المرتبط به عبر حقل «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «client name» من السجل المرتبط عبر «client»"
+      },
+      "Goals.ClientTherapist": {
+        "table": "Goals",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "حقل «client therapist» في سجل «goal» مأخوذ من السجل المرتبط به عبر حقل «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «therapist» من السجل المرتبط عبر «client»"
+      },
+      "Goals.Name": {
+        "table": "Goals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «goal» يطابق حقل «goals ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goals ID"
+      },
+      "Goals.UpdateCount": {
+        "table": "Goals",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "حقل «update count» في سجل «goal» هو عدد سجلات «goal updates» المرتبطة بسجل «goal».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(goal, goals ID)"
+      },
+      "Goals.AvgScoreAchieved": {
+        "table": "Goals",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "حقل «avg score achieved» في سجل «goal» هو متوسط قيم حقل «score achieved» عبر سجلات «goal updates» المرتبطة بسجل «goal».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "متوسط «score achieved» في جميع سجلات «goal updates» التي يتحقق فيها أنّ حقل «goal» يساوي goals ID"
+      },
+      "Goals.LatestScore": {
+        "table": "Goals",
+        "field": "LatestScore",
+        "kind": "rollup",
+        "rule": "حقل «latest score» في سجل «goal» هو أكبر قيم حقل «score achieved» عبر سجلات «goal updates» المرتبطة بسجل «goal».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "أكبر قيم «score achieved» في جميع سجلات «goal updates» التي يتحقق فيها أنّ حقل «goal» يساوي goals ID"
+      },
+      "Goals.ProgressPct": {
+        "table": "Goals",
+        "field": "ProgressPct",
+        "kind": "formula",
+        "rule": "حقل «progress pct» في سجل «goal» يُحسب على النحو الآتي: حقل «avg score achieved» مقسومًا على حقل «target score» مضروبًا في 100 (أو 0 إذا تعذّر الحساب).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          },
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          }
+        ],
+        "structure": null,
+        "plain": "((avg score achieved تقسيم target score) ضرب 100)، أو 0 إذا وقع خطأ"
+      },
+      "Goals.RemainingGap": {
+        "table": "Goals",
+        "field": "RemainingGap",
+        "kind": "formula",
+        "rule": "حقل «remaining gap» في سجل «goal» يُحسب على النحو الآتي: الأكبر من بين 0 وحقل «target score» ناقص حقل «avg score achieved».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": null,
+        "plain": "الأكبر من بين 0 و(target score ناقص avg score achieved)"
+      },
+      "Goals.IsOnTrack": {
+        "table": "Goals",
+        "field": "IsOnTrack",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «goal» على أنه «on track» إذا تحقق أنّ حقل «progress pct» لا يقل عن 70.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Progress pct لا يقل عن 70"
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "حقل «client name» في سجل «session» مأخوذ من السجل المرتبط به عبر حقل «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «client name» من السجل المرتبط عبر «client»"
+      },
+      "Sessions.ClientTherapist": {
+        "table": "Sessions",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "حقل «client therapist» في سجل «session» مأخوذ من السجل المرتبط به عبر حقل «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «therapist» من السجل المرتبط عبر «client»"
+      },
+      "Sessions.Name": {
+        "table": "Sessions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «session» يطابق حقل «sessions ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Sessions ID"
+      },
+      "Sessions.UpdateCount": {
+        "table": "Sessions",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "حقل «update count» في سجل «session» هو عدد سجلات «goal updates» المرتبطة بسجل «session».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «goal updates» التي يتحقق فيها أنّ حقل «session» يساوي sessions ID"
+      },
+      "Sessions.AvgScoreAchieved": {
+        "table": "Sessions",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "حقل «avg score achieved» في سجل «session» هو متوسط قيم حقل «score achieved» عبر سجلات «goal updates» المرتبطة بسجل «session».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "متوسط «score achieved» في جميع سجلات «goal updates» التي يتحقق فيها أنّ حقل «session» يساوي sessions ID"
+      },
+      "Sessions.IsProductive": {
+        "table": "Sessions",
+        "field": "IsProductive",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «session» على أنه «productive» إذا تحقق أنّ جميع الشروط الآتية متحققة: حقل «update count» لا يقل عن 2 وحقل «avg score achieved» لا يقل عن 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "UpdateCount",
+            "label": "update count"
+          },
+          {
+            "table": "Sessions",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُصنّف سجل «session» على أنه «productive» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "حقل «update count» لا يقل عن 2"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "حقل «avg score achieved» لا يقل عن 5"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Update count لا يقل عن 2 وavg score achieved لا يقل عن 5"
+      },
+      "Sessions.StatusLabel": {
+        "table": "Sessions",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "حقل «status label» في سجل «session» يتحدد وفق ترتيب الأولوية الآتي:\n1. «Productive»، إذا تحقق أنّ علامة «productive» مفعّلة؛\n2. «Light»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "IsProductive",
+            "label": "is productive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «status label» في سجل «session» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«Productive»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «productive» مفعّلة"
+              }
+            },
+            {
+              "value": "«Light»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ is productive فالناتج \"Productive\"، وإلا فالناتج \"Light\""
+      },
+      "GoalUpdates.GoalTitle": {
+        "table": "GoalUpdates",
+        "field": "GoalTitle",
+        "kind": "lookup",
+        "rule": "حقل «goal title» في سجل «goal update» مأخوذ من السجل المرتبط به عبر حقل «goal».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «title» من السجل المرتبط عبر «goal»"
+      },
+      "GoalUpdates.GoalClient": {
+        "table": "GoalUpdates",
+        "field": "GoalClient",
+        "kind": "lookup",
+        "rule": "حقل «goal client» في سجل «goal update» مأخوذ من السجل المرتبط به عبر حقل «goal».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «client» من السجل المرتبط عبر «goal»"
+      },
+      "GoalUpdates.GoalTargetScore": {
+        "table": "GoalUpdates",
+        "field": "GoalTargetScore",
+        "kind": "lookup",
+        "rule": "حقل «goal target score» في سجل «goal update» مأخوذ من السجل المرتبط به عبر حقل «goal».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «target score» من السجل المرتبط عبر «goal»"
+      },
+      "GoalUpdates.GoalClientTherapist": {
+        "table": "GoalUpdates",
+        "field": "GoalClientTherapist",
+        "kind": "lookup",
+        "rule": "حقل «goal client therapist» في سجل «goal update» مأخوذ من السجل المرتبط به عبر حقل «goal».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ClientTherapist",
+            "label": "client therapist"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «client therapist» من السجل المرتبط عبر «goal»"
+      },
+      "GoalUpdates.SessionLabel": {
+        "table": "GoalUpdates",
+        "field": "SessionLabel",
+        "kind": "lookup",
+        "rule": "حقل «session label» في سجل «goal update» مأخوذ من السجل المرتبط به عبر حقل «session».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «session label» من السجل المرتبط عبر «session»"
+      },
+      "GoalUpdates.Name": {
+        "table": "GoalUpdates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «goal update» يطابق حقل «goal updates ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "GoalUpdatesId",
+            "label": "goal updates ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goal updates ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "في كل سجل «user»، **يجب أن** تُحدّد قيمة حقل «full name» وحقل «role»."
+      ],
+      "Clients": [
+        "**يجب أن** يشير كل سجل «client» إلى سجل «user» واحد فقط عبر حقل «therapist».",
+        "في كل سجل «client»، **يجب أن** تُحدّد قيمة حقل «client name»."
+      ],
+      "Goals": [
+        "**يجب أن** يشير كل سجل «goal» إلى سجل «client» واحد فقط.",
+        "في كل سجل «goal»، **يجب أن** تُحدّد قيمة حقل «title» وحقل «target score»."
+      ],
+      "Sessions": [
+        "**يجب أن** يشير كل سجل «session» إلى سجل «client» واحد فقط.",
+        "في كل سجل «session»، **يجب أن** تُحدّد قيمة حقل «session label» وحقل «mood rating»."
+      ],
+      "GoalUpdates": [
+        "**يجب أن** يشير كل سجل «goal update» إلى سجل «goal» واحد فقط.",
+        "**يجب أن** يشير كل سجل «goal update» إلى سجل «session» واحد فقط.",
+        "في كل سجل «goal update»، **يجب أن** تُحدّد قيمة حقل «score achieved»."
+      ]
+    },
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Clients": "client",
+      "Goals": "goal",
+      "Sessions": "session",
+      "GoalUpdates": "goal update"
+    }
+  },
+  "de": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein User: Name entspricht Users ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Users ID"
+      },
+      "Users.ClientCount": {
+        "table": "Users",
+        "field": "ClientCount",
+        "kind": "rollup",
+        "rule": "Ein User: Client Count ist die Anzahl der mit dem User verbundenen Clients.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(Therapist, Users ID)"
+      },
+      "Clients.TherapistName": {
+        "table": "Clients",
+        "field": "TherapistName",
+        "kind": "lookup",
+        "rule": "Ein Client: Therapist Name ist der Full Name des zugehörigen Therapist des Client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Full Name des verknüpften Therapist"
+      },
+      "Clients.Name": {
+        "table": "Clients",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Client: Name entspricht Clients ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Clients ID"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "Ein Client: Session Count ist die Anzahl der mit dem Client verbundenen Sessions.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(Client, Clients ID)"
+      },
+      "Clients.AvgMoodRating": {
+        "table": "Clients",
+        "field": "AvgMoodRating",
+        "kind": "rollup",
+        "rule": "Ein Client: Avg Mood Rating ist der Durchschnitt von Mood Rating über die mit dem Client verbundenen Sessions.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "MoodRating",
+            "label": "mood rating"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Durchschnitt von Mood Rating über alle Sessions, deren Client ist Clients ID"
+      },
+      "Clients.GoalCount": {
+        "table": "Clients",
+        "field": "GoalCount",
+        "kind": "rollup",
+        "rule": "Ein Client: Goal Count ist die Anzahl der mit dem Client verbundenen Goals.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(Client, Clients ID)"
+      },
+      "Clients.AvgGoalProgress": {
+        "table": "Clients",
+        "field": "AvgGoalProgress",
+        "kind": "rollup",
+        "rule": "Ein Client: Avg Goal Progress ist der Durchschnitt von Progress Pct über die mit dem Client verbundenen Goals.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Durchschnitt von Progress Pct über alle Goals, deren Client ist Clients ID"
+      },
+      "Clients.LastSessionLabel": {
+        "table": "Clients",
+        "field": "LastSessionLabel",
+        "kind": "rollup",
+        "rule": "Ein Client: Last Session Label ist der größte Wert von Session Label über die mit dem Client verbundenen Sessions.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Größter Wert von Session Label über alle Sessions, deren Client ist Clients ID"
+      },
+      "Clients.IsAtRisk": {
+        "table": "Clients",
+        "field": "IsAtRisk",
+        "kind": "formula",
+        "rule": "Ein Client gilt als at risk, wenn mindestens eines des Folgenden gilt: der Avg Mood Rating kleiner ist als 5 oder der Avg Goal Progress kleiner ist als 50.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "AvgMoodRating",
+            "label": "avg mood rating"
+          },
+          {
+            "table": "Clients",
+            "field": "AvgGoalProgress",
+            "label": "avg goal progress"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Ein Client gilt als at risk, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "der Avg Mood Rating kleiner ist als 5"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "der Avg Goal Progress kleiner ist als 50"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Avg Mood Rating kleiner als 5 ist oder Avg Goal Progress kleiner als 50 ist"
+      },
+      "Clients.StatusLabel": {
+        "table": "Clients",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "Das Feld „Status Label“ des Client wird nach folgender Priorität bestimmt:\n1. „At risk“, wenn das Kennzeichen „Is At Risk“ gesetzt ist;\n2. andernfalls „On track“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "IsAtRisk",
+            "label": "is at risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Status Label“ des Client wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„At risk“",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Is At Risk“ gesetzt ist"
+              }
+            },
+            {
+              "value": "„On track“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Is At Risk, dann \"At risk\", andernfalls \"On track\""
+      },
+      "Goals.ClientName": {
+        "table": "Goals",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Ein Goal: Client Name — aus dem zugehörigen Client übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Client Name des verknüpften Client"
+      },
+      "Goals.ClientTherapist": {
+        "table": "Goals",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "Ein Goal: Client Therapist — aus dem zugehörigen Client übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Therapist des verknüpften Client"
+      },
+      "Goals.Name": {
+        "table": "Goals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Goal: Name entspricht Goals ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goals ID"
+      },
+      "Goals.UpdateCount": {
+        "table": "Goals",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "Ein Goal: Update Count ist die Anzahl der mit dem Goal verbundenen Goal Updates.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(Goal, Goals ID)"
+      },
+      "Goals.AvgScoreAchieved": {
+        "table": "Goals",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "Ein Goal: Avg Score Achieved ist der Durchschnitt von Score Achieved über die mit dem Goal verbundenen Goal Updates.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Durchschnitt von Score Achieved über alle Goal Updates, deren Goal ist Goals ID"
+      },
+      "Goals.LatestScore": {
+        "table": "Goals",
+        "field": "LatestScore",
+        "kind": "rollup",
+        "rule": "Ein Goal: Latest Score ist der größte Wert von Score Achieved über die mit dem Goal verbundenen Goal Updates.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Größter Wert von Score Achieved über alle Goal Updates, deren Goal ist Goals ID"
+      },
+      "Goals.ProgressPct": {
+        "table": "Goals",
+        "field": "ProgressPct",
+        "kind": "formula",
+        "rule": "Ein Goal: Progress Pct wird berechnet als der Avg Score Achieved geteilt durch die Target Score mal 100 (oder 0, falls dies nicht berechnet werden kann).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          },
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          }
+        ],
+        "structure": null,
+        "plain": "((Avg Score Achieved geteilt durch Target Score) mal 100), oder 0, falls dies einen Fehler hat"
+      },
+      "Goals.RemainingGap": {
+        "table": "Goals",
+        "field": "RemainingGap",
+        "kind": "formula",
+        "rule": "Ein Goal: Remaining Gap wird berechnet als das größte von 0 und die Target Score minus der Avg Score Achieved.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": null,
+        "plain": "Das größte von 0 und (Target Score minus Avg Score Achieved)"
+      },
+      "Goals.IsOnTrack": {
+        "table": "Goals",
+        "field": "IsOnTrack",
+        "kind": "formula",
+        "rule": "Ein Goal gilt als on track, wenn der Progress Pct mindestens 70 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Progress Pct mindestens 70 ist"
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Eine Session: Client Name — aus dem zugehörigen Client übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Client Name des verknüpften Client"
+      },
+      "Sessions.ClientTherapist": {
+        "table": "Sessions",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "Eine Session: Client Therapist — aus dem zugehörigen Client übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Therapist des verknüpften Client"
+      },
+      "Sessions.Name": {
+        "table": "Sessions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Session: Name entspricht Sessions ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Sessions ID"
+      },
+      "Sessions.UpdateCount": {
+        "table": "Sessions",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "Eine Session: Update Count ist die Anzahl der mit der Session verbundenen Goal Updates.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Goal Updates, deren Session ist Sessions ID"
+      },
+      "Sessions.AvgScoreAchieved": {
+        "table": "Sessions",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "Eine Session: Avg Score Achieved ist der Durchschnitt von Score Achieved über die mit der Session verbundenen Goal Updates.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Durchschnitt von Score Achieved über alle Goal Updates, deren Session ist Sessions ID"
+      },
+      "Sessions.IsProductive": {
+        "table": "Sessions",
+        "field": "IsProductive",
+        "kind": "formula",
+        "rule": "Eine Session gilt als eine Productive, wenn alles Folgende gilt: der Update Count mindestens 2 ist und der Avg Score Achieved mindestens 5 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "UpdateCount",
+            "label": "update count"
+          },
+          {
+            "table": "Sessions",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Eine Session gilt als eine Productive, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "der Update Count mindestens 2 ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "der Avg Score Achieved mindestens 5 ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Update Count mindestens 2 ist und Avg Score Achieved mindestens 5 ist"
+      },
+      "Sessions.StatusLabel": {
+        "table": "Sessions",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "Das Feld „Status Label“ der Session wird nach folgender Priorität bestimmt:\n1. „Productive“, wenn das Kennzeichen „Is Productive“ gesetzt ist;\n2. andernfalls „Light“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "IsProductive",
+            "label": "is productive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Status Label“ der Session wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„Productive“",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Is Productive“ gesetzt ist"
+              }
+            },
+            {
+              "value": "„Light“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Is Productive, dann \"Productive\", andernfalls \"Light\""
+      },
+      "GoalUpdates.GoalTitle": {
+        "table": "GoalUpdates",
+        "field": "GoalTitle",
+        "kind": "lookup",
+        "rule": "Eine Goal Update: Goal Title — aus dem zugehörigen Goal übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Title des verknüpften Goal"
+      },
+      "GoalUpdates.GoalClient": {
+        "table": "GoalUpdates",
+        "field": "GoalClient",
+        "kind": "lookup",
+        "rule": "Eine Goal Update: Goal Client — aus dem zugehörigen Goal übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Client des verknüpften Goal"
+      },
+      "GoalUpdates.GoalTargetScore": {
+        "table": "GoalUpdates",
+        "field": "GoalTargetScore",
+        "kind": "lookup",
+        "rule": "Eine Goal Update: Goal Target Score — aus dem zugehörigen Goal übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Target Score des verknüpften Goal"
+      },
+      "GoalUpdates.GoalClientTherapist": {
+        "table": "GoalUpdates",
+        "field": "GoalClientTherapist",
+        "kind": "lookup",
+        "rule": "Eine Goal Update: Goal Client Therapist — aus dem zugehörigen Goal übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ClientTherapist",
+            "label": "client therapist"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Client Therapist des verknüpften Goal"
+      },
+      "GoalUpdates.SessionLabel": {
+        "table": "GoalUpdates",
+        "field": "SessionLabel",
+        "kind": "lookup",
+        "rule": "Eine Goal Update: Session Label — aus dem zugehörigen Session übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Session Label des verknüpften Session"
+      },
+      "GoalUpdates.Name": {
+        "table": "GoalUpdates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Goal Update: Name entspricht Goal Updates ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "GoalUpdatesId",
+            "label": "goal updates ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goal Updates ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "Ein User **muss** eine Full Name und eine Role haben."
+      ],
+      "Clients": [
+        "Ein Client **muss** auf genau einen User als seinen Therapist verweisen.",
+        "Ein Client **muss** eine Client Name haben."
+      ],
+      "Goals": [
+        "Ein Goal **muss** auf genau einen Client verweisen.",
+        "Ein Goal **muss** eine Title und eine Target Score haben."
+      ],
+      "Sessions": [
+        "Eine Session **muss** auf genau einen Client verweisen.",
+        "Eine Session **muss** ein Session Label und ein Mood Rating haben."
+      ],
+      "GoalUpdates": [
+        "Eine Goal Update **muss** auf genau einen Goal verweisen.",
+        "Eine Goal Update **muss** auf genau einen Session verweisen.",
+        "Eine Goal Update **muss** ein Score Achieved haben."
+      ]
+    },
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "User",
+      "Clients": "Client",
+      "Goals": "Goal",
+      "Sessions": "Session",
+      "GoalUpdates": "Goal Update"
+    }
+  },
+  "es": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un user: name es igual a users ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Users ID"
+      },
+      "Users.ClientCount": {
+        "table": "Users",
+        "field": "ClientCount",
+        "kind": "rollup",
+        "rule": "Un user: client count es el número de clients relacionados con el user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(therapist, users ID)"
+      },
+      "Clients.TherapistName": {
+        "table": "Clients",
+        "field": "TherapistName",
+        "kind": "lookup",
+        "rule": "Un client: therapist name es el full name del therapist vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El full name del therapist vinculado"
+      },
+      "Clients.Name": {
+        "table": "Clients",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un client: name es igual a clients ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Clients ID"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "Un client: session count es el número de sessions relacionados con el client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgMoodRating": {
+        "table": "Clients",
+        "field": "AvgMoodRating",
+        "kind": "rollup",
+        "rule": "Un client: avg mood rating es el promedio de mood rating entre los sessions relacionados con el client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "MoodRating",
+            "label": "mood rating"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Promedio de mood rating entre todos los sessions cuyo client es clients ID"
+      },
+      "Clients.GoalCount": {
+        "table": "Clients",
+        "field": "GoalCount",
+        "kind": "rollup",
+        "rule": "Un client: goal count es el número de goals relacionados con el client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgGoalProgress": {
+        "table": "Clients",
+        "field": "AvgGoalProgress",
+        "kind": "rollup",
+        "rule": "Un client: avg goal progress es el promedio de progress pct entre los goals relacionados con el client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Promedio de progress pct entre todos los goals cuyo client es clients ID"
+      },
+      "Clients.LastSessionLabel": {
+        "table": "Clients",
+        "field": "LastSessionLabel",
+        "kind": "rollup",
+        "rule": "Un client: last session label es el mayor valor de session label entre los sessions relacionados con el client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Mayor valor de session label entre todos los sessions cuyo client es clients ID"
+      },
+      "Clients.IsAtRisk": {
+        "table": "Clients",
+        "field": "IsAtRisk",
+        "kind": "formula",
+        "rule": "Un client se considera at risk si se cumple al menos una de las siguientes: el avg mood rating es menor que 5 o el avg goal progress es menor que 50.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "AvgMoodRating",
+            "label": "avg mood rating"
+          },
+          {
+            "table": "Clients",
+            "field": "AvgGoalProgress",
+            "label": "avg goal progress"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un client se considera at risk si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el avg mood rating es menor que 5"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el avg goal progress es menor que 50"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Avg mood rating es menor que 5 o avg goal progress es menor que 50"
+      },
+      "Clients.StatusLabel": {
+        "table": "Clients",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "El campo «status label» del client se determina según la siguiente prioridad:\n1. «At risk», si el indicador «at risk» está activado;\n2. en todos los demás casos, «On track».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "IsAtRisk",
+            "label": "is at risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «status label» del client se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«At risk»",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «at risk» está activado"
+              }
+            },
+            {
+              "value": "«On track»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is at risk, entonces \"At risk\", de lo contrario \"On track\""
+      },
+      "Goals.ClientName": {
+        "table": "Goals",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Un goal: client name — tomado del client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El client name del client vinculado"
+      },
+      "Goals.ClientTherapist": {
+        "table": "Goals",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "Un goal: client therapist — tomado del client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El therapist del client vinculado"
+      },
+      "Goals.Name": {
+        "table": "Goals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un goal: name es igual a goals ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goals ID"
+      },
+      "Goals.UpdateCount": {
+        "table": "Goals",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "Un goal: update count es el número de goal updates relacionados con el goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(goal, goals ID)"
+      },
+      "Goals.AvgScoreAchieved": {
+        "table": "Goals",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "Un goal: avg score achieved es el promedio de score achieved entre los goal updates relacionados con el goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Promedio de score achieved entre todos los goal updates cuyo goal es goals ID"
+      },
+      "Goals.LatestScore": {
+        "table": "Goals",
+        "field": "LatestScore",
+        "kind": "rollup",
+        "rule": "Un goal: latest score es el mayor valor de score achieved entre los goal updates relacionados con el goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Mayor valor de score achieved entre todos los goal updates cuyo goal es goals ID"
+      },
+      "Goals.ProgressPct": {
+        "table": "Goals",
+        "field": "ProgressPct",
+        "kind": "formula",
+        "rule": "Un goal: progress pct se calcula como el avg score achieved dividido por el target score por 100 (o 0 si no puede calcularse).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          },
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          }
+        ],
+        "structure": null,
+        "plain": "((avg score achieved dividido por target score) por 100), o 0 si eso da error"
+      },
+      "Goals.RemainingGap": {
+        "table": "Goals",
+        "field": "RemainingGap",
+        "kind": "formula",
+        "rule": "Un goal: remaining gap se calcula como el mayor de 0 y el target score menos el avg score achieved.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": null,
+        "plain": "El mayor de 0 y (target score menos avg score achieved)"
+      },
+      "Goals.IsOnTrack": {
+        "table": "Goals",
+        "field": "IsOnTrack",
+        "kind": "formula",
+        "rule": "Un goal se considera on track si el progress pct es al menos 70.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Progress pct es al menos 70"
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Un session: client name — tomado del client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El client name del client vinculado"
+      },
+      "Sessions.ClientTherapist": {
+        "table": "Sessions",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "Un session: client therapist — tomado del client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El therapist del client vinculado"
+      },
+      "Sessions.Name": {
+        "table": "Sessions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un session: name es igual a sessions ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Sessions ID"
+      },
+      "Sessions.UpdateCount": {
+        "table": "Sessions",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "Un session: update count es el número de goal updates relacionados con el session.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de goal updates cuyo session es sessions ID"
+      },
+      "Sessions.AvgScoreAchieved": {
+        "table": "Sessions",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "Un session: avg score achieved es el promedio de score achieved entre los goal updates relacionados con el session.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Promedio de score achieved entre todos los goal updates cuyo session es sessions ID"
+      },
+      "Sessions.IsProductive": {
+        "table": "Sessions",
+        "field": "IsProductive",
+        "kind": "formula",
+        "rule": "Un session se considera productive si se cumple todo lo siguiente: el update count es al menos 2 y el avg score achieved es al menos 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "UpdateCount",
+            "label": "update count"
+          },
+          {
+            "table": "Sessions",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un session se considera productive si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el update count es al menos 2"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el avg score achieved es al menos 5"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Update count es al menos 2 y avg score achieved es al menos 5"
+      },
+      "Sessions.StatusLabel": {
+        "table": "Sessions",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "El campo «status label» del session se determina según la siguiente prioridad:\n1. «Productive», si el indicador «productive» está activado;\n2. en todos los demás casos, «Light».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "IsProductive",
+            "label": "is productive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «status label» del session se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«Productive»",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «productive» está activado"
+              }
+            },
+            {
+              "value": "«Light»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is productive, entonces \"Productive\", de lo contrario \"Light\""
+      },
+      "GoalUpdates.GoalTitle": {
+        "table": "GoalUpdates",
+        "field": "GoalTitle",
+        "kind": "lookup",
+        "rule": "Un goal update: goal title — tomado del goal vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El title del goal vinculado"
+      },
+      "GoalUpdates.GoalClient": {
+        "table": "GoalUpdates",
+        "field": "GoalClient",
+        "kind": "lookup",
+        "rule": "Un goal update: goal client — tomado del goal vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El client del goal vinculado"
+      },
+      "GoalUpdates.GoalTargetScore": {
+        "table": "GoalUpdates",
+        "field": "GoalTargetScore",
+        "kind": "lookup",
+        "rule": "Un goal update: goal target score — tomado del goal vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El target score del goal vinculado"
+      },
+      "GoalUpdates.GoalClientTherapist": {
+        "table": "GoalUpdates",
+        "field": "GoalClientTherapist",
+        "kind": "lookup",
+        "rule": "Un goal update: goal client therapist — tomado del goal vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ClientTherapist",
+            "label": "client therapist"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El client therapist del goal vinculado"
+      },
+      "GoalUpdates.SessionLabel": {
+        "table": "GoalUpdates",
+        "field": "SessionLabel",
+        "kind": "lookup",
+        "rule": "Un goal update: session label — tomado del session vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El session label del session vinculado"
+      },
+      "GoalUpdates.Name": {
+        "table": "GoalUpdates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un goal update: name es igual a goal updates ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "GoalUpdatesId",
+            "label": "goal updates ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goal updates ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "Un user **debe** tener un full name y un role."
+      ],
+      "Clients": [
+        "Un client **debe** referenciar exactamente un user como su therapist.",
+        "Un client **debe** tener un client name."
+      ],
+      "Goals": [
+        "Un goal **debe** referenciar exactamente un client.",
+        "Un goal **debe** tener un title y un target score."
+      ],
+      "Sessions": [
+        "Un session **debe** referenciar exactamente un client.",
+        "Un session **debe** tener un session label y un mood rating."
+      ],
+      "GoalUpdates": [
+        "Un goal update **debe** referenciar exactamente un goal.",
+        "Un goal update **debe** referenciar exactamente un session.",
+        "Un goal update **debe** tener un score achieved."
+      ]
+    },
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Clients": "client",
+      "Goals": "goal",
+      "Sessions": "session",
+      "GoalUpdates": "goal update"
+    }
+  },
+  "fr": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un user : name est identique à users ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Users ID"
+      },
+      "Users.ClientCount": {
+        "table": "Users",
+        "field": "ClientCount",
+        "kind": "rollup",
+        "rule": "Un user : client count est le nombre de clients liés à l'user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(therapist, users ID)"
+      },
+      "Clients.TherapistName": {
+        "table": "Clients",
+        "field": "TherapistName",
+        "kind": "lookup",
+        "rule": "Un client : therapist name est le full name du therapist lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le full name du therapist lié"
+      },
+      "Clients.Name": {
+        "table": "Clients",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un client : name est identique à clients ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Clients ID"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "Un client : session count est le nombre de sessions liés à le client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgMoodRating": {
+        "table": "Clients",
+        "field": "AvgMoodRating",
+        "kind": "rollup",
+        "rule": "Un client : avg mood rating est la moyenne de mood rating sur les sessions liés à le client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "MoodRating",
+            "label": "mood rating"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Moyenne de mood rating sur tous les sessions dont client est clients ID"
+      },
+      "Clients.GoalCount": {
+        "table": "Clients",
+        "field": "GoalCount",
+        "kind": "rollup",
+        "rule": "Un client : goal count est le nombre de goals liés à le client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgGoalProgress": {
+        "table": "Clients",
+        "field": "AvgGoalProgress",
+        "kind": "rollup",
+        "rule": "Un client : avg goal progress est la moyenne de progress pct sur les goals liés à le client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Moyenne de progress pct sur tous les goals dont client est clients ID"
+      },
+      "Clients.LastSessionLabel": {
+        "table": "Clients",
+        "field": "LastSessionLabel",
+        "kind": "rollup",
+        "rule": "Un client : last session label est la plus grande valeur de session label sur les sessions liés à le client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Plus grande valeur de session label sur tous les sessions dont client est clients ID"
+      },
+      "Clients.IsAtRisk": {
+        "table": "Clients",
+        "field": "IsAtRisk",
+        "kind": "formula",
+        "rule": "Un client est considéré comme at risk si au moins une des conditions suivantes est vraie : l'avg mood rating est inférieur à 5 ou l'avg goal progress est inférieur à 50.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "AvgMoodRating",
+            "label": "avg mood rating"
+          },
+          {
+            "table": "Clients",
+            "field": "AvgGoalProgress",
+            "label": "avg goal progress"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un client est considéré comme at risk si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'avg mood rating est inférieur à 5"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'avg goal progress est inférieur à 50"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Avg mood rating est inférieur à 5 ou avg goal progress est inférieur à 50"
+      },
+      "Clients.StatusLabel": {
+        "table": "Clients",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "Le champ « status label » du client est déterminé selon la priorité suivante :\n1. « At risk », si l'indicateur « at risk » est activé ;\n2. dans tous les autres cas, « On track ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "IsAtRisk",
+            "label": "is at risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « status label » du client est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« At risk »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « at risk » est activé"
+              }
+            },
+            {
+              "value": "« On track »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is at risk, alors \"At risk\", sinon \"On track\""
+      },
+      "Goals.ClientName": {
+        "table": "Goals",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Un goal : client name — repris du client lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le client name du client lié"
+      },
+      "Goals.ClientTherapist": {
+        "table": "Goals",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "Un goal : client therapist — repris du client lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le therapist du client lié"
+      },
+      "Goals.Name": {
+        "table": "Goals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un goal : name est identique à goals ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goals ID"
+      },
+      "Goals.UpdateCount": {
+        "table": "Goals",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "Un goal : update count est le nombre de goal updates liés à le goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(goal, goals ID)"
+      },
+      "Goals.AvgScoreAchieved": {
+        "table": "Goals",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "Un goal : avg score achieved est la moyenne de score achieved sur les goal updates liés à le goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Moyenne de score achieved sur tous les goal updates dont goal est goals ID"
+      },
+      "Goals.LatestScore": {
+        "table": "Goals",
+        "field": "LatestScore",
+        "kind": "rollup",
+        "rule": "Un goal : latest score est la plus grande valeur de score achieved sur les goal updates liés à le goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Plus grande valeur de score achieved sur tous les goal updates dont goal est goals ID"
+      },
+      "Goals.ProgressPct": {
+        "table": "Goals",
+        "field": "ProgressPct",
+        "kind": "formula",
+        "rule": "Un goal : progress pct est calculé comme l'avg score achieved divisé par le target score multiplié par 100 (ou 0 si le calcul échoue).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          },
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          }
+        ],
+        "structure": null,
+        "plain": "((avg score achieved divisé par target score) fois 100), ou 0 en cas d'erreur"
+      },
+      "Goals.RemainingGap": {
+        "table": "Goals",
+        "field": "RemainingGap",
+        "kind": "formula",
+        "rule": "Un goal : remaining gap est calculé comme le plus grand de 0 et le target score moins l'avg score achieved.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": null,
+        "plain": "Le plus grand de 0 et (target score moins avg score achieved)"
+      },
+      "Goals.IsOnTrack": {
+        "table": "Goals",
+        "field": "IsOnTrack",
+        "kind": "formula",
+        "rule": "Un goal est considéré comme on track si le progress pct est au moins 70.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Progress pct est au moins 70"
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Une session : client name — repris du client lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le client name du client lié"
+      },
+      "Sessions.ClientTherapist": {
+        "table": "Sessions",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "Une session : client therapist — repris du client lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le therapist du client lié"
+      },
+      "Sessions.Name": {
+        "table": "Sessions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Une session : name est identique à sessions ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Sessions ID"
+      },
+      "Sessions.UpdateCount": {
+        "table": "Sessions",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "Une session : update count est le nombre de goal updates liés à la session.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des goal updates dont session est sessions ID"
+      },
+      "Sessions.AvgScoreAchieved": {
+        "table": "Sessions",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "Une session : avg score achieved est la moyenne de score achieved sur les goal updates liés à la session.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Moyenne de score achieved sur tous les goal updates dont session est sessions ID"
+      },
+      "Sessions.IsProductive": {
+        "table": "Sessions",
+        "field": "IsProductive",
+        "kind": "formula",
+        "rule": "Une session est considéré comme productive si tout ce qui suit est vrai : l'update count est au moins 2 et l'avg score achieved est au moins 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "UpdateCount",
+            "label": "update count"
+          },
+          {
+            "table": "Sessions",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Une session est considéré comme productive si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'update count est au moins 2"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'avg score achieved est au moins 5"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Update count est au moins 2 et avg score achieved est au moins 5"
+      },
+      "Sessions.StatusLabel": {
+        "table": "Sessions",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "Le champ « status label » de la session est déterminé selon la priorité suivante :\n1. « Productive », si l'indicateur « productive » est activé ;\n2. dans tous les autres cas, « Light ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "IsProductive",
+            "label": "is productive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « status label » de la session est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« Productive »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « productive » est activé"
+              }
+            },
+            {
+              "value": "« Light »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is productive, alors \"Productive\", sinon \"Light\""
+      },
+      "GoalUpdates.GoalTitle": {
+        "table": "GoalUpdates",
+        "field": "GoalTitle",
+        "kind": "lookup",
+        "rule": "Un goal update : goal title — repris du goal lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le title du goal lié"
+      },
+      "GoalUpdates.GoalClient": {
+        "table": "GoalUpdates",
+        "field": "GoalClient",
+        "kind": "lookup",
+        "rule": "Un goal update : goal client — repris du goal lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le client du goal lié"
+      },
+      "GoalUpdates.GoalTargetScore": {
+        "table": "GoalUpdates",
+        "field": "GoalTargetScore",
+        "kind": "lookup",
+        "rule": "Un goal update : goal target score — repris du goal lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le target score du goal lié"
+      },
+      "GoalUpdates.GoalClientTherapist": {
+        "table": "GoalUpdates",
+        "field": "GoalClientTherapist",
+        "kind": "lookup",
+        "rule": "Un goal update : goal client therapist — repris du goal lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ClientTherapist",
+            "label": "client therapist"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le client therapist du goal lié"
+      },
+      "GoalUpdates.SessionLabel": {
+        "table": "GoalUpdates",
+        "field": "SessionLabel",
+        "kind": "lookup",
+        "rule": "Un goal update : session label — repris du session lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le session label du session lié"
+      },
+      "GoalUpdates.Name": {
+        "table": "GoalUpdates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un goal update : name est identique à goal updates ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "GoalUpdatesId",
+            "label": "goal updates ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goal updates ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "Un user **doit** avoir un full name et un role."
+      ],
+      "Clients": [
+        "Un client **doit** référencer exactement un user comme son therapist.",
+        "Un client **doit** avoir un client name."
+      ],
+      "Goals": [
+        "Un goal **doit** référencer exactement un client.",
+        "Un goal **doit** avoir un title et un target score."
+      ],
+      "Sessions": [
+        "Une session **doit** référencer exactement un client.",
+        "Une session **doit** avoir un session label et un mood rating."
+      ],
+      "GoalUpdates": [
+        "Un goal update **doit** référencer exactement un goal.",
+        "Un goal update **doit** référencer exactement un session.",
+        "Un goal update **doit** avoir un score achieved."
+      ]
+    },
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Clients": "client",
+      "Goals": "goal",
+      "Sessions": "session",
+      "GoalUpdates": "goal update"
+    }
+  },
+  "hi": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "user का “name” उसके “users ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Users ID"
+      },
+      "Users.ClientCount": {
+        "table": "Users",
+        "field": "ClientCount",
+        "kind": "rollup",
+        "rule": "user का “client count” user से संबंधित “clients” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(therapist, users ID)"
+      },
+      "Clients.TherapistName": {
+        "table": "Clients",
+        "field": "TherapistName",
+        "kind": "lookup",
+        "rule": "client का “therapist name” लिंक किए गए “therapist” का “full name” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “therapist” का full name"
+      },
+      "Clients.Name": {
+        "table": "Clients",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "client का “name” उसके “clients ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Clients ID"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "client का “session count” client से संबंधित “sessions” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgMoodRating": {
+        "table": "Clients",
+        "field": "AvgMoodRating",
+        "kind": "rollup",
+        "rule": "client का “avg mood rating” client से संबंधित “sessions” पर औसत “mood rating” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "MoodRating",
+            "label": "mood rating"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “sessions” पर औसत mood rating, जिनका client clients ID है"
+      },
+      "Clients.GoalCount": {
+        "table": "Clients",
+        "field": "GoalCount",
+        "kind": "rollup",
+        "rule": "client का “goal count” client से संबंधित “goals” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgGoalProgress": {
+        "table": "Clients",
+        "field": "AvgGoalProgress",
+        "kind": "rollup",
+        "rule": "client का “avg goal progress” client से संबंधित “goals” पर औसत “progress pct” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “goals” पर औसत progress pct, जिनका client clients ID है"
+      },
+      "Clients.LastSessionLabel": {
+        "table": "Clients",
+        "field": "LastSessionLabel",
+        "kind": "rollup",
+        "rule": "client का “last session label” client से संबंधित “sessions” पर अधिकतम “session label” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “sessions” पर अधिकतम session label, जिनका client clients ID है"
+      },
+      "Clients.IsAtRisk": {
+        "table": "Clients",
+        "field": "IsAtRisk",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित में से कम से कम एक सही है: avg mood rating 5 से कम है या avg goal progress 50 से कम है, तो client “at risk” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "AvgMoodRating",
+            "label": "avg mood rating"
+          },
+          {
+            "table": "Clients",
+            "field": "AvgGoalProgress",
+            "label": "avg goal progress"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "client “at risk” माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "avg mood rating 5 से कम है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "avg goal progress 50 से कम है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Avg mood rating 5 से कम है या avg goal progress 50 से कम है"
+      },
+      "Clients.StatusLabel": {
+        "table": "Clients",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "Client का “status label” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “At risk”, यदि “at risk” ध्वज लगा हुआ है;\n2. अन्य सभी स्थितियों में, “On track”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "IsAtRisk",
+            "label": "is at risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Client का “status label” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“At risk”",
+              "when": {
+                "kind": "leaf",
+                "text": "“at risk” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "“On track”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि is at risk, तो \"At risk\", अन्यथा \"On track\""
+      },
+      "Goals.ClientName": {
+        "table": "Goals",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "goal का “client name” — लिंक किए गए “client” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “client” का client name"
+      },
+      "Goals.ClientTherapist": {
+        "table": "Goals",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "goal का “client therapist” — लिंक किए गए “client” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “client” का therapist"
+      },
+      "Goals.Name": {
+        "table": "Goals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "goal का “name” उसके “goals ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goals ID"
+      },
+      "Goals.UpdateCount": {
+        "table": "Goals",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "goal का “update count” goal से संबंधित “goal updates” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(goal, goals ID)"
+      },
+      "Goals.AvgScoreAchieved": {
+        "table": "Goals",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "goal का “avg score achieved” goal से संबंधित “goal updates” पर औसत “score achieved” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “goal updates” पर औसत score achieved, जिनका goal goals ID है"
+      },
+      "Goals.LatestScore": {
+        "table": "Goals",
+        "field": "LatestScore",
+        "kind": "rollup",
+        "rule": "goal का “latest score” goal से संबंधित “goal updates” पर अधिकतम “score achieved” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “goal updates” पर अधिकतम score achieved, जिनका goal goals ID है"
+      },
+      "Goals.ProgressPct": {
+        "table": "Goals",
+        "field": "ProgressPct",
+        "kind": "formula",
+        "rule": "goal का “progress pct” avg score achieved भाग target score गुणा 100 (या 0, यदि उसकी गणना न हो सके) के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          },
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          }
+        ],
+        "structure": null,
+        "plain": "((avg score achieved भाग target score) गुणा 100), या 0 यदि उसमें त्रुटि हो"
+      },
+      "Goals.RemainingGap": {
+        "table": "Goals",
+        "field": "RemainingGap",
+        "kind": "formula",
+        "rule": "goal का “remaining gap” 0 और target score घटा avg score achieved में से अधिकतम के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": null,
+        "plain": "0 और (target score घटा avg score achieved) में से अधिकतम"
+      },
+      "Goals.IsOnTrack": {
+        "table": "Goals",
+        "field": "IsOnTrack",
+        "kind": "formula",
+        "rule": "यदि progress pct कम से कम 70 है, तो goal “on track” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Progress pct कम से कम 70 है"
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "session का “client name” — लिंक किए गए “client” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “client” का client name"
+      },
+      "Sessions.ClientTherapist": {
+        "table": "Sessions",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "session का “client therapist” — लिंक किए गए “client” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “client” का therapist"
+      },
+      "Sessions.Name": {
+        "table": "Sessions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "session का “name” उसके “sessions ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Sessions ID"
+      },
+      "Sessions.UpdateCount": {
+        "table": "Sessions",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "session का “update count” session से संबंधित “goal updates” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “goal updates” की संख्या, जिनका session sessions ID है"
+      },
+      "Sessions.AvgScoreAchieved": {
+        "table": "Sessions",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "session का “avg score achieved” session से संबंधित “goal updates” पर औसत “score achieved” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “goal updates” पर औसत score achieved, जिनका session sessions ID है"
+      },
+      "Sessions.IsProductive": {
+        "table": "Sessions",
+        "field": "IsProductive",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: update count कम से कम 2 है और avg score achieved कम से कम 5 है, तो session “productive” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "UpdateCount",
+            "label": "update count"
+          },
+          {
+            "table": "Sessions",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "session “productive” माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "update count कम से कम 2 है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "avg score achieved कम से कम 5 है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Update count कम से कम 2 है और avg score achieved कम से कम 5 है"
+      },
+      "Sessions.StatusLabel": {
+        "table": "Sessions",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "Session का “status label” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “Productive”, यदि “productive” ध्वज लगा हुआ है;\n2. अन्य सभी स्थितियों में, “Light”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "IsProductive",
+            "label": "is productive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Session का “status label” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“Productive”",
+              "when": {
+                "kind": "leaf",
+                "text": "“productive” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "“Light”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि is productive, तो \"Productive\", अन्यथा \"Light\""
+      },
+      "GoalUpdates.GoalTitle": {
+        "table": "GoalUpdates",
+        "field": "GoalTitle",
+        "kind": "lookup",
+        "rule": "goal update का “goal title” — लिंक किए गए “goal” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “goal” का title"
+      },
+      "GoalUpdates.GoalClient": {
+        "table": "GoalUpdates",
+        "field": "GoalClient",
+        "kind": "lookup",
+        "rule": "goal update का “goal client” — लिंक किए गए “goal” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “goal” का client"
+      },
+      "GoalUpdates.GoalTargetScore": {
+        "table": "GoalUpdates",
+        "field": "GoalTargetScore",
+        "kind": "lookup",
+        "rule": "goal update का “goal target score” — लिंक किए गए “goal” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “goal” का target score"
+      },
+      "GoalUpdates.GoalClientTherapist": {
+        "table": "GoalUpdates",
+        "field": "GoalClientTherapist",
+        "kind": "lookup",
+        "rule": "goal update का “goal client therapist” — लिंक किए गए “goal” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ClientTherapist",
+            "label": "client therapist"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “goal” का client therapist"
+      },
+      "GoalUpdates.SessionLabel": {
+        "table": "GoalUpdates",
+        "field": "SessionLabel",
+        "kind": "lookup",
+        "rule": "goal update का “session label” — लिंक किए गए “session” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “session” का session label"
+      },
+      "GoalUpdates.Name": {
+        "table": "GoalUpdates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "goal update का “name” उसके “goal updates ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "GoalUpdatesId",
+            "label": "goal updates ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goal updates ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "user को full name और role रखना **अनिवार्य** है।"
+      ],
+      "Clients": [
+        "client को अपने “therapist” के रूप में ठीक एक “user” का संदर्भ देना **अनिवार्य** है।",
+        "client को client name रखना **अनिवार्य** है।"
+      ],
+      "Goals": [
+        "goal को ठीक एक “client” का संदर्भ देना **अनिवार्य** है।",
+        "goal को title और target score रखना **अनिवार्य** है।"
+      ],
+      "Sessions": [
+        "session को ठीक एक “client” का संदर्भ देना **अनिवार्य** है।",
+        "session को session label और mood rating रखना **अनिवार्य** है।"
+      ],
+      "GoalUpdates": [
+        "goal update को ठीक एक “goal” का संदर्भ देना **अनिवार्य** है।",
+        "goal update को ठीक एक “session” का संदर्भ देना **अनिवार्य** है।",
+        "goal update को score achieved रखना **अनिवार्य** है।"
+      ]
+    },
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "Users": "user",
+      "Clients": "client",
+      "Goals": "goal",
+      "Sessions": "session",
+      "GoalUpdates": "goal update"
+    }
+  },
+  "id": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap user, name sama dengan users ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Users ID"
+      },
+      "Users.ClientCount": {
+        "table": "Users",
+        "field": "ClientCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap user, client count adalah jumlah clients yang terkait dengan user tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(therapist, users ID)"
+      },
+      "Clients.TherapistName": {
+        "table": "Clients",
+        "field": "TherapistName",
+        "kind": "lookup",
+        "rule": "Untuk setiap client, therapist name adalah full name dari therapist yang tertaut pada client tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name dari therapist yang tertaut"
+      },
+      "Clients.Name": {
+        "table": "Clients",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap client, name sama dengan clients ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Clients ID"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap client, session count adalah jumlah sessions yang terkait dengan client tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgMoodRating": {
+        "table": "Clients",
+        "field": "AvgMoodRating",
+        "kind": "rollup",
+        "rule": "Untuk setiap client, avg mood rating adalah nilai rata-rata mood rating pada seluruh sessions yang terkait dengan client tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "MoodRating",
+            "label": "mood rating"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rata-rata mood rating pada semua sessions dengan syarat client adalah clients ID"
+      },
+      "Clients.GoalCount": {
+        "table": "Clients",
+        "field": "GoalCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap client, goal count adalah jumlah goals yang terkait dengan client tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgGoalProgress": {
+        "table": "Clients",
+        "field": "AvgGoalProgress",
+        "kind": "rollup",
+        "rule": "Untuk setiap client, avg goal progress adalah nilai rata-rata progress pct pada seluruh goals yang terkait dengan client tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rata-rata progress pct pada semua goals dengan syarat client adalah clients ID"
+      },
+      "Clients.LastSessionLabel": {
+        "table": "Clients",
+        "field": "LastSessionLabel",
+        "kind": "rollup",
+        "rule": "Untuk setiap client, last session label adalah nilai maksimum session label pada seluruh sessions yang terkait dengan client tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Nilai maksimum session label pada semua sessions dengan syarat client adalah clients ID"
+      },
+      "Clients.IsAtRisk": {
+        "table": "Clients",
+        "field": "IsAtRisk",
+        "kind": "formula",
+        "rule": "Setiap client dianggap “at risk” jika paling sedikit satu dari kondisi berikut terpenuhi: avg mood rating kurang dari 5 atau avg goal progress kurang dari 50.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "AvgMoodRating",
+            "label": "avg mood rating"
+          },
+          {
+            "table": "Clients",
+            "field": "AvgGoalProgress",
+            "label": "avg goal progress"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap client dianggap “at risk” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "avg mood rating kurang dari 5"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "avg goal progress kurang dari 50"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Avg mood rating kurang dari 5 atau avg goal progress kurang dari 50"
+      },
+      "Clients.StatusLabel": {
+        "table": "Clients",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "Untuk setiap client, status label ditentukan menurut urutan prioritas berikut:\n1. “At risk”, jika penanda “at risk” aktif;\n2. dalam semua kasus lainnya, “On track”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "IsAtRisk",
+            "label": "is at risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap client, status label ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“At risk”",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “at risk” aktif"
+              }
+            },
+            {
+              "value": "“On track”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika is at risk maka \"At risk\", selain itu \"On track\""
+      },
+      "Goals.ClientName": {
+        "table": "Goals",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Untuk setiap goal, client name diambil dari client yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client name dari client yang tertaut"
+      },
+      "Goals.ClientTherapist": {
+        "table": "Goals",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "Untuk setiap goal, client therapist diambil dari client yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Therapist dari client yang tertaut"
+      },
+      "Goals.Name": {
+        "table": "Goals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap goal, name sama dengan goals ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goals ID"
+      },
+      "Goals.UpdateCount": {
+        "table": "Goals",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap goal, update count adalah jumlah goal updates yang terkait dengan goal tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(goal, goals ID)"
+      },
+      "Goals.AvgScoreAchieved": {
+        "table": "Goals",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "Untuk setiap goal, avg score achieved adalah nilai rata-rata score achieved pada seluruh goal updates yang terkait dengan goal tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rata-rata score achieved pada semua goal updates dengan syarat goal adalah goals ID"
+      },
+      "Goals.LatestScore": {
+        "table": "Goals",
+        "field": "LatestScore",
+        "kind": "rollup",
+        "rule": "Untuk setiap goal, latest score adalah nilai maksimum score achieved pada seluruh goal updates yang terkait dengan goal tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Nilai maksimum score achieved pada semua goal updates dengan syarat goal adalah goals ID"
+      },
+      "Goals.ProgressPct": {
+        "table": "Goals",
+        "field": "ProgressPct",
+        "kind": "formula",
+        "rule": "Untuk setiap goal, progress pct dihitung sebagai avg score achieved dibagi target score dikali 100 (atau 0 jika tidak dapat dihitung).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          },
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          }
+        ],
+        "structure": null,
+        "plain": "((avg score achieved dibagi target score) dikali 100), atau 0 jika terjadi kesalahan"
+      },
+      "Goals.RemainingGap": {
+        "table": "Goals",
+        "field": "RemainingGap",
+        "kind": "formula",
+        "rule": "Untuk setiap goal, remaining gap dihitung sebagai nilai terbesar dari 0 dan target score dikurangi avg score achieved.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": null,
+        "plain": "Nilai terbesar dari 0 dan (target score dikurangi avg score achieved)"
+      },
+      "Goals.IsOnTrack": {
+        "table": "Goals",
+        "field": "IsOnTrack",
+        "kind": "formula",
+        "rule": "Setiap goal dianggap “on track” jika progress pct tidak kurang dari 70.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Progress pct tidak kurang dari 70"
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Untuk setiap session, client name diambil dari client yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client name dari client yang tertaut"
+      },
+      "Sessions.ClientTherapist": {
+        "table": "Sessions",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "Untuk setiap session, client therapist diambil dari client yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Therapist dari client yang tertaut"
+      },
+      "Sessions.Name": {
+        "table": "Sessions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap session, name sama dengan sessions ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Sessions ID"
+      },
+      "Sessions.UpdateCount": {
+        "table": "Sessions",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap session, update count adalah jumlah goal updates yang terkait dengan session tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah goal updates dengan syarat session adalah sessions ID"
+      },
+      "Sessions.AvgScoreAchieved": {
+        "table": "Sessions",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "Untuk setiap session, avg score achieved adalah nilai rata-rata score achieved pada seluruh goal updates yang terkait dengan session tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rata-rata score achieved pada semua goal updates dengan syarat session adalah sessions ID"
+      },
+      "Sessions.IsProductive": {
+        "table": "Sessions",
+        "field": "IsProductive",
+        "kind": "formula",
+        "rule": "Setiap session dianggap “productive” jika semua kondisi berikut terpenuhi: update count tidak kurang dari 2 dan avg score achieved tidak kurang dari 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "UpdateCount",
+            "label": "update count"
+          },
+          {
+            "table": "Sessions",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap session dianggap “productive” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "update count tidak kurang dari 2"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "avg score achieved tidak kurang dari 5"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Update count tidak kurang dari 2 dan avg score achieved tidak kurang dari 5"
+      },
+      "Sessions.StatusLabel": {
+        "table": "Sessions",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "Untuk setiap session, status label ditentukan menurut urutan prioritas berikut:\n1. “Productive”, jika penanda “productive” aktif;\n2. dalam semua kasus lainnya, “Light”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "IsProductive",
+            "label": "is productive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap session, status label ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“Productive”",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “productive” aktif"
+              }
+            },
+            {
+              "value": "“Light”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika is productive maka \"Productive\", selain itu \"Light\""
+      },
+      "GoalUpdates.GoalTitle": {
+        "table": "GoalUpdates",
+        "field": "GoalTitle",
+        "kind": "lookup",
+        "rule": "Untuk setiap goal update, goal title diambil dari goal yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Title dari goal yang tertaut"
+      },
+      "GoalUpdates.GoalClient": {
+        "table": "GoalUpdates",
+        "field": "GoalClient",
+        "kind": "lookup",
+        "rule": "Untuk setiap goal update, goal client diambil dari goal yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client dari goal yang tertaut"
+      },
+      "GoalUpdates.GoalTargetScore": {
+        "table": "GoalUpdates",
+        "field": "GoalTargetScore",
+        "kind": "lookup",
+        "rule": "Untuk setiap goal update, goal target score diambil dari goal yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Target score dari goal yang tertaut"
+      },
+      "GoalUpdates.GoalClientTherapist": {
+        "table": "GoalUpdates",
+        "field": "GoalClientTherapist",
+        "kind": "lookup",
+        "rule": "Untuk setiap goal update, goal client therapist diambil dari goal yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ClientTherapist",
+            "label": "client therapist"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client therapist dari goal yang tertaut"
+      },
+      "GoalUpdates.SessionLabel": {
+        "table": "GoalUpdates",
+        "field": "SessionLabel",
+        "kind": "lookup",
+        "rule": "Untuk setiap goal update, session label diambil dari session yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Session label dari session yang tertaut"
+      },
+      "GoalUpdates.Name": {
+        "table": "GoalUpdates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap goal update, name sama dengan goal updates ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "GoalUpdatesId",
+            "label": "goal updates ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goal updates ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "Setiap user **harus** memiliki full name dan role."
+      ],
+      "Clients": [
+        "Setiap client **harus** merujuk pada tepat satu user sebagai therapist.",
+        "Setiap client **harus** memiliki client name."
+      ],
+      "Goals": [
+        "Setiap goal **harus** merujuk pada tepat satu client.",
+        "Setiap goal **harus** memiliki title dan target score."
+      ],
+      "Sessions": [
+        "Setiap session **harus** merujuk pada tepat satu client.",
+        "Setiap session **harus** memiliki session label dan mood rating."
+      ],
+      "GoalUpdates": [
+        "Setiap goal update **harus** merujuk pada tepat satu goal.",
+        "Setiap goal update **harus** merujuk pada tepat satu session.",
+        "Setiap goal update **harus** memiliki score achieved."
+      ]
+    },
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Clients": "client",
+      "Goals": "goal",
+      "Sessions": "session",
+      "GoalUpdates": "goal update"
+    }
+  },
+  "it": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un user: name è uguale a users ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Users ID"
+      },
+      "Users.ClientCount": {
+        "table": "Users",
+        "field": "ClientCount",
+        "kind": "rollup",
+        "rule": "Un user: client count è il numero di clients collegati a l'user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(therapist, users ID)"
+      },
+      "Clients.TherapistName": {
+        "table": "Clients",
+        "field": "TherapistName",
+        "kind": "lookup",
+        "rule": "Un client: therapist name è il full name del therapist collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il full name del therapist collegato"
+      },
+      "Clients.Name": {
+        "table": "Clients",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un client: name è uguale a clients ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Clients ID"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "Un client: session count è il numero di sessions collegati a il client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgMoodRating": {
+        "table": "Clients",
+        "field": "AvgMoodRating",
+        "kind": "rollup",
+        "rule": "Un client: avg mood rating è la media di mood rating tra i sessions collegati a il client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "MoodRating",
+            "label": "mood rating"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Media di mood rating su tutti i sessions il cui client è clients ID"
+      },
+      "Clients.GoalCount": {
+        "table": "Clients",
+        "field": "GoalCount",
+        "kind": "rollup",
+        "rule": "Un client: goal count è il numero di goals collegati a il client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgGoalProgress": {
+        "table": "Clients",
+        "field": "AvgGoalProgress",
+        "kind": "rollup",
+        "rule": "Un client: avg goal progress è la media di progress pct tra i goals collegati a il client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Media di progress pct su tutti i goals il cui client è clients ID"
+      },
+      "Clients.LastSessionLabel": {
+        "table": "Clients",
+        "field": "LastSessionLabel",
+        "kind": "rollup",
+        "rule": "Un client: last session label è il valore massimo di session label tra i sessions collegati a il client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Valore massimo di session label su tutti i sessions il cui client è clients ID"
+      },
+      "Clients.IsAtRisk": {
+        "table": "Clients",
+        "field": "IsAtRisk",
+        "kind": "formula",
+        "rule": "Un client è considerato at risk se vale almeno una delle seguenti: l'avg mood rating è minore di 5 o l'avg goal progress è minore di 50.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "AvgMoodRating",
+            "label": "avg mood rating"
+          },
+          {
+            "table": "Clients",
+            "field": "AvgGoalProgress",
+            "label": "avg goal progress"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un client è considerato at risk se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'avg mood rating è minore di 5"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'avg goal progress è minore di 50"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Avg mood rating è minore di 5 o avg goal progress è minore di 50"
+      },
+      "Clients.StatusLabel": {
+        "table": "Clients",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "Il campo “status label” del client è determinato secondo la seguente priorità:\n1. «At risk», se l'indicatore “at risk” è attivo;\n2. in tutti gli altri casi, «On track».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "IsAtRisk",
+            "label": "is at risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “status label” del client è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«At risk»",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “at risk” è attivo"
+              }
+            },
+            {
+              "value": "«On track»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is at risk, allora \"At risk\", altrimenti \"On track\""
+      },
+      "Goals.ClientName": {
+        "table": "Goals",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Un goal: client name — ripreso dal client collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il client name del client collegato"
+      },
+      "Goals.ClientTherapist": {
+        "table": "Goals",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "Un goal: client therapist — ripreso dal client collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il therapist del client collegato"
+      },
+      "Goals.Name": {
+        "table": "Goals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un goal: name è uguale a goals ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goals ID"
+      },
+      "Goals.UpdateCount": {
+        "table": "Goals",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "Un goal: update count è il numero di goal updates collegati a il goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(goal, goals ID)"
+      },
+      "Goals.AvgScoreAchieved": {
+        "table": "Goals",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "Un goal: avg score achieved è la media di score achieved tra i goal updates collegati a il goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Media di score achieved su tutti i goal updates il cui goal è goals ID"
+      },
+      "Goals.LatestScore": {
+        "table": "Goals",
+        "field": "LatestScore",
+        "kind": "rollup",
+        "rule": "Un goal: latest score è il valore massimo di score achieved tra i goal updates collegati a il goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Valore massimo di score achieved su tutti i goal updates il cui goal è goals ID"
+      },
+      "Goals.ProgressPct": {
+        "table": "Goals",
+        "field": "ProgressPct",
+        "kind": "formula",
+        "rule": "Un goal: progress pct è calcolato come l'avg score achieved diviso il target score per 100 (o 0 se non può essere calcolato).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          },
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          }
+        ],
+        "structure": null,
+        "plain": "((avg score achieved diviso target score) per 100), o 0 in caso di errore"
+      },
+      "Goals.RemainingGap": {
+        "table": "Goals",
+        "field": "RemainingGap",
+        "kind": "formula",
+        "rule": "Un goal: remaining gap è calcolato come il maggiore tra 0 e il target score meno l'avg score achieved.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": null,
+        "plain": "Il maggiore tra 0 e (target score meno avg score achieved)"
+      },
+      "Goals.IsOnTrack": {
+        "table": "Goals",
+        "field": "IsOnTrack",
+        "kind": "formula",
+        "rule": "Un goal è considerato on track se il progress pct è almeno 70.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Progress pct è almeno 70"
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Un session: client name — ripreso dal client collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il client name del client collegato"
+      },
+      "Sessions.ClientTherapist": {
+        "table": "Sessions",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "Un session: client therapist — ripreso dal client collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il therapist del client collegato"
+      },
+      "Sessions.Name": {
+        "table": "Sessions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un session: name è uguale a sessions ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Sessions ID"
+      },
+      "Sessions.UpdateCount": {
+        "table": "Sessions",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "Un session: update count è il numero di goal updates collegati a il session.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei goal updates il cui session è sessions ID"
+      },
+      "Sessions.AvgScoreAchieved": {
+        "table": "Sessions",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "Un session: avg score achieved è la media di score achieved tra i goal updates collegati a il session.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Media di score achieved su tutti i goal updates il cui session è sessions ID"
+      },
+      "Sessions.IsProductive": {
+        "table": "Sessions",
+        "field": "IsProductive",
+        "kind": "formula",
+        "rule": "Un session è considerato productive se vale tutto quanto segue: l'update count è almeno 2 e l'avg score achieved è almeno 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "UpdateCount",
+            "label": "update count"
+          },
+          {
+            "table": "Sessions",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un session è considerato productive se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'update count è almeno 2"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'avg score achieved è almeno 5"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Update count è almeno 2 e avg score achieved è almeno 5"
+      },
+      "Sessions.StatusLabel": {
+        "table": "Sessions",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "Il campo “status label” del session è determinato secondo la seguente priorità:\n1. «Productive», se l'indicatore “productive” è attivo;\n2. in tutti gli altri casi, «Light».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "IsProductive",
+            "label": "is productive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “status label” del session è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«Productive»",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “productive” è attivo"
+              }
+            },
+            {
+              "value": "«Light»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is productive, allora \"Productive\", altrimenti \"Light\""
+      },
+      "GoalUpdates.GoalTitle": {
+        "table": "GoalUpdates",
+        "field": "GoalTitle",
+        "kind": "lookup",
+        "rule": "Un goal update: goal title — ripreso dal goal collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il title del goal collegato"
+      },
+      "GoalUpdates.GoalClient": {
+        "table": "GoalUpdates",
+        "field": "GoalClient",
+        "kind": "lookup",
+        "rule": "Un goal update: goal client — ripreso dal goal collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il client del goal collegato"
+      },
+      "GoalUpdates.GoalTargetScore": {
+        "table": "GoalUpdates",
+        "field": "GoalTargetScore",
+        "kind": "lookup",
+        "rule": "Un goal update: goal target score — ripreso dal goal collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il target score del goal collegato"
+      },
+      "GoalUpdates.GoalClientTherapist": {
+        "table": "GoalUpdates",
+        "field": "GoalClientTherapist",
+        "kind": "lookup",
+        "rule": "Un goal update: goal client therapist — ripreso dal goal collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ClientTherapist",
+            "label": "client therapist"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il client therapist del goal collegato"
+      },
+      "GoalUpdates.SessionLabel": {
+        "table": "GoalUpdates",
+        "field": "SessionLabel",
+        "kind": "lookup",
+        "rule": "Un goal update: session label — ripreso dal session collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il session label del session collegato"
+      },
+      "GoalUpdates.Name": {
+        "table": "GoalUpdates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un goal update: name è uguale a goal updates ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "GoalUpdatesId",
+            "label": "goal updates ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goal updates ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "Un user **deve** avere un full name e un role."
+      ],
+      "Clients": [
+        "Un client **deve** referenziare esattamente un user come suo therapist.",
+        "Un client **deve** avere un client name."
+      ],
+      "Goals": [
+        "Un goal **deve** referenziare esattamente un client.",
+        "Un goal **deve** avere un title e un target score."
+      ],
+      "Sessions": [
+        "Un session **deve** referenziare esattamente un client.",
+        "Un session **deve** avere un session label e un mood rating."
+      ],
+      "GoalUpdates": [
+        "Un goal update **deve** referenziare esattamente un goal.",
+        "Un goal update **deve** referenziare esattamente un session.",
+        "Un goal update **deve** avere un score achieved."
+      ]
+    },
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Clients": "client",
+      "Goals": "goal",
+      "Sessions": "session",
+      "GoalUpdates": "goal update"
+    }
+  },
+  "ja": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "userの「name」は users ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Users ID"
+      },
+      "Users.ClientCount": {
+        "table": "Users",
+        "field": "ClientCount",
+        "kind": "rollup",
+        "rule": "userの「client count」は userに関連する「clients」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(therapist, users ID)"
+      },
+      "Clients.TherapistName": {
+        "table": "Clients",
+        "field": "TherapistName",
+        "kind": "lookup",
+        "rule": "clientの「therapist name」は、リンクされた「therapist」の「full name」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「therapist」の full name"
+      },
+      "Clients.Name": {
+        "table": "Clients",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "clientの「name」は clients ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Clients ID"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "clientの「session count」は clientに関連する「sessions」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgMoodRating": {
+        "table": "Clients",
+        "field": "AvgMoodRating",
+        "kind": "rollup",
+        "rule": "clientの「avg mood rating」は clientに関連する「sessions」全体での「mood rating」の平均 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "MoodRating",
+            "label": "mood rating"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client が clients ID であるすべての「sessions」にわたる mood rating の平均"
+      },
+      "Clients.GoalCount": {
+        "table": "Clients",
+        "field": "GoalCount",
+        "kind": "rollup",
+        "rule": "clientの「goal count」は clientに関連する「goals」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgGoalProgress": {
+        "table": "Clients",
+        "field": "AvgGoalProgress",
+        "kind": "rollup",
+        "rule": "clientの「avg goal progress」は clientに関連する「goals」全体での「progress pct」の平均 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client が clients ID であるすべての「goals」にわたる progress pct の平均"
+      },
+      "Clients.LastSessionLabel": {
+        "table": "Clients",
+        "field": "LastSessionLabel",
+        "kind": "rollup",
+        "rule": "clientの「last session label」は clientに関連する「sessions」全体での「session label」の最大値 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client が clients ID であるすべての「sessions」にわたる session label の最大"
+      },
+      "Clients.IsAtRisk": {
+        "table": "Clients",
+        "field": "IsAtRisk",
+        "kind": "formula",
+        "rule": "次のいずれかが成り立つ: avg mood rating が 5 より小さいまたはavg goal progress が 50 より小さい場合、clientは「At Risk」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "AvgMoodRating",
+            "label": "avg mood rating"
+          },
+          {
+            "table": "Clients",
+            "field": "AvgGoalProgress",
+            "label": "avg goal progress"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、clientは「At Risk」と見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "avg mood rating が 5 より小さい"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "avg goal progress が 50 より小さい"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Avg mood rating が 5 より小さいまたはavg goal progress が 50 より小さい"
+      },
+      "Clients.StatusLabel": {
+        "table": "Clients",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "Clientの「status label」は、次の優先順位で決まります:\n1. フラグ「at risk」が設定されている場合は 「At risk」;\n2. それ以外の場合は 「On track」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "IsAtRisk",
+            "label": "is at risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Clientの「status label」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「At risk」",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「at risk」が設定されている"
+              }
+            },
+            {
+              "value": "「On track」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is at riskなら \"At risk\"、そうでなければ \"On track\""
+      },
+      "Goals.ClientName": {
+        "table": "Goals",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "goalの「client name」— リンクされた「client」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「client」の client name"
+      },
+      "Goals.ClientTherapist": {
+        "table": "Goals",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "goalの「client therapist」— リンクされた「client」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「client」の therapist"
+      },
+      "Goals.Name": {
+        "table": "Goals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "goalの「name」は goals ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goals ID"
+      },
+      "Goals.UpdateCount": {
+        "table": "Goals",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "goalの「update count」は goalに関連する「goal updates」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(goal, goals ID)"
+      },
+      "Goals.AvgScoreAchieved": {
+        "table": "Goals",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "goalの「avg score achieved」は goalに関連する「goal updates」全体での「score achieved」の平均 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goal が goals ID であるすべての「goal updates」にわたる score achieved の平均"
+      },
+      "Goals.LatestScore": {
+        "table": "Goals",
+        "field": "LatestScore",
+        "kind": "rollup",
+        "rule": "goalの「latest score」は goalに関連する「goal updates」全体での「score achieved」の最大値 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goal が goals ID であるすべての「goal updates」にわたる score achieved の最大"
+      },
+      "Goals.ProgressPct": {
+        "table": "Goals",
+        "field": "ProgressPct",
+        "kind": "formula",
+        "rule": "goalの「progress pct」は avg score achieved わる target score かける 100(計算できない場合は 0) として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          },
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          }
+        ],
+        "structure": null,
+        "plain": "((avg score achieved わる target score) かける 100)(エラー時は 0)"
+      },
+      "Goals.RemainingGap": {
+        "table": "Goals",
+        "field": "RemainingGap",
+        "kind": "formula",
+        "rule": "goalの「remaining gap」は 0およびtarget score ひく avg score achieved のうち最大のもの として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": null,
+        "plain": "0および(target score ひく avg score achieved) のうち最大"
+      },
+      "Goals.IsOnTrack": {
+        "table": "Goals",
+        "field": "IsOnTrack",
+        "kind": "formula",
+        "rule": "progress pct が 70 以上である場合、goalは「On Track」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Progress pct が 70 以上"
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "sessionの「client name」— リンクされた「client」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「client」の client name"
+      },
+      "Sessions.ClientTherapist": {
+        "table": "Sessions",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "sessionの「client therapist」— リンクされた「client」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「client」の therapist"
+      },
+      "Sessions.Name": {
+        "table": "Sessions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "sessionの「name」は sessions ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Sessions ID"
+      },
+      "Sessions.UpdateCount": {
+        "table": "Sessions",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "sessionの「update count」は sessionに関連する「goal updates」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Session が sessions ID である「goal updates」の件数"
+      },
+      "Sessions.AvgScoreAchieved": {
+        "table": "Sessions",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "sessionの「avg score achieved」は sessionに関連する「goal updates」全体での「score achieved」の平均 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Session が sessions ID であるすべての「goal updates」にわたる score achieved の平均"
+      },
+      "Sessions.IsProductive": {
+        "table": "Sessions",
+        "field": "IsProductive",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: update count が 2 以上であるおよびavg score achieved が 5 以上である場合、sessionは「Productive」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "UpdateCount",
+            "label": "update count"
+          },
+          {
+            "table": "Sessions",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、sessionは「Productive」と見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "update count が 2 以上である"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "avg score achieved が 5 以上である"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Update count が 2 以上およびavg score achieved が 5 以上"
+      },
+      "Sessions.StatusLabel": {
+        "table": "Sessions",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "Sessionの「status label」は、次の優先順位で決まります:\n1. フラグ「productive」が設定されている場合は 「Productive」;\n2. それ以外の場合は 「Light」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "IsProductive",
+            "label": "is productive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Sessionの「status label」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「Productive」",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「productive」が設定されている"
+              }
+            },
+            {
+              "value": "「Light」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is productiveなら \"Productive\"、そうでなければ \"Light\""
+      },
+      "GoalUpdates.GoalTitle": {
+        "table": "GoalUpdates",
+        "field": "GoalTitle",
+        "kind": "lookup",
+        "rule": "goal updateの「goal title」— リンクされた「goal」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「goal」の title"
+      },
+      "GoalUpdates.GoalClient": {
+        "table": "GoalUpdates",
+        "field": "GoalClient",
+        "kind": "lookup",
+        "rule": "goal updateの「goal client」— リンクされた「goal」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「goal」の client"
+      },
+      "GoalUpdates.GoalTargetScore": {
+        "table": "GoalUpdates",
+        "field": "GoalTargetScore",
+        "kind": "lookup",
+        "rule": "goal updateの「goal target score」— リンクされた「goal」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「goal」の target score"
+      },
+      "GoalUpdates.GoalClientTherapist": {
+        "table": "GoalUpdates",
+        "field": "GoalClientTherapist",
+        "kind": "lookup",
+        "rule": "goal updateの「goal client therapist」— リンクされた「goal」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ClientTherapist",
+            "label": "client therapist"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「goal」の client therapist"
+      },
+      "GoalUpdates.SessionLabel": {
+        "table": "GoalUpdates",
+        "field": "SessionLabel",
+        "kind": "lookup",
+        "rule": "goal updateの「session label」— リンクされた「session」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「session」の session label"
+      },
+      "GoalUpdates.Name": {
+        "table": "GoalUpdates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "goal updateの「name」は goal updates ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "GoalUpdatesId",
+            "label": "goal updates ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goal updates ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "userは full nameおよびrole を持た**なければなりません**。"
+      ],
+      "Clients": [
+        "clientは、therapistとして「user」をちょうど 1 件参照し**なければなりません**。",
+        "clientは client name を持た**なければなりません**。"
+      ],
+      "Goals": [
+        "goalは「client」をちょうど 1 件参照し**なければなりません**。",
+        "goalは titleおよびtarget score を持た**なければなりません**。"
+      ],
+      "Sessions": [
+        "sessionは「client」をちょうど 1 件参照し**なければなりません**。",
+        "sessionは session labelおよびmood rating を持た**なければなりません**。"
+      ],
+      "GoalUpdates": [
+        "goal updateは「goal」をちょうど 1 件参照し**なければなりません**。",
+        "goal updateは「session」をちょうど 1 件参照し**なければなりません**。",
+        "goal updateは score achieved を持た**なければなりません**。"
+      ]
+    },
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "Users": "user",
+      "Clients": "client",
+      "Goals": "goal",
+      "Sessions": "session",
+      "GoalUpdates": "goal update"
+    }
+  },
+  "ko": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘user’ 레코드의 ‘name’ 값은 같은 레코드의 ‘users ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Users ID"
+      },
+      "Users.ClientCount": {
+        "table": "Users",
+        "field": "ClientCount",
+        "kind": "rollup",
+        "rule": "‘user’ 레코드의 ‘client count’ 값은 해당 ‘user’ 레코드에 연결된 ‘clients’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(therapist, users ID)"
+      },
+      "Clients.TherapistName": {
+        "table": "Clients",
+        "field": "TherapistName",
+        "kind": "lookup",
+        "rule": "‘client’ 레코드의 ‘therapist name’ 값은 연결된 ‘therapist’ 레코드의 ‘full name’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 therapist 레코드의 full name"
+      },
+      "Clients.Name": {
+        "table": "Clients",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘client’ 레코드의 ‘name’ 값은 같은 레코드의 ‘clients ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Clients ID"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "‘client’ 레코드의 ‘session count’ 값은 해당 ‘client’ 레코드에 연결된 ‘sessions’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgMoodRating": {
+        "table": "Clients",
+        "field": "AvgMoodRating",
+        "kind": "rollup",
+        "rule": "‘client’ 레코드의 ‘avg mood rating’ 값은 해당 ‘client’ 레코드에 연결된 모든 ‘sessions’ 레코드의 평균 ‘mood rating’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "MoodRating",
+            "label": "mood rating"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(client 값이 clients ID임)에 맞는 모든 sessions 레코드의 mood rating 평균"
+      },
+      "Clients.GoalCount": {
+        "table": "Clients",
+        "field": "GoalCount",
+        "kind": "rollup",
+        "rule": "‘client’ 레코드의 ‘goal count’ 값은 해당 ‘client’ 레코드에 연결된 ‘goals’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgGoalProgress": {
+        "table": "Clients",
+        "field": "AvgGoalProgress",
+        "kind": "rollup",
+        "rule": "‘client’ 레코드의 ‘avg goal progress’ 값은 해당 ‘client’ 레코드에 연결된 모든 ‘goals’ 레코드의 평균 ‘progress pct’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(client 값이 clients ID임)에 맞는 모든 goals 레코드의 progress pct 평균"
+      },
+      "Clients.LastSessionLabel": {
+        "table": "Clients",
+        "field": "LastSessionLabel",
+        "kind": "rollup",
+        "rule": "‘client’ 레코드의 ‘last session label’ 값은 해당 ‘client’ 레코드에 연결된 모든 ‘sessions’ 레코드의 최대 ‘session label’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(client 값이 clients ID임)에 맞는 모든 sessions 레코드의 session label 최댓값"
+      },
+      "Clients.IsAtRisk": {
+        "table": "Clients",
+        "field": "IsAtRisk",
+        "kind": "formula",
+        "rule": "다음 중 하나 이상에 해당하는 경우(‘avg mood rating’ 값이 5보다 작은 경우 또는 ‘avg goal progress’ 값이 50보다 작은 경우), ‘client’ 레코드는 ‘at risk’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "AvgMoodRating",
+            "label": "avg mood rating"
+          },
+          {
+            "table": "Clients",
+            "field": "AvgGoalProgress",
+            "label": "avg goal progress"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘client’ 레코드는 ‘at risk’에 해당하는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘avg mood rating’ 값이 5보다 작은 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘avg goal progress’ 값이 50보다 작은 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Avg mood rating 값이 5보다 작음 또는 avg goal progress 값이 50보다 작음"
+      },
+      "Clients.StatusLabel": {
+        "table": "Clients",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "‘client’ 레코드의 ‘status label’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘at risk’ 플래그가 설정된 경우: “At risk”\n2. 그 밖의 경우: “On track”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "IsAtRisk",
+            "label": "is at risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘client’ 레코드의 ‘status label’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“At risk”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘at risk’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "“On track”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(is at risk)이 성립하면 \"At risk\", 그렇지 않으면 \"On track\""
+      },
+      "Goals.ClientName": {
+        "table": "Goals",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "‘goal’ 레코드의 ‘client name’ 값은 연결된 ‘client’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 client 레코드의 client name"
+      },
+      "Goals.ClientTherapist": {
+        "table": "Goals",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "‘goal’ 레코드의 ‘client therapist’ 값은 연결된 ‘client’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 client 레코드의 therapist"
+      },
+      "Goals.Name": {
+        "table": "Goals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘goal’ 레코드의 ‘name’ 값은 같은 레코드의 ‘goals ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goals ID"
+      },
+      "Goals.UpdateCount": {
+        "table": "Goals",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "‘goal’ 레코드의 ‘update count’ 값은 해당 ‘goal’ 레코드에 연결된 ‘goal updates’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(goal, goals ID)"
+      },
+      "Goals.AvgScoreAchieved": {
+        "table": "Goals",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "‘goal’ 레코드의 ‘avg score achieved’ 값은 해당 ‘goal’ 레코드에 연결된 모든 ‘goal updates’ 레코드의 평균 ‘score achieved’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(goal 값이 goals ID임)에 맞는 모든 goal updates 레코드의 score achieved 평균"
+      },
+      "Goals.LatestScore": {
+        "table": "Goals",
+        "field": "LatestScore",
+        "kind": "rollup",
+        "rule": "‘goal’ 레코드의 ‘latest score’ 값은 해당 ‘goal’ 레코드에 연결된 모든 ‘goal updates’ 레코드의 최대 ‘score achieved’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(goal 값이 goals ID임)에 맞는 모든 goal updates 레코드의 score achieved 최댓값"
+      },
+      "Goals.ProgressPct": {
+        "table": "Goals",
+        "field": "ProgressPct",
+        "kind": "formula",
+        "rule": "‘goal’ 레코드의 ‘progress pct’ 값은 다음과 같이 계산됩니다: ‘avg score achieved’ 나누기 ‘target score’ 곱하기 100(계산할 수 없는 경우에는 0).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          },
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          }
+        ],
+        "structure": null,
+        "plain": "((avg score achieved 나누기 target score) 곱하기 100)(오류가 있으면 0)"
+      },
+      "Goals.RemainingGap": {
+        "table": "Goals",
+        "field": "RemainingGap",
+        "kind": "formula",
+        "rule": "‘goal’ 레코드의 ‘remaining gap’ 값은 다음과 같이 계산됩니다: 0 및 ‘target score’ 빼기 ‘avg score achieved’ 중 최대치.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": null,
+        "plain": "0 및 (target score 빼기 avg score achieved) 중 최대치"
+      },
+      "Goals.IsOnTrack": {
+        "table": "Goals",
+        "field": "IsOnTrack",
+        "kind": "formula",
+        "rule": "‘progress pct’ 값이 70 이상인 경우, ‘goal’ 레코드는 ‘on track’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Progress pct 값이 70 이상임"
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "‘session’ 레코드의 ‘client name’ 값은 연결된 ‘client’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 client 레코드의 client name"
+      },
+      "Sessions.ClientTherapist": {
+        "table": "Sessions",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "‘session’ 레코드의 ‘client therapist’ 값은 연결된 ‘client’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 client 레코드의 therapist"
+      },
+      "Sessions.Name": {
+        "table": "Sessions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘session’ 레코드의 ‘name’ 값은 같은 레코드의 ‘sessions ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Sessions ID"
+      },
+      "Sessions.UpdateCount": {
+        "table": "Sessions",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "‘session’ 레코드의 ‘update count’ 값은 해당 ‘session’ 레코드에 연결된 ‘goal updates’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(session 값이 sessions ID임)에 맞는 goal updates 레코드의 개수"
+      },
+      "Sessions.AvgScoreAchieved": {
+        "table": "Sessions",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "‘session’ 레코드의 ‘avg score achieved’ 값은 해당 ‘session’ 레코드에 연결된 모든 ‘goal updates’ 레코드의 평균 ‘score achieved’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(session 값이 sessions ID임)에 맞는 모든 goal updates 레코드의 score achieved 평균"
+      },
+      "Sessions.IsProductive": {
+        "table": "Sessions",
+        "field": "IsProductive",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘update count’ 값이 2 이상인 경우 및 ‘avg score achieved’ 값이 5 이상인 경우), ‘session’ 레코드는 ‘productive’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "UpdateCount",
+            "label": "update count"
+          },
+          {
+            "table": "Sessions",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘session’ 레코드는 ‘productive’에 해당하는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘update count’ 값이 2 이상인 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘avg score achieved’ 값이 5 이상인 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Update count 값이 2 이상임 및 avg score achieved 값이 5 이상임"
+      },
+      "Sessions.StatusLabel": {
+        "table": "Sessions",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "‘session’ 레코드의 ‘status label’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘productive’ 플래그가 설정된 경우: “Productive”\n2. 그 밖의 경우: “Light”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "IsProductive",
+            "label": "is productive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘session’ 레코드의 ‘status label’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“Productive”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘productive’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "“Light”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(is productive)이 성립하면 \"Productive\", 그렇지 않으면 \"Light\""
+      },
+      "GoalUpdates.GoalTitle": {
+        "table": "GoalUpdates",
+        "field": "GoalTitle",
+        "kind": "lookup",
+        "rule": "‘goal update’ 레코드의 ‘goal title’ 값은 연결된 ‘goal’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 goal 레코드의 title"
+      },
+      "GoalUpdates.GoalClient": {
+        "table": "GoalUpdates",
+        "field": "GoalClient",
+        "kind": "lookup",
+        "rule": "‘goal update’ 레코드의 ‘goal client’ 값은 연결된 ‘goal’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 goal 레코드의 client"
+      },
+      "GoalUpdates.GoalTargetScore": {
+        "table": "GoalUpdates",
+        "field": "GoalTargetScore",
+        "kind": "lookup",
+        "rule": "‘goal update’ 레코드의 ‘goal target score’ 값은 연결된 ‘goal’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 goal 레코드의 target score"
+      },
+      "GoalUpdates.GoalClientTherapist": {
+        "table": "GoalUpdates",
+        "field": "GoalClientTherapist",
+        "kind": "lookup",
+        "rule": "‘goal update’ 레코드의 ‘goal client therapist’ 값은 연결된 ‘goal’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ClientTherapist",
+            "label": "client therapist"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 goal 레코드의 client therapist"
+      },
+      "GoalUpdates.SessionLabel": {
+        "table": "GoalUpdates",
+        "field": "SessionLabel",
+        "kind": "lookup",
+        "rule": "‘goal update’ 레코드의 ‘session label’ 값은 연결된 ‘session’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 session 레코드의 session label"
+      },
+      "GoalUpdates.Name": {
+        "table": "GoalUpdates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘goal update’ 레코드의 ‘name’ 값은 같은 레코드의 ‘goal updates ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "GoalUpdatesId",
+            "label": "goal updates ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goal updates ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "‘user’ 레코드는 ‘full name’ 및 ‘role’ 값을 포함**해야 합니다**."
+      ],
+      "Clients": [
+        "‘client’ 레코드는 ‘therapist’ 필드를 통해 ‘user’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘client’ 레코드는 ‘client name’ 값을 포함**해야 합니다**."
+      ],
+      "Goals": [
+        "‘goal’ 레코드는 ‘client’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘goal’ 레코드는 ‘title’ 및 ‘target score’ 값을 포함**해야 합니다**."
+      ],
+      "Sessions": [
+        "‘session’ 레코드는 ‘client’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘session’ 레코드는 ‘session label’ 및 ‘mood rating’ 값을 포함**해야 합니다**."
+      ],
+      "GoalUpdates": [
+        "‘goal update’ 레코드는 ‘goal’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘goal update’ 레코드는 ‘session’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘goal update’ 레코드는 ‘score achieved’ 값을 포함**해야 합니다**."
+      ]
+    },
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Clients": "client",
+      "Goals": "goal",
+      "Sessions": "session",
+      "GoalUpdates": "goal update"
+    }
+  },
+  "nl": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een user: name is gelijk aan users ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Users ID"
+      },
+      "Users.ClientCount": {
+        "table": "Users",
+        "field": "ClientCount",
+        "kind": "rollup",
+        "rule": "Een user: client count is het aantal clients dat is gekoppeld aan de user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(therapist, users ID)"
+      },
+      "Clients.TherapistName": {
+        "table": "Clients",
+        "field": "TherapistName",
+        "kind": "lookup",
+        "rule": "Een client: therapist name is de full name van de gekoppelde therapist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De full name van de gekoppelde therapist"
+      },
+      "Clients.Name": {
+        "table": "Clients",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een client: name is gelijk aan clients ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Clients ID"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "Een client: session count is het aantal sessions dat is gekoppeld aan de client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgMoodRating": {
+        "table": "Clients",
+        "field": "AvgMoodRating",
+        "kind": "rollup",
+        "rule": "Een client: avg mood rating is het gemiddelde van mood rating over de sessions gekoppeld aan de client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "MoodRating",
+            "label": "mood rating"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Gemiddelde van mood rating over alle sessions waarvan client is clients ID"
+      },
+      "Clients.GoalCount": {
+        "table": "Clients",
+        "field": "GoalCount",
+        "kind": "rollup",
+        "rule": "Een client: goal count is het aantal goals dat is gekoppeld aan de client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgGoalProgress": {
+        "table": "Clients",
+        "field": "AvgGoalProgress",
+        "kind": "rollup",
+        "rule": "Een client: avg goal progress is het gemiddelde van progress pct over de goals gekoppeld aan de client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Gemiddelde van progress pct over alle goals waarvan client is clients ID"
+      },
+      "Clients.LastSessionLabel": {
+        "table": "Clients",
+        "field": "LastSessionLabel",
+        "kind": "rollup",
+        "rule": "Een client: last session label is de hoogste waarde van session label over de sessions gekoppeld aan de client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Hoogste waarde van session label over alle sessions waarvan client is clients ID"
+      },
+      "Clients.IsAtRisk": {
+        "table": "Clients",
+        "field": "IsAtRisk",
+        "kind": "formula",
+        "rule": "Een client geldt als at risk als ten minste één van het volgende geldt: de avg mood rating kleiner is dan 5 of de avg goal progress kleiner is dan 50.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "AvgMoodRating",
+            "label": "avg mood rating"
+          },
+          {
+            "table": "Clients",
+            "field": "AvgGoalProgress",
+            "label": "avg goal progress"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een client geldt als at risk als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de avg mood rating kleiner is dan 5"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de avg goal progress kleiner is dan 50"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Avg mood rating is kleiner dan 5 of avg goal progress is kleiner dan 50"
+      },
+      "Clients.StatusLabel": {
+        "table": "Clients",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "Het veld ‘status label’ van de client wordt bepaald volgens de volgende prioriteit:\n1. ‘At risk’, als de vlag ‘at risk’ is gezet;\n2. in alle andere gevallen ‘On track’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "IsAtRisk",
+            "label": "is at risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘status label’ van de client wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘At risk’",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘at risk’ is gezet"
+              }
+            },
+            {
+              "value": "‘On track’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als is at risk, dan \"At risk\", anders \"On track\""
+      },
+      "Goals.ClientName": {
+        "table": "Goals",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Een goal: client name — overgenomen van de gekoppelde client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De client name van de gekoppelde client"
+      },
+      "Goals.ClientTherapist": {
+        "table": "Goals",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "Een goal: client therapist — overgenomen van de gekoppelde client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De therapist van de gekoppelde client"
+      },
+      "Goals.Name": {
+        "table": "Goals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een goal: name is gelijk aan goals ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goals ID"
+      },
+      "Goals.UpdateCount": {
+        "table": "Goals",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "Een goal: update count is het aantal goal updates dat is gekoppeld aan de goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(goal, goals ID)"
+      },
+      "Goals.AvgScoreAchieved": {
+        "table": "Goals",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "Een goal: avg score achieved is het gemiddelde van score achieved over de goal updates gekoppeld aan de goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Gemiddelde van score achieved over alle goal updates waarvan goal is goals ID"
+      },
+      "Goals.LatestScore": {
+        "table": "Goals",
+        "field": "LatestScore",
+        "kind": "rollup",
+        "rule": "Een goal: latest score is de hoogste waarde van score achieved over de goal updates gekoppeld aan de goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Hoogste waarde van score achieved over alle goal updates waarvan goal is goals ID"
+      },
+      "Goals.ProgressPct": {
+        "table": "Goals",
+        "field": "ProgressPct",
+        "kind": "formula",
+        "rule": "Een goal: progress pct wordt berekend als de avg score achieved gedeeld door de target score maal 100 (of 0 als dat niet kan worden berekend).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          },
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          }
+        ],
+        "structure": null,
+        "plain": "((avg score achieved gedeeld door target score) maal 100), of 0 als dat een fout geeft"
+      },
+      "Goals.RemainingGap": {
+        "table": "Goals",
+        "field": "RemainingGap",
+        "kind": "formula",
+        "rule": "Een goal: remaining gap wordt berekend als de grootste van 0 en de target score min de avg score achieved.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": null,
+        "plain": "De grootste van 0 en (target score min avg score achieved)"
+      },
+      "Goals.IsOnTrack": {
+        "table": "Goals",
+        "field": "IsOnTrack",
+        "kind": "formula",
+        "rule": "Een goal geldt als on track als de progress pct ten minste 70 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Progress pct is ten minste 70"
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Een session: client name — overgenomen van de gekoppelde client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De client name van de gekoppelde client"
+      },
+      "Sessions.ClientTherapist": {
+        "table": "Sessions",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "Een session: client therapist — overgenomen van de gekoppelde client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De therapist van de gekoppelde client"
+      },
+      "Sessions.Name": {
+        "table": "Sessions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een session: name is gelijk aan sessions ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Sessions ID"
+      },
+      "Sessions.UpdateCount": {
+        "table": "Sessions",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "Een session: update count is het aantal goal updates dat is gekoppeld aan de session.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal goal updates waarvan session is sessions ID"
+      },
+      "Sessions.AvgScoreAchieved": {
+        "table": "Sessions",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "Een session: avg score achieved is het gemiddelde van score achieved over de goal updates gekoppeld aan de session.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Gemiddelde van score achieved over alle goal updates waarvan session is sessions ID"
+      },
+      "Sessions.IsProductive": {
+        "table": "Sessions",
+        "field": "IsProductive",
+        "kind": "formula",
+        "rule": "Een session geldt als productive als al het volgende geldt: de update count ten minste 2 is en de avg score achieved ten minste 5 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "UpdateCount",
+            "label": "update count"
+          },
+          {
+            "table": "Sessions",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een session geldt als productive als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de update count ten minste 2 is"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de avg score achieved ten minste 5 is"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Update count is ten minste 2 en avg score achieved is ten minste 5"
+      },
+      "Sessions.StatusLabel": {
+        "table": "Sessions",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "Het veld ‘status label’ van de session wordt bepaald volgens de volgende prioriteit:\n1. ‘Productive’, als de vlag ‘productive’ is gezet;\n2. in alle andere gevallen ‘Light’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "IsProductive",
+            "label": "is productive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘status label’ van de session wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘Productive’",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘productive’ is gezet"
+              }
+            },
+            {
+              "value": "‘Light’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als is productive, dan \"Productive\", anders \"Light\""
+      },
+      "GoalUpdates.GoalTitle": {
+        "table": "GoalUpdates",
+        "field": "GoalTitle",
+        "kind": "lookup",
+        "rule": "Een goal update: goal title — overgenomen van de gekoppelde goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De title van de gekoppelde goal"
+      },
+      "GoalUpdates.GoalClient": {
+        "table": "GoalUpdates",
+        "field": "GoalClient",
+        "kind": "lookup",
+        "rule": "Een goal update: goal client — overgenomen van de gekoppelde goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De client van de gekoppelde goal"
+      },
+      "GoalUpdates.GoalTargetScore": {
+        "table": "GoalUpdates",
+        "field": "GoalTargetScore",
+        "kind": "lookup",
+        "rule": "Een goal update: goal target score — overgenomen van de gekoppelde goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De target score van de gekoppelde goal"
+      },
+      "GoalUpdates.GoalClientTherapist": {
+        "table": "GoalUpdates",
+        "field": "GoalClientTherapist",
+        "kind": "lookup",
+        "rule": "Een goal update: goal client therapist — overgenomen van de gekoppelde goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ClientTherapist",
+            "label": "client therapist"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De client therapist van de gekoppelde goal"
+      },
+      "GoalUpdates.SessionLabel": {
+        "table": "GoalUpdates",
+        "field": "SessionLabel",
+        "kind": "lookup",
+        "rule": "Een goal update: session label — overgenomen van de gekoppelde session.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De session label van de gekoppelde session"
+      },
+      "GoalUpdates.Name": {
+        "table": "GoalUpdates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een goal update: name is gelijk aan goal updates ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "GoalUpdatesId",
+            "label": "goal updates ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goal updates ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "Een user **moet** een full name en een role hebben."
+      ],
+      "Clients": [
+        "Een client **moet** naar precies één user verwijzen als zijn therapist.",
+        "Een client **moet** een client name hebben."
+      ],
+      "Goals": [
+        "Een goal **moet** naar precies één client verwijzen.",
+        "Een goal **moet** een title en een target score hebben."
+      ],
+      "Sessions": [
+        "Een session **moet** naar precies één client verwijzen.",
+        "Een session **moet** een session label en een mood rating hebben."
+      ],
+      "GoalUpdates": [
+        "Een goal update **moet** naar precies één goal verwijzen.",
+        "Een goal update **moet** naar precies één session verwijzen.",
+        "Een goal update **moet** een score achieved hebben."
+      ]
+    },
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Clients": "client",
+      "Goals": "goal",
+      "Sessions": "session",
+      "GoalUpdates": "goal update"
+    }
+  },
+  "pt": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um user: name é igual a users ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Users ID"
+      },
+      "Users.ClientCount": {
+        "table": "Users",
+        "field": "ClientCount",
+        "kind": "rollup",
+        "rule": "Um user: client count é o número de clients relacionados a o user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(therapist, users ID)"
+      },
+      "Clients.TherapistName": {
+        "table": "Clients",
+        "field": "TherapistName",
+        "kind": "lookup",
+        "rule": "Um client: therapist name é o full name do therapist vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O full name do therapist vinculado"
+      },
+      "Clients.Name": {
+        "table": "Clients",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um client: name é igual a clients ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Clients ID"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "Um client: session count é o número de sessions relacionados a o client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgMoodRating": {
+        "table": "Clients",
+        "field": "AvgMoodRating",
+        "kind": "rollup",
+        "rule": "Um client: avg mood rating é a média de mood rating entre os sessions relacionados a o client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "MoodRating",
+            "label": "mood rating"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Média de mood rating entre todos os sessions cujo client é clients ID"
+      },
+      "Clients.GoalCount": {
+        "table": "Clients",
+        "field": "GoalCount",
+        "kind": "rollup",
+        "rule": "Um client: goal count é o número de goals relacionados a o client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgGoalProgress": {
+        "table": "Clients",
+        "field": "AvgGoalProgress",
+        "kind": "rollup",
+        "rule": "Um client: avg goal progress é a média de progress pct entre os goals relacionados a o client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Média de progress pct entre todos os goals cujo client é clients ID"
+      },
+      "Clients.LastSessionLabel": {
+        "table": "Clients",
+        "field": "LastSessionLabel",
+        "kind": "rollup",
+        "rule": "Um client: last session label é o maior valor de session label entre os sessions relacionados a o client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Maior valor de session label entre todos os sessions cujo client é clients ID"
+      },
+      "Clients.IsAtRisk": {
+        "table": "Clients",
+        "field": "IsAtRisk",
+        "kind": "formula",
+        "rule": "Um client é considerado at risk se pelo menos uma das seguintes é verdadeira: o avg mood rating é menor que 5 ou o avg goal progress é menor que 50.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "AvgMoodRating",
+            "label": "avg mood rating"
+          },
+          {
+            "table": "Clients",
+            "field": "AvgGoalProgress",
+            "label": "avg goal progress"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um client é considerado at risk se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o avg mood rating é menor que 5"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o avg goal progress é menor que 50"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Avg mood rating é menor que 5 ou avg goal progress é menor que 50"
+      },
+      "Clients.StatusLabel": {
+        "table": "Clients",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "O campo “status label” do client é determinado pela seguinte prioridade:\n1. “At risk”, se o indicador “at risk” está ativado;\n2. em todos os outros casos, “On track”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "IsAtRisk",
+            "label": "is at risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “status label” do client é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“At risk”",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “at risk” está ativado"
+              }
+            },
+            {
+              "value": "“On track”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is at risk, então \"At risk\", caso contrário \"On track\""
+      },
+      "Goals.ClientName": {
+        "table": "Goals",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Um goal: client name — obtido do client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O client name do client vinculado"
+      },
+      "Goals.ClientTherapist": {
+        "table": "Goals",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "Um goal: client therapist — obtido do client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O therapist do client vinculado"
+      },
+      "Goals.Name": {
+        "table": "Goals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um goal: name é igual a goals ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goals ID"
+      },
+      "Goals.UpdateCount": {
+        "table": "Goals",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "Um goal: update count é o número de goal updates relacionados a o goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(goal, goals ID)"
+      },
+      "Goals.AvgScoreAchieved": {
+        "table": "Goals",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "Um goal: avg score achieved é a média de score achieved entre os goal updates relacionados a o goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Média de score achieved entre todos os goal updates cujo goal é goals ID"
+      },
+      "Goals.LatestScore": {
+        "table": "Goals",
+        "field": "LatestScore",
+        "kind": "rollup",
+        "rule": "Um goal: latest score é o maior valor de score achieved entre os goal updates relacionados a o goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Maior valor de score achieved entre todos os goal updates cujo goal é goals ID"
+      },
+      "Goals.ProgressPct": {
+        "table": "Goals",
+        "field": "ProgressPct",
+        "kind": "formula",
+        "rule": "Um goal: progress pct é calculado como o avg score achieved dividido por o target score vezes 100 (ou 0 se não puder ser calculado).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          },
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          }
+        ],
+        "structure": null,
+        "plain": "((avg score achieved dividido por target score) vezes 100), ou 0 se isso der erro"
+      },
+      "Goals.RemainingGap": {
+        "table": "Goals",
+        "field": "RemainingGap",
+        "kind": "formula",
+        "rule": "Um goal: remaining gap é calculado como o maior de 0 e o target score menos o avg score achieved.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": null,
+        "plain": "O maior de 0 e (target score menos avg score achieved)"
+      },
+      "Goals.IsOnTrack": {
+        "table": "Goals",
+        "field": "IsOnTrack",
+        "kind": "formula",
+        "rule": "Um goal é considerado on track se o progress pct é pelo menos 70.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Progress pct é pelo menos 70"
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Um session: client name — obtido do client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O client name do client vinculado"
+      },
+      "Sessions.ClientTherapist": {
+        "table": "Sessions",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "Um session: client therapist — obtido do client vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O therapist do client vinculado"
+      },
+      "Sessions.Name": {
+        "table": "Sessions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um session: name é igual a sessions ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Sessions ID"
+      },
+      "Sessions.UpdateCount": {
+        "table": "Sessions",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "Um session: update count é o número de goal updates relacionados a o session.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de goal updates cujo session é sessions ID"
+      },
+      "Sessions.AvgScoreAchieved": {
+        "table": "Sessions",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "Um session: avg score achieved é a média de score achieved entre os goal updates relacionados a o session.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Média de score achieved entre todos os goal updates cujo session é sessions ID"
+      },
+      "Sessions.IsProductive": {
+        "table": "Sessions",
+        "field": "IsProductive",
+        "kind": "formula",
+        "rule": "Um session é considerado productive se tudo o que segue é verdadeiro: o update count é pelo menos 2 e o avg score achieved é pelo menos 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "UpdateCount",
+            "label": "update count"
+          },
+          {
+            "table": "Sessions",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um session é considerado productive se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o update count é pelo menos 2"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o avg score achieved é pelo menos 5"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Update count é pelo menos 2 e avg score achieved é pelo menos 5"
+      },
+      "Sessions.StatusLabel": {
+        "table": "Sessions",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "O campo “status label” do session é determinado pela seguinte prioridade:\n1. “Productive”, se o indicador “productive” está ativado;\n2. em todos os outros casos, “Light”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "IsProductive",
+            "label": "is productive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “status label” do session é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“Productive”",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “productive” está ativado"
+              }
+            },
+            {
+              "value": "“Light”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is productive, então \"Productive\", caso contrário \"Light\""
+      },
+      "GoalUpdates.GoalTitle": {
+        "table": "GoalUpdates",
+        "field": "GoalTitle",
+        "kind": "lookup",
+        "rule": "Um goal update: goal title — obtido do goal vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O title do goal vinculado"
+      },
+      "GoalUpdates.GoalClient": {
+        "table": "GoalUpdates",
+        "field": "GoalClient",
+        "kind": "lookup",
+        "rule": "Um goal update: goal client — obtido do goal vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O client do goal vinculado"
+      },
+      "GoalUpdates.GoalTargetScore": {
+        "table": "GoalUpdates",
+        "field": "GoalTargetScore",
+        "kind": "lookup",
+        "rule": "Um goal update: goal target score — obtido do goal vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O target score do goal vinculado"
+      },
+      "GoalUpdates.GoalClientTherapist": {
+        "table": "GoalUpdates",
+        "field": "GoalClientTherapist",
+        "kind": "lookup",
+        "rule": "Um goal update: goal client therapist — obtido do goal vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ClientTherapist",
+            "label": "client therapist"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O client therapist do goal vinculado"
+      },
+      "GoalUpdates.SessionLabel": {
+        "table": "GoalUpdates",
+        "field": "SessionLabel",
+        "kind": "lookup",
+        "rule": "Um goal update: session label — obtido do session vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O session label do session vinculado"
+      },
+      "GoalUpdates.Name": {
+        "table": "GoalUpdates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um goal update: name é igual a goal updates ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "GoalUpdatesId",
+            "label": "goal updates ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goal updates ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "Um user **deve** ter um full name e um role."
+      ],
+      "Clients": [
+        "Um client **deve** referenciar exatamente um user como seu therapist.",
+        "Um client **deve** ter um client name."
+      ],
+      "Goals": [
+        "Um goal **deve** referenciar exatamente um client.",
+        "Um goal **deve** ter um title e um target score."
+      ],
+      "Sessions": [
+        "Um session **deve** referenciar exatamente um client.",
+        "Um session **deve** ter um session label e um mood rating."
+      ],
+      "GoalUpdates": [
+        "Um goal update **deve** referenciar exatamente um goal.",
+        "Um goal update **deve** referenciar exatamente um session.",
+        "Um goal update **deve** ter um score achieved."
+      ]
+    },
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Clients": "client",
+      "Goals": "goal",
+      "Sessions": "session",
+      "GoalUpdates": "goal update"
+    }
+  },
+  "ru": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "User: «name» совпадает с users ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Users ID"
+      },
+      "Users.ClientCount": {
+        "table": "Users",
+        "field": "ClientCount",
+        "kind": "rollup",
+        "rule": "User: «client count» — это число записей «clients», связанных с user.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(therapist, users ID)"
+      },
+      "Clients.TherapistName": {
+        "table": "Clients",
+        "field": "TherapistName",
+        "kind": "lookup",
+        "rule": "Client: «therapist name» — это «full name» связанного «therapist».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name связанного «therapist»"
+      },
+      "Clients.Name": {
+        "table": "Clients",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Client: «name» совпадает с clients ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Clients ID"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "Client: «session count» — это число записей «sessions», связанных с client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgMoodRating": {
+        "table": "Clients",
+        "field": "AvgMoodRating",
+        "kind": "rollup",
+        "rule": "Client: «avg mood rating» — это среднее «mood rating» по записям «sessions», связанным с client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "MoodRating",
+            "label": "mood rating"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Среднее mood rating по всем «sessions», у которых client равно clients ID"
+      },
+      "Clients.GoalCount": {
+        "table": "Clients",
+        "field": "GoalCount",
+        "kind": "rollup",
+        "rule": "Client: «goal count» — это число записей «goals», связанных с client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgGoalProgress": {
+        "table": "Clients",
+        "field": "AvgGoalProgress",
+        "kind": "rollup",
+        "rule": "Client: «avg goal progress» — это среднее «progress pct» по записям «goals», связанным с client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Среднее progress pct по всем «goals», у которых client равно clients ID"
+      },
+      "Clients.LastSessionLabel": {
+        "table": "Clients",
+        "field": "LastSessionLabel",
+        "kind": "rollup",
+        "rule": "Client: «last session label» — это наибольшее значение «session label» по записям «sessions», связанным с client.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Наибольшее session label по всем «sessions», у которых client равно clients ID"
+      },
+      "Clients.IsAtRisk": {
+        "table": "Clients",
+        "field": "IsAtRisk",
+        "kind": "formula",
+        "rule": "Client считается «at risk», если выполняется хотя бы одно из следующего: avg mood rating меньше 5 или avg goal progress меньше 50.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "AvgMoodRating",
+            "label": "avg mood rating"
+          },
+          {
+            "table": "Clients",
+            "field": "AvgGoalProgress",
+            "label": "avg goal progress"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Client считается «at risk», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "avg mood rating меньше 5"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "avg goal progress меньше 50"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Avg mood rating меньше 5 или avg goal progress меньше 50"
+      },
+      "Clients.StatusLabel": {
+        "table": "Clients",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "Поле «status label» (Client) определяется по следующему приоритету:\n1. «At risk», если признак «at risk» установлен;\n2. во всех остальных случаях — «On track».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "IsAtRisk",
+            "label": "is at risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «status label» (Client) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«At risk»",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «at risk» установлен"
+              }
+            },
+            {
+              "value": "«On track»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если is at risk, то \"At risk\", иначе \"On track\""
+      },
+      "Goals.ClientName": {
+        "table": "Goals",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Goal: «client name» — берётся из связанного «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client name связанного «client»"
+      },
+      "Goals.ClientTherapist": {
+        "table": "Goals",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "Goal: «client therapist» — берётся из связанного «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Therapist связанного «client»"
+      },
+      "Goals.Name": {
+        "table": "Goals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Goal: «name» совпадает с goals ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goals ID"
+      },
+      "Goals.UpdateCount": {
+        "table": "Goals",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "Goal: «update count» — это число записей «goal updates», связанных с goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(goal, goals ID)"
+      },
+      "Goals.AvgScoreAchieved": {
+        "table": "Goals",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "Goal: «avg score achieved» — это среднее «score achieved» по записям «goal updates», связанным с goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Среднее score achieved по всем «goal updates», у которых goal равно goals ID"
+      },
+      "Goals.LatestScore": {
+        "table": "Goals",
+        "field": "LatestScore",
+        "kind": "rollup",
+        "rule": "Goal: «latest score» — это наибольшее значение «score achieved» по записям «goal updates», связанным с goal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Наибольшее score achieved по всем «goal updates», у которых goal равно goals ID"
+      },
+      "Goals.ProgressPct": {
+        "table": "Goals",
+        "field": "ProgressPct",
+        "kind": "formula",
+        "rule": "Goal: «progress pct» вычисляется как avg score achieved разделить на target score умножить на 100 (или 0, если вычислить не удаётся).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          },
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          }
+        ],
+        "structure": null,
+        "plain": "((avg score achieved разделить на target score) умножить на 100), или 0, если возникает ошибка"
+      },
+      "Goals.RemainingGap": {
+        "table": "Goals",
+        "field": "RemainingGap",
+        "kind": "formula",
+        "rule": "Goal: «remaining gap» вычисляется как наибольшее из 0 и target score минус avg score achieved.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": null,
+        "plain": "Наибольшее из 0 и (target score минус avg score achieved)"
+      },
+      "Goals.IsOnTrack": {
+        "table": "Goals",
+        "field": "IsOnTrack",
+        "kind": "formula",
+        "rule": "Goal считается «on track», если progress pct не меньше 70.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Progress pct не меньше 70"
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Session: «client name» — берётся из связанного «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client name связанного «client»"
+      },
+      "Sessions.ClientTherapist": {
+        "table": "Sessions",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "Session: «client therapist» — берётся из связанного «client».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Therapist связанного «client»"
+      },
+      "Sessions.Name": {
+        "table": "Sessions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Session: «name» совпадает с sessions ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Sessions ID"
+      },
+      "Sessions.UpdateCount": {
+        "table": "Sessions",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "Session: «update count» — это число записей «goal updates», связанных с session.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «goal updates», у которых session равно sessions ID"
+      },
+      "Sessions.AvgScoreAchieved": {
+        "table": "Sessions",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "Session: «avg score achieved» — это среднее «score achieved» по записям «goal updates», связанным с session.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Среднее score achieved по всем «goal updates», у которых session равно sessions ID"
+      },
+      "Sessions.IsProductive": {
+        "table": "Sessions",
+        "field": "IsProductive",
+        "kind": "formula",
+        "rule": "Session считается «productive», если выполняется всё следующее: update count не меньше 2 и avg score achieved не меньше 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "UpdateCount",
+            "label": "update count"
+          },
+          {
+            "table": "Sessions",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Session считается «productive», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "update count не меньше 2"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "avg score achieved не меньше 5"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Update count не меньше 2 и avg score achieved не меньше 5"
+      },
+      "Sessions.StatusLabel": {
+        "table": "Sessions",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "Поле «status label» (Session) определяется по следующему приоритету:\n1. «Productive», если признак «productive» установлен;\n2. во всех остальных случаях — «Light».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "IsProductive",
+            "label": "is productive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «status label» (Session) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«Productive»",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «productive» установлен"
+              }
+            },
+            {
+              "value": "«Light»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если is productive, то \"Productive\", иначе \"Light\""
+      },
+      "GoalUpdates.GoalTitle": {
+        "table": "GoalUpdates",
+        "field": "GoalTitle",
+        "kind": "lookup",
+        "rule": "Goal update: «goal title» — берётся из связанного «goal».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Title связанного «goal»"
+      },
+      "GoalUpdates.GoalClient": {
+        "table": "GoalUpdates",
+        "field": "GoalClient",
+        "kind": "lookup",
+        "rule": "Goal update: «goal client» — берётся из связанного «goal».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client связанного «goal»"
+      },
+      "GoalUpdates.GoalTargetScore": {
+        "table": "GoalUpdates",
+        "field": "GoalTargetScore",
+        "kind": "lookup",
+        "rule": "Goal update: «goal target score» — берётся из связанного «goal».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Target score связанного «goal»"
+      },
+      "GoalUpdates.GoalClientTherapist": {
+        "table": "GoalUpdates",
+        "field": "GoalClientTherapist",
+        "kind": "lookup",
+        "rule": "Goal update: «goal client therapist» — берётся из связанного «goal».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ClientTherapist",
+            "label": "client therapist"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client therapist связанного «goal»"
+      },
+      "GoalUpdates.SessionLabel": {
+        "table": "GoalUpdates",
+        "field": "SessionLabel",
+        "kind": "lookup",
+        "rule": "Goal update: «session label» — берётся из связанного «session».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Session label связанного «session»"
+      },
+      "GoalUpdates.Name": {
+        "table": "GoalUpdates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Goal update: «name» совпадает с goal updates ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "GoalUpdatesId",
+            "label": "goal updates ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goal updates ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "User **обязан** иметь full name и role."
+      ],
+      "Clients": [
+        "Client **обязан** ссылаться ровно на один «user» в роли «therapist».",
+        "Client **обязан** иметь client name."
+      ],
+      "Goals": [
+        "Goal **обязан** ссылаться ровно на один «client».",
+        "Goal **обязан** иметь title и target score."
+      ],
+      "Sessions": [
+        "Session **обязан** ссылаться ровно на один «client».",
+        "Session **обязан** иметь session label и mood rating."
+      ],
+      "GoalUpdates": [
+        "Goal update **обязан** ссылаться ровно на один «goal».",
+        "Goal update **обязан** ссылаться ровно на один «session».",
+        "Goal update **обязан** иметь score achieved."
+      ]
+    },
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Clients": "client",
+      "Goals": "goal",
+      "Sessions": "session",
+      "GoalUpdates": "goal update"
+    }
+  },
+  "tr": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“user” kaydının “name” alanı, “users ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Users ID"
+      },
+      "Users.ClientCount": {
+        "table": "Users",
+        "field": "ClientCount",
+        "kind": "rollup",
+        "rule": "“user” kaydının “client count” alanı, “user” kaydıyla ilişkili “clients” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(therapist, users ID)"
+      },
+      "Clients.TherapistName": {
+        "table": "Clients",
+        "field": "TherapistName",
+        "kind": "lookup",
+        "rule": "“client” kaydının “therapist name” alanı, “therapist” alanı üzerinden bağlı kaydın “full name” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı therapist kaydının full name değeri"
+      },
+      "Clients.Name": {
+        "table": "Clients",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“client” kaydının “name” alanı, “clients ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Clients ID"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "“client” kaydının “session count” alanı, “client” kaydıyla ilişkili “sessions” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgMoodRating": {
+        "table": "Clients",
+        "field": "AvgMoodRating",
+        "kind": "rollup",
+        "rule": "“client” kaydının “avg mood rating” alanı, “client” kaydıyla ilişkili “sessions” kayıtları üzerinden hesaplanan ortalama “mood rating” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "MoodRating",
+            "label": "mood rating"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client değeri clients ID olan tüm sessions kayıtlarındaki mood rating değerlerinin ortalaması"
+      },
+      "Clients.GoalCount": {
+        "table": "Clients",
+        "field": "GoalCount",
+        "kind": "rollup",
+        "rule": "“client” kaydının “goal count” alanı, “client” kaydıyla ilişkili “goals” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgGoalProgress": {
+        "table": "Clients",
+        "field": "AvgGoalProgress",
+        "kind": "rollup",
+        "rule": "“client” kaydının “avg goal progress” alanı, “client” kaydıyla ilişkili “goals” kayıtları üzerinden hesaplanan ortalama “progress pct” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client değeri clients ID olan tüm goals kayıtlarındaki progress pct değerlerinin ortalaması"
+      },
+      "Clients.LastSessionLabel": {
+        "table": "Clients",
+        "field": "LastSessionLabel",
+        "kind": "rollup",
+        "rule": "“client” kaydının “last session label” alanı, “client” kaydıyla ilişkili “sessions” kayıtları üzerinden hesaplanan en büyük “session label” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client değeri clients ID olan tüm sessions kayıtlarındaki session label değerlerinin en büyüğü"
+      },
+      "Clients.IsAtRisk": {
+        "table": "Clients",
+        "field": "IsAtRisk",
+        "kind": "formula",
+        "rule": "“client” kaydı, “avg mood rating” alanı 5 değerinden küçük veya “avg goal progress” alanı 50 değerinden küçük ise “at risk” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "AvgMoodRating",
+            "label": "avg mood rating"
+          },
+          {
+            "table": "Clients",
+            "field": "AvgGoalProgress",
+            "label": "avg goal progress"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“client” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “at risk” sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“avg mood rating” alanı 5 değerinden küçük"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“avg goal progress” alanı 50 değerinden küçük"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Avg mood rating, 5 değerinden küçük veya avg goal progress, 50 değerinden küçük"
+      },
+      "Clients.StatusLabel": {
+        "table": "Clients",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "“client” kaydının “status label” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “at risk” bayrağı etkin ise “At risk”;\n2. diğer tüm durumlarda “On track”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "IsAtRisk",
+            "label": "is at risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“client” kaydının “status label” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“At risk”",
+              "when": {
+                "kind": "leaf",
+                "text": "“at risk” bayrağı etkin"
+              }
+            },
+            {
+              "value": "“On track”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is at risk ise \"At risk\", aksi takdirde \"On track\""
+      },
+      "Goals.ClientName": {
+        "table": "Goals",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "“goal” kaydının “client name” alanı, “client” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı client kaydının client name değeri"
+      },
+      "Goals.ClientTherapist": {
+        "table": "Goals",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "“goal” kaydının “client therapist” alanı, “client” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı client kaydının therapist değeri"
+      },
+      "Goals.Name": {
+        "table": "Goals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“goal” kaydının “name” alanı, “goals ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goals ID"
+      },
+      "Goals.UpdateCount": {
+        "table": "Goals",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "“goal” kaydının “update count” alanı, “goal” kaydıyla ilişkili “goal updates” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(goal, goals ID)"
+      },
+      "Goals.AvgScoreAchieved": {
+        "table": "Goals",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "“goal” kaydının “avg score achieved” alanı, “goal” kaydıyla ilişkili “goal updates” kayıtları üzerinden hesaplanan ortalama “score achieved” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goal değeri goals ID olan tüm goal updates kayıtlarındaki score achieved değerlerinin ortalaması"
+      },
+      "Goals.LatestScore": {
+        "table": "Goals",
+        "field": "LatestScore",
+        "kind": "rollup",
+        "rule": "“goal” kaydının “latest score” alanı, “goal” kaydıyla ilişkili “goal updates” kayıtları üzerinden hesaplanan en büyük “score achieved” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goal değeri goals ID olan tüm goal updates kayıtlarındaki score achieved değerlerinin en büyüğü"
+      },
+      "Goals.ProgressPct": {
+        "table": "Goals",
+        "field": "ProgressPct",
+        "kind": "formula",
+        "rule": "“goal” kaydının “progress pct” alanı, “avg score achieved” alanı bölü “target score” alanı çarpı 100 (hesaplanamıyor ise 0) olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          },
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          }
+        ],
+        "structure": null,
+        "plain": "((avg score achieved bölü target score) çarpı 100), hata oluşursa 0"
+      },
+      "Goals.RemainingGap": {
+        "table": "Goals",
+        "field": "RemainingGap",
+        "kind": "formula",
+        "rule": "“goal” kaydının “remaining gap” alanı, 0 ve “target score” alanı eksi “avg score achieved” alanı değerlerinin en büyüğü olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": null,
+        "plain": "0 ve (target score eksi avg score achieved) değerlerinin en büyüğü"
+      },
+      "Goals.IsOnTrack": {
+        "table": "Goals",
+        "field": "IsOnTrack",
+        "kind": "formula",
+        "rule": "“goal” kaydı, “progress pct” alanı en az 70 değerinde ise “on track” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Progress pct, en az 70 değerinde"
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "“session” kaydının “client name” alanı, “client” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı client kaydının client name değeri"
+      },
+      "Sessions.ClientTherapist": {
+        "table": "Sessions",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "“session” kaydının “client therapist” alanı, “client” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı client kaydının therapist değeri"
+      },
+      "Sessions.Name": {
+        "table": "Sessions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“session” kaydının “name” alanı, “sessions ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Sessions ID"
+      },
+      "Sessions.UpdateCount": {
+        "table": "Sessions",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "“session” kaydının “update count” alanı, “session” kaydıyla ilişkili “goal updates” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Session değeri sessions ID olan goal updates kayıtlarının sayısı"
+      },
+      "Sessions.AvgScoreAchieved": {
+        "table": "Sessions",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "“session” kaydının “avg score achieved” alanı, “session” kaydıyla ilişkili “goal updates” kayıtları üzerinden hesaplanan ortalama “score achieved” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Session değeri sessions ID olan tüm goal updates kayıtlarındaki score achieved değerlerinin ortalaması"
+      },
+      "Sessions.IsProductive": {
+        "table": "Sessions",
+        "field": "IsProductive",
+        "kind": "formula",
+        "rule": "“session” kaydı, “update count” alanı en az 2 değerinde ve “avg score achieved” alanı en az 5 değerinde ise “productive” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "UpdateCount",
+            "label": "update count"
+          },
+          {
+            "table": "Sessions",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“session” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “productive” sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“update count” alanı en az 2 değerinde"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“avg score achieved” alanı en az 5 değerinde"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Update count, en az 2 değerinde ve avg score achieved, en az 5 değerinde"
+      },
+      "Sessions.StatusLabel": {
+        "table": "Sessions",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "“session” kaydının “status label” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “productive” bayrağı etkin ise “Productive”;\n2. diğer tüm durumlarda “Light”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "IsProductive",
+            "label": "is productive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“session” kaydının “status label” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“Productive”",
+              "when": {
+                "kind": "leaf",
+                "text": "“productive” bayrağı etkin"
+              }
+            },
+            {
+              "value": "“Light”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is productive ise \"Productive\", aksi takdirde \"Light\""
+      },
+      "GoalUpdates.GoalTitle": {
+        "table": "GoalUpdates",
+        "field": "GoalTitle",
+        "kind": "lookup",
+        "rule": "“goal update” kaydının “goal title” alanı, “goal” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı goal kaydının title değeri"
+      },
+      "GoalUpdates.GoalClient": {
+        "table": "GoalUpdates",
+        "field": "GoalClient",
+        "kind": "lookup",
+        "rule": "“goal update” kaydının “goal client” alanı, “goal” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı goal kaydının client değeri"
+      },
+      "GoalUpdates.GoalTargetScore": {
+        "table": "GoalUpdates",
+        "field": "GoalTargetScore",
+        "kind": "lookup",
+        "rule": "“goal update” kaydının “goal target score” alanı, “goal” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı goal kaydının target score değeri"
+      },
+      "GoalUpdates.GoalClientTherapist": {
+        "table": "GoalUpdates",
+        "field": "GoalClientTherapist",
+        "kind": "lookup",
+        "rule": "“goal update” kaydının “goal client therapist” alanı, “goal” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ClientTherapist",
+            "label": "client therapist"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı goal kaydının client therapist değeri"
+      },
+      "GoalUpdates.SessionLabel": {
+        "table": "GoalUpdates",
+        "field": "SessionLabel",
+        "kind": "lookup",
+        "rule": "“goal update” kaydının “session label” alanı, “session” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı session kaydının session label değeri"
+      },
+      "GoalUpdates.Name": {
+        "table": "GoalUpdates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“goal update” kaydının “name” alanı, “goal updates ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "GoalUpdatesId",
+            "label": "goal updates ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goal updates ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "“user” kaydı, “full name” alanı ve “role” alanı dolu olmak **zorundadır**."
+      ],
+      "Clients": [
+        "“client” kaydı, “therapist” alanı aracılığıyla tam olarak bir “user” kaydına referans vermek **zorundadır**.",
+        "“client” kaydı, “client name” alanı dolu olmak **zorundadır**."
+      ],
+      "Goals": [
+        "“goal” kaydı, tam olarak bir “client” kaydına referans vermek **zorundadır**.",
+        "“goal” kaydı, “title” alanı ve “target score” alanı dolu olmak **zorundadır**."
+      ],
+      "Sessions": [
+        "“session” kaydı, tam olarak bir “client” kaydına referans vermek **zorundadır**.",
+        "“session” kaydı, “session label” alanı ve “mood rating” alanı dolu olmak **zorundadır**."
+      ],
+      "GoalUpdates": [
+        "“goal update” kaydı, tam olarak bir “goal” kaydına referans vermek **zorundadır**.",
+        "“goal update” kaydı, tam olarak bir “session” kaydına referans vermek **zorundadır**.",
+        "“goal update” kaydı, “score achieved” alanı dolu olmak **zorundadır**."
+      ]
+    },
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Clients": "client",
+      "Goals": "goal",
+      "Sessions": "session",
+      "GoalUpdates": "goal update"
+    }
+  },
+  "vi": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi user có cùng giá trị với trường “users ID” của chính user đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Users ID"
+      },
+      "Users.ClientCount": {
+        "table": "Users",
+        "field": "ClientCount",
+        "kind": "rollup",
+        "rule": "Trường “client count” của mỗi user là số lượng clients liên quan đến user đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(therapist, users ID)"
+      },
+      "Clients.TherapistName": {
+        "table": "Clients",
+        "field": "TherapistName",
+        "kind": "lookup",
+        "rule": "Trường “therapist name” của mỗi client là trường “full name” của bản ghi liên kết qua trường “therapist”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name của bản ghi liên kết qua therapist"
+      },
+      "Clients.Name": {
+        "table": "Clients",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi client có cùng giá trị với trường “clients ID” của chính client đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Clients ID"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "Trường “session count” của mỗi client là số lượng sessions liên quan đến client đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgMoodRating": {
+        "table": "Clients",
+        "field": "AvgMoodRating",
+        "kind": "rollup",
+        "rule": "Trường “avg mood rating” của mỗi client là giá trị trung bình của trường “mood rating” trên các sessions liên quan đến client đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "MoodRating",
+            "label": "mood rating"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Giá trị trung bình của mood rating trên tất cả sessions có client là clients ID"
+      },
+      "Clients.GoalCount": {
+        "table": "Clients",
+        "field": "GoalCount",
+        "kind": "rollup",
+        "rule": "Trường “goal count” của mỗi client là số lượng goals liên quan đến client đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgGoalProgress": {
+        "table": "Clients",
+        "field": "AvgGoalProgress",
+        "kind": "rollup",
+        "rule": "Trường “avg goal progress” của mỗi client là giá trị trung bình của trường “progress pct” trên các goals liên quan đến client đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Giá trị trung bình của progress pct trên tất cả goals có client là clients ID"
+      },
+      "Clients.LastSessionLabel": {
+        "table": "Clients",
+        "field": "LastSessionLabel",
+        "kind": "rollup",
+        "rule": "Trường “last session label” của mỗi client là giá trị lớn nhất của trường “session label” trên các sessions liên quan đến client đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Giá trị lớn nhất của session label trên tất cả sessions có client là clients ID"
+      },
+      "Clients.IsAtRisk": {
+        "table": "Clients",
+        "field": "IsAtRisk",
+        "kind": "formula",
+        "rule": "Mỗi client được coi là “at risk” nếu ít nhất một trong các điều kiện sau đúng: avg mood rating nhỏ hơn 5 hoặc avg goal progress nhỏ hơn 50.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "AvgMoodRating",
+            "label": "avg mood rating"
+          },
+          {
+            "table": "Clients",
+            "field": "AvgGoalProgress",
+            "label": "avg goal progress"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi client được coi là “at risk” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "avg mood rating nhỏ hơn 5"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "avg goal progress nhỏ hơn 50"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Avg mood rating nhỏ hơn 5 hoặc avg goal progress nhỏ hơn 50"
+      },
+      "Clients.StatusLabel": {
+        "table": "Clients",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "Trường “status label” của mỗi client được xác định theo thứ tự ưu tiên sau:\n1. “At risk”, nếu cờ “at risk” được bật;\n2. trong mọi trường hợp còn lại, “On track”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "IsAtRisk",
+            "label": "is at risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “status label” của mỗi client được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“At risk”",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “at risk” được bật"
+              }
+            },
+            {
+              "value": "“On track”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu is at risk thì \"At risk\", nếu không thì \"On track\""
+      },
+      "Goals.ClientName": {
+        "table": "Goals",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Trường “client name” của mỗi goal được lấy từ bản ghi liên kết qua trường “client”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client name của bản ghi liên kết qua client"
+      },
+      "Goals.ClientTherapist": {
+        "table": "Goals",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "Trường “client therapist” của mỗi goal được lấy từ bản ghi liên kết qua trường “client”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Therapist của bản ghi liên kết qua client"
+      },
+      "Goals.Name": {
+        "table": "Goals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi goal có cùng giá trị với trường “goals ID” của chính goal đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goals ID"
+      },
+      "Goals.UpdateCount": {
+        "table": "Goals",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "Trường “update count” của mỗi goal là số lượng goal updates liên quan đến goal đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(goal, goals ID)"
+      },
+      "Goals.AvgScoreAchieved": {
+        "table": "Goals",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "Trường “avg score achieved” của mỗi goal là giá trị trung bình của trường “score achieved” trên các goal updates liên quan đến goal đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Giá trị trung bình của score achieved trên tất cả goal updates có goal là goals ID"
+      },
+      "Goals.LatestScore": {
+        "table": "Goals",
+        "field": "LatestScore",
+        "kind": "rollup",
+        "rule": "Trường “latest score” của mỗi goal là giá trị lớn nhất của trường “score achieved” trên các goal updates liên quan đến goal đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Giá trị lớn nhất của score achieved trên tất cả goal updates có goal là goals ID"
+      },
+      "Goals.ProgressPct": {
+        "table": "Goals",
+        "field": "ProgressPct",
+        "kind": "formula",
+        "rule": "Trường “progress pct” của mỗi goal được tính bằng avg score achieved chia cho target score nhân 100 (hoặc 0 nếu không tính được).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          },
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          }
+        ],
+        "structure": null,
+        "plain": "((avg score achieved chia cho target score) nhân 100), hoặc 0 nếu biểu thức đó bị lỗi"
+      },
+      "Goals.RemainingGap": {
+        "table": "Goals",
+        "field": "RemainingGap",
+        "kind": "formula",
+        "rule": "Trường “remaining gap” của mỗi goal được tính bằng giá trị lớn nhất trong số 0 và target score trừ avg score achieved.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": null,
+        "plain": "Giá trị lớn nhất trong số 0 và (target score trừ avg score achieved)"
+      },
+      "Goals.IsOnTrack": {
+        "table": "Goals",
+        "field": "IsOnTrack",
+        "kind": "formula",
+        "rule": "Mỗi goal được coi là “on track” nếu progress pct không nhỏ hơn 70.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Progress pct không nhỏ hơn 70"
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "Trường “client name” của mỗi session được lấy từ bản ghi liên kết qua trường “client”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client name của bản ghi liên kết qua client"
+      },
+      "Sessions.ClientTherapist": {
+        "table": "Sessions",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "Trường “client therapist” của mỗi session được lấy từ bản ghi liên kết qua trường “client”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Therapist của bản ghi liên kết qua client"
+      },
+      "Sessions.Name": {
+        "table": "Sessions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi session có cùng giá trị với trường “sessions ID” của chính session đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Sessions ID"
+      },
+      "Sessions.UpdateCount": {
+        "table": "Sessions",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "Trường “update count” của mỗi session là số lượng goal updates liên quan đến session đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng goal updates có session là sessions ID"
+      },
+      "Sessions.AvgScoreAchieved": {
+        "table": "Sessions",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "Trường “avg score achieved” của mỗi session là giá trị trung bình của trường “score achieved” trên các goal updates liên quan đến session đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Giá trị trung bình của score achieved trên tất cả goal updates có session là sessions ID"
+      },
+      "Sessions.IsProductive": {
+        "table": "Sessions",
+        "field": "IsProductive",
+        "kind": "formula",
+        "rule": "Mỗi session được coi là “productive” nếu tất cả các điều kiện sau đều đúng: update count không nhỏ hơn 2 và avg score achieved không nhỏ hơn 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "UpdateCount",
+            "label": "update count"
+          },
+          {
+            "table": "Sessions",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi session được coi là “productive” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "update count không nhỏ hơn 2"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "avg score achieved không nhỏ hơn 5"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Update count không nhỏ hơn 2 và avg score achieved không nhỏ hơn 5"
+      },
+      "Sessions.StatusLabel": {
+        "table": "Sessions",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "Trường “status label” của mỗi session được xác định theo thứ tự ưu tiên sau:\n1. “Productive”, nếu cờ “productive” được bật;\n2. trong mọi trường hợp còn lại, “Light”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "IsProductive",
+            "label": "is productive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “status label” của mỗi session được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“Productive”",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “productive” được bật"
+              }
+            },
+            {
+              "value": "“Light”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu is productive thì \"Productive\", nếu không thì \"Light\""
+      },
+      "GoalUpdates.GoalTitle": {
+        "table": "GoalUpdates",
+        "field": "GoalTitle",
+        "kind": "lookup",
+        "rule": "Trường “goal title” của mỗi goal update được lấy từ bản ghi liên kết qua trường “goal”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Title của bản ghi liên kết qua goal"
+      },
+      "GoalUpdates.GoalClient": {
+        "table": "GoalUpdates",
+        "field": "GoalClient",
+        "kind": "lookup",
+        "rule": "Trường “goal client” của mỗi goal update được lấy từ bản ghi liên kết qua trường “goal”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client của bản ghi liên kết qua goal"
+      },
+      "GoalUpdates.GoalTargetScore": {
+        "table": "GoalUpdates",
+        "field": "GoalTargetScore",
+        "kind": "lookup",
+        "rule": "Trường “goal target score” của mỗi goal update được lấy từ bản ghi liên kết qua trường “goal”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Target score của bản ghi liên kết qua goal"
+      },
+      "GoalUpdates.GoalClientTherapist": {
+        "table": "GoalUpdates",
+        "field": "GoalClientTherapist",
+        "kind": "lookup",
+        "rule": "Trường “goal client therapist” của mỗi goal update được lấy từ bản ghi liên kết qua trường “goal”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ClientTherapist",
+            "label": "client therapist"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Client therapist của bản ghi liên kết qua goal"
+      },
+      "GoalUpdates.SessionLabel": {
+        "table": "GoalUpdates",
+        "field": "SessionLabel",
+        "kind": "lookup",
+        "rule": "Trường “session label” của mỗi goal update được lấy từ bản ghi liên kết qua trường “session”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Session label của bản ghi liên kết qua session"
+      },
+      "GoalUpdates.Name": {
+        "table": "GoalUpdates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi goal update có cùng giá trị với trường “goal updates ID” của chính goal update đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "GoalUpdatesId",
+            "label": "goal updates ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goal updates ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "Mỗi user **phải** có full name và role."
+      ],
+      "Clients": [
+        "Mỗi client **phải** tham chiếu đến đúng một user với vai trò therapist.",
+        "Mỗi client **phải** có client name."
+      ],
+      "Goals": [
+        "Mỗi goal **phải** tham chiếu đến đúng một client.",
+        "Mỗi goal **phải** có title và target score."
+      ],
+      "Sessions": [
+        "Mỗi session **phải** tham chiếu đến đúng một client.",
+        "Mỗi session **phải** có session label và mood rating."
+      ],
+      "GoalUpdates": [
+        "Mỗi goal update **phải** tham chiếu đến đúng một goal.",
+        "Mỗi goal update **phải** tham chiếu đến đúng một session.",
+        "Mỗi goal update **phải** có score achieved."
+      ]
+    },
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Clients": "client",
+      "Goals": "goal",
+      "Sessions": "session",
+      "GoalUpdates": "goal update"
+    }
+  },
+  "zh": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "user的“name”与 users ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Users ID"
+      },
+      "Users.ClientCount": {
+        "table": "Users",
+        "field": "ClientCount",
+        "kind": "rollup",
+        "rule": "user的“client count”为 与user相关的“clients”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(therapist, users ID)"
+      },
+      "Clients.TherapistName": {
+        "table": "Clients",
+        "field": "TherapistName",
+        "kind": "lookup",
+        "rule": "client的“therapist name”是所关联的“therapist”的“full name”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Users",
+            "field": "UsersId",
+            "label": "users ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“therapist”的full name"
+      },
+      "Clients.Name": {
+        "table": "Clients",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "client的“name”与 clients ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Clients ID"
+      },
+      "Clients.SessionCount": {
+        "table": "Clients",
+        "field": "SessionCount",
+        "kind": "rollup",
+        "rule": "client的“session count”为 与client相关的“sessions”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgMoodRating": {
+        "table": "Clients",
+        "field": "AvgMoodRating",
+        "kind": "rollup",
+        "rule": "client的“avg mood rating”为 与client相关的所有“sessions”的“mood rating”的平均值。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "MoodRating",
+            "label": "mood rating"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有client为clients ID的“sessions”的mood rating的平均值"
+      },
+      "Clients.GoalCount": {
+        "table": "Clients",
+        "field": "GoalCount",
+        "kind": "rollup",
+        "rule": "client的“goal count”为 与client相关的“goals”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(client, clients ID)"
+      },
+      "Clients.AvgGoalProgress": {
+        "table": "Clients",
+        "field": "AvgGoalProgress",
+        "kind": "rollup",
+        "rule": "client的“avg goal progress”为 与client相关的所有“goals”的“progress pct”的平均值。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有client为clients ID的“goals”的progress pct的平均值"
+      },
+      "Clients.LastSessionLabel": {
+        "table": "Clients",
+        "field": "LastSessionLabel",
+        "kind": "rollup",
+        "rule": "client的“last session label”为 与client相关的所有“sessions”的“session label”的最大值。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有client为clients ID的“sessions”的session label的最大值"
+      },
+      "Clients.IsAtRisk": {
+        "table": "Clients",
+        "field": "IsAtRisk",
+        "kind": "formula",
+        "rule": "当以下至少一项成立:avg mood rating小于5或avg goal progress小于50时,client被视为“At Risk”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "AvgMoodRating",
+            "label": "avg mood rating"
+          },
+          {
+            "table": "Clients",
+            "field": "AvgGoalProgress",
+            "label": "avg goal progress"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,client被视为“At Risk”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "avg mood rating小于5"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "avg goal progress小于50"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Avg mood rating小于5或avg goal progress小于50"
+      },
+      "Clients.StatusLabel": {
+        "table": "Clients",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "Client的“status label”按以下优先级确定:\n1. 当标志“at risk”已设置时,取 “At risk”;\n2. 其余情况取 “On track”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "IsAtRisk",
+            "label": "is at risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Client的“status label”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“At risk”",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“at risk”已设置"
+              }
+            },
+            {
+              "value": "“On track”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若is at risk,则\"At risk\",否则\"On track\""
+      },
+      "Goals.ClientName": {
+        "table": "Goals",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "goal的“client name”——取自所关联的“client”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“client”的client name"
+      },
+      "Goals.ClientTherapist": {
+        "table": "Goals",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "goal的“client therapist”——取自所关联的“client”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“client”的therapist"
+      },
+      "Goals.Name": {
+        "table": "Goals",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "goal的“name”与 goals ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goals ID"
+      },
+      "Goals.UpdateCount": {
+        "table": "Goals",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "goal的“update count”为 与goal相关的“goal updates”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Countif(goal, goals ID)"
+      },
+      "Goals.AvgScoreAchieved": {
+        "table": "Goals",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "goal的“avg score achieved”为 与goal相关的所有“goal updates”的“score achieved”的平均值。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有goal为goals ID的“goal updates”的score achieved的平均值"
+      },
+      "Goals.LatestScore": {
+        "table": "Goals",
+        "field": "LatestScore",
+        "kind": "rollup",
+        "rule": "goal的“latest score”为 与goal相关的所有“goal updates”的“score achieved”的最大值。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有goal为goals ID的“goal updates”的score achieved的最大值"
+      },
+      "Goals.ProgressPct": {
+        "table": "Goals",
+        "field": "ProgressPct",
+        "kind": "formula",
+        "rule": "goal的“progress pct”按 avg score achieved除以target score乘100(无法计算时取0) 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          },
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          }
+        ],
+        "structure": null,
+        "plain": "((avg score achieved除以target score)乘100)(出错时取0)"
+      },
+      "Goals.RemainingGap": {
+        "table": "Goals",
+        "field": "RemainingGap",
+        "kind": "formula",
+        "rule": "goal的“remaining gap”按 0且target score减avg score achieved中的最大者 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "Goals",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": null,
+        "plain": "0且(target score减avg score achieved)中的最大者"
+      },
+      "Goals.IsOnTrack": {
+        "table": "Goals",
+        "field": "IsOnTrack",
+        "kind": "formula",
+        "rule": "当progress pct不小于70时,goal被视为“On Track”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ProgressPct",
+            "label": "progress pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Progress pct不小于70"
+      },
+      "Sessions.ClientName": {
+        "table": "Sessions",
+        "field": "ClientName",
+        "kind": "lookup",
+        "rule": "session的“client name”——取自所关联的“client”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "ClientName",
+            "label": "client name"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“client”的client name"
+      },
+      "Sessions.ClientTherapist": {
+        "table": "Sessions",
+        "field": "ClientTherapist",
+        "kind": "lookup",
+        "rule": "session的“client therapist”——取自所关联的“client”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Clients",
+            "field": "Therapist",
+            "label": "therapist"
+          },
+          {
+            "table": "Sessions",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "Clients",
+            "field": "ClientsId",
+            "label": "clients ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“client”的therapist"
+      },
+      "Sessions.Name": {
+        "table": "Sessions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "session的“name”与 sessions ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Sessions ID"
+      },
+      "Sessions.UpdateCount": {
+        "table": "Sessions",
+        "field": "UpdateCount",
+        "kind": "rollup",
+        "rule": "session的“update count”为 与session相关的“goal updates”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Session为sessions ID的“goal updates”的数量"
+      },
+      "Sessions.AvgScoreAchieved": {
+        "table": "Sessions",
+        "field": "AvgScoreAchieved",
+        "kind": "rollup",
+        "rule": "session的“avg score achieved”为 与session相关的所有“goal updates”的“score achieved”的平均值。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "ScoreAchieved",
+            "label": "score achieved"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有session为sessions ID的“goal updates”的score achieved的平均值"
+      },
+      "Sessions.IsProductive": {
+        "table": "Sessions",
+        "field": "IsProductive",
+        "kind": "formula",
+        "rule": "当以下全部成立:update count不小于2且avg score achieved不小于5时,session被视为“Productive”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "UpdateCount",
+            "label": "update count"
+          },
+          {
+            "table": "Sessions",
+            "field": "AvgScoreAchieved",
+            "label": "avg score achieved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,session被视为“Productive”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "update count不小于2"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "avg score achieved不小于5"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Update count不小于2且avg score achieved不小于5"
+      },
+      "Sessions.StatusLabel": {
+        "table": "Sessions",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "Session的“status label”按以下优先级确定:\n1. 当标志“productive”已设置时,取 “Productive”;\n2. 其余情况取 “Light”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "IsProductive",
+            "label": "is productive"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Session的“status label”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“Productive”",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“productive”已设置"
+              }
+            },
+            {
+              "value": "“Light”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若is productive,则\"Productive\",否则\"Light\""
+      },
+      "GoalUpdates.GoalTitle": {
+        "table": "GoalUpdates",
+        "field": "GoalTitle",
+        "kind": "lookup",
+        "rule": "goal update的“goal title”——取自所关联的“goal”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Title",
+            "label": "title"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“goal”的title"
+      },
+      "GoalUpdates.GoalClient": {
+        "table": "GoalUpdates",
+        "field": "GoalClient",
+        "kind": "lookup",
+        "rule": "goal update的“goal client”——取自所关联的“goal”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "Client",
+            "label": "client"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“goal”的client"
+      },
+      "GoalUpdates.GoalTargetScore": {
+        "table": "GoalUpdates",
+        "field": "GoalTargetScore",
+        "kind": "lookup",
+        "rule": "goal update的“goal target score”——取自所关联的“goal”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "TargetScore",
+            "label": "target score"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“goal”的target score"
+      },
+      "GoalUpdates.GoalClientTherapist": {
+        "table": "GoalUpdates",
+        "field": "GoalClientTherapist",
+        "kind": "lookup",
+        "rule": "goal update的“goal client therapist”——取自所关联的“goal”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Goals",
+            "field": "ClientTherapist",
+            "label": "client therapist"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Goal",
+            "label": "goal"
+          },
+          {
+            "table": "Goals",
+            "field": "GoalsId",
+            "label": "goals ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“goal”的client therapist"
+      },
+      "GoalUpdates.SessionLabel": {
+        "table": "GoalUpdates",
+        "field": "SessionLabel",
+        "kind": "lookup",
+        "rule": "goal update的“session label”——取自所关联的“session”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Sessions",
+            "field": "SessionLabel",
+            "label": "session label"
+          },
+          {
+            "table": "GoalUpdates",
+            "field": "Session",
+            "label": "session"
+          },
+          {
+            "table": "Sessions",
+            "field": "SessionsId",
+            "label": "sessions ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“session”的session label"
+      },
+      "GoalUpdates.Name": {
+        "table": "GoalUpdates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "goal update的“name”与 goal updates ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GoalUpdates",
+            "field": "GoalUpdatesId",
+            "label": "goal updates ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Goal updates ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "user**必须**具有full name且role。"
+      ],
+      "Clients": [
+        "client**必须**恰好引用一个“user”作为其therapist。",
+        "client**必须**具有client name。"
+      ],
+      "Goals": [
+        "goal**必须**恰好引用一个“client”。",
+        "goal**必须**具有title且target score。"
+      ],
+      "Sessions": [
+        "session**必须**恰好引用一个“client”。",
+        "session**必须**具有session label且mood rating。"
+      ],
+      "GoalUpdates": [
+        "goal update**必须**恰好引用一个“goal”。",
+        "goal update**必须**恰好引用一个“session”。",
+        "goal update**必须**具有score achieved。"
+      ]
+    },
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "Users": "user",

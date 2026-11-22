@@ -1471,7 +1471,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
   ]
  }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -1970,6 +1985,8046 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "EDBRelations": "EDB relation",
+      "Commands": "command",
+      "Rules": "rule",
+      "Transitions": "transition",
+      "TransitionEffects": "transition effect",
+      "TransitionEvents": "transition event",
+      "IntegrityConstraints": "integrity constraint",
+      "Observables": "observable",
+      "SeedFacts": "seed fact",
+      "InputHistories": "input history",
+      "ReflectionConditions": "reflection condition",
+      "Substrates": "substrate",
+      "AnswerKeyResults": "answer key result",
+      "ReflectionResults": "reflection result"
+    }
+  },
+  "ar": {
+    "fields": {
+      "EDBRelations.Name": {
+        "table": "EDBRelations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «EDB relation» يطابق حقل «relation ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EDBRelations",
+            "field": "RelationId",
+            "label": "relation ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Relation ID"
+      },
+      "Commands.Name": {
+        "table": "Commands",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «command» يطابق حقل «command ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Commands",
+            "field": "CommandId",
+            "label": "command ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Command ID"
+      },
+      "Rules.Name": {
+        "table": "Rules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «rule» يطابق حقل «rule ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rules",
+            "field": "RuleId",
+            "label": "rule ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rule ID"
+      },
+      "Transitions.Name": {
+        "table": "Transitions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «transition» يطابق حقل «transition ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transitions",
+            "field": "TransitionId",
+            "label": "transition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transition ID"
+      },
+      "TransitionEffects.Name": {
+        "table": "TransitionEffects",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «transition effect» يطابق حقل «effect ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEffects",
+            "field": "EffectId",
+            "label": "effect ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Effect ID"
+      },
+      "TransitionEvents.Name": {
+        "table": "TransitionEvents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «transition event» يطابق حقل «event ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEvents",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "IntegrityConstraints.Name": {
+        "table": "IntegrityConstraints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «integrity constraint» يطابق حقل «constraint ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IntegrityConstraints",
+            "field": "ConstraintId",
+            "label": "constraint ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Constraint ID"
+      },
+      "Observables.Name": {
+        "table": "Observables",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «observable» يطابق حقل «observable ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Observables",
+            "field": "ObservableId",
+            "label": "observable ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Observable ID"
+      },
+      "SeedFacts.Name": {
+        "table": "SeedFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «seed fact» يطابق حقل «seed fact ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SeedFacts",
+            "field": "SeedFactId",
+            "label": "seed fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seed fact ID"
+      },
+      "InputHistories.Name": {
+        "table": "InputHistories",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «input history» يطابق حقل «input history ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InputHistories",
+            "field": "InputHistoryId",
+            "label": "input history ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Input history ID"
+      },
+      "ReflectionConditions.Name": {
+        "table": "ReflectionConditions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «reflection condition» يطابق حقل «condition ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionConditions",
+            "field": "ConditionId",
+            "label": "condition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Condition ID"
+      },
+      "Substrates.Name": {
+        "table": "Substrates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «substrate» يطابق حقل «substrate ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate ID"
+      },
+      "Substrates.AnswerKeyResultCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyResultCount",
+        "kind": "rollup",
+        "rule": "حقل «answer key result count» في سجل «substrate» هو عدد سجلات «answer key results» المرتبطة بسجل «substrate».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «answer key results» التي يتحقق فيها أنّ حقل «substrate» يساوي substrate ID"
+      },
+      "Substrates.AnswerKeyFailCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyFailCount",
+        "kind": "rollup",
+        "rule": "حقل «answer key fail count» في سجل «substrate» هو عدد سجلات «answer key results» المرتبطة بسجل «substrate» التي يساوي فيها حقل «outcome» «fail».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "AnswerKeyResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «answer key results» التي يتحقق فيها أنّ حقل «substrate» يساوي substrate ID وحقل «outcome» يساوي \"fail\""
+      },
+      "Substrates.AnswerKeyOk": {
+        "table": "Substrates",
+        "field": "AnswerKeyOk",
+        "kind": "formula",
+        "rule": "يوسم سجل «substrate» بعلامة «answer key ok» إذا تحقق أنّ جميع الشروط الآتية متحققة: حقل «answer key result count» أكبر من 0 وحقل «answer key fail count» يساوي 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyResultCount",
+            "label": "answer key result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyFailCount",
+            "label": "answer key fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يوسم سجل «substrate» بعلامة «answer key ok» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "حقل «answer key result count» أكبر من 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "حقل «answer key fail count» يساوي 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key result count أكبر من 0 وanswer key fail count يساوي 0"
+      },
+      "Substrates.ReflectionResultCount": {
+        "table": "Substrates",
+        "field": "ReflectionResultCount",
+        "kind": "rollup",
+        "rule": "حقل «reflection result count» في سجل «substrate» هو عدد سجلات «reflection results» المرتبطة بسجل «substrate».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «reflection results» التي يتحقق فيها أنّ حقل «substrate» يساوي substrate ID"
+      },
+      "Substrates.ReflectionFailCount": {
+        "table": "Substrates",
+        "field": "ReflectionFailCount",
+        "kind": "rollup",
+        "rule": "حقل «reflection fail count» في سجل «substrate» هو عدد سجلات «reflection results» المرتبطة بسجل «substrate» التي يساوي فيها حقل «outcome» «fail».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "ReflectionResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «reflection results» التي يتحقق فيها أنّ حقل «substrate» يساوي substrate ID وحقل «outcome» يساوي \"fail\""
+      },
+      "Substrates.ReflectionOk": {
+        "table": "Substrates",
+        "field": "ReflectionOk",
+        "kind": "formula",
+        "rule": "يوسم سجل «substrate» بعلامة «reflection ok» إذا تحقق أنّ جميع الشروط الآتية متحققة: حقل «reflection result count» أكبر من 0 وحقل «reflection fail count» يساوي 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "ReflectionResultCount",
+            "label": "reflection result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionFailCount",
+            "label": "reflection fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يوسم سجل «substrate» بعلامة «reflection ok» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "حقل «reflection result count» أكبر من 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "حقل «reflection fail count» يساوي 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Reflection result count أكبر من 0 وreflection fail count يساوي 0"
+      },
+      "Substrates.Conformant": {
+        "table": "Substrates",
+        "field": "Conformant",
+        "kind": "formula",
+        "rule": "يوسم سجل «substrate» بعلامة «conformant» إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «answer key ok» مفعّلة وعلامة «reflection ok» مفعّلة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyOk",
+            "label": "answer key ok"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionOk",
+            "label": "reflection ok"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يوسم سجل «substrate» بعلامة «conformant» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "علامة «answer key ok» مفعّلة"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "علامة «reflection ok» مفعّلة"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key ok وreflection ok"
+      },
+      "AnswerKeyResults.Name": {
+        "table": "AnswerKeyResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «answer key result» يطابق حقل «answer key result ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "AnswerKeyResultId",
+            "label": "answer key result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Answer key result ID"
+      },
+      "ReflectionResults.Name": {
+        "table": "ReflectionResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «reflection result» يطابق حقل «reflection result ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "ReflectionResultId",
+            "label": "reflection result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Reflection result ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "EDBRelations": [
+        "**يجب أن** يشير كل سجل «EDB relation» إلى سجل «seed fact» واحد فقط.",
+        "**يجب أن** يشير كل سجل «EDB relation» إلى سجل «transition effect» واحد فقط.",
+        "في كل سجل «EDB relation»، **يجب أن** تُحدّد قيمة حقل «fields»، وحقل «field count»، وحقل «description»."
+      ],
+      "Commands": [
+        "**يجب أن** يشير كل سجل «command» إلى سجل «transition» واحد فقط.",
+        "في كل سجل «command»، **يجب أن** تُحدّد قيمة حقل «params»، وحقل «param count»، وحقل «description»."
+      ],
+      "Rules": [
+        "**يجب أن** يشير كل سجل «rule» إلى سجل «transition» واحد فقط عبر حقل «guarded transitions».",
+        "**يجب أن** يشير كل سجل «rule» إلى سجل «transition effect» واحد فقط.",
+        "**يجب أن** يشير كل سجل «rule» إلى سجل «transition event» واحد فقط.",
+        "**يجب أن** يشير كل سجل «rule» إلى سجل «integrity constraint» واحد فقط.",
+        "في كل سجل «rule»، **يجب أن** تُحدّد قيمة حقل «head predicate»، وحقل «kind»، وحقل «head JSON»، وحقل «paper section ref»، وحقل «description»."
+      ],
+      "Transitions": [
+        "**يجب أن** يشير كل سجل «transition» إلى سجل «command» واحد فقط.",
+        "**يجب أن** يشير كل سجل «transition» إلى سجل «rule» واحد فقط عبر حقل «guard».",
+        "**يجب أن** يشير كل سجل «transition» إلى سجل «transition effect» واحد فقط عبر حقل «effects».",
+        "**يجب أن** يشير كل سجل «transition» إلى سجل «transition event» واحد فقط عبر حقل «events».",
+        "في كل سجل «transition»، **يجب أن** تُحدّد قيمة حقل «description»."
+      ],
+      "TransitionEffects": [
+        "**يجب أن** يشير كل سجل «transition effect» إلى سجل «transition» واحد فقط.",
+        "**يجب أن** يشير كل سجل «transition effect» إلى سجل «EDB relation» واحد فقط عبر حقل «relation».",
+        "**يجب أن** يشير كل سجل «transition effect» إلى سجل «rule» واحد فقط عبر حقل «from rule».",
+        "في كل سجل «transition effect»، **يجب أن** تُحدّد قيمة حقل «op»."
+      ],
+      "TransitionEvents": [
+        "**يجب أن** يشير كل سجل «transition event» إلى سجل «transition» واحد فقط.",
+        "**يجب أن** يشير كل سجل «transition event» إلى سجل «rule» واحد فقط عبر حقل «from rule».",
+        "في كل سجل «transition event»، **يجب أن** تُحدّد قيمة حقل «event relation»."
+      ],
+      "IntegrityConstraints": [
+        "**يجب أن** يشير كل سجل «integrity constraint» إلى سجل «rule» واحد فقط.",
+        "في كل سجل «integrity constraint»، **يجب أن** تُحدّد قيمة حقل «description»."
+      ],
+      "Observables": [
+        "في كل سجل «observable»، **يجب أن** تُحدّد قيمة حقل «exposed predicate» وحقل «description»."
+      ],
+      "SeedFacts": [
+        "**يجب أن** يشير كل سجل «seed fact» إلى سجل «EDB relation» واحد فقط عبر حقل «relation».",
+        "في كل سجل «seed fact»، **يجب أن** تُحدّد قيمة حقل «n»، وحقل «op»، وحقل «tuple JSON»، وحقل «k»."
+      ],
+      "InputHistories": [
+        "**يجب أن** يشير كل سجل «input history» إلى سجل «answer key result» واحد فقط.",
+        "في كل سجل «input history»، **يجب أن** تُحدّد قيمة حقل «source file»، وحقل «event count»، وحقل «description»."
+      ],
+      "ReflectionConditions": [
+        "**يجب أن** يشير كل سجل «reflection condition» إلى سجل «reflection result» واحد فقط.",
+        "في كل سجل «reflection condition»، **يجب أن** تُحدّد قيمة حقل «condition number»، وحقل «title»، وحقل «paper section ref»، وحقل «description»."
+      ],
+      "Substrates": [
+        "**يجب أن** يشير كل سجل «substrate» إلى سجل «answer key result» واحد فقط.",
+        "**يجب أن** يشير كل سجل «substrate» إلى سجل «reflection result» واحد فقط.",
+        "في كل سجل «substrate»، **يجب أن** تُحدّد قيمة حقل «description» وحقل «paper section ref»، وأن يُسجّل ما إذا كان مصنّفًا على أنه «control»."
+      ],
+      "AnswerKeyResults": [
+        "**يجب أن** يشير كل سجل «answer key result» إلى سجل «substrate» واحد فقط.",
+        "**يجب أن** يشير كل سجل «answer key result» إلى سجل «input history» واحد فقط.",
+        "في كل سجل «answer key result»، **يجب أن** تُحدّد قيمة حقل «traces produced»، وحقل «permitted»، وحقل «outcome»."
+      ],
+      "ReflectionResults": [
+        "**يجب أن** يشير كل سجل «reflection result» إلى سجل «substrate» واحد فقط.",
+        "**يجب أن** يشير كل سجل «reflection result» إلى سجل «reflection condition» واحد فقط.",
+        "في كل سجل «reflection result»، **يجب أن** تُحدّد قيمة حقل «outcome»."
+      ]
+    },
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "EDBRelations": "EDB relation",
+      "Commands": "command",
+      "Rules": "rule",
+      "Transitions": "transition",
+      "TransitionEffects": "transition effect",
+      "TransitionEvents": "transition event",
+      "IntegrityConstraints": "integrity constraint",
+      "Observables": "observable",
+      "SeedFacts": "seed fact",
+      "InputHistories": "input history",
+      "ReflectionConditions": "reflection condition",
+      "Substrates": "substrate",
+      "AnswerKeyResults": "answer key result",
+      "ReflectionResults": "reflection result"
+    }
+  },
+  "de": {
+    "fields": {
+      "EDBRelations.Name": {
+        "table": "EDBRelations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine EDB Relation: Name entspricht Relation ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EDBRelations",
+            "field": "RelationId",
+            "label": "relation ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Relation ID"
+      },
+      "Commands.Name": {
+        "table": "Commands",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Command: Name entspricht Command ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Commands",
+            "field": "CommandId",
+            "label": "command ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Command ID"
+      },
+      "Rules.Name": {
+        "table": "Rules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Rule: Name entspricht Rule ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rules",
+            "field": "RuleId",
+            "label": "rule ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rule ID"
+      },
+      "Transitions.Name": {
+        "table": "Transitions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Transition: Name entspricht Transition ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transitions",
+            "field": "TransitionId",
+            "label": "transition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transition ID"
+      },
+      "TransitionEffects.Name": {
+        "table": "TransitionEffects",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Transition Effect: Name entspricht Effect ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEffects",
+            "field": "EffectId",
+            "label": "effect ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Effect ID"
+      },
+      "TransitionEvents.Name": {
+        "table": "TransitionEvents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Transition Event: Name entspricht Event ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEvents",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "IntegrityConstraints.Name": {
+        "table": "IntegrityConstraints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Integrity Constraint: Name entspricht Constraint ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IntegrityConstraints",
+            "field": "ConstraintId",
+            "label": "constraint ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Constraint ID"
+      },
+      "Observables.Name": {
+        "table": "Observables",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Observable: Name entspricht Observable ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Observables",
+            "field": "ObservableId",
+            "label": "observable ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Observable ID"
+      },
+      "SeedFacts.Name": {
+        "table": "SeedFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Seed Fact: Name entspricht Seed Fact ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SeedFacts",
+            "field": "SeedFactId",
+            "label": "seed fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seed Fact ID"
+      },
+      "InputHistories.Name": {
+        "table": "InputHistories",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Input History: Name entspricht Input History ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InputHistories",
+            "field": "InputHistoryId",
+            "label": "input history ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Input History ID"
+      },
+      "ReflectionConditions.Name": {
+        "table": "ReflectionConditions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Reflection Condition: Name entspricht Condition ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionConditions",
+            "field": "ConditionId",
+            "label": "condition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Condition ID"
+      },
+      "Substrates.Name": {
+        "table": "Substrates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Substrate: Name entspricht Substrate ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate ID"
+      },
+      "Substrates.AnswerKeyResultCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyResultCount",
+        "kind": "rollup",
+        "rule": "Eine Substrate: Answer Key Result Count ist die Anzahl der mit der Substrate verbundenen Answer Key Results.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Answer Key Results, deren Substrate ist Substrate ID"
+      },
+      "Substrates.AnswerKeyFailCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyFailCount",
+        "kind": "rollup",
+        "rule": "Eine Substrate: Answer Key Fail Count ist die Anzahl der Answer Key Results der Substrate, die Outcome von „fail“ haben.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "AnswerKeyResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Answer Key Results, deren Substrate ist Substrate ID und Outcome ist \"fail\""
+      },
+      "Substrates.AnswerKeyOk": {
+        "table": "Substrates",
+        "field": "AnswerKeyOk",
+        "kind": "formula",
+        "rule": "Eine Substrate ist markiert als Answer Key Ok, wenn alles Folgende gilt: der Answer Key Result Count größer ist als 0 und der Answer Key Fail Count 0 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyResultCount",
+            "label": "answer key result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyFailCount",
+            "label": "answer key fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Eine Substrate ist markiert als Answer Key Ok, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "der Answer Key Result Count größer ist als 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "der Answer Key Fail Count 0 ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer Key Result Count größer als 0 ist und Answer Key Fail Count gleich 0 ist"
+      },
+      "Substrates.ReflectionResultCount": {
+        "table": "Substrates",
+        "field": "ReflectionResultCount",
+        "kind": "rollup",
+        "rule": "Eine Substrate: Reflection Result Count ist die Anzahl der mit der Substrate verbundenen Reflection Results.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Reflection Results, deren Substrate ist Substrate ID"
+      },
+      "Substrates.ReflectionFailCount": {
+        "table": "Substrates",
+        "field": "ReflectionFailCount",
+        "kind": "rollup",
+        "rule": "Eine Substrate: Reflection Fail Count ist die Anzahl der Reflection Results der Substrate, die Outcome von „fail“ haben.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "ReflectionResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Reflection Results, deren Substrate ist Substrate ID und Outcome ist \"fail\""
+      },
+      "Substrates.ReflectionOk": {
+        "table": "Substrates",
+        "field": "ReflectionOk",
+        "kind": "formula",
+        "rule": "Eine Substrate ist markiert als Reflection Ok, wenn alles Folgende gilt: der Reflection Result Count größer ist als 0 und der Reflection Fail Count 0 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "ReflectionResultCount",
+            "label": "reflection result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionFailCount",
+            "label": "reflection fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Eine Substrate ist markiert als Reflection Ok, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "der Reflection Result Count größer ist als 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "der Reflection Fail Count 0 ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Reflection Result Count größer als 0 ist und Reflection Fail Count gleich 0 ist"
+      },
+      "Substrates.Conformant": {
+        "table": "Substrates",
+        "field": "Conformant",
+        "kind": "formula",
+        "rule": "Eine Substrate ist markiert als Conformant, wenn alles Folgende gilt: das Kennzeichen „Answer Key Ok“ gesetzt ist und das Kennzeichen „Reflection Ok“ gesetzt ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyOk",
+            "label": "answer key ok"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionOk",
+            "label": "reflection ok"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Eine Substrate ist markiert als Conformant, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Answer Key Ok“ gesetzt ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Reflection Ok“ gesetzt ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer Key Ok und Reflection Ok"
+      },
+      "AnswerKeyResults.Name": {
+        "table": "AnswerKeyResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Answer Key Result: Name entspricht Answer Key Result ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "AnswerKeyResultId",
+            "label": "answer key result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Answer Key Result ID"
+      },
+      "ReflectionResults.Name": {
+        "table": "ReflectionResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Reflection Result: Name entspricht Reflection Result ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "ReflectionResultId",
+            "label": "reflection result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Reflection Result ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "EDBRelations": [
+        "Eine EDB Relation **muss** auf genau einen Seed Fact verweisen.",
+        "Eine EDB Relation **muss** auf genau einen Transition Effect verweisen.",
+        "Eine EDB Relation **muss** ein Fields; ein Field Count; und eine Description haben."
+      ],
+      "Commands": [
+        "Ein Command **muss** auf genau einen Transition verweisen.",
+        "Ein Command **muss** ein Params; ein Param Count; und eine Description haben."
+      ],
+      "Rules": [
+        "Eine Rule **muss** auf genau einen Transition als seinen Guarded Transitions verweisen.",
+        "Eine Rule **muss** auf genau einen Transition Effect verweisen.",
+        "Eine Rule **muss** auf genau einen Transition Event verweisen.",
+        "Eine Rule **muss** auf genau einen Integrity Constraint verweisen.",
+        "Eine Rule **muss** eine Head Predicate; ein Kind; ein Head JSON; ein Paper Section Ref; und eine Description haben."
+      ],
+      "Transitions": [
+        "Eine Transition **muss** auf genau einen Command verweisen.",
+        "Eine Transition **muss** auf genau einen Rule als seinen Guard verweisen.",
+        "Eine Transition **muss** auf genau einen Transition Effect als seinen Effects verweisen.",
+        "Eine Transition **muss** auf genau einen Transition Event als seinen Events verweisen.",
+        "Eine Transition **muss** eine Description haben."
+      ],
+      "TransitionEffects": [
+        "Ein Transition Effect **muss** auf genau einen Transition verweisen.",
+        "Ein Transition Effect **muss** auf genau einen EDB Relation als seinen Relation verweisen.",
+        "Ein Transition Effect **muss** auf genau einen Rule als seinen From Rule verweisen.",
+        "Ein Transition Effect **muss** ein Op haben."
+      ],
+      "TransitionEvents": [
+        "Ein Transition Event **muss** auf genau einen Transition verweisen.",
+        "Ein Transition Event **muss** auf genau einen Rule als seinen From Rule verweisen.",
+        "Ein Transition Event **muss** eine Event Relation haben."
+      ],
+      "IntegrityConstraints": [
+        "Ein Integrity Constraint **muss** auf genau einen Rule verweisen.",
+        "Ein Integrity Constraint **muss** eine Description haben."
+      ],
+      "Observables": [
+        "Eine Observable **muss** eine Exposed Predicate und eine Description haben."
+      ],
+      "SeedFacts": [
+        "Ein Seed Fact **muss** auf genau einen EDB Relation als seinen Relation verweisen.",
+        "Ein Seed Fact **muss** ein N; ein Op; ein Tuple JSON; und ein K haben."
+      ],
+      "InputHistories": [
+        "Ein Input History **muss** auf genau einen Answer Key Result verweisen.",
+        "Ein Input History **muss** eine Source File; ein Event Count; und eine Description haben."
+      ],
+      "ReflectionConditions": [
+        "Eine Reflection Condition **muss** auf genau einen Reflection Result verweisen.",
+        "Eine Reflection Condition **muss** ein Condition Number; eine Title; ein Paper Section Ref; und eine Description haben."
+      ],
+      "Substrates": [
+        "Eine Substrate **muss** auf genau einen Answer Key Result verweisen.",
+        "Eine Substrate **muss** auf genau einen Reflection Result verweisen.",
+        "Eine Substrate **muss** eine Description und ein Paper Section Ref haben und erfassen, ob es ist ein Control."
+      ],
+      "AnswerKeyResults": [
+        "Ein Answer Key Result **muss** auf genau einen Substrate verweisen.",
+        "Ein Answer Key Result **muss** auf genau einen Input History verweisen.",
+        "Ein Answer Key Result **muss** ein Traces Produced; ein Permitted; und eine Outcome haben."
+      ],
+      "ReflectionResults": [
+        "Ein Reflection Result **muss** auf genau einen Substrate verweisen.",
+        "Ein Reflection Result **muss** auf genau einen Reflection Condition verweisen.",
+        "Ein Reflection Result **muss** eine Outcome haben."
+      ]
+    },
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "EDBRelations": "EDB Relation",
+      "Commands": "Command",
+      "Rules": "Rule",
+      "Transitions": "Transition",
+      "TransitionEffects": "Transition Effect",
+      "TransitionEvents": "Transition Event",
+      "IntegrityConstraints": "Integrity Constraint",
+      "Observables": "Observable",
+      "SeedFacts": "Seed Fact",
+      "InputHistories": "Input History",
+      "ReflectionConditions": "Reflection Condition",
+      "Substrates": "Substrate",
+      "AnswerKeyResults": "Answer Key Result",
+      "ReflectionResults": "Reflection Result"
+    }
+  },
+  "es": {
+    "fields": {
+      "EDBRelations.Name": {
+        "table": "EDBRelations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un EDB relation: name es igual a relation ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EDBRelations",
+            "field": "RelationId",
+            "label": "relation ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Relation ID"
+      },
+      "Commands.Name": {
+        "table": "Commands",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un command: name es igual a command ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Commands",
+            "field": "CommandId",
+            "label": "command ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Command ID"
+      },
+      "Rules.Name": {
+        "table": "Rules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un rule: name es igual a rule ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rules",
+            "field": "RuleId",
+            "label": "rule ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rule ID"
+      },
+      "Transitions.Name": {
+        "table": "Transitions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un transition: name es igual a transition ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transitions",
+            "field": "TransitionId",
+            "label": "transition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transition ID"
+      },
+      "TransitionEffects.Name": {
+        "table": "TransitionEffects",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un transition effect: name es igual a effect ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEffects",
+            "field": "EffectId",
+            "label": "effect ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Effect ID"
+      },
+      "TransitionEvents.Name": {
+        "table": "TransitionEvents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un transition event: name es igual a event ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEvents",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "IntegrityConstraints.Name": {
+        "table": "IntegrityConstraints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un integrity constraint: name es igual a constraint ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IntegrityConstraints",
+            "field": "ConstraintId",
+            "label": "constraint ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Constraint ID"
+      },
+      "Observables.Name": {
+        "table": "Observables",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un observable: name es igual a observable ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Observables",
+            "field": "ObservableId",
+            "label": "observable ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Observable ID"
+      },
+      "SeedFacts.Name": {
+        "table": "SeedFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un seed fact: name es igual a seed fact ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SeedFacts",
+            "field": "SeedFactId",
+            "label": "seed fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seed fact ID"
+      },
+      "InputHistories.Name": {
+        "table": "InputHistories",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un input history: name es igual a input history ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InputHistories",
+            "field": "InputHistoryId",
+            "label": "input history ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Input history ID"
+      },
+      "ReflectionConditions.Name": {
+        "table": "ReflectionConditions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un reflection condition: name es igual a condition ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionConditions",
+            "field": "ConditionId",
+            "label": "condition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Condition ID"
+      },
+      "Substrates.Name": {
+        "table": "Substrates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un substrate: name es igual a substrate ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate ID"
+      },
+      "Substrates.AnswerKeyResultCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyResultCount",
+        "kind": "rollup",
+        "rule": "Un substrate: answer key result count es el número de answer key results relacionados con el substrate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de answer key results cuyo substrate es substrate ID"
+      },
+      "Substrates.AnswerKeyFailCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyFailCount",
+        "kind": "rollup",
+        "rule": "Un substrate: answer key fail count es el número de answer key results del substrate que tienen un outcome de «fail».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "AnswerKeyResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de answer key results cuyo substrate es substrate ID y outcome es \"fail\""
+      },
+      "Substrates.AnswerKeyOk": {
+        "table": "Substrates",
+        "field": "AnswerKeyOk",
+        "kind": "formula",
+        "rule": "Un substrate está marcado como answer key ok si se cumple todo lo siguiente: el answer key result count es mayor que 0 y el answer key fail count es 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyResultCount",
+            "label": "answer key result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyFailCount",
+            "label": "answer key fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un substrate está marcado como answer key ok si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el answer key result count es mayor que 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el answer key fail count es 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key result count es mayor que 0 y answer key fail count es igual a 0"
+      },
+      "Substrates.ReflectionResultCount": {
+        "table": "Substrates",
+        "field": "ReflectionResultCount",
+        "kind": "rollup",
+        "rule": "Un substrate: reflection result count es el número de reflection results relacionados con el substrate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de reflection results cuyo substrate es substrate ID"
+      },
+      "Substrates.ReflectionFailCount": {
+        "table": "Substrates",
+        "field": "ReflectionFailCount",
+        "kind": "rollup",
+        "rule": "Un substrate: reflection fail count es el número de reflection results del substrate que tienen un outcome de «fail».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "ReflectionResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de reflection results cuyo substrate es substrate ID y outcome es \"fail\""
+      },
+      "Substrates.ReflectionOk": {
+        "table": "Substrates",
+        "field": "ReflectionOk",
+        "kind": "formula",
+        "rule": "Un substrate está marcado como reflection ok si se cumple todo lo siguiente: el reflection result count es mayor que 0 y el reflection fail count es 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "ReflectionResultCount",
+            "label": "reflection result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionFailCount",
+            "label": "reflection fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un substrate está marcado como reflection ok si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el reflection result count es mayor que 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el reflection fail count es 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Reflection result count es mayor que 0 y reflection fail count es igual a 0"
+      },
+      "Substrates.Conformant": {
+        "table": "Substrates",
+        "field": "Conformant",
+        "kind": "formula",
+        "rule": "Un substrate está marcado como conformant si se cumple todo lo siguiente: el indicador «answer key ok» está activado y el indicador «reflection ok» está activado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyOk",
+            "label": "answer key ok"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionOk",
+            "label": "reflection ok"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un substrate está marcado como conformant si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «answer key ok» está activado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «reflection ok» está activado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key ok y reflection ok"
+      },
+      "AnswerKeyResults.Name": {
+        "table": "AnswerKeyResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un answer key result: name es igual a answer key result ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "AnswerKeyResultId",
+            "label": "answer key result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Answer key result ID"
+      },
+      "ReflectionResults.Name": {
+        "table": "ReflectionResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un reflection result: name es igual a reflection result ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "ReflectionResultId",
+            "label": "reflection result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Reflection result ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "EDBRelations": [
+        "Un EDB relation **debe** referenciar exactamente un seed fact.",
+        "Un EDB relation **debe** referenciar exactamente un transition effect.",
+        "Un EDB relation **debe** tener un fields; un field count; y un description."
+      ],
+      "Commands": [
+        "Un command **debe** referenciar exactamente un transition.",
+        "Un command **debe** tener un params; un param count; y un description."
+      ],
+      "Rules": [
+        "Un rule **debe** referenciar exactamente un transition como su guarded transitions.",
+        "Un rule **debe** referenciar exactamente un transition effect.",
+        "Un rule **debe** referenciar exactamente un transition event.",
+        "Un rule **debe** referenciar exactamente un integrity constraint.",
+        "Un rule **debe** tener un head predicate; un kind; un head JSON; un paper section ref; y un description."
+      ],
+      "Transitions": [
+        "Un transition **debe** referenciar exactamente un command.",
+        "Un transition **debe** referenciar exactamente un rule como su guard.",
+        "Un transition **debe** referenciar exactamente un transition effect como su effects.",
+        "Un transition **debe** referenciar exactamente un transition event como su events.",
+        "Un transition **debe** tener un description."
+      ],
+      "TransitionEffects": [
+        "Un transition effect **debe** referenciar exactamente un transition.",
+        "Un transition effect **debe** referenciar exactamente un EDB relation como su relation.",
+        "Un transition effect **debe** referenciar exactamente un rule como su from rule.",
+        "Un transition effect **debe** tener un op."
+      ],
+      "TransitionEvents": [
+        "Un transition event **debe** referenciar exactamente un transition.",
+        "Un transition event **debe** referenciar exactamente un rule como su from rule.",
+        "Un transition event **debe** tener un event relation."
+      ],
+      "IntegrityConstraints": [
+        "Un integrity constraint **debe** referenciar exactamente un rule.",
+        "Un integrity constraint **debe** tener un description."
+      ],
+      "Observables": [
+        "Un observable **debe** tener un exposed predicate y un description."
+      ],
+      "SeedFacts": [
+        "Un seed fact **debe** referenciar exactamente un EDB relation como su relation.",
+        "Un seed fact **debe** tener un n; un op; un tuple JSON; y un k."
+      ],
+      "InputHistories": [
+        "Un input history **debe** referenciar exactamente un answer key result.",
+        "Un input history **debe** tener un source file; un event count; y un description."
+      ],
+      "ReflectionConditions": [
+        "Un reflection condition **debe** referenciar exactamente un reflection result.",
+        "Un reflection condition **debe** tener un condition number; un title; un paper section ref; y un description."
+      ],
+      "Substrates": [
+        "Un substrate **debe** referenciar exactamente un answer key result.",
+        "Un substrate **debe** referenciar exactamente un reflection result.",
+        "Un substrate **debe** tener un description y un paper section ref, y registrar si es un control."
+      ],
+      "AnswerKeyResults": [
+        "Un answer key result **debe** referenciar exactamente un substrate.",
+        "Un answer key result **debe** referenciar exactamente un input history.",
+        "Un answer key result **debe** tener un traces produced; un permitted; y un outcome."
+      ],
+      "ReflectionResults": [
+        "Un reflection result **debe** referenciar exactamente un substrate.",
+        "Un reflection result **debe** referenciar exactamente un reflection condition.",
+        "Un reflection result **debe** tener un outcome."
+      ]
+    },
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "EDBRelations": "EDB relation",
+      "Commands": "command",
+      "Rules": "rule",
+      "Transitions": "transition",
+      "TransitionEffects": "transition effect",
+      "TransitionEvents": "transition event",
+      "IntegrityConstraints": "integrity constraint",
+      "Observables": "observable",
+      "SeedFacts": "seed fact",
+      "InputHistories": "input history",
+      "ReflectionConditions": "reflection condition",
+      "Substrates": "substrate",
+      "AnswerKeyResults": "answer key result",
+      "ReflectionResults": "reflection result"
+    }
+  },
+  "fr": {
+    "fields": {
+      "EDBRelations.Name": {
+        "table": "EDBRelations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Une EDB relation : name est identique à relation ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EDBRelations",
+            "field": "RelationId",
+            "label": "relation ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Relation ID"
+      },
+      "Commands.Name": {
+        "table": "Commands",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un command : name est identique à command ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Commands",
+            "field": "CommandId",
+            "label": "command ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Command ID"
+      },
+      "Rules.Name": {
+        "table": "Rules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un rule : name est identique à rule ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rules",
+            "field": "RuleId",
+            "label": "rule ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rule ID"
+      },
+      "Transitions.Name": {
+        "table": "Transitions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Une transition : name est identique à transition ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transitions",
+            "field": "TransitionId",
+            "label": "transition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transition ID"
+      },
+      "TransitionEffects.Name": {
+        "table": "TransitionEffects",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un transition effect : name est identique à effect ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEffects",
+            "field": "EffectId",
+            "label": "effect ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Effect ID"
+      },
+      "TransitionEvents.Name": {
+        "table": "TransitionEvents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un transition event : name est identique à event ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEvents",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "IntegrityConstraints.Name": {
+        "table": "IntegrityConstraints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un integrity constraint : name est identique à constraint ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IntegrityConstraints",
+            "field": "ConstraintId",
+            "label": "constraint ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Constraint ID"
+      },
+      "Observables.Name": {
+        "table": "Observables",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un observable : name est identique à observable ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Observables",
+            "field": "ObservableId",
+            "label": "observable ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Observable ID"
+      },
+      "SeedFacts.Name": {
+        "table": "SeedFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un seed fact : name est identique à seed fact ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SeedFacts",
+            "field": "SeedFactId",
+            "label": "seed fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seed fact ID"
+      },
+      "InputHistories.Name": {
+        "table": "InputHistories",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un input history : name est identique à input history ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InputHistories",
+            "field": "InputHistoryId",
+            "label": "input history ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Input history ID"
+      },
+      "ReflectionConditions.Name": {
+        "table": "ReflectionConditions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Une reflection condition : name est identique à condition ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionConditions",
+            "field": "ConditionId",
+            "label": "condition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Condition ID"
+      },
+      "Substrates.Name": {
+        "table": "Substrates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un substrate : name est identique à substrate ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate ID"
+      },
+      "Substrates.AnswerKeyResultCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyResultCount",
+        "kind": "rollup",
+        "rule": "Un substrate : answer key result count est le nombre de answer key results liés à le substrate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des answer key results dont substrate est substrate ID"
+      },
+      "Substrates.AnswerKeyFailCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyFailCount",
+        "kind": "rollup",
+        "rule": "Un substrate : answer key fail count est le nombre de answer key results du substrate qui ont un outcome de « fail ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "AnswerKeyResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des answer key results dont substrate est substrate ID et outcome est \"fail\""
+      },
+      "Substrates.AnswerKeyOk": {
+        "table": "Substrates",
+        "field": "AnswerKeyOk",
+        "kind": "formula",
+        "rule": "Un substrate est marqué comme answer key ok si tout ce qui suit est vrai : l'answer key result count est supérieur à 0 et l'answer key fail count est 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyResultCount",
+            "label": "answer key result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyFailCount",
+            "label": "answer key fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un substrate est marqué comme answer key ok si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'answer key result count est supérieur à 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'answer key fail count est 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key result count est supérieur à 0 et answer key fail count est égal à 0"
+      },
+      "Substrates.ReflectionResultCount": {
+        "table": "Substrates",
+        "field": "ReflectionResultCount",
+        "kind": "rollup",
+        "rule": "Un substrate : reflection result count est le nombre de reflection results liés à le substrate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des reflection results dont substrate est substrate ID"
+      },
+      "Substrates.ReflectionFailCount": {
+        "table": "Substrates",
+        "field": "ReflectionFailCount",
+        "kind": "rollup",
+        "rule": "Un substrate : reflection fail count est le nombre de reflection results du substrate qui ont un outcome de « fail ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "ReflectionResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des reflection results dont substrate est substrate ID et outcome est \"fail\""
+      },
+      "Substrates.ReflectionOk": {
+        "table": "Substrates",
+        "field": "ReflectionOk",
+        "kind": "formula",
+        "rule": "Un substrate est marqué comme reflection ok si tout ce qui suit est vrai : le reflection result count est supérieur à 0 et le reflection fail count est 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "ReflectionResultCount",
+            "label": "reflection result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionFailCount",
+            "label": "reflection fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un substrate est marqué comme reflection ok si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "le reflection result count est supérieur à 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "le reflection fail count est 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Reflection result count est supérieur à 0 et reflection fail count est égal à 0"
+      },
+      "Substrates.Conformant": {
+        "table": "Substrates",
+        "field": "Conformant",
+        "kind": "formula",
+        "rule": "Un substrate est marqué comme conformant si tout ce qui suit est vrai : l'indicateur « answer key ok » est activé et l'indicateur « reflection ok » est activé.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyOk",
+            "label": "answer key ok"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionOk",
+            "label": "reflection ok"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un substrate est marqué comme conformant si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « answer key ok » est activé"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « reflection ok » est activé"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key ok et reflection ok"
+      },
+      "AnswerKeyResults.Name": {
+        "table": "AnswerKeyResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un answer key result : name est identique à answer key result ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "AnswerKeyResultId",
+            "label": "answer key result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Answer key result ID"
+      },
+      "ReflectionResults.Name": {
+        "table": "ReflectionResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un reflection result : name est identique à reflection result ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "ReflectionResultId",
+            "label": "reflection result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Reflection result ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "EDBRelations": [
+        "Une EDB relation **doit** référencer exactement un seed fact.",
+        "Une EDB relation **doit** référencer exactement un transition effect.",
+        "Une EDB relation **doit** avoir un fields; un field count; et une description."
+      ],
+      "Commands": [
+        "Un command **doit** référencer exactement un transition.",
+        "Un command **doit** avoir un params; un param count; et une description."
+      ],
+      "Rules": [
+        "Un rule **doit** référencer exactement un transition comme son guarded transitions.",
+        "Un rule **doit** référencer exactement un transition effect.",
+        "Un rule **doit** référencer exactement un transition event.",
+        "Un rule **doit** référencer exactement un integrity constraint.",
+        "Un rule **doit** avoir un head predicate; un kind; un head JSON; un paper section ref; et une description."
+      ],
+      "Transitions": [
+        "Une transition **doit** référencer exactement un command.",
+        "Une transition **doit** référencer exactement un rule comme son guard.",
+        "Une transition **doit** référencer exactement un transition effect comme son effects.",
+        "Une transition **doit** référencer exactement un transition event comme son events.",
+        "Une transition **doit** avoir une description."
+      ],
+      "TransitionEffects": [
+        "Un transition effect **doit** référencer exactement un transition.",
+        "Un transition effect **doit** référencer exactement un EDB relation comme son relation.",
+        "Un transition effect **doit** référencer exactement un rule comme son from rule.",
+        "Un transition effect **doit** avoir un op."
+      ],
+      "TransitionEvents": [
+        "Un transition event **doit** référencer exactement un transition.",
+        "Un transition event **doit** référencer exactement un rule comme son from rule.",
+        "Un transition event **doit** avoir une event relation."
+      ],
+      "IntegrityConstraints": [
+        "Un integrity constraint **doit** référencer exactement un rule.",
+        "Un integrity constraint **doit** avoir une description."
+      ],
+      "Observables": [
+        "Un observable **doit** avoir un exposed predicate et une description."
+      ],
+      "SeedFacts": [
+        "Un seed fact **doit** référencer exactement un EDB relation comme son relation.",
+        "Un seed fact **doit** avoir un n; un op; un tuple JSON; et un k."
+      ],
+      "InputHistories": [
+        "Un input history **doit** référencer exactement un answer key result.",
+        "Un input history **doit** avoir un source file; un event count; et une description."
+      ],
+      "ReflectionConditions": [
+        "Une reflection condition **doit** référencer exactement un reflection result.",
+        "Une reflection condition **doit** avoir un condition number; un title; un paper section ref; et une description."
+      ],
+      "Substrates": [
+        "Un substrate **doit** référencer exactement un answer key result.",
+        "Un substrate **doit** référencer exactement un reflection result.",
+        "Un substrate **doit** avoir une description et un paper section ref, et consigner si il est un control."
+      ],
+      "AnswerKeyResults": [
+        "Un answer key result **doit** référencer exactement un substrate.",
+        "Un answer key result **doit** référencer exactement un input history.",
+        "Un answer key result **doit** avoir un traces produced; un permitted; et un outcome."
+      ],
+      "ReflectionResults": [
+        "Un reflection result **doit** référencer exactement un substrate.",
+        "Un reflection result **doit** référencer exactement un reflection condition.",
+        "Un reflection result **doit** avoir un outcome."
+      ]
+    },
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "EDBRelations": "EDB relation",
+      "Commands": "command",
+      "Rules": "rule",
+      "Transitions": "transition",
+      "TransitionEffects": "transition effect",
+      "TransitionEvents": "transition event",
+      "IntegrityConstraints": "integrity constraint",
+      "Observables": "observable",
+      "SeedFacts": "seed fact",
+      "InputHistories": "input history",
+      "ReflectionConditions": "reflection condition",
+      "Substrates": "substrate",
+      "AnswerKeyResults": "answer key result",
+      "ReflectionResults": "reflection result"
+    }
+  },
+  "hi": {
+    "fields": {
+      "EDBRelations.Name": {
+        "table": "EDBRelations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "EDB relation का “name” उसके “relation ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EDBRelations",
+            "field": "RelationId",
+            "label": "relation ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Relation ID"
+      },
+      "Commands.Name": {
+        "table": "Commands",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "command का “name” उसके “command ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Commands",
+            "field": "CommandId",
+            "label": "command ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Command ID"
+      },
+      "Rules.Name": {
+        "table": "Rules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "rule का “name” उसके “rule ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rules",
+            "field": "RuleId",
+            "label": "rule ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rule ID"
+      },
+      "Transitions.Name": {
+        "table": "Transitions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "transition का “name” उसके “transition ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transitions",
+            "field": "TransitionId",
+            "label": "transition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transition ID"
+      },
+      "TransitionEffects.Name": {
+        "table": "TransitionEffects",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "transition effect का “name” उसके “effect ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEffects",
+            "field": "EffectId",
+            "label": "effect ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Effect ID"
+      },
+      "TransitionEvents.Name": {
+        "table": "TransitionEvents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "transition event का “name” उसके “event ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEvents",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "IntegrityConstraints.Name": {
+        "table": "IntegrityConstraints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "integrity constraint का “name” उसके “constraint ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IntegrityConstraints",
+            "field": "ConstraintId",
+            "label": "constraint ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Constraint ID"
+      },
+      "Observables.Name": {
+        "table": "Observables",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "observable का “name” उसके “observable ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Observables",
+            "field": "ObservableId",
+            "label": "observable ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Observable ID"
+      },
+      "SeedFacts.Name": {
+        "table": "SeedFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "seed fact का “name” उसके “seed fact ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SeedFacts",
+            "field": "SeedFactId",
+            "label": "seed fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seed fact ID"
+      },
+      "InputHistories.Name": {
+        "table": "InputHistories",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "input history का “name” उसके “input history ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InputHistories",
+            "field": "InputHistoryId",
+            "label": "input history ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Input history ID"
+      },
+      "ReflectionConditions.Name": {
+        "table": "ReflectionConditions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "reflection condition का “name” उसके “condition ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionConditions",
+            "field": "ConditionId",
+            "label": "condition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Condition ID"
+      },
+      "Substrates.Name": {
+        "table": "Substrates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "substrate का “name” उसके “substrate ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate ID"
+      },
+      "Substrates.AnswerKeyResultCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyResultCount",
+        "kind": "rollup",
+        "rule": "substrate का “answer key result count” substrate से संबंधित “answer key results” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “answer key results” की संख्या, जिनका substrate substrate ID है"
+      },
+      "Substrates.AnswerKeyFailCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyFailCount",
+        "kind": "rollup",
+        "rule": "substrate का “answer key fail count” substrate के उन “answer key results” की संख्या, जो “outcome” का मान “fail” रखते हैं है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "AnswerKeyResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “answer key results” की संख्या, जिनका substrate substrate ID है और outcome \"fail\" है"
+      },
+      "Substrates.AnswerKeyOk": {
+        "table": "Substrates",
+        "field": "AnswerKeyOk",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: answer key result count 0 से अधिक है और answer key fail count 0 है, तो substrate “answer key ok” के रूप में दर्ज किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyResultCount",
+            "label": "answer key result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyFailCount",
+            "label": "answer key fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "substrate “answer key ok” के रूप में दर्ज किया जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "answer key result count 0 से अधिक है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "answer key fail count 0 है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key result count 0 से अधिक है और answer key fail count 0 के बराबर है"
+      },
+      "Substrates.ReflectionResultCount": {
+        "table": "Substrates",
+        "field": "ReflectionResultCount",
+        "kind": "rollup",
+        "rule": "substrate का “reflection result count” substrate से संबंधित “reflection results” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “reflection results” की संख्या, जिनका substrate substrate ID है"
+      },
+      "Substrates.ReflectionFailCount": {
+        "table": "Substrates",
+        "field": "ReflectionFailCount",
+        "kind": "rollup",
+        "rule": "substrate का “reflection fail count” substrate के उन “reflection results” की संख्या, जो “outcome” का मान “fail” रखते हैं है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "ReflectionResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “reflection results” की संख्या, जिनका substrate substrate ID है और outcome \"fail\" है"
+      },
+      "Substrates.ReflectionOk": {
+        "table": "Substrates",
+        "field": "ReflectionOk",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: reflection result count 0 से अधिक है और reflection fail count 0 है, तो substrate “reflection ok” के रूप में दर्ज किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "ReflectionResultCount",
+            "label": "reflection result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionFailCount",
+            "label": "reflection fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "substrate “reflection ok” के रूप में दर्ज किया जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "reflection result count 0 से अधिक है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "reflection fail count 0 है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Reflection result count 0 से अधिक है और reflection fail count 0 के बराबर है"
+      },
+      "Substrates.Conformant": {
+        "table": "Substrates",
+        "field": "Conformant",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: “answer key ok” ध्वज लगा हुआ है और “reflection ok” ध्वज लगा हुआ है, तो substrate “conformant” के रूप में दर्ज किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyOk",
+            "label": "answer key ok"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionOk",
+            "label": "reflection ok"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "substrate “conformant” के रूप में दर्ज किया जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“answer key ok” ध्वज लगा हुआ है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“reflection ok” ध्वज लगा हुआ है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key ok और reflection ok"
+      },
+      "AnswerKeyResults.Name": {
+        "table": "AnswerKeyResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "answer key result का “name” उसके “answer key result ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "AnswerKeyResultId",
+            "label": "answer key result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Answer key result ID"
+      },
+      "ReflectionResults.Name": {
+        "table": "ReflectionResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "reflection result का “name” उसके “reflection result ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "ReflectionResultId",
+            "label": "reflection result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Reflection result ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "EDBRelations": [
+        "EDB relation को ठीक एक “seed fact” का संदर्भ देना **अनिवार्य** है।",
+        "EDB relation को ठीक एक “transition effect” का संदर्भ देना **अनिवार्य** है।",
+        "EDB relation को fields, field count और description रखना **अनिवार्य** है।"
+      ],
+      "Commands": [
+        "command को ठीक एक “transition” का संदर्भ देना **अनिवार्य** है।",
+        "command को params, param count और description रखना **अनिवार्य** है।"
+      ],
+      "Rules": [
+        "rule को अपने “guarded transitions” के रूप में ठीक एक “transition” का संदर्भ देना **अनिवार्य** है।",
+        "rule को ठीक एक “transition effect” का संदर्भ देना **अनिवार्य** है।",
+        "rule को ठीक एक “transition event” का संदर्भ देना **अनिवार्य** है।",
+        "rule को ठीक एक “integrity constraint” का संदर्भ देना **अनिवार्य** है।",
+        "rule को head predicate, kind, head JSON, paper section ref और description रखना **अनिवार्य** है।"
+      ],
+      "Transitions": [
+        "transition को ठीक एक “command” का संदर्भ देना **अनिवार्य** है।",
+        "transition को अपने “guard” के रूप में ठीक एक “rule” का संदर्भ देना **अनिवार्य** है।",
+        "transition को अपने “effects” के रूप में ठीक एक “transition effect” का संदर्भ देना **अनिवार्य** है।",
+        "transition को अपने “events” के रूप में ठीक एक “transition event” का संदर्भ देना **अनिवार्य** है।",
+        "transition को description रखना **अनिवार्य** है।"
+      ],
+      "TransitionEffects": [
+        "transition effect को ठीक एक “transition” का संदर्भ देना **अनिवार्य** है।",
+        "transition effect को अपने “relation” के रूप में ठीक एक “EDB relation” का संदर्भ देना **अनिवार्य** है।",
+        "transition effect को अपने “from rule” के रूप में ठीक एक “rule” का संदर्भ देना **अनिवार्य** है।",
+        "transition effect को op रखना **अनिवार्य** है।"
+      ],
+      "TransitionEvents": [
+        "transition event को ठीक एक “transition” का संदर्भ देना **अनिवार्य** है।",
+        "transition event को अपने “from rule” के रूप में ठीक एक “rule” का संदर्भ देना **अनिवार्य** है।",
+        "transition event को event relation रखना **अनिवार्य** है।"
+      ],
+      "IntegrityConstraints": [
+        "integrity constraint को ठीक एक “rule” का संदर्भ देना **अनिवार्य** है।",
+        "integrity constraint को description रखना **अनिवार्य** है।"
+      ],
+      "Observables": [
+        "observable को exposed predicate और description रखना **अनिवार्य** है।"
+      ],
+      "SeedFacts": [
+        "seed fact को अपने “relation” के रूप में ठीक एक “EDB relation” का संदर्भ देना **अनिवार्य** है।",
+        "seed fact को n, op, tuple JSON और k रखना **अनिवार्य** है।"
+      ],
+      "InputHistories": [
+        "input history को ठीक एक “answer key result” का संदर्भ देना **अनिवार्य** है।",
+        "input history को source file, event count और description रखना **अनिवार्य** है।"
+      ],
+      "ReflectionConditions": [
+        "reflection condition को ठीक एक “reflection result” का संदर्भ देना **अनिवार्य** है।",
+        "reflection condition को condition number, title, paper section ref और description रखना **अनिवार्य** है।"
+      ],
+      "Substrates": [
+        "substrate को ठीक एक “answer key result” का संदर्भ देना **अनिवार्य** है।",
+        "substrate को ठीक एक “reflection result” का संदर्भ देना **अनिवार्य** है।",
+        "substrate को description और paper section ref रखना, तथा यह कि वह “control” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ],
+      "AnswerKeyResults": [
+        "answer key result को ठीक एक “substrate” का संदर्भ देना **अनिवार्य** है।",
+        "answer key result को ठीक एक “input history” का संदर्भ देना **अनिवार्य** है।",
+        "answer key result को traces produced, permitted और outcome रखना **अनिवार्य** है।"
+      ],
+      "ReflectionResults": [
+        "reflection result को ठीक एक “substrate” का संदर्भ देना **अनिवार्य** है।",
+        "reflection result को ठीक एक “reflection condition” का संदर्भ देना **अनिवार्य** है।",
+        "reflection result को outcome रखना **अनिवार्य** है।"
+      ]
+    },
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "EDBRelations": "EDB relation",
+      "Commands": "command",
+      "Rules": "rule",
+      "Transitions": "transition",
+      "TransitionEffects": "transition effect",
+      "TransitionEvents": "transition event",
+      "IntegrityConstraints": "integrity constraint",
+      "Observables": "observable",
+      "SeedFacts": "seed fact",
+      "InputHistories": "input history",
+      "ReflectionConditions": "reflection condition",
+      "Substrates": "substrate",
+      "AnswerKeyResults": "answer key result",
+      "ReflectionResults": "reflection result"
+    }
+  },
+  "id": {
+    "fields": {
+      "EDBRelations.Name": {
+        "table": "EDBRelations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap EDB relation, name sama dengan relation ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EDBRelations",
+            "field": "RelationId",
+            "label": "relation ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Relation ID"
+      },
+      "Commands.Name": {
+        "table": "Commands",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap command, name sama dengan command ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Commands",
+            "field": "CommandId",
+            "label": "command ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Command ID"
+      },
+      "Rules.Name": {
+        "table": "Rules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap rule, name sama dengan rule ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rules",
+            "field": "RuleId",
+            "label": "rule ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rule ID"
+      },
+      "Transitions.Name": {
+        "table": "Transitions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap transition, name sama dengan transition ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transitions",
+            "field": "TransitionId",
+            "label": "transition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transition ID"
+      },
+      "TransitionEffects.Name": {
+        "table": "TransitionEffects",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap transition effect, name sama dengan effect ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEffects",
+            "field": "EffectId",
+            "label": "effect ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Effect ID"
+      },
+      "TransitionEvents.Name": {
+        "table": "TransitionEvents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap transition event, name sama dengan event ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEvents",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "IntegrityConstraints.Name": {
+        "table": "IntegrityConstraints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap integrity constraint, name sama dengan constraint ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IntegrityConstraints",
+            "field": "ConstraintId",
+            "label": "constraint ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Constraint ID"
+      },
+      "Observables.Name": {
+        "table": "Observables",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap observable, name sama dengan observable ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Observables",
+            "field": "ObservableId",
+            "label": "observable ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Observable ID"
+      },
+      "SeedFacts.Name": {
+        "table": "SeedFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap seed fact, name sama dengan seed fact ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SeedFacts",
+            "field": "SeedFactId",
+            "label": "seed fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seed fact ID"
+      },
+      "InputHistories.Name": {
+        "table": "InputHistories",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap input history, name sama dengan input history ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InputHistories",
+            "field": "InputHistoryId",
+            "label": "input history ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Input history ID"
+      },
+      "ReflectionConditions.Name": {
+        "table": "ReflectionConditions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap reflection condition, name sama dengan condition ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionConditions",
+            "field": "ConditionId",
+            "label": "condition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Condition ID"
+      },
+      "Substrates.Name": {
+        "table": "Substrates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap substrate, name sama dengan substrate ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate ID"
+      },
+      "Substrates.AnswerKeyResultCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyResultCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap substrate, answer key result count adalah jumlah answer key results yang terkait dengan substrate tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah answer key results dengan syarat substrate adalah substrate ID"
+      },
+      "Substrates.AnswerKeyFailCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyFailCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap substrate, answer key fail count adalah jumlah answer key results dari substrate tersebut yang memiliki outcome bernilai “fail”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "AnswerKeyResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah answer key results dengan syarat substrate adalah substrate ID dan outcome adalah \"fail\""
+      },
+      "Substrates.AnswerKeyOk": {
+        "table": "Substrates",
+        "field": "AnswerKeyOk",
+        "kind": "formula",
+        "rule": "Setiap substrate ditandai sebagai “answer key ok” jika semua kondisi berikut terpenuhi: answer key result count lebih dari 0 dan answer key fail count adalah 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyResultCount",
+            "label": "answer key result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyFailCount",
+            "label": "answer key fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap substrate ditandai sebagai “answer key ok” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "answer key result count lebih dari 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "answer key fail count adalah 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key result count lebih dari 0 dan answer key fail count sama dengan 0"
+      },
+      "Substrates.ReflectionResultCount": {
+        "table": "Substrates",
+        "field": "ReflectionResultCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap substrate, reflection result count adalah jumlah reflection results yang terkait dengan substrate tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah reflection results dengan syarat substrate adalah substrate ID"
+      },
+      "Substrates.ReflectionFailCount": {
+        "table": "Substrates",
+        "field": "ReflectionFailCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap substrate, reflection fail count adalah jumlah reflection results dari substrate tersebut yang memiliki outcome bernilai “fail”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "ReflectionResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah reflection results dengan syarat substrate adalah substrate ID dan outcome adalah \"fail\""
+      },
+      "Substrates.ReflectionOk": {
+        "table": "Substrates",
+        "field": "ReflectionOk",
+        "kind": "formula",
+        "rule": "Setiap substrate ditandai sebagai “reflection ok” jika semua kondisi berikut terpenuhi: reflection result count lebih dari 0 dan reflection fail count adalah 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "ReflectionResultCount",
+            "label": "reflection result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionFailCount",
+            "label": "reflection fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap substrate ditandai sebagai “reflection ok” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "reflection result count lebih dari 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "reflection fail count adalah 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Reflection result count lebih dari 0 dan reflection fail count sama dengan 0"
+      },
+      "Substrates.Conformant": {
+        "table": "Substrates",
+        "field": "Conformant",
+        "kind": "formula",
+        "rule": "Setiap substrate ditandai sebagai “conformant” jika semua kondisi berikut terpenuhi: penanda “answer key ok” aktif dan penanda “reflection ok” aktif.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyOk",
+            "label": "answer key ok"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionOk",
+            "label": "reflection ok"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap substrate ditandai sebagai “conformant” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "penanda “answer key ok” aktif"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "penanda “reflection ok” aktif"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key ok dan reflection ok"
+      },
+      "AnswerKeyResults.Name": {
+        "table": "AnswerKeyResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap answer key result, name sama dengan answer key result ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "AnswerKeyResultId",
+            "label": "answer key result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Answer key result ID"
+      },
+      "ReflectionResults.Name": {
+        "table": "ReflectionResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap reflection result, name sama dengan reflection result ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "ReflectionResultId",
+            "label": "reflection result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Reflection result ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "EDBRelations": [
+        "Setiap EDB relation **harus** merujuk pada tepat satu seed fact.",
+        "Setiap EDB relation **harus** merujuk pada tepat satu transition effect.",
+        "Setiap EDB relation **harus** memiliki fields, field count, dan description."
+      ],
+      "Commands": [
+        "Setiap command **harus** merujuk pada tepat satu transition.",
+        "Setiap command **harus** memiliki params, param count, dan description."
+      ],
+      "Rules": [
+        "Setiap rule **harus** merujuk pada tepat satu transition sebagai guarded transitions.",
+        "Setiap rule **harus** merujuk pada tepat satu transition effect.",
+        "Setiap rule **harus** merujuk pada tepat satu transition event.",
+        "Setiap rule **harus** merujuk pada tepat satu integrity constraint.",
+        "Setiap rule **harus** memiliki head predicate, kind, head JSON, paper section ref, dan description."
+      ],
+      "Transitions": [
+        "Setiap transition **harus** merujuk pada tepat satu command.",
+        "Setiap transition **harus** merujuk pada tepat satu rule sebagai guard.",
+        "Setiap transition **harus** merujuk pada tepat satu transition effect sebagai effects.",
+        "Setiap transition **harus** merujuk pada tepat satu transition event sebagai events.",
+        "Setiap transition **harus** memiliki description."
+      ],
+      "TransitionEffects": [
+        "Setiap transition effect **harus** merujuk pada tepat satu transition.",
+        "Setiap transition effect **harus** merujuk pada tepat satu EDB relation sebagai relation.",
+        "Setiap transition effect **harus** merujuk pada tepat satu rule sebagai from rule.",
+        "Setiap transition effect **harus** memiliki op."
+      ],
+      "TransitionEvents": [
+        "Setiap transition event **harus** merujuk pada tepat satu transition.",
+        "Setiap transition event **harus** merujuk pada tepat satu rule sebagai from rule.",
+        "Setiap transition event **harus** memiliki event relation."
+      ],
+      "IntegrityConstraints": [
+        "Setiap integrity constraint **harus** merujuk pada tepat satu rule.",
+        "Setiap integrity constraint **harus** memiliki description."
+      ],
+      "Observables": [
+        "Setiap observable **harus** memiliki exposed predicate dan description."
+      ],
+      "SeedFacts": [
+        "Setiap seed fact **harus** merujuk pada tepat satu EDB relation sebagai relation.",
+        "Setiap seed fact **harus** memiliki n, op, tuple JSON, dan k."
+      ],
+      "InputHistories": [
+        "Setiap input history **harus** merujuk pada tepat satu answer key result.",
+        "Setiap input history **harus** memiliki source file, event count, dan description."
+      ],
+      "ReflectionConditions": [
+        "Setiap reflection condition **harus** merujuk pada tepat satu reflection result.",
+        "Setiap reflection condition **harus** memiliki condition number, title, paper section ref, dan description."
+      ],
+      "Substrates": [
+        "Setiap substrate **harus** merujuk pada tepat satu answer key result.",
+        "Setiap substrate **harus** merujuk pada tepat satu reflection result.",
+        "Setiap substrate **harus** memiliki description dan paper section ref, serta menyatakan apakah tergolong “control”."
+      ],
+      "AnswerKeyResults": [
+        "Setiap answer key result **harus** merujuk pada tepat satu substrate.",
+        "Setiap answer key result **harus** merujuk pada tepat satu input history.",
+        "Setiap answer key result **harus** memiliki traces produced, permitted, dan outcome."
+      ],
+      "ReflectionResults": [
+        "Setiap reflection result **harus** merujuk pada tepat satu substrate.",
+        "Setiap reflection result **harus** merujuk pada tepat satu reflection condition.",
+        "Setiap reflection result **harus** memiliki outcome."
+      ]
+    },
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "EDBRelations": "EDB relation",
+      "Commands": "command",
+      "Rules": "rule",
+      "Transitions": "transition",
+      "TransitionEffects": "transition effect",
+      "TransitionEvents": "transition event",
+      "IntegrityConstraints": "integrity constraint",
+      "Observables": "observable",
+      "SeedFacts": "seed fact",
+      "InputHistories": "input history",
+      "ReflectionConditions": "reflection condition",
+      "Substrates": "substrate",
+      "AnswerKeyResults": "answer key result",
+      "ReflectionResults": "reflection result"
+    }
+  },
+  "it": {
+    "fields": {
+      "EDBRelations.Name": {
+        "table": "EDBRelations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un EDB relation: name è uguale a relation ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EDBRelations",
+            "field": "RelationId",
+            "label": "relation ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Relation ID"
+      },
+      "Commands.Name": {
+        "table": "Commands",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un command: name è uguale a command ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Commands",
+            "field": "CommandId",
+            "label": "command ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Command ID"
+      },
+      "Rules.Name": {
+        "table": "Rules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un rule: name è uguale a rule ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rules",
+            "field": "RuleId",
+            "label": "rule ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rule ID"
+      },
+      "Transitions.Name": {
+        "table": "Transitions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un transition: name è uguale a transition ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transitions",
+            "field": "TransitionId",
+            "label": "transition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transition ID"
+      },
+      "TransitionEffects.Name": {
+        "table": "TransitionEffects",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un transition effect: name è uguale a effect ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEffects",
+            "field": "EffectId",
+            "label": "effect ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Effect ID"
+      },
+      "TransitionEvents.Name": {
+        "table": "TransitionEvents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un transition event: name è uguale a event ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEvents",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "IntegrityConstraints.Name": {
+        "table": "IntegrityConstraints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un integrity constraint: name è uguale a constraint ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IntegrityConstraints",
+            "field": "ConstraintId",
+            "label": "constraint ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Constraint ID"
+      },
+      "Observables.Name": {
+        "table": "Observables",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un observable: name è uguale a observable ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Observables",
+            "field": "ObservableId",
+            "label": "observable ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Observable ID"
+      },
+      "SeedFacts.Name": {
+        "table": "SeedFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un seed fact: name è uguale a seed fact ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SeedFacts",
+            "field": "SeedFactId",
+            "label": "seed fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seed fact ID"
+      },
+      "InputHistories.Name": {
+        "table": "InputHistories",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un input history: name è uguale a input history ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InputHistories",
+            "field": "InputHistoryId",
+            "label": "input history ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Input history ID"
+      },
+      "ReflectionConditions.Name": {
+        "table": "ReflectionConditions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un reflection condition: name è uguale a condition ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionConditions",
+            "field": "ConditionId",
+            "label": "condition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Condition ID"
+      },
+      "Substrates.Name": {
+        "table": "Substrates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un substrate: name è uguale a substrate ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate ID"
+      },
+      "Substrates.AnswerKeyResultCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyResultCount",
+        "kind": "rollup",
+        "rule": "Un substrate: answer key result count è il numero di answer key results collegati a il substrate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei answer key results il cui substrate è substrate ID"
+      },
+      "Substrates.AnswerKeyFailCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyFailCount",
+        "kind": "rollup",
+        "rule": "Un substrate: answer key fail count è il numero di answer key results del substrate che hanno un outcome pari a «fail».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "AnswerKeyResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei answer key results il cui substrate è substrate ID e outcome è \"fail\""
+      },
+      "Substrates.AnswerKeyOk": {
+        "table": "Substrates",
+        "field": "AnswerKeyOk",
+        "kind": "formula",
+        "rule": "Un substrate è contrassegnato come answer key ok se vale tutto quanto segue: l'answer key result count è maggiore di 0 e l'answer key fail count è 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyResultCount",
+            "label": "answer key result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyFailCount",
+            "label": "answer key fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un substrate è contrassegnato come answer key ok se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'answer key result count è maggiore di 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'answer key fail count è 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key result count è maggiore di 0 e answer key fail count è uguale a 0"
+      },
+      "Substrates.ReflectionResultCount": {
+        "table": "Substrates",
+        "field": "ReflectionResultCount",
+        "kind": "rollup",
+        "rule": "Un substrate: reflection result count è il numero di reflection results collegati a il substrate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei reflection results il cui substrate è substrate ID"
+      },
+      "Substrates.ReflectionFailCount": {
+        "table": "Substrates",
+        "field": "ReflectionFailCount",
+        "kind": "rollup",
+        "rule": "Un substrate: reflection fail count è il numero di reflection results del substrate che hanno un outcome pari a «fail».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "ReflectionResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei reflection results il cui substrate è substrate ID e outcome è \"fail\""
+      },
+      "Substrates.ReflectionOk": {
+        "table": "Substrates",
+        "field": "ReflectionOk",
+        "kind": "formula",
+        "rule": "Un substrate è contrassegnato come reflection ok se vale tutto quanto segue: il reflection result count è maggiore di 0 e il reflection fail count è 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "ReflectionResultCount",
+            "label": "reflection result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionFailCount",
+            "label": "reflection fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un substrate è contrassegnato come reflection ok se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "il reflection result count è maggiore di 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "il reflection fail count è 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Reflection result count è maggiore di 0 e reflection fail count è uguale a 0"
+      },
+      "Substrates.Conformant": {
+        "table": "Substrates",
+        "field": "Conformant",
+        "kind": "formula",
+        "rule": "Un substrate è contrassegnato come conformant se vale tutto quanto segue: l'indicatore “answer key ok” è attivo e l'indicatore “reflection ok” è attivo.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyOk",
+            "label": "answer key ok"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionOk",
+            "label": "reflection ok"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un substrate è contrassegnato come conformant se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “answer key ok” è attivo"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “reflection ok” è attivo"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key ok e reflection ok"
+      },
+      "AnswerKeyResults.Name": {
+        "table": "AnswerKeyResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un answer key result: name è uguale a answer key result ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "AnswerKeyResultId",
+            "label": "answer key result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Answer key result ID"
+      },
+      "ReflectionResults.Name": {
+        "table": "ReflectionResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un reflection result: name è uguale a reflection result ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "ReflectionResultId",
+            "label": "reflection result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Reflection result ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "EDBRelations": [
+        "Un EDB relation **deve** referenziare esattamente un seed fact.",
+        "Un EDB relation **deve** referenziare esattamente un transition effect.",
+        "Un EDB relation **deve** avere un fields; un field count; e un description."
+      ],
+      "Commands": [
+        "Un command **deve** referenziare esattamente un transition.",
+        "Un command **deve** avere un params; un param count; e un description."
+      ],
+      "Rules": [
+        "Un rule **deve** referenziare esattamente un transition come suo guarded transitions.",
+        "Un rule **deve** referenziare esattamente un transition effect.",
+        "Un rule **deve** referenziare esattamente un transition event.",
+        "Un rule **deve** referenziare esattamente un integrity constraint.",
+        "Un rule **deve** avere un head predicate; un kind; un head JSON; un paper section ref; e un description."
+      ],
+      "Transitions": [
+        "Un transition **deve** referenziare esattamente un command.",
+        "Un transition **deve** referenziare esattamente un rule come suo guard.",
+        "Un transition **deve** referenziare esattamente un transition effect come suo effects.",
+        "Un transition **deve** referenziare esattamente un transition event come suo events.",
+        "Un transition **deve** avere un description."
+      ],
+      "TransitionEffects": [
+        "Un transition effect **deve** referenziare esattamente un transition.",
+        "Un transition effect **deve** referenziare esattamente un EDB relation come suo relation.",
+        "Un transition effect **deve** referenziare esattamente un rule come suo from rule.",
+        "Un transition effect **deve** avere un op."
+      ],
+      "TransitionEvents": [
+        "Un transition event **deve** referenziare esattamente un transition.",
+        "Un transition event **deve** referenziare esattamente un rule come suo from rule.",
+        "Un transition event **deve** avere un event relation."
+      ],
+      "IntegrityConstraints": [
+        "Un integrity constraint **deve** referenziare esattamente un rule.",
+        "Un integrity constraint **deve** avere un description."
+      ],
+      "Observables": [
+        "Un observable **deve** avere un exposed predicate e un description."
+      ],
+      "SeedFacts": [
+        "Un seed fact **deve** referenziare esattamente un EDB relation come suo relation.",
+        "Un seed fact **deve** avere un n; un op; un tuple JSON; e un k."
+      ],
+      "InputHistories": [
+        "Un input history **deve** referenziare esattamente un answer key result.",
+        "Un input history **deve** avere un source file; un event count; e un description."
+      ],
+      "ReflectionConditions": [
+        "Un reflection condition **deve** referenziare esattamente un reflection result.",
+        "Un reflection condition **deve** avere un condition number; un title; un paper section ref; e un description."
+      ],
+      "Substrates": [
+        "Un substrate **deve** referenziare esattamente un answer key result.",
+        "Un substrate **deve** referenziare esattamente un reflection result.",
+        "Un substrate **deve** avere un description e un paper section ref, e registrare se è un control."
+      ],
+      "AnswerKeyResults": [
+        "Un answer key result **deve** referenziare esattamente un substrate.",
+        "Un answer key result **deve** referenziare esattamente un input history.",
+        "Un answer key result **deve** avere un traces produced; un permitted; e un outcome."
+      ],
+      "ReflectionResults": [
+        "Un reflection result **deve** referenziare esattamente un substrate.",
+        "Un reflection result **deve** referenziare esattamente un reflection condition.",
+        "Un reflection result **deve** avere un outcome."
+      ]
+    },
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "EDBRelations": "EDB relation",
+      "Commands": "command",
+      "Rules": "rule",
+      "Transitions": "transition",
+      "TransitionEffects": "transition effect",
+      "TransitionEvents": "transition event",
+      "IntegrityConstraints": "integrity constraint",
+      "Observables": "observable",
+      "SeedFacts": "seed fact",
+      "InputHistories": "input history",
+      "ReflectionConditions": "reflection condition",
+      "Substrates": "substrate",
+      "AnswerKeyResults": "answer key result",
+      "ReflectionResults": "reflection result"
+    }
+  },
+  "ja": {
+    "fields": {
+      "EDBRelations.Name": {
+        "table": "EDBRelations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "EDB relationの「name」は relation ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EDBRelations",
+            "field": "RelationId",
+            "label": "relation ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Relation ID"
+      },
+      "Commands.Name": {
+        "table": "Commands",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "commandの「name」は command ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Commands",
+            "field": "CommandId",
+            "label": "command ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Command ID"
+      },
+      "Rules.Name": {
+        "table": "Rules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "ruleの「name」は rule ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rules",
+            "field": "RuleId",
+            "label": "rule ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rule ID"
+      },
+      "Transitions.Name": {
+        "table": "Transitions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "transitionの「name」は transition ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transitions",
+            "field": "TransitionId",
+            "label": "transition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transition ID"
+      },
+      "TransitionEffects.Name": {
+        "table": "TransitionEffects",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "transition effectの「name」は effect ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEffects",
+            "field": "EffectId",
+            "label": "effect ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Effect ID"
+      },
+      "TransitionEvents.Name": {
+        "table": "TransitionEvents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "transition eventの「name」は event ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEvents",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "IntegrityConstraints.Name": {
+        "table": "IntegrityConstraints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "integrity constraintの「name」は constraint ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IntegrityConstraints",
+            "field": "ConstraintId",
+            "label": "constraint ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Constraint ID"
+      },
+      "Observables.Name": {
+        "table": "Observables",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "observableの「name」は observable ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Observables",
+            "field": "ObservableId",
+            "label": "observable ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Observable ID"
+      },
+      "SeedFacts.Name": {
+        "table": "SeedFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "seed factの「name」は seed fact ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SeedFacts",
+            "field": "SeedFactId",
+            "label": "seed fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seed fact ID"
+      },
+      "InputHistories.Name": {
+        "table": "InputHistories",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "input historyの「name」は input history ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InputHistories",
+            "field": "InputHistoryId",
+            "label": "input history ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Input history ID"
+      },
+      "ReflectionConditions.Name": {
+        "table": "ReflectionConditions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "reflection conditionの「name」は condition ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionConditions",
+            "field": "ConditionId",
+            "label": "condition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Condition ID"
+      },
+      "Substrates.Name": {
+        "table": "Substrates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "substrateの「name」は substrate ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate ID"
+      },
+      "Substrates.AnswerKeyResultCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyResultCount",
+        "kind": "rollup",
+        "rule": "substrateの「answer key result count」は substrateに関連する「answer key results」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate が substrate ID である「answer key results」の件数"
+      },
+      "Substrates.AnswerKeyFailCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyFailCount",
+        "kind": "rollup",
+        "rule": "substrateの「answer key fail count」は substrateの「answer key results」のうち、「outcome」が 「fail」 であるものの件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "AnswerKeyResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate が substrate IDおよびoutcome が \"fail\" である「answer key results」の件数"
+      },
+      "Substrates.AnswerKeyOk": {
+        "table": "Substrates",
+        "field": "AnswerKeyOk",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: answer key result count が 0 より大きいおよびanswer key fail count が 0 である場合、substrateは「Answer Key Ok」と記録されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyResultCount",
+            "label": "answer key result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyFailCount",
+            "label": "answer key fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、substrateは「Answer Key Ok」と記録されます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "answer key result count が 0 より大きい"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "answer key fail count が 0 である"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key result count が 0 より大きいおよびanswer key fail count が 0 と等しい"
+      },
+      "Substrates.ReflectionResultCount": {
+        "table": "Substrates",
+        "field": "ReflectionResultCount",
+        "kind": "rollup",
+        "rule": "substrateの「reflection result count」は substrateに関連する「reflection results」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate が substrate ID である「reflection results」の件数"
+      },
+      "Substrates.ReflectionFailCount": {
+        "table": "Substrates",
+        "field": "ReflectionFailCount",
+        "kind": "rollup",
+        "rule": "substrateの「reflection fail count」は substrateの「reflection results」のうち、「outcome」が 「fail」 であるものの件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "ReflectionResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate が substrate IDおよびoutcome が \"fail\" である「reflection results」の件数"
+      },
+      "Substrates.ReflectionOk": {
+        "table": "Substrates",
+        "field": "ReflectionOk",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: reflection result count が 0 より大きいおよびreflection fail count が 0 である場合、substrateは「Reflection Ok」と記録されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "ReflectionResultCount",
+            "label": "reflection result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionFailCount",
+            "label": "reflection fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、substrateは「Reflection Ok」と記録されます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "reflection result count が 0 より大きい"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "reflection fail count が 0 である"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Reflection result count が 0 より大きいおよびreflection fail count が 0 と等しい"
+      },
+      "Substrates.Conformant": {
+        "table": "Substrates",
+        "field": "Conformant",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: フラグ「answer key ok」が設定されているおよびフラグ「reflection ok」が設定されている場合、substrateは「Conformant」と記録されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyOk",
+            "label": "answer key ok"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionOk",
+            "label": "reflection ok"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、substrateは「Conformant」と記録されます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「answer key ok」が設定されている"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「reflection ok」が設定されている"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key okおよびreflection ok"
+      },
+      "AnswerKeyResults.Name": {
+        "table": "AnswerKeyResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "answer key resultの「name」は answer key result ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "AnswerKeyResultId",
+            "label": "answer key result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Answer key result ID"
+      },
+      "ReflectionResults.Name": {
+        "table": "ReflectionResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "reflection resultの「name」は reflection result ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "ReflectionResultId",
+            "label": "reflection result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Reflection result ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "EDBRelations": [
+        "EDB relationは「seed fact」をちょうど 1 件参照し**なければなりません**。",
+        "EDB relationは「transition effect」をちょうど 1 件参照し**なければなりません**。",
+        "EDB relationは fields、field count、およびdescription を持た**なければなりません**。"
+      ],
+      "Commands": [
+        "commandは「transition」をちょうど 1 件参照し**なければなりません**。",
+        "commandは params、param count、およびdescription を持た**なければなりません**。"
+      ],
+      "Rules": [
+        "ruleは、guarded transitionsとして「transition」をちょうど 1 件参照し**なければなりません**。",
+        "ruleは「transition effect」をちょうど 1 件参照し**なければなりません**。",
+        "ruleは「transition event」をちょうど 1 件参照し**なければなりません**。",
+        "ruleは「integrity constraint」をちょうど 1 件参照し**なければなりません**。",
+        "ruleは head predicate、kind、head JSON、paper section ref、およびdescription を持た**なければなりません**。"
+      ],
+      "Transitions": [
+        "transitionは「command」をちょうど 1 件参照し**なければなりません**。",
+        "transitionは、guardとして「rule」をちょうど 1 件参照し**なければなりません**。",
+        "transitionは、effectsとして「transition effect」をちょうど 1 件参照し**なければなりません**。",
+        "transitionは、eventsとして「transition event」をちょうど 1 件参照し**なければなりません**。",
+        "transitionは description を持た**なければなりません**。"
+      ],
+      "TransitionEffects": [
+        "transition effectは「transition」をちょうど 1 件参照し**なければなりません**。",
+        "transition effectは、relationとして「EDB relation」をちょうど 1 件参照し**なければなりません**。",
+        "transition effectは、from ruleとして「rule」をちょうど 1 件参照し**なければなりません**。",
+        "transition effectは op を持た**なければなりません**。"
+      ],
+      "TransitionEvents": [
+        "transition eventは「transition」をちょうど 1 件参照し**なければなりません**。",
+        "transition eventは、from ruleとして「rule」をちょうど 1 件参照し**なければなりません**。",
+        "transition eventは event relation を持た**なければなりません**。"
+      ],
+      "IntegrityConstraints": [
+        "integrity constraintは「rule」をちょうど 1 件参照し**なければなりません**。",
+        "integrity constraintは description を持た**なければなりません**。"
+      ],
+      "Observables": [
+        "observableは exposed predicateおよびdescription を持た**なければなりません**。"
+      ],
+      "SeedFacts": [
+        "seed factは、relationとして「EDB relation」をちょうど 1 件参照し**なければなりません**。",
+        "seed factは n、op、tuple JSON、およびk を持た**なければなりません**。"
+      ],
+      "InputHistories": [
+        "input historyは「answer key result」をちょうど 1 件参照し**なければなりません**。",
+        "input historyは source file、event count、およびdescription を持た**なければなりません**。"
+      ],
+      "ReflectionConditions": [
+        "reflection conditionは「reflection result」をちょうど 1 件参照し**なければなりません**。",
+        "reflection conditionは condition number、title、paper section ref、およびdescription を持た**なければなりません**。"
+      ],
+      "Substrates": [
+        "substrateは「answer key result」をちょうど 1 件参照し**なければなりません**。",
+        "substrateは「reflection result」をちょうど 1 件参照し**なければなりません**。",
+        "substrateは descriptionおよびpaper section ref を持た、かつ 「Control」であるかどうかを記録し**なければなりません**。"
+      ],
+      "AnswerKeyResults": [
+        "answer key resultは「substrate」をちょうど 1 件参照し**なければなりません**。",
+        "answer key resultは「input history」をちょうど 1 件参照し**なければなりません**。",
+        "answer key resultは traces produced、permitted、およびoutcome を持た**なければなりません**。"
+      ],
+      "ReflectionResults": [
+        "reflection resultは「substrate」をちょうど 1 件参照し**なければなりません**。",
+        "reflection resultは「reflection condition」をちょうど 1 件参照し**なければなりません**。",
+        "reflection resultは outcome を持た**なければなりません**。"
+      ]
+    },
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "EDBRelations": "EDB relation",
+      "Commands": "command",
+      "Rules": "rule",
+      "Transitions": "transition",
+      "TransitionEffects": "transition effect",
+      "TransitionEvents": "transition event",
+      "IntegrityConstraints": "integrity constraint",
+      "Observables": "observable",
+      "SeedFacts": "seed fact",
+      "InputHistories": "input history",
+      "ReflectionConditions": "reflection condition",
+      "Substrates": "substrate",
+      "AnswerKeyResults": "answer key result",
+      "ReflectionResults": "reflection result"
+    }
+  },
+  "ko": {
+    "fields": {
+      "EDBRelations.Name": {
+        "table": "EDBRelations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘EDB relation’ 레코드의 ‘name’ 값은 같은 레코드의 ‘relation ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EDBRelations",
+            "field": "RelationId",
+            "label": "relation ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Relation ID"
+      },
+      "Commands.Name": {
+        "table": "Commands",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘command’ 레코드의 ‘name’ 값은 같은 레코드의 ‘command ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Commands",
+            "field": "CommandId",
+            "label": "command ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Command ID"
+      },
+      "Rules.Name": {
+        "table": "Rules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘rule’ 레코드의 ‘name’ 값은 같은 레코드의 ‘rule ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rules",
+            "field": "RuleId",
+            "label": "rule ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rule ID"
+      },
+      "Transitions.Name": {
+        "table": "Transitions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘transition’ 레코드의 ‘name’ 값은 같은 레코드의 ‘transition ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transitions",
+            "field": "TransitionId",
+            "label": "transition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transition ID"
+      },
+      "TransitionEffects.Name": {
+        "table": "TransitionEffects",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘transition effect’ 레코드의 ‘name’ 값은 같은 레코드의 ‘effect ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEffects",
+            "field": "EffectId",
+            "label": "effect ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Effect ID"
+      },
+      "TransitionEvents.Name": {
+        "table": "TransitionEvents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘transition event’ 레코드의 ‘name’ 값은 같은 레코드의 ‘event ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEvents",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "IntegrityConstraints.Name": {
+        "table": "IntegrityConstraints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘integrity constraint’ 레코드의 ‘name’ 값은 같은 레코드의 ‘constraint ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IntegrityConstraints",
+            "field": "ConstraintId",
+            "label": "constraint ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Constraint ID"
+      },
+      "Observables.Name": {
+        "table": "Observables",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘observable’ 레코드의 ‘name’ 값은 같은 레코드의 ‘observable ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Observables",
+            "field": "ObservableId",
+            "label": "observable ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Observable ID"
+      },
+      "SeedFacts.Name": {
+        "table": "SeedFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘seed fact’ 레코드의 ‘name’ 값은 같은 레코드의 ‘seed fact ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SeedFacts",
+            "field": "SeedFactId",
+            "label": "seed fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seed fact ID"
+      },
+      "InputHistories.Name": {
+        "table": "InputHistories",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘input history’ 레코드의 ‘name’ 값은 같은 레코드의 ‘input history ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InputHistories",
+            "field": "InputHistoryId",
+            "label": "input history ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Input history ID"
+      },
+      "ReflectionConditions.Name": {
+        "table": "ReflectionConditions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘reflection condition’ 레코드의 ‘name’ 값은 같은 레코드의 ‘condition ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionConditions",
+            "field": "ConditionId",
+            "label": "condition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Condition ID"
+      },
+      "Substrates.Name": {
+        "table": "Substrates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘substrate’ 레코드의 ‘name’ 값은 같은 레코드의 ‘substrate ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate ID"
+      },
+      "Substrates.AnswerKeyResultCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyResultCount",
+        "kind": "rollup",
+        "rule": "‘substrate’ 레코드의 ‘answer key result count’ 값은 해당 ‘substrate’ 레코드에 연결된 ‘answer key results’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(substrate 값이 substrate ID임)에 맞는 answer key results 레코드의 개수"
+      },
+      "Substrates.AnswerKeyFailCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyFailCount",
+        "kind": "rollup",
+        "rule": "‘substrate’ 레코드의 ‘answer key fail count’ 값은 해당 ‘substrate’ 레코드에 연결된 ‘answer key results’ 레코드 중 ‘outcome’ 값이 “fail”인 것의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "AnswerKeyResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(substrate 값이 substrate ID임 및 outcome 값이 \"fail\"임)에 맞는 answer key results 레코드의 개수"
+      },
+      "Substrates.AnswerKeyOk": {
+        "table": "Substrates",
+        "field": "AnswerKeyOk",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘answer key result count’ 값이 0보다 큰 경우 및 ‘answer key fail count’ 값이 0인 경우), ‘substrate’ 레코드는 ‘answer key ok’에 해당하는 것으로 표시됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyResultCount",
+            "label": "answer key result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyFailCount",
+            "label": "answer key fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘substrate’ 레코드는 ‘answer key ok’에 해당하는 것으로 표시됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘answer key result count’ 값이 0보다 큰 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘answer key fail count’ 값이 0인 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key result count 값이 0보다 큼 및 answer key fail count 값이 0 값과 같음"
+      },
+      "Substrates.ReflectionResultCount": {
+        "table": "Substrates",
+        "field": "ReflectionResultCount",
+        "kind": "rollup",
+        "rule": "‘substrate’ 레코드의 ‘reflection result count’ 값은 해당 ‘substrate’ 레코드에 연결된 ‘reflection results’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(substrate 값이 substrate ID임)에 맞는 reflection results 레코드의 개수"
+      },
+      "Substrates.ReflectionFailCount": {
+        "table": "Substrates",
+        "field": "ReflectionFailCount",
+        "kind": "rollup",
+        "rule": "‘substrate’ 레코드의 ‘reflection fail count’ 값은 해당 ‘substrate’ 레코드에 연결된 ‘reflection results’ 레코드 중 ‘outcome’ 값이 “fail”인 것의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "ReflectionResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(substrate 값이 substrate ID임 및 outcome 값이 \"fail\"임)에 맞는 reflection results 레코드의 개수"
+      },
+      "Substrates.ReflectionOk": {
+        "table": "Substrates",
+        "field": "ReflectionOk",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘reflection result count’ 값이 0보다 큰 경우 및 ‘reflection fail count’ 값이 0인 경우), ‘substrate’ 레코드는 ‘reflection ok’에 해당하는 것으로 표시됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "ReflectionResultCount",
+            "label": "reflection result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionFailCount",
+            "label": "reflection fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘substrate’ 레코드는 ‘reflection ok’에 해당하는 것으로 표시됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘reflection result count’ 값이 0보다 큰 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘reflection fail count’ 값이 0인 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Reflection result count 값이 0보다 큼 및 reflection fail count 값이 0 값과 같음"
+      },
+      "Substrates.Conformant": {
+        "table": "Substrates",
+        "field": "Conformant",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘answer key ok’ 플래그가 설정된 경우 및 ‘reflection ok’ 플래그가 설정된 경우), ‘substrate’ 레코드는 ‘conformant’에 해당하는 것으로 표시됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyOk",
+            "label": "answer key ok"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionOk",
+            "label": "reflection ok"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘substrate’ 레코드는 ‘conformant’에 해당하는 것으로 표시됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘answer key ok’ 플래그가 설정된 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘reflection ok’ 플래그가 설정된 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key ok 및 reflection ok"
+      },
+      "AnswerKeyResults.Name": {
+        "table": "AnswerKeyResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘answer key result’ 레코드의 ‘name’ 값은 같은 레코드의 ‘answer key result ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "AnswerKeyResultId",
+            "label": "answer key result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Answer key result ID"
+      },
+      "ReflectionResults.Name": {
+        "table": "ReflectionResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘reflection result’ 레코드의 ‘name’ 값은 같은 레코드의 ‘reflection result ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "ReflectionResultId",
+            "label": "reflection result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Reflection result ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "EDBRelations": [
+        "‘EDB relation’ 레코드는 ‘seed fact’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘EDB relation’ 레코드는 ‘transition effect’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘EDB relation’ 레코드는 ‘fields’, ‘field count’ 및 ‘description’ 값을 포함**해야 합니다**."
+      ],
+      "Commands": [
+        "‘command’ 레코드는 ‘transition’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘command’ 레코드는 ‘params’, ‘param count’ 및 ‘description’ 값을 포함**해야 합니다**."
+      ],
+      "Rules": [
+        "‘rule’ 레코드는 ‘guarded transitions’ 필드를 통해 ‘transition’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘rule’ 레코드는 ‘transition effect’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘rule’ 레코드는 ‘transition event’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘rule’ 레코드는 ‘integrity constraint’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘rule’ 레코드는 ‘head predicate’, ‘kind’, ‘head JSON’, ‘paper section ref’ 및 ‘description’ 값을 포함**해야 합니다**."
+      ],
+      "Transitions": [
+        "‘transition’ 레코드는 ‘command’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘transition’ 레코드는 ‘guard’ 필드를 통해 ‘rule’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘transition’ 레코드는 ‘effects’ 필드를 통해 ‘transition effect’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘transition’ 레코드는 ‘events’ 필드를 통해 ‘transition event’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘transition’ 레코드는 ‘description’ 값을 포함**해야 합니다**."
+      ],
+      "TransitionEffects": [
+        "‘transition effect’ 레코드는 ‘transition’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘transition effect’ 레코드는 ‘relation’ 필드를 통해 ‘EDB relation’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘transition effect’ 레코드는 ‘from rule’ 필드를 통해 ‘rule’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘transition effect’ 레코드는 ‘op’ 값을 포함**해야 합니다**."
+      ],
+      "TransitionEvents": [
+        "‘transition event’ 레코드는 ‘transition’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘transition event’ 레코드는 ‘from rule’ 필드를 통해 ‘rule’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘transition event’ 레코드는 ‘event relation’ 값을 포함**해야 합니다**."
+      ],
+      "IntegrityConstraints": [
+        "‘integrity constraint’ 레코드는 ‘rule’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘integrity constraint’ 레코드는 ‘description’ 값을 포함**해야 합니다**."
+      ],
+      "Observables": [
+        "‘observable’ 레코드는 ‘exposed predicate’ 및 ‘description’ 값을 포함**해야 합니다**."
+      ],
+      "SeedFacts": [
+        "‘seed fact’ 레코드는 ‘relation’ 필드를 통해 ‘EDB relation’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘seed fact’ 레코드는 ‘n’, ‘op’, ‘tuple JSON’ 및 ‘k’ 값을 포함**해야 합니다**."
+      ],
+      "InputHistories": [
+        "‘input history’ 레코드는 ‘answer key result’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘input history’ 레코드는 ‘source file’, ‘event count’ 및 ‘description’ 값을 포함**해야 합니다**."
+      ],
+      "ReflectionConditions": [
+        "‘reflection condition’ 레코드는 ‘reflection result’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘reflection condition’ 레코드는 ‘condition number’, ‘title’, ‘paper section ref’ 및 ‘description’ 값을 포함**해야 합니다**."
+      ],
+      "Substrates": [
+        "‘substrate’ 레코드는 ‘answer key result’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘substrate’ 레코드는 ‘reflection result’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘substrate’ 레코드는 ‘description’ 및 ‘paper section ref’ 값을 포함하고, 해당 레코드가 ‘control’에 해당하는지 여부를 기록**해야 합니다**."
+      ],
+      "AnswerKeyResults": [
+        "‘answer key result’ 레코드는 ‘substrate’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘answer key result’ 레코드는 ‘input history’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘answer key result’ 레코드는 ‘traces produced’, ‘permitted’ 및 ‘outcome’ 값을 포함**해야 합니다**."
+      ],
+      "ReflectionResults": [
+        "‘reflection result’ 레코드는 ‘substrate’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘reflection result’ 레코드는 ‘reflection condition’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘reflection result’ 레코드는 ‘outcome’ 값을 포함**해야 합니다**."
+      ]
+    },
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "EDBRelations": "EDB relation",
+      "Commands": "command",
+      "Rules": "rule",
+      "Transitions": "transition",
+      "TransitionEffects": "transition effect",
+      "TransitionEvents": "transition event",
+      "IntegrityConstraints": "integrity constraint",
+      "Observables": "observable",
+      "SeedFacts": "seed fact",
+      "InputHistories": "input history",
+      "ReflectionConditions": "reflection condition",
+      "Substrates": "substrate",
+      "AnswerKeyResults": "answer key result",
+      "ReflectionResults": "reflection result"
+    }
+  },
+  "nl": {
+    "fields": {
+      "EDBRelations.Name": {
+        "table": "EDBRelations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een EDB relation: name is gelijk aan relation ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EDBRelations",
+            "field": "RelationId",
+            "label": "relation ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Relation ID"
+      },
+      "Commands.Name": {
+        "table": "Commands",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een command: name is gelijk aan command ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Commands",
+            "field": "CommandId",
+            "label": "command ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Command ID"
+      },
+      "Rules.Name": {
+        "table": "Rules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een rule: name is gelijk aan rule ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rules",
+            "field": "RuleId",
+            "label": "rule ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rule ID"
+      },
+      "Transitions.Name": {
+        "table": "Transitions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een transition: name is gelijk aan transition ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transitions",
+            "field": "TransitionId",
+            "label": "transition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transition ID"
+      },
+      "TransitionEffects.Name": {
+        "table": "TransitionEffects",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een transition effect: name is gelijk aan effect ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEffects",
+            "field": "EffectId",
+            "label": "effect ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Effect ID"
+      },
+      "TransitionEvents.Name": {
+        "table": "TransitionEvents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een transition event: name is gelijk aan event ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEvents",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "IntegrityConstraints.Name": {
+        "table": "IntegrityConstraints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een integrity constraint: name is gelijk aan constraint ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IntegrityConstraints",
+            "field": "ConstraintId",
+            "label": "constraint ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Constraint ID"
+      },
+      "Observables.Name": {
+        "table": "Observables",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een observable: name is gelijk aan observable ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Observables",
+            "field": "ObservableId",
+            "label": "observable ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Observable ID"
+      },
+      "SeedFacts.Name": {
+        "table": "SeedFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een seed fact: name is gelijk aan seed fact ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SeedFacts",
+            "field": "SeedFactId",
+            "label": "seed fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seed fact ID"
+      },
+      "InputHistories.Name": {
+        "table": "InputHistories",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een input history: name is gelijk aan input history ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InputHistories",
+            "field": "InputHistoryId",
+            "label": "input history ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Input history ID"
+      },
+      "ReflectionConditions.Name": {
+        "table": "ReflectionConditions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een reflection condition: name is gelijk aan condition ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionConditions",
+            "field": "ConditionId",
+            "label": "condition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Condition ID"
+      },
+      "Substrates.Name": {
+        "table": "Substrates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een substrate: name is gelijk aan substrate ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate ID"
+      },
+      "Substrates.AnswerKeyResultCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyResultCount",
+        "kind": "rollup",
+        "rule": "Een substrate: answer key result count is het aantal answer key results dat is gekoppeld aan de substrate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal answer key results waarvan substrate is substrate ID"
+      },
+      "Substrates.AnswerKeyFailCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyFailCount",
+        "kind": "rollup",
+        "rule": "Een substrate: answer key fail count is het aantal answer key results van de substrate dat een outcome van ‘fail’ hebben.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "AnswerKeyResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal answer key results waarvan substrate is substrate ID en outcome is \"fail\""
+      },
+      "Substrates.AnswerKeyOk": {
+        "table": "Substrates",
+        "field": "AnswerKeyOk",
+        "kind": "formula",
+        "rule": "Een substrate is gemarkeerd als answer key ok als al het volgende geldt: de answer key result count groter is dan 0 en de answer key fail count 0 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyResultCount",
+            "label": "answer key result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyFailCount",
+            "label": "answer key fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een substrate is gemarkeerd als answer key ok als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de answer key result count groter is dan 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de answer key fail count 0 is"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key result count is groter dan 0 en answer key fail count is gelijk aan 0"
+      },
+      "Substrates.ReflectionResultCount": {
+        "table": "Substrates",
+        "field": "ReflectionResultCount",
+        "kind": "rollup",
+        "rule": "Een substrate: reflection result count is het aantal reflection results dat is gekoppeld aan de substrate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal reflection results waarvan substrate is substrate ID"
+      },
+      "Substrates.ReflectionFailCount": {
+        "table": "Substrates",
+        "field": "ReflectionFailCount",
+        "kind": "rollup",
+        "rule": "Een substrate: reflection fail count is het aantal reflection results van de substrate dat een outcome van ‘fail’ hebben.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "ReflectionResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal reflection results waarvan substrate is substrate ID en outcome is \"fail\""
+      },
+      "Substrates.ReflectionOk": {
+        "table": "Substrates",
+        "field": "ReflectionOk",
+        "kind": "formula",
+        "rule": "Een substrate is gemarkeerd als reflection ok als al het volgende geldt: de reflection result count groter is dan 0 en de reflection fail count 0 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "ReflectionResultCount",
+            "label": "reflection result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionFailCount",
+            "label": "reflection fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een substrate is gemarkeerd als reflection ok als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de reflection result count groter is dan 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de reflection fail count 0 is"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Reflection result count is groter dan 0 en reflection fail count is gelijk aan 0"
+      },
+      "Substrates.Conformant": {
+        "table": "Substrates",
+        "field": "Conformant",
+        "kind": "formula",
+        "rule": "Een substrate is gemarkeerd als conformant als al het volgende geldt: de vlag ‘answer key ok’ is gezet en de vlag ‘reflection ok’ is gezet.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyOk",
+            "label": "answer key ok"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionOk",
+            "label": "reflection ok"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een substrate is gemarkeerd als conformant als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘answer key ok’ is gezet"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘reflection ok’ is gezet"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key ok en reflection ok"
+      },
+      "AnswerKeyResults.Name": {
+        "table": "AnswerKeyResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een answer key result: name is gelijk aan answer key result ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "AnswerKeyResultId",
+            "label": "answer key result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Answer key result ID"
+      },
+      "ReflectionResults.Name": {
+        "table": "ReflectionResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een reflection result: name is gelijk aan reflection result ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "ReflectionResultId",
+            "label": "reflection result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Reflection result ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "EDBRelations": [
+        "Een EDB relation **moet** naar precies één seed fact verwijzen.",
+        "Een EDB relation **moet** naar precies één transition effect verwijzen.",
+        "Een EDB relation **moet** een fields; een field count; en een description hebben."
+      ],
+      "Commands": [
+        "Een command **moet** naar precies één transition verwijzen.",
+        "Een command **moet** een params; een param count; en een description hebben."
+      ],
+      "Rules": [
+        "Een rule **moet** naar precies één transition verwijzen als zijn guarded transitions.",
+        "Een rule **moet** naar precies één transition effect verwijzen.",
+        "Een rule **moet** naar precies één transition event verwijzen.",
+        "Een rule **moet** naar precies één integrity constraint verwijzen.",
+        "Een rule **moet** een head predicate; een kind; een head JSON; een paper section ref; en een description hebben."
+      ],
+      "Transitions": [
+        "Een transition **moet** naar precies één command verwijzen.",
+        "Een transition **moet** naar precies één rule verwijzen als zijn guard.",
+        "Een transition **moet** naar precies één transition effect verwijzen als zijn effects.",
+        "Een transition **moet** naar precies één transition event verwijzen als zijn events.",
+        "Een transition **moet** een description hebben."
+      ],
+      "TransitionEffects": [
+        "Een transition effect **moet** naar precies één transition verwijzen.",
+        "Een transition effect **moet** naar precies één EDB relation verwijzen als zijn relation.",
+        "Een transition effect **moet** naar precies één rule verwijzen als zijn from rule.",
+        "Een transition effect **moet** een op hebben."
+      ],
+      "TransitionEvents": [
+        "Een transition event **moet** naar precies één transition verwijzen.",
+        "Een transition event **moet** naar precies één rule verwijzen als zijn from rule.",
+        "Een transition event **moet** een event relation hebben."
+      ],
+      "IntegrityConstraints": [
+        "Een integrity constraint **moet** naar precies één rule verwijzen.",
+        "Een integrity constraint **moet** een description hebben."
+      ],
+      "Observables": [
+        "Een observable **moet** een exposed predicate en een description hebben."
+      ],
+      "SeedFacts": [
+        "Een seed fact **moet** naar precies één EDB relation verwijzen als zijn relation.",
+        "Een seed fact **moet** een n; een op; een tuple JSON; en een k hebben."
+      ],
+      "InputHistories": [
+        "Een input history **moet** naar precies één answer key result verwijzen.",
+        "Een input history **moet** een source file; een event count; en een description hebben."
+      ],
+      "ReflectionConditions": [
+        "Een reflection condition **moet** naar precies één reflection result verwijzen.",
+        "Een reflection condition **moet** een condition number; een title; een paper section ref; en een description hebben."
+      ],
+      "Substrates": [
+        "Een substrate **moet** naar precies één answer key result verwijzen.",
+        "Een substrate **moet** naar precies één reflection result verwijzen.",
+        "Een substrate **moet** een description en een paper section ref hebben, en vastleggen of het is een control."
+      ],
+      "AnswerKeyResults": [
+        "Een answer key result **moet** naar precies één substrate verwijzen.",
+        "Een answer key result **moet** naar precies één input history verwijzen.",
+        "Een answer key result **moet** een traces produced; een permitted; en een outcome hebben."
+      ],
+      "ReflectionResults": [
+        "Een reflection result **moet** naar precies één substrate verwijzen.",
+        "Een reflection result **moet** naar precies één reflection condition verwijzen.",
+        "Een reflection result **moet** een outcome hebben."
+      ]
+    },
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "EDBRelations": "EDB relation",
+      "Commands": "command",
+      "Rules": "rule",
+      "Transitions": "transition",
+      "TransitionEffects": "transition effect",
+      "TransitionEvents": "transition event",
+      "IntegrityConstraints": "integrity constraint",
+      "Observables": "observable",
+      "SeedFacts": "seed fact",
+      "InputHistories": "input history",
+      "ReflectionConditions": "reflection condition",
+      "Substrates": "substrate",
+      "AnswerKeyResults": "answer key result",
+      "ReflectionResults": "reflection result"
+    }
+  },
+  "pt": {
+    "fields": {
+      "EDBRelations.Name": {
+        "table": "EDBRelations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um EDB relation: name é igual a relation ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EDBRelations",
+            "field": "RelationId",
+            "label": "relation ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Relation ID"
+      },
+      "Commands.Name": {
+        "table": "Commands",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um command: name é igual a command ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Commands",
+            "field": "CommandId",
+            "label": "command ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Command ID"
+      },
+      "Rules.Name": {
+        "table": "Rules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um rule: name é igual a rule ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rules",
+            "field": "RuleId",
+            "label": "rule ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rule ID"
+      },
+      "Transitions.Name": {
+        "table": "Transitions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um transition: name é igual a transition ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transitions",
+            "field": "TransitionId",
+            "label": "transition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transition ID"
+      },
+      "TransitionEffects.Name": {
+        "table": "TransitionEffects",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um transition effect: name é igual a effect ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEffects",
+            "field": "EffectId",
+            "label": "effect ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Effect ID"
+      },
+      "TransitionEvents.Name": {
+        "table": "TransitionEvents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um transition event: name é igual a event ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEvents",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "IntegrityConstraints.Name": {
+        "table": "IntegrityConstraints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um integrity constraint: name é igual a constraint ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IntegrityConstraints",
+            "field": "ConstraintId",
+            "label": "constraint ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Constraint ID"
+      },
+      "Observables.Name": {
+        "table": "Observables",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um observable: name é igual a observable ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Observables",
+            "field": "ObservableId",
+            "label": "observable ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Observable ID"
+      },
+      "SeedFacts.Name": {
+        "table": "SeedFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um seed fact: name é igual a seed fact ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SeedFacts",
+            "field": "SeedFactId",
+            "label": "seed fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seed fact ID"
+      },
+      "InputHistories.Name": {
+        "table": "InputHistories",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um input history: name é igual a input history ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InputHistories",
+            "field": "InputHistoryId",
+            "label": "input history ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Input history ID"
+      },
+      "ReflectionConditions.Name": {
+        "table": "ReflectionConditions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um reflection condition: name é igual a condition ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionConditions",
+            "field": "ConditionId",
+            "label": "condition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Condition ID"
+      },
+      "Substrates.Name": {
+        "table": "Substrates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um substrate: name é igual a substrate ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate ID"
+      },
+      "Substrates.AnswerKeyResultCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyResultCount",
+        "kind": "rollup",
+        "rule": "Um substrate: answer key result count é o número de answer key results relacionados a o substrate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de answer key results cujo substrate é substrate ID"
+      },
+      "Substrates.AnswerKeyFailCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyFailCount",
+        "kind": "rollup",
+        "rule": "Um substrate: answer key fail count é o número de answer key results do substrate que têm um outcome de “fail”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "AnswerKeyResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de answer key results cujo substrate é substrate ID e outcome é \"fail\""
+      },
+      "Substrates.AnswerKeyOk": {
+        "table": "Substrates",
+        "field": "AnswerKeyOk",
+        "kind": "formula",
+        "rule": "Um substrate está marcado como answer key ok se tudo o que segue é verdadeiro: o answer key result count é maior que 0 e o answer key fail count é 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyResultCount",
+            "label": "answer key result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyFailCount",
+            "label": "answer key fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um substrate está marcado como answer key ok se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o answer key result count é maior que 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o answer key fail count é 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key result count é maior que 0 e answer key fail count é igual a 0"
+      },
+      "Substrates.ReflectionResultCount": {
+        "table": "Substrates",
+        "field": "ReflectionResultCount",
+        "kind": "rollup",
+        "rule": "Um substrate: reflection result count é o número de reflection results relacionados a o substrate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de reflection results cujo substrate é substrate ID"
+      },
+      "Substrates.ReflectionFailCount": {
+        "table": "Substrates",
+        "field": "ReflectionFailCount",
+        "kind": "rollup",
+        "rule": "Um substrate: reflection fail count é o número de reflection results do substrate que têm um outcome de “fail”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "ReflectionResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de reflection results cujo substrate é substrate ID e outcome é \"fail\""
+      },
+      "Substrates.ReflectionOk": {
+        "table": "Substrates",
+        "field": "ReflectionOk",
+        "kind": "formula",
+        "rule": "Um substrate está marcado como reflection ok se tudo o que segue é verdadeiro: o reflection result count é maior que 0 e o reflection fail count é 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "ReflectionResultCount",
+            "label": "reflection result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionFailCount",
+            "label": "reflection fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um substrate está marcado como reflection ok se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o reflection result count é maior que 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o reflection fail count é 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Reflection result count é maior que 0 e reflection fail count é igual a 0"
+      },
+      "Substrates.Conformant": {
+        "table": "Substrates",
+        "field": "Conformant",
+        "kind": "formula",
+        "rule": "Um substrate está marcado como conformant se tudo o que segue é verdadeiro: o indicador “answer key ok” está ativado e o indicador “reflection ok” está ativado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyOk",
+            "label": "answer key ok"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionOk",
+            "label": "reflection ok"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um substrate está marcado como conformant se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “answer key ok” está ativado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “reflection ok” está ativado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key ok e reflection ok"
+      },
+      "AnswerKeyResults.Name": {
+        "table": "AnswerKeyResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um answer key result: name é igual a answer key result ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "AnswerKeyResultId",
+            "label": "answer key result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Answer key result ID"
+      },
+      "ReflectionResults.Name": {
+        "table": "ReflectionResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um reflection result: name é igual a reflection result ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "ReflectionResultId",
+            "label": "reflection result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Reflection result ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "EDBRelations": [
+        "Um EDB relation **deve** referenciar exatamente um seed fact.",
+        "Um EDB relation **deve** referenciar exatamente um transition effect.",
+        "Um EDB relation **deve** ter um fields; um field count; e um description."
+      ],
+      "Commands": [
+        "Um command **deve** referenciar exatamente um transition.",
+        "Um command **deve** ter um params; um param count; e um description."
+      ],
+      "Rules": [
+        "Um rule **deve** referenciar exatamente um transition como seu guarded transitions.",
+        "Um rule **deve** referenciar exatamente um transition effect.",
+        "Um rule **deve** referenciar exatamente um transition event.",
+        "Um rule **deve** referenciar exatamente um integrity constraint.",
+        "Um rule **deve** ter um head predicate; um kind; um head JSON; um paper section ref; e um description."
+      ],
+      "Transitions": [
+        "Um transition **deve** referenciar exatamente um command.",
+        "Um transition **deve** referenciar exatamente um rule como seu guard.",
+        "Um transition **deve** referenciar exatamente um transition effect como seu effects.",
+        "Um transition **deve** referenciar exatamente um transition event como seu events.",
+        "Um transition **deve** ter um description."
+      ],
+      "TransitionEffects": [
+        "Um transition effect **deve** referenciar exatamente um transition.",
+        "Um transition effect **deve** referenciar exatamente um EDB relation como seu relation.",
+        "Um transition effect **deve** referenciar exatamente um rule como seu from rule.",
+        "Um transition effect **deve** ter um op."
+      ],
+      "TransitionEvents": [
+        "Um transition event **deve** referenciar exatamente um transition.",
+        "Um transition event **deve** referenciar exatamente um rule como seu from rule.",
+        "Um transition event **deve** ter um event relation."
+      ],
+      "IntegrityConstraints": [
+        "Um integrity constraint **deve** referenciar exatamente um rule.",
+        "Um integrity constraint **deve** ter um description."
+      ],
+      "Observables": [
+        "Um observable **deve** ter um exposed predicate e um description."
+      ],
+      "SeedFacts": [
+        "Um seed fact **deve** referenciar exatamente um EDB relation como seu relation.",
+        "Um seed fact **deve** ter um n; um op; um tuple JSON; e um k."
+      ],
+      "InputHistories": [
+        "Um input history **deve** referenciar exatamente um answer key result.",
+        "Um input history **deve** ter um source file; um event count; e um description."
+      ],
+      "ReflectionConditions": [
+        "Um reflection condition **deve** referenciar exatamente um reflection result.",
+        "Um reflection condition **deve** ter um condition number; um title; um paper section ref; e um description."
+      ],
+      "Substrates": [
+        "Um substrate **deve** referenciar exatamente um answer key result.",
+        "Um substrate **deve** referenciar exatamente um reflection result.",
+        "Um substrate **deve** ter um description e um paper section ref, e registrar se é um control."
+      ],
+      "AnswerKeyResults": [
+        "Um answer key result **deve** referenciar exatamente um substrate.",
+        "Um answer key result **deve** referenciar exatamente um input history.",
+        "Um answer key result **deve** ter um traces produced; um permitted; e um outcome."
+      ],
+      "ReflectionResults": [
+        "Um reflection result **deve** referenciar exatamente um substrate.",
+        "Um reflection result **deve** referenciar exatamente um reflection condition.",
+        "Um reflection result **deve** ter um outcome."
+      ]
+    },
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "EDBRelations": "EDB relation",
+      "Commands": "command",
+      "Rules": "rule",
+      "Transitions": "transition",
+      "TransitionEffects": "transition effect",
+      "TransitionEvents": "transition event",
+      "IntegrityConstraints": "integrity constraint",
+      "Observables": "observable",
+      "SeedFacts": "seed fact",
+      "InputHistories": "input history",
+      "ReflectionConditions": "reflection condition",
+      "Substrates": "substrate",
+      "AnswerKeyResults": "answer key result",
+      "ReflectionResults": "reflection result"
+    }
+  },
+  "ru": {
+    "fields": {
+      "EDBRelations.Name": {
+        "table": "EDBRelations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "EDB relation: «name» совпадает с relation ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EDBRelations",
+            "field": "RelationId",
+            "label": "relation ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Relation ID"
+      },
+      "Commands.Name": {
+        "table": "Commands",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Command: «name» совпадает с command ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Commands",
+            "field": "CommandId",
+            "label": "command ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Command ID"
+      },
+      "Rules.Name": {
+        "table": "Rules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Rule: «name» совпадает с rule ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rules",
+            "field": "RuleId",
+            "label": "rule ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rule ID"
+      },
+      "Transitions.Name": {
+        "table": "Transitions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Transition: «name» совпадает с transition ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transitions",
+            "field": "TransitionId",
+            "label": "transition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transition ID"
+      },
+      "TransitionEffects.Name": {
+        "table": "TransitionEffects",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Transition effect: «name» совпадает с effect ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEffects",
+            "field": "EffectId",
+            "label": "effect ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Effect ID"
+      },
+      "TransitionEvents.Name": {
+        "table": "TransitionEvents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Transition event: «name» совпадает с event ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEvents",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "IntegrityConstraints.Name": {
+        "table": "IntegrityConstraints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Integrity constraint: «name» совпадает с constraint ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IntegrityConstraints",
+            "field": "ConstraintId",
+            "label": "constraint ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Constraint ID"
+      },
+      "Observables.Name": {
+        "table": "Observables",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Observable: «name» совпадает с observable ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Observables",
+            "field": "ObservableId",
+            "label": "observable ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Observable ID"
+      },
+      "SeedFacts.Name": {
+        "table": "SeedFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Seed fact: «name» совпадает с seed fact ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SeedFacts",
+            "field": "SeedFactId",
+            "label": "seed fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seed fact ID"
+      },
+      "InputHistories.Name": {
+        "table": "InputHistories",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Input history: «name» совпадает с input history ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InputHistories",
+            "field": "InputHistoryId",
+            "label": "input history ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Input history ID"
+      },
+      "ReflectionConditions.Name": {
+        "table": "ReflectionConditions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Reflection condition: «name» совпадает с condition ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionConditions",
+            "field": "ConditionId",
+            "label": "condition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Condition ID"
+      },
+      "Substrates.Name": {
+        "table": "Substrates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Substrate: «name» совпадает с substrate ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate ID"
+      },
+      "Substrates.AnswerKeyResultCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyResultCount",
+        "kind": "rollup",
+        "rule": "Substrate: «answer key result count» — это число записей «answer key results», связанных с substrate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «answer key results», у которых substrate равно substrate ID"
+      },
+      "Substrates.AnswerKeyFailCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyFailCount",
+        "kind": "rollup",
+        "rule": "Substrate: «answer key fail count» — это число записей «answer key results» (substrate), которые имеют «outcome», равный «fail».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "AnswerKeyResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «answer key results», у которых substrate равно substrate ID и outcome равно \"fail\""
+      },
+      "Substrates.AnswerKeyOk": {
+        "table": "Substrates",
+        "field": "AnswerKeyOk",
+        "kind": "formula",
+        "rule": "Substrate помечается как «answer key ok», если выполняется всё следующее: answer key result count больше 0 и answer key fail count равно 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyResultCount",
+            "label": "answer key result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyFailCount",
+            "label": "answer key fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Substrate помечается как «answer key ok», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "answer key result count больше 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "answer key fail count равно 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key result count больше 0 и answer key fail count равно 0"
+      },
+      "Substrates.ReflectionResultCount": {
+        "table": "Substrates",
+        "field": "ReflectionResultCount",
+        "kind": "rollup",
+        "rule": "Substrate: «reflection result count» — это число записей «reflection results», связанных с substrate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «reflection results», у которых substrate равно substrate ID"
+      },
+      "Substrates.ReflectionFailCount": {
+        "table": "Substrates",
+        "field": "ReflectionFailCount",
+        "kind": "rollup",
+        "rule": "Substrate: «reflection fail count» — это число записей «reflection results» (substrate), которые имеют «outcome», равный «fail».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "ReflectionResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «reflection results», у которых substrate равно substrate ID и outcome равно \"fail\""
+      },
+      "Substrates.ReflectionOk": {
+        "table": "Substrates",
+        "field": "ReflectionOk",
+        "kind": "formula",
+        "rule": "Substrate помечается как «reflection ok», если выполняется всё следующее: reflection result count больше 0 и reflection fail count равно 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "ReflectionResultCount",
+            "label": "reflection result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionFailCount",
+            "label": "reflection fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Substrate помечается как «reflection ok», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "reflection result count больше 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "reflection fail count равно 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Reflection result count больше 0 и reflection fail count равно 0"
+      },
+      "Substrates.Conformant": {
+        "table": "Substrates",
+        "field": "Conformant",
+        "kind": "formula",
+        "rule": "Substrate помечается как «conformant», если выполняется всё следующее: признак «answer key ok» установлен и признак «reflection ok» установлен.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyOk",
+            "label": "answer key ok"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionOk",
+            "label": "reflection ok"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Substrate помечается как «conformant», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "признак «answer key ok» установлен"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "признак «reflection ok» установлен"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key ok и reflection ok"
+      },
+      "AnswerKeyResults.Name": {
+        "table": "AnswerKeyResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Answer key result: «name» совпадает с answer key result ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "AnswerKeyResultId",
+            "label": "answer key result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Answer key result ID"
+      },
+      "ReflectionResults.Name": {
+        "table": "ReflectionResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Reflection result: «name» совпадает с reflection result ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "ReflectionResultId",
+            "label": "reflection result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Reflection result ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "EDBRelations": [
+        "EDB relation **обязан** ссылаться ровно на один «seed fact».",
+        "EDB relation **обязан** ссылаться ровно на один «transition effect».",
+        "EDB relation **обязан** иметь fields; field count; и description."
+      ],
+      "Commands": [
+        "Command **обязан** ссылаться ровно на один «transition».",
+        "Command **обязан** иметь params; param count; и description."
+      ],
+      "Rules": [
+        "Rule **обязан** ссылаться ровно на один «transition» в роли «guarded transitions».",
+        "Rule **обязан** ссылаться ровно на один «transition effect».",
+        "Rule **обязан** ссылаться ровно на один «transition event».",
+        "Rule **обязан** ссылаться ровно на один «integrity constraint».",
+        "Rule **обязан** иметь head predicate; kind; head JSON; paper section ref; и description."
+      ],
+      "Transitions": [
+        "Transition **обязан** ссылаться ровно на один «command».",
+        "Transition **обязан** ссылаться ровно на один «rule» в роли «guard».",
+        "Transition **обязан** ссылаться ровно на один «transition effect» в роли «effects».",
+        "Transition **обязан** ссылаться ровно на один «transition event» в роли «events».",
+        "Transition **обязан** иметь description."
+      ],
+      "TransitionEffects": [
+        "Transition effect **обязан** ссылаться ровно на один «transition».",
+        "Transition effect **обязан** ссылаться ровно на один «EDB relation» в роли «relation».",
+        "Transition effect **обязан** ссылаться ровно на один «rule» в роли «from rule».",
+        "Transition effect **обязан** иметь op."
+      ],
+      "TransitionEvents": [
+        "Transition event **обязан** ссылаться ровно на один «transition».",
+        "Transition event **обязан** ссылаться ровно на один «rule» в роли «from rule».",
+        "Transition event **обязан** иметь event relation."
+      ],
+      "IntegrityConstraints": [
+        "Integrity constraint **обязан** ссылаться ровно на один «rule».",
+        "Integrity constraint **обязан** иметь description."
+      ],
+      "Observables": [
+        "Observable **обязан** иметь exposed predicate и description."
+      ],
+      "SeedFacts": [
+        "Seed fact **обязан** ссылаться ровно на один «EDB relation» в роли «relation».",
+        "Seed fact **обязан** иметь n; op; tuple JSON; и k."
+      ],
+      "InputHistories": [
+        "Input history **обязан** ссылаться ровно на один «answer key result».",
+        "Input history **обязан** иметь source file; event count; и description."
+      ],
+      "ReflectionConditions": [
+        "Reflection condition **обязан** ссылаться ровно на один «reflection result».",
+        "Reflection condition **обязан** иметь condition number; title; paper section ref; и description."
+      ],
+      "Substrates": [
+        "Substrate **обязан** ссылаться ровно на один «answer key result».",
+        "Substrate **обязан** ссылаться ровно на один «reflection result».",
+        "Substrate **обязан** иметь description и paper section ref, а также фиксировать то, он является «control» ли."
+      ],
+      "AnswerKeyResults": [
+        "Answer key result **обязан** ссылаться ровно на один «substrate».",
+        "Answer key result **обязан** ссылаться ровно на один «input history».",
+        "Answer key result **обязан** иметь traces produced; permitted; и outcome."
+      ],
+      "ReflectionResults": [
+        "Reflection result **обязан** ссылаться ровно на один «substrate».",
+        "Reflection result **обязан** ссылаться ровно на один «reflection condition».",
+        "Reflection result **обязан** иметь outcome."
+      ]
+    },
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "EDBRelations": "EDB relation",
+      "Commands": "command",
+      "Rules": "rule",
+      "Transitions": "transition",
+      "TransitionEffects": "transition effect",
+      "TransitionEvents": "transition event",
+      "IntegrityConstraints": "integrity constraint",
+      "Observables": "observable",
+      "SeedFacts": "seed fact",
+      "InputHistories": "input history",
+      "ReflectionConditions": "reflection condition",
+      "Substrates": "substrate",
+      "AnswerKeyResults": "answer key result",
+      "ReflectionResults": "reflection result"
+    }
+  },
+  "tr": {
+    "fields": {
+      "EDBRelations.Name": {
+        "table": "EDBRelations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“EDB relation” kaydının “name” alanı, “relation ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EDBRelations",
+            "field": "RelationId",
+            "label": "relation ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Relation ID"
+      },
+      "Commands.Name": {
+        "table": "Commands",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“command” kaydının “name” alanı, “command ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Commands",
+            "field": "CommandId",
+            "label": "command ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Command ID"
+      },
+      "Rules.Name": {
+        "table": "Rules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“rule” kaydının “name” alanı, “rule ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rules",
+            "field": "RuleId",
+            "label": "rule ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rule ID"
+      },
+      "Transitions.Name": {
+        "table": "Transitions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“transition” kaydının “name” alanı, “transition ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transitions",
+            "field": "TransitionId",
+            "label": "transition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transition ID"
+      },
+      "TransitionEffects.Name": {
+        "table": "TransitionEffects",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“transition effect” kaydının “name” alanı, “effect ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEffects",
+            "field": "EffectId",
+            "label": "effect ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Effect ID"
+      },
+      "TransitionEvents.Name": {
+        "table": "TransitionEvents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“transition event” kaydının “name” alanı, “event ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEvents",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "IntegrityConstraints.Name": {
+        "table": "IntegrityConstraints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“integrity constraint” kaydının “name” alanı, “constraint ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IntegrityConstraints",
+            "field": "ConstraintId",
+            "label": "constraint ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Constraint ID"
+      },
+      "Observables.Name": {
+        "table": "Observables",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“observable” kaydının “name” alanı, “observable ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Observables",
+            "field": "ObservableId",
+            "label": "observable ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Observable ID"
+      },
+      "SeedFacts.Name": {
+        "table": "SeedFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“seed fact” kaydının “name” alanı, “seed fact ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SeedFacts",
+            "field": "SeedFactId",
+            "label": "seed fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seed fact ID"
+      },
+      "InputHistories.Name": {
+        "table": "InputHistories",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“input history” kaydının “name” alanı, “input history ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InputHistories",
+            "field": "InputHistoryId",
+            "label": "input history ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Input history ID"
+      },
+      "ReflectionConditions.Name": {
+        "table": "ReflectionConditions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“reflection condition” kaydının “name” alanı, “condition ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionConditions",
+            "field": "ConditionId",
+            "label": "condition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Condition ID"
+      },
+      "Substrates.Name": {
+        "table": "Substrates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“substrate” kaydının “name” alanı, “substrate ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate ID"
+      },
+      "Substrates.AnswerKeyResultCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyResultCount",
+        "kind": "rollup",
+        "rule": "“substrate” kaydının “answer key result count” alanı, “substrate” kaydıyla ilişkili “answer key results” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate değeri substrate ID olan answer key results kayıtlarının sayısı"
+      },
+      "Substrates.AnswerKeyFailCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyFailCount",
+        "kind": "rollup",
+        "rule": "“substrate” kaydının “answer key fail count” alanı, “substrate” kaydıyla ilişkili, “outcome” alanı “fail” olan “answer key results” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "AnswerKeyResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate değeri substrate ID ve outcome değeri \"fail\" olan answer key results kayıtlarının sayısı"
+      },
+      "Substrates.AnswerKeyOk": {
+        "table": "Substrates",
+        "field": "AnswerKeyOk",
+        "kind": "formula",
+        "rule": "“substrate” kaydı, “answer key result count” alanı 0 değerinden büyük ve “answer key fail count” alanı 0 değerine eşit ise “answer key ok” olarak işaretlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyResultCount",
+            "label": "answer key result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyFailCount",
+            "label": "answer key fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“substrate” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “answer key ok” olarak işaretlenir:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“answer key result count” alanı 0 değerinden büyük"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“answer key fail count” alanı 0 değerine eşit"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key result count, 0 değerinden büyük ve answer key fail count, 0 değerine eşit"
+      },
+      "Substrates.ReflectionResultCount": {
+        "table": "Substrates",
+        "field": "ReflectionResultCount",
+        "kind": "rollup",
+        "rule": "“substrate” kaydının “reflection result count” alanı, “substrate” kaydıyla ilişkili “reflection results” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate değeri substrate ID olan reflection results kayıtlarının sayısı"
+      },
+      "Substrates.ReflectionFailCount": {
+        "table": "Substrates",
+        "field": "ReflectionFailCount",
+        "kind": "rollup",
+        "rule": "“substrate” kaydının “reflection fail count” alanı, “substrate” kaydıyla ilişkili, “outcome” alanı “fail” olan “reflection results” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "ReflectionResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate değeri substrate ID ve outcome değeri \"fail\" olan reflection results kayıtlarının sayısı"
+      },
+      "Substrates.ReflectionOk": {
+        "table": "Substrates",
+        "field": "ReflectionOk",
+        "kind": "formula",
+        "rule": "“substrate” kaydı, “reflection result count” alanı 0 değerinden büyük ve “reflection fail count” alanı 0 değerine eşit ise “reflection ok” olarak işaretlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "ReflectionResultCount",
+            "label": "reflection result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionFailCount",
+            "label": "reflection fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“substrate” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “reflection ok” olarak işaretlenir:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“reflection result count” alanı 0 değerinden büyük"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“reflection fail count” alanı 0 değerine eşit"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Reflection result count, 0 değerinden büyük ve reflection fail count, 0 değerine eşit"
+      },
+      "Substrates.Conformant": {
+        "table": "Substrates",
+        "field": "Conformant",
+        "kind": "formula",
+        "rule": "“substrate” kaydı, “answer key ok” bayrağı etkin ve “reflection ok” bayrağı etkin ise “conformant” olarak işaretlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyOk",
+            "label": "answer key ok"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionOk",
+            "label": "reflection ok"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“substrate” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “conformant” olarak işaretlenir:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“answer key ok” bayrağı etkin"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“reflection ok” bayrağı etkin"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key ok ve reflection ok"
+      },
+      "AnswerKeyResults.Name": {
+        "table": "AnswerKeyResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“answer key result” kaydının “name” alanı, “answer key result ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "AnswerKeyResultId",
+            "label": "answer key result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Answer key result ID"
+      },
+      "ReflectionResults.Name": {
+        "table": "ReflectionResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“reflection result” kaydının “name” alanı, “reflection result ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "ReflectionResultId",
+            "label": "reflection result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Reflection result ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "EDBRelations": [
+        "“EDB relation” kaydı, tam olarak bir “seed fact” kaydına referans vermek **zorundadır**.",
+        "“EDB relation” kaydı, tam olarak bir “transition effect” kaydına referans vermek **zorundadır**.",
+        "“EDB relation” kaydı, “fields” alanı, “field count” alanı ve “description” alanı dolu olmak **zorundadır**."
+      ],
+      "Commands": [
+        "“command” kaydı, tam olarak bir “transition” kaydına referans vermek **zorundadır**.",
+        "“command” kaydı, “params” alanı, “param count” alanı ve “description” alanı dolu olmak **zorundadır**."
+      ],
+      "Rules": [
+        "“rule” kaydı, “guarded transitions” alanı aracılığıyla tam olarak bir “transition” kaydına referans vermek **zorundadır**.",
+        "“rule” kaydı, tam olarak bir “transition effect” kaydına referans vermek **zorundadır**.",
+        "“rule” kaydı, tam olarak bir “transition event” kaydına referans vermek **zorundadır**.",
+        "“rule” kaydı, tam olarak bir “integrity constraint” kaydına referans vermek **zorundadır**.",
+        "“rule” kaydı, “head predicate” alanı, “kind” alanı, “head JSON” alanı, “paper section ref” alanı ve “description” alanı dolu olmak **zorundadır**."
+      ],
+      "Transitions": [
+        "“transition” kaydı, tam olarak bir “command” kaydına referans vermek **zorundadır**.",
+        "“transition” kaydı, “guard” alanı aracılığıyla tam olarak bir “rule” kaydına referans vermek **zorundadır**.",
+        "“transition” kaydı, “effects” alanı aracılığıyla tam olarak bir “transition effect” kaydına referans vermek **zorundadır**.",
+        "“transition” kaydı, “events” alanı aracılığıyla tam olarak bir “transition event” kaydına referans vermek **zorundadır**.",
+        "“transition” kaydı, “description” alanı dolu olmak **zorundadır**."
+      ],
+      "TransitionEffects": [
+        "“transition effect” kaydı, tam olarak bir “transition” kaydına referans vermek **zorundadır**.",
+        "“transition effect” kaydı, “relation” alanı aracılığıyla tam olarak bir “EDB relation” kaydına referans vermek **zorundadır**.",
+        "“transition effect” kaydı, “from rule” alanı aracılığıyla tam olarak bir “rule” kaydına referans vermek **zorundadır**.",
+        "“transition effect” kaydı, “op” alanı dolu olmak **zorundadır**."
+      ],
+      "TransitionEvents": [
+        "“transition event” kaydı, tam olarak bir “transition” kaydına referans vermek **zorundadır**.",
+        "“transition event” kaydı, “from rule” alanı aracılığıyla tam olarak bir “rule” kaydına referans vermek **zorundadır**.",
+        "“transition event” kaydı, “event relation” alanı dolu olmak **zorundadır**."
+      ],
+      "IntegrityConstraints": [
+        "“integrity constraint” kaydı, tam olarak bir “rule” kaydına referans vermek **zorundadır**.",
+        "“integrity constraint” kaydı, “description” alanı dolu olmak **zorundadır**."
+      ],
+      "Observables": [
+        "“observable” kaydı, “exposed predicate” alanı ve “description” alanı dolu olmak **zorundadır**."
+      ],
+      "SeedFacts": [
+        "“seed fact” kaydı, “relation” alanı aracılığıyla tam olarak bir “EDB relation” kaydına referans vermek **zorundadır**.",
+        "“seed fact” kaydı, “n” alanı, “op” alanı, “tuple JSON” alanı ve “k” alanı dolu olmak **zorundadır**."
+      ],
+      "InputHistories": [
+        "“input history” kaydı, tam olarak bir “answer key result” kaydına referans vermek **zorundadır**.",
+        "“input history” kaydı, “source file” alanı, “event count” alanı ve “description” alanı dolu olmak **zorundadır**."
+      ],
+      "ReflectionConditions": [
+        "“reflection condition” kaydı, tam olarak bir “reflection result” kaydına referans vermek **zorundadır**.",
+        "“reflection condition” kaydı, “condition number” alanı, “title” alanı, “paper section ref” alanı ve “description” alanı dolu olmak **zorundadır**."
+      ],
+      "Substrates": [
+        "“substrate” kaydı, tam olarak bir “answer key result” kaydına referans vermek **zorundadır**.",
+        "“substrate” kaydı, tam olarak bir “reflection result” kaydına referans vermek **zorundadır**.",
+        "“substrate” kaydı, “description” alanı ve “paper section ref” alanı dolu olmak, ayrıca “control” olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ],
+      "AnswerKeyResults": [
+        "“answer key result” kaydı, tam olarak bir “substrate” kaydına referans vermek **zorundadır**.",
+        "“answer key result” kaydı, tam olarak bir “input history” kaydına referans vermek **zorundadır**.",
+        "“answer key result” kaydı, “traces produced” alanı, “permitted” alanı ve “outcome” alanı dolu olmak **zorundadır**."
+      ],
+      "ReflectionResults": [
+        "“reflection result” kaydı, tam olarak bir “substrate” kaydına referans vermek **zorundadır**.",
+        "“reflection result” kaydı, tam olarak bir “reflection condition” kaydına referans vermek **zorundadır**.",
+        "“reflection result” kaydı, “outcome” alanı dolu olmak **zorundadır**."
+      ]
+    },
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "EDBRelations": "EDB relation",
+      "Commands": "command",
+      "Rules": "rule",
+      "Transitions": "transition",
+      "TransitionEffects": "transition effect",
+      "TransitionEvents": "transition event",
+      "IntegrityConstraints": "integrity constraint",
+      "Observables": "observable",
+      "SeedFacts": "seed fact",
+      "InputHistories": "input history",
+      "ReflectionConditions": "reflection condition",
+      "Substrates": "substrate",
+      "AnswerKeyResults": "answer key result",
+      "ReflectionResults": "reflection result"
+    }
+  },
+  "vi": {
+    "fields": {
+      "EDBRelations.Name": {
+        "table": "EDBRelations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi EDB relation có cùng giá trị với trường “relation ID” của chính EDB relation đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EDBRelations",
+            "field": "RelationId",
+            "label": "relation ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Relation ID"
+      },
+      "Commands.Name": {
+        "table": "Commands",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi command có cùng giá trị với trường “command ID” của chính command đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Commands",
+            "field": "CommandId",
+            "label": "command ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Command ID"
+      },
+      "Rules.Name": {
+        "table": "Rules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi rule có cùng giá trị với trường “rule ID” của chính rule đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rules",
+            "field": "RuleId",
+            "label": "rule ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rule ID"
+      },
+      "Transitions.Name": {
+        "table": "Transitions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi transition có cùng giá trị với trường “transition ID” của chính transition đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transitions",
+            "field": "TransitionId",
+            "label": "transition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transition ID"
+      },
+      "TransitionEffects.Name": {
+        "table": "TransitionEffects",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi transition effect có cùng giá trị với trường “effect ID” của chính transition effect đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEffects",
+            "field": "EffectId",
+            "label": "effect ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Effect ID"
+      },
+      "TransitionEvents.Name": {
+        "table": "TransitionEvents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi transition event có cùng giá trị với trường “event ID” của chính transition event đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEvents",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "IntegrityConstraints.Name": {
+        "table": "IntegrityConstraints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi integrity constraint có cùng giá trị với trường “constraint ID” của chính integrity constraint đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IntegrityConstraints",
+            "field": "ConstraintId",
+            "label": "constraint ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Constraint ID"
+      },
+      "Observables.Name": {
+        "table": "Observables",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi observable có cùng giá trị với trường “observable ID” của chính observable đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Observables",
+            "field": "ObservableId",
+            "label": "observable ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Observable ID"
+      },
+      "SeedFacts.Name": {
+        "table": "SeedFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi seed fact có cùng giá trị với trường “seed fact ID” của chính seed fact đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SeedFacts",
+            "field": "SeedFactId",
+            "label": "seed fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seed fact ID"
+      },
+      "InputHistories.Name": {
+        "table": "InputHistories",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi input history có cùng giá trị với trường “input history ID” của chính input history đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InputHistories",
+            "field": "InputHistoryId",
+            "label": "input history ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Input history ID"
+      },
+      "ReflectionConditions.Name": {
+        "table": "ReflectionConditions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi reflection condition có cùng giá trị với trường “condition ID” của chính reflection condition đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionConditions",
+            "field": "ConditionId",
+            "label": "condition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Condition ID"
+      },
+      "Substrates.Name": {
+        "table": "Substrates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi substrate có cùng giá trị với trường “substrate ID” của chính substrate đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate ID"
+      },
+      "Substrates.AnswerKeyResultCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyResultCount",
+        "kind": "rollup",
+        "rule": "Trường “answer key result count” của mỗi substrate là số lượng answer key results liên quan đến substrate đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng answer key results có substrate là substrate ID"
+      },
+      "Substrates.AnswerKeyFailCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyFailCount",
+        "kind": "rollup",
+        "rule": "Trường “answer key fail count” của mỗi substrate là số lượng answer key results liên quan đến substrate đó, chỉ tính các bản ghi có trường “outcome” là “fail”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "AnswerKeyResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng answer key results có substrate là substrate ID và outcome là \"fail\""
+      },
+      "Substrates.AnswerKeyOk": {
+        "table": "Substrates",
+        "field": "AnswerKeyOk",
+        "kind": "formula",
+        "rule": "Mỗi substrate được đánh dấu là “answer key ok” nếu tất cả các điều kiện sau đều đúng: answer key result count lớn hơn 0 và answer key fail count là 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyResultCount",
+            "label": "answer key result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyFailCount",
+            "label": "answer key fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi substrate được đánh dấu là “answer key ok” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "answer key result count lớn hơn 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "answer key fail count là 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key result count lớn hơn 0 và answer key fail count bằng 0"
+      },
+      "Substrates.ReflectionResultCount": {
+        "table": "Substrates",
+        "field": "ReflectionResultCount",
+        "kind": "rollup",
+        "rule": "Trường “reflection result count” của mỗi substrate là số lượng reflection results liên quan đến substrate đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng reflection results có substrate là substrate ID"
+      },
+      "Substrates.ReflectionFailCount": {
+        "table": "Substrates",
+        "field": "ReflectionFailCount",
+        "kind": "rollup",
+        "rule": "Trường “reflection fail count” của mỗi substrate là số lượng reflection results liên quan đến substrate đó, chỉ tính các bản ghi có trường “outcome” là “fail”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "ReflectionResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng reflection results có substrate là substrate ID và outcome là \"fail\""
+      },
+      "Substrates.ReflectionOk": {
+        "table": "Substrates",
+        "field": "ReflectionOk",
+        "kind": "formula",
+        "rule": "Mỗi substrate được đánh dấu là “reflection ok” nếu tất cả các điều kiện sau đều đúng: reflection result count lớn hơn 0 và reflection fail count là 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "ReflectionResultCount",
+            "label": "reflection result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionFailCount",
+            "label": "reflection fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi substrate được đánh dấu là “reflection ok” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "reflection result count lớn hơn 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "reflection fail count là 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Reflection result count lớn hơn 0 và reflection fail count bằng 0"
+      },
+      "Substrates.Conformant": {
+        "table": "Substrates",
+        "field": "Conformant",
+        "kind": "formula",
+        "rule": "Mỗi substrate được đánh dấu là “conformant” nếu tất cả các điều kiện sau đều đúng: cờ “answer key ok” được bật và cờ “reflection ok” được bật.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyOk",
+            "label": "answer key ok"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionOk",
+            "label": "reflection ok"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi substrate được đánh dấu là “conformant” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "cờ “answer key ok” được bật"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "cờ “reflection ok” được bật"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key ok và reflection ok"
+      },
+      "AnswerKeyResults.Name": {
+        "table": "AnswerKeyResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi answer key result có cùng giá trị với trường “answer key result ID” của chính answer key result đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "AnswerKeyResultId",
+            "label": "answer key result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Answer key result ID"
+      },
+      "ReflectionResults.Name": {
+        "table": "ReflectionResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi reflection result có cùng giá trị với trường “reflection result ID” của chính reflection result đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "ReflectionResultId",
+            "label": "reflection result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Reflection result ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "EDBRelations": [
+        "Mỗi EDB relation **phải** tham chiếu đến đúng một seed fact.",
+        "Mỗi EDB relation **phải** tham chiếu đến đúng một transition effect.",
+        "Mỗi EDB relation **phải** có fields, field count và description."
+      ],
+      "Commands": [
+        "Mỗi command **phải** tham chiếu đến đúng một transition.",
+        "Mỗi command **phải** có params, param count và description."
+      ],
+      "Rules": [
+        "Mỗi rule **phải** tham chiếu đến đúng một transition với vai trò guarded transitions.",
+        "Mỗi rule **phải** tham chiếu đến đúng một transition effect.",
+        "Mỗi rule **phải** tham chiếu đến đúng một transition event.",
+        "Mỗi rule **phải** tham chiếu đến đúng một integrity constraint.",
+        "Mỗi rule **phải** có head predicate, kind, head JSON, paper section ref và description."
+      ],
+      "Transitions": [
+        "Mỗi transition **phải** tham chiếu đến đúng một command.",
+        "Mỗi transition **phải** tham chiếu đến đúng một rule với vai trò guard.",
+        "Mỗi transition **phải** tham chiếu đến đúng một transition effect với vai trò effects.",
+        "Mỗi transition **phải** tham chiếu đến đúng một transition event với vai trò events.",
+        "Mỗi transition **phải** có description."
+      ],
+      "TransitionEffects": [
+        "Mỗi transition effect **phải** tham chiếu đến đúng một transition.",
+        "Mỗi transition effect **phải** tham chiếu đến đúng một EDB relation với vai trò relation.",
+        "Mỗi transition effect **phải** tham chiếu đến đúng một rule với vai trò from rule.",
+        "Mỗi transition effect **phải** có op."
+      ],
+      "TransitionEvents": [
+        "Mỗi transition event **phải** tham chiếu đến đúng một transition.",
+        "Mỗi transition event **phải** tham chiếu đến đúng một rule với vai trò from rule.",
+        "Mỗi transition event **phải** có event relation."
+      ],
+      "IntegrityConstraints": [
+        "Mỗi integrity constraint **phải** tham chiếu đến đúng một rule.",
+        "Mỗi integrity constraint **phải** có description."
+      ],
+      "Observables": [
+        "Mỗi observable **phải** có exposed predicate và description."
+      ],
+      "SeedFacts": [
+        "Mỗi seed fact **phải** tham chiếu đến đúng một EDB relation với vai trò relation.",
+        "Mỗi seed fact **phải** có n, op, tuple JSON và k."
+      ],
+      "InputHistories": [
+        "Mỗi input history **phải** tham chiếu đến đúng một answer key result.",
+        "Mỗi input history **phải** có source file, event count và description."
+      ],
+      "ReflectionConditions": [
+        "Mỗi reflection condition **phải** tham chiếu đến đúng một reflection result.",
+        "Mỗi reflection condition **phải** có condition number, title, paper section ref và description."
+      ],
+      "Substrates": [
+        "Mỗi substrate **phải** tham chiếu đến đúng một answer key result.",
+        "Mỗi substrate **phải** tham chiếu đến đúng một reflection result.",
+        "Mỗi substrate **phải** có description và paper section ref, đồng thời được ghi nhận rõ là “control” hay không."
+      ],
+      "AnswerKeyResults": [
+        "Mỗi answer key result **phải** tham chiếu đến đúng một substrate.",
+        "Mỗi answer key result **phải** tham chiếu đến đúng một input history.",
+        "Mỗi answer key result **phải** có traces produced, permitted và outcome."
+      ],
+      "ReflectionResults": [
+        "Mỗi reflection result **phải** tham chiếu đến đúng một substrate.",
+        "Mỗi reflection result **phải** tham chiếu đến đúng một reflection condition.",
+        "Mỗi reflection result **phải** có outcome."
+      ]
+    },
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "EDBRelations": "EDB relation",
+      "Commands": "command",
+      "Rules": "rule",
+      "Transitions": "transition",
+      "TransitionEffects": "transition effect",
+      "TransitionEvents": "transition event",
+      "IntegrityConstraints": "integrity constraint",
+      "Observables": "observable",
+      "SeedFacts": "seed fact",
+      "InputHistories": "input history",
+      "ReflectionConditions": "reflection condition",
+      "Substrates": "substrate",
+      "AnswerKeyResults": "answer key result",
+      "ReflectionResults": "reflection result"
+    }
+  },
+  "zh": {
+    "fields": {
+      "EDBRelations.Name": {
+        "table": "EDBRelations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "EDB relation的“name”与 relation ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EDBRelations",
+            "field": "RelationId",
+            "label": "relation ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Relation ID"
+      },
+      "Commands.Name": {
+        "table": "Commands",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "command的“name”与 command ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Commands",
+            "field": "CommandId",
+            "label": "command ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Command ID"
+      },
+      "Rules.Name": {
+        "table": "Rules",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "rule的“name”与 rule ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rules",
+            "field": "RuleId",
+            "label": "rule ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rule ID"
+      },
+      "Transitions.Name": {
+        "table": "Transitions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "transition的“name”与 transition ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transitions",
+            "field": "TransitionId",
+            "label": "transition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transition ID"
+      },
+      "TransitionEffects.Name": {
+        "table": "TransitionEffects",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "transition effect的“name”与 effect ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEffects",
+            "field": "EffectId",
+            "label": "effect ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Effect ID"
+      },
+      "TransitionEvents.Name": {
+        "table": "TransitionEvents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "transition event的“name”与 event ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransitionEvents",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event ID"
+      },
+      "IntegrityConstraints.Name": {
+        "table": "IntegrityConstraints",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "integrity constraint的“name”与 constraint ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IntegrityConstraints",
+            "field": "ConstraintId",
+            "label": "constraint ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Constraint ID"
+      },
+      "Observables.Name": {
+        "table": "Observables",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "observable的“name”与 observable ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Observables",
+            "field": "ObservableId",
+            "label": "observable ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Observable ID"
+      },
+      "SeedFacts.Name": {
+        "table": "SeedFacts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "seed fact的“name”与 seed fact ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SeedFacts",
+            "field": "SeedFactId",
+            "label": "seed fact ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seed fact ID"
+      },
+      "InputHistories.Name": {
+        "table": "InputHistories",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "input history的“name”与 input history ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InputHistories",
+            "field": "InputHistoryId",
+            "label": "input history ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Input history ID"
+      },
+      "ReflectionConditions.Name": {
+        "table": "ReflectionConditions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "reflection condition的“name”与 condition ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionConditions",
+            "field": "ConditionId",
+            "label": "condition ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Condition ID"
+      },
+      "Substrates.Name": {
+        "table": "Substrates",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "substrate的“name”与 substrate ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate ID"
+      },
+      "Substrates.AnswerKeyResultCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyResultCount",
+        "kind": "rollup",
+        "rule": "substrate的“answer key result count”为 与substrate相关的“answer key results”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate为substrate ID的“answer key results”的数量"
+      },
+      "Substrates.AnswerKeyFailCount": {
+        "table": "Substrates",
+        "field": "AnswerKeyFailCount",
+        "kind": "rollup",
+        "rule": "substrate的“answer key fail count”为 substrate的“answer key results”中“outcome”为 “fail”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "AnswerKeyResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate为substrate ID且outcome为\"fail\"的“answer key results”的数量"
+      },
+      "Substrates.AnswerKeyOk": {
+        "table": "Substrates",
+        "field": "AnswerKeyOk",
+        "kind": "formula",
+        "rule": "当以下全部成立:answer key result count大于0且answer key fail count为0时,substrate被标记为“Answer Key Ok”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyResultCount",
+            "label": "answer key result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyFailCount",
+            "label": "answer key fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,substrate被标记为“Answer Key Ok”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "answer key result count大于0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "answer key fail count为0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key result count大于0且answer key fail count等于0"
+      },
+      "Substrates.ReflectionResultCount": {
+        "table": "Substrates",
+        "field": "ReflectionResultCount",
+        "kind": "rollup",
+        "rule": "substrate的“reflection result count”为 与substrate相关的“reflection results”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate为substrate ID的“reflection results”的数量"
+      },
+      "Substrates.ReflectionFailCount": {
+        "table": "Substrates",
+        "field": "ReflectionFailCount",
+        "kind": "rollup",
+        "rule": "substrate的“reflection fail count”为 substrate的“reflection results”中“outcome”为 “fail”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "Substrate",
+            "label": "substrate"
+          },
+          {
+            "table": "Substrates",
+            "field": "SubstrateId",
+            "label": "substrate ID"
+          },
+          {
+            "table": "ReflectionResults",
+            "field": "Outcome",
+            "label": "outcome"
+          }
+        ],
+        "structure": null,
+        "plain": "Substrate为substrate ID且outcome为\"fail\"的“reflection results”的数量"
+      },
+      "Substrates.ReflectionOk": {
+        "table": "Substrates",
+        "field": "ReflectionOk",
+        "kind": "formula",
+        "rule": "当以下全部成立:reflection result count大于0且reflection fail count为0时,substrate被标记为“Reflection Ok”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "ReflectionResultCount",
+            "label": "reflection result count"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionFailCount",
+            "label": "reflection fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,substrate被标记为“Reflection Ok”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "reflection result count大于0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "reflection fail count为0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Reflection result count大于0且reflection fail count等于0"
+      },
+      "Substrates.Conformant": {
+        "table": "Substrates",
+        "field": "Conformant",
+        "kind": "formula",
+        "rule": "当以下全部成立:标志“answer key ok”已设置且标志“reflection ok”已设置时,substrate被标记为“Conformant”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Substrates",
+            "field": "AnswerKeyOk",
+            "label": "answer key ok"
+          },
+          {
+            "table": "Substrates",
+            "field": "ReflectionOk",
+            "label": "reflection ok"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,substrate被标记为“Conformant”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "标志“answer key ok”已设置"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "标志“reflection ok”已设置"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Answer key ok且reflection ok"
+      },
+      "AnswerKeyResults.Name": {
+        "table": "AnswerKeyResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "answer key result的“name”与 answer key result ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AnswerKeyResults",
+            "field": "AnswerKeyResultId",
+            "label": "answer key result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Answer key result ID"
+      },
+      "ReflectionResults.Name": {
+        "table": "ReflectionResults",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "reflection result的“name”与 reflection result ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ReflectionResults",
+            "field": "ReflectionResultId",
+            "label": "reflection result ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Reflection result ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "EDBRelations": [
+        "EDB relation**必须**恰好引用一个“seed fact”。",
+        "EDB relation**必须**恰好引用一个“transition effect”。",
+        "EDB relation**必须**具有fields、field count,且description。"
+      ],
+      "Commands": [
+        "command**必须**恰好引用一个“transition”。",
+        "command**必须**具有params、param count,且description。"
+      ],
+      "Rules": [
+        "rule**必须**恰好引用一个“transition”作为其guarded transitions。",
+        "rule**必须**恰好引用一个“transition effect”。",
+        "rule**必须**恰好引用一个“transition event”。",
+        "rule**必须**恰好引用一个“integrity constraint”。",
+        "rule**必须**具有head predicate、kind、head JSON、paper section ref,且description。"
+      ],
+      "Transitions": [
+        "transition**必须**恰好引用一个“command”。",
+        "transition**必须**恰好引用一个“rule”作为其guard。",
+        "transition**必须**恰好引用一个“transition effect”作为其effects。",
+        "transition**必须**恰好引用一个“transition event”作为其events。",
+        "transition**必须**具有description。"
+      ],
+      "TransitionEffects": [
+        "transition effect**必须**恰好引用一个“transition”。",
+        "transition effect**必须**恰好引用一个“EDB relation”作为其relation。",
+        "transition effect**必须**恰好引用一个“rule”作为其from rule。",
+        "transition effect**必须**具有op。"
+      ],
+      "TransitionEvents": [
+        "transition event**必须**恰好引用一个“transition”。",
+        "transition event**必须**恰好引用一个“rule”作为其from rule。",
+        "transition event**必须**具有event relation。"
+      ],
+      "IntegrityConstraints": [
+        "integrity constraint**必须**恰好引用一个“rule”。",
+        "integrity constraint**必须**具有description。"
+      ],
+      "Observables": [
+        "observable**必须**具有exposed predicate且description。"
+      ],
+      "SeedFacts": [
+        "seed fact**必须**恰好引用一个“EDB relation”作为其relation。",
+        "seed fact**必须**具有n、op、tuple JSON,且k。"
+      ],
+      "InputHistories": [
+        "input history**必须**恰好引用一个“answer key result”。",
+        "input history**必须**具有source file、event count,且description。"
+      ],
+      "ReflectionConditions": [
+        "reflection condition**必须**恰好引用一个“reflection result”。",
+        "reflection condition**必须**具有condition number、title、paper section ref,且description。"
+      ],
+      "Substrates": [
+        "substrate**必须**恰好引用一个“answer key result”。",
+        "substrate**必须**恰好引用一个“reflection result”。",
+        "substrate**必须**具有description且paper section ref,并记录其是“Control”与否。"
+      ],
+      "AnswerKeyResults": [
+        "answer key result**必须**恰好引用一个“substrate”。",
+        "answer key result**必须**恰好引用一个“input history”。",
+        "answer key result**必须**具有traces produced、permitted,且outcome。"
+      ],
+      "ReflectionResults": [
+        "reflection result**必须**恰好引用一个“substrate”。",
+        "reflection result**必须**恰好引用一个“reflection condition”。",
+        "reflection result**必须**具有outcome。"
+      ]
+    },
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "EDBRelations": "EDB relation",

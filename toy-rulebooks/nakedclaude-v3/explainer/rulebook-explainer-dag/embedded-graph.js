@@ -1947,7 +1947,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -2842,6 +2857,14151 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "Products": "product",
+      "Orders": "order",
+      "OrderLineItems": "order line item",
+      "Payments": "payment",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "ar": {
+    "fields": {
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «customer» على أنه «stopped» إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: جميع الشروط الآتية متحققة: علامة «status is blocking» مفعّلة وحقل «name» يساوي «Bobby»؛ أو علامة «multi payment orders» مفعّلة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Customers",
+            "field": "HasMultiPaymentOrders",
+            "label": "has multi payment orders"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُصنّف سجل «customer» على أنه «stopped» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "علامة «status is blocking» مفعّلة"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "حقل «name» يساوي «Bobby»"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "علامة «multi payment orders» مفعّلة"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "إذا تحقق أنّ status is blocking فالناتج true()، وإلا فالناتج false()؛ وname هو \"Bobby\"؛ أو has multi payment orders"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "حقل «status is blocking» في سجل «customer» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «status» مصنّفًا على أنه «blocking».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «is blocking» من السجل المرتبط عبر «status»"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "حقل «status display name» في سجل «customer» مأخوذ من السجل المرتبط به عبر حقل «status».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «display name» من السجل المرتبط عبر «status»"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "حقل «status description» في سجل «customer» مأخوذ من السجل المرتبط به عبر حقل «status».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «description» من السجل المرتبط عبر «status»"
+      },
+      "Customers.AverageOrderValue": {
+        "table": "Customers",
+        "field": "AverageOrderValue",
+        "kind": "formula",
+        "rule": "حقل «average order value» في سجل «customer» يُحسب على النحو الآتي: «Unable to generate formula».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.LifetimeMarginPercent": {
+        "table": "Customers",
+        "field": "LifetimeMarginPercent",
+        "kind": "formula",
+        "rule": "حقل «lifetime margin percent» في سجل «customer» يُحسب على النحو الآتي: «Unable to generate formula».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CustomerSinceDays": {
+        "table": "Customers",
+        "field": "CustomerSinceDays",
+        "kind": "formula",
+        "rule": "حقل «customer since days» في سجل «customer» يتحدد وفق ترتيب الأولوية الآتي:\n1. عدد الأيام من حقل «created at» إلى التاريخ والوقت الحاليان، إذا تحقق أنّ علامة «created at» مفعّلة؛\n2. قيمة فارغة، في سائر الحالات.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CreatedAt",
+            "label": "created at"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «customer since days» في سجل «customer» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "عدد الأيام من حقل «created at» إلى التاريخ والوقت الحاليان",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «created at» مفعّلة"
+              }
+            },
+            {
+              "value": "قيمة فارغة",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ created at فالناتج datetime_diff(الآن, created at, \"days\")، وإلا فالناتج blank()"
+      },
+      "Customers.DaysSinceLastOrder": {
+        "table": "Customers",
+        "field": "DaysSinceLastOrder",
+        "kind": "formula",
+        "rule": "حقل «days since last order» في سجل «customer» يُحسب على النحو الآتي: «Unable to generate formula».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CountOfMultiplePaymentOrders": {
+        "table": "Customers",
+        "field": "CountOfMultiplePaymentOrders",
+        "kind": "rollup",
+        "rule": "حقل «count of multiple payment orders» في سجل «customer» هو عدد سجلات «orders» المرتبطة بسجل «customer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomerId",
+            "label": "customer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «orders» التي يتحقق فيها أنّ حقل «customer» يساوي customer ID"
+      },
+      "Customers.HasMultiPaymentOrders": {
+        "table": "Customers",
+        "field": "HasMultiPaymentOrders",
+        "kind": "formula",
+        "rule": "يُعدّ سجل «customer» حائزًا على «multi payment orders» إذا تحقق أنّ حقل «count of multiple payment orders» أكبر من 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CountOfMultiplePaymentOrders",
+            "label": "count of multiple payment orders"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of multiple payment orders أكبر من 0"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «status» يُحسب على النحو الآتي: حقل «display name» بأحرف صغيرة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name بأحرف صغيرة"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «product» يُحسب على النحو الآتي: حقل «SKU» بعد وضع شرطة مكان كل مسافة بأحرف صغيرة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "SKU",
+            "label": "SKU"
+          }
+        ],
+        "structure": null,
+        "plain": "SKU بعد وضع «-» مكان « » بأحرف صغيرة"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «order» يُحسب على النحو الآتي: حقل «customer»، ثم شرطة، ثم حقل «order number» بعد وضع شرطة مكان كل مسافة بأحرف صغيرة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "((customer يليه \"-\") يليه order number) بعد وضع «-» مكان « » بأحرف صغيرة"
+      },
+      "Orders.ItemCount": {
+        "table": "Orders",
+        "field": "ItemCount",
+        "kind": "rollup",
+        "rule": "حقل «item count» في سجل «order» هو عدد سجلات «order line items» المرتبطة بسجل «order».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «order line items» التي يتحقق فيها أنّ حقل «order» يساوي order ID"
+      },
+      "Orders.TotalQuantity": {
+        "table": "Orders",
+        "field": "TotalQuantity",
+        "kind": "rollup",
+        "rule": "حقل «total quantity» في سجل «order» هو مجموع قيم حقل «quantity» عبر سجلات «order line items» المرتبطة بسجل «order».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «quantity» في جميع سجلات «order line items» التي يتحقق فيها أنّ حقل «order» يساوي order ID"
+      },
+      "Orders.SubTotal": {
+        "table": "Orders",
+        "field": "SubTotal",
+        "kind": "rollup",
+        "rule": "حقل «sub total» في سجل «order» هو مجموع قيم حقل «sub total» عبر سجلات «order line items» المرتبطة بسجل «order».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «sub total» في جميع سجلات «order line items» التي يتحقق فيها أنّ حقل «order» يساوي order ID"
+      },
+      "Orders.TaxAmount": {
+        "table": "Orders",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "حقل «tax amount» في سجل «order» يُحسب على النحو الآتي: حقل «sub total» مضروبًا في حقل «tax rate».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total ضرب tax rate"
+      },
+      "Orders.OrderTotal": {
+        "table": "Orders",
+        "field": "OrderTotal",
+        "kind": "formula",
+        "rule": "حقل «order total» في سجل «order» يُحسب على النحو الآتي: حقل «sub total» زائد حقل «tax amount».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total زائد tax amount"
+      },
+      "Orders.TotalPaid": {
+        "table": "Orders",
+        "field": "TotalPaid",
+        "kind": "rollup",
+        "rule": "حقل «total paid» في سجل «order» هو مجموع قيم حقل «completed amount» عبر سجلات «payments» المرتبطة بسجل «order».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "CompletedAmount",
+            "label": "completed amount"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «completed amount» في جميع سجلات «payments» التي يتحقق فيها أنّ حقل «order» يساوي order ID"
+      },
+      "Orders.AmountDue": {
+        "table": "Orders",
+        "field": "AmountDue",
+        "kind": "formula",
+        "rule": "حقل «amount due» في سجل «order» يُحسب على النحو الآتي: حقل «order total» ناقص حقل «total paid» مقرّبًا إلى 2 من المنازل العشرية.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": null,
+        "plain": "(order total ناقص total paid) مقرّبًا إلى 2 من المنازل العشرية"
+      },
+      "Orders.IsPaidInFull": {
+        "table": "Orders",
+        "field": "IsPaidInFull",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «order» على أنه «paid in full» إذا تحقق أنّ حقل «amount due» لا يزيد على 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «is paid in full» في سجل «order» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "صحيح",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «amount due» لا يزيد على 0"
+              }
+            },
+            {
+              "value": "خطأ",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ amount due لا يزيد على 0 فالناتج true()، وإلا فالناتج false()"
+      },
+      "Orders.PaymentCount": {
+        "table": "Orders",
+        "field": "PaymentCount",
+        "kind": "rollup",
+        "rule": "حقل «payment count» في سجل «order» هو عدد سجلات «payments» المرتبطة بسجل «order».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «payments» التي يتحقق فيها أنّ حقل «order» يساوي order ID"
+      },
+      "Orders.IsMultiPaymentOrder": {
+        "table": "Orders",
+        "field": "IsMultiPaymentOrder",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «order» على أنه «multi payment order» إذا تحقق أنّ حقل «payment count» أكبر من 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "PaymentCount",
+            "label": "payment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment count أكبر من 1"
+      },
+      "Orders.LastPaymentDate": {
+        "table": "Orders",
+        "field": "LastPaymentDate",
+        "kind": "rollup",
+        "rule": "حقل «last payment date» في سجل «order» هو مجموع قيم حقل «payment date» عبر سجلات «payments» المرتبطة بسجل «order».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentDate",
+            "label": "payment date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «payment date» في جميع سجلات «payments» التي يتحقق فيها أنّ حقل «order» يساوي order ID"
+      },
+      "Orders.PaymentStatusLabel": {
+        "table": "Orders",
+        "field": "PaymentStatusLabel",
+        "kind": "formula",
+        "rule": "حقل «payment status label» في سجل «order» يتحدد وفق ترتيب الأولوية الآتي:\n1. «Paid»، إذا تحقق أنّ علامة «paid in full» مفعّلة؛\n2. «Unpaid»، إذا تحقق أنّ حقل «total paid» يساوي 0؛\n3. «Partial»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «payment status label» في سجل «order» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«Paid»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «paid in full» مفعّلة"
+              }
+            },
+            {
+              "value": "«Unpaid»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «total paid» يساوي 0"
+              }
+            },
+            {
+              "value": "«Partial»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ is paid in full فالناتج \"Paid\"، وإلا فالناتج إذا تحقق أنّ total paid يساوي 0 فالناتج \"Unpaid\"، وإلا فالناتج \"Partial\""
+      },
+      "OrderLineItems.Name": {
+        "table": "OrderLineItems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «order line item» يُحسب على النحو الآتي: حقل «order»، ثم «-line-»، ثم حقل «line number» بعد وضع شرطة مكان كل مسافة بأحرف صغيرة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order يليه \"-line-\") يليه line number) بعد وضع «-» مكان « » بأحرف صغيرة"
+      },
+      "OrderLineItems.PreDiscount": {
+        "table": "OrderLineItems",
+        "field": "PreDiscount",
+        "kind": "formula",
+        "rule": "حقل «pre discount» في سجل «order line item» يُحسب على النحو الآتي: حقل «quantity» مضروبًا في حقل «unit price».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity ضرب unit price"
+      },
+      "OrderLineItems.DiscountAmount": {
+        "table": "OrderLineItems",
+        "field": "DiscountAmount",
+        "kind": "formula",
+        "rule": "حقل «discount amount» في سجل «order line item» يُحسب على النحو الآتي: حقل «pre discount» مضروبًا في حقل «discount percent».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountPercent",
+            "label": "discount percent"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount ضرب discount percent"
+      },
+      "OrderLineItems.SubTotal": {
+        "table": "OrderLineItems",
+        "field": "SubTotal",
+        "kind": "formula",
+        "rule": "حقل «sub total» في سجل «order line item» يُحسب على النحو الآتي: حقل «pre discount» ناقص حقل «discount amount».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount ناقص discount amount"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «payment» يُحسب على النحو الآتي: حقل «order»، ثم «-pmt-»، ثم حقل «payment number» بعد وضع شرطة مكان كل مسافة بأحرف صغيرة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order يليه \"-pmt-\") يليه payment number) بعد وضع «-» مكان « » بأحرف صغيرة"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "حقل «order date» في سجل «payment» مأخوذ من السجل المرتبط به عبر حقل «order».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «order date» من السجل المرتبط عبر «order»"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "حقل «order number» في سجل «payment» مأخوذ من السجل المرتبط به عبر حقل «order».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «order number» من السجل المرتبط عبر «order»"
+      },
+      "Payments.OrderStatus": {
+        "table": "Payments",
+        "field": "OrderStatus",
+        "kind": "lookup",
+        "rule": "حقل «order status» في سجل «payment» مأخوذ من السجل المرتبط به عبر حقل «order».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderStatus",
+            "label": "order status"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «order status» من السجل المرتبط عبر «order»"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "حقل «order total» في سجل «payment» مأخوذ من السجل المرتبط به عبر حقل «order».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «order total» من السجل المرتبط عبر «order»"
+      },
+      "Payments.IsCompleted": {
+        "table": "Payments",
+        "field": "IsCompleted",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «payment» على أنه «completed» إذا تحقق أنّ حقل «payment status» يساوي «Completed».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «is completed» في سجل «payment» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "صحيح",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «payment status» يساوي «Completed»"
+              }
+            },
+            {
+              "value": "خطأ",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ payment status هو \"Completed\" فالناتج true()، وإلا فالناتج false()"
+      },
+      "Payments.CompletedAmount": {
+        "table": "Payments",
+        "field": "CompletedAmount",
+        "kind": "formula",
+        "rule": "حقل «completed amount» في سجل «payment» يتحدد وفق ترتيب الأولوية الآتي:\n1. حقل «amount»، إذا تحقق أنّ حقل «payment status» يساوي «completed»؛\n2. 0، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          },
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «completed amount» في سجل «payment» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "حقل «amount»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «payment status» يساوي «completed»"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ payment status بأحرف صغيرة هو \"completed\" فالناتج amount، وإلا فالناتج 0"
+      },
+      "Payments.OrderAmountDue": {
+        "table": "Payments",
+        "field": "OrderAmountDue",
+        "kind": "lookup",
+        "rule": "حقل «order amount due» في سجل «payment» مأخوذ من السجل المرتبط به عبر حقل «order».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «amount due» من السجل المرتبط عبر «order»"
+      },
+      "Payments.OrderIsPaidInFull": {
+        "table": "Payments",
+        "field": "OrderIsPaidInFull",
+        "kind": "lookup",
+        "rule": "حقل «order is paid in full» في سجل «payment» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «order» مصنّفًا على أنه «paid in full».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «is paid in full» من السجل المرتبط عبر «order»"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "Products": "product",
+      "Orders": "order",
+      "OrderLineItems": "order line item",
+      "Payments": "payment",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "de": {
+    "fields": {
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "Ein Customer gilt als stopped, wenn mindestens eines des Folgenden gilt: alles Folgende gilt: das Kennzeichen „Status is Blocking“ gesetzt ist und die Name „Bobby“ ist oder das Kennzeichen „Has Multi Payment Orders“ gesetzt ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Customers",
+            "field": "HasMultiPaymentOrders",
+            "label": "has multi payment orders"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Ein Customer gilt als stopped, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "das Kennzeichen „Status is Blocking“ gesetzt ist"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "die Name „Bobby“ ist"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Has Multi Payment Orders“ gesetzt ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Wenn Status is Blocking, dann true(), andernfalls false() und Name ist \"Bobby\" oder Has Multi Payment Orders"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "Ein Customer: Status is Blocking ist wahr, wenn der zugehörige Status des Customer ist blocking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Is Blocking des verknüpften Status"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "Ein Customer: Status Display Name — aus dem zugehörigen Status übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Display Name des verknüpften Status"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "Ein Customer: Status Description — aus dem zugehörigen Status übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Description des verknüpften Status"
+      },
+      "Customers.AverageOrderValue": {
+        "table": "Customers",
+        "field": "AverageOrderValue",
+        "kind": "formula",
+        "rule": "Ein Customer: Average Order Value wird berechnet als „Unable to generate formula“.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.LifetimeMarginPercent": {
+        "table": "Customers",
+        "field": "LifetimeMarginPercent",
+        "kind": "formula",
+        "rule": "Ein Customer: Lifetime Margin Percent wird berechnet als „Unable to generate formula“.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CustomerSinceDays": {
+        "table": "Customers",
+        "field": "CustomerSinceDays",
+        "kind": "formula",
+        "rule": "Das Feld „Customer Since Days“ des Customer wird nach folgender Priorität bestimmt:\n1. die Anzahl der Tage von der Created At bis das aktuelle Datum und die aktuelle Uhrzeit, wenn das Kennzeichen „Created At“ gesetzt ist;\n2. andernfalls kein Wert.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CreatedAt",
+            "label": "created at"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Customer Since Days“ des Customer wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "die Anzahl der Tage von der Created At bis das aktuelle Datum und die aktuelle Uhrzeit",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Created At“ gesetzt ist"
+              }
+            },
+            {
+              "value": "kein Wert",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Created At, dann datetime_diff(jetzt, Created At, \"days\"), andernfalls blank()"
+      },
+      "Customers.DaysSinceLastOrder": {
+        "table": "Customers",
+        "field": "DaysSinceLastOrder",
+        "kind": "formula",
+        "rule": "Ein Customer: Days Since Last Order wird berechnet als „Unable to generate formula“.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CountOfMultiplePaymentOrders": {
+        "table": "Customers",
+        "field": "CountOfMultiplePaymentOrders",
+        "kind": "rollup",
+        "rule": "Ein Customer: Count of Multiple Payment Orders ist die Anzahl der mit dem Customer verbundenen Orders.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomerId",
+            "label": "customer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Orders, deren Customer ist Customer ID"
+      },
+      "Customers.HasMultiPaymentOrders": {
+        "table": "Customers",
+        "field": "HasMultiPaymentOrders",
+        "kind": "formula",
+        "rule": "Ein Customer gilt als über einen Multi Payment Orders verfügend, wenn der Count of Multiple Payment Orders größer ist als 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CountOfMultiplePaymentOrders",
+            "label": "count of multiple payment orders"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of Multiple Payment Orders größer als 0 ist"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Status: Name wird berechnet als das kleingeschriebene Display Name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display Name kleingeschrieben"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Product: Name wird berechnet als das kleingeschriebene SKU, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "SKU",
+            "label": "SKU"
+          }
+        ],
+        "structure": null,
+        "plain": "SKU, wobei „ “ durch „-“ ersetzt wird kleingeschrieben"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Order: Name wird berechnet als das kleingeschriebene Customer, gefolgt von ein Bindestrich, gefolgt von der Order Number, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "((Customer verbunden mit \"-\") verbunden mit Order Number), wobei „ “ durch „-“ ersetzt wird kleingeschrieben"
+      },
+      "Orders.ItemCount": {
+        "table": "Orders",
+        "field": "ItemCount",
+        "kind": "rollup",
+        "rule": "Ein Order: Item Count ist die Anzahl der mit dem Order verbundenen Order Line Items.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Order Line Items, deren Order ist Order ID"
+      },
+      "Orders.TotalQuantity": {
+        "table": "Orders",
+        "field": "TotalQuantity",
+        "kind": "rollup",
+        "rule": "Ein Order: Total Quantity ist die Gesamtsumme von Quantity über die mit dem Order verbundenen Order Line Items.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Quantity über alle Order Line Items, deren Order ist Order ID"
+      },
+      "Orders.SubTotal": {
+        "table": "Orders",
+        "field": "SubTotal",
+        "kind": "rollup",
+        "rule": "Ein Order: Sub Total ist die Gesamtsumme von Sub Total über die mit dem Order verbundenen Order Line Items.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Sub Total über alle Order Line Items, deren Order ist Order ID"
+      },
+      "Orders.TaxAmount": {
+        "table": "Orders",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "Ein Order: Tax Amount wird berechnet als der Sub Total mal die Tax Rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub Total mal Tax Rate"
+      },
+      "Orders.OrderTotal": {
+        "table": "Orders",
+        "field": "OrderTotal",
+        "kind": "formula",
+        "rule": "Ein Order: Order Total wird berechnet als der Sub Total plus der Tax Amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub Total plus Tax Amount"
+      },
+      "Orders.TotalPaid": {
+        "table": "Orders",
+        "field": "TotalPaid",
+        "kind": "rollup",
+        "rule": "Ein Order: Total Paid ist die Gesamtsumme von Completed Amount über die mit dem Order verbundenen Payments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "CompletedAmount",
+            "label": "completed amount"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Completed Amount über alle Payments, deren Order ist Order ID"
+      },
+      "Orders.AmountDue": {
+        "table": "Orders",
+        "field": "AmountDue",
+        "kind": "formula",
+        "rule": "Ein Order: Amount Due wird berechnet als der Order Total minus der Total Paid auf 2 Dezimalstellen gerundet.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": null,
+        "plain": "(Order Total minus Total Paid) auf 2 Dezimalstellen gerundet"
+      },
+      "Orders.IsPaidInFull": {
+        "table": "Orders",
+        "field": "IsPaidInFull",
+        "kind": "formula",
+        "rule": "Ein Order gilt als ein Paid in Full, wenn die Amount Due höchstens 0 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Is Paid in Full“ des Order wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "wahr",
+              "when": {
+                "kind": "leaf",
+                "text": "die Amount Due höchstens 0 ist"
+              }
+            },
+            {
+              "value": "falsch",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Amount Due höchstens 0 ist, dann true(), andernfalls false()"
+      },
+      "Orders.PaymentCount": {
+        "table": "Orders",
+        "field": "PaymentCount",
+        "kind": "rollup",
+        "rule": "Ein Order: Payment Count ist die Anzahl der mit dem Order verbundenen Payments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Payments, deren Order ist Order ID"
+      },
+      "Orders.IsMultiPaymentOrder": {
+        "table": "Orders",
+        "field": "IsMultiPaymentOrder",
+        "kind": "formula",
+        "rule": "Ein Order gilt als ein Multi Payment Order, wenn der Payment Count größer ist als 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "PaymentCount",
+            "label": "payment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment Count größer als 1 ist"
+      },
+      "Orders.LastPaymentDate": {
+        "table": "Orders",
+        "field": "LastPaymentDate",
+        "kind": "rollup",
+        "rule": "Ein Order: Last Payment Date ist die Gesamtsumme von Payment Date über die mit dem Order verbundenen Payments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentDate",
+            "label": "payment date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Payment Date über alle Payments, deren Order ist Order ID"
+      },
+      "Orders.PaymentStatusLabel": {
+        "table": "Orders",
+        "field": "PaymentStatusLabel",
+        "kind": "formula",
+        "rule": "Das Feld „Payment Status Label“ des Order wird nach folgender Priorität bestimmt:\n1. „Paid“, wenn das Kennzeichen „Is Paid in Full“ gesetzt ist;\n2. „Unpaid“, wenn der Total Paid 0 ist;\n3. andernfalls „Partial“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Payment Status Label“ des Order wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„Paid“",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Is Paid in Full“ gesetzt ist"
+              }
+            },
+            {
+              "value": "„Unpaid“",
+              "when": {
+                "kind": "leaf",
+                "text": "der Total Paid 0 ist"
+              }
+            },
+            {
+              "value": "„Partial“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Is Paid in Full, dann \"Paid\", andernfalls wenn Total Paid gleich 0 ist, dann \"Unpaid\", andernfalls \"Partial\""
+      },
+      "OrderLineItems.Name": {
+        "table": "OrderLineItems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Order Line Item: Name wird berechnet als das kleingeschriebene Order, gefolgt von „-line-“, gefolgt von der Line Number, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "((Order verbunden mit \"-line-\") verbunden mit Line Number), wobei „ “ durch „-“ ersetzt wird kleingeschrieben"
+      },
+      "OrderLineItems.PreDiscount": {
+        "table": "OrderLineItems",
+        "field": "PreDiscount",
+        "kind": "formula",
+        "rule": "Ein Order Line Item: Pre Discount wird berechnet als der Quantity mal die Unit Price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity mal Unit Price"
+      },
+      "OrderLineItems.DiscountAmount": {
+        "table": "OrderLineItems",
+        "field": "DiscountAmount",
+        "kind": "formula",
+        "rule": "Ein Order Line Item: Discount Amount wird berechnet als der Pre Discount mal der Discount Percent.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountPercent",
+            "label": "discount percent"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre Discount mal Discount Percent"
+      },
+      "OrderLineItems.SubTotal": {
+        "table": "OrderLineItems",
+        "field": "SubTotal",
+        "kind": "formula",
+        "rule": "Ein Order Line Item: Sub Total wird berechnet als der Pre Discount minus der Discount Amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre Discount minus Discount Amount"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Payment: Name wird berechnet als das kleingeschriebene Order, gefolgt von „-pmt-“, gefolgt von der Payment Number, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "((Order verbunden mit \"-pmt-\") verbunden mit Payment Number), wobei „ “ durch „-“ ersetzt wird kleingeschrieben"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "Ein Payment: Order Date — aus dem zugehörigen Order übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Order Date des verknüpften Order"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Ein Payment: Order Number — aus dem zugehörigen Order übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Order Number des verknüpften Order"
+      },
+      "Payments.OrderStatus": {
+        "table": "Payments",
+        "field": "OrderStatus",
+        "kind": "lookup",
+        "rule": "Ein Payment: Order Status — aus dem zugehörigen Order übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderStatus",
+            "label": "order status"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Order Status des verknüpften Order"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "Ein Payment: Order Total — aus dem zugehörigen Order übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Order Total des verknüpften Order"
+      },
+      "Payments.IsCompleted": {
+        "table": "Payments",
+        "field": "IsCompleted",
+        "kind": "formula",
+        "rule": "Ein Payment gilt als completed, wenn der Payment Status „Completed“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Is Completed“ des Payment wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "wahr",
+              "when": {
+                "kind": "leaf",
+                "text": "der Payment Status „Completed“ ist"
+              }
+            },
+            {
+              "value": "falsch",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Payment Status ist \"Completed\", dann true(), andernfalls false()"
+      },
+      "Payments.CompletedAmount": {
+        "table": "Payments",
+        "field": "CompletedAmount",
+        "kind": "formula",
+        "rule": "Das Feld „Completed Amount“ des Payment wird nach folgender Priorität bestimmt:\n1. der Amount, wenn der Payment Status „completed“ ist;\n2. andernfalls 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          },
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Completed Amount“ des Payment wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "der Amount",
+              "when": {
+                "kind": "leaf",
+                "text": "der Payment Status „completed“ ist"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Payment Status kleingeschrieben ist \"completed\", dann Amount, andernfalls 0"
+      },
+      "Payments.OrderAmountDue": {
+        "table": "Payments",
+        "field": "OrderAmountDue",
+        "kind": "lookup",
+        "rule": "Ein Payment: Order Amount Due — aus dem zugehörigen Order übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Amount Due des verknüpften Order"
+      },
+      "Payments.OrderIsPaidInFull": {
+        "table": "Payments",
+        "field": "OrderIsPaidInFull",
+        "kind": "lookup",
+        "rule": "Ein Payment: Order is Paid in Full ist wahr, wenn der zugehörige Order des Payment ist ein Paid in Full.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Is Paid in Full des verknüpften Order"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "Customer",
+      "Statuses": "Status",
+      "Products": "Product",
+      "Orders": "Order",
+      "OrderLineItems": "Order Line Item",
+      "Payments": "Payment",
+      "ERBVersions": "ERB Version",
+      "ERBCustomizations": "ERB Customization"
+    }
+  },
+  "es": {
+    "fields": {
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "Un customer se considera stopped si se cumple al menos una de las siguientes: se cumple todo lo siguiente: el indicador «status is blocking» está activado y el name es «Bobby» o el indicador «multi payment orders» está activado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Customers",
+            "field": "HasMultiPaymentOrders",
+            "label": "has multi payment orders"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un customer se considera stopped si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "el indicador «status is blocking» está activado"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "el name es «Bobby»"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «multi payment orders» está activado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Si status is blocking, entonces true(), de lo contrario false() y name es \"Bobby\" o has multi payment orders"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "Un customer: status is blocking es verdadero cuando el status vinculado es blocking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El is blocking del status vinculado"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "Un customer: status display name — tomado del status vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El display name del status vinculado"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "Un customer: status description — tomado del status vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El description del status vinculado"
+      },
+      "Customers.AverageOrderValue": {
+        "table": "Customers",
+        "field": "AverageOrderValue",
+        "kind": "formula",
+        "rule": "Un customer: average order value se calcula como «Unable to generate formula».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.LifetimeMarginPercent": {
+        "table": "Customers",
+        "field": "LifetimeMarginPercent",
+        "kind": "formula",
+        "rule": "Un customer: lifetime margin percent se calcula como «Unable to generate formula».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CustomerSinceDays": {
+        "table": "Customers",
+        "field": "CustomerSinceDays",
+        "kind": "formula",
+        "rule": "El campo «customer since days» del customer se determina según la siguiente prioridad:\n1. el número de días desde el created at hasta la fecha y hora actuales, si el indicador «created at» está activado;\n2. en todos los demás casos, ningún valor.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CreatedAt",
+            "label": "created at"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «customer since days» del customer se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "el número de días desde el created at hasta la fecha y hora actuales",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «created at» está activado"
+              }
+            },
+            {
+              "value": "ningún valor",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si created at, entonces datetime_diff(ahora, created at, \"days\"), de lo contrario blank()"
+      },
+      "Customers.DaysSinceLastOrder": {
+        "table": "Customers",
+        "field": "DaysSinceLastOrder",
+        "kind": "formula",
+        "rule": "Un customer: days since last order se calcula como «Unable to generate formula».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CountOfMultiplePaymentOrders": {
+        "table": "Customers",
+        "field": "CountOfMultiplePaymentOrders",
+        "kind": "rollup",
+        "rule": "Un customer: count of multiple payment orders es el número de orders relacionados con el customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomerId",
+            "label": "customer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de orders cuyo customer es customer ID"
+      },
+      "Customers.HasMultiPaymentOrders": {
+        "table": "Customers",
+        "field": "HasMultiPaymentOrders",
+        "kind": "formula",
+        "rule": "Un customer se considera que tiene un multi payment orders si el count of multiple payment orders es mayor que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CountOfMultiplePaymentOrders",
+            "label": "count of multiple payment orders"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of multiple payment orders es mayor que 0"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un status: name se calcula como el display name en minúsculas.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name en minúsculas"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un product: name se calcula como el SKU con cada un espacio reemplazado por un guion en minúsculas.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "SKU",
+            "label": "SKU"
+          }
+        ],
+        "structure": null,
+        "plain": "SKU con « » reemplazado por «-» en minúsculas"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un order: name se calcula como el customer, seguido de un guion, seguido de el order number con cada un espacio reemplazado por un guion en minúsculas.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "((customer unido con \"-\") unido con order number) con « » reemplazado por «-» en minúsculas"
+      },
+      "Orders.ItemCount": {
+        "table": "Orders",
+        "field": "ItemCount",
+        "kind": "rollup",
+        "rule": "Un order: item count es el número de order line items relacionados con el order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de order line items cuyo order es order ID"
+      },
+      "Orders.TotalQuantity": {
+        "table": "Orders",
+        "field": "TotalQuantity",
+        "kind": "rollup",
+        "rule": "Un order: total quantity es el total de quantity entre los order line items relacionados con el order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de quantity entre todos los order line items cuyo order es order ID"
+      },
+      "Orders.SubTotal": {
+        "table": "Orders",
+        "field": "SubTotal",
+        "kind": "rollup",
+        "rule": "Un order: sub total es el total de sub total entre los order line items relacionados con el order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de sub total entre todos los order line items cuyo order es order ID"
+      },
+      "Orders.TaxAmount": {
+        "table": "Orders",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "Un order: tax amount se calcula como el sub total por el tax rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total por tax rate"
+      },
+      "Orders.OrderTotal": {
+        "table": "Orders",
+        "field": "OrderTotal",
+        "kind": "formula",
+        "rule": "Un order: order total se calcula como el sub total más el tax amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total más tax amount"
+      },
+      "Orders.TotalPaid": {
+        "table": "Orders",
+        "field": "TotalPaid",
+        "kind": "rollup",
+        "rule": "Un order: total paid es el total de completed amount entre los payments relacionados con el order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "CompletedAmount",
+            "label": "completed amount"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de completed amount entre todos los payments cuyo order es order ID"
+      },
+      "Orders.AmountDue": {
+        "table": "Orders",
+        "field": "AmountDue",
+        "kind": "formula",
+        "rule": "Un order: amount due se calcula como el order total menos el total paid redondeado a 2 decimal(es).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": null,
+        "plain": "(order total menos total paid) redondeado a 2 decimales"
+      },
+      "Orders.IsPaidInFull": {
+        "table": "Orders",
+        "field": "IsPaidInFull",
+        "kind": "formula",
+        "rule": "Un order se considera un paid in full si el amount due es como máximo 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «is paid in full» del order se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "verdadero",
+              "when": {
+                "kind": "leaf",
+                "text": "el amount due es como máximo 0"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si amount due es como máximo 0, entonces true(), de lo contrario false()"
+      },
+      "Orders.PaymentCount": {
+        "table": "Orders",
+        "field": "PaymentCount",
+        "kind": "rollup",
+        "rule": "Un order: payment count es el número de payments relacionados con el order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de payments cuyo order es order ID"
+      },
+      "Orders.IsMultiPaymentOrder": {
+        "table": "Orders",
+        "field": "IsMultiPaymentOrder",
+        "kind": "formula",
+        "rule": "Un order se considera un multi payment order si el payment count es mayor que 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "PaymentCount",
+            "label": "payment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment count es mayor que 1"
+      },
+      "Orders.LastPaymentDate": {
+        "table": "Orders",
+        "field": "LastPaymentDate",
+        "kind": "rollup",
+        "rule": "Un order: last payment date es el total de payment date entre los payments relacionados con el order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentDate",
+            "label": "payment date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de payment date entre todos los payments cuyo order es order ID"
+      },
+      "Orders.PaymentStatusLabel": {
+        "table": "Orders",
+        "field": "PaymentStatusLabel",
+        "kind": "formula",
+        "rule": "El campo «payment status label» del order se determina según la siguiente prioridad:\n1. «Paid», si el indicador «paid in full» está activado;\n2. «Unpaid», si el total paid es 0;\n3. en todos los demás casos, «Partial».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «payment status label» del order se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«Paid»",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «paid in full» está activado"
+              }
+            },
+            {
+              "value": "«Unpaid»",
+              "when": {
+                "kind": "leaf",
+                "text": "el total paid es 0"
+              }
+            },
+            {
+              "value": "«Partial»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is paid in full, entonces \"Paid\", de lo contrario si total paid es igual a 0, entonces \"Unpaid\", de lo contrario \"Partial\""
+      },
+      "OrderLineItems.Name": {
+        "table": "OrderLineItems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un order line item: name se calcula como el order, seguido de «-line-», seguido de el line number con cada un espacio reemplazado por un guion en minúsculas.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order unido con \"-line-\") unido con line number) con « » reemplazado por «-» en minúsculas"
+      },
+      "OrderLineItems.PreDiscount": {
+        "table": "OrderLineItems",
+        "field": "PreDiscount",
+        "kind": "formula",
+        "rule": "Un order line item: pre discount se calcula como el quantity por el unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity por unit price"
+      },
+      "OrderLineItems.DiscountAmount": {
+        "table": "OrderLineItems",
+        "field": "DiscountAmount",
+        "kind": "formula",
+        "rule": "Un order line item: discount amount se calcula como el pre discount por el discount percent.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountPercent",
+            "label": "discount percent"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount por discount percent"
+      },
+      "OrderLineItems.SubTotal": {
+        "table": "OrderLineItems",
+        "field": "SubTotal",
+        "kind": "formula",
+        "rule": "Un order line item: sub total se calcula como el pre discount menos el discount amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount menos discount amount"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un payment: name se calcula como el order, seguido de «-pmt-», seguido de el payment number con cada un espacio reemplazado por un guion en minúsculas.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order unido con \"-pmt-\") unido con payment number) con « » reemplazado por «-» en minúsculas"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "Un payment: order date — tomado del order vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El order date del order vinculado"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Un payment: order number — tomado del order vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El order number del order vinculado"
+      },
+      "Payments.OrderStatus": {
+        "table": "Payments",
+        "field": "OrderStatus",
+        "kind": "lookup",
+        "rule": "Un payment: order status — tomado del order vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderStatus",
+            "label": "order status"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El order status del order vinculado"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "Un payment: order total — tomado del order vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El order total del order vinculado"
+      },
+      "Payments.IsCompleted": {
+        "table": "Payments",
+        "field": "IsCompleted",
+        "kind": "formula",
+        "rule": "Un payment se considera completed si el payment status es «Completed».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «is completed» del payment se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "verdadero",
+              "when": {
+                "kind": "leaf",
+                "text": "el payment status es «Completed»"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si payment status es \"Completed\", entonces true(), de lo contrario false()"
+      },
+      "Payments.CompletedAmount": {
+        "table": "Payments",
+        "field": "CompletedAmount",
+        "kind": "formula",
+        "rule": "El campo «completed amount» del payment se determina según la siguiente prioridad:\n1. el amount, si el payment status es «completed»;\n2. en todos los demás casos, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          },
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «completed amount» del payment se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "el amount",
+              "when": {
+                "kind": "leaf",
+                "text": "el payment status es «completed»"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si payment status en minúsculas es \"completed\", entonces amount, de lo contrario 0"
+      },
+      "Payments.OrderAmountDue": {
+        "table": "Payments",
+        "field": "OrderAmountDue",
+        "kind": "lookup",
+        "rule": "Un payment: order amount due — tomado del order vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El amount due del order vinculado"
+      },
+      "Payments.OrderIsPaidInFull": {
+        "table": "Payments",
+        "field": "OrderIsPaidInFull",
+        "kind": "lookup",
+        "rule": "Un payment: order is paid in full es verdadero cuando el order vinculado es un paid in full.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El is paid in full del order vinculado"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "Products": "product",
+      "Orders": "order",
+      "OrderLineItems": "order line item",
+      "Payments": "payment",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "fr": {
+    "fields": {
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "Un customer est considéré comme stopped si au moins une des conditions suivantes est vraie : tout ce qui suit est vrai : l'indicateur « status is blocking » est activé et le name est « Bobby » ou l'indicateur « multi payment orders » est activé.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Customers",
+            "field": "HasMultiPaymentOrders",
+            "label": "has multi payment orders"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un customer est considéré comme stopped si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "l'indicateur « status is blocking » est activé"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "le name est « Bobby »"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « multi payment orders » est activé"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Si status is blocking, alors true(), sinon false() et name est \"Bobby\" ou has multi payment orders"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "Un customer : status is blocking est vrai lorsque le status lié est blocking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le is blocking du status lié"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "Un customer : status display name — repris du status lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le display name du status lié"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "Un customer : status description — repris du status lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le description du status lié"
+      },
+      "Customers.AverageOrderValue": {
+        "table": "Customers",
+        "field": "AverageOrderValue",
+        "kind": "formula",
+        "rule": "Un customer : average order value est calculé comme « Unable to generate formula ».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.LifetimeMarginPercent": {
+        "table": "Customers",
+        "field": "LifetimeMarginPercent",
+        "kind": "formula",
+        "rule": "Un customer : lifetime margin percent est calculé comme « Unable to generate formula ».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CustomerSinceDays": {
+        "table": "Customers",
+        "field": "CustomerSinceDays",
+        "kind": "formula",
+        "rule": "Le champ « customer since days » du customer est déterminé selon la priorité suivante :\n1. le nombre de jours de le created at à la date et l'heure actuelles, si l'indicateur « created at » est activé ;\n2. dans tous les autres cas, aucune valeur.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CreatedAt",
+            "label": "created at"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « customer since days » du customer est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "le nombre de jours de le created at à la date et l'heure actuelles",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « created at » est activé"
+              }
+            },
+            {
+              "value": "aucune valeur",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si created at, alors datetime_diff(maintenant, created at, \"days\"), sinon blank()"
+      },
+      "Customers.DaysSinceLastOrder": {
+        "table": "Customers",
+        "field": "DaysSinceLastOrder",
+        "kind": "formula",
+        "rule": "Un customer : days since last order est calculé comme « Unable to generate formula ».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CountOfMultiplePaymentOrders": {
+        "table": "Customers",
+        "field": "CountOfMultiplePaymentOrders",
+        "kind": "rollup",
+        "rule": "Un customer : count of multiple payment orders est le nombre de orders liés à le customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomerId",
+            "label": "customer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des orders dont customer est customer ID"
+      },
+      "Customers.HasMultiPaymentOrders": {
+        "table": "Customers",
+        "field": "HasMultiPaymentOrders",
+        "kind": "formula",
+        "rule": "Un customer est considéré comme disposant de un multi payment orders si le count of multiple payment orders est supérieur à 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CountOfMultiplePaymentOrders",
+            "label": "count of multiple payment orders"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of multiple payment orders est supérieur à 0"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un status : name est calculé comme le display name en minuscules.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name en minuscules"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un product : name est calculé comme le SKU avec chaque une espace remplacé par un trait d'union en minuscules.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "SKU",
+            "label": "SKU"
+          }
+        ],
+        "structure": null,
+        "plain": "SKU avec « » remplacé par « - » en minuscules"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un order : name est calculé comme le customer, suivi de un trait d'union, suivi de l'order number avec chaque une espace remplacé par un trait d'union en minuscules.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "((customer joint à \"-\") joint à order number) avec « » remplacé par « - » en minuscules"
+      },
+      "Orders.ItemCount": {
+        "table": "Orders",
+        "field": "ItemCount",
+        "kind": "rollup",
+        "rule": "Un order : item count est le nombre de order line items liés à l'order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des order line items dont order est order ID"
+      },
+      "Orders.TotalQuantity": {
+        "table": "Orders",
+        "field": "TotalQuantity",
+        "kind": "rollup",
+        "rule": "Un order : total quantity est le total de quantity sur les order line items liés à l'order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de quantity sur tous les order line items dont order est order ID"
+      },
+      "Orders.SubTotal": {
+        "table": "Orders",
+        "field": "SubTotal",
+        "kind": "rollup",
+        "rule": "Un order : sub total est le total de sub total sur les order line items liés à l'order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de sub total sur tous les order line items dont order est order ID"
+      },
+      "Orders.TaxAmount": {
+        "table": "Orders",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "Un order : tax amount est calculé comme le sub total multiplié par le tax rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total fois tax rate"
+      },
+      "Orders.OrderTotal": {
+        "table": "Orders",
+        "field": "OrderTotal",
+        "kind": "formula",
+        "rule": "Un order : order total est calculé comme le sub total plus le tax amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total plus tax amount"
+      },
+      "Orders.TotalPaid": {
+        "table": "Orders",
+        "field": "TotalPaid",
+        "kind": "rollup",
+        "rule": "Un order : total paid est le total de completed amount sur les payments liés à l'order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "CompletedAmount",
+            "label": "completed amount"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de completed amount sur tous les payments dont order est order ID"
+      },
+      "Orders.AmountDue": {
+        "table": "Orders",
+        "field": "AmountDue",
+        "kind": "formula",
+        "rule": "Un order : amount due est calculé comme l'order total moins le total paid arrondi à 2 décimale(s).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": null,
+        "plain": "(order total moins total paid) arrondi à 2 décimales"
+      },
+      "Orders.IsPaidInFull": {
+        "table": "Orders",
+        "field": "IsPaidInFull",
+        "kind": "formula",
+        "rule": "Un order est considéré comme un paid in full si l'amount due est au plus 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « is paid in full » de l'order est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "vrai",
+              "when": {
+                "kind": "leaf",
+                "text": "l'amount due est au plus 0"
+              }
+            },
+            {
+              "value": "faux",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si amount due est au plus 0, alors true(), sinon false()"
+      },
+      "Orders.PaymentCount": {
+        "table": "Orders",
+        "field": "PaymentCount",
+        "kind": "rollup",
+        "rule": "Un order : payment count est le nombre de payments liés à l'order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des payments dont order est order ID"
+      },
+      "Orders.IsMultiPaymentOrder": {
+        "table": "Orders",
+        "field": "IsMultiPaymentOrder",
+        "kind": "formula",
+        "rule": "Un order est considéré comme un multi payment order si le payment count est supérieur à 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "PaymentCount",
+            "label": "payment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment count est supérieur à 1"
+      },
+      "Orders.LastPaymentDate": {
+        "table": "Orders",
+        "field": "LastPaymentDate",
+        "kind": "rollup",
+        "rule": "Un order : last payment date est le total de payment date sur les payments liés à l'order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentDate",
+            "label": "payment date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de payment date sur tous les payments dont order est order ID"
+      },
+      "Orders.PaymentStatusLabel": {
+        "table": "Orders",
+        "field": "PaymentStatusLabel",
+        "kind": "formula",
+        "rule": "Le champ « payment status label » de l'order est déterminé selon la priorité suivante :\n1. « Paid », si l'indicateur « paid in full » est activé ;\n2. « Unpaid », si le total paid est 0 ;\n3. dans tous les autres cas, « Partial ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « payment status label » de l'order est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« Paid »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « paid in full » est activé"
+              }
+            },
+            {
+              "value": "« Unpaid »",
+              "when": {
+                "kind": "leaf",
+                "text": "le total paid est 0"
+              }
+            },
+            {
+              "value": "« Partial »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is paid in full, alors \"Paid\", sinon si total paid est égal à 0, alors \"Unpaid\", sinon \"Partial\""
+      },
+      "OrderLineItems.Name": {
+        "table": "OrderLineItems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un order line item : name est calculé comme le order, suivi de « -line- », suivi de le line number avec chaque une espace remplacé par un trait d'union en minuscules.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order joint à \"-line-\") joint à line number) avec « » remplacé par « - » en minuscules"
+      },
+      "OrderLineItems.PreDiscount": {
+        "table": "OrderLineItems",
+        "field": "PreDiscount",
+        "kind": "formula",
+        "rule": "Un order line item : pre discount est calculé comme le quantity multiplié par l'unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity fois unit price"
+      },
+      "OrderLineItems.DiscountAmount": {
+        "table": "OrderLineItems",
+        "field": "DiscountAmount",
+        "kind": "formula",
+        "rule": "Un order line item : discount amount est calculé comme le pre discount multiplié par le discount percent.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountPercent",
+            "label": "discount percent"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount fois discount percent"
+      },
+      "OrderLineItems.SubTotal": {
+        "table": "OrderLineItems",
+        "field": "SubTotal",
+        "kind": "formula",
+        "rule": "Un order line item : sub total est calculé comme le pre discount moins le discount amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount moins discount amount"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un payment : name est calculé comme le order, suivi de « -pmt- », suivi de le payment number avec chaque une espace remplacé par un trait d'union en minuscules.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order joint à \"-pmt-\") joint à payment number) avec « » remplacé par « - » en minuscules"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "Un payment : order date — repris du order lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le order date du order lié"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Un payment : order number — repris du order lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le order number du order lié"
+      },
+      "Payments.OrderStatus": {
+        "table": "Payments",
+        "field": "OrderStatus",
+        "kind": "lookup",
+        "rule": "Un payment : order status — repris du order lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderStatus",
+            "label": "order status"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le order status du order lié"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "Un payment : order total — repris du order lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le order total du order lié"
+      },
+      "Payments.IsCompleted": {
+        "table": "Payments",
+        "field": "IsCompleted",
+        "kind": "formula",
+        "rule": "Un payment est considéré comme completed si le payment status est « Completed ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « is completed » du payment est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "vrai",
+              "when": {
+                "kind": "leaf",
+                "text": "le payment status est « Completed »"
+              }
+            },
+            {
+              "value": "faux",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si payment status est \"Completed\", alors true(), sinon false()"
+      },
+      "Payments.CompletedAmount": {
+        "table": "Payments",
+        "field": "CompletedAmount",
+        "kind": "formula",
+        "rule": "Le champ « completed amount » du payment est déterminé selon la priorité suivante :\n1. l'amount, si le payment status est « completed » ;\n2. dans tous les autres cas, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          },
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « completed amount » du payment est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "l'amount",
+              "when": {
+                "kind": "leaf",
+                "text": "le payment status est « completed »"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si payment status en minuscules est \"completed\", alors amount, sinon 0"
+      },
+      "Payments.OrderAmountDue": {
+        "table": "Payments",
+        "field": "OrderAmountDue",
+        "kind": "lookup",
+        "rule": "Un payment : order amount due — repris du order lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le amount due du order lié"
+      },
+      "Payments.OrderIsPaidInFull": {
+        "table": "Payments",
+        "field": "OrderIsPaidInFull",
+        "kind": "lookup",
+        "rule": "Un payment : order is paid in full est vrai lorsque le order lié est un paid in full.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le is paid in full du order lié"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "Products": "product",
+      "Orders": "order",
+      "OrderLineItems": "order line item",
+      "Payments": "payment",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "hi": {
+    "fields": {
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित में से कम से कम एक सही है: निम्नलिखित सभी सही हैं: “status is blocking” ध्वज लगा हुआ है और name “Bobby” है या “multi payment orders” ध्वज लगा हुआ है, तो customer “stopped” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Customers",
+            "field": "HasMultiPaymentOrders",
+            "label": "has multi payment orders"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "customer “stopped” माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "“status is blocking” ध्वज लगा हुआ है"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "name “Bobby” है"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“multi payment orders” ध्वज लगा हुआ है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "यदि status is blocking, तो true(), अन्यथा false() और name \"Bobby\" है या has multi payment orders"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "customer का “status is blocking” तब सत्य होता है, जब लिंक किए गए “status” का “blocking” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “status” का is blocking"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "customer का “status display name” — लिंक किए गए “status” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “status” का display name"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "customer का “status description” — लिंक किए गए “status” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “status” का description"
+      },
+      "Customers.AverageOrderValue": {
+        "table": "Customers",
+        "field": "AverageOrderValue",
+        "kind": "formula",
+        "rule": "customer का “average order value” “Unable to generate formula” के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.LifetimeMarginPercent": {
+        "table": "Customers",
+        "field": "LifetimeMarginPercent",
+        "kind": "formula",
+        "rule": "customer का “lifetime margin percent” “Unable to generate formula” के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CustomerSinceDays": {
+        "table": "Customers",
+        "field": "CustomerSinceDays",
+        "kind": "formula",
+        "rule": "Customer का “customer since days” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. created at से वर्तमान तारीख और समय तक दिनों की संख्या, यदि “created at” ध्वज लगा हुआ है;\n2. अन्य सभी स्थितियों में, कोई मान नहीं।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CreatedAt",
+            "label": "created at"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Customer का “customer since days” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "created at से वर्तमान तारीख और समय तक दिनों की संख्या",
+              "when": {
+                "kind": "leaf",
+                "text": "“created at” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "कोई मान नहीं",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि created at, तो datetime_diff(अभी, created at, \"days\"), अन्यथा blank()"
+      },
+      "Customers.DaysSinceLastOrder": {
+        "table": "Customers",
+        "field": "DaysSinceLastOrder",
+        "kind": "formula",
+        "rule": "customer का “days since last order” “Unable to generate formula” के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CountOfMultiplePaymentOrders": {
+        "table": "Customers",
+        "field": "CountOfMultiplePaymentOrders",
+        "kind": "rollup",
+        "rule": "customer का “count of multiple payment orders” customer से संबंधित “orders” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomerId",
+            "label": "customer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “orders” की संख्या, जिनका customer customer ID है"
+      },
+      "Customers.HasMultiPaymentOrders": {
+        "table": "Customers",
+        "field": "HasMultiPaymentOrders",
+        "kind": "formula",
+        "rule": "यदि count of multiple payment orders 0 से अधिक है, तो customer “multi payment orders” रखने वाला माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CountOfMultiplePaymentOrders",
+            "label": "count of multiple payment orders"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of multiple payment orders 0 से अधिक है"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "status का “name” display name छोटे अक्षरों में के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name छोटे अक्षरों में"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "product का “name” SKU, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो छोटे अक्षरों में के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "SKU",
+            "label": "SKU"
+          }
+        ],
+        "structure": null,
+        "plain": "SKU, जिसमें “ ” को “-” से बदला गया हो छोटे अक्षरों में"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "order का “name” customer, उसके बाद एक योजक चिह्न, उसके बाद order number, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो छोटे अक्षरों में के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "((customer \"-\" से जुड़ा हुआ) order number से जुड़ा हुआ), जिसमें “ ” को “-” से बदला गया हो छोटे अक्षरों में"
+      },
+      "Orders.ItemCount": {
+        "table": "Orders",
+        "field": "ItemCount",
+        "kind": "rollup",
+        "rule": "order का “item count” order से संबंधित “order line items” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “order line items” की संख्या, जिनका order order ID है"
+      },
+      "Orders.TotalQuantity": {
+        "table": "Orders",
+        "field": "TotalQuantity",
+        "kind": "rollup",
+        "rule": "order का “total quantity” order से संबंधित “order line items” पर कुल “quantity” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “order line items” पर योग quantity, जिनका order order ID है"
+      },
+      "Orders.SubTotal": {
+        "table": "Orders",
+        "field": "SubTotal",
+        "kind": "rollup",
+        "rule": "order का “sub total” order से संबंधित “order line items” पर कुल “sub total” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “order line items” पर योग sub total, जिनका order order ID है"
+      },
+      "Orders.TaxAmount": {
+        "table": "Orders",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "order का “tax amount” sub total गुणा tax rate के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total गुणा tax rate"
+      },
+      "Orders.OrderTotal": {
+        "table": "Orders",
+        "field": "OrderTotal",
+        "kind": "formula",
+        "rule": "order का “order total” sub total जोड़ tax amount के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total जोड़ tax amount"
+      },
+      "Orders.TotalPaid": {
+        "table": "Orders",
+        "field": "TotalPaid",
+        "kind": "rollup",
+        "rule": "order का “total paid” order से संबंधित “payments” पर कुल “completed amount” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "CompletedAmount",
+            "label": "completed amount"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “payments” पर योग completed amount, जिनका order order ID है"
+      },
+      "Orders.AmountDue": {
+        "table": "Orders",
+        "field": "AmountDue",
+        "kind": "formula",
+        "rule": "order का “amount due” order total घटा total paid, 2 दशमलव स्थानों तक पूर्णांकित के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": null,
+        "plain": "(order total घटा total paid), 2 दशमलव स्थानों तक पूर्णांकित"
+      },
+      "Orders.IsPaidInFull": {
+        "table": "Orders",
+        "field": "IsPaidInFull",
+        "kind": "formula",
+        "rule": "यदि amount due अधिक से अधिक 0 है, तो order “paid in full” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Order का “is paid in full” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "सत्य",
+              "when": {
+                "kind": "leaf",
+                "text": "amount due अधिक से अधिक 0 है"
+              }
+            },
+            {
+              "value": "असत्य",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि amount due अधिक से अधिक 0 है, तो true(), अन्यथा false()"
+      },
+      "Orders.PaymentCount": {
+        "table": "Orders",
+        "field": "PaymentCount",
+        "kind": "rollup",
+        "rule": "order का “payment count” order से संबंधित “payments” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “payments” की संख्या, जिनका order order ID है"
+      },
+      "Orders.IsMultiPaymentOrder": {
+        "table": "Orders",
+        "field": "IsMultiPaymentOrder",
+        "kind": "formula",
+        "rule": "यदि payment count 1 से अधिक है, तो order “multi payment order” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "PaymentCount",
+            "label": "payment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment count 1 से अधिक है"
+      },
+      "Orders.LastPaymentDate": {
+        "table": "Orders",
+        "field": "LastPaymentDate",
+        "kind": "rollup",
+        "rule": "order का “last payment date” order से संबंधित “payments” पर कुल “payment date” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentDate",
+            "label": "payment date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “payments” पर योग payment date, जिनका order order ID है"
+      },
+      "Orders.PaymentStatusLabel": {
+        "table": "Orders",
+        "field": "PaymentStatusLabel",
+        "kind": "formula",
+        "rule": "Order का “payment status label” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “Paid”, यदि “paid in full” ध्वज लगा हुआ है;\n2. “Unpaid”, यदि total paid 0 है;\n3. अन्य सभी स्थितियों में, “Partial”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Order का “payment status label” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“Paid”",
+              "when": {
+                "kind": "leaf",
+                "text": "“paid in full” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "“Unpaid”",
+              "when": {
+                "kind": "leaf",
+                "text": "total paid 0 है"
+              }
+            },
+            {
+              "value": "“Partial”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि is paid in full, तो \"Paid\", अन्यथा यदि total paid 0 के बराबर है, तो \"Unpaid\", अन्यथा \"Partial\""
+      },
+      "OrderLineItems.Name": {
+        "table": "OrderLineItems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "order line item का “name” order, उसके बाद “-line-”, उसके बाद line number, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो छोटे अक्षरों में के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order \"-line-\" से जुड़ा हुआ) line number से जुड़ा हुआ), जिसमें “ ” को “-” से बदला गया हो छोटे अक्षरों में"
+      },
+      "OrderLineItems.PreDiscount": {
+        "table": "OrderLineItems",
+        "field": "PreDiscount",
+        "kind": "formula",
+        "rule": "order line item का “pre discount” quantity गुणा unit price के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity गुणा unit price"
+      },
+      "OrderLineItems.DiscountAmount": {
+        "table": "OrderLineItems",
+        "field": "DiscountAmount",
+        "kind": "formula",
+        "rule": "order line item का “discount amount” pre discount गुणा discount percent के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountPercent",
+            "label": "discount percent"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount गुणा discount percent"
+      },
+      "OrderLineItems.SubTotal": {
+        "table": "OrderLineItems",
+        "field": "SubTotal",
+        "kind": "formula",
+        "rule": "order line item का “sub total” pre discount घटा discount amount के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount घटा discount amount"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "payment का “name” order, उसके बाद “-pmt-”, उसके बाद payment number, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो छोटे अक्षरों में के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order \"-pmt-\" से जुड़ा हुआ) payment number से जुड़ा हुआ), जिसमें “ ” को “-” से बदला गया हो छोटे अक्षरों में"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "payment का “order date” — लिंक किए गए “order” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “order” का order date"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "payment का “order number” — लिंक किए गए “order” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “order” का order number"
+      },
+      "Payments.OrderStatus": {
+        "table": "Payments",
+        "field": "OrderStatus",
+        "kind": "lookup",
+        "rule": "payment का “order status” — लिंक किए गए “order” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderStatus",
+            "label": "order status"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “order” का order status"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "payment का “order total” — लिंक किए गए “order” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “order” का order total"
+      },
+      "Payments.IsCompleted": {
+        "table": "Payments",
+        "field": "IsCompleted",
+        "kind": "formula",
+        "rule": "यदि payment status “Completed” है, तो payment “completed” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Payment का “is completed” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "सत्य",
+              "when": {
+                "kind": "leaf",
+                "text": "payment status “Completed” है"
+              }
+            },
+            {
+              "value": "असत्य",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि payment status \"Completed\" है, तो true(), अन्यथा false()"
+      },
+      "Payments.CompletedAmount": {
+        "table": "Payments",
+        "field": "CompletedAmount",
+        "kind": "formula",
+        "rule": "Payment का “completed amount” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. amount, यदि payment status “completed” है;\n2. अन्य सभी स्थितियों में, 0।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          },
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Payment का “completed amount” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "amount",
+              "when": {
+                "kind": "leaf",
+                "text": "payment status “completed” है"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि payment status छोटे अक्षरों में \"completed\" है, तो amount, अन्यथा 0"
+      },
+      "Payments.OrderAmountDue": {
+        "table": "Payments",
+        "field": "OrderAmountDue",
+        "kind": "lookup",
+        "rule": "payment का “order amount due” — लिंक किए गए “order” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “order” का amount due"
+      },
+      "Payments.OrderIsPaidInFull": {
+        "table": "Payments",
+        "field": "OrderIsPaidInFull",
+        "kind": "lookup",
+        "rule": "payment का “order is paid in full” तब सत्य होता है, जब लिंक किए गए “order” का “paid in full” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “order” का is paid in full"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "Products": "product",
+      "Orders": "order",
+      "OrderLineItems": "order line item",
+      "Payments": "payment",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "id": {
+    "fields": {
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "Setiap customer dianggap “stopped” jika paling sedikit satu dari kondisi berikut terpenuhi: semua kondisi berikut terpenuhi: penanda “status is blocking” aktif dan name adalah “Bobby” atau penanda “multi payment orders” aktif.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Customers",
+            "field": "HasMultiPaymentOrders",
+            "label": "has multi payment orders"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap customer dianggap “stopped” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "penanda “status is blocking” aktif"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "name adalah “Bobby”"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "penanda “multi payment orders” aktif"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Jika status is blocking maka true(), selain itu false() dan name adalah \"Bobby\" atau has multi payment orders"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "Untuk setiap customer, status is blocking bernilai benar jika status yang tertaut pada customer tersebut tergolong “blocking”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is blocking dari status yang tertaut"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "Untuk setiap customer, status display name diambil dari status yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name dari status yang tertaut"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "Untuk setiap customer, status description diambil dari status yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Description dari status yang tertaut"
+      },
+      "Customers.AverageOrderValue": {
+        "table": "Customers",
+        "field": "AverageOrderValue",
+        "kind": "formula",
+        "rule": "Untuk setiap customer, average order value dihitung sebagai “Unable to generate formula”.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.LifetimeMarginPercent": {
+        "table": "Customers",
+        "field": "LifetimeMarginPercent",
+        "kind": "formula",
+        "rule": "Untuk setiap customer, lifetime margin percent dihitung sebagai “Unable to generate formula”.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CustomerSinceDays": {
+        "table": "Customers",
+        "field": "CustomerSinceDays",
+        "kind": "formula",
+        "rule": "Untuk setiap customer, customer since days ditentukan menurut urutan prioritas berikut:\n1. jumlah hari dari created at hingga tanggal dan waktu saat ini, jika penanda “created at” aktif;\n2. dalam semua kasus lainnya, nilai kosong.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CreatedAt",
+            "label": "created at"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap customer, customer since days ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "jumlah hari dari created at hingga tanggal dan waktu saat ini",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “created at” aktif"
+              }
+            },
+            {
+              "value": "nilai kosong",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika created at maka datetime_diff(saat ini, created at, \"days\"), selain itu blank()"
+      },
+      "Customers.DaysSinceLastOrder": {
+        "table": "Customers",
+        "field": "DaysSinceLastOrder",
+        "kind": "formula",
+        "rule": "Untuk setiap customer, days since last order dihitung sebagai “Unable to generate formula”.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CountOfMultiplePaymentOrders": {
+        "table": "Customers",
+        "field": "CountOfMultiplePaymentOrders",
+        "kind": "rollup",
+        "rule": "Untuk setiap customer, count of multiple payment orders adalah jumlah orders yang terkait dengan customer tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomerId",
+            "label": "customer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah orders dengan syarat customer adalah customer ID"
+      },
+      "Customers.HasMultiPaymentOrders": {
+        "table": "Customers",
+        "field": "HasMultiPaymentOrders",
+        "kind": "formula",
+        "rule": "Setiap customer dianggap memiliki “multi payment orders” jika count of multiple payment orders lebih dari 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CountOfMultiplePaymentOrders",
+            "label": "count of multiple payment orders"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of multiple payment orders lebih dari 0"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap status, name dihitung sebagai display name dalam huruf kecil.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name dalam huruf kecil"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap product, name dihitung sebagai SKU dengan setiap spasi diganti dengan tanda hubung dalam huruf kecil.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "SKU",
+            "label": "SKU"
+          }
+        ],
+        "structure": null,
+        "plain": "SKU dengan “ ” diganti dengan “-” dalam huruf kecil"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap order, name dihitung sebagai customer, diikuti tanda hubung, diikuti order number dengan setiap spasi diganti dengan tanda hubung dalam huruf kecil.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "((customer digabung dengan \"-\") digabung dengan order number) dengan “ ” diganti dengan “-” dalam huruf kecil"
+      },
+      "Orders.ItemCount": {
+        "table": "Orders",
+        "field": "ItemCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap order, item count adalah jumlah order line items yang terkait dengan order tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah order line items dengan syarat order adalah order ID"
+      },
+      "Orders.TotalQuantity": {
+        "table": "Orders",
+        "field": "TotalQuantity",
+        "kind": "rollup",
+        "rule": "Untuk setiap order, total quantity adalah nilai total quantity pada seluruh order line items yang terkait dengan order tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total quantity pada semua order line items dengan syarat order adalah order ID"
+      },
+      "Orders.SubTotal": {
+        "table": "Orders",
+        "field": "SubTotal",
+        "kind": "rollup",
+        "rule": "Untuk setiap order, sub total adalah nilai total sub total pada seluruh order line items yang terkait dengan order tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total sub total pada semua order line items dengan syarat order adalah order ID"
+      },
+      "Orders.TaxAmount": {
+        "table": "Orders",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "Untuk setiap order, tax amount dihitung sebagai sub total dikali tax rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total dikali tax rate"
+      },
+      "Orders.OrderTotal": {
+        "table": "Orders",
+        "field": "OrderTotal",
+        "kind": "formula",
+        "rule": "Untuk setiap order, order total dihitung sebagai sub total ditambah tax amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total ditambah tax amount"
+      },
+      "Orders.TotalPaid": {
+        "table": "Orders",
+        "field": "TotalPaid",
+        "kind": "rollup",
+        "rule": "Untuk setiap order, total paid adalah nilai total completed amount pada seluruh payments yang terkait dengan order tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "CompletedAmount",
+            "label": "completed amount"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total completed amount pada semua payments dengan syarat order adalah order ID"
+      },
+      "Orders.AmountDue": {
+        "table": "Orders",
+        "field": "AmountDue",
+        "kind": "formula",
+        "rule": "Untuk setiap order, amount due dihitung sebagai order total dikurangi total paid dibulatkan hingga 2 angka di belakang koma.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": null,
+        "plain": "(order total dikurangi total paid) dibulatkan hingga 2 angka di belakang koma"
+      },
+      "Orders.IsPaidInFull": {
+        "table": "Orders",
+        "field": "IsPaidInFull",
+        "kind": "formula",
+        "rule": "Setiap order dianggap “paid in full” jika amount due tidak lebih dari 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap order, is paid in full ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "benar",
+              "when": {
+                "kind": "leaf",
+                "text": "amount due tidak lebih dari 0"
+              }
+            },
+            {
+              "value": "salah",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika amount due tidak lebih dari 0 maka true(), selain itu false()"
+      },
+      "Orders.PaymentCount": {
+        "table": "Orders",
+        "field": "PaymentCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap order, payment count adalah jumlah payments yang terkait dengan order tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah payments dengan syarat order adalah order ID"
+      },
+      "Orders.IsMultiPaymentOrder": {
+        "table": "Orders",
+        "field": "IsMultiPaymentOrder",
+        "kind": "formula",
+        "rule": "Setiap order dianggap “multi payment order” jika payment count lebih dari 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "PaymentCount",
+            "label": "payment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment count lebih dari 1"
+      },
+      "Orders.LastPaymentDate": {
+        "table": "Orders",
+        "field": "LastPaymentDate",
+        "kind": "rollup",
+        "rule": "Untuk setiap order, last payment date adalah nilai total payment date pada seluruh payments yang terkait dengan order tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentDate",
+            "label": "payment date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total payment date pada semua payments dengan syarat order adalah order ID"
+      },
+      "Orders.PaymentStatusLabel": {
+        "table": "Orders",
+        "field": "PaymentStatusLabel",
+        "kind": "formula",
+        "rule": "Untuk setiap order, payment status label ditentukan menurut urutan prioritas berikut:\n1. “Paid”, jika penanda “paid in full” aktif;\n2. “Unpaid”, jika total paid adalah 0;\n3. dalam semua kasus lainnya, “Partial”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap order, payment status label ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“Paid”",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “paid in full” aktif"
+              }
+            },
+            {
+              "value": "“Unpaid”",
+              "when": {
+                "kind": "leaf",
+                "text": "total paid adalah 0"
+              }
+            },
+            {
+              "value": "“Partial”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika is paid in full maka \"Paid\", selain itu jika total paid sama dengan 0 maka \"Unpaid\", selain itu \"Partial\""
+      },
+      "OrderLineItems.Name": {
+        "table": "OrderLineItems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap order line item, name dihitung sebagai order, diikuti “-line-”, diikuti line number dengan setiap spasi diganti dengan tanda hubung dalam huruf kecil.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order digabung dengan \"-line-\") digabung dengan line number) dengan “ ” diganti dengan “-” dalam huruf kecil"
+      },
+      "OrderLineItems.PreDiscount": {
+        "table": "OrderLineItems",
+        "field": "PreDiscount",
+        "kind": "formula",
+        "rule": "Untuk setiap order line item, pre discount dihitung sebagai quantity dikali unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity dikali unit price"
+      },
+      "OrderLineItems.DiscountAmount": {
+        "table": "OrderLineItems",
+        "field": "DiscountAmount",
+        "kind": "formula",
+        "rule": "Untuk setiap order line item, discount amount dihitung sebagai pre discount dikali discount percent.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountPercent",
+            "label": "discount percent"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount dikali discount percent"
+      },
+      "OrderLineItems.SubTotal": {
+        "table": "OrderLineItems",
+        "field": "SubTotal",
+        "kind": "formula",
+        "rule": "Untuk setiap order line item, sub total dihitung sebagai pre discount dikurangi discount amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount dikurangi discount amount"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap payment, name dihitung sebagai order, diikuti “-pmt-”, diikuti payment number dengan setiap spasi diganti dengan tanda hubung dalam huruf kecil.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order digabung dengan \"-pmt-\") digabung dengan payment number) dengan “ ” diganti dengan “-” dalam huruf kecil"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "Untuk setiap payment, order date diambil dari order yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order date dari order yang tertaut"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Untuk setiap payment, order number diambil dari order yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number dari order yang tertaut"
+      },
+      "Payments.OrderStatus": {
+        "table": "Payments",
+        "field": "OrderStatus",
+        "kind": "lookup",
+        "rule": "Untuk setiap payment, order status diambil dari order yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderStatus",
+            "label": "order status"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order status dari order yang tertaut"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "Untuk setiap payment, order total diambil dari order yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order total dari order yang tertaut"
+      },
+      "Payments.IsCompleted": {
+        "table": "Payments",
+        "field": "IsCompleted",
+        "kind": "formula",
+        "rule": "Setiap payment dianggap “completed” jika payment status adalah “Completed”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap payment, is completed ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "benar",
+              "when": {
+                "kind": "leaf",
+                "text": "payment status adalah “Completed”"
+              }
+            },
+            {
+              "value": "salah",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika payment status adalah \"Completed\" maka true(), selain itu false()"
+      },
+      "Payments.CompletedAmount": {
+        "table": "Payments",
+        "field": "CompletedAmount",
+        "kind": "formula",
+        "rule": "Untuk setiap payment, completed amount ditentukan menurut urutan prioritas berikut:\n1. amount, jika payment status adalah “completed”;\n2. dalam semua kasus lainnya, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          },
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap payment, completed amount ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "amount",
+              "when": {
+                "kind": "leaf",
+                "text": "payment status adalah “completed”"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika payment status dalam huruf kecil adalah \"completed\" maka amount, selain itu 0"
+      },
+      "Payments.OrderAmountDue": {
+        "table": "Payments",
+        "field": "OrderAmountDue",
+        "kind": "lookup",
+        "rule": "Untuk setiap payment, order amount due diambil dari order yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Amount due dari order yang tertaut"
+      },
+      "Payments.OrderIsPaidInFull": {
+        "table": "Payments",
+        "field": "OrderIsPaidInFull",
+        "kind": "lookup",
+        "rule": "Untuk setiap payment, order is paid in full bernilai benar jika order yang tertaut pada payment tersebut tergolong “paid in full”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is paid in full dari order yang tertaut"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "Products": "product",
+      "Orders": "order",
+      "OrderLineItems": "order line item",
+      "Payments": "payment",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "it": {
+    "fields": {
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "Un customer è considerato stopped se vale almeno una delle seguenti: vale tutto quanto segue: l'indicatore “status is blocking” è attivo e il name è «Bobby» o l'indicatore “multi payment orders” è attivo.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Customers",
+            "field": "HasMultiPaymentOrders",
+            "label": "has multi payment orders"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un customer è considerato stopped se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "l'indicatore “status is blocking” è attivo"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "il name è «Bobby»"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “multi payment orders” è attivo"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Se status is blocking, allora true(), altrimenti false() e name è \"Bobby\" o has multi payment orders"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "Un customer: status is blocking è vero quando il status collegato è blocking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il is blocking del status collegato"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "Un customer: status display name — ripreso dal status collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il display name del status collegato"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "Un customer: status description — ripreso dal status collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il description del status collegato"
+      },
+      "Customers.AverageOrderValue": {
+        "table": "Customers",
+        "field": "AverageOrderValue",
+        "kind": "formula",
+        "rule": "Un customer: average order value è calcolato come «Unable to generate formula».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.LifetimeMarginPercent": {
+        "table": "Customers",
+        "field": "LifetimeMarginPercent",
+        "kind": "formula",
+        "rule": "Un customer: lifetime margin percent è calcolato come «Unable to generate formula».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CustomerSinceDays": {
+        "table": "Customers",
+        "field": "CustomerSinceDays",
+        "kind": "formula",
+        "rule": "Il campo “customer since days” del customer è determinato secondo la seguente priorità:\n1. il numero di giorni da il created at a la data e l'ora correnti, se l'indicatore “created at” è attivo;\n2. in tutti gli altri casi, nessun valore.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CreatedAt",
+            "label": "created at"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “customer since days” del customer è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "il numero di giorni da il created at a la data e l'ora correnti",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “created at” è attivo"
+              }
+            },
+            {
+              "value": "nessun valore",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se created at, allora datetime_diff(adesso, created at, \"days\"), altrimenti blank()"
+      },
+      "Customers.DaysSinceLastOrder": {
+        "table": "Customers",
+        "field": "DaysSinceLastOrder",
+        "kind": "formula",
+        "rule": "Un customer: days since last order è calcolato come «Unable to generate formula».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CountOfMultiplePaymentOrders": {
+        "table": "Customers",
+        "field": "CountOfMultiplePaymentOrders",
+        "kind": "rollup",
+        "rule": "Un customer: count of multiple payment orders è il numero di orders collegati a il customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomerId",
+            "label": "customer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei orders il cui customer è customer ID"
+      },
+      "Customers.HasMultiPaymentOrders": {
+        "table": "Customers",
+        "field": "HasMultiPaymentOrders",
+        "kind": "formula",
+        "rule": "Un customer è considerato come dotato di un multi payment orders se il count of multiple payment orders è maggiore di 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CountOfMultiplePaymentOrders",
+            "label": "count of multiple payment orders"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of multiple payment orders è maggiore di 0"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un status: name è calcolato come il display name in minuscolo.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name in minuscolo"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un product: name è calcolato come il SKU con ogni uno spazio sostituito da un trattino in minuscolo.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "SKU",
+            "label": "SKU"
+          }
+        ],
+        "structure": null,
+        "plain": "SKU con « » sostituito da «-» in minuscolo"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un order: name è calcolato come il customer, seguito da un trattino, seguito da l'order number con ogni uno spazio sostituito da un trattino in minuscolo.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "((customer unito a \"-\") unito a order number) con « » sostituito da «-» in minuscolo"
+      },
+      "Orders.ItemCount": {
+        "table": "Orders",
+        "field": "ItemCount",
+        "kind": "rollup",
+        "rule": "Un order: item count è il numero di order line items collegati a l'order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei order line items il cui order è order ID"
+      },
+      "Orders.TotalQuantity": {
+        "table": "Orders",
+        "field": "TotalQuantity",
+        "kind": "rollup",
+        "rule": "Un order: total quantity è il totale di quantity tra i order line items collegati a l'order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di quantity su tutti i order line items il cui order è order ID"
+      },
+      "Orders.SubTotal": {
+        "table": "Orders",
+        "field": "SubTotal",
+        "kind": "rollup",
+        "rule": "Un order: sub total è il totale di sub total tra i order line items collegati a l'order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di sub total su tutti i order line items il cui order è order ID"
+      },
+      "Orders.TaxAmount": {
+        "table": "Orders",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "Un order: tax amount è calcolato come il sub total per il tax rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total per tax rate"
+      },
+      "Orders.OrderTotal": {
+        "table": "Orders",
+        "field": "OrderTotal",
+        "kind": "formula",
+        "rule": "Un order: order total è calcolato come il sub total più il tax amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total più tax amount"
+      },
+      "Orders.TotalPaid": {
+        "table": "Orders",
+        "field": "TotalPaid",
+        "kind": "rollup",
+        "rule": "Un order: total paid è il totale di completed amount tra i payments collegati a l'order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "CompletedAmount",
+            "label": "completed amount"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di completed amount su tutti i payments il cui order è order ID"
+      },
+      "Orders.AmountDue": {
+        "table": "Orders",
+        "field": "AmountDue",
+        "kind": "formula",
+        "rule": "Un order: amount due è calcolato come l'order total meno il total paid arrotondato a 2 decimale/i.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": null,
+        "plain": "(order total meno total paid) arrotondato a 2 decimali"
+      },
+      "Orders.IsPaidInFull": {
+        "table": "Orders",
+        "field": "IsPaidInFull",
+        "kind": "formula",
+        "rule": "Un order è considerato un paid in full se l'amount due è al massimo 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “is paid in full” dell'order è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "vero",
+              "when": {
+                "kind": "leaf",
+                "text": "l'amount due è al massimo 0"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se amount due è al massimo 0, allora true(), altrimenti false()"
+      },
+      "Orders.PaymentCount": {
+        "table": "Orders",
+        "field": "PaymentCount",
+        "kind": "rollup",
+        "rule": "Un order: payment count è il numero di payments collegati a l'order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei payments il cui order è order ID"
+      },
+      "Orders.IsMultiPaymentOrder": {
+        "table": "Orders",
+        "field": "IsMultiPaymentOrder",
+        "kind": "formula",
+        "rule": "Un order è considerato un multi payment order se il payment count è maggiore di 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "PaymentCount",
+            "label": "payment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment count è maggiore di 1"
+      },
+      "Orders.LastPaymentDate": {
+        "table": "Orders",
+        "field": "LastPaymentDate",
+        "kind": "rollup",
+        "rule": "Un order: last payment date è il totale di payment date tra i payments collegati a l'order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentDate",
+            "label": "payment date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di payment date su tutti i payments il cui order è order ID"
+      },
+      "Orders.PaymentStatusLabel": {
+        "table": "Orders",
+        "field": "PaymentStatusLabel",
+        "kind": "formula",
+        "rule": "Il campo “payment status label” dell'order è determinato secondo la seguente priorità:\n1. «Paid», se l'indicatore “paid in full” è attivo;\n2. «Unpaid», se il total paid è 0;\n3. in tutti gli altri casi, «Partial».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “payment status label” dell'order è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«Paid»",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “paid in full” è attivo"
+              }
+            },
+            {
+              "value": "«Unpaid»",
+              "when": {
+                "kind": "leaf",
+                "text": "il total paid è 0"
+              }
+            },
+            {
+              "value": "«Partial»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is paid in full, allora \"Paid\", altrimenti se total paid è uguale a 0, allora \"Unpaid\", altrimenti \"Partial\""
+      },
+      "OrderLineItems.Name": {
+        "table": "OrderLineItems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un order line item: name è calcolato come il order, seguito da «-line-», seguito da il line number con ogni uno spazio sostituito da un trattino in minuscolo.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order unito a \"-line-\") unito a line number) con « » sostituito da «-» in minuscolo"
+      },
+      "OrderLineItems.PreDiscount": {
+        "table": "OrderLineItems",
+        "field": "PreDiscount",
+        "kind": "formula",
+        "rule": "Un order line item: pre discount è calcolato come il quantity per l'unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity per unit price"
+      },
+      "OrderLineItems.DiscountAmount": {
+        "table": "OrderLineItems",
+        "field": "DiscountAmount",
+        "kind": "formula",
+        "rule": "Un order line item: discount amount è calcolato come il pre discount per il discount percent.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountPercent",
+            "label": "discount percent"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount per discount percent"
+      },
+      "OrderLineItems.SubTotal": {
+        "table": "OrderLineItems",
+        "field": "SubTotal",
+        "kind": "formula",
+        "rule": "Un order line item: sub total è calcolato come il pre discount meno il discount amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount meno discount amount"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un payment: name è calcolato come il order, seguito da «-pmt-», seguito da il payment number con ogni uno spazio sostituito da un trattino in minuscolo.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order unito a \"-pmt-\") unito a payment number) con « » sostituito da «-» in minuscolo"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "Un payment: order date — ripreso dal order collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il order date del order collegato"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Un payment: order number — ripreso dal order collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il order number del order collegato"
+      },
+      "Payments.OrderStatus": {
+        "table": "Payments",
+        "field": "OrderStatus",
+        "kind": "lookup",
+        "rule": "Un payment: order status — ripreso dal order collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderStatus",
+            "label": "order status"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il order status del order collegato"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "Un payment: order total — ripreso dal order collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il order total del order collegato"
+      },
+      "Payments.IsCompleted": {
+        "table": "Payments",
+        "field": "IsCompleted",
+        "kind": "formula",
+        "rule": "Un payment è considerato completed se il payment status è «Completed».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “is completed” del payment è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "vero",
+              "when": {
+                "kind": "leaf",
+                "text": "il payment status è «Completed»"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se payment status è \"Completed\", allora true(), altrimenti false()"
+      },
+      "Payments.CompletedAmount": {
+        "table": "Payments",
+        "field": "CompletedAmount",
+        "kind": "formula",
+        "rule": "Il campo “completed amount” del payment è determinato secondo la seguente priorità:\n1. l'amount, se il payment status è «completed»;\n2. in tutti gli altri casi, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          },
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “completed amount” del payment è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "l'amount",
+              "when": {
+                "kind": "leaf",
+                "text": "il payment status è «completed»"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se payment status in minuscolo è \"completed\", allora amount, altrimenti 0"
+      },
+      "Payments.OrderAmountDue": {
+        "table": "Payments",
+        "field": "OrderAmountDue",
+        "kind": "lookup",
+        "rule": "Un payment: order amount due — ripreso dal order collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il amount due del order collegato"
+      },
+      "Payments.OrderIsPaidInFull": {
+        "table": "Payments",
+        "field": "OrderIsPaidInFull",
+        "kind": "lookup",
+        "rule": "Un payment: order is paid in full è vero quando il order collegato è un paid in full.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il is paid in full del order collegato"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "Products": "product",
+      "Orders": "order",
+      "OrderLineItems": "order line item",
+      "Payments": "payment",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "ja": {
+    "fields": {
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "次のいずれかが成り立つ: 次のすべてが成り立つ: フラグ「status is blocking」が設定されているおよびname が 「Bobby」 であるまたはフラグ「multi payment orders」が設定されている場合、customerは「Stopped」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Customers",
+            "field": "HasMultiPaymentOrders",
+            "label": "has multi payment orders"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、customerは「Stopped」と見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "フラグ「status is blocking」が設定されている"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "name が 「Bobby」 である"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「multi payment orders」が設定されている"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Status is blockingなら true()、そうでなければ false()およびname は \"Bobby\"またはhas multi payment orders"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "customerの「status is blocking」は、リンクされた「status」が「Blocking」であるとき真になります。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「status」の is blocking"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "customerの「status display name」— リンクされた「status」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「status」の display name"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "customerの「status description」— リンクされた「status」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「status」の description"
+      },
+      "Customers.AverageOrderValue": {
+        "table": "Customers",
+        "field": "AverageOrderValue",
+        "kind": "formula",
+        "rule": "customerの「average order value」は 「Unable to generate formula」 として計算されます。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.LifetimeMarginPercent": {
+        "table": "Customers",
+        "field": "LifetimeMarginPercent",
+        "kind": "formula",
+        "rule": "customerの「lifetime margin percent」は 「Unable to generate formula」 として計算されます。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CustomerSinceDays": {
+        "table": "Customers",
+        "field": "CustomerSinceDays",
+        "kind": "formula",
+        "rule": "Customerの「customer since days」は、次の優先順位で決まります:\n1. フラグ「created at」が設定されている場合は created at から 現在の日時 までの日数;\n2. それ以外の場合は 値なし。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CreatedAt",
+            "label": "created at"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Customerの「customer since days」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "created at から 現在の日時 までの日数",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「created at」が設定されている"
+              }
+            },
+            {
+              "value": "値なし",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Created atなら datetime_diff(現在, created at, \"days\")、そうでなければ blank()"
+      },
+      "Customers.DaysSinceLastOrder": {
+        "table": "Customers",
+        "field": "DaysSinceLastOrder",
+        "kind": "formula",
+        "rule": "customerの「days since last order」は 「Unable to generate formula」 として計算されます。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CountOfMultiplePaymentOrders": {
+        "table": "Customers",
+        "field": "CountOfMultiplePaymentOrders",
+        "kind": "rollup",
+        "rule": "customerの「count of multiple payment orders」は customerに関連する「orders」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomerId",
+            "label": "customer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Customer が customer ID である「orders」の件数"
+      },
+      "Customers.HasMultiPaymentOrders": {
+        "table": "Customers",
+        "field": "HasMultiPaymentOrders",
+        "kind": "formula",
+        "rule": "count of multiple payment orders が 0 より大きい場合、customerは「Multi Payment Orders」を持つと見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CountOfMultiplePaymentOrders",
+            "label": "count of multiple payment orders"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of multiple payment orders が 0 より大きい"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "statusの「name」は display name を小文字にしたもの として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name を小文字にしたもの"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "productの「name」は SKU の 空白 1 つ をすべて ハイフン に置き換えたもの を小文字にしたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "SKU",
+            "label": "SKU"
+          }
+        ],
+        "structure": null,
+        "plain": "SKU の「 」を「-」に置き換えたもの を小文字にしたもの"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "orderの「name」は customer、続いて ハイフン、続いて order number の 空白 1 つ をすべて ハイフン に置き換えたもの を小文字にしたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "((customer と \"-\" を連結) と order number を連結) の「 」を「-」に置き換えたもの を小文字にしたもの"
+      },
+      "Orders.ItemCount": {
+        "table": "Orders",
+        "field": "ItemCount",
+        "kind": "rollup",
+        "rule": "orderの「item count」は orderに関連する「order line items」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order が order ID である「order line items」の件数"
+      },
+      "Orders.TotalQuantity": {
+        "table": "Orders",
+        "field": "TotalQuantity",
+        "kind": "rollup",
+        "rule": "orderの「total quantity」は orderに関連する「order line items」全体での「quantity」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order が order ID であるすべての「order line items」にわたる quantity の合計"
+      },
+      "Orders.SubTotal": {
+        "table": "Orders",
+        "field": "SubTotal",
+        "kind": "rollup",
+        "rule": "orderの「sub total」は orderに関連する「order line items」全体での「sub total」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order が order ID であるすべての「order line items」にわたる sub total の合計"
+      },
+      "Orders.TaxAmount": {
+        "table": "Orders",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "orderの「tax amount」は sub total かける tax rate として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total かける tax rate"
+      },
+      "Orders.OrderTotal": {
+        "table": "Orders",
+        "field": "OrderTotal",
+        "kind": "formula",
+        "rule": "orderの「order total」は sub total たす tax amount として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total たす tax amount"
+      },
+      "Orders.TotalPaid": {
+        "table": "Orders",
+        "field": "TotalPaid",
+        "kind": "rollup",
+        "rule": "orderの「total paid」は orderに関連する「payments」全体での「completed amount」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "CompletedAmount",
+            "label": "completed amount"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order が order ID であるすべての「payments」にわたる completed amount の合計"
+      },
+      "Orders.AmountDue": {
+        "table": "Orders",
+        "field": "AmountDue",
+        "kind": "formula",
+        "rule": "orderの「amount due」は order total ひく total paid を小数第 2 位に丸めたもの として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": null,
+        "plain": "(order total ひく total paid) を小数第 2 位に丸めたもの"
+      },
+      "Orders.IsPaidInFull": {
+        "table": "Orders",
+        "field": "IsPaidInFull",
+        "kind": "formula",
+        "rule": "amount due が 0 以下である場合、orderは「Paid in Full」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Orderの「is paid in full」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "amount due が 0 以下である"
+              }
+            },
+            {
+              "value": "偽",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Amount due が 0 以下なら true()、そうでなければ false()"
+      },
+      "Orders.PaymentCount": {
+        "table": "Orders",
+        "field": "PaymentCount",
+        "kind": "rollup",
+        "rule": "orderの「payment count」は orderに関連する「payments」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order が order ID である「payments」の件数"
+      },
+      "Orders.IsMultiPaymentOrder": {
+        "table": "Orders",
+        "field": "IsMultiPaymentOrder",
+        "kind": "formula",
+        "rule": "payment count が 1 より大きい場合、orderは「Multi Payment Order」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "PaymentCount",
+            "label": "payment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment count が 1 より大きい"
+      },
+      "Orders.LastPaymentDate": {
+        "table": "Orders",
+        "field": "LastPaymentDate",
+        "kind": "rollup",
+        "rule": "orderの「last payment date」は orderに関連する「payments」全体での「payment date」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentDate",
+            "label": "payment date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order が order ID であるすべての「payments」にわたる payment date の合計"
+      },
+      "Orders.PaymentStatusLabel": {
+        "table": "Orders",
+        "field": "PaymentStatusLabel",
+        "kind": "formula",
+        "rule": "Orderの「payment status label」は、次の優先順位で決まります:\n1. フラグ「paid in full」が設定されている場合は 「Paid」;\n2. total paid が 0 である場合は 「Unpaid」;\n3. それ以外の場合は 「Partial」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Orderの「payment status label」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「Paid」",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「paid in full」が設定されている"
+              }
+            },
+            {
+              "value": "「Unpaid」",
+              "when": {
+                "kind": "leaf",
+                "text": "total paid が 0 である"
+              }
+            },
+            {
+              "value": "「Partial」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is paid in fullなら \"Paid\"、そうでなければ total paid が 0 と等しいなら \"Unpaid\"、そうでなければ \"Partial\""
+      },
+      "OrderLineItems.Name": {
+        "table": "OrderLineItems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "order line itemの「name」は order、続いて 「-line-」、続いて line number の 空白 1 つ をすべて ハイフン に置き換えたもの を小文字にしたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order と \"-line-\" を連結) と line number を連結) の「 」を「-」に置き換えたもの を小文字にしたもの"
+      },
+      "OrderLineItems.PreDiscount": {
+        "table": "OrderLineItems",
+        "field": "PreDiscount",
+        "kind": "formula",
+        "rule": "order line itemの「pre discount」は quantity かける unit price として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity かける unit price"
+      },
+      "OrderLineItems.DiscountAmount": {
+        "table": "OrderLineItems",
+        "field": "DiscountAmount",
+        "kind": "formula",
+        "rule": "order line itemの「discount amount」は pre discount かける discount percent として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountPercent",
+            "label": "discount percent"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount かける discount percent"
+      },
+      "OrderLineItems.SubTotal": {
+        "table": "OrderLineItems",
+        "field": "SubTotal",
+        "kind": "formula",
+        "rule": "order line itemの「sub total」は pre discount ひく discount amount として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount ひく discount amount"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "paymentの「name」は order、続いて 「-pmt-」、続いて payment number の 空白 1 つ をすべて ハイフン に置き換えたもの を小文字にしたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order と \"-pmt-\" を連結) と payment number を連結) の「 」を「-」に置き換えたもの を小文字にしたもの"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "paymentの「order date」— リンクされた「order」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「order」の order date"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "paymentの「order number」— リンクされた「order」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「order」の order number"
+      },
+      "Payments.OrderStatus": {
+        "table": "Payments",
+        "field": "OrderStatus",
+        "kind": "lookup",
+        "rule": "paymentの「order status」— リンクされた「order」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderStatus",
+            "label": "order status"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「order」の order status"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "paymentの「order total」— リンクされた「order」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「order」の order total"
+      },
+      "Payments.IsCompleted": {
+        "table": "Payments",
+        "field": "IsCompleted",
+        "kind": "formula",
+        "rule": "payment status が 「Completed」 である場合、paymentは「Completed」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Paymentの「is completed」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "payment status が 「Completed」 である"
+              }
+            },
+            {
+              "value": "偽",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Payment status は \"Completed\"なら true()、そうでなければ false()"
+      },
+      "Payments.CompletedAmount": {
+        "table": "Payments",
+        "field": "CompletedAmount",
+        "kind": "formula",
+        "rule": "Paymentの「completed amount」は、次の優先順位で決まります:\n1. payment status が 「completed」 である場合は amount;\n2. それ以外の場合は 0。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          },
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Paymentの「completed amount」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "amount",
+              "when": {
+                "kind": "leaf",
+                "text": "payment status が 「completed」 である"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Payment status を小文字にしたもの は \"completed\"なら amount、そうでなければ 0"
+      },
+      "Payments.OrderAmountDue": {
+        "table": "Payments",
+        "field": "OrderAmountDue",
+        "kind": "lookup",
+        "rule": "paymentの「order amount due」— リンクされた「order」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「order」の amount due"
+      },
+      "Payments.OrderIsPaidInFull": {
+        "table": "Payments",
+        "field": "OrderIsPaidInFull",
+        "kind": "lookup",
+        "rule": "paymentの「order is paid in full」は、リンクされた「order」が「Paid in Full」であるとき真になります。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「order」の is paid in full"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "Products": "product",
+      "Orders": "order",
+      "OrderLineItems": "order line item",
+      "Payments": "payment",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "ko": {
+    "fields": {
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "다음 중 하나 이상에 해당하는 경우(다음 모두에 해당하는 경우(‘status is blocking’ 플래그가 설정된 경우 및 ‘name’ 값이 “Bobby”인 경우) 또는 ‘multi payment orders’ 플래그가 설정된 경우), ‘customer’ 레코드는 ‘stopped’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Customers",
+            "field": "HasMultiPaymentOrders",
+            "label": "has multi payment orders"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘customer’ 레코드는 ‘stopped’에 해당하는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "‘status is blocking’ 플래그가 설정된 경우"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "‘name’ 값이 “Bobby”인 경우"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘multi payment orders’ 플래그가 설정된 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "조건(status is blocking)이 성립하면 true(), 그렇지 않으면 false() 및 name 값이 \"Bobby\"임 또는 has multi payment orders"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "‘customer’ 레코드의 ‘status is blocking’ 값은 연결된 ‘status’ 레코드가 ‘blocking’에 해당하는 경우에 참입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 status 레코드의 is blocking"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "‘customer’ 레코드의 ‘status display name’ 값은 연결된 ‘status’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 status 레코드의 display name"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "‘customer’ 레코드의 ‘status description’ 값은 연결된 ‘status’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 status 레코드의 description"
+      },
+      "Customers.AverageOrderValue": {
+        "table": "Customers",
+        "field": "AverageOrderValue",
+        "kind": "formula",
+        "rule": "‘customer’ 레코드의 ‘average order value’ 값은 다음과 같이 계산됩니다: “Unable to generate formula”.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.LifetimeMarginPercent": {
+        "table": "Customers",
+        "field": "LifetimeMarginPercent",
+        "kind": "formula",
+        "rule": "‘customer’ 레코드의 ‘lifetime margin percent’ 값은 다음과 같이 계산됩니다: “Unable to generate formula”.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CustomerSinceDays": {
+        "table": "Customers",
+        "field": "CustomerSinceDays",
+        "kind": "formula",
+        "rule": "‘customer’ 레코드의 ‘customer since days’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘created at’ 플래그가 설정된 경우: ‘created at’부터 현재 날짜 및 시각까지의 기간(일 단위)\n2. 그 밖의 경우: 값 없음.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CreatedAt",
+            "label": "created at"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘customer’ 레코드의 ‘customer since days’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "‘created at’부터 현재 날짜 및 시각까지의 기간(일 단위)",
+              "when": {
+                "kind": "leaf",
+                "text": "‘created at’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "값 없음",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(created at)이 성립하면 datetime_diff(현재 시각, created at, \"days\"), 그렇지 않으면 blank()"
+      },
+      "Customers.DaysSinceLastOrder": {
+        "table": "Customers",
+        "field": "DaysSinceLastOrder",
+        "kind": "formula",
+        "rule": "‘customer’ 레코드의 ‘days since last order’ 값은 다음과 같이 계산됩니다: “Unable to generate formula”.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CountOfMultiplePaymentOrders": {
+        "table": "Customers",
+        "field": "CountOfMultiplePaymentOrders",
+        "kind": "rollup",
+        "rule": "‘customer’ 레코드의 ‘count of multiple payment orders’ 값은 해당 ‘customer’ 레코드에 연결된 ‘orders’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomerId",
+            "label": "customer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(customer 값이 customer ID임)에 맞는 orders 레코드의 개수"
+      },
+      "Customers.HasMultiPaymentOrders": {
+        "table": "Customers",
+        "field": "HasMultiPaymentOrders",
+        "kind": "formula",
+        "rule": "‘count of multiple payment orders’ 값이 0보다 큰 경우, ‘customer’ 레코드는 ‘multi payment orders’ 항목이 있는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CountOfMultiplePaymentOrders",
+            "label": "count of multiple payment orders"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of multiple payment orders 값이 0보다 큼"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘status’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘display name’의 소문자 변환 결과.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name의 소문자 변환 결과"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘product’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘SKU’의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과의 소문자 변환 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "SKU",
+            "label": "SKU"
+          }
+        ],
+        "structure": null,
+        "plain": "SKU의 “ ” 부분을 “-” 값으로 치환한 결과의 소문자 변환 결과"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘order’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘customer’, 이어서 하이픈, 이어서 ‘order number’의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과의 소문자 변환 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "((customer 뒤에 \"-\" 연결한 결과) 뒤에 order number 연결한 결과)의 “ ” 부분을 “-” 값으로 치환한 결과의 소문자 변환 결과"
+      },
+      "Orders.ItemCount": {
+        "table": "Orders",
+        "field": "ItemCount",
+        "kind": "rollup",
+        "rule": "‘order’ 레코드의 ‘item count’ 값은 해당 ‘order’ 레코드에 연결된 ‘order line items’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(order 값이 order ID임)에 맞는 order line items 레코드의 개수"
+      },
+      "Orders.TotalQuantity": {
+        "table": "Orders",
+        "field": "TotalQuantity",
+        "kind": "rollup",
+        "rule": "‘order’ 레코드의 ‘total quantity’ 값은 해당 ‘order’ 레코드에 연결된 모든 ‘order line items’ 레코드의 총 ‘quantity’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(order 값이 order ID임)에 맞는 모든 order line items 레코드의 quantity 합계"
+      },
+      "Orders.SubTotal": {
+        "table": "Orders",
+        "field": "SubTotal",
+        "kind": "rollup",
+        "rule": "‘order’ 레코드의 ‘sub total’ 값은 해당 ‘order’ 레코드에 연결된 모든 ‘order line items’ 레코드의 총 ‘sub total’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(order 값이 order ID임)에 맞는 모든 order line items 레코드의 sub total 합계"
+      },
+      "Orders.TaxAmount": {
+        "table": "Orders",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "‘order’ 레코드의 ‘tax amount’ 값은 다음과 같이 계산됩니다: ‘sub total’ 곱하기 ‘tax rate’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total 곱하기 tax rate"
+      },
+      "Orders.OrderTotal": {
+        "table": "Orders",
+        "field": "OrderTotal",
+        "kind": "formula",
+        "rule": "‘order’ 레코드의 ‘order total’ 값은 다음과 같이 계산됩니다: ‘sub total’ 더하기 ‘tax amount’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total 더하기 tax amount"
+      },
+      "Orders.TotalPaid": {
+        "table": "Orders",
+        "field": "TotalPaid",
+        "kind": "rollup",
+        "rule": "‘order’ 레코드의 ‘total paid’ 값은 해당 ‘order’ 레코드에 연결된 모든 ‘payments’ 레코드의 총 ‘completed amount’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "CompletedAmount",
+            "label": "completed amount"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(order 값이 order ID임)에 맞는 모든 payments 레코드의 completed amount 합계"
+      },
+      "Orders.AmountDue": {
+        "table": "Orders",
+        "field": "AmountDue",
+        "kind": "formula",
+        "rule": "‘order’ 레코드의 ‘amount due’ 값은 다음과 같이 계산됩니다: ‘order total’ 빼기 ‘total paid’의 소수점 이하 2자리 반올림 결과.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": null,
+        "plain": "(order total 빼기 total paid)의 소수점 이하 2자리 반올림 결과"
+      },
+      "Orders.IsPaidInFull": {
+        "table": "Orders",
+        "field": "IsPaidInFull",
+        "kind": "formula",
+        "rule": "‘amount due’ 값이 0 이하인 경우, ‘order’ 레코드는 ‘paid in full’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘order’ 레코드의 ‘is paid in full’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "참",
+              "when": {
+                "kind": "leaf",
+                "text": "‘amount due’ 값이 0 이하인 경우"
+              }
+            },
+            {
+              "value": "거짓",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(amount due 값이 0 이하임)이 성립하면 true(), 그렇지 않으면 false()"
+      },
+      "Orders.PaymentCount": {
+        "table": "Orders",
+        "field": "PaymentCount",
+        "kind": "rollup",
+        "rule": "‘order’ 레코드의 ‘payment count’ 값은 해당 ‘order’ 레코드에 연결된 ‘payments’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(order 값이 order ID임)에 맞는 payments 레코드의 개수"
+      },
+      "Orders.IsMultiPaymentOrder": {
+        "table": "Orders",
+        "field": "IsMultiPaymentOrder",
+        "kind": "formula",
+        "rule": "‘payment count’ 값이 1보다 큰 경우, ‘order’ 레코드는 ‘multi payment order’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "PaymentCount",
+            "label": "payment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment count 값이 1보다 큼"
+      },
+      "Orders.LastPaymentDate": {
+        "table": "Orders",
+        "field": "LastPaymentDate",
+        "kind": "rollup",
+        "rule": "‘order’ 레코드의 ‘last payment date’ 값은 해당 ‘order’ 레코드에 연결된 모든 ‘payments’ 레코드의 총 ‘payment date’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentDate",
+            "label": "payment date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(order 값이 order ID임)에 맞는 모든 payments 레코드의 payment date 합계"
+      },
+      "Orders.PaymentStatusLabel": {
+        "table": "Orders",
+        "field": "PaymentStatusLabel",
+        "kind": "formula",
+        "rule": "‘order’ 레코드의 ‘payment status label’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘paid in full’ 플래그가 설정된 경우: “Paid”\n2. ‘total paid’ 값이 0인 경우: “Unpaid”\n3. 그 밖의 경우: “Partial”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘order’ 레코드의 ‘payment status label’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“Paid”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘paid in full’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "“Unpaid”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘total paid’ 값이 0인 경우"
+              }
+            },
+            {
+              "value": "“Partial”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(is paid in full)이 성립하면 \"Paid\", 그렇지 않으면 조건(total paid 값이 0 값과 같음)이 성립하면 \"Unpaid\", 그렇지 않으면 \"Partial\""
+      },
+      "OrderLineItems.Name": {
+        "table": "OrderLineItems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘order line item’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘order’, 이어서 “-line-”, 이어서 ‘line number’의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과의 소문자 변환 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order 뒤에 \"-line-\" 연결한 결과) 뒤에 line number 연결한 결과)의 “ ” 부분을 “-” 값으로 치환한 결과의 소문자 변환 결과"
+      },
+      "OrderLineItems.PreDiscount": {
+        "table": "OrderLineItems",
+        "field": "PreDiscount",
+        "kind": "formula",
+        "rule": "‘order line item’ 레코드의 ‘pre discount’ 값은 다음과 같이 계산됩니다: ‘quantity’ 곱하기 ‘unit price’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity 곱하기 unit price"
+      },
+      "OrderLineItems.DiscountAmount": {
+        "table": "OrderLineItems",
+        "field": "DiscountAmount",
+        "kind": "formula",
+        "rule": "‘order line item’ 레코드의 ‘discount amount’ 값은 다음과 같이 계산됩니다: ‘pre discount’ 곱하기 ‘discount percent’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountPercent",
+            "label": "discount percent"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount 곱하기 discount percent"
+      },
+      "OrderLineItems.SubTotal": {
+        "table": "OrderLineItems",
+        "field": "SubTotal",
+        "kind": "formula",
+        "rule": "‘order line item’ 레코드의 ‘sub total’ 값은 다음과 같이 계산됩니다: ‘pre discount’ 빼기 ‘discount amount’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount 빼기 discount amount"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘payment’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘order’, 이어서 “-pmt-”, 이어서 ‘payment number’의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과의 소문자 변환 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order 뒤에 \"-pmt-\" 연결한 결과) 뒤에 payment number 연결한 결과)의 “ ” 부분을 “-” 값으로 치환한 결과의 소문자 변환 결과"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "‘payment’ 레코드의 ‘order date’ 값은 연결된 ‘order’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 order 레코드의 order date"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "‘payment’ 레코드의 ‘order number’ 값은 연결된 ‘order’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 order 레코드의 order number"
+      },
+      "Payments.OrderStatus": {
+        "table": "Payments",
+        "field": "OrderStatus",
+        "kind": "lookup",
+        "rule": "‘payment’ 레코드의 ‘order status’ 값은 연결된 ‘order’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderStatus",
+            "label": "order status"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 order 레코드의 order status"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "‘payment’ 레코드의 ‘order total’ 값은 연결된 ‘order’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 order 레코드의 order total"
+      },
+      "Payments.IsCompleted": {
+        "table": "Payments",
+        "field": "IsCompleted",
+        "kind": "formula",
+        "rule": "‘payment status’ 값이 “Completed”인 경우, ‘payment’ 레코드는 ‘completed’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘payment’ 레코드의 ‘is completed’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "참",
+              "when": {
+                "kind": "leaf",
+                "text": "‘payment status’ 값이 “Completed”인 경우"
+              }
+            },
+            {
+              "value": "거짓",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(payment status 값이 \"Completed\"임)이 성립하면 true(), 그렇지 않으면 false()"
+      },
+      "Payments.CompletedAmount": {
+        "table": "Payments",
+        "field": "CompletedAmount",
+        "kind": "formula",
+        "rule": "‘payment’ 레코드의 ‘completed amount’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘payment status’ 값이 “completed”인 경우: ‘amount’\n2. 그 밖의 경우: 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          },
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘payment’ 레코드의 ‘completed amount’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "‘amount’",
+              "when": {
+                "kind": "leaf",
+                "text": "‘payment status’ 값이 “completed”인 경우"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(payment status의 소문자 변환 결과 값이 \"completed\"임)이 성립하면 amount, 그렇지 않으면 0"
+      },
+      "Payments.OrderAmountDue": {
+        "table": "Payments",
+        "field": "OrderAmountDue",
+        "kind": "lookup",
+        "rule": "‘payment’ 레코드의 ‘order amount due’ 값은 연결된 ‘order’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 order 레코드의 amount due"
+      },
+      "Payments.OrderIsPaidInFull": {
+        "table": "Payments",
+        "field": "OrderIsPaidInFull",
+        "kind": "lookup",
+        "rule": "‘payment’ 레코드의 ‘order is paid in full’ 값은 연결된 ‘order’ 레코드가 ‘paid in full’에 해당하는 경우에 참입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 order 레코드의 is paid in full"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "Products": "product",
+      "Orders": "order",
+      "OrderLineItems": "order line item",
+      "Payments": "payment",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "nl": {
+    "fields": {
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "Een customer geldt als stopped als ten minste één van het volgende geldt: al het volgende geldt: de vlag ‘status is blocking’ is gezet en de name ‘Bobby’ is of de vlag ‘multi payment orders’ is gezet.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Customers",
+            "field": "HasMultiPaymentOrders",
+            "label": "has multi payment orders"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een customer geldt als stopped als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "de vlag ‘status is blocking’ is gezet"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "de name ‘Bobby’ is"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘multi payment orders’ is gezet"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Als status is blocking, dan true(), anders false() en name is \"Bobby\" of has multi payment orders"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "Een customer: status is blocking geldt wanneer de gekoppelde status is blocking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De is blocking van de gekoppelde status"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "Een customer: status display name — overgenomen van de gekoppelde status.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De display name van de gekoppelde status"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "Een customer: status description — overgenomen van de gekoppelde status.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De description van de gekoppelde status"
+      },
+      "Customers.AverageOrderValue": {
+        "table": "Customers",
+        "field": "AverageOrderValue",
+        "kind": "formula",
+        "rule": "Een customer: average order value wordt berekend als ‘Unable to generate formula’.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.LifetimeMarginPercent": {
+        "table": "Customers",
+        "field": "LifetimeMarginPercent",
+        "kind": "formula",
+        "rule": "Een customer: lifetime margin percent wordt berekend als ‘Unable to generate formula’.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CustomerSinceDays": {
+        "table": "Customers",
+        "field": "CustomerSinceDays",
+        "kind": "formula",
+        "rule": "Het veld ‘customer since days’ van de customer wordt bepaald volgens de volgende prioriteit:\n1. het aantal dagen van de created at tot de huidige datum en tijd, als de vlag ‘created at’ is gezet;\n2. in alle andere gevallen geen waarde.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CreatedAt",
+            "label": "created at"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘customer since days’ van de customer wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "het aantal dagen van de created at tot de huidige datum en tijd",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘created at’ is gezet"
+              }
+            },
+            {
+              "value": "geen waarde",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als created at, dan datetime_diff(nu, created at, \"days\"), anders blank()"
+      },
+      "Customers.DaysSinceLastOrder": {
+        "table": "Customers",
+        "field": "DaysSinceLastOrder",
+        "kind": "formula",
+        "rule": "Een customer: days since last order wordt berekend als ‘Unable to generate formula’.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CountOfMultiplePaymentOrders": {
+        "table": "Customers",
+        "field": "CountOfMultiplePaymentOrders",
+        "kind": "rollup",
+        "rule": "Een customer: count of multiple payment orders is het aantal orders dat is gekoppeld aan de customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomerId",
+            "label": "customer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal orders waarvan customer is customer ID"
+      },
+      "Customers.HasMultiPaymentOrders": {
+        "table": "Customers",
+        "field": "HasMultiPaymentOrders",
+        "kind": "formula",
+        "rule": "Een customer geldt als beschikkend over een multi payment orders als de count of multiple payment orders groter is dan 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CountOfMultiplePaymentOrders",
+            "label": "count of multiple payment orders"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of multiple payment orders is groter dan 0"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een status: name wordt berekend als de display name in kleine letters.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name in kleine letters"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een product: name wordt berekend als de SKU waarbij elke een spatie wordt vervangen door een koppelteken in kleine letters.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "SKU",
+            "label": "SKU"
+          }
+        ],
+        "structure": null,
+        "plain": "SKU waarbij ‘ ’ wordt vervangen door ‘-’ in kleine letters"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een order: name wordt berekend als de customer, gevolgd door een koppelteken, gevolgd door de order number waarbij elke een spatie wordt vervangen door een koppelteken in kleine letters.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "((customer samengevoegd met \"-\") samengevoegd met order number) waarbij ‘ ’ wordt vervangen door ‘-’ in kleine letters"
+      },
+      "Orders.ItemCount": {
+        "table": "Orders",
+        "field": "ItemCount",
+        "kind": "rollup",
+        "rule": "Een order: item count is het aantal order line items dat is gekoppeld aan de order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal order line items waarvan order is order ID"
+      },
+      "Orders.TotalQuantity": {
+        "table": "Orders",
+        "field": "TotalQuantity",
+        "kind": "rollup",
+        "rule": "Een order: total quantity is het totaal van quantity over de order line items gekoppeld aan de order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van quantity over alle order line items waarvan order is order ID"
+      },
+      "Orders.SubTotal": {
+        "table": "Orders",
+        "field": "SubTotal",
+        "kind": "rollup",
+        "rule": "Een order: sub total is het totaal van sub total over de order line items gekoppeld aan de order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van sub total over alle order line items waarvan order is order ID"
+      },
+      "Orders.TaxAmount": {
+        "table": "Orders",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "Een order: tax amount wordt berekend als de sub total maal de tax rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total maal tax rate"
+      },
+      "Orders.OrderTotal": {
+        "table": "Orders",
+        "field": "OrderTotal",
+        "kind": "formula",
+        "rule": "Een order: order total wordt berekend als de sub total plus de tax amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total plus tax amount"
+      },
+      "Orders.TotalPaid": {
+        "table": "Orders",
+        "field": "TotalPaid",
+        "kind": "rollup",
+        "rule": "Een order: total paid is het totaal van completed amount over de payments gekoppeld aan de order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "CompletedAmount",
+            "label": "completed amount"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van completed amount over alle payments waarvan order is order ID"
+      },
+      "Orders.AmountDue": {
+        "table": "Orders",
+        "field": "AmountDue",
+        "kind": "formula",
+        "rule": "Een order: amount due wordt berekend als de order total min de total paid afgerond op 2 decimalen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": null,
+        "plain": "(order total min total paid) afgerond op 2 decimalen"
+      },
+      "Orders.IsPaidInFull": {
+        "table": "Orders",
+        "field": "IsPaidInFull",
+        "kind": "formula",
+        "rule": "Een order geldt als een paid in full als de amount due ten hoogste 0 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘is paid in full’ van de order wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "waar",
+              "when": {
+                "kind": "leaf",
+                "text": "de amount due ten hoogste 0 is"
+              }
+            },
+            {
+              "value": "onwaar",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als amount due is ten hoogste 0, dan true(), anders false()"
+      },
+      "Orders.PaymentCount": {
+        "table": "Orders",
+        "field": "PaymentCount",
+        "kind": "rollup",
+        "rule": "Een order: payment count is het aantal payments dat is gekoppeld aan de order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal payments waarvan order is order ID"
+      },
+      "Orders.IsMultiPaymentOrder": {
+        "table": "Orders",
+        "field": "IsMultiPaymentOrder",
+        "kind": "formula",
+        "rule": "Een order geldt als een multi payment order als de payment count groter is dan 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "PaymentCount",
+            "label": "payment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment count is groter dan 1"
+      },
+      "Orders.LastPaymentDate": {
+        "table": "Orders",
+        "field": "LastPaymentDate",
+        "kind": "rollup",
+        "rule": "Een order: last payment date is het totaal van payment date over de payments gekoppeld aan de order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentDate",
+            "label": "payment date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van payment date over alle payments waarvan order is order ID"
+      },
+      "Orders.PaymentStatusLabel": {
+        "table": "Orders",
+        "field": "PaymentStatusLabel",
+        "kind": "formula",
+        "rule": "Het veld ‘payment status label’ van de order wordt bepaald volgens de volgende prioriteit:\n1. ‘Paid’, als de vlag ‘paid in full’ is gezet;\n2. ‘Unpaid’, als de total paid 0 is;\n3. in alle andere gevallen ‘Partial’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘payment status label’ van de order wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘Paid’",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘paid in full’ is gezet"
+              }
+            },
+            {
+              "value": "‘Unpaid’",
+              "when": {
+                "kind": "leaf",
+                "text": "de total paid 0 is"
+              }
+            },
+            {
+              "value": "‘Partial’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als is paid in full, dan \"Paid\", anders als total paid is gelijk aan 0, dan \"Unpaid\", anders \"Partial\""
+      },
+      "OrderLineItems.Name": {
+        "table": "OrderLineItems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een order line item: name wordt berekend als de order, gevolgd door ‘-line-’, gevolgd door de line number waarbij elke een spatie wordt vervangen door een koppelteken in kleine letters.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order samengevoegd met \"-line-\") samengevoegd met line number) waarbij ‘ ’ wordt vervangen door ‘-’ in kleine letters"
+      },
+      "OrderLineItems.PreDiscount": {
+        "table": "OrderLineItems",
+        "field": "PreDiscount",
+        "kind": "formula",
+        "rule": "Een order line item: pre discount wordt berekend als de quantity maal de unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity maal unit price"
+      },
+      "OrderLineItems.DiscountAmount": {
+        "table": "OrderLineItems",
+        "field": "DiscountAmount",
+        "kind": "formula",
+        "rule": "Een order line item: discount amount wordt berekend als de pre discount maal de discount percent.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountPercent",
+            "label": "discount percent"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount maal discount percent"
+      },
+      "OrderLineItems.SubTotal": {
+        "table": "OrderLineItems",
+        "field": "SubTotal",
+        "kind": "formula",
+        "rule": "Een order line item: sub total wordt berekend als de pre discount min de discount amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount min discount amount"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een payment: name wordt berekend als de order, gevolgd door ‘-pmt-’, gevolgd door de payment number waarbij elke een spatie wordt vervangen door een koppelteken in kleine letters.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order samengevoegd met \"-pmt-\") samengevoegd met payment number) waarbij ‘ ’ wordt vervangen door ‘-’ in kleine letters"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "Een payment: order date — overgenomen van de gekoppelde order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De order date van de gekoppelde order"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Een payment: order number — overgenomen van de gekoppelde order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De order number van de gekoppelde order"
+      },
+      "Payments.OrderStatus": {
+        "table": "Payments",
+        "field": "OrderStatus",
+        "kind": "lookup",
+        "rule": "Een payment: order status — overgenomen van de gekoppelde order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderStatus",
+            "label": "order status"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De order status van de gekoppelde order"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "Een payment: order total — overgenomen van de gekoppelde order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De order total van de gekoppelde order"
+      },
+      "Payments.IsCompleted": {
+        "table": "Payments",
+        "field": "IsCompleted",
+        "kind": "formula",
+        "rule": "Een payment geldt als completed als de payment status ‘Completed’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘is completed’ van het payment wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "waar",
+              "when": {
+                "kind": "leaf",
+                "text": "de payment status ‘Completed’ is"
+              }
+            },
+            {
+              "value": "onwaar",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als payment status is \"Completed\", dan true(), anders false()"
+      },
+      "Payments.CompletedAmount": {
+        "table": "Payments",
+        "field": "CompletedAmount",
+        "kind": "formula",
+        "rule": "Het veld ‘completed amount’ van het payment wordt bepaald volgens de volgende prioriteit:\n1. de amount, als de payment status ‘completed’ is;\n2. in alle andere gevallen 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          },
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘completed amount’ van het payment wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "de amount",
+              "when": {
+                "kind": "leaf",
+                "text": "de payment status ‘completed’ is"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als payment status in kleine letters is \"completed\", dan amount, anders 0"
+      },
+      "Payments.OrderAmountDue": {
+        "table": "Payments",
+        "field": "OrderAmountDue",
+        "kind": "lookup",
+        "rule": "Een payment: order amount due — overgenomen van de gekoppelde order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De amount due van de gekoppelde order"
+      },
+      "Payments.OrderIsPaidInFull": {
+        "table": "Payments",
+        "field": "OrderIsPaidInFull",
+        "kind": "lookup",
+        "rule": "Een payment: order is paid in full is waar wanneer de gekoppelde order is een paid in full.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De is paid in full van de gekoppelde order"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "Products": "product",
+      "Orders": "order",
+      "OrderLineItems": "order line item",
+      "Payments": "payment",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "pt": {
+    "fields": {
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "Um customer é considerado stopped se pelo menos uma das seguintes é verdadeira: tudo o que segue é verdadeiro: o indicador “status is blocking” está ativado e o name é “Bobby” ou o indicador “multi payment orders” está ativado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Customers",
+            "field": "HasMultiPaymentOrders",
+            "label": "has multi payment orders"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um customer é considerado stopped se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "o indicador “status is blocking” está ativado"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "o name é “Bobby”"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “multi payment orders” está ativado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Se status is blocking, então true(), caso contrário false() e name é \"Bobby\" ou has multi payment orders"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "Um customer: status is blocking é verdadeiro quando o status vinculado é blocking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O is blocking do status vinculado"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "Um customer: status display name — obtido do status vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O display name do status vinculado"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "Um customer: status description — obtido do status vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O description do status vinculado"
+      },
+      "Customers.AverageOrderValue": {
+        "table": "Customers",
+        "field": "AverageOrderValue",
+        "kind": "formula",
+        "rule": "Um customer: average order value é calculado como “Unable to generate formula”.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.LifetimeMarginPercent": {
+        "table": "Customers",
+        "field": "LifetimeMarginPercent",
+        "kind": "formula",
+        "rule": "Um customer: lifetime margin percent é calculado como “Unable to generate formula”.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CustomerSinceDays": {
+        "table": "Customers",
+        "field": "CustomerSinceDays",
+        "kind": "formula",
+        "rule": "O campo “customer since days” do customer é determinado pela seguinte prioridade:\n1. o número de dias de o created at até a data e hora atuais, se o indicador “created at” está ativado;\n2. em todos os outros casos, nenhum valor.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CreatedAt",
+            "label": "created at"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “customer since days” do customer é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "o número de dias de o created at até a data e hora atuais",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “created at” está ativado"
+              }
+            },
+            {
+              "value": "nenhum valor",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se created at, então datetime_diff(agora, created at, \"days\"), caso contrário blank()"
+      },
+      "Customers.DaysSinceLastOrder": {
+        "table": "Customers",
+        "field": "DaysSinceLastOrder",
+        "kind": "formula",
+        "rule": "Um customer: days since last order é calculado como “Unable to generate formula”.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CountOfMultiplePaymentOrders": {
+        "table": "Customers",
+        "field": "CountOfMultiplePaymentOrders",
+        "kind": "rollup",
+        "rule": "Um customer: count of multiple payment orders é o número de orders relacionados a o customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomerId",
+            "label": "customer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de orders cujo customer é customer ID"
+      },
+      "Customers.HasMultiPaymentOrders": {
+        "table": "Customers",
+        "field": "HasMultiPaymentOrders",
+        "kind": "formula",
+        "rule": "Um customer é considerado como tendo um multi payment orders se o count of multiple payment orders é maior que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CountOfMultiplePaymentOrders",
+            "label": "count of multiple payment orders"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of multiple payment orders é maior que 0"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um status: name é calculado como o display name em minúsculas.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name em minúsculas"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um product: name é calculado como o SKU com cada um espaço substituído por um hífen em minúsculas.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "SKU",
+            "label": "SKU"
+          }
+        ],
+        "structure": null,
+        "plain": "SKU com “ ” substituído por “-” em minúsculas"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um order: name é calculado como o customer, seguido de um hífen, seguido de o order number com cada um espaço substituído por um hífen em minúsculas.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "((customer unido a \"-\") unido a order number) com “ ” substituído por “-” em minúsculas"
+      },
+      "Orders.ItemCount": {
+        "table": "Orders",
+        "field": "ItemCount",
+        "kind": "rollup",
+        "rule": "Um order: item count é o número de order line items relacionados a o order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de order line items cujo order é order ID"
+      },
+      "Orders.TotalQuantity": {
+        "table": "Orders",
+        "field": "TotalQuantity",
+        "kind": "rollup",
+        "rule": "Um order: total quantity é o total de quantity entre os order line items relacionados a o order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de quantity entre todos os order line items cujo order é order ID"
+      },
+      "Orders.SubTotal": {
+        "table": "Orders",
+        "field": "SubTotal",
+        "kind": "rollup",
+        "rule": "Um order: sub total é o total de sub total entre os order line items relacionados a o order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de sub total entre todos os order line items cujo order é order ID"
+      },
+      "Orders.TaxAmount": {
+        "table": "Orders",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "Um order: tax amount é calculado como o sub total vezes o tax rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total vezes tax rate"
+      },
+      "Orders.OrderTotal": {
+        "table": "Orders",
+        "field": "OrderTotal",
+        "kind": "formula",
+        "rule": "Um order: order total é calculado como o sub total mais o tax amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total mais tax amount"
+      },
+      "Orders.TotalPaid": {
+        "table": "Orders",
+        "field": "TotalPaid",
+        "kind": "rollup",
+        "rule": "Um order: total paid é o total de completed amount entre os payments relacionados a o order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "CompletedAmount",
+            "label": "completed amount"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de completed amount entre todos os payments cujo order é order ID"
+      },
+      "Orders.AmountDue": {
+        "table": "Orders",
+        "field": "AmountDue",
+        "kind": "formula",
+        "rule": "Um order: amount due é calculado como o order total menos o total paid arredondado para 2 casa(s) decimal(is).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": null,
+        "plain": "(order total menos total paid) arredondado para 2 casas decimais"
+      },
+      "Orders.IsPaidInFull": {
+        "table": "Orders",
+        "field": "IsPaidInFull",
+        "kind": "formula",
+        "rule": "Um order é considerado um paid in full se o amount due é no máximo 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “is paid in full” do order é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "verdadeiro",
+              "when": {
+                "kind": "leaf",
+                "text": "o amount due é no máximo 0"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se amount due é no máximo 0, então true(), caso contrário false()"
+      },
+      "Orders.PaymentCount": {
+        "table": "Orders",
+        "field": "PaymentCount",
+        "kind": "rollup",
+        "rule": "Um order: payment count é o número de payments relacionados a o order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de payments cujo order é order ID"
+      },
+      "Orders.IsMultiPaymentOrder": {
+        "table": "Orders",
+        "field": "IsMultiPaymentOrder",
+        "kind": "formula",
+        "rule": "Um order é considerado um multi payment order se o payment count é maior que 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "PaymentCount",
+            "label": "payment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment count é maior que 1"
+      },
+      "Orders.LastPaymentDate": {
+        "table": "Orders",
+        "field": "LastPaymentDate",
+        "kind": "rollup",
+        "rule": "Um order: last payment date é o total de payment date entre os payments relacionados a o order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentDate",
+            "label": "payment date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de payment date entre todos os payments cujo order é order ID"
+      },
+      "Orders.PaymentStatusLabel": {
+        "table": "Orders",
+        "field": "PaymentStatusLabel",
+        "kind": "formula",
+        "rule": "O campo “payment status label” do order é determinado pela seguinte prioridade:\n1. “Paid”, se o indicador “paid in full” está ativado;\n2. “Unpaid”, se o total paid é 0;\n3. em todos os outros casos, “Partial”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “payment status label” do order é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“Paid”",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “paid in full” está ativado"
+              }
+            },
+            {
+              "value": "“Unpaid”",
+              "when": {
+                "kind": "leaf",
+                "text": "o total paid é 0"
+              }
+            },
+            {
+              "value": "“Partial”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is paid in full, então \"Paid\", caso contrário se total paid é igual a 0, então \"Unpaid\", caso contrário \"Partial\""
+      },
+      "OrderLineItems.Name": {
+        "table": "OrderLineItems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um order line item: name é calculado como o order, seguido de “-line-”, seguido de o line number com cada um espaço substituído por um hífen em minúsculas.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order unido a \"-line-\") unido a line number) com “ ” substituído por “-” em minúsculas"
+      },
+      "OrderLineItems.PreDiscount": {
+        "table": "OrderLineItems",
+        "field": "PreDiscount",
+        "kind": "formula",
+        "rule": "Um order line item: pre discount é calculado como o quantity vezes a unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity vezes unit price"
+      },
+      "OrderLineItems.DiscountAmount": {
+        "table": "OrderLineItems",
+        "field": "DiscountAmount",
+        "kind": "formula",
+        "rule": "Um order line item: discount amount é calculado como o pre discount vezes o discount percent.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountPercent",
+            "label": "discount percent"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount vezes discount percent"
+      },
+      "OrderLineItems.SubTotal": {
+        "table": "OrderLineItems",
+        "field": "SubTotal",
+        "kind": "formula",
+        "rule": "Um order line item: sub total é calculado como o pre discount menos o discount amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount menos discount amount"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um payment: name é calculado como o order, seguido de “-pmt-”, seguido de o payment number com cada um espaço substituído por um hífen em minúsculas.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order unido a \"-pmt-\") unido a payment number) com “ ” substituído por “-” em minúsculas"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "Um payment: order date — obtido do order vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O order date do order vinculado"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Um payment: order number — obtido do order vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O order number do order vinculado"
+      },
+      "Payments.OrderStatus": {
+        "table": "Payments",
+        "field": "OrderStatus",
+        "kind": "lookup",
+        "rule": "Um payment: order status — obtido do order vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderStatus",
+            "label": "order status"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O order status do order vinculado"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "Um payment: order total — obtido do order vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O order total do order vinculado"
+      },
+      "Payments.IsCompleted": {
+        "table": "Payments",
+        "field": "IsCompleted",
+        "kind": "formula",
+        "rule": "Um payment é considerado completed se o payment status é “Completed”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “is completed” do payment é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "verdadeiro",
+              "when": {
+                "kind": "leaf",
+                "text": "o payment status é “Completed”"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se payment status é \"Completed\", então true(), caso contrário false()"
+      },
+      "Payments.CompletedAmount": {
+        "table": "Payments",
+        "field": "CompletedAmount",
+        "kind": "formula",
+        "rule": "O campo “completed amount” do payment é determinado pela seguinte prioridade:\n1. o amount, se o payment status é “completed”;\n2. em todos os outros casos, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          },
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “completed amount” do payment é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "o amount",
+              "when": {
+                "kind": "leaf",
+                "text": "o payment status é “completed”"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se payment status em minúsculas é \"completed\", então amount, caso contrário 0"
+      },
+      "Payments.OrderAmountDue": {
+        "table": "Payments",
+        "field": "OrderAmountDue",
+        "kind": "lookup",
+        "rule": "Um payment: order amount due — obtido do order vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O amount due do order vinculado"
+      },
+      "Payments.OrderIsPaidInFull": {
+        "table": "Payments",
+        "field": "OrderIsPaidInFull",
+        "kind": "lookup",
+        "rule": "Um payment: order is paid in full é verdadeiro quando o order vinculado é um paid in full.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O is paid in full do order vinculado"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "Products": "product",
+      "Orders": "order",
+      "OrderLineItems": "order line item",
+      "Payments": "payment",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "ru": {
+    "fields": {
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "Customer считается «stopped», если выполняется хотя бы одно из следующего: выполняется всё следующее: признак «status is blocking» установлен и name равно «Bobby» или признак «multi payment orders» установлен.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Customers",
+            "field": "HasMultiPaymentOrders",
+            "label": "has multi payment orders"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Customer считается «stopped», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "признак «status is blocking» установлен"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "name равно «Bobby»"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "признак «multi payment orders» установлен"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Если status is blocking, то true(), иначе false() и name равно \"Bobby\" или has multi payment orders"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "Customer: «status is blocking» истинно, когда связанный «status» является «blocking».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is blocking связанного «status»"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "Customer: «status display name» — берётся из связанного «status».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name связанного «status»"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "Customer: «status description» — берётся из связанного «status».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Description связанного «status»"
+      },
+      "Customers.AverageOrderValue": {
+        "table": "Customers",
+        "field": "AverageOrderValue",
+        "kind": "formula",
+        "rule": "Customer: «average order value» вычисляется как «Unable to generate formula».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.LifetimeMarginPercent": {
+        "table": "Customers",
+        "field": "LifetimeMarginPercent",
+        "kind": "formula",
+        "rule": "Customer: «lifetime margin percent» вычисляется как «Unable to generate formula».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CustomerSinceDays": {
+        "table": "Customers",
+        "field": "CustomerSinceDays",
+        "kind": "formula",
+        "rule": "Поле «customer since days» (Customer) определяется по следующему приоритету:\n1. число дней от created at до текущие дата и время, если признак «created at» установлен;\n2. во всех остальных случаях — нет значения.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CreatedAt",
+            "label": "created at"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «customer since days» (Customer) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "число дней от created at до текущие дата и время",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «created at» установлен"
+              }
+            },
+            {
+              "value": "нет значения",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если created at, то datetime_diff(сейчас, created at, \"days\"), иначе blank()"
+      },
+      "Customers.DaysSinceLastOrder": {
+        "table": "Customers",
+        "field": "DaysSinceLastOrder",
+        "kind": "formula",
+        "rule": "Customer: «days since last order» вычисляется как «Unable to generate formula».",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CountOfMultiplePaymentOrders": {
+        "table": "Customers",
+        "field": "CountOfMultiplePaymentOrders",
+        "kind": "rollup",
+        "rule": "Customer: «count of multiple payment orders» — это число записей «orders», связанных с customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomerId",
+            "label": "customer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «orders», у которых customer равно customer ID"
+      },
+      "Customers.HasMultiPaymentOrders": {
+        "table": "Customers",
+        "field": "HasMultiPaymentOrders",
+        "kind": "formula",
+        "rule": "Customer считается имеющим «multi payment orders», если count of multiple payment orders больше 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CountOfMultiplePaymentOrders",
+            "label": "count of multiple payment orders"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of multiple payment orders больше 0"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Status: «name» вычисляется как display name в нижнем регистре.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name в нижнем регистре"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Product: «name» вычисляется как SKU, где каждое пробел заменено на дефис в нижнем регистре.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "SKU",
+            "label": "SKU"
+          }
+        ],
+        "structure": null,
+        "plain": "SKU, где « » заменено на «-» в нижнем регистре"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Order: «name» вычисляется как customer, затем дефис, затем order number, где каждое пробел заменено на дефис в нижнем регистре.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "((customer соединено с \"-\") соединено с order number), где « » заменено на «-» в нижнем регистре"
+      },
+      "Orders.ItemCount": {
+        "table": "Orders",
+        "field": "ItemCount",
+        "kind": "rollup",
+        "rule": "Order: «item count» — это число записей «order line items», связанных с order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «order line items», у которых order равно order ID"
+      },
+      "Orders.TotalQuantity": {
+        "table": "Orders",
+        "field": "TotalQuantity",
+        "kind": "rollup",
+        "rule": "Order: «total quantity» — это сумма «quantity» по записям «order line items», связанным с order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма quantity по всем «order line items», у которых order равно order ID"
+      },
+      "Orders.SubTotal": {
+        "table": "Orders",
+        "field": "SubTotal",
+        "kind": "rollup",
+        "rule": "Order: «sub total» — это сумма «sub total» по записям «order line items», связанным с order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма sub total по всем «order line items», у которых order равно order ID"
+      },
+      "Orders.TaxAmount": {
+        "table": "Orders",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "Order: «tax amount» вычисляется как sub total умножить на tax rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total умножить на tax rate"
+      },
+      "Orders.OrderTotal": {
+        "table": "Orders",
+        "field": "OrderTotal",
+        "kind": "formula",
+        "rule": "Order: «order total» вычисляется как sub total плюс tax amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total плюс tax amount"
+      },
+      "Orders.TotalPaid": {
+        "table": "Orders",
+        "field": "TotalPaid",
+        "kind": "rollup",
+        "rule": "Order: «total paid» — это сумма «completed amount» по записям «payments», связанным с order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "CompletedAmount",
+            "label": "completed amount"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма completed amount по всем «payments», у которых order равно order ID"
+      },
+      "Orders.AmountDue": {
+        "table": "Orders",
+        "field": "AmountDue",
+        "kind": "formula",
+        "rule": "Order: «amount due» вычисляется как order total минус total paid, округлённое до 2 знаков после запятой.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": null,
+        "plain": "(order total минус total paid), округлённое до 2 знаков"
+      },
+      "Orders.IsPaidInFull": {
+        "table": "Orders",
+        "field": "IsPaidInFull",
+        "kind": "formula",
+        "rule": "Order считается «paid in full», если amount due не больше 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «is paid in full» (Order) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "истина",
+              "when": {
+                "kind": "leaf",
+                "text": "amount due не больше 0"
+              }
+            },
+            {
+              "value": "ложь",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если amount due не больше 0, то true(), иначе false()"
+      },
+      "Orders.PaymentCount": {
+        "table": "Orders",
+        "field": "PaymentCount",
+        "kind": "rollup",
+        "rule": "Order: «payment count» — это число записей «payments», связанных с order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «payments», у которых order равно order ID"
+      },
+      "Orders.IsMultiPaymentOrder": {
+        "table": "Orders",
+        "field": "IsMultiPaymentOrder",
+        "kind": "formula",
+        "rule": "Order считается «multi payment order», если payment count больше 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "PaymentCount",
+            "label": "payment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment count больше 1"
+      },
+      "Orders.LastPaymentDate": {
+        "table": "Orders",
+        "field": "LastPaymentDate",
+        "kind": "rollup",
+        "rule": "Order: «last payment date» — это сумма «payment date» по записям «payments», связанным с order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentDate",
+            "label": "payment date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма payment date по всем «payments», у которых order равно order ID"
+      },
+      "Orders.PaymentStatusLabel": {
+        "table": "Orders",
+        "field": "PaymentStatusLabel",
+        "kind": "formula",
+        "rule": "Поле «payment status label» (Order) определяется по следующему приоритету:\n1. «Paid», если признак «paid in full» установлен;\n2. «Unpaid», если total paid равно 0;\n3. во всех остальных случаях — «Partial».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «payment status label» (Order) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«Paid»",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «paid in full» установлен"
+              }
+            },
+            {
+              "value": "«Unpaid»",
+              "when": {
+                "kind": "leaf",
+                "text": "total paid равно 0"
+              }
+            },
+            {
+              "value": "«Partial»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если is paid in full, то \"Paid\", иначе если total paid равно 0, то \"Unpaid\", иначе \"Partial\""
+      },
+      "OrderLineItems.Name": {
+        "table": "OrderLineItems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Order line item: «name» вычисляется как order, затем «-line-», затем line number, где каждое пробел заменено на дефис в нижнем регистре.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order соединено с \"-line-\") соединено с line number), где « » заменено на «-» в нижнем регистре"
+      },
+      "OrderLineItems.PreDiscount": {
+        "table": "OrderLineItems",
+        "field": "PreDiscount",
+        "kind": "formula",
+        "rule": "Order line item: «pre discount» вычисляется как quantity умножить на unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity умножить на unit price"
+      },
+      "OrderLineItems.DiscountAmount": {
+        "table": "OrderLineItems",
+        "field": "DiscountAmount",
+        "kind": "formula",
+        "rule": "Order line item: «discount amount» вычисляется как pre discount умножить на discount percent.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountPercent",
+            "label": "discount percent"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount умножить на discount percent"
+      },
+      "OrderLineItems.SubTotal": {
+        "table": "OrderLineItems",
+        "field": "SubTotal",
+        "kind": "formula",
+        "rule": "Order line item: «sub total» вычисляется как pre discount минус discount amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount минус discount amount"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Payment: «name» вычисляется как order, затем «-pmt-», затем payment number, где каждое пробел заменено на дефис в нижнем регистре.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order соединено с \"-pmt-\") соединено с payment number), где « » заменено на «-» в нижнем регистре"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "Payment: «order date» — берётся из связанного «order».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order date связанного «order»"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Payment: «order number» — берётся из связанного «order».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number связанного «order»"
+      },
+      "Payments.OrderStatus": {
+        "table": "Payments",
+        "field": "OrderStatus",
+        "kind": "lookup",
+        "rule": "Payment: «order status» — берётся из связанного «order».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderStatus",
+            "label": "order status"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order status связанного «order»"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "Payment: «order total» — берётся из связанного «order».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order total связанного «order»"
+      },
+      "Payments.IsCompleted": {
+        "table": "Payments",
+        "field": "IsCompleted",
+        "kind": "formula",
+        "rule": "Payment считается «completed», если payment status равно «Completed».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «is completed» (Payment) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "истина",
+              "when": {
+                "kind": "leaf",
+                "text": "payment status равно «Completed»"
+              }
+            },
+            {
+              "value": "ложь",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если payment status равно \"Completed\", то true(), иначе false()"
+      },
+      "Payments.CompletedAmount": {
+        "table": "Payments",
+        "field": "CompletedAmount",
+        "kind": "formula",
+        "rule": "Поле «completed amount» (Payment) определяется по следующему приоритету:\n1. amount, если payment status равно «completed»;\n2. во всех остальных случаях — 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          },
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «completed amount» (Payment) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "amount",
+              "when": {
+                "kind": "leaf",
+                "text": "payment status равно «completed»"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если payment status в нижнем регистре равно \"completed\", то amount, иначе 0"
+      },
+      "Payments.OrderAmountDue": {
+        "table": "Payments",
+        "field": "OrderAmountDue",
+        "kind": "lookup",
+        "rule": "Payment: «order amount due» — берётся из связанного «order».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Amount due связанного «order»"
+      },
+      "Payments.OrderIsPaidInFull": {
+        "table": "Payments",
+        "field": "OrderIsPaidInFull",
+        "kind": "lookup",
+        "rule": "Payment: «order is paid in full» истинно, когда связанный «order» является «paid in full».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is paid in full связанного «order»"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "Products": "product",
+      "Orders": "order",
+      "OrderLineItems": "order line item",
+      "Payments": "payment",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "tr": {
+    "fields": {
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "“customer” kaydı, (“status is blocking” bayrağı etkin ve “name” alanı “Bobby” değerine eşit) veya “multi payment orders” bayrağı etkin ise “stopped” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Customers",
+            "field": "HasMultiPaymentOrders",
+            "label": "has multi payment orders"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“customer” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “stopped” sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "“status is blocking” bayrağı etkin"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "“name” alanı “Bobby” değerine eşit"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“multi payment orders” bayrağı etkin"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "(status is blocking ise true(), aksi takdirde false() ve name, \"Bobby\" değerine eşit) veya has multi payment orders"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "“customer” kaydının “status is blocking” alanı, “status” alanı üzerinden bağlı kayıt “blocking” ise doğrudur.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı status kaydının is blocking değeri"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "“customer” kaydının “status display name” alanı, “status” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı status kaydının display name değeri"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "“customer” kaydının “status description” alanı, “status” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı status kaydının description değeri"
+      },
+      "Customers.AverageOrderValue": {
+        "table": "Customers",
+        "field": "AverageOrderValue",
+        "kind": "formula",
+        "rule": "“customer” kaydının “average order value” alanı, “Unable to generate formula” olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.LifetimeMarginPercent": {
+        "table": "Customers",
+        "field": "LifetimeMarginPercent",
+        "kind": "formula",
+        "rule": "“customer” kaydının “lifetime margin percent” alanı, “Unable to generate formula” olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CustomerSinceDays": {
+        "table": "Customers",
+        "field": "CustomerSinceDays",
+        "kind": "formula",
+        "rule": "“customer” kaydının “customer since days” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “created at” bayrağı etkin ise “created at” alanı ile geçerli tarih ve saat arasındaki gün sayısı;\n2. diğer tüm durumlarda boş değer.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CreatedAt",
+            "label": "created at"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“customer” kaydının “customer since days” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“created at” alanı ile geçerli tarih ve saat arasındaki gün sayısı",
+              "when": {
+                "kind": "leaf",
+                "text": "“created at” bayrağı etkin"
+              }
+            },
+            {
+              "value": "boş değer",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Created at ise datetime_diff(şimdi, created at, \"days\"), aksi takdirde blank()"
+      },
+      "Customers.DaysSinceLastOrder": {
+        "table": "Customers",
+        "field": "DaysSinceLastOrder",
+        "kind": "formula",
+        "rule": "“customer” kaydının “days since last order” alanı, “Unable to generate formula” olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CountOfMultiplePaymentOrders": {
+        "table": "Customers",
+        "field": "CountOfMultiplePaymentOrders",
+        "kind": "rollup",
+        "rule": "“customer” kaydının “count of multiple payment orders” alanı, “customer” kaydıyla ilişkili “orders” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomerId",
+            "label": "customer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Customer değeri customer ID olan orders kayıtlarının sayısı"
+      },
+      "Customers.HasMultiPaymentOrders": {
+        "table": "Customers",
+        "field": "HasMultiPaymentOrders",
+        "kind": "formula",
+        "rule": "“customer” kaydı, “count of multiple payment orders” alanı 0 değerinden büyük ise “multi payment orders” sahibi sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CountOfMultiplePaymentOrders",
+            "label": "count of multiple payment orders"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of multiple payment orders, 0 değerinden büyük"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“status” kaydının “name” alanı, küçük harfe çevrilmiş “display name” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş display name"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“product” kaydının “name” alanı, küçük harfe çevrilmiş “SKU” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "SKU",
+            "label": "SKU"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş SKU değerindeki her “ ” yerine “-” konularak elde edilen metin"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“order” kaydının “name” alanı, küçük harfe çevrilmiş “customer” alanı, ardından bir kısa çizgi, ardından “order number” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş ((customer ile \"-\" birleşimi) ile order number birleşimi) değerindeki her “ ” yerine “-” konularak elde edilen metin"
+      },
+      "Orders.ItemCount": {
+        "table": "Orders",
+        "field": "ItemCount",
+        "kind": "rollup",
+        "rule": "“order” kaydının “item count” alanı, “order” kaydıyla ilişkili “order line items” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order değeri order ID olan order line items kayıtlarının sayısı"
+      },
+      "Orders.TotalQuantity": {
+        "table": "Orders",
+        "field": "TotalQuantity",
+        "kind": "rollup",
+        "rule": "“order” kaydının “total quantity” alanı, “order” kaydıyla ilişkili “order line items” kayıtları üzerinden hesaplanan toplam “quantity” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order değeri order ID olan tüm order line items kayıtlarındaki quantity değerlerinin toplamı"
+      },
+      "Orders.SubTotal": {
+        "table": "Orders",
+        "field": "SubTotal",
+        "kind": "rollup",
+        "rule": "“order” kaydının “sub total” alanı, “order” kaydıyla ilişkili “order line items” kayıtları üzerinden hesaplanan toplam “sub total” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order değeri order ID olan tüm order line items kayıtlarındaki sub total değerlerinin toplamı"
+      },
+      "Orders.TaxAmount": {
+        "table": "Orders",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "“order” kaydının “tax amount” alanı, “sub total” alanı çarpı “tax rate” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total çarpı tax rate"
+      },
+      "Orders.OrderTotal": {
+        "table": "Orders",
+        "field": "OrderTotal",
+        "kind": "formula",
+        "rule": "“order” kaydının “order total” alanı, “sub total” alanı artı “tax amount” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total artı tax amount"
+      },
+      "Orders.TotalPaid": {
+        "table": "Orders",
+        "field": "TotalPaid",
+        "kind": "rollup",
+        "rule": "“order” kaydının “total paid” alanı, “order” kaydıyla ilişkili “payments” kayıtları üzerinden hesaplanan toplam “completed amount” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "CompletedAmount",
+            "label": "completed amount"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order değeri order ID olan tüm payments kayıtlarındaki completed amount değerlerinin toplamı"
+      },
+      "Orders.AmountDue": {
+        "table": "Orders",
+        "field": "AmountDue",
+        "kind": "formula",
+        "rule": "“order” kaydının “amount due” alanı, 2 ondalık basamağa yuvarlanmış “order total” alanı eksi “total paid” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": null,
+        "plain": "2 ondalık basamağa yuvarlanmış (order total eksi total paid)"
+      },
+      "Orders.IsPaidInFull": {
+        "table": "Orders",
+        "field": "IsPaidInFull",
+        "kind": "formula",
+        "rule": "“order” kaydı, “amount due” alanı en çok 0 değerinde ise “paid in full” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“order” kaydının “is paid in full” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "doğru",
+              "when": {
+                "kind": "leaf",
+                "text": "“amount due” alanı en çok 0 değerinde"
+              }
+            },
+            {
+              "value": "yanlış",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Amount due, en çok 0 değerinde ise true(), aksi takdirde false()"
+      },
+      "Orders.PaymentCount": {
+        "table": "Orders",
+        "field": "PaymentCount",
+        "kind": "rollup",
+        "rule": "“order” kaydının “payment count” alanı, “order” kaydıyla ilişkili “payments” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order değeri order ID olan payments kayıtlarının sayısı"
+      },
+      "Orders.IsMultiPaymentOrder": {
+        "table": "Orders",
+        "field": "IsMultiPaymentOrder",
+        "kind": "formula",
+        "rule": "“order” kaydı, “payment count” alanı 1 değerinden büyük ise “multi payment order” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "PaymentCount",
+            "label": "payment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment count, 1 değerinden büyük"
+      },
+      "Orders.LastPaymentDate": {
+        "table": "Orders",
+        "field": "LastPaymentDate",
+        "kind": "rollup",
+        "rule": "“order” kaydının “last payment date” alanı, “order” kaydıyla ilişkili “payments” kayıtları üzerinden hesaplanan toplam “payment date” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentDate",
+            "label": "payment date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order değeri order ID olan tüm payments kayıtlarındaki payment date değerlerinin toplamı"
+      },
+      "Orders.PaymentStatusLabel": {
+        "table": "Orders",
+        "field": "PaymentStatusLabel",
+        "kind": "formula",
+        "rule": "“order” kaydının “payment status label” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “paid in full” bayrağı etkin ise “Paid”;\n2. “total paid” alanı 0 değerine eşit ise “Unpaid”;\n3. diğer tüm durumlarda “Partial”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“order” kaydının “payment status label” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“Paid”",
+              "when": {
+                "kind": "leaf",
+                "text": "“paid in full” bayrağı etkin"
+              }
+            },
+            {
+              "value": "“Unpaid”",
+              "when": {
+                "kind": "leaf",
+                "text": "“total paid” alanı 0 değerine eşit"
+              }
+            },
+            {
+              "value": "“Partial”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is paid in full ise \"Paid\", aksi takdirde total paid, 0 değerine eşit ise \"Unpaid\", aksi takdirde \"Partial\""
+      },
+      "OrderLineItems.Name": {
+        "table": "OrderLineItems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“order line item” kaydının “name” alanı, küçük harfe çevrilmiş “order” alanı, ardından “-line-”, ardından “line number” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş ((order ile \"-line-\" birleşimi) ile line number birleşimi) değerindeki her “ ” yerine “-” konularak elde edilen metin"
+      },
+      "OrderLineItems.PreDiscount": {
+        "table": "OrderLineItems",
+        "field": "PreDiscount",
+        "kind": "formula",
+        "rule": "“order line item” kaydının “pre discount” alanı, “quantity” alanı çarpı “unit price” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity çarpı unit price"
+      },
+      "OrderLineItems.DiscountAmount": {
+        "table": "OrderLineItems",
+        "field": "DiscountAmount",
+        "kind": "formula",
+        "rule": "“order line item” kaydının “discount amount” alanı, “pre discount” alanı çarpı “discount percent” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountPercent",
+            "label": "discount percent"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount çarpı discount percent"
+      },
+      "OrderLineItems.SubTotal": {
+        "table": "OrderLineItems",
+        "field": "SubTotal",
+        "kind": "formula",
+        "rule": "“order line item” kaydının “sub total” alanı, “pre discount” alanı eksi “discount amount” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount eksi discount amount"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“payment” kaydının “name” alanı, küçük harfe çevrilmiş “order” alanı, ardından “-pmt-”, ardından “payment number” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş ((order ile \"-pmt-\" birleşimi) ile payment number birleşimi) değerindeki her “ ” yerine “-” konularak elde edilen metin"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "“payment” kaydının “order date” alanı, “order” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı order kaydının order date değeri"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "“payment” kaydının “order number” alanı, “order” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı order kaydının order number değeri"
+      },
+      "Payments.OrderStatus": {
+        "table": "Payments",
+        "field": "OrderStatus",
+        "kind": "lookup",
+        "rule": "“payment” kaydının “order status” alanı, “order” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderStatus",
+            "label": "order status"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı order kaydının order status değeri"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "“payment” kaydının “order total” alanı, “order” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı order kaydının order total değeri"
+      },
+      "Payments.IsCompleted": {
+        "table": "Payments",
+        "field": "IsCompleted",
+        "kind": "formula",
+        "rule": "“payment” kaydı, “payment status” alanı “Completed” değerine eşit ise “completed” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“payment” kaydının “is completed” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "doğru",
+              "when": {
+                "kind": "leaf",
+                "text": "“payment status” alanı “Completed” değerine eşit"
+              }
+            },
+            {
+              "value": "yanlış",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Payment status, \"Completed\" değerine eşit ise true(), aksi takdirde false()"
+      },
+      "Payments.CompletedAmount": {
+        "table": "Payments",
+        "field": "CompletedAmount",
+        "kind": "formula",
+        "rule": "“payment” kaydının “completed amount” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “payment status” alanı “completed” değerine eşit ise “amount” alanı;\n2. diğer tüm durumlarda 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          },
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“payment” kaydının “completed amount” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“amount” alanı",
+              "when": {
+                "kind": "leaf",
+                "text": "“payment status” alanı “completed” değerine eşit"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Küçük harfe çevrilmiş payment status, \"completed\" değerine eşit ise amount, aksi takdirde 0"
+      },
+      "Payments.OrderAmountDue": {
+        "table": "Payments",
+        "field": "OrderAmountDue",
+        "kind": "lookup",
+        "rule": "“payment” kaydının “order amount due” alanı, “order” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı order kaydının amount due değeri"
+      },
+      "Payments.OrderIsPaidInFull": {
+        "table": "Payments",
+        "field": "OrderIsPaidInFull",
+        "kind": "lookup",
+        "rule": "“payment” kaydının “order is paid in full” alanı, “order” alanı üzerinden bağlı kayıt “paid in full” ise doğrudur.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı order kaydının is paid in full değeri"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "Products": "product",
+      "Orders": "order",
+      "OrderLineItems": "order line item",
+      "Payments": "payment",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "vi": {
+    "fields": {
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "Mỗi customer được coi là “stopped” nếu ít nhất một trong các điều kiện sau đúng: tất cả các điều kiện sau đều đúng: cờ “status is blocking” được bật và name là “Bobby” hoặc cờ “multi payment orders” được bật.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Customers",
+            "field": "HasMultiPaymentOrders",
+            "label": "has multi payment orders"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi customer được coi là “stopped” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "cờ “status is blocking” được bật"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "name là “Bobby”"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "cờ “multi payment orders” được bật"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Nếu status is blocking thì true(), nếu không thì false() và name là \"Bobby\" hoặc has multi payment orders"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "Trường “status is blocking” của mỗi customer có giá trị đúng khi bản ghi liên kết qua trường “status” là “blocking”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is blocking của bản ghi liên kết qua status"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "Trường “status display name” của mỗi customer được lấy từ bản ghi liên kết qua trường “status”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name của bản ghi liên kết qua status"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "Trường “status description” của mỗi customer được lấy từ bản ghi liên kết qua trường “status”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Description của bản ghi liên kết qua status"
+      },
+      "Customers.AverageOrderValue": {
+        "table": "Customers",
+        "field": "AverageOrderValue",
+        "kind": "formula",
+        "rule": "Trường “average order value” của mỗi customer được tính bằng “Unable to generate formula”.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.LifetimeMarginPercent": {
+        "table": "Customers",
+        "field": "LifetimeMarginPercent",
+        "kind": "formula",
+        "rule": "Trường “lifetime margin percent” của mỗi customer được tính bằng “Unable to generate formula”.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CustomerSinceDays": {
+        "table": "Customers",
+        "field": "CustomerSinceDays",
+        "kind": "formula",
+        "rule": "Trường “customer since days” của mỗi customer được xác định theo thứ tự ưu tiên sau:\n1. số ngày tính từ created at đến ngày giờ hiện tại, nếu cờ “created at” được bật;\n2. trong mọi trường hợp còn lại, giá trị trống.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CreatedAt",
+            "label": "created at"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “customer since days” của mỗi customer được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "số ngày tính từ created at đến ngày giờ hiện tại",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “created at” được bật"
+              }
+            },
+            {
+              "value": "giá trị trống",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu created at thì datetime_diff(thời điểm hiện tại, created at, \"days\"), nếu không thì blank()"
+      },
+      "Customers.DaysSinceLastOrder": {
+        "table": "Customers",
+        "field": "DaysSinceLastOrder",
+        "kind": "formula",
+        "rule": "Trường “days since last order” của mỗi customer được tính bằng “Unable to generate formula”.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CountOfMultiplePaymentOrders": {
+        "table": "Customers",
+        "field": "CountOfMultiplePaymentOrders",
+        "kind": "rollup",
+        "rule": "Trường “count of multiple payment orders” của mỗi customer là số lượng orders liên quan đến customer đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomerId",
+            "label": "customer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng orders có customer là customer ID"
+      },
+      "Customers.HasMultiPaymentOrders": {
+        "table": "Customers",
+        "field": "HasMultiPaymentOrders",
+        "kind": "formula",
+        "rule": "Mỗi customer được coi là có “multi payment orders” nếu count of multiple payment orders lớn hơn 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CountOfMultiplePaymentOrders",
+            "label": "count of multiple payment orders"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of multiple payment orders lớn hơn 0"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi status được tính bằng display name viết bằng chữ thường.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name viết bằng chữ thường"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi product được tính bằng SKU sau khi thay mọi dấu cách bằng dấu gạch nối viết bằng chữ thường.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "SKU",
+            "label": "SKU"
+          }
+        ],
+        "structure": null,
+        "plain": "SKU sau khi thay “ ” bằng “-” viết bằng chữ thường"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi order được tính bằng customer, tiếp theo là dấu gạch nối, tiếp theo là order number sau khi thay mọi dấu cách bằng dấu gạch nối viết bằng chữ thường.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "((customer nối với \"-\") nối với order number) sau khi thay “ ” bằng “-” viết bằng chữ thường"
+      },
+      "Orders.ItemCount": {
+        "table": "Orders",
+        "field": "ItemCount",
+        "kind": "rollup",
+        "rule": "Trường “item count” của mỗi order là số lượng order line items liên quan đến order đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng order line items có order là order ID"
+      },
+      "Orders.TotalQuantity": {
+        "table": "Orders",
+        "field": "TotalQuantity",
+        "kind": "rollup",
+        "rule": "Trường “total quantity” của mỗi order là giá trị tổng cộng của trường “quantity” trên các order line items liên quan đến order đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng quantity trên tất cả order line items có order là order ID"
+      },
+      "Orders.SubTotal": {
+        "table": "Orders",
+        "field": "SubTotal",
+        "kind": "rollup",
+        "rule": "Trường “sub total” của mỗi order là giá trị tổng cộng của trường “sub total” trên các order line items liên quan đến order đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng sub total trên tất cả order line items có order là order ID"
+      },
+      "Orders.TaxAmount": {
+        "table": "Orders",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "Trường “tax amount” của mỗi order được tính bằng sub total nhân tax rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total nhân tax rate"
+      },
+      "Orders.OrderTotal": {
+        "table": "Orders",
+        "field": "OrderTotal",
+        "kind": "formula",
+        "rule": "Trường “order total” của mỗi order được tính bằng sub total cộng tax amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total cộng tax amount"
+      },
+      "Orders.TotalPaid": {
+        "table": "Orders",
+        "field": "TotalPaid",
+        "kind": "rollup",
+        "rule": "Trường “total paid” của mỗi order là giá trị tổng cộng của trường “completed amount” trên các payments liên quan đến order đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "CompletedAmount",
+            "label": "completed amount"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng completed amount trên tất cả payments có order là order ID"
+      },
+      "Orders.AmountDue": {
+        "table": "Orders",
+        "field": "AmountDue",
+        "kind": "formula",
+        "rule": "Trường “amount due” của mỗi order được tính bằng order total trừ total paid làm tròn đến 2 chữ số thập phân.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": null,
+        "plain": "(order total trừ total paid) làm tròn đến 2 chữ số thập phân"
+      },
+      "Orders.IsPaidInFull": {
+        "table": "Orders",
+        "field": "IsPaidInFull",
+        "kind": "formula",
+        "rule": "Mỗi order được coi là “paid in full” nếu amount due không lớn hơn 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “is paid in full” của mỗi order được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "đúng",
+              "when": {
+                "kind": "leaf",
+                "text": "amount due không lớn hơn 0"
+              }
+            },
+            {
+              "value": "sai",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu amount due không lớn hơn 0 thì true(), nếu không thì false()"
+      },
+      "Orders.PaymentCount": {
+        "table": "Orders",
+        "field": "PaymentCount",
+        "kind": "rollup",
+        "rule": "Trường “payment count” của mỗi order là số lượng payments liên quan đến order đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng payments có order là order ID"
+      },
+      "Orders.IsMultiPaymentOrder": {
+        "table": "Orders",
+        "field": "IsMultiPaymentOrder",
+        "kind": "formula",
+        "rule": "Mỗi order được coi là “multi payment order” nếu payment count lớn hơn 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "PaymentCount",
+            "label": "payment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment count lớn hơn 1"
+      },
+      "Orders.LastPaymentDate": {
+        "table": "Orders",
+        "field": "LastPaymentDate",
+        "kind": "rollup",
+        "rule": "Trường “last payment date” của mỗi order là giá trị tổng cộng của trường “payment date” trên các payments liên quan đến order đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentDate",
+            "label": "payment date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng payment date trên tất cả payments có order là order ID"
+      },
+      "Orders.PaymentStatusLabel": {
+        "table": "Orders",
+        "field": "PaymentStatusLabel",
+        "kind": "formula",
+        "rule": "Trường “payment status label” của mỗi order được xác định theo thứ tự ưu tiên sau:\n1. “Paid”, nếu cờ “paid in full” được bật;\n2. “Unpaid”, nếu total paid là 0;\n3. trong mọi trường hợp còn lại, “Partial”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “payment status label” của mỗi order được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“Paid”",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “paid in full” được bật"
+              }
+            },
+            {
+              "value": "“Unpaid”",
+              "when": {
+                "kind": "leaf",
+                "text": "total paid là 0"
+              }
+            },
+            {
+              "value": "“Partial”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu is paid in full thì \"Paid\", nếu không thì nếu total paid bằng 0 thì \"Unpaid\", nếu không thì \"Partial\""
+      },
+      "OrderLineItems.Name": {
+        "table": "OrderLineItems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi order line item được tính bằng order, tiếp theo là “-line-”, tiếp theo là line number sau khi thay mọi dấu cách bằng dấu gạch nối viết bằng chữ thường.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order nối với \"-line-\") nối với line number) sau khi thay “ ” bằng “-” viết bằng chữ thường"
+      },
+      "OrderLineItems.PreDiscount": {
+        "table": "OrderLineItems",
+        "field": "PreDiscount",
+        "kind": "formula",
+        "rule": "Trường “pre discount” của mỗi order line item được tính bằng quantity nhân unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity nhân unit price"
+      },
+      "OrderLineItems.DiscountAmount": {
+        "table": "OrderLineItems",
+        "field": "DiscountAmount",
+        "kind": "formula",
+        "rule": "Trường “discount amount” của mỗi order line item được tính bằng pre discount nhân discount percent.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountPercent",
+            "label": "discount percent"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount nhân discount percent"
+      },
+      "OrderLineItems.SubTotal": {
+        "table": "OrderLineItems",
+        "field": "SubTotal",
+        "kind": "formula",
+        "rule": "Trường “sub total” của mỗi order line item được tính bằng pre discount trừ discount amount.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount trừ discount amount"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi payment được tính bằng order, tiếp theo là “-pmt-”, tiếp theo là payment number sau khi thay mọi dấu cách bằng dấu gạch nối viết bằng chữ thường.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "((order nối với \"-pmt-\") nối với payment number) sau khi thay “ ” bằng “-” viết bằng chữ thường"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "Trường “order date” của mỗi payment được lấy từ bản ghi liên kết qua trường “order”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order date của bản ghi liên kết qua order"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Trường “order number” của mỗi payment được lấy từ bản ghi liên kết qua trường “order”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number của bản ghi liên kết qua order"
+      },
+      "Payments.OrderStatus": {
+        "table": "Payments",
+        "field": "OrderStatus",
+        "kind": "lookup",
+        "rule": "Trường “order status” của mỗi payment được lấy từ bản ghi liên kết qua trường “order”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderStatus",
+            "label": "order status"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order status của bản ghi liên kết qua order"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "Trường “order total” của mỗi payment được lấy từ bản ghi liên kết qua trường “order”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order total của bản ghi liên kết qua order"
+      },
+      "Payments.IsCompleted": {
+        "table": "Payments",
+        "field": "IsCompleted",
+        "kind": "formula",
+        "rule": "Mỗi payment được coi là “completed” nếu payment status là “Completed”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “is completed” của mỗi payment được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "đúng",
+              "when": {
+                "kind": "leaf",
+                "text": "payment status là “Completed”"
+              }
+            },
+            {
+              "value": "sai",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu payment status là \"Completed\" thì true(), nếu không thì false()"
+      },
+      "Payments.CompletedAmount": {
+        "table": "Payments",
+        "field": "CompletedAmount",
+        "kind": "formula",
+        "rule": "Trường “completed amount” của mỗi payment được xác định theo thứ tự ưu tiên sau:\n1. amount, nếu payment status là “completed”;\n2. trong mọi trường hợp còn lại, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          },
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “completed amount” của mỗi payment được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "amount",
+              "when": {
+                "kind": "leaf",
+                "text": "payment status là “completed”"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu payment status viết bằng chữ thường là \"completed\" thì amount, nếu không thì 0"
+      },
+      "Payments.OrderAmountDue": {
+        "table": "Payments",
+        "field": "OrderAmountDue",
+        "kind": "lookup",
+        "rule": "Trường “order amount due” của mỗi payment được lấy từ bản ghi liên kết qua trường “order”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Amount due của bản ghi liên kết qua order"
+      },
+      "Payments.OrderIsPaidInFull": {
+        "table": "Payments",
+        "field": "OrderIsPaidInFull",
+        "kind": "lookup",
+        "rule": "Trường “order is paid in full” của mỗi payment có giá trị đúng khi bản ghi liên kết qua trường “order” là “paid in full”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is paid in full của bản ghi liên kết qua order"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "Products": "product",
+      "Orders": "order",
+      "OrderLineItems": "order line item",
+      "Payments": "payment",
+      "ERBVersions": "ERB version",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "zh": {
+    "fields": {
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "当以下至少一项成立:以下全部成立:标志“status is blocking”已设置且name为“Bobby”或标志“multi payment orders”已设置时,customer被视为“Stopped”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Customers",
+            "field": "HasMultiPaymentOrders",
+            "label": "has multi payment orders"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,customer被视为“Stopped”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "标志“status is blocking”已设置"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "name为“Bobby”"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "标志“multi payment orders”已设置"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "若status is blocking,则true(),否则false()且name为\"Bobby\"或has multi payment orders"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "customer的“status is blocking”在所关联的“status”是“Blocking”时为真。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“status”的is blocking"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "customer的“status display name”——取自所关联的“status”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“status”的display name"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "customer的“status description”——取自所关联的“status”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“status”的description"
+      },
+      "Customers.AverageOrderValue": {
+        "table": "Customers",
+        "field": "AverageOrderValue",
+        "kind": "formula",
+        "rule": "customer的“average order value”按 “Unable to generate formula” 计算。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.LifetimeMarginPercent": {
+        "table": "Customers",
+        "field": "LifetimeMarginPercent",
+        "kind": "formula",
+        "rule": "customer的“lifetime margin percent”按 “Unable to generate formula” 计算。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CustomerSinceDays": {
+        "table": "Customers",
+        "field": "CustomerSinceDays",
+        "kind": "formula",
+        "rule": "Customer的“customer since days”按以下优先级确定:\n1. 当标志“created at”已设置时,取 从created at到当前日期和时间的天数;\n2. 其余情况取 无值。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CreatedAt",
+            "label": "created at"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Customer的“customer since days”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "从created at到当前日期和时间的天数",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“created at”已设置"
+              }
+            },
+            {
+              "value": "无值",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若created at,则datetime_diff(现在, created at, \"days\"),否则blank()"
+      },
+      "Customers.DaysSinceLastOrder": {
+        "table": "Customers",
+        "field": "DaysSinceLastOrder",
+        "kind": "formula",
+        "rule": "customer的“days since last order”按 “Unable to generate formula” 计算。",
+        "mechanical": false,
+        "refs": [],
+        "structure": null,
+        "plain": "\"Unable to generate formula\""
+      },
+      "Customers.CountOfMultiplePaymentOrders": {
+        "table": "Customers",
+        "field": "CountOfMultiplePaymentOrders",
+        "kind": "rollup",
+        "rule": "customer的“count of multiple payment orders”为 与customer相关的“orders”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomerId",
+            "label": "customer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Customer为customer ID的“orders”的数量"
+      },
+      "Customers.HasMultiPaymentOrders": {
+        "table": "Customers",
+        "field": "HasMultiPaymentOrders",
+        "kind": "formula",
+        "rule": "当count of multiple payment orders大于0时,customer被视为具有“Multi Payment Orders”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "CountOfMultiplePaymentOrders",
+            "label": "count of multiple payment orders"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of multiple payment orders大于0"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "status的“name”按 转为小写的display name 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的display name"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "product的“name”按 转为小写的SKU中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "SKU",
+            "label": "SKU"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的SKU中“ ”替换为“-”后的结果"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "order的“name”按 转为小写的customer,接着是一个连字符,接着是order number中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的((customer与\"-\"拼接)与order number拼接)中“ ”替换为“-”后的结果"
+      },
+      "Orders.ItemCount": {
+        "table": "Orders",
+        "field": "ItemCount",
+        "kind": "rollup",
+        "rule": "order的“item count”为 与order相关的“order line items”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order为order ID的“order line items”的数量"
+      },
+      "Orders.TotalQuantity": {
+        "table": "Orders",
+        "field": "TotalQuantity",
+        "kind": "rollup",
+        "rule": "order的“total quantity”为 与order相关的所有“order line items”的“quantity”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有order为order ID的“order line items”的quantity的总和"
+      },
+      "Orders.SubTotal": {
+        "table": "Orders",
+        "field": "SubTotal",
+        "kind": "rollup",
+        "rule": "order的“sub total”为 与order相关的所有“order line items”的“sub total”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有order为order ID的“order line items”的sub total的总和"
+      },
+      "Orders.TaxAmount": {
+        "table": "Orders",
+        "field": "TaxAmount",
+        "kind": "formula",
+        "rule": "order的“tax amount”按 sub total乘tax rate 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxRate",
+            "label": "tax rate"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total乘tax rate"
+      },
+      "Orders.OrderTotal": {
+        "table": "Orders",
+        "field": "OrderTotal",
+        "kind": "formula",
+        "rule": "order的“order total”按 sub total加tax amount 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "SubTotal",
+            "label": "sub total"
+          },
+          {
+            "table": "Orders",
+            "field": "TaxAmount",
+            "label": "tax amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Sub total加tax amount"
+      },
+      "Orders.TotalPaid": {
+        "table": "Orders",
+        "field": "TotalPaid",
+        "kind": "rollup",
+        "rule": "order的“total paid”为 与order相关的所有“payments”的“completed amount”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "CompletedAmount",
+            "label": "completed amount"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有order为order ID的“payments”的completed amount的总和"
+      },
+      "Orders.AmountDue": {
+        "table": "Orders",
+        "field": "AmountDue",
+        "kind": "formula",
+        "rule": "order的“amount due”按 order total减total paid四舍五入到2位小数 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": null,
+        "plain": "(order total减total paid)四舍五入到2位小数"
+      },
+      "Orders.IsPaidInFull": {
+        "table": "Orders",
+        "field": "IsPaidInFull",
+        "kind": "formula",
+        "rule": "当amount due不大于0时,order被视为“Paid in Full”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Order的“is paid in full”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "amount due不大于0"
+              }
+            },
+            {
+              "value": "假",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若amount due不大于0,则true(),否则false()"
+      },
+      "Orders.PaymentCount": {
+        "table": "Orders",
+        "field": "PaymentCount",
+        "kind": "rollup",
+        "rule": "order的“payment count”为 与order相关的“payments”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order为order ID的“payments”的数量"
+      },
+      "Orders.IsMultiPaymentOrder": {
+        "table": "Orders",
+        "field": "IsMultiPaymentOrder",
+        "kind": "formula",
+        "rule": "当payment count大于1时,order被视为“Multi Payment Order”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "PaymentCount",
+            "label": "payment count"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment count大于1"
+      },
+      "Orders.LastPaymentDate": {
+        "table": "Orders",
+        "field": "LastPaymentDate",
+        "kind": "rollup",
+        "rule": "order的“last payment date”为 与order相关的所有“payments”的“payment date”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentDate",
+            "label": "payment date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有order为order ID的“payments”的payment date的总和"
+      },
+      "Orders.PaymentStatusLabel": {
+        "table": "Orders",
+        "field": "PaymentStatusLabel",
+        "kind": "formula",
+        "rule": "Order的“payment status label”按以下优先级确定:\n1. 当标志“paid in full”已设置时,取 “Paid”;\n2. 当total paid为0时,取 “Unpaid”;\n3. 其余情况取 “Partial”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Orders",
+            "field": "TotalPaid",
+            "label": "total paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Order的“payment status label”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“Paid”",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“paid in full”已设置"
+              }
+            },
+            {
+              "value": "“Unpaid”",
+              "when": {
+                "kind": "leaf",
+                "text": "total paid为0"
+              }
+            },
+            {
+              "value": "“Partial”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若is paid in full,则\"Paid\",否则若total paid等于0,则\"Unpaid\",否则\"Partial\""
+      },
+      "OrderLineItems.Name": {
+        "table": "OrderLineItems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "order line item的“name”按 转为小写的order,接着是“-line-”,接着是line number中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的((order与\"-line-\"拼接)与line number拼接)中“ ”替换为“-”后的结果"
+      },
+      "OrderLineItems.PreDiscount": {
+        "table": "OrderLineItems",
+        "field": "PreDiscount",
+        "kind": "formula",
+        "rule": "order line item的“pre discount”按 quantity乘unit price 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity乘unit price"
+      },
+      "OrderLineItems.DiscountAmount": {
+        "table": "OrderLineItems",
+        "field": "DiscountAmount",
+        "kind": "formula",
+        "rule": "order line item的“discount amount”按 pre discount乘discount percent 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountPercent",
+            "label": "discount percent"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount乘discount percent"
+      },
+      "OrderLineItems.SubTotal": {
+        "table": "OrderLineItems",
+        "field": "SubTotal",
+        "kind": "formula",
+        "rule": "order line item的“sub total”按 pre discount减discount amount 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLineItems",
+            "field": "PreDiscount",
+            "label": "pre discount"
+          },
+          {
+            "table": "OrderLineItems",
+            "field": "DiscountAmount",
+            "label": "discount amount"
+          }
+        ],
+        "structure": null,
+        "plain": "Pre discount减discount amount"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "payment的“name”按 转为小写的order,接着是“-pmt-”,接着是payment number中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的((order与\"-pmt-\"拼接)与payment number拼接)中“ ”替换为“-”后的结果"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "payment的“order date”——取自所关联的“order”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“order”的order date"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "payment的“order number”——取自所关联的“order”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“order”的order number"
+      },
+      "Payments.OrderStatus": {
+        "table": "Payments",
+        "field": "OrderStatus",
+        "kind": "lookup",
+        "rule": "payment的“order status”——取自所关联的“order”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderStatus",
+            "label": "order status"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“order”的order status"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "payment的“order total”——取自所关联的“order”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderTotal",
+            "label": "order total"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“order”的order total"
+      },
+      "Payments.IsCompleted": {
+        "table": "Payments",
+        "field": "IsCompleted",
+        "kind": "formula",
+        "rule": "当payment status为“Completed”时,payment被视为“Completed”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Payment的“is completed”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "payment status为“Completed”"
+              }
+            },
+            {
+              "value": "假",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若payment status为\"Completed\",则true(),否则false()"
+      },
+      "Payments.CompletedAmount": {
+        "table": "Payments",
+        "field": "CompletedAmount",
+        "kind": "formula",
+        "rule": "Payment的“completed amount”按以下优先级确定:\n1. 当payment status为“completed”时,取 amount;\n2. 其余情况取 0。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentStatus",
+            "label": "payment status"
+          },
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Payment的“completed amount”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "amount",
+              "when": {
+                "kind": "leaf",
+                "text": "payment status为“completed”"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若转为小写的payment status为\"completed\",则amount,否则0"
+      },
+      "Payments.OrderAmountDue": {
+        "table": "Payments",
+        "field": "OrderAmountDue",
+        "kind": "lookup",
+        "rule": "payment的“order amount due”——取自所关联的“order”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountDue",
+            "label": "amount due"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“order”的amount due"
+      },
+      "Payments.OrderIsPaidInFull": {
+        "table": "Payments",
+        "field": "OrderIsPaidInFull",
+        "kind": "lookup",
+        "rule": "payment的“order is paid in full”在所关联的“order”是“Paid in Full”时为真。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaidInFull",
+            "label": "is paid in full"
+          },
+          {
+            "table": "Payments",
+            "field": "Order",
+            "label": "order"
+          },
+          {
+            "table": "Orders",
+            "field": "OrderId",
+            "label": "order ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“order”的is paid in full"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "Customers": "customer",

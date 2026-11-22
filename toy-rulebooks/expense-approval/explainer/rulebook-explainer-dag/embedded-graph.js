@@ -416,7 +416,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -648,6 +663,3666 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "Employees": "employee",
+      "ExpenseReports": "expense report",
+      "ExpenseItems": "expense item"
+    }
+  },
+  "ar": {
+    "fields": {
+      "Employees.Name": {
+        "table": "Employees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «employee» يُحسب على النحو الآتي: حقل «first name»، ثم مسافة، ثم حقل «last name».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Employees",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name يليه \" \") يليه last name"
+      },
+      "ExpenseReports.EmployeeName": {
+        "table": "ExpenseReports",
+        "field": "EmployeeName",
+        "kind": "lookup",
+        "rule": "حقل «employee name» في سجل «expense report» مأخوذ من السجل المرتبط به عبر حقل «employee».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «employee»"
+      },
+      "ExpenseReports.EmployeeBudgetLimit": {
+        "table": "ExpenseReports",
+        "field": "EmployeeBudgetLimit",
+        "kind": "lookup",
+        "rule": "حقل «employee budget limit» في سجل «expense report» مأخوذ من السجل المرتبط به عبر حقل «employee».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "BudgetLimit",
+            "label": "budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «budget limit» من السجل المرتبط عبر «employee»"
+      },
+      "ExpenseReports.TotalAmount": {
+        "table": "ExpenseReports",
+        "field": "TotalAmount",
+        "kind": "rollup",
+        "rule": "حقل «total amount» في سجل «expense report» هو مجموع قيم حقل «amount» عبر سجلات «expense items» المرتبطة بسجل «expense report».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseItems",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "ExpenseItems",
+            "field": "ExpenseReport",
+            "label": "expense report"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "ExpenseReportId",
+            "label": "expense report ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «amount» في جميع سجلات «expense items» التي يتحقق فيها أنّ حقل «expense report» يساوي expense report ID"
+      },
+      "ExpenseReports.IsOverBudget": {
+        "table": "ExpenseReports",
+        "field": "IsOverBudget",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «expense report» على أنه «over budget» إذا تحقق أنّ جميع الشروط الآتية متحققة: حقل «employee budget limit» أكبر من 0 وحقل «total amount» أكبر من حقل «employee budget limit».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "EmployeeBudgetLimit",
+            "label": "employee budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "TotalAmount",
+            "label": "total amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «is over budget» في سجل «expense report» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "صحيح",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "حقل «employee budget limit» أكبر من 0"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "حقل «total amount» أكبر من حقل «employee budget limit»"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "خطأ",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "صحيح إذا تحقق أنّ employee budget limit أكبر من 0 وtotal amount أكبر من employee budget limit"
+      },
+      "ExpenseReports.IsApproved": {
+        "table": "ExpenseReports",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «expense report» على أنه «approved» إذا تحقق أنّ حقل «approval status» يساوي «approved».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "ApprovalStatus",
+            "label": "approval status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «is approved» في سجل «expense report» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "صحيح",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «approval status» يساوي «approved»"
+              }
+            },
+            {
+              "value": "خطأ",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "صحيح إذا تحقق أنّ approval status هو \"approved\""
+      },
+      "ExpenseReports.RequiresEscalation": {
+        "table": "ExpenseReports",
+        "field": "RequiresEscalation",
+        "kind": "formula",
+        "rule": "يُعدّ سجل «expense report» محققًا لشرط «requires escalation» إذا تحقق أنّ جميع الشروط الآتية متحققة: حقل «is over budget» يساوي صحيح وحقل «is approved» يساوي خطأ.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "IsOverBudget",
+            "label": "is over budget"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "IsApproved",
+            "label": "is approved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «requires escalation» في سجل «expense report» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "صحيح",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "حقل «is over budget» يساوي صحيح"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "حقل «is approved» يساوي خطأ"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "خطأ",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "صحيح إذا تحقق أنّ is over budget يساوي نعم وis approved يساوي لا"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Employees": "employee",
+      "ExpenseReports": "expense report",
+      "ExpenseItems": "expense item"
+    }
+  },
+  "de": {
+    "fields": {
+      "Employees.Name": {
+        "table": "Employees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Employee: Name wird berechnet als die First Name, gefolgt von ein Leerzeichen, gefolgt von die Last Name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Employees",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(First Name verbunden mit \" \") verbunden mit Last Name"
+      },
+      "ExpenseReports.EmployeeName": {
+        "table": "ExpenseReports",
+        "field": "EmployeeName",
+        "kind": "lookup",
+        "rule": "Ein Expense Report: Employee Name — aus dem zugehörigen Employee übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Employee"
+      },
+      "ExpenseReports.EmployeeBudgetLimit": {
+        "table": "ExpenseReports",
+        "field": "EmployeeBudgetLimit",
+        "kind": "lookup",
+        "rule": "Ein Expense Report: Employee Budget Limit — aus dem zugehörigen Employee übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "BudgetLimit",
+            "label": "budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Budget Limit des verknüpften Employee"
+      },
+      "ExpenseReports.TotalAmount": {
+        "table": "ExpenseReports",
+        "field": "TotalAmount",
+        "kind": "rollup",
+        "rule": "Ein Expense Report: Total Amount ist die Gesamtsumme von Amount über die mit dem Expense Report verbundenen Expense Items.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseItems",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "ExpenseItems",
+            "field": "ExpenseReport",
+            "label": "expense report"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "ExpenseReportId",
+            "label": "expense report ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Amount über alle Expense Items, deren Expense Report ist Expense Report ID"
+      },
+      "ExpenseReports.IsOverBudget": {
+        "table": "ExpenseReports",
+        "field": "IsOverBudget",
+        "kind": "formula",
+        "rule": "Ein Expense Report gilt als ein Over Budget, wenn alles Folgende gilt: der Employee Budget Limit größer ist als 0 und der Total Amount größer ist als der Employee Budget Limit.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "EmployeeBudgetLimit",
+            "label": "employee budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "TotalAmount",
+            "label": "total amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Is Over Budget“ des Expense Report wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "wahr",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "der Employee Budget Limit größer ist als 0"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "der Total Amount größer ist als der Employee Budget Limit"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "falsch",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wahr, wenn Employee Budget Limit größer als 0 ist und Total Amount größer als Employee Budget Limit ist"
+      },
+      "ExpenseReports.IsApproved": {
+        "table": "ExpenseReports",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Ein Expense Report gilt als approved, wenn der Approval Status „approved“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "ApprovalStatus",
+            "label": "approval status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Is Approved“ des Expense Report wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "wahr",
+              "when": {
+                "kind": "leaf",
+                "text": "der Approval Status „approved“ ist"
+              }
+            },
+            {
+              "value": "falsch",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wahr, wenn Approval Status ist \"approved\""
+      },
+      "ExpenseReports.RequiresEscalation": {
+        "table": "ExpenseReports",
+        "field": "RequiresEscalation",
+        "kind": "formula",
+        "rule": "Ein Expense Report gilt als Escalation erfordernd, wenn alles Folgende gilt: der Is Over Budget wahr ist und der Is Approved falsch ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "IsOverBudget",
+            "label": "is over budget"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "IsApproved",
+            "label": "is approved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Requires Escalation“ des Expense Report wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "wahr",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "der Is Over Budget wahr ist"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "der Is Approved falsch ist"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "falsch",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wahr, wenn Is Over Budget gleich ja ist und Is Approved gleich nein ist"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Employees": "Employee",
+      "ExpenseReports": "Expense Report",
+      "ExpenseItems": "Expense Item"
+    }
+  },
+  "es": {
+    "fields": {
+      "Employees.Name": {
+        "table": "Employees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un employee: name se calcula como el first name, seguido de un espacio, seguido de el last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Employees",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name unido con \" \") unido con last name"
+      },
+      "ExpenseReports.EmployeeName": {
+        "table": "ExpenseReports",
+        "field": "EmployeeName",
+        "kind": "lookup",
+        "rule": "Un expense report: employee name — tomado del employee vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del employee vinculado"
+      },
+      "ExpenseReports.EmployeeBudgetLimit": {
+        "table": "ExpenseReports",
+        "field": "EmployeeBudgetLimit",
+        "kind": "lookup",
+        "rule": "Un expense report: employee budget limit — tomado del employee vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "BudgetLimit",
+            "label": "budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El budget limit del employee vinculado"
+      },
+      "ExpenseReports.TotalAmount": {
+        "table": "ExpenseReports",
+        "field": "TotalAmount",
+        "kind": "rollup",
+        "rule": "Un expense report: total amount es el total de amount entre los expense items relacionados con el expense report.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseItems",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "ExpenseItems",
+            "field": "ExpenseReport",
+            "label": "expense report"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "ExpenseReportId",
+            "label": "expense report ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de amount entre todos los expense items cuyo expense report es expense report ID"
+      },
+      "ExpenseReports.IsOverBudget": {
+        "table": "ExpenseReports",
+        "field": "IsOverBudget",
+        "kind": "formula",
+        "rule": "Un expense report se considera un over budget si se cumple todo lo siguiente: el employee budget limit es mayor que 0 y el total amount es mayor que el employee budget limit.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "EmployeeBudgetLimit",
+            "label": "employee budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "TotalAmount",
+            "label": "total amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «is over budget» del expense report se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "verdadero",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "el employee budget limit es mayor que 0"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "el total amount es mayor que el employee budget limit"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Verdadero cuando employee budget limit es mayor que 0 y total amount es mayor que employee budget limit"
+      },
+      "ExpenseReports.IsApproved": {
+        "table": "ExpenseReports",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Un expense report se considera approved si el approval status es «approved».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "ApprovalStatus",
+            "label": "approval status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «is approved» del expense report se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "verdadero",
+              "when": {
+                "kind": "leaf",
+                "text": "el approval status es «approved»"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Verdadero cuando approval status es \"approved\""
+      },
+      "ExpenseReports.RequiresEscalation": {
+        "table": "ExpenseReports",
+        "field": "RequiresEscalation",
+        "kind": "formula",
+        "rule": "Un expense report se considera que cumple: escalation si se cumple todo lo siguiente: el is over budget es verdadero y el is approved es falso.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "IsOverBudget",
+            "label": "is over budget"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "IsApproved",
+            "label": "is approved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «requires escalation» del expense report se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "verdadero",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "el is over budget es verdadero"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "el is approved es falso"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Verdadero cuando is over budget es igual a sí y is approved es igual a no"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Employees": "employee",
+      "ExpenseReports": "expense report",
+      "ExpenseItems": "expense item"
+    }
+  },
+  "fr": {
+    "fields": {
+      "Employees.Name": {
+        "table": "Employees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un employee : name est calculé comme le first name, suivi de une espace, suivi de le last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Employees",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name joint à \" \") joint à last name"
+      },
+      "ExpenseReports.EmployeeName": {
+        "table": "ExpenseReports",
+        "field": "EmployeeName",
+        "kind": "lookup",
+        "rule": "Un expense report : employee name — repris du employee lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du employee lié"
+      },
+      "ExpenseReports.EmployeeBudgetLimit": {
+        "table": "ExpenseReports",
+        "field": "EmployeeBudgetLimit",
+        "kind": "lookup",
+        "rule": "Un expense report : employee budget limit — repris du employee lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "BudgetLimit",
+            "label": "budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le budget limit du employee lié"
+      },
+      "ExpenseReports.TotalAmount": {
+        "table": "ExpenseReports",
+        "field": "TotalAmount",
+        "kind": "rollup",
+        "rule": "Un expense report : total amount est le total de amount sur les expense items liés à l'expense report.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseItems",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "ExpenseItems",
+            "field": "ExpenseReport",
+            "label": "expense report"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "ExpenseReportId",
+            "label": "expense report ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de amount sur tous les expense items dont expense report est expense report ID"
+      },
+      "ExpenseReports.IsOverBudget": {
+        "table": "ExpenseReports",
+        "field": "IsOverBudget",
+        "kind": "formula",
+        "rule": "Un expense report est considéré comme un over budget si tout ce qui suit est vrai : l'employee budget limit est supérieur à 0 et le total amount est supérieur à l'employee budget limit.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "EmployeeBudgetLimit",
+            "label": "employee budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "TotalAmount",
+            "label": "total amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « is over budget » de l'expense report est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "vrai",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "l'employee budget limit est supérieur à 0"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "le total amount est supérieur à l'employee budget limit"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "faux",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Vrai lorsque employee budget limit est supérieur à 0 et total amount est supérieur à employee budget limit"
+      },
+      "ExpenseReports.IsApproved": {
+        "table": "ExpenseReports",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Un expense report est considéré comme approved si l'approval status est « approved ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "ApprovalStatus",
+            "label": "approval status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « is approved » de l'expense report est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "vrai",
+              "when": {
+                "kind": "leaf",
+                "text": "l'approval status est « approved »"
+              }
+            },
+            {
+              "value": "faux",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Vrai lorsque approval status est \"approved\""
+      },
+      "ExpenseReports.RequiresEscalation": {
+        "table": "ExpenseReports",
+        "field": "RequiresEscalation",
+        "kind": "formula",
+        "rule": "Un expense report est considéré comme satisfaisant : escalation si tout ce qui suit est vrai : l'is over budget est vrai et l'is approved est faux.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "IsOverBudget",
+            "label": "is over budget"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "IsApproved",
+            "label": "is approved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « requires escalation » de l'expense report est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "vrai",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "l'is over budget est vrai"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "l'is approved est faux"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "faux",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Vrai lorsque is over budget est égal à oui et is approved est égal à non"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Employees": "employee",
+      "ExpenseReports": "expense report",
+      "ExpenseItems": "expense item"
+    }
+  },
+  "hi": {
+    "fields": {
+      "Employees.Name": {
+        "table": "Employees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "employee का “name” first name, उसके बाद एक रिक्त स्थान, उसके बाद last name के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Employees",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name \" \" से जुड़ा हुआ) last name से जुड़ा हुआ"
+      },
+      "ExpenseReports.EmployeeName": {
+        "table": "ExpenseReports",
+        "field": "EmployeeName",
+        "kind": "lookup",
+        "rule": "expense report का “employee name” — लिंक किए गए “employee” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “employee” का name"
+      },
+      "ExpenseReports.EmployeeBudgetLimit": {
+        "table": "ExpenseReports",
+        "field": "EmployeeBudgetLimit",
+        "kind": "lookup",
+        "rule": "expense report का “employee budget limit” — लिंक किए गए “employee” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "BudgetLimit",
+            "label": "budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “employee” का budget limit"
+      },
+      "ExpenseReports.TotalAmount": {
+        "table": "ExpenseReports",
+        "field": "TotalAmount",
+        "kind": "rollup",
+        "rule": "expense report का “total amount” expense report से संबंधित “expense items” पर कुल “amount” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseItems",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "ExpenseItems",
+            "field": "ExpenseReport",
+            "label": "expense report"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "ExpenseReportId",
+            "label": "expense report ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “expense items” पर योग amount, जिनका expense report expense report ID है"
+      },
+      "ExpenseReports.IsOverBudget": {
+        "table": "ExpenseReports",
+        "field": "IsOverBudget",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: employee budget limit 0 से अधिक है और total amount employee budget limit से अधिक है, तो expense report “over budget” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "EmployeeBudgetLimit",
+            "label": "employee budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "TotalAmount",
+            "label": "total amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Expense report का “is over budget” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "सत्य",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "employee budget limit 0 से अधिक है"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "total amount employee budget limit से अधिक है"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "असत्य",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "सत्य, जब employee budget limit 0 से अधिक है और total amount employee budget limit से अधिक है"
+      },
+      "ExpenseReports.IsApproved": {
+        "table": "ExpenseReports",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "यदि approval status “approved” है, तो expense report “approved” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "ApprovalStatus",
+            "label": "approval status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Expense report का “is approved” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "सत्य",
+              "when": {
+                "kind": "leaf",
+                "text": "approval status “approved” है"
+              }
+            },
+            {
+              "value": "असत्य",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "सत्य, जब approval status \"approved\" है"
+      },
+      "ExpenseReports.RequiresEscalation": {
+        "table": "ExpenseReports",
+        "field": "RequiresEscalation",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: is over budget सत्य है और is approved असत्य है, तो expense report “escalation” की शर्त पूरी करने वाला माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "IsOverBudget",
+            "label": "is over budget"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "IsApproved",
+            "label": "is approved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Expense report का “requires escalation” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "सत्य",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "is over budget सत्य है"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "is approved असत्य है"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "असत्य",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "सत्य, जब is over budget हाँ के बराबर है और is approved नहीं के बराबर है"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "Employees": "employee",
+      "ExpenseReports": "expense report",
+      "ExpenseItems": "expense item"
+    }
+  },
+  "id": {
+    "fields": {
+      "Employees.Name": {
+        "table": "Employees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap employee, name dihitung sebagai first name, diikuti spasi, diikuti last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Employees",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name digabung dengan \" \") digabung dengan last name"
+      },
+      "ExpenseReports.EmployeeName": {
+        "table": "ExpenseReports",
+        "field": "EmployeeName",
+        "kind": "lookup",
+        "rule": "Untuk setiap expense report, employee name diambil dari employee yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari employee yang tertaut"
+      },
+      "ExpenseReports.EmployeeBudgetLimit": {
+        "table": "ExpenseReports",
+        "field": "EmployeeBudgetLimit",
+        "kind": "lookup",
+        "rule": "Untuk setiap expense report, employee budget limit diambil dari employee yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "BudgetLimit",
+            "label": "budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Budget limit dari employee yang tertaut"
+      },
+      "ExpenseReports.TotalAmount": {
+        "table": "ExpenseReports",
+        "field": "TotalAmount",
+        "kind": "rollup",
+        "rule": "Untuk setiap expense report, total amount adalah nilai total amount pada seluruh expense items yang terkait dengan expense report tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseItems",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "ExpenseItems",
+            "field": "ExpenseReport",
+            "label": "expense report"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "ExpenseReportId",
+            "label": "expense report ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total amount pada semua expense items dengan syarat expense report adalah expense report ID"
+      },
+      "ExpenseReports.IsOverBudget": {
+        "table": "ExpenseReports",
+        "field": "IsOverBudget",
+        "kind": "formula",
+        "rule": "Setiap expense report dianggap “over budget” jika semua kondisi berikut terpenuhi: employee budget limit lebih dari 0 dan total amount lebih dari employee budget limit.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "EmployeeBudgetLimit",
+            "label": "employee budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "TotalAmount",
+            "label": "total amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap expense report, is over budget ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "benar",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "employee budget limit lebih dari 0"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "total amount lebih dari employee budget limit"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "salah",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Benar jika employee budget limit lebih dari 0 dan total amount lebih dari employee budget limit"
+      },
+      "ExpenseReports.IsApproved": {
+        "table": "ExpenseReports",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Setiap expense report dianggap “approved” jika approval status adalah “approved”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "ApprovalStatus",
+            "label": "approval status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap expense report, is approved ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "benar",
+              "when": {
+                "kind": "leaf",
+                "text": "approval status adalah “approved”"
+              }
+            },
+            {
+              "value": "salah",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Benar jika approval status adalah \"approved\""
+      },
+      "ExpenseReports.RequiresEscalation": {
+        "table": "ExpenseReports",
+        "field": "RequiresEscalation",
+        "kind": "formula",
+        "rule": "Setiap expense report dianggap memenuhi kondisi “requires escalation” jika semua kondisi berikut terpenuhi: is over budget adalah benar dan is approved adalah salah.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "IsOverBudget",
+            "label": "is over budget"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "IsApproved",
+            "label": "is approved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap expense report, requires escalation ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "benar",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "is over budget adalah benar"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "is approved adalah salah"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "salah",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Benar jika is over budget sama dengan ya dan is approved sama dengan tidak"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Employees": "employee",
+      "ExpenseReports": "expense report",
+      "ExpenseItems": "expense item"
+    }
+  },
+  "it": {
+    "fields": {
+      "Employees.Name": {
+        "table": "Employees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un employee: name è calcolato come il first name, seguito da uno spazio, seguito da il last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Employees",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name unito a \" \") unito a last name"
+      },
+      "ExpenseReports.EmployeeName": {
+        "table": "ExpenseReports",
+        "field": "EmployeeName",
+        "kind": "lookup",
+        "rule": "Un expense report: employee name — ripreso dal employee collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del employee collegato"
+      },
+      "ExpenseReports.EmployeeBudgetLimit": {
+        "table": "ExpenseReports",
+        "field": "EmployeeBudgetLimit",
+        "kind": "lookup",
+        "rule": "Un expense report: employee budget limit — ripreso dal employee collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "BudgetLimit",
+            "label": "budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il budget limit del employee collegato"
+      },
+      "ExpenseReports.TotalAmount": {
+        "table": "ExpenseReports",
+        "field": "TotalAmount",
+        "kind": "rollup",
+        "rule": "Un expense report: total amount è il totale di amount tra i expense items collegati a l'expense report.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseItems",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "ExpenseItems",
+            "field": "ExpenseReport",
+            "label": "expense report"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "ExpenseReportId",
+            "label": "expense report ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di amount su tutti i expense items il cui expense report è expense report ID"
+      },
+      "ExpenseReports.IsOverBudget": {
+        "table": "ExpenseReports",
+        "field": "IsOverBudget",
+        "kind": "formula",
+        "rule": "Un expense report è considerato un over budget se vale tutto quanto segue: l'employee budget limit è maggiore di 0 e il total amount è maggiore di l'employee budget limit.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "EmployeeBudgetLimit",
+            "label": "employee budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "TotalAmount",
+            "label": "total amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “is over budget” dell'expense report è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "vero",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "l'employee budget limit è maggiore di 0"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "il total amount è maggiore di l'employee budget limit"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Vero quando employee budget limit è maggiore di 0 e total amount è maggiore di employee budget limit"
+      },
+      "ExpenseReports.IsApproved": {
+        "table": "ExpenseReports",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Un expense report è considerato approved se l'approval status è «approved».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "ApprovalStatus",
+            "label": "approval status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “is approved” dell'expense report è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "vero",
+              "when": {
+                "kind": "leaf",
+                "text": "l'approval status è «approved»"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Vero quando approval status è \"approved\""
+      },
+      "ExpenseReports.RequiresEscalation": {
+        "table": "ExpenseReports",
+        "field": "RequiresEscalation",
+        "kind": "formula",
+        "rule": "Un expense report è considerato come soddisfacente: escalation se vale tutto quanto segue: l'is over budget è vero e l'is approved è falso.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "IsOverBudget",
+            "label": "is over budget"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "IsApproved",
+            "label": "is approved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “requires escalation” dell'expense report è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "vero",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "l'is over budget è vero"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "l'is approved è falso"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Vero quando is over budget è uguale a sì e is approved è uguale a no"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Employees": "employee",
+      "ExpenseReports": "expense report",
+      "ExpenseItems": "expense item"
+    }
+  },
+  "ja": {
+    "fields": {
+      "Employees.Name": {
+        "table": "Employees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "employeeの「name」は first name、続いて 空白 1 つ、続いて last name として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Employees",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name と \" \" を連結) と last name を連結"
+      },
+      "ExpenseReports.EmployeeName": {
+        "table": "ExpenseReports",
+        "field": "EmployeeName",
+        "kind": "lookup",
+        "rule": "expense reportの「employee name」— リンクされた「employee」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「employee」の name"
+      },
+      "ExpenseReports.EmployeeBudgetLimit": {
+        "table": "ExpenseReports",
+        "field": "EmployeeBudgetLimit",
+        "kind": "lookup",
+        "rule": "expense reportの「employee budget limit」— リンクされた「employee」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "BudgetLimit",
+            "label": "budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「employee」の budget limit"
+      },
+      "ExpenseReports.TotalAmount": {
+        "table": "ExpenseReports",
+        "field": "TotalAmount",
+        "kind": "rollup",
+        "rule": "expense reportの「total amount」は expense reportに関連する「expense items」全体での「amount」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseItems",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "ExpenseItems",
+            "field": "ExpenseReport",
+            "label": "expense report"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "ExpenseReportId",
+            "label": "expense report ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Expense report が expense report ID であるすべての「expense items」にわたる amount の合計"
+      },
+      "ExpenseReports.IsOverBudget": {
+        "table": "ExpenseReports",
+        "field": "IsOverBudget",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: employee budget limit が 0 より大きいおよびtotal amount が employee budget limit より大きい場合、expense reportは「Over Budget」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "EmployeeBudgetLimit",
+            "label": "employee budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "TotalAmount",
+            "label": "total amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Expense reportの「is over budget」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "employee budget limit が 0 より大きい"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "total amount が employee budget limit より大きい"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "偽",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Employee budget limit が 0 より大きいおよびtotal amount が employee budget limit より大きいとき真"
+      },
+      "ExpenseReports.IsApproved": {
+        "table": "ExpenseReports",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "approval status が 「approved」 である場合、expense reportは「Approved」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "ApprovalStatus",
+            "label": "approval status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Expense reportの「is approved」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "approval status が 「approved」 である"
+              }
+            },
+            {
+              "value": "偽",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Approval status は \"approved\"とき真"
+      },
+      "ExpenseReports.RequiresEscalation": {
+        "table": "ExpenseReports",
+        "field": "RequiresEscalation",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: is over budget が 真 であるおよびis approved が 偽 である場合、expense reportは「Escalation」を満たすと見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "IsOverBudget",
+            "label": "is over budget"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "IsApproved",
+            "label": "is approved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Expense reportの「requires escalation」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "is over budget が 真 である"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "is approved が 偽 である"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "偽",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is over budget が はい と等しいおよびis approved が いいえ と等しいとき真"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "Employees": "employee",
+      "ExpenseReports": "expense report",
+      "ExpenseItems": "expense item"
+    }
+  },
+  "ko": {
+    "fields": {
+      "Employees.Name": {
+        "table": "Employees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘employee’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘first name’, 이어서 공백 한 칸, 이어서 ‘last name’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Employees",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name 뒤에 \" \" 연결한 결과) 뒤에 last name 연결한 결과"
+      },
+      "ExpenseReports.EmployeeName": {
+        "table": "ExpenseReports",
+        "field": "EmployeeName",
+        "kind": "lookup",
+        "rule": "‘expense report’ 레코드의 ‘employee name’ 값은 연결된 ‘employee’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 employee 레코드의 name"
+      },
+      "ExpenseReports.EmployeeBudgetLimit": {
+        "table": "ExpenseReports",
+        "field": "EmployeeBudgetLimit",
+        "kind": "lookup",
+        "rule": "‘expense report’ 레코드의 ‘employee budget limit’ 값은 연결된 ‘employee’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "BudgetLimit",
+            "label": "budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 employee 레코드의 budget limit"
+      },
+      "ExpenseReports.TotalAmount": {
+        "table": "ExpenseReports",
+        "field": "TotalAmount",
+        "kind": "rollup",
+        "rule": "‘expense report’ 레코드의 ‘total amount’ 값은 해당 ‘expense report’ 레코드에 연결된 모든 ‘expense items’ 레코드의 총 ‘amount’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseItems",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "ExpenseItems",
+            "field": "ExpenseReport",
+            "label": "expense report"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "ExpenseReportId",
+            "label": "expense report ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(expense report 값이 expense report ID임)에 맞는 모든 expense items 레코드의 amount 합계"
+      },
+      "ExpenseReports.IsOverBudget": {
+        "table": "ExpenseReports",
+        "field": "IsOverBudget",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘employee budget limit’ 값이 0보다 큰 경우 및 ‘total amount’ 값이 ‘employee budget limit’보다 큰 경우), ‘expense report’ 레코드는 ‘over budget’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "EmployeeBudgetLimit",
+            "label": "employee budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "TotalAmount",
+            "label": "total amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘expense report’ 레코드의 ‘is over budget’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "참",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "‘employee budget limit’ 값이 0보다 큰 경우"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "‘total amount’ 값이 ‘employee budget limit’보다 큰 경우"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "거짓",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "다음이 성립하면 참: employee budget limit 값이 0보다 큼 및 total amount 값이 employee budget limit보다 큼"
+      },
+      "ExpenseReports.IsApproved": {
+        "table": "ExpenseReports",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "‘approval status’ 값이 “approved”인 경우, ‘expense report’ 레코드는 ‘approved’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "ApprovalStatus",
+            "label": "approval status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘expense report’ 레코드의 ‘is approved’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "참",
+              "when": {
+                "kind": "leaf",
+                "text": "‘approval status’ 값이 “approved”인 경우"
+              }
+            },
+            {
+              "value": "거짓",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "다음이 성립하면 참: approval status 값이 \"approved\"임"
+      },
+      "ExpenseReports.RequiresEscalation": {
+        "table": "ExpenseReports",
+        "field": "RequiresEscalation",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘is over budget’ 값이 참인 경우 및 ‘is approved’ 값이 거짓인 경우), ‘expense report’ 레코드는 ‘requires escalation’ 조건에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "IsOverBudget",
+            "label": "is over budget"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "IsApproved",
+            "label": "is approved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘expense report’ 레코드의 ‘requires escalation’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "참",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "‘is over budget’ 값이 참인 경우"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "‘is approved’ 값이 거짓인 경우"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "거짓",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "다음이 성립하면 참: is over budget 값이 예 값과 같음 및 is approved 값이 아니요 값과 같음"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Employees": "employee",
+      "ExpenseReports": "expense report",
+      "ExpenseItems": "expense item"
+    }
+  },
+  "nl": {
+    "fields": {
+      "Employees.Name": {
+        "table": "Employees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een employee: name wordt berekend als de first name, gevolgd door een spatie, gevolgd door de last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Employees",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name samengevoegd met \" \") samengevoegd met last name"
+      },
+      "ExpenseReports.EmployeeName": {
+        "table": "ExpenseReports",
+        "field": "EmployeeName",
+        "kind": "lookup",
+        "rule": "Een expense report: employee name — overgenomen van de gekoppelde employee.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde employee"
+      },
+      "ExpenseReports.EmployeeBudgetLimit": {
+        "table": "ExpenseReports",
+        "field": "EmployeeBudgetLimit",
+        "kind": "lookup",
+        "rule": "Een expense report: employee budget limit — overgenomen van de gekoppelde employee.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "BudgetLimit",
+            "label": "budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De budget limit van de gekoppelde employee"
+      },
+      "ExpenseReports.TotalAmount": {
+        "table": "ExpenseReports",
+        "field": "TotalAmount",
+        "kind": "rollup",
+        "rule": "Een expense report: total amount is het totaal van amount over de expense items gekoppeld aan de expense report.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseItems",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "ExpenseItems",
+            "field": "ExpenseReport",
+            "label": "expense report"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "ExpenseReportId",
+            "label": "expense report ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van amount over alle expense items waarvan expense report is expense report ID"
+      },
+      "ExpenseReports.IsOverBudget": {
+        "table": "ExpenseReports",
+        "field": "IsOverBudget",
+        "kind": "formula",
+        "rule": "Een expense report geldt als een over budget als al het volgende geldt: de employee budget limit groter is dan 0 en de total amount groter is dan de employee budget limit.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "EmployeeBudgetLimit",
+            "label": "employee budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "TotalAmount",
+            "label": "total amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘is over budget’ van de expense report wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "waar",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "de employee budget limit groter is dan 0"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "de total amount groter is dan de employee budget limit"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "onwaar",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Waar wanneer employee budget limit is groter dan 0 en total amount is groter dan employee budget limit"
+      },
+      "ExpenseReports.IsApproved": {
+        "table": "ExpenseReports",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Een expense report geldt als approved als de approval status ‘approved’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "ApprovalStatus",
+            "label": "approval status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘is approved’ van de expense report wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "waar",
+              "when": {
+                "kind": "leaf",
+                "text": "de approval status ‘approved’ is"
+              }
+            },
+            {
+              "value": "onwaar",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Waar wanneer approval status is \"approved\""
+      },
+      "ExpenseReports.RequiresEscalation": {
+        "table": "ExpenseReports",
+        "field": "RequiresEscalation",
+        "kind": "formula",
+        "rule": "Een expense report geldt als voldoend aan: escalation als al het volgende geldt: de is over budget waar is en de is approved onwaar is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "IsOverBudget",
+            "label": "is over budget"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "IsApproved",
+            "label": "is approved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘requires escalation’ van de expense report wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "waar",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "de is over budget waar is"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "de is approved onwaar is"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "onwaar",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Waar wanneer is over budget is gelijk aan ja en is approved is gelijk aan nee"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Employees": "employee",
+      "ExpenseReports": "expense report",
+      "ExpenseItems": "expense item"
+    }
+  },
+  "pt": {
+    "fields": {
+      "Employees.Name": {
+        "table": "Employees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um employee: name é calculado como o first name, seguido de um espaço, seguido de o last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Employees",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name unido a \" \") unido a last name"
+      },
+      "ExpenseReports.EmployeeName": {
+        "table": "ExpenseReports",
+        "field": "EmployeeName",
+        "kind": "lookup",
+        "rule": "Um expense report: employee name — obtido do employee vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do employee vinculado"
+      },
+      "ExpenseReports.EmployeeBudgetLimit": {
+        "table": "ExpenseReports",
+        "field": "EmployeeBudgetLimit",
+        "kind": "lookup",
+        "rule": "Um expense report: employee budget limit — obtido do employee vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "BudgetLimit",
+            "label": "budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O budget limit do employee vinculado"
+      },
+      "ExpenseReports.TotalAmount": {
+        "table": "ExpenseReports",
+        "field": "TotalAmount",
+        "kind": "rollup",
+        "rule": "Um expense report: total amount é o total de amount entre os expense items relacionados a o expense report.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseItems",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "ExpenseItems",
+            "field": "ExpenseReport",
+            "label": "expense report"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "ExpenseReportId",
+            "label": "expense report ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de amount entre todos os expense items cujo expense report é expense report ID"
+      },
+      "ExpenseReports.IsOverBudget": {
+        "table": "ExpenseReports",
+        "field": "IsOverBudget",
+        "kind": "formula",
+        "rule": "Um expense report é considerado um over budget se tudo o que segue é verdadeiro: o employee budget limit é maior que 0 e o total amount é maior que o employee budget limit.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "EmployeeBudgetLimit",
+            "label": "employee budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "TotalAmount",
+            "label": "total amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “is over budget” do expense report é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "verdadeiro",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "o employee budget limit é maior que 0"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "o total amount é maior que o employee budget limit"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Verdadeiro quando employee budget limit é maior que 0 e total amount é maior que employee budget limit"
+      },
+      "ExpenseReports.IsApproved": {
+        "table": "ExpenseReports",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Um expense report é considerado approved se o approval status é “approved”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "ApprovalStatus",
+            "label": "approval status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “is approved” do expense report é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "verdadeiro",
+              "when": {
+                "kind": "leaf",
+                "text": "o approval status é “approved”"
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Verdadeiro quando approval status é \"approved\""
+      },
+      "ExpenseReports.RequiresEscalation": {
+        "table": "ExpenseReports",
+        "field": "RequiresEscalation",
+        "kind": "formula",
+        "rule": "Um expense report é considerado como satisfazendo: escalation se tudo o que segue é verdadeiro: o is over budget é verdadeiro e o is approved é falso.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "IsOverBudget",
+            "label": "is over budget"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "IsApproved",
+            "label": "is approved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “requires escalation” do expense report é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "verdadeiro",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "o is over budget é verdadeiro"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "o is approved é falso"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Verdadeiro quando is over budget é igual a sim e is approved é igual a não"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Employees": "employee",
+      "ExpenseReports": "expense report",
+      "ExpenseItems": "expense item"
+    }
+  },
+  "ru": {
+    "fields": {
+      "Employees.Name": {
+        "table": "Employees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Employee: «name» вычисляется как first name, затем пробел, затем last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Employees",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name соединено с \" \") соединено с last name"
+      },
+      "ExpenseReports.EmployeeName": {
+        "table": "ExpenseReports",
+        "field": "EmployeeName",
+        "kind": "lookup",
+        "rule": "Expense report: «employee name» — берётся из связанного «employee».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «employee»"
+      },
+      "ExpenseReports.EmployeeBudgetLimit": {
+        "table": "ExpenseReports",
+        "field": "EmployeeBudgetLimit",
+        "kind": "lookup",
+        "rule": "Expense report: «employee budget limit» — берётся из связанного «employee».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "BudgetLimit",
+            "label": "budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Budget limit связанного «employee»"
+      },
+      "ExpenseReports.TotalAmount": {
+        "table": "ExpenseReports",
+        "field": "TotalAmount",
+        "kind": "rollup",
+        "rule": "Expense report: «total amount» — это сумма «amount» по записям «expense items», связанным с expense report.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseItems",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "ExpenseItems",
+            "field": "ExpenseReport",
+            "label": "expense report"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "ExpenseReportId",
+            "label": "expense report ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма amount по всем «expense items», у которых expense report равно expense report ID"
+      },
+      "ExpenseReports.IsOverBudget": {
+        "table": "ExpenseReports",
+        "field": "IsOverBudget",
+        "kind": "formula",
+        "rule": "Expense report считается «over budget», если выполняется всё следующее: employee budget limit больше 0 и total amount больше employee budget limit.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "EmployeeBudgetLimit",
+            "label": "employee budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "TotalAmount",
+            "label": "total amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «is over budget» (Expense report) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "истина",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "employee budget limit больше 0"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "total amount больше employee budget limit"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "ложь",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Истина, когда employee budget limit больше 0 и total amount больше employee budget limit"
+      },
+      "ExpenseReports.IsApproved": {
+        "table": "ExpenseReports",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Expense report считается «approved», если approval status равно «approved».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "ApprovalStatus",
+            "label": "approval status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «is approved» (Expense report) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "истина",
+              "when": {
+                "kind": "leaf",
+                "text": "approval status равно «approved»"
+              }
+            },
+            {
+              "value": "ложь",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Истина, когда approval status равно \"approved\""
+      },
+      "ExpenseReports.RequiresEscalation": {
+        "table": "ExpenseReports",
+        "field": "RequiresEscalation",
+        "kind": "formula",
+        "rule": "Expense report считается удовлетворяющим условию «escalation», если выполняется всё следующее: is over budget равно истина и is approved равно ложь.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "IsOverBudget",
+            "label": "is over budget"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "IsApproved",
+            "label": "is approved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «requires escalation» (Expense report) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "истина",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "is over budget равно истина"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "is approved равно ложь"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "ложь",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Истина, когда is over budget равно да и is approved равно нет"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Employees": "employee",
+      "ExpenseReports": "expense report",
+      "ExpenseItems": "expense item"
+    }
+  },
+  "tr": {
+    "fields": {
+      "Employees.Name": {
+        "table": "Employees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“employee” kaydının “name” alanı, “first name” alanı, ardından bir boşluk, ardından “last name” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Employees",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name ile \" \" birleşimi) ile last name birleşimi"
+      },
+      "ExpenseReports.EmployeeName": {
+        "table": "ExpenseReports",
+        "field": "EmployeeName",
+        "kind": "lookup",
+        "rule": "“expense report” kaydının “employee name” alanı, “employee” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı employee kaydının name değeri"
+      },
+      "ExpenseReports.EmployeeBudgetLimit": {
+        "table": "ExpenseReports",
+        "field": "EmployeeBudgetLimit",
+        "kind": "lookup",
+        "rule": "“expense report” kaydının “employee budget limit” alanı, “employee” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "BudgetLimit",
+            "label": "budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı employee kaydının budget limit değeri"
+      },
+      "ExpenseReports.TotalAmount": {
+        "table": "ExpenseReports",
+        "field": "TotalAmount",
+        "kind": "rollup",
+        "rule": "“expense report” kaydının “total amount” alanı, “expense report” kaydıyla ilişkili “expense items” kayıtları üzerinden hesaplanan toplam “amount” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseItems",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "ExpenseItems",
+            "field": "ExpenseReport",
+            "label": "expense report"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "ExpenseReportId",
+            "label": "expense report ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Expense report değeri expense report ID olan tüm expense items kayıtlarındaki amount değerlerinin toplamı"
+      },
+      "ExpenseReports.IsOverBudget": {
+        "table": "ExpenseReports",
+        "field": "IsOverBudget",
+        "kind": "formula",
+        "rule": "“expense report” kaydı, “employee budget limit” alanı 0 değerinden büyük ve “total amount” alanı “employee budget limit” alanı değerinden büyük ise “over budget” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "EmployeeBudgetLimit",
+            "label": "employee budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "TotalAmount",
+            "label": "total amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“expense report” kaydının “is over budget” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "doğru",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "“employee budget limit” alanı 0 değerinden büyük"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "“total amount” alanı “employee budget limit” alanı değerinden büyük"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "yanlış",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Employee budget limit, 0 değerinden büyük ve total amount, employee budget limit değerinden büyük ise doğru"
+      },
+      "ExpenseReports.IsApproved": {
+        "table": "ExpenseReports",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "“expense report” kaydı, “approval status” alanı “approved” değerine eşit ise “approved” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "ApprovalStatus",
+            "label": "approval status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“expense report” kaydının “is approved” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "doğru",
+              "when": {
+                "kind": "leaf",
+                "text": "“approval status” alanı “approved” değerine eşit"
+              }
+            },
+            {
+              "value": "yanlış",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Approval status, \"approved\" değerine eşit ise doğru"
+      },
+      "ExpenseReports.RequiresEscalation": {
+        "table": "ExpenseReports",
+        "field": "RequiresEscalation",
+        "kind": "formula",
+        "rule": "“expense report” kaydı, “is over budget” alanı doğru değerine eşit ve “is approved” alanı yanlış değerine eşit ise “requires escalation” koşulunu sağlamış sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "IsOverBudget",
+            "label": "is over budget"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "IsApproved",
+            "label": "is approved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“expense report” kaydının “requires escalation” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "doğru",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "“is over budget” alanı doğru değerine eşit"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "“is approved” alanı yanlış değerine eşit"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "yanlış",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is over budget, evet değerine eşit ve is approved, hayır değerine eşit ise doğru"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Employees": "employee",
+      "ExpenseReports": "expense report",
+      "ExpenseItems": "expense item"
+    }
+  },
+  "vi": {
+    "fields": {
+      "Employees.Name": {
+        "table": "Employees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi employee được tính bằng first name, tiếp theo là dấu cách, tiếp theo là last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Employees",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name nối với \" \") nối với last name"
+      },
+      "ExpenseReports.EmployeeName": {
+        "table": "ExpenseReports",
+        "field": "EmployeeName",
+        "kind": "lookup",
+        "rule": "Trường “employee name” của mỗi expense report được lấy từ bản ghi liên kết qua trường “employee”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua employee"
+      },
+      "ExpenseReports.EmployeeBudgetLimit": {
+        "table": "ExpenseReports",
+        "field": "EmployeeBudgetLimit",
+        "kind": "lookup",
+        "rule": "Trường “employee budget limit” của mỗi expense report được lấy từ bản ghi liên kết qua trường “employee”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "BudgetLimit",
+            "label": "budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Budget limit của bản ghi liên kết qua employee"
+      },
+      "ExpenseReports.TotalAmount": {
+        "table": "ExpenseReports",
+        "field": "TotalAmount",
+        "kind": "rollup",
+        "rule": "Trường “total amount” của mỗi expense report là giá trị tổng cộng của trường “amount” trên các expense items liên quan đến expense report đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseItems",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "ExpenseItems",
+            "field": "ExpenseReport",
+            "label": "expense report"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "ExpenseReportId",
+            "label": "expense report ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng amount trên tất cả expense items có expense report là expense report ID"
+      },
+      "ExpenseReports.IsOverBudget": {
+        "table": "ExpenseReports",
+        "field": "IsOverBudget",
+        "kind": "formula",
+        "rule": "Mỗi expense report được coi là “over budget” nếu tất cả các điều kiện sau đều đúng: employee budget limit lớn hơn 0 và total amount lớn hơn employee budget limit.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "EmployeeBudgetLimit",
+            "label": "employee budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "TotalAmount",
+            "label": "total amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “is over budget” của mỗi expense report được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "đúng",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "employee budget limit lớn hơn 0"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "total amount lớn hơn employee budget limit"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "sai",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Đúng khi employee budget limit lớn hơn 0 và total amount lớn hơn employee budget limit"
+      },
+      "ExpenseReports.IsApproved": {
+        "table": "ExpenseReports",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "Mỗi expense report được coi là “approved” nếu approval status là “approved”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "ApprovalStatus",
+            "label": "approval status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “is approved” của mỗi expense report được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "đúng",
+              "when": {
+                "kind": "leaf",
+                "text": "approval status là “approved”"
+              }
+            },
+            {
+              "value": "sai",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Đúng khi approval status là \"approved\""
+      },
+      "ExpenseReports.RequiresEscalation": {
+        "table": "ExpenseReports",
+        "field": "RequiresEscalation",
+        "kind": "formula",
+        "rule": "Mỗi expense report được coi là thỏa điều kiện “requires escalation” nếu tất cả các điều kiện sau đều đúng: is over budget là đúng và is approved là sai.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "IsOverBudget",
+            "label": "is over budget"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "IsApproved",
+            "label": "is approved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “requires escalation” của mỗi expense report được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "đúng",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "is over budget là đúng"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "is approved là sai"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "sai",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Đúng khi is over budget bằng có và is approved bằng không"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Employees": "employee",
+      "ExpenseReports": "expense report",
+      "ExpenseItems": "expense item"
+    }
+  },
+  "zh": {
+    "fields": {
+      "Employees.Name": {
+        "table": "Employees",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "employee的“name”按 first name,接着是一个空格,接着是last name 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Employees",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name与\" \"拼接)与last name拼接"
+      },
+      "ExpenseReports.EmployeeName": {
+        "table": "ExpenseReports",
+        "field": "EmployeeName",
+        "kind": "lookup",
+        "rule": "expense report的“employee name”——取自所关联的“employee”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“employee”的name"
+      },
+      "ExpenseReports.EmployeeBudgetLimit": {
+        "table": "ExpenseReports",
+        "field": "EmployeeBudgetLimit",
+        "kind": "lookup",
+        "rule": "expense report的“employee budget limit”——取自所关联的“employee”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Employees",
+            "field": "BudgetLimit",
+            "label": "budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "Employee",
+            "label": "employee"
+          },
+          {
+            "table": "Employees",
+            "field": "EmployeeId",
+            "label": "employee ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“employee”的budget limit"
+      },
+      "ExpenseReports.TotalAmount": {
+        "table": "ExpenseReports",
+        "field": "TotalAmount",
+        "kind": "rollup",
+        "rule": "expense report的“total amount”为 与expense report相关的所有“expense items”的“amount”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseItems",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "ExpenseItems",
+            "field": "ExpenseReport",
+            "label": "expense report"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "ExpenseReportId",
+            "label": "expense report ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有expense report为expense report ID的“expense items”的amount的总和"
+      },
+      "ExpenseReports.IsOverBudget": {
+        "table": "ExpenseReports",
+        "field": "IsOverBudget",
+        "kind": "formula",
+        "rule": "当以下全部成立:employee budget limit大于0且total amount大于employee budget limit时,expense report被视为“Over Budget”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "EmployeeBudgetLimit",
+            "label": "employee budget limit"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "TotalAmount",
+            "label": "total amount"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Expense report的“is over budget”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "employee budget limit大于0"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "total amount大于employee budget limit"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "假",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "当employee budget limit大于0且total amount大于employee budget limit时为真"
+      },
+      "ExpenseReports.IsApproved": {
+        "table": "ExpenseReports",
+        "field": "IsApproved",
+        "kind": "formula",
+        "rule": "当approval status为“approved”时,expense report被视为“Approved”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "ApprovalStatus",
+            "label": "approval status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Expense report的“is approved”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "leaf",
+                "text": "approval status为“approved”"
+              }
+            },
+            {
+              "value": "假",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "当approval status为\"approved\"时为真"
+      },
+      "ExpenseReports.RequiresEscalation": {
+        "table": "ExpenseReports",
+        "field": "RequiresEscalation",
+        "kind": "formula",
+        "rule": "当以下全部成立:is over budget为真且is approved为假时,expense report被视为满足“Escalation”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ExpenseReports",
+            "field": "IsOverBudget",
+            "label": "is over budget"
+          },
+          {
+            "table": "ExpenseReports",
+            "field": "IsApproved",
+            "label": "is approved"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Expense report的“requires escalation”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "is over budget为真"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "is approved为假"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "假",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "当is over budget等于是且is approved等于否时为真"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "Employees": "employee",

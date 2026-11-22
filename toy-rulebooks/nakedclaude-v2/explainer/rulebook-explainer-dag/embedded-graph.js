@@ -470,7 +470,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -669,6 +684,3186 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "AppUsers": "app user"
+    }
+  },
+  "ar": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «customer» يُحسب على النحو الآتي: حقل «full name» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name بأحرف صغيرة بعد وضع «-» مكان « »"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "حقل «full name» في سجل «customer» يُحسب على النحو الآتي: حقل «first name»، ثم مسافة، ثم حقل «last name».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name يليه \" \") يليه last name"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "حقل «status display name» في سجل «customer» مأخوذ من السجل المرتبط به عبر حقل «status».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «display name» من السجل المرتبط عبر «status»"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "حقل «status is blocking» في سجل «customer» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «status» مصنّفًا على أنه «blocking».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «is blocking» من السجل المرتبط عبر «status»"
+      },
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «customer» على أنه «stopped» إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «status is blocking» مفعّلة وحقل «first name» يساوي «Bob».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «is stopped» في سجل «customer» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "صحيح",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "علامة «status is blocking» مفعّلة"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "حقل «first name» يساوي «Bob»"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "خطأ",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ status is blocking وfirst name هو \"Bob\" فالناتج true()، وإلا فالناتج false()"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "حقل «status description» في سجل «customer» مأخوذ من السجل المرتبط به عبر حقل «status».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «description» من السجل المرتبط عبر «status»"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «status» يُحسب على النحو الآتي: حقل «display name» بأحرف صغيرة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name بأحرف صغيرة"
+      },
+      "AppUsers.Name": {
+        "table": "AppUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «app user» يُحسب على النحو الآتي: حقل «email address» بعد وضع شرطة مكان كل «. » بعد وضع شرطة مكان كل «@» بأحرف صغيرة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "AppUsers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address بعد وضع «-» مكان «. » بعد وضع «-» مكان «@» بأحرف صغيرة"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "AppUsers": "app user"
+    }
+  },
+  "de": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Customer: Name wird berechnet als das kleingeschriebene Full Name, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full Name kleingeschrieben, wobei „ “ durch „-“ ersetzt wird"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Ein Customer: Full Name wird berechnet als die First Name, gefolgt von ein Leerzeichen, gefolgt von die Last Name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(First Name verbunden mit \" \") verbunden mit Last Name"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "Ein Customer: Status Display Name — aus dem zugehörigen Status übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Display Name des verknüpften Status"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "Ein Customer: Status is Blocking ist wahr, wenn der zugehörige Status des Customer ist blocking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Is Blocking des verknüpften Status"
+      },
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "Ein Customer gilt als stopped, wenn alles Folgende gilt: das Kennzeichen „Status is Blocking“ gesetzt ist und die First Name „Bob“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Is Stopped“ des Customer wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "wahr",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "das Kennzeichen „Status is Blocking“ gesetzt ist"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "die First Name „Bob“ ist"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "falsch",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Status is Blocking und First Name ist \"Bob\", dann true(), andernfalls false()"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "Ein Customer: Status Description — aus dem zugehörigen Status übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Description des verknüpften Status"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Status: Name wird berechnet als das kleingeschriebene Display Name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display Name kleingeschrieben"
+      },
+      "AppUsers.Name": {
+        "table": "AppUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein App User: Name wird berechnet als das kleingeschriebene Email Address, wobei jedes „. “ durch ein Bindestrich ersetzt wird, wobei jedes „@“ durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "AppUsers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email Address, wobei „. “ durch „-“ ersetzt wird, wobei „@“ durch „-“ ersetzt wird kleingeschrieben"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "Customer",
+      "Statuses": "Status",
+      "AppUsers": "App User"
+    }
+  },
+  "es": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un customer: name se calcula como el full name en minúsculas con cada un espacio reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name en minúsculas con « » reemplazado por «-»"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Un customer: full name se calcula como el first name, seguido de un espacio, seguido de el last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name unido con \" \") unido con last name"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "Un customer: status display name — tomado del status vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El display name del status vinculado"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "Un customer: status is blocking es verdadero cuando el status vinculado es blocking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El is blocking del status vinculado"
+      },
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "Un customer se considera stopped si se cumple todo lo siguiente: el indicador «status is blocking» está activado y el first name es «Bob».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «is stopped» del customer se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "verdadero",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "el indicador «status is blocking» está activado"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "el first name es «Bob»"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si status is blocking y first name es \"Bob\", entonces true(), de lo contrario false()"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "Un customer: status description — tomado del status vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El description del status vinculado"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un status: name se calcula como el display name en minúsculas.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name en minúsculas"
+      },
+      "AppUsers.Name": {
+        "table": "AppUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un app user: name se calcula como el email address con cada «. » reemplazado por un guion con cada «@» reemplazado por un guion en minúsculas.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "AppUsers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address con «. » reemplazado por «-» con «@» reemplazado por «-» en minúsculas"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "AppUsers": "app user"
+    }
+  },
+  "fr": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un customer : name est calculé comme le full name en minuscules avec chaque une espace remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name en minuscules avec « » remplacé par « - »"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Un customer : full name est calculé comme le first name, suivi de une espace, suivi de le last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name joint à \" \") joint à last name"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "Un customer : status display name — repris du status lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le display name du status lié"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "Un customer : status is blocking est vrai lorsque le status lié est blocking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le is blocking du status lié"
+      },
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "Un customer est considéré comme stopped si tout ce qui suit est vrai : l'indicateur « status is blocking » est activé et le first name est « Bob ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « is stopped » du customer est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "vrai",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "l'indicateur « status is blocking » est activé"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "le first name est « Bob »"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "faux",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si status is blocking et first name est \"Bob\", alors true(), sinon false()"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "Un customer : status description — repris du status lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le description du status lié"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un status : name est calculé comme le display name en minuscules.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name en minuscules"
+      },
+      "AppUsers.Name": {
+        "table": "AppUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un app user : name est calculé comme le email address avec chaque «. » remplacé par un trait d'union avec chaque « @ » remplacé par un trait d'union en minuscules.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "AppUsers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address avec « . » remplacé par « - » avec « @ » remplacé par « - » en minuscules"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "AppUsers": "app user"
+    }
+  },
+  "hi": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "customer का “name” full name छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "customer का “full name” first name, उसके बाद एक रिक्त स्थान, उसके बाद last name के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name \" \" से जुड़ा हुआ) last name से जुड़ा हुआ"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "customer का “status display name” — लिंक किए गए “status” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “status” का display name"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "customer का “status is blocking” तब सत्य होता है, जब लिंक किए गए “status” का “blocking” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “status” का is blocking"
+      },
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: “status is blocking” ध्वज लगा हुआ है और first name “Bob” है, तो customer “stopped” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Customer का “is stopped” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "सत्य",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "“status is blocking” ध्वज लगा हुआ है"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "first name “Bob” है"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "असत्य",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि status is blocking और first name \"Bob\" है, तो true(), अन्यथा false()"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "customer का “status description” — लिंक किए गए “status” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “status” का description"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "status का “name” display name छोटे अक्षरों में के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name छोटे अक्षरों में"
+      },
+      "AppUsers.Name": {
+        "table": "AppUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "app user का “name” email address, जिसमें हर “. ” को एक योजक चिह्न से बदला गया हो, जिसमें हर “@” को एक योजक चिह्न से बदला गया हो छोटे अक्षरों में के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "AppUsers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address, जिसमें “. ” को “-” से बदला गया हो, जिसमें “@” को “-” से बदला गया हो छोटे अक्षरों में"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "AppUsers": "app user"
+    }
+  },
+  "id": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap customer, name dihitung sebagai full name dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name dalam huruf kecil dengan “ ” diganti dengan “-”"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Untuk setiap customer, full name dihitung sebagai first name, diikuti spasi, diikuti last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name digabung dengan \" \") digabung dengan last name"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "Untuk setiap customer, status display name diambil dari status yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name dari status yang tertaut"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "Untuk setiap customer, status is blocking bernilai benar jika status yang tertaut pada customer tersebut tergolong “blocking”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is blocking dari status yang tertaut"
+      },
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "Setiap customer dianggap “stopped” jika semua kondisi berikut terpenuhi: penanda “status is blocking” aktif dan first name adalah “Bob”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap customer, is stopped ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "benar",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "penanda “status is blocking” aktif"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "first name adalah “Bob”"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "salah",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika status is blocking dan first name adalah \"Bob\" maka true(), selain itu false()"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "Untuk setiap customer, status description diambil dari status yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Description dari status yang tertaut"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap status, name dihitung sebagai display name dalam huruf kecil.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name dalam huruf kecil"
+      },
+      "AppUsers.Name": {
+        "table": "AppUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap app user, name dihitung sebagai email address dengan setiap “. ” diganti dengan tanda hubung dengan setiap “@” diganti dengan tanda hubung dalam huruf kecil.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "AppUsers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address dengan “. ” diganti dengan “-” dengan “@” diganti dengan “-” dalam huruf kecil"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "AppUsers": "app user"
+    }
+  },
+  "it": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un customer: name è calcolato come il full name in minuscolo con ogni uno spazio sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name in minuscolo con « » sostituito da «-»"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Un customer: full name è calcolato come il first name, seguito da uno spazio, seguito da il last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name unito a \" \") unito a last name"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "Un customer: status display name — ripreso dal status collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il display name del status collegato"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "Un customer: status is blocking è vero quando il status collegato è blocking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il is blocking del status collegato"
+      },
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "Un customer è considerato stopped se vale tutto quanto segue: l'indicatore “status is blocking” è attivo e il first name è «Bob».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “is stopped” del customer è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "vero",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "l'indicatore “status is blocking” è attivo"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "il first name è «Bob»"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se status is blocking e first name è \"Bob\", allora true(), altrimenti false()"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "Un customer: status description — ripreso dal status collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il description del status collegato"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un status: name è calcolato come il display name in minuscolo.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name in minuscolo"
+      },
+      "AppUsers.Name": {
+        "table": "AppUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un app user: name è calcolato come il email address con ogni «. » sostituito da un trattino con ogni «@» sostituito da un trattino in minuscolo.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "AppUsers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address con «. » sostituito da «-» con «@» sostituito da «-» in minuscolo"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "AppUsers": "app user"
+    }
+  },
+  "ja": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "customerの「name」は full name を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name を小文字にしたもの の「 」を「-」に置き換えたもの"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "customerの「full name」は first name、続いて 空白 1 つ、続いて last name として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name と \" \" を連結) と last name を連結"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "customerの「status display name」— リンクされた「status」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「status」の display name"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "customerの「status is blocking」は、リンクされた「status」が「Blocking」であるとき真になります。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「status」の is blocking"
+      },
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: フラグ「status is blocking」が設定されているおよびfirst name が 「Bob」 である場合、customerは「Stopped」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Customerの「is stopped」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "フラグ「status is blocking」が設定されている"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "first name が 「Bob」 である"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "偽",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Status is blockingおよびfirst name は \"Bob\"なら true()、そうでなければ false()"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "customerの「status description」— リンクされた「status」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「status」の description"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "statusの「name」は display name を小文字にしたもの として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name を小文字にしたもの"
+      },
+      "AppUsers.Name": {
+        "table": "AppUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "app userの「name」は email address の 「. 」 をすべて ハイフン に置き換えたもの の 「@」 をすべて ハイフン に置き換えたもの を小文字にしたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "AppUsers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address の「. 」を「-」に置き換えたもの の「@」を「-」に置き換えたもの を小文字にしたもの"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "AppUsers": "app user"
+    }
+  },
+  "ko": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘customer’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘full name’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "‘customer’ 레코드의 ‘full name’ 값은 다음과 같이 계산됩니다: ‘first name’, 이어서 공백 한 칸, 이어서 ‘last name’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name 뒤에 \" \" 연결한 결과) 뒤에 last name 연결한 결과"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "‘customer’ 레코드의 ‘status display name’ 값은 연결된 ‘status’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 status 레코드의 display name"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "‘customer’ 레코드의 ‘status is blocking’ 값은 연결된 ‘status’ 레코드가 ‘blocking’에 해당하는 경우에 참입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 status 레코드의 is blocking"
+      },
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘status is blocking’ 플래그가 설정된 경우 및 ‘first name’ 값이 “Bob”인 경우), ‘customer’ 레코드는 ‘stopped’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘customer’ 레코드의 ‘is stopped’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "참",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "‘status is blocking’ 플래그가 설정된 경우"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "‘first name’ 값이 “Bob”인 경우"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "거짓",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(status is blocking 및 first name 값이 \"Bob\"임)이 성립하면 true(), 그렇지 않으면 false()"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "‘customer’ 레코드의 ‘status description’ 값은 연결된 ‘status’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 status 레코드의 description"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘status’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘display name’의 소문자 변환 결과.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name의 소문자 변환 결과"
+      },
+      "AppUsers.Name": {
+        "table": "AppUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘app user’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘email address’의 “. ” 부분을 모두 하이픈 값으로 치환한 결과의 “@” 부분을 모두 하이픈 값으로 치환한 결과의 소문자 변환 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "AppUsers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address의 “. ” 부분을 “-” 값으로 치환한 결과의 “@” 부분을 “-” 값으로 치환한 결과의 소문자 변환 결과"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "AppUsers": "app user"
+    }
+  },
+  "nl": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een customer: name wordt berekend als de full name in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Een customer: full name wordt berekend als de first name, gevolgd door een spatie, gevolgd door de last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name samengevoegd met \" \") samengevoegd met last name"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "Een customer: status display name — overgenomen van de gekoppelde status.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De display name van de gekoppelde status"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "Een customer: status is blocking geldt wanneer de gekoppelde status is blocking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De is blocking van de gekoppelde status"
+      },
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "Een customer geldt als stopped als al het volgende geldt: de vlag ‘status is blocking’ is gezet en de first name ‘Bob’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘is stopped’ van de customer wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "waar",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "de vlag ‘status is blocking’ is gezet"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "de first name ‘Bob’ is"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "onwaar",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als status is blocking en first name is \"Bob\", dan true(), anders false()"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "Een customer: status description — overgenomen van de gekoppelde status.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De description van de gekoppelde status"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een status: name wordt berekend als de display name in kleine letters.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name in kleine letters"
+      },
+      "AppUsers.Name": {
+        "table": "AppUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een app user: name wordt berekend als de email address waarbij elke ‘. ’ wordt vervangen door een koppelteken waarbij elke ‘@’ wordt vervangen door een koppelteken in kleine letters.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "AppUsers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address waarbij ‘. ’ wordt vervangen door ‘-’ waarbij ‘@’ wordt vervangen door ‘-’ in kleine letters"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "AppUsers": "app user"
+    }
+  },
+  "pt": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um customer: name é calculado como o full name em minúsculas com cada um espaço substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name em minúsculas com “ ” substituído por “-”"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Um customer: full name é calculado como o first name, seguido de um espaço, seguido de o last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name unido a \" \") unido a last name"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "Um customer: status display name — obtido do status vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O display name do status vinculado"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "Um customer: status is blocking é verdadeiro quando o status vinculado é blocking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O is blocking do status vinculado"
+      },
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "Um customer é considerado stopped se tudo o que segue é verdadeiro: o indicador “status is blocking” está ativado e o first name é “Bob”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “is stopped” do customer é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "verdadeiro",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "o indicador “status is blocking” está ativado"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "o first name é “Bob”"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "falso",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se status is blocking e first name é \"Bob\", então true(), caso contrário false()"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "Um customer: status description — obtido do status vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O description do status vinculado"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um status: name é calculado como o display name em minúsculas.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name em minúsculas"
+      },
+      "AppUsers.Name": {
+        "table": "AppUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um app user: name é calculado como o email address com cada “. ” substituído por um hífen com cada “@” substituído por um hífen em minúsculas.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "AppUsers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address com “. ” substituído por “-” com “@” substituído por “-” em minúsculas"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "AppUsers": "app user"
+    }
+  },
+  "ru": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Customer: «name» вычисляется как full name в нижнем регистре, где каждое пробел заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name в нижнем регистре, где « » заменено на «-»"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Customer: «full name» вычисляется как first name, затем пробел, затем last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name соединено с \" \") соединено с last name"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "Customer: «status display name» — берётся из связанного «status».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name связанного «status»"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "Customer: «status is blocking» истинно, когда связанный «status» является «blocking».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is blocking связанного «status»"
+      },
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "Customer считается «stopped», если выполняется всё следующее: признак «status is blocking» установлен и first name равно «Bob».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «is stopped» (Customer) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "истина",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "признак «status is blocking» установлен"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "first name равно «Bob»"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "ложь",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если status is blocking и first name равно \"Bob\", то true(), иначе false()"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "Customer: «status description» — берётся из связанного «status».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Description связанного «status»"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Status: «name» вычисляется как display name в нижнем регистре.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name в нижнем регистре"
+      },
+      "AppUsers.Name": {
+        "table": "AppUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "App user: «name» вычисляется как email address, где каждое «. » заменено на дефис, где каждое «@» заменено на дефис в нижнем регистре.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "AppUsers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address, где «. » заменено на «-», где «@» заменено на «-» в нижнем регистре"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "AppUsers": "app user"
+    }
+  },
+  "tr": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“customer” kaydının “name” alanı, küçük harfe çevrilmiş “full name” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş full name değerindeki her “ ” yerine “-” konularak elde edilen metin"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "“customer” kaydının “full name” alanı, “first name” alanı, ardından bir boşluk, ardından “last name” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name ile \" \" birleşimi) ile last name birleşimi"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "“customer” kaydının “status display name” alanı, “status” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı status kaydının display name değeri"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "“customer” kaydının “status is blocking” alanı, “status” alanı üzerinden bağlı kayıt “blocking” ise doğrudur.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı status kaydının is blocking değeri"
+      },
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "“customer” kaydı, “status is blocking” bayrağı etkin ve “first name” alanı “Bob” değerine eşit ise “stopped” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“customer” kaydının “is stopped” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "doğru",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "“status is blocking” bayrağı etkin"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "“first name” alanı “Bob” değerine eşit"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "yanlış",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Status is blocking ve first name, \"Bob\" değerine eşit ise true(), aksi takdirde false()"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "“customer” kaydının “status description” alanı, “status” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı status kaydının description değeri"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“status” kaydının “name” alanı, küçük harfe çevrilmiş “display name” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş display name"
+      },
+      "AppUsers.Name": {
+        "table": "AppUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“app user” kaydının “name” alanı, küçük harfe çevrilmiş “email address” alanı değerindeki her “. ” yerine bir kısa çizgi konularak elde edilen metin değerindeki her “@” yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "AppUsers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş email address değerindeki her “. ” yerine “-” konularak elde edilen metin değerindeki her “@” yerine “-” konularak elde edilen metin"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "AppUsers": "app user"
+    }
+  },
+  "vi": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi customer được tính bằng full name viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name viết bằng chữ thường sau khi thay “ ” bằng “-”"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Trường “full name” của mỗi customer được tính bằng first name, tiếp theo là dấu cách, tiếp theo là last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name nối với \" \") nối với last name"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "Trường “status display name” của mỗi customer được lấy từ bản ghi liên kết qua trường “status”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name của bản ghi liên kết qua status"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "Trường “status is blocking” của mỗi customer có giá trị đúng khi bản ghi liên kết qua trường “status” là “blocking”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is blocking của bản ghi liên kết qua status"
+      },
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "Mỗi customer được coi là “stopped” nếu tất cả các điều kiện sau đều đúng: cờ “status is blocking” được bật và first name là “Bob”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “is stopped” của mỗi customer được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "đúng",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "cờ “status is blocking” được bật"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "first name là “Bob”"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "sai",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu status is blocking và first name là \"Bob\" thì true(), nếu không thì false()"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "Trường “status description” của mỗi customer được lấy từ bản ghi liên kết qua trường “status”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Description của bản ghi liên kết qua status"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi status được tính bằng display name viết bằng chữ thường.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name viết bằng chữ thường"
+      },
+      "AppUsers.Name": {
+        "table": "AppUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi app user được tính bằng email address sau khi thay mọi “. ” bằng dấu gạch nối sau khi thay mọi “@” bằng dấu gạch nối viết bằng chữ thường.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "AppUsers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address sau khi thay “. ” bằng “-” sau khi thay “@” bằng “-” viết bằng chữ thường"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer",
+      "Statuses": "status",
+      "AppUsers": "app user"
+    }
+  },
+  "zh": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "customer的“name”按 转为小写的full name中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的full name中“ ”替换为“-”后的结果"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "customer的“full name”按 first name,接着是一个空格,接着是last name 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name与\" \"拼接)与last name拼接"
+      },
+      "Customers.StatusDisplayName": {
+        "table": "Customers",
+        "field": "StatusDisplayName",
+        "kind": "lookup",
+        "rule": "customer的“status display name”——取自所关联的“status”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“status”的display name"
+      },
+      "Customers.StatusIsBlocking": {
+        "table": "Customers",
+        "field": "StatusIsBlocking",
+        "kind": "lookup",
+        "rule": "customer的“status is blocking”在所关联的“status”是“Blocking”时为真。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "IsBlocking",
+            "label": "is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“status”的is blocking"
+      },
+      "Customers.IsStopped": {
+        "table": "Customers",
+        "field": "IsStopped",
+        "kind": "formula",
+        "rule": "当以下全部成立:标志“status is blocking”已设置且first name为“Bob”时,customer被视为“Stopped”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "StatusIsBlocking",
+            "label": "status is blocking"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Customer的“is stopped”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "真",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "标志“status is blocking”已设置"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "first name为“Bob”"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "假",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若status is blocking且first name为\"Bob\",则true(),否则false()"
+      },
+      "Customers.StatusDescription": {
+        "table": "Customers",
+        "field": "StatusDescription",
+        "kind": "lookup",
+        "rule": "customer的“status description”——取自所关联的“status”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "Description",
+            "label": "description"
+          },
+          {
+            "table": "Customers",
+            "field": "Status",
+            "label": "status"
+          },
+          {
+            "table": "Statuses",
+            "field": "StatuseId",
+            "label": "statuse ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“status”的description"
+      },
+      "Statuses.Name": {
+        "table": "Statuses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "status的“name”按 转为小写的display name 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statuses",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的display name"
+      },
+      "AppUsers.Name": {
+        "table": "AppUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "app user的“name”按 转为小写的email address中的每个“. ”替换为一个连字符后的结果中的每个“@”替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "AppUsers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的email address中“. ”替换为“-”后的结果中“@”替换为“-”后的结果"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "Customers": "customer",

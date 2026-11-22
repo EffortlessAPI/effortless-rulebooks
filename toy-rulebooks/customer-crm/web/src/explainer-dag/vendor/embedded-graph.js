@@ -1564,7 +1564,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -2824,6 +2839,19821 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Customers": "customer",
+      "Orders": "order",
+      "Payments": "payment",
+      "JetModels": "jet model",
+      "FlightControlSystems": "flight control system",
+      "OrderLines": "order line"
+    }
+  },
+  "ar": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «user» يطابق حقل «email» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Users.FullName": {
+        "table": "Users",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "حقل «full name» في سجل «user» يُحسب على النحو الآتي: حقل «last name»، ثم فاصلة تليها مسافة، ثم حقل «first name».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Users",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name، ثم \", \"، ثم first name"
+      },
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «customer» يطابق حقل «email» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "حقل «full name» في سجل «customer» يُحسب على النحو الآتي: حقل «last name»، ثم فاصلة تليها مسافة، ثم حقل «first name».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name، ثم \", \"، ثم first name"
+      },
+      "Customers.LifetimeSales": {
+        "table": "Customers",
+        "field": "LifetimeSales",
+        "kind": "rollup",
+        "rule": "حقل «lifetime sales» في سجل «customer» هو مجموع قيم حقل «recent total» عبر سجلات «orders» المرتبطة بسجل «customer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "RecentTotal",
+            "label": "recent total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «recent total» في جميع سجلات «orders» التي يتحقق فيها أنّ حقل «customer» يساوي هذا السجل"
+      },
+      "Customers.UnpaidOrderCount": {
+        "table": "Customers",
+        "field": "UnpaidOrderCount",
+        "kind": "rollup",
+        "rule": "حقل «unpaid order count» في سجل «customer» هو مجموع قيم حقل «unpaid flag» عبر سجلات «orders» المرتبطة بسجل «customer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "UnpaidFlag",
+            "label": "unpaid flag"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «unpaid flag» في جميع سجلات «orders» التي يتحقق فيها أنّ حقل «customer» يساوي هذا السجل"
+      },
+      "Customers.LargeOrderCount": {
+        "table": "Customers",
+        "field": "LargeOrderCount",
+        "kind": "rollup",
+        "rule": "حقل «large order count» في سجل «customer» هو عدد «large orders» الخاصة بسجل «customer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «((total ضرب 0) زائد 1)» حيث حقل «customer» يساوي هذا السجل وحقل «total» يساوي \">500\""
+      },
+      "Customers.IsVIP": {
+        "table": "Customers",
+        "field": "IsVIP",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «customer» على أنه «VIP» إذا تحقق أنّ جميع الشروط الآتية متحققة: حقل «lifetime sales» أكبر من 1000 وحقل «unpaid order count» لا يزيد على 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LifetimeSales",
+            "label": "lifetime sales"
+          },
+          {
+            "table": "Customers",
+            "field": "UnpaidOrderCount",
+            "label": "unpaid order count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُصنّف سجل «customer» على أنه «VIP» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "حقل «lifetime sales» أكبر من 1000"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "حقل «unpaid order count» لا يزيد على 1"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Lifetime sales أكبر من 1,000 وunpaid order count لا يزيد على 1"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «order» يطابق حقل «order number» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number"
+      },
+      "Orders.CustomerFirstName": {
+        "table": "Orders",
+        "field": "CustomerFirstName",
+        "kind": "lookup",
+        "rule": "حقل «customer first name» في سجل «order» مأخوذ من السجل المرتبط به عبر حقل «customer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «first name» من السجل المرتبط عبر «customer»"
+      },
+      "Orders.CustomerLastName": {
+        "table": "Orders",
+        "field": "CustomerLastName",
+        "kind": "lookup",
+        "rule": "حقل «customer last name» في سجل «order» مأخوذ من السجل المرتبط به عبر حقل «customer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «last name» من السجل المرتبط عبر «customer»"
+      },
+      "Orders.CustomerFullName": {
+        "table": "Orders",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "حقل «customer full name» في سجل «order» مأخوذ من السجل المرتبط به عبر حقل «customer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «full name» من السجل المرتبط عبر «customer»"
+      },
+      "Orders.CustomerEmail": {
+        "table": "Orders",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "حقل «customer email» في سجل «order» مأخوذ من السجل المرتبط به عبر حقل «customer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «email» من السجل المرتبط عبر «customer»"
+      },
+      "Orders.AmountPaid": {
+        "table": "Orders",
+        "field": "AmountPaid",
+        "kind": "rollup",
+        "rule": "حقل «amount paid» في سجل «order» هو مجموع قيم حقل «amount» عبر سجلات «payments» المرتبطة بسجل «order».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «amount» في جميع سجلات «payments» التي يتحقق فيها أنّ حقل «order ID» يساوي هذا السجل"
+      },
+      "Orders.Balance": {
+        "table": "Orders",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "حقل «balance» في سجل «order» يُحسب على النحو الآتي: حقل «total» ناقص حقل «amount paid».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          }
+        ],
+        "structure": null,
+        "plain": "Total ناقص amount paid"
+      },
+      "Orders.IsPaid": {
+        "table": "Orders",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «order» على أنه «paid» إذا تحقق أنّ حقل «balance» لا يزيد على 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance لا يزيد على 0"
+      },
+      "Orders.UnpaidFlag": {
+        "table": "Orders",
+        "field": "UnpaidFlag",
+        "kind": "formula",
+        "rule": "حقل «unpaid flag» في سجل «order» يتحدد وفق ترتيب الأولوية الآتي:\n1. 0، إذا تحقق أنّ علامة «paid» مفعّلة؛\n2. 1، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «unpaid flag» في سجل «order» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «paid» مفعّلة"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ is paid فالناتج 0، وإلا فالناتج 1"
+      },
+      "Orders.IsRecent": {
+        "table": "Orders",
+        "field": "IsRecent",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «order» على أنه «recent» إذا تحقق أنّ عدد الأيام من حقل «order date» إلى تاريخ اليوم لا يزيد على 90.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد الأيام بين اليوم وorder date لا يزيد على 90"
+      },
+      "Orders.RecentTotal": {
+        "table": "Orders",
+        "field": "RecentTotal",
+        "kind": "formula",
+        "rule": "حقل «recent total» في سجل «order» يتحدد وفق ترتيب الأولوية الآتي:\n1. حقل «total»، إذا تحقق أنّ علامة «recent» مفعّلة؛\n2. 0، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsRecent",
+            "label": "is recent"
+          },
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «recent total» في سجل «order» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "حقل «total»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «recent» مفعّلة"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ is recent فالناتج total، وإلا فالناتج 0"
+      },
+      "Orders.FCSSubtotal": {
+        "table": "Orders",
+        "field": "FCSSubtotal",
+        "kind": "rollup",
+        "rule": "حقل «FCS subtotal» في سجل «order» هو مجموع قيم حقل «line total» عبر سجلات «order lines» المرتبطة بسجل «order».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «line total» في جميع سجلات «order lines» التي يتحقق فيها أنّ حقل «order ID» يساوي هذا السجل"
+      },
+      "Orders.FCSUnitCount": {
+        "table": "Orders",
+        "field": "FCSUnitCount",
+        "kind": "rollup",
+        "rule": "حقل «FCS unit count» في سجل «order» هو مجموع قيم حقل «quantity» عبر سجلات «order lines» المرتبطة بسجل «order».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «quantity» في جميع سجلات «order lines» التي يتحقق فيها أنّ حقل «order ID» يساوي هذا السجل"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «payment» يطابق حقل «payment number» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment number"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "حقل «order number» في سجل «payment» مأخوذ من السجل المرتبط به عبر حقل «order ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «order number» من السجل المرتبط عبر «order ID»"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "حقل «order date» في سجل «payment» مأخوذ من السجل المرتبط به عبر حقل «order ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «order date» من السجل المرتبط عبر «order ID»"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "حقل «order total» في سجل «payment» مأخوذ من السجل المرتبط به عبر حقل «order ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «total» من السجل المرتبط عبر «order ID»"
+      },
+      "Payments.OrderAmountPaid": {
+        "table": "Payments",
+        "field": "OrderAmountPaid",
+        "kind": "lookup",
+        "rule": "حقل «order amount paid» في سجل «payment» مأخوذ من السجل المرتبط به عبر حقل «order ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «amount paid» من السجل المرتبط عبر «order ID»"
+      },
+      "Payments.OrderBalance": {
+        "table": "Payments",
+        "field": "OrderBalance",
+        "kind": "lookup",
+        "rule": "حقل «order balance» في سجل «payment» مأخوذ من السجل المرتبط به عبر حقل «order ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «balance» من السجل المرتبط عبر «order ID»"
+      },
+      "Payments.OrderIsPaid": {
+        "table": "Payments",
+        "field": "OrderIsPaid",
+        "kind": "lookup",
+        "rule": "حقل «order is paid» في سجل «payment» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «order ID» مصنّفًا على أنه «paid».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «is paid» من السجل المرتبط عبر «order ID»"
+      },
+      "Payments.OrderCustomer": {
+        "table": "Payments",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "حقل «order customer» في سجل «payment» مأخوذ من السجل المرتبط به عبر حقل «order ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «customer» من السجل المرتبط عبر «order ID»"
+      },
+      "Payments.CustomerFullName": {
+        "table": "Payments",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "حقل «customer full name» في سجل «payment» مأخوذ من السجل المرتبط به عبر حقل «order ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerFullName",
+            "label": "customer full name"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «customer full name» من السجل المرتبط عبر «order ID»"
+      },
+      "Payments.CustomerEmail": {
+        "table": "Payments",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "حقل «customer email» في سجل «payment» مأخوذ من السجل المرتبط به عبر حقل «order ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerEmail",
+            "label": "customer email"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «customer email» من السجل المرتبط عبر «order ID»"
+      },
+      "JetModels.Name": {
+        "table": "JetModels",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «jet model» يطابق حقل «model code» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "ModelCode",
+            "label": "model code"
+          }
+        ],
+        "structure": null,
+        "plain": "Model code"
+      },
+      "JetModels.IsFifthGen": {
+        "table": "JetModels",
+        "field": "IsFifthGen",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «jet model» على أنه «fifth gen» إذا تحقق أنّ حقل «generation» لا يقل عن 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          }
+        ],
+        "structure": null,
+        "plain": "Generation لا يقل عن 5"
+      },
+      "JetModels.FCSVariantCount": {
+        "table": "JetModels",
+        "field": "FCSVariantCount",
+        "kind": "rollup",
+        "rule": "حقل «FCS variant count» في سجل «jet model» هو عدد «FCS variants» الخاصة بسجل «jet model».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «((unit price ضرب 0) زائد 1)» حيث حقل «jet model ID» يساوي هذا السجل"
+      },
+      "JetModels.TotalUnitsOrdered": {
+        "table": "JetModels",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "حقل «total units ordered» في سجل «jet model» هو حقل «total units ordered» عبر سجلات «flight control systems» المرتبطة بسجل «jet model».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalUnitsOrdered",
+            "label": "total units ordered"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «total units ordered» في جميع سجلات «flight control systems» التي يتحقق فيها أنّ حقل «jet model ID» يساوي هذا السجل"
+      },
+      "JetModels.TotalRevenue": {
+        "table": "JetModels",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "حقل «total revenue» في سجل «jet model» هو حقل «total revenue» عبر سجلات «flight control systems» المرتبطة بسجل «jet model».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalRevenue",
+            "label": "total revenue"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «total revenue» في جميع سجلات «flight control systems» التي يتحقق فيها أنّ حقل «jet model ID» يساوي هذا السجل"
+      },
+      "FlightControlSystems.Name": {
+        "table": "FlightControlSystems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «flight control system» يطابق حقل «FCS code» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "FCSCode",
+            "label": "FCS code"
+          }
+        ],
+        "structure": null,
+        "plain": "FCS code"
+      },
+      "FlightControlSystems.JetManufacturer": {
+        "table": "FlightControlSystems",
+        "field": "JetManufacturer",
+        "kind": "lookup",
+        "rule": "حقل «jet manufacturer» في سجل «flight control system» مأخوذ من السجل المرتبط به عبر حقل «jet model ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Manufacturer",
+            "label": "manufacturer"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «manufacturer» من السجل المرتبط عبر «jet model ID»"
+      },
+      "FlightControlSystems.JetGeneration": {
+        "table": "FlightControlSystems",
+        "field": "JetGeneration",
+        "kind": "lookup",
+        "rule": "حقل «jet generation» في سجل «flight control system» مأخوذ من السجل المرتبط به عبر حقل «jet model ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «generation» من السجل المرتبط عبر «jet model ID»"
+      },
+      "FlightControlSystems.IsTripleRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsTripleRedundant",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «flight control system» على أنه «triple redundant» إذا تحقق أنّ حقل «redundancy channels» لا يقل عن 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels لا يقل عن 3"
+      },
+      "FlightControlSystems.IsQuadRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsQuadRedundant",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «flight control system» على أنه «quad redundant» إذا تحقق أنّ حقل «redundancy channels» لا يقل عن 4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels لا يقل عن 4"
+      },
+      "FlightControlSystems.MeetsFifthGenSpec": {
+        "table": "FlightControlSystems",
+        "field": "MeetsFifthGenSpec",
+        "kind": "formula",
+        "rule": "يُعدّ سجل «flight control system» محققًا لشرط «meets fifth gen spec» إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «quad redundant» مفعّلة؛ وواحد على الأقل من الشروط الآتية متحقق: حقل «architecture» يساوي «fly-by-wire» أو حقل «architecture» يساوي «fly-by-light»؛ وحقل «jet generation» لا يقل عن 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "IsQuadRedundant",
+            "label": "is quad redundant"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetGeneration",
+            "label": "jet generation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُعدّ سجل «flight control system» محققًا لشرط «meets fifth gen spec» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "علامة «quad redundant» مفعّلة"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "حقل «architecture» يساوي «fly-by-wire»"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "حقل «architecture» يساوي «fly-by-light»"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "حقل «jet generation» لا يقل عن 5"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is quad redundant، وarchitecture هو \"fly-by-wire\" أو architecture هو \"fly-by-light\"، وjet generation لا يقل عن 5"
+      },
+      "FlightControlSystems.TotalUnitsOrdered": {
+        "table": "FlightControlSystems",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "حقل «total units ordered» في سجل «flight control system» هو مجموع قيم حقل «quantity» عبر سجلات «order lines» المرتبطة بسجل «flight control system».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «quantity» في جميع سجلات «order lines» التي يتحقق فيها أنّ حقل «FCS ID» يساوي هذا السجل"
+      },
+      "FlightControlSystems.TotalRevenue": {
+        "table": "FlightControlSystems",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "حقل «total revenue» في سجل «flight control system» هو مجموع قيم حقل «line total» عبر سجلات «order lines» المرتبطة بسجل «flight control system».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «line total» في جميع سجلات «order lines» التي يتحقق فيها أنّ حقل «FCS ID» يساوي هذا السجل"
+      },
+      "OrderLines.Name": {
+        "table": "OrderLines",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «order line» يطابق حقل «line number» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "Line number"
+      },
+      "OrderLines.FCSUnitPrice": {
+        "table": "OrderLines",
+        "field": "FCSUnitPrice",
+        "kind": "lookup",
+        "rule": "حقل «FCS unit price» في سجل «order line» مأخوذ من السجل المرتبط به عبر حقل «FCS ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «unit price» من السجل المرتبط عبر «FCS ID»"
+      },
+      "OrderLines.FCSArchitecture": {
+        "table": "OrderLines",
+        "field": "FCSArchitecture",
+        "kind": "lookup",
+        "rule": "حقل «FCS architecture» في سجل «order line» مأخوذ من السجل المرتبط به عبر حقل «FCS ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «architecture» من السجل المرتبط عبر «FCS ID»"
+      },
+      "OrderLines.FCSJetModel": {
+        "table": "OrderLines",
+        "field": "FCSJetModel",
+        "kind": "lookup",
+        "rule": "حقل «FCS jet model» في سجل «order line» يأخذ قيمة حقل «jet model ID» من السجل المرتبط به عبر حقل «FCS ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «jet model ID» من السجل المرتبط عبر «FCS ID»"
+      },
+      "OrderLines.FCSMeetsFifthGenSpec": {
+        "table": "OrderLines",
+        "field": "FCSMeetsFifthGenSpec",
+        "kind": "lookup",
+        "rule": "حقل «FCS meets fifth gen spec» في سجل «order line» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «FCS ID» موسومًا بعلامة «meets fifth gen spec».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "MeetsFifthGenSpec",
+            "label": "meets fifth gen spec"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «meets fifth gen spec» من السجل المرتبط عبر «FCS ID»"
+      },
+      "OrderLines.OrderNumber": {
+        "table": "OrderLines",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "حقل «order number» في سجل «order line» مأخوذ من السجل المرتبط به عبر حقل «order ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «order number» من السجل المرتبط عبر «order ID»"
+      },
+      "OrderLines.OrderCustomer": {
+        "table": "OrderLines",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "حقل «order customer» في سجل «order line» مأخوذ من السجل المرتبط به عبر حقل «order ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «customer» من السجل المرتبط عبر «order ID»"
+      },
+      "OrderLines.LineTotal": {
+        "table": "OrderLines",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "حقل «line total» في سجل «order line» يُحسب على النحو الآتي: حقل «quantity» مضروبًا في حقل «FCS unit price».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSUnitPrice",
+            "label": "FCS unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity ضرب FCS unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "في كل سجل «user»، **يجب أن** تُحدّد قيمة حقل «email» وحقل «role»."
+      ],
+      "Customers": [
+        "في كل سجل «customer»، **يجب أن** تُحدّد قيمة حقل «email»."
+      ],
+      "Orders": [
+        "في كل سجل «order»، **يجب أن** تُحدّد قيمة حقل «order number»، وحقل «order date»، وحقل «customer»، وحقل «total»."
+      ],
+      "Payments": [
+        "في كل سجل «payment»، **يجب أن** تُحدّد قيمة حقل «payment number»، وحقل «order ID»، وحقل «payment date»، وحقل «amount»، وحقل «method»."
+      ],
+      "JetModels": [
+        "في كل سجل «jet model»، **يجب أن** تُحدّد قيمة حقل «model code»، وحقل «manufacturer»، وحقل «generation»."
+      ],
+      "FlightControlSystems": [
+        "في كل سجل «flight control system»، **يجب أن** تُحدّد قيمة حقل «FCS code»، وحقل «jet model ID»، وحقل «architecture»، وحقل «redundancy channels»، وحقل «unit price»."
+      ],
+      "OrderLines": [
+        "في كل سجل «order line»، **يجب أن** تُحدّد قيمة حقل «line number»، وحقل «order ID»، وحقل «FCS ID»، وحقل «quantity»."
+      ]
+    },
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Customers": "customer",
+      "Orders": "order",
+      "Payments": "payment",
+      "JetModels": "jet model",
+      "FlightControlSystems": "flight control system",
+      "OrderLines": "order line"
+    }
+  },
+  "de": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein User: Name entspricht Email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Users.FullName": {
+        "table": "Users",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Ein User: Full Name wird berechnet als die Last Name, gefolgt von ein Komma gefolgt von einem Leerzeichen, gefolgt von die First Name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Users",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last Name, \", \", verbunden mit First Name"
+      },
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Customer: Name entspricht Email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Ein Customer: Full Name wird berechnet als die Last Name, gefolgt von ein Komma gefolgt von einem Leerzeichen, gefolgt von die First Name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last Name, \", \", verbunden mit First Name"
+      },
+      "Customers.LifetimeSales": {
+        "table": "Customers",
+        "field": "LifetimeSales",
+        "kind": "rollup",
+        "rule": "Ein Customer: Lifetime Sales ist die Gesamtsumme von Recent Total über die mit dem Customer verbundenen Orders.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "RecentTotal",
+            "label": "recent total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Recent Total über alle Orders, deren Customer ist dieser hier"
+      },
+      "Customers.UnpaidOrderCount": {
+        "table": "Customers",
+        "field": "UnpaidOrderCount",
+        "kind": "rollup",
+        "rule": "Ein Customer: Unpaid Order Count ist die Gesamtsumme von Unpaid Flag über die mit dem Customer verbundenen Orders.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "UnpaidFlag",
+            "label": "unpaid flag"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Unpaid Flag über alle Orders, deren Customer ist dieser hier"
+      },
+      "Customers.LargeOrderCount": {
+        "table": "Customers",
+        "field": "LargeOrderCount",
+        "kind": "rollup",
+        "rule": "Ein Customer: Large Order Count ist die Anzahl der Large Orders des Customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von ((Total mal 0) plus 1), wobei Customer ist dieser hier und Total ist \">500\""
+      },
+      "Customers.IsVIP": {
+        "table": "Customers",
+        "field": "IsVIP",
+        "kind": "formula",
+        "rule": "Ein Customer gilt als ein VIP, wenn alles Folgende gilt: der Lifetime Sales größer ist als 1000 und der Unpaid Order Count höchstens 1 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LifetimeSales",
+            "label": "lifetime sales"
+          },
+          {
+            "table": "Customers",
+            "field": "UnpaidOrderCount",
+            "label": "unpaid order count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Ein Customer gilt als ein VIP, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "der Lifetime Sales größer ist als 1000"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "der Unpaid Order Count höchstens 1 ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Lifetime Sales größer als 1,000 ist und Unpaid Order Count höchstens 1 ist"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Order: Name entspricht Order Number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "Order Number"
+      },
+      "Orders.CustomerFirstName": {
+        "table": "Orders",
+        "field": "CustomerFirstName",
+        "kind": "lookup",
+        "rule": "Ein Order: Customer First Name — aus dem zugehörigen Customer übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der First Name des verknüpften Customer"
+      },
+      "Orders.CustomerLastName": {
+        "table": "Orders",
+        "field": "CustomerLastName",
+        "kind": "lookup",
+        "rule": "Ein Order: Customer Last Name — aus dem zugehörigen Customer übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Last Name des verknüpften Customer"
+      },
+      "Orders.CustomerFullName": {
+        "table": "Orders",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "Ein Order: Customer Full Name — aus dem zugehörigen Customer übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Full Name des verknüpften Customer"
+      },
+      "Orders.CustomerEmail": {
+        "table": "Orders",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "Ein Order: Customer Email — aus dem zugehörigen Customer übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Email des verknüpften Customer"
+      },
+      "Orders.AmountPaid": {
+        "table": "Orders",
+        "field": "AmountPaid",
+        "kind": "rollup",
+        "rule": "Ein Order: Amount Paid ist die Gesamtsumme von Amount über die mit dem Order verbundenen Payments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Amount über alle Payments, deren Order ID ist dieser hier"
+      },
+      "Orders.Balance": {
+        "table": "Orders",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "Ein Order: Balance wird berechnet als der Total minus der Amount Paid.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          }
+        ],
+        "structure": null,
+        "plain": "Total minus Amount Paid"
+      },
+      "Orders.IsPaid": {
+        "table": "Orders",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "Ein Order gilt als ein Paid, wenn die Balance höchstens 0 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance höchstens 0 ist"
+      },
+      "Orders.UnpaidFlag": {
+        "table": "Orders",
+        "field": "UnpaidFlag",
+        "kind": "formula",
+        "rule": "Das Feld „Unpaid Flag“ des Order wird nach folgender Priorität bestimmt:\n1. 0, wenn das Kennzeichen „Is Paid“ gesetzt ist;\n2. andernfalls 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Unpaid Flag“ des Order wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Is Paid“ gesetzt ist"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Is Paid, dann 0, andernfalls 1"
+      },
+      "Orders.IsRecent": {
+        "table": "Orders",
+        "field": "IsRecent",
+        "kind": "formula",
+        "rule": "Ein Order gilt als ein Recent, wenn die Anzahl der Tage von die Order Date bis das heutige Datum höchstens 90 ist.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          }
+        ],
+        "structure": null,
+        "plain": "Die Tage zwischen heute und Order Date höchstens 90 ist"
+      },
+      "Orders.RecentTotal": {
+        "table": "Orders",
+        "field": "RecentTotal",
+        "kind": "formula",
+        "rule": "Das Feld „Recent Total“ des Order wird nach folgender Priorität bestimmt:\n1. der Total, wenn das Kennzeichen „Is Recent“ gesetzt ist;\n2. andernfalls 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsRecent",
+            "label": "is recent"
+          },
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Recent Total“ des Order wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "der Total",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Is Recent“ gesetzt ist"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Is Recent, dann Total, andernfalls 0"
+      },
+      "Orders.FCSSubtotal": {
+        "table": "Orders",
+        "field": "FCSSubtotal",
+        "kind": "rollup",
+        "rule": "Ein Order: FCS Subtotal ist die Gesamtsumme von Line Total über die mit dem Order verbundenen Order Lines.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Line Total über alle Order Lines, deren Order ID ist dieser hier"
+      },
+      "Orders.FCSUnitCount": {
+        "table": "Orders",
+        "field": "FCSUnitCount",
+        "kind": "rollup",
+        "rule": "Ein Order: FCS Unit Count ist die Gesamtsumme von Quantity über die mit dem Order verbundenen Order Lines.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Quantity über alle Order Lines, deren Order ID ist dieser hier"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Payment: Name entspricht Payment Number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment Number"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Ein Payment: Order Number — aus dem zugehörigen Order ID übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Order Number des verknüpften Order ID"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "Ein Payment: Order Date — aus dem zugehörigen Order ID übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Order Date des verknüpften Order ID"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "Ein Payment: Order Total — aus dem zugehörigen Order ID übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Total des verknüpften Order ID"
+      },
+      "Payments.OrderAmountPaid": {
+        "table": "Payments",
+        "field": "OrderAmountPaid",
+        "kind": "lookup",
+        "rule": "Ein Payment: Order Amount Paid — aus dem zugehörigen Order ID übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Amount Paid des verknüpften Order ID"
+      },
+      "Payments.OrderBalance": {
+        "table": "Payments",
+        "field": "OrderBalance",
+        "kind": "lookup",
+        "rule": "Ein Payment: Order Balance — aus dem zugehörigen Order ID übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Balance des verknüpften Order ID"
+      },
+      "Payments.OrderIsPaid": {
+        "table": "Payments",
+        "field": "OrderIsPaid",
+        "kind": "lookup",
+        "rule": "Ein Payment: Order is Paid ist wahr, wenn der zugehörige Order ID des Payment ist ein Paid.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Is Paid des verknüpften Order ID"
+      },
+      "Payments.OrderCustomer": {
+        "table": "Payments",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "Ein Payment: Order Customer — aus dem zugehörigen Order ID übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Customer des verknüpften Order ID"
+      },
+      "Payments.CustomerFullName": {
+        "table": "Payments",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "Ein Payment: Customer Full Name — aus dem zugehörigen Order ID übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerFullName",
+            "label": "customer full name"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Customer Full Name des verknüpften Order ID"
+      },
+      "Payments.CustomerEmail": {
+        "table": "Payments",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "Ein Payment: Customer Email — aus dem zugehörigen Order ID übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerEmail",
+            "label": "customer email"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Customer Email des verknüpften Order ID"
+      },
+      "JetModels.Name": {
+        "table": "JetModels",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Jet Model: Name entspricht Model Code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "ModelCode",
+            "label": "model code"
+          }
+        ],
+        "structure": null,
+        "plain": "Model Code"
+      },
+      "JetModels.IsFifthGen": {
+        "table": "JetModels",
+        "field": "IsFifthGen",
+        "kind": "formula",
+        "rule": "Ein Jet Model gilt als ein Fifth Gen, wenn die Generation mindestens 5 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          }
+        ],
+        "structure": null,
+        "plain": "Generation mindestens 5 ist"
+      },
+      "JetModels.FCSVariantCount": {
+        "table": "JetModels",
+        "field": "FCSVariantCount",
+        "kind": "rollup",
+        "rule": "Ein Jet Model: FCS Variant Count ist die Anzahl der FCS Variants des Jet Model.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von ((Unit Price mal 0) plus 1), wobei Jet Model ID ist dieser hier"
+      },
+      "JetModels.TotalUnitsOrdered": {
+        "table": "JetModels",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "Ein Jet Model: Total Units Ordered ist von Total Units Ordered über die mit dem Jet Model verbundenen Flight Control Systems.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalUnitsOrdered",
+            "label": "total units ordered"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Total Units Ordered über alle Flight Control Systems, deren Jet Model ID ist dieser hier"
+      },
+      "JetModels.TotalRevenue": {
+        "table": "JetModels",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "Ein Jet Model: Total Revenue ist von Total Revenue über die mit dem Jet Model verbundenen Flight Control Systems.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalRevenue",
+            "label": "total revenue"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Total Revenue über alle Flight Control Systems, deren Jet Model ID ist dieser hier"
+      },
+      "FlightControlSystems.Name": {
+        "table": "FlightControlSystems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Flight Control System: Name entspricht FCS Code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "FCSCode",
+            "label": "FCS code"
+          }
+        ],
+        "structure": null,
+        "plain": "FCS Code"
+      },
+      "FlightControlSystems.JetManufacturer": {
+        "table": "FlightControlSystems",
+        "field": "JetManufacturer",
+        "kind": "lookup",
+        "rule": "Ein Flight Control System: Jet Manufacturer — aus dem zugehörigen Jet Model ID übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Manufacturer",
+            "label": "manufacturer"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Manufacturer des verknüpften Jet Model ID"
+      },
+      "FlightControlSystems.JetGeneration": {
+        "table": "FlightControlSystems",
+        "field": "JetGeneration",
+        "kind": "lookup",
+        "rule": "Ein Flight Control System: Jet Generation — aus dem zugehörigen Jet Model ID übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Generation des verknüpften Jet Model ID"
+      },
+      "FlightControlSystems.IsTripleRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsTripleRedundant",
+        "kind": "formula",
+        "rule": "Ein Flight Control System gilt als ein Triple Redundant, wenn der Redundancy Channels mindestens 3 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy Channels mindestens 3 ist"
+      },
+      "FlightControlSystems.IsQuadRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsQuadRedundant",
+        "kind": "formula",
+        "rule": "Ein Flight Control System gilt als ein Quad Redundant, wenn der Redundancy Channels mindestens 4 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy Channels mindestens 4 ist"
+      },
+      "FlightControlSystems.MeetsFifthGenSpec": {
+        "table": "FlightControlSystems",
+        "field": "MeetsFifthGenSpec",
+        "kind": "formula",
+        "rule": "Ein Flight Control System gilt als Fifth Gen Spec erfüllend, wenn alles Folgende gilt: das Kennzeichen „Is Quad Redundant“ gesetzt ist; mindestens eines des Folgenden gilt: die Architecture „fly-by-wire“ ist oder die Architecture „fly-by-light“ ist; und die Jet Generation mindestens 5 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "IsQuadRedundant",
+            "label": "is quad redundant"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetGeneration",
+            "label": "jet generation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Ein Flight Control System gilt als Fifth Gen Spec erfüllend, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Is Quad Redundant“ gesetzt ist"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "die Architecture „fly-by-wire“ ist"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "die Architecture „fly-by-light“ ist"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "die Jet Generation mindestens 5 ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is Quad Redundant, Architecture ist \"fly-by-wire\" oder Architecture ist \"fly-by-light\", und Jet Generation mindestens 5 ist"
+      },
+      "FlightControlSystems.TotalUnitsOrdered": {
+        "table": "FlightControlSystems",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "Ein Flight Control System: Total Units Ordered ist die Gesamtsumme von Quantity über die mit dem Flight Control System verbundenen Order Lines.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Quantity über alle Order Lines, deren FCS ID ist dieser hier"
+      },
+      "FlightControlSystems.TotalRevenue": {
+        "table": "FlightControlSystems",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "Ein Flight Control System: Total Revenue ist die Gesamtsumme von Line Total über die mit dem Flight Control System verbundenen Order Lines.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Line Total über alle Order Lines, deren FCS ID ist dieser hier"
+      },
+      "OrderLines.Name": {
+        "table": "OrderLines",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Order Line: Name entspricht Line Number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "Line Number"
+      },
+      "OrderLines.FCSUnitPrice": {
+        "table": "OrderLines",
+        "field": "FCSUnitPrice",
+        "kind": "lookup",
+        "rule": "Eine Order Line: FCS Unit Price — aus dem zugehörigen FCS ID übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Unit Price des verknüpften FCS ID"
+      },
+      "OrderLines.FCSArchitecture": {
+        "table": "OrderLines",
+        "field": "FCSArchitecture",
+        "kind": "lookup",
+        "rule": "Eine Order Line: FCS Architecture — aus dem zugehörigen FCS ID übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Architecture des verknüpften FCS ID"
+      },
+      "OrderLines.FCSJetModel": {
+        "table": "OrderLines",
+        "field": "FCSJetModel",
+        "kind": "lookup",
+        "rule": "Eine Order Line: FCS Jet Model ist der Jet Model ID des zugehörigen FCS ID der Order Line.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Jet Model ID des verknüpften FCS ID"
+      },
+      "OrderLines.FCSMeetsFifthGenSpec": {
+        "table": "OrderLines",
+        "field": "FCSMeetsFifthGenSpec",
+        "kind": "lookup",
+        "rule": "Eine Order Line: FCS Meets Fifth Gen Spec ist wahr, wenn der zugehörige FCS ID der Order Line ist Meets Fifth Gen Spec.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "MeetsFifthGenSpec",
+            "label": "meets fifth gen spec"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Meets Fifth Gen Spec des verknüpften FCS ID"
+      },
+      "OrderLines.OrderNumber": {
+        "table": "OrderLines",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Eine Order Line: Order Number — aus dem zugehörigen Order ID übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Order Number des verknüpften Order ID"
+      },
+      "OrderLines.OrderCustomer": {
+        "table": "OrderLines",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "Eine Order Line: Order Customer — aus dem zugehörigen Order ID übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Customer des verknüpften Order ID"
+      },
+      "OrderLines.LineTotal": {
+        "table": "OrderLines",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "Eine Order Line: Line Total wird berechnet als der Quantity mal die FCS Unit Price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSUnitPrice",
+            "label": "FCS unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity mal FCS Unit Price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "Ein User **muss** ein Email und eine Role haben."
+      ],
+      "Customers": [
+        "Ein Customer **muss** ein Email haben."
+      ],
+      "Orders": [
+        "Ein Order **muss** ein Order Number; eine Order Date; ein Customer; und ein Total haben."
+      ],
+      "Payments": [
+        "Ein Payment **muss** ein Payment Number; ein Order ID; eine Payment Date; ein Amount; und ein Method haben."
+      ],
+      "JetModels": [
+        "Ein Jet Model **muss** eine Model Code; ein Manufacturer; und eine Generation haben."
+      ],
+      "FlightControlSystems": [
+        "Ein Flight Control System **muss** eine FCS Code; ein Jet Model ID; eine Architecture; ein Redundancy Channels; und eine Unit Price haben."
+      ],
+      "OrderLines": [
+        "Eine Order Line **muss** ein Line Number; ein Order ID; ein FCS ID; und ein Quantity haben."
+      ]
+    },
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "User",
+      "Customers": "Customer",
+      "Orders": "Order",
+      "Payments": "Payment",
+      "JetModels": "Jet Model",
+      "FlightControlSystems": "Flight Control System",
+      "OrderLines": "Order Line"
+    }
+  },
+  "es": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un user: name es igual a email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Users.FullName": {
+        "table": "Users",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Un user: full name se calcula como el last name, seguido de una coma seguida de un espacio, seguido de el first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Users",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name, \", \", unido con first name"
+      },
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un customer: name es igual a email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Un customer: full name se calcula como el last name, seguido de una coma seguida de un espacio, seguido de el first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name, \", \", unido con first name"
+      },
+      "Customers.LifetimeSales": {
+        "table": "Customers",
+        "field": "LifetimeSales",
+        "kind": "rollup",
+        "rule": "Un customer: lifetime sales es el total de recent total entre los orders relacionados con el customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "RecentTotal",
+            "label": "recent total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de recent total entre todos los orders cuyo customer es este"
+      },
+      "Customers.UnpaidOrderCount": {
+        "table": "Customers",
+        "field": "UnpaidOrderCount",
+        "kind": "rollup",
+        "rule": "Un customer: unpaid order count es el total de unpaid flag entre los orders relacionados con el customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "UnpaidFlag",
+            "label": "unpaid flag"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de unpaid flag entre todos los orders cuyo customer es este"
+      },
+      "Customers.LargeOrderCount": {
+        "table": "Customers",
+        "field": "LargeOrderCount",
+        "kind": "rollup",
+        "rule": "Un customer: large order count es el número de large orders del customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de ((total por 0) más 1) donde customer es este y total es \">500\""
+      },
+      "Customers.IsVIP": {
+        "table": "Customers",
+        "field": "IsVIP",
+        "kind": "formula",
+        "rule": "Un customer se considera un VIP si se cumple todo lo siguiente: el lifetime sales es mayor que 1000 y el unpaid order count es como máximo 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LifetimeSales",
+            "label": "lifetime sales"
+          },
+          {
+            "table": "Customers",
+            "field": "UnpaidOrderCount",
+            "label": "unpaid order count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un customer se considera un VIP si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el lifetime sales es mayor que 1000"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el unpaid order count es como máximo 1"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Lifetime sales es mayor que 1,000 y unpaid order count es como máximo 1"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un order: name es igual a order number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number"
+      },
+      "Orders.CustomerFirstName": {
+        "table": "Orders",
+        "field": "CustomerFirstName",
+        "kind": "lookup",
+        "rule": "Un order: customer first name — tomado del customer vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El first name del customer vinculado"
+      },
+      "Orders.CustomerLastName": {
+        "table": "Orders",
+        "field": "CustomerLastName",
+        "kind": "lookup",
+        "rule": "Un order: customer last name — tomado del customer vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El last name del customer vinculado"
+      },
+      "Orders.CustomerFullName": {
+        "table": "Orders",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "Un order: customer full name — tomado del customer vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El full name del customer vinculado"
+      },
+      "Orders.CustomerEmail": {
+        "table": "Orders",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "Un order: customer email — tomado del customer vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El email del customer vinculado"
+      },
+      "Orders.AmountPaid": {
+        "table": "Orders",
+        "field": "AmountPaid",
+        "kind": "rollup",
+        "rule": "Un order: amount paid es el total de amount entre los payments relacionados con el order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de amount entre todos los payments cuyo order ID es este"
+      },
+      "Orders.Balance": {
+        "table": "Orders",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "Un order: balance se calcula como el total menos el amount paid.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          }
+        ],
+        "structure": null,
+        "plain": "Total menos amount paid"
+      },
+      "Orders.IsPaid": {
+        "table": "Orders",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "Un order se considera un paid si el balance es como máximo 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance es como máximo 0"
+      },
+      "Orders.UnpaidFlag": {
+        "table": "Orders",
+        "field": "UnpaidFlag",
+        "kind": "formula",
+        "rule": "El campo «unpaid flag» del order se determina según la siguiente prioridad:\n1. 0, si el indicador «paid» está activado;\n2. en todos los demás casos, 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «unpaid flag» del order se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «paid» está activado"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is paid, entonces 0, de lo contrario 1"
+      },
+      "Orders.IsRecent": {
+        "table": "Orders",
+        "field": "IsRecent",
+        "kind": "formula",
+        "rule": "Un order se considera recent si el número de días desde el order date hasta la fecha de hoy es como máximo 90.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          }
+        ],
+        "structure": null,
+        "plain": "Los días entre hoy y order date es como máximo 90"
+      },
+      "Orders.RecentTotal": {
+        "table": "Orders",
+        "field": "RecentTotal",
+        "kind": "formula",
+        "rule": "El campo «recent total» del order se determina según la siguiente prioridad:\n1. el total, si el indicador «recent» está activado;\n2. en todos los demás casos, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsRecent",
+            "label": "is recent"
+          },
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «recent total» del order se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "el total",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «recent» está activado"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is recent, entonces total, de lo contrario 0"
+      },
+      "Orders.FCSSubtotal": {
+        "table": "Orders",
+        "field": "FCSSubtotal",
+        "kind": "rollup",
+        "rule": "Un order: FCS subtotal es el total de line total entre los order lines relacionados con el order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de line total entre todos los order lines cuyo order ID es este"
+      },
+      "Orders.FCSUnitCount": {
+        "table": "Orders",
+        "field": "FCSUnitCount",
+        "kind": "rollup",
+        "rule": "Un order: FCS unit count es el total de quantity entre los order lines relacionados con el order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de quantity entre todos los order lines cuyo order ID es este"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un payment: name es igual a payment number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment number"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Un payment: order number — tomado del order ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El order number del order ID vinculado"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "Un payment: order date — tomado del order ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El order date del order ID vinculado"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "Un payment: order total — tomado del order ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El total del order ID vinculado"
+      },
+      "Payments.OrderAmountPaid": {
+        "table": "Payments",
+        "field": "OrderAmountPaid",
+        "kind": "lookup",
+        "rule": "Un payment: order amount paid — tomado del order ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El amount paid del order ID vinculado"
+      },
+      "Payments.OrderBalance": {
+        "table": "Payments",
+        "field": "OrderBalance",
+        "kind": "lookup",
+        "rule": "Un payment: order balance — tomado del order ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El balance del order ID vinculado"
+      },
+      "Payments.OrderIsPaid": {
+        "table": "Payments",
+        "field": "OrderIsPaid",
+        "kind": "lookup",
+        "rule": "Un payment: order is paid es verdadero cuando el order ID vinculado es un paid.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El is paid del order ID vinculado"
+      },
+      "Payments.OrderCustomer": {
+        "table": "Payments",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "Un payment: order customer — tomado del order ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El customer del order ID vinculado"
+      },
+      "Payments.CustomerFullName": {
+        "table": "Payments",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "Un payment: customer full name — tomado del order ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerFullName",
+            "label": "customer full name"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El customer full name del order ID vinculado"
+      },
+      "Payments.CustomerEmail": {
+        "table": "Payments",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "Un payment: customer email — tomado del order ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerEmail",
+            "label": "customer email"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El customer email del order ID vinculado"
+      },
+      "JetModels.Name": {
+        "table": "JetModels",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un jet model: name es igual a model code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "ModelCode",
+            "label": "model code"
+          }
+        ],
+        "structure": null,
+        "plain": "Model code"
+      },
+      "JetModels.IsFifthGen": {
+        "table": "JetModels",
+        "field": "IsFifthGen",
+        "kind": "formula",
+        "rule": "Un jet model se considera un fifth gen si el generation es al menos 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          }
+        ],
+        "structure": null,
+        "plain": "Generation es al menos 5"
+      },
+      "JetModels.FCSVariantCount": {
+        "table": "JetModels",
+        "field": "FCSVariantCount",
+        "kind": "rollup",
+        "rule": "Un jet model: FCS variant count es el número de FCS variants del jet model.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de ((unit price por 0) más 1) donde jet model ID es este"
+      },
+      "JetModels.TotalUnitsOrdered": {
+        "table": "JetModels",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "Un jet model: total units ordered es de total units ordered entre los flight control systems relacionados con el jet model.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalUnitsOrdered",
+            "label": "total units ordered"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de total units ordered entre todos los flight control systems cuyo jet model ID es este"
+      },
+      "JetModels.TotalRevenue": {
+        "table": "JetModels",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "Un jet model: total revenue es de total revenue entre los flight control systems relacionados con el jet model.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalRevenue",
+            "label": "total revenue"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de total revenue entre todos los flight control systems cuyo jet model ID es este"
+      },
+      "FlightControlSystems.Name": {
+        "table": "FlightControlSystems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un flight control system: name es igual a FCS code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "FCSCode",
+            "label": "FCS code"
+          }
+        ],
+        "structure": null,
+        "plain": "FCS code"
+      },
+      "FlightControlSystems.JetManufacturer": {
+        "table": "FlightControlSystems",
+        "field": "JetManufacturer",
+        "kind": "lookup",
+        "rule": "Un flight control system: jet manufacturer — tomado del jet model ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Manufacturer",
+            "label": "manufacturer"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El manufacturer del jet model ID vinculado"
+      },
+      "FlightControlSystems.JetGeneration": {
+        "table": "FlightControlSystems",
+        "field": "JetGeneration",
+        "kind": "lookup",
+        "rule": "Un flight control system: jet generation — tomado del jet model ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El generation del jet model ID vinculado"
+      },
+      "FlightControlSystems.IsTripleRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsTripleRedundant",
+        "kind": "formula",
+        "rule": "Un flight control system se considera triple redundant si el redundancy channels es al menos 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels es al menos 3"
+      },
+      "FlightControlSystems.IsQuadRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsQuadRedundant",
+        "kind": "formula",
+        "rule": "Un flight control system se considera quad redundant si el redundancy channels es al menos 4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels es al menos 4"
+      },
+      "FlightControlSystems.MeetsFifthGenSpec": {
+        "table": "FlightControlSystems",
+        "field": "MeetsFifthGenSpec",
+        "kind": "formula",
+        "rule": "Un flight control system se considera que cumple: fifth gen spec si se cumple todo lo siguiente: el indicador «quad redundant» está activado; se cumple al menos una de las siguientes: el architecture es «fly-by-wire» o el architecture es «fly-by-light»; y el jet generation es al menos 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "IsQuadRedundant",
+            "label": "is quad redundant"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetGeneration",
+            "label": "jet generation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un flight control system se considera que cumple: fifth gen spec si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «quad redundant» está activado"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "el architecture es «fly-by-wire»"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "el architecture es «fly-by-light»"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el jet generation es al menos 5"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is quad redundant, architecture es \"fly-by-wire\" o architecture es \"fly-by-light\", y jet generation es al menos 5"
+      },
+      "FlightControlSystems.TotalUnitsOrdered": {
+        "table": "FlightControlSystems",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "Un flight control system: total units ordered es el total de quantity entre los order lines relacionados con el flight control system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de quantity entre todos los order lines cuyo FCS ID es este"
+      },
+      "FlightControlSystems.TotalRevenue": {
+        "table": "FlightControlSystems",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "Un flight control system: total revenue es el total de line total entre los order lines relacionados con el flight control system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de line total entre todos los order lines cuyo FCS ID es este"
+      },
+      "OrderLines.Name": {
+        "table": "OrderLines",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un order line: name es igual a line number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "Line number"
+      },
+      "OrderLines.FCSUnitPrice": {
+        "table": "OrderLines",
+        "field": "FCSUnitPrice",
+        "kind": "lookup",
+        "rule": "Un order line: FCS unit price — tomado del FCS ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El unit price del FCS ID vinculado"
+      },
+      "OrderLines.FCSArchitecture": {
+        "table": "OrderLines",
+        "field": "FCSArchitecture",
+        "kind": "lookup",
+        "rule": "Un order line: FCS architecture — tomado del FCS ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El architecture del FCS ID vinculado"
+      },
+      "OrderLines.FCSJetModel": {
+        "table": "OrderLines",
+        "field": "FCSJetModel",
+        "kind": "lookup",
+        "rule": "Un order line: FCS jet model es el jet model ID del FCS ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El jet model ID del FCS ID vinculado"
+      },
+      "OrderLines.FCSMeetsFifthGenSpec": {
+        "table": "OrderLines",
+        "field": "FCSMeetsFifthGenSpec",
+        "kind": "lookup",
+        "rule": "Un order line: FCS meets fifth gen spec es verdadero cuando el FCS ID vinculado es meets fifth gen spec.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "MeetsFifthGenSpec",
+            "label": "meets fifth gen spec"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El meets fifth gen spec del FCS ID vinculado"
+      },
+      "OrderLines.OrderNumber": {
+        "table": "OrderLines",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Un order line: order number — tomado del order ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El order number del order ID vinculado"
+      },
+      "OrderLines.OrderCustomer": {
+        "table": "OrderLines",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "Un order line: order customer — tomado del order ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El customer del order ID vinculado"
+      },
+      "OrderLines.LineTotal": {
+        "table": "OrderLines",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "Un order line: line total se calcula como el quantity por el FCS unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSUnitPrice",
+            "label": "FCS unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity por FCS unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "Un user **debe** tener un email y un role."
+      ],
+      "Customers": [
+        "Un customer **debe** tener un email."
+      ],
+      "Orders": [
+        "Un order **debe** tener un order number; un order date; un customer; y un total."
+      ],
+      "Payments": [
+        "Un payment **debe** tener un payment number; un order ID; un payment date; un amount; y un method."
+      ],
+      "JetModels": [
+        "Un jet model **debe** tener un model code; un manufacturer; y un generation."
+      ],
+      "FlightControlSystems": [
+        "Un flight control system **debe** tener un FCS code; un jet model ID; un architecture; un redundancy channels; y un unit price."
+      ],
+      "OrderLines": [
+        "Un order line **debe** tener un line number; un order ID; un FCS ID; y un quantity."
+      ]
+    },
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Customers": "customer",
+      "Orders": "order",
+      "Payments": "payment",
+      "JetModels": "jet model",
+      "FlightControlSystems": "flight control system",
+      "OrderLines": "order line"
+    }
+  },
+  "fr": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un user : name est identique à email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Users.FullName": {
+        "table": "Users",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Un user : full name est calculé comme le last name, suivi de une virgule suivie d'une espace, suivi de le first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Users",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name, \", \", joint à first name"
+      },
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un customer : name est identique à email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Un customer : full name est calculé comme le last name, suivi de une virgule suivie d'une espace, suivi de le first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name, \", \", joint à first name"
+      },
+      "Customers.LifetimeSales": {
+        "table": "Customers",
+        "field": "LifetimeSales",
+        "kind": "rollup",
+        "rule": "Un customer : lifetime sales est le total de recent total sur les orders liés à le customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "RecentTotal",
+            "label": "recent total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de recent total sur tous les orders dont customer est celui-ci"
+      },
+      "Customers.UnpaidOrderCount": {
+        "table": "Customers",
+        "field": "UnpaidOrderCount",
+        "kind": "rollup",
+        "rule": "Un customer : unpaid order count est le total de unpaid flag sur les orders liés à le customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "UnpaidFlag",
+            "label": "unpaid flag"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de unpaid flag sur tous les orders dont customer est celui-ci"
+      },
+      "Customers.LargeOrderCount": {
+        "table": "Customers",
+        "field": "LargeOrderCount",
+        "kind": "rollup",
+        "rule": "Un customer : large order count est le nombre de large orders du customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de ((total fois 0) plus 1) où customer est celui-ci et total est \">500\""
+      },
+      "Customers.IsVIP": {
+        "table": "Customers",
+        "field": "IsVIP",
+        "kind": "formula",
+        "rule": "Un customer est considéré comme un VIP si tout ce qui suit est vrai : le lifetime sales est supérieur à 1000 et l'unpaid order count est au plus 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LifetimeSales",
+            "label": "lifetime sales"
+          },
+          {
+            "table": "Customers",
+            "field": "UnpaidOrderCount",
+            "label": "unpaid order count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un customer est considéré comme un VIP si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "le lifetime sales est supérieur à 1000"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'unpaid order count est au plus 1"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Lifetime sales est supérieur à 1,000 et unpaid order count est au plus 1"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un order : name est identique à order number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number"
+      },
+      "Orders.CustomerFirstName": {
+        "table": "Orders",
+        "field": "CustomerFirstName",
+        "kind": "lookup",
+        "rule": "Un order : customer first name — repris du customer lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le first name du customer lié"
+      },
+      "Orders.CustomerLastName": {
+        "table": "Orders",
+        "field": "CustomerLastName",
+        "kind": "lookup",
+        "rule": "Un order : customer last name — repris du customer lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le last name du customer lié"
+      },
+      "Orders.CustomerFullName": {
+        "table": "Orders",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "Un order : customer full name — repris du customer lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le full name du customer lié"
+      },
+      "Orders.CustomerEmail": {
+        "table": "Orders",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "Un order : customer email — repris du customer lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le email du customer lié"
+      },
+      "Orders.AmountPaid": {
+        "table": "Orders",
+        "field": "AmountPaid",
+        "kind": "rollup",
+        "rule": "Un order : amount paid est le total de amount sur les payments liés à l'order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de amount sur tous les payments dont order ID est celui-ci"
+      },
+      "Orders.Balance": {
+        "table": "Orders",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "Un order : balance est calculé comme le total moins l'amount paid.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          }
+        ],
+        "structure": null,
+        "plain": "Total moins amount paid"
+      },
+      "Orders.IsPaid": {
+        "table": "Orders",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "Un order est considéré comme un paid si la balance est au plus 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance est au plus 0"
+      },
+      "Orders.UnpaidFlag": {
+        "table": "Orders",
+        "field": "UnpaidFlag",
+        "kind": "formula",
+        "rule": "Le champ « unpaid flag » de l'order est déterminé selon la priorité suivante :\n1. 0, si l'indicateur « paid » est activé ;\n2. dans tous les autres cas, 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « unpaid flag » de l'order est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « paid » est activé"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is paid, alors 0, sinon 1"
+      },
+      "Orders.IsRecent": {
+        "table": "Orders",
+        "field": "IsRecent",
+        "kind": "formula",
+        "rule": "Un order est considéré comme recent si le nombre de jours de l'order date à la date du jour est au plus 90.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          }
+        ],
+        "structure": null,
+        "plain": "Les jours entre aujourd'hui et order date est au plus 90"
+      },
+      "Orders.RecentTotal": {
+        "table": "Orders",
+        "field": "RecentTotal",
+        "kind": "formula",
+        "rule": "Le champ « recent total » de l'order est déterminé selon la priorité suivante :\n1. le total, si l'indicateur « recent » est activé ;\n2. dans tous les autres cas, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsRecent",
+            "label": "is recent"
+          },
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « recent total » de l'order est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "le total",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « recent » est activé"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is recent, alors total, sinon 0"
+      },
+      "Orders.FCSSubtotal": {
+        "table": "Orders",
+        "field": "FCSSubtotal",
+        "kind": "rollup",
+        "rule": "Un order : FCS subtotal est le total de line total sur les order lines liés à l'order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de line total sur tous les order lines dont order ID est celui-ci"
+      },
+      "Orders.FCSUnitCount": {
+        "table": "Orders",
+        "field": "FCSUnitCount",
+        "kind": "rollup",
+        "rule": "Un order : FCS unit count est le total de quantity sur les order lines liés à l'order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de quantity sur tous les order lines dont order ID est celui-ci"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un payment : name est identique à payment number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment number"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Un payment : order number — repris du order ID lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le order number du order ID lié"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "Un payment : order date — repris du order ID lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le order date du order ID lié"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "Un payment : order total — repris du order ID lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le total du order ID lié"
+      },
+      "Payments.OrderAmountPaid": {
+        "table": "Payments",
+        "field": "OrderAmountPaid",
+        "kind": "lookup",
+        "rule": "Un payment : order amount paid — repris du order ID lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le amount paid du order ID lié"
+      },
+      "Payments.OrderBalance": {
+        "table": "Payments",
+        "field": "OrderBalance",
+        "kind": "lookup",
+        "rule": "Un payment : order balance — repris du order ID lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le balance du order ID lié"
+      },
+      "Payments.OrderIsPaid": {
+        "table": "Payments",
+        "field": "OrderIsPaid",
+        "kind": "lookup",
+        "rule": "Un payment : order is paid est vrai lorsque le order ID lié est un paid.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le is paid du order ID lié"
+      },
+      "Payments.OrderCustomer": {
+        "table": "Payments",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "Un payment : order customer — repris du order ID lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le customer du order ID lié"
+      },
+      "Payments.CustomerFullName": {
+        "table": "Payments",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "Un payment : customer full name — repris du order ID lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerFullName",
+            "label": "customer full name"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le customer full name du order ID lié"
+      },
+      "Payments.CustomerEmail": {
+        "table": "Payments",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "Un payment : customer email — repris du order ID lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerEmail",
+            "label": "customer email"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le customer email du order ID lié"
+      },
+      "JetModels.Name": {
+        "table": "JetModels",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un jet model : name est identique à model code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "ModelCode",
+            "label": "model code"
+          }
+        ],
+        "structure": null,
+        "plain": "Model code"
+      },
+      "JetModels.IsFifthGen": {
+        "table": "JetModels",
+        "field": "IsFifthGen",
+        "kind": "formula",
+        "rule": "Un jet model est considéré comme un fifth gen si la generation est au moins 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          }
+        ],
+        "structure": null,
+        "plain": "Generation est au moins 5"
+      },
+      "JetModels.FCSVariantCount": {
+        "table": "JetModels",
+        "field": "FCSVariantCount",
+        "kind": "rollup",
+        "rule": "Un jet model : FCS variant count est le nombre de FCS variants du jet model.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de ((unit price fois 0) plus 1) où jet model ID est celui-ci"
+      },
+      "JetModels.TotalUnitsOrdered": {
+        "table": "JetModels",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "Un jet model : total units ordered est de total units ordered sur les flight control systems liés à le jet model.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalUnitsOrdered",
+            "label": "total units ordered"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de total units ordered sur tous les flight control systems dont jet model ID est celui-ci"
+      },
+      "JetModels.TotalRevenue": {
+        "table": "JetModels",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "Un jet model : total revenue est de total revenue sur les flight control systems liés à le jet model.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalRevenue",
+            "label": "total revenue"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de total revenue sur tous les flight control systems dont jet model ID est celui-ci"
+      },
+      "FlightControlSystems.Name": {
+        "table": "FlightControlSystems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un flight control system : name est identique à FCS code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "FCSCode",
+            "label": "FCS code"
+          }
+        ],
+        "structure": null,
+        "plain": "FCS code"
+      },
+      "FlightControlSystems.JetManufacturer": {
+        "table": "FlightControlSystems",
+        "field": "JetManufacturer",
+        "kind": "lookup",
+        "rule": "Un flight control system : jet manufacturer — repris du jet model ID lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Manufacturer",
+            "label": "manufacturer"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le manufacturer du jet model ID lié"
+      },
+      "FlightControlSystems.JetGeneration": {
+        "table": "FlightControlSystems",
+        "field": "JetGeneration",
+        "kind": "lookup",
+        "rule": "Un flight control system : jet generation — repris du jet model ID lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le generation du jet model ID lié"
+      },
+      "FlightControlSystems.IsTripleRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsTripleRedundant",
+        "kind": "formula",
+        "rule": "Un flight control system est considéré comme triple redundant si le redundancy channels est au moins 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels est au moins 3"
+      },
+      "FlightControlSystems.IsQuadRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsQuadRedundant",
+        "kind": "formula",
+        "rule": "Un flight control system est considéré comme quad redundant si le redundancy channels est au moins 4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels est au moins 4"
+      },
+      "FlightControlSystems.MeetsFifthGenSpec": {
+        "table": "FlightControlSystems",
+        "field": "MeetsFifthGenSpec",
+        "kind": "formula",
+        "rule": "Un flight control system est considéré comme satisfaisant : fifth gen spec si tout ce qui suit est vrai : l'indicateur « quad redundant » est activé; au moins une des conditions suivantes est vraie : l'architecture est « fly-by-wire » ou l'architecture est « fly-by-light »; et la jet generation est au moins 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "IsQuadRedundant",
+            "label": "is quad redundant"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetGeneration",
+            "label": "jet generation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un flight control system est considéré comme satisfaisant : fifth gen spec si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « quad redundant » est activé"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "l'architecture est « fly-by-wire »"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "l'architecture est « fly-by-light »"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "la jet generation est au moins 5"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is quad redundant, architecture est \"fly-by-wire\" ou architecture est \"fly-by-light\", et jet generation est au moins 5"
+      },
+      "FlightControlSystems.TotalUnitsOrdered": {
+        "table": "FlightControlSystems",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "Un flight control system : total units ordered est le total de quantity sur les order lines liés à le flight control system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de quantity sur tous les order lines dont FCS ID est celui-ci"
+      },
+      "FlightControlSystems.TotalRevenue": {
+        "table": "FlightControlSystems",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "Un flight control system : total revenue est le total de line total sur les order lines liés à le flight control system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de line total sur tous les order lines dont FCS ID est celui-ci"
+      },
+      "OrderLines.Name": {
+        "table": "OrderLines",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un order line : name est identique à line number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "Line number"
+      },
+      "OrderLines.FCSUnitPrice": {
+        "table": "OrderLines",
+        "field": "FCSUnitPrice",
+        "kind": "lookup",
+        "rule": "Un order line : FCS unit price — repris du FCS ID lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le unit price du FCS ID lié"
+      },
+      "OrderLines.FCSArchitecture": {
+        "table": "OrderLines",
+        "field": "FCSArchitecture",
+        "kind": "lookup",
+        "rule": "Un order line : FCS architecture — repris du FCS ID lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le architecture du FCS ID lié"
+      },
+      "OrderLines.FCSJetModel": {
+        "table": "OrderLines",
+        "field": "FCSJetModel",
+        "kind": "lookup",
+        "rule": "Un order line : FCS jet model est le jet model ID du FCS ID lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le jet model ID du FCS ID lié"
+      },
+      "OrderLines.FCSMeetsFifthGenSpec": {
+        "table": "OrderLines",
+        "field": "FCSMeetsFifthGenSpec",
+        "kind": "lookup",
+        "rule": "Un order line : FCS meets fifth gen spec est vrai lorsque le FCS ID lié est meets fifth gen spec.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "MeetsFifthGenSpec",
+            "label": "meets fifth gen spec"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le meets fifth gen spec du FCS ID lié"
+      },
+      "OrderLines.OrderNumber": {
+        "table": "OrderLines",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Un order line : order number — repris du order ID lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le order number du order ID lié"
+      },
+      "OrderLines.OrderCustomer": {
+        "table": "OrderLines",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "Un order line : order customer — repris du order ID lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le customer du order ID lié"
+      },
+      "OrderLines.LineTotal": {
+        "table": "OrderLines",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "Un order line : line total est calculé comme le quantity multiplié par le FCS unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSUnitPrice",
+            "label": "FCS unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity fois FCS unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "Un user **doit** avoir un email et un role."
+      ],
+      "Customers": [
+        "Un customer **doit** avoir un email."
+      ],
+      "Orders": [
+        "Un order **doit** avoir un order number; un order date; un customer; et un total."
+      ],
+      "Payments": [
+        "Un payment **doit** avoir un payment number; un order ID; un payment date; un amount; et un method."
+      ],
+      "JetModels": [
+        "Un jet model **doit** avoir un model code; un manufacturer; et une generation."
+      ],
+      "FlightControlSystems": [
+        "Un flight control system **doit** avoir un FCS code; un jet model ID; une architecture; un redundancy channels; et un unit price."
+      ],
+      "OrderLines": [
+        "Un order line **doit** avoir un line number; un order ID; un FCS ID; et un quantity."
+      ]
+    },
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Customers": "customer",
+      "Orders": "order",
+      "Payments": "payment",
+      "JetModels": "jet model",
+      "FlightControlSystems": "flight control system",
+      "OrderLines": "order line"
+    }
+  },
+  "hi": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "user का “name” उसके “email” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Users.FullName": {
+        "table": "Users",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "user का “full name” last name, उसके बाद एक अल्पविराम और उसके बाद रिक्त स्थान, उसके बाद first name के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Users",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name, \", \" से जुड़ा हुआ first name"
+      },
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "customer का “name” उसके “email” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "customer का “full name” last name, उसके बाद एक अल्पविराम और उसके बाद रिक्त स्थान, उसके बाद first name के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name, \", \" से जुड़ा हुआ first name"
+      },
+      "Customers.LifetimeSales": {
+        "table": "Customers",
+        "field": "LifetimeSales",
+        "kind": "rollup",
+        "rule": "customer का “lifetime sales” customer से संबंधित “orders” पर कुल “recent total” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "RecentTotal",
+            "label": "recent total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “orders” पर योग recent total, जिनका customer यह रिकॉर्ड है"
+      },
+      "Customers.UnpaidOrderCount": {
+        "table": "Customers",
+        "field": "UnpaidOrderCount",
+        "kind": "rollup",
+        "rule": "customer का “unpaid order count” customer से संबंधित “orders” पर कुल “unpaid flag” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "UnpaidFlag",
+            "label": "unpaid flag"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “orders” पर योग unpaid flag, जिनका customer यह रिकॉर्ड है"
+      },
+      "Customers.LargeOrderCount": {
+        "table": "Customers",
+        "field": "LargeOrderCount",
+        "kind": "rollup",
+        "rule": "customer का “large order count” customer के “large orders” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "योग ((total गुणा 0) जोड़ 1), जहाँ customer यह रिकॉर्ड है और total \">500\" है"
+      },
+      "Customers.IsVIP": {
+        "table": "Customers",
+        "field": "IsVIP",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: lifetime sales 1000 से अधिक है और unpaid order count अधिक से अधिक 1 है, तो customer “VIP” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LifetimeSales",
+            "label": "lifetime sales"
+          },
+          {
+            "table": "Customers",
+            "field": "UnpaidOrderCount",
+            "label": "unpaid order count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "customer “VIP” माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "lifetime sales 1000 से अधिक है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "unpaid order count अधिक से अधिक 1 है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Lifetime sales 1,000 से अधिक है और unpaid order count अधिक से अधिक 1 है"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "order का “name” उसके “order number” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number"
+      },
+      "Orders.CustomerFirstName": {
+        "table": "Orders",
+        "field": "CustomerFirstName",
+        "kind": "lookup",
+        "rule": "order का “customer first name” — लिंक किए गए “customer” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “customer” का first name"
+      },
+      "Orders.CustomerLastName": {
+        "table": "Orders",
+        "field": "CustomerLastName",
+        "kind": "lookup",
+        "rule": "order का “customer last name” — लिंक किए गए “customer” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “customer” का last name"
+      },
+      "Orders.CustomerFullName": {
+        "table": "Orders",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "order का “customer full name” — लिंक किए गए “customer” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “customer” का full name"
+      },
+      "Orders.CustomerEmail": {
+        "table": "Orders",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "order का “customer email” — लिंक किए गए “customer” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “customer” का email"
+      },
+      "Orders.AmountPaid": {
+        "table": "Orders",
+        "field": "AmountPaid",
+        "kind": "rollup",
+        "rule": "order का “amount paid” order से संबंधित “payments” पर कुल “amount” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “payments” पर योग amount, जिनका order ID यह रिकॉर्ड है"
+      },
+      "Orders.Balance": {
+        "table": "Orders",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "order का “balance” total घटा amount paid के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          }
+        ],
+        "structure": null,
+        "plain": "Total घटा amount paid"
+      },
+      "Orders.IsPaid": {
+        "table": "Orders",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "यदि balance अधिक से अधिक 0 है, तो order “paid” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance अधिक से अधिक 0 है"
+      },
+      "Orders.UnpaidFlag": {
+        "table": "Orders",
+        "field": "UnpaidFlag",
+        "kind": "formula",
+        "rule": "Order का “unpaid flag” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. 0, यदि “paid” ध्वज लगा हुआ है;\n2. अन्य सभी स्थितियों में, 1।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Order का “unpaid flag” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "“paid” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि is paid, तो 0, अन्यथा 1"
+      },
+      "Orders.IsRecent": {
+        "table": "Orders",
+        "field": "IsRecent",
+        "kind": "formula",
+        "rule": "यदि order date से आज की तारीख तक दिनों की संख्या अधिक से अधिक 90 है, तो order “recent” माना जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          }
+        ],
+        "structure": null,
+        "plain": "आज और order date के बीच दिनों अधिक से अधिक 90 है"
+      },
+      "Orders.RecentTotal": {
+        "table": "Orders",
+        "field": "RecentTotal",
+        "kind": "formula",
+        "rule": "Order का “recent total” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. total, यदि “recent” ध्वज लगा हुआ है;\n2. अन्य सभी स्थितियों में, 0।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsRecent",
+            "label": "is recent"
+          },
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Order का “recent total” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "total",
+              "when": {
+                "kind": "leaf",
+                "text": "“recent” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि is recent, तो total, अन्यथा 0"
+      },
+      "Orders.FCSSubtotal": {
+        "table": "Orders",
+        "field": "FCSSubtotal",
+        "kind": "rollup",
+        "rule": "order का “FCS subtotal” order से संबंधित “order lines” पर कुल “line total” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “order lines” पर योग line total, जिनका order ID यह रिकॉर्ड है"
+      },
+      "Orders.FCSUnitCount": {
+        "table": "Orders",
+        "field": "FCSUnitCount",
+        "kind": "rollup",
+        "rule": "order का “FCS unit count” order से संबंधित “order lines” पर कुल “quantity” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “order lines” पर योग quantity, जिनका order ID यह रिकॉर्ड है"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "payment का “name” उसके “payment number” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment number"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "payment का “order number” — लिंक किए गए “order ID” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “order ID” का order number"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "payment का “order date” — लिंक किए गए “order ID” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “order ID” का order date"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "payment का “order total” — लिंक किए गए “order ID” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “order ID” का total"
+      },
+      "Payments.OrderAmountPaid": {
+        "table": "Payments",
+        "field": "OrderAmountPaid",
+        "kind": "lookup",
+        "rule": "payment का “order amount paid” — लिंक किए गए “order ID” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “order ID” का amount paid"
+      },
+      "Payments.OrderBalance": {
+        "table": "Payments",
+        "field": "OrderBalance",
+        "kind": "lookup",
+        "rule": "payment का “order balance” — लिंक किए गए “order ID” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “order ID” का balance"
+      },
+      "Payments.OrderIsPaid": {
+        "table": "Payments",
+        "field": "OrderIsPaid",
+        "kind": "lookup",
+        "rule": "payment का “order is paid” तब सत्य होता है, जब लिंक किए गए “order ID” का “paid” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “order ID” का is paid"
+      },
+      "Payments.OrderCustomer": {
+        "table": "Payments",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "payment का “order customer” — लिंक किए गए “order ID” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “order ID” का customer"
+      },
+      "Payments.CustomerFullName": {
+        "table": "Payments",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "payment का “customer full name” — लिंक किए गए “order ID” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerFullName",
+            "label": "customer full name"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “order ID” का customer full name"
+      },
+      "Payments.CustomerEmail": {
+        "table": "Payments",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "payment का “customer email” — लिंक किए गए “order ID” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerEmail",
+            "label": "customer email"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “order ID” का customer email"
+      },
+      "JetModels.Name": {
+        "table": "JetModels",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "jet model का “name” उसके “model code” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "ModelCode",
+            "label": "model code"
+          }
+        ],
+        "structure": null,
+        "plain": "Model code"
+      },
+      "JetModels.IsFifthGen": {
+        "table": "JetModels",
+        "field": "IsFifthGen",
+        "kind": "formula",
+        "rule": "यदि generation कम से कम 5 है, तो jet model “fifth gen” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          }
+        ],
+        "structure": null,
+        "plain": "Generation कम से कम 5 है"
+      },
+      "JetModels.FCSVariantCount": {
+        "table": "JetModels",
+        "field": "FCSVariantCount",
+        "kind": "rollup",
+        "rule": "jet model का “FCS variant count” jet model के “FCS variants” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "योग ((unit price गुणा 0) जोड़ 1), जहाँ jet model ID यह रिकॉर्ड है"
+      },
+      "JetModels.TotalUnitsOrdered": {
+        "table": "JetModels",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "jet model का “total units ordered” jet model से संबंधित “flight control systems” पर “total units ordered” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalUnitsOrdered",
+            "label": "total units ordered"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “flight control systems” पर योग total units ordered, जिनका jet model ID यह रिकॉर्ड है"
+      },
+      "JetModels.TotalRevenue": {
+        "table": "JetModels",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "jet model का “total revenue” jet model से संबंधित “flight control systems” पर “total revenue” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalRevenue",
+            "label": "total revenue"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “flight control systems” पर योग total revenue, जिनका jet model ID यह रिकॉर्ड है"
+      },
+      "FlightControlSystems.Name": {
+        "table": "FlightControlSystems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "flight control system का “name” उसके “FCS code” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "FCSCode",
+            "label": "FCS code"
+          }
+        ],
+        "structure": null,
+        "plain": "FCS code"
+      },
+      "FlightControlSystems.JetManufacturer": {
+        "table": "FlightControlSystems",
+        "field": "JetManufacturer",
+        "kind": "lookup",
+        "rule": "flight control system का “jet manufacturer” — लिंक किए गए “jet model ID” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Manufacturer",
+            "label": "manufacturer"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “jet model ID” का manufacturer"
+      },
+      "FlightControlSystems.JetGeneration": {
+        "table": "FlightControlSystems",
+        "field": "JetGeneration",
+        "kind": "lookup",
+        "rule": "flight control system का “jet generation” — लिंक किए गए “jet model ID” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “jet model ID” का generation"
+      },
+      "FlightControlSystems.IsTripleRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsTripleRedundant",
+        "kind": "formula",
+        "rule": "यदि redundancy channels कम से कम 3 है, तो flight control system “triple redundant” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels कम से कम 3 है"
+      },
+      "FlightControlSystems.IsQuadRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsQuadRedundant",
+        "kind": "formula",
+        "rule": "यदि redundancy channels कम से कम 4 है, तो flight control system “quad redundant” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels कम से कम 4 है"
+      },
+      "FlightControlSystems.MeetsFifthGenSpec": {
+        "table": "FlightControlSystems",
+        "field": "MeetsFifthGenSpec",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: “quad redundant” ध्वज लगा हुआ है, निम्नलिखित में से कम से कम एक सही है: architecture “fly-by-wire” है या architecture “fly-by-light” है और jet generation कम से कम 5 है, तो flight control system “fifth gen spec” की शर्त पूरी करने वाला माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "IsQuadRedundant",
+            "label": "is quad redundant"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetGeneration",
+            "label": "jet generation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "flight control system “fifth gen spec” की शर्त पूरी करने वाला माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“quad redundant” ध्वज लगा हुआ है"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "architecture “fly-by-wire” है"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "architecture “fly-by-light” है"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "jet generation कम से कम 5 है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is quad redundant, architecture \"fly-by-wire\" है या architecture \"fly-by-light\" है और jet generation कम से कम 5 है"
+      },
+      "FlightControlSystems.TotalUnitsOrdered": {
+        "table": "FlightControlSystems",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "flight control system का “total units ordered” flight control system से संबंधित “order lines” पर कुल “quantity” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “order lines” पर योग quantity, जिनका FCS ID यह रिकॉर्ड है"
+      },
+      "FlightControlSystems.TotalRevenue": {
+        "table": "FlightControlSystems",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "flight control system का “total revenue” flight control system से संबंधित “order lines” पर कुल “line total” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “order lines” पर योग line total, जिनका FCS ID यह रिकॉर्ड है"
+      },
+      "OrderLines.Name": {
+        "table": "OrderLines",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "order line का “name” उसके “line number” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "Line number"
+      },
+      "OrderLines.FCSUnitPrice": {
+        "table": "OrderLines",
+        "field": "FCSUnitPrice",
+        "kind": "lookup",
+        "rule": "order line का “FCS unit price” — लिंक किए गए “FCS ID” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “FCS ID” का unit price"
+      },
+      "OrderLines.FCSArchitecture": {
+        "table": "OrderLines",
+        "field": "FCSArchitecture",
+        "kind": "lookup",
+        "rule": "order line का “FCS architecture” — लिंक किए गए “FCS ID” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “FCS ID” का architecture"
+      },
+      "OrderLines.FCSJetModel": {
+        "table": "OrderLines",
+        "field": "FCSJetModel",
+        "kind": "lookup",
+        "rule": "order line का “FCS jet model” लिंक किए गए “FCS ID” का “jet model ID” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “FCS ID” का jet model ID"
+      },
+      "OrderLines.FCSMeetsFifthGenSpec": {
+        "table": "OrderLines",
+        "field": "FCSMeetsFifthGenSpec",
+        "kind": "lookup",
+        "rule": "order line का “FCS meets fifth gen spec” तब सत्य होता है, जब लिंक किए गए “FCS ID” का “meets fifth gen spec” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "MeetsFifthGenSpec",
+            "label": "meets fifth gen spec"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “FCS ID” का meets fifth gen spec"
+      },
+      "OrderLines.OrderNumber": {
+        "table": "OrderLines",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "order line का “order number” — लिंक किए गए “order ID” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “order ID” का order number"
+      },
+      "OrderLines.OrderCustomer": {
+        "table": "OrderLines",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "order line का “order customer” — लिंक किए गए “order ID” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “order ID” का customer"
+      },
+      "OrderLines.LineTotal": {
+        "table": "OrderLines",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "order line का “line total” quantity गुणा FCS unit price के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSUnitPrice",
+            "label": "FCS unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity गुणा FCS unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "user को email और role रखना **अनिवार्य** है।"
+      ],
+      "Customers": [
+        "customer को email रखना **अनिवार्य** है।"
+      ],
+      "Orders": [
+        "order को order number, order date, customer और total रखना **अनिवार्य** है।"
+      ],
+      "Payments": [
+        "payment को payment number, order ID, payment date, amount और method रखना **अनिवार्य** है।"
+      ],
+      "JetModels": [
+        "jet model को model code, manufacturer और generation रखना **अनिवार्य** है।"
+      ],
+      "FlightControlSystems": [
+        "flight control system को FCS code, jet model ID, architecture, redundancy channels और unit price रखना **अनिवार्य** है।"
+      ],
+      "OrderLines": [
+        "order line को line number, order ID, FCS ID और quantity रखना **अनिवार्य** है।"
+      ]
+    },
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "Users": "user",
+      "Customers": "customer",
+      "Orders": "order",
+      "Payments": "payment",
+      "JetModels": "jet model",
+      "FlightControlSystems": "flight control system",
+      "OrderLines": "order line"
+    }
+  },
+  "id": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap user, name sama dengan email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Users.FullName": {
+        "table": "Users",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Untuk setiap user, full name dihitung sebagai last name, diikuti tanda koma yang diikuti spasi, diikuti first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Users",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name, \", \", digabung dengan first name"
+      },
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap customer, name sama dengan email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Untuk setiap customer, full name dihitung sebagai last name, diikuti tanda koma yang diikuti spasi, diikuti first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name, \", \", digabung dengan first name"
+      },
+      "Customers.LifetimeSales": {
+        "table": "Customers",
+        "field": "LifetimeSales",
+        "kind": "rollup",
+        "rule": "Untuk setiap customer, lifetime sales adalah nilai total recent total pada seluruh orders yang terkait dengan customer tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "RecentTotal",
+            "label": "recent total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Total recent total pada semua orders dengan syarat customer adalah entri ini"
+      },
+      "Customers.UnpaidOrderCount": {
+        "table": "Customers",
+        "field": "UnpaidOrderCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap customer, unpaid order count adalah nilai total unpaid flag pada seluruh orders yang terkait dengan customer tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "UnpaidFlag",
+            "label": "unpaid flag"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Total unpaid flag pada semua orders dengan syarat customer adalah entri ini"
+      },
+      "Customers.LargeOrderCount": {
+        "table": "Customers",
+        "field": "LargeOrderCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap customer, large order count adalah jumlah large orders dari customer tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Total ((total dikali 0) ditambah 1) dengan syarat customer adalah entri ini dan total adalah \">500\""
+      },
+      "Customers.IsVIP": {
+        "table": "Customers",
+        "field": "IsVIP",
+        "kind": "formula",
+        "rule": "Setiap customer dianggap “VIP” jika semua kondisi berikut terpenuhi: lifetime sales lebih dari 1000 dan unpaid order count tidak lebih dari 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LifetimeSales",
+            "label": "lifetime sales"
+          },
+          {
+            "table": "Customers",
+            "field": "UnpaidOrderCount",
+            "label": "unpaid order count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap customer dianggap “VIP” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "lifetime sales lebih dari 1000"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "unpaid order count tidak lebih dari 1"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Lifetime sales lebih dari 1,000 dan unpaid order count tidak lebih dari 1"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap order, name sama dengan order number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number"
+      },
+      "Orders.CustomerFirstName": {
+        "table": "Orders",
+        "field": "CustomerFirstName",
+        "kind": "lookup",
+        "rule": "Untuk setiap order, customer first name diambil dari customer yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "First name dari customer yang tertaut"
+      },
+      "Orders.CustomerLastName": {
+        "table": "Orders",
+        "field": "CustomerLastName",
+        "kind": "lookup",
+        "rule": "Untuk setiap order, customer last name diambil dari customer yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name dari customer yang tertaut"
+      },
+      "Orders.CustomerFullName": {
+        "table": "Orders",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "Untuk setiap order, customer full name diambil dari customer yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name dari customer yang tertaut"
+      },
+      "Orders.CustomerEmail": {
+        "table": "Orders",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "Untuk setiap order, customer email diambil dari customer yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Email dari customer yang tertaut"
+      },
+      "Orders.AmountPaid": {
+        "table": "Orders",
+        "field": "AmountPaid",
+        "kind": "rollup",
+        "rule": "Untuk setiap order, amount paid adalah nilai total amount pada seluruh payments yang terkait dengan order tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Total amount pada semua payments dengan syarat order ID adalah entri ini"
+      },
+      "Orders.Balance": {
+        "table": "Orders",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "Untuk setiap order, balance dihitung sebagai total dikurangi amount paid.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          }
+        ],
+        "structure": null,
+        "plain": "Total dikurangi amount paid"
+      },
+      "Orders.IsPaid": {
+        "table": "Orders",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "Setiap order dianggap “paid” jika balance tidak lebih dari 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance tidak lebih dari 0"
+      },
+      "Orders.UnpaidFlag": {
+        "table": "Orders",
+        "field": "UnpaidFlag",
+        "kind": "formula",
+        "rule": "Untuk setiap order, unpaid flag ditentukan menurut urutan prioritas berikut:\n1. 0, jika penanda “paid” aktif;\n2. dalam semua kasus lainnya, 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap order, unpaid flag ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “paid” aktif"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika is paid maka 0, selain itu 1"
+      },
+      "Orders.IsRecent": {
+        "table": "Orders",
+        "field": "IsRecent",
+        "kind": "formula",
+        "rule": "Setiap order dianggap “recent” jika jumlah hari dari order date hingga tanggal hari ini tidak lebih dari 90.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah hari antara hari ini dan order date tidak lebih dari 90"
+      },
+      "Orders.RecentTotal": {
+        "table": "Orders",
+        "field": "RecentTotal",
+        "kind": "formula",
+        "rule": "Untuk setiap order, recent total ditentukan menurut urutan prioritas berikut:\n1. total, jika penanda “recent” aktif;\n2. dalam semua kasus lainnya, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsRecent",
+            "label": "is recent"
+          },
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap order, recent total ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "total",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “recent” aktif"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika is recent maka total, selain itu 0"
+      },
+      "Orders.FCSSubtotal": {
+        "table": "Orders",
+        "field": "FCSSubtotal",
+        "kind": "rollup",
+        "rule": "Untuk setiap order, FCS subtotal adalah nilai total line total pada seluruh order lines yang terkait dengan order tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Total line total pada semua order lines dengan syarat order ID adalah entri ini"
+      },
+      "Orders.FCSUnitCount": {
+        "table": "Orders",
+        "field": "FCSUnitCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap order, FCS unit count adalah nilai total quantity pada seluruh order lines yang terkait dengan order tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Total quantity pada semua order lines dengan syarat order ID adalah entri ini"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap payment, name sama dengan payment number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment number"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Untuk setiap payment, order number diambil dari order ID yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number dari order ID yang tertaut"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "Untuk setiap payment, order date diambil dari order ID yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order date dari order ID yang tertaut"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "Untuk setiap payment, order total diambil dari order ID yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total dari order ID yang tertaut"
+      },
+      "Payments.OrderAmountPaid": {
+        "table": "Payments",
+        "field": "OrderAmountPaid",
+        "kind": "lookup",
+        "rule": "Untuk setiap payment, order amount paid diambil dari order ID yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Amount paid dari order ID yang tertaut"
+      },
+      "Payments.OrderBalance": {
+        "table": "Payments",
+        "field": "OrderBalance",
+        "kind": "lookup",
+        "rule": "Untuk setiap payment, order balance diambil dari order ID yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance dari order ID yang tertaut"
+      },
+      "Payments.OrderIsPaid": {
+        "table": "Payments",
+        "field": "OrderIsPaid",
+        "kind": "lookup",
+        "rule": "Untuk setiap payment, order is paid bernilai benar jika order ID yang tertaut pada payment tersebut tergolong “paid”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is paid dari order ID yang tertaut"
+      },
+      "Payments.OrderCustomer": {
+        "table": "Payments",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "Untuk setiap payment, order customer diambil dari order ID yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Customer dari order ID yang tertaut"
+      },
+      "Payments.CustomerFullName": {
+        "table": "Payments",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "Untuk setiap payment, customer full name diambil dari order ID yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerFullName",
+            "label": "customer full name"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Customer full name dari order ID yang tertaut"
+      },
+      "Payments.CustomerEmail": {
+        "table": "Payments",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "Untuk setiap payment, customer email diambil dari order ID yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerEmail",
+            "label": "customer email"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Customer email dari order ID yang tertaut"
+      },
+      "JetModels.Name": {
+        "table": "JetModels",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap jet model, name sama dengan model code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "ModelCode",
+            "label": "model code"
+          }
+        ],
+        "structure": null,
+        "plain": "Model code"
+      },
+      "JetModels.IsFifthGen": {
+        "table": "JetModels",
+        "field": "IsFifthGen",
+        "kind": "formula",
+        "rule": "Setiap jet model dianggap “fifth gen” jika generation tidak kurang dari 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          }
+        ],
+        "structure": null,
+        "plain": "Generation tidak kurang dari 5"
+      },
+      "JetModels.FCSVariantCount": {
+        "table": "JetModels",
+        "field": "FCSVariantCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap jet model, FCS variant count adalah jumlah FCS variants dari jet model tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Total ((unit price dikali 0) ditambah 1) dengan syarat jet model ID adalah entri ini"
+      },
+      "JetModels.TotalUnitsOrdered": {
+        "table": "JetModels",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "Untuk setiap jet model, total units ordered adalah nilai total units ordered pada seluruh flight control systems yang terkait dengan jet model tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalUnitsOrdered",
+            "label": "total units ordered"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Total total units ordered pada semua flight control systems dengan syarat jet model ID adalah entri ini"
+      },
+      "JetModels.TotalRevenue": {
+        "table": "JetModels",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "Untuk setiap jet model, total revenue adalah nilai total revenue pada seluruh flight control systems yang terkait dengan jet model tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalRevenue",
+            "label": "total revenue"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Total total revenue pada semua flight control systems dengan syarat jet model ID adalah entri ini"
+      },
+      "FlightControlSystems.Name": {
+        "table": "FlightControlSystems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap flight control system, name sama dengan FCS code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "FCSCode",
+            "label": "FCS code"
+          }
+        ],
+        "structure": null,
+        "plain": "FCS code"
+      },
+      "FlightControlSystems.JetManufacturer": {
+        "table": "FlightControlSystems",
+        "field": "JetManufacturer",
+        "kind": "lookup",
+        "rule": "Untuk setiap flight control system, jet manufacturer diambil dari jet model ID yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Manufacturer",
+            "label": "manufacturer"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Manufacturer dari jet model ID yang tertaut"
+      },
+      "FlightControlSystems.JetGeneration": {
+        "table": "FlightControlSystems",
+        "field": "JetGeneration",
+        "kind": "lookup",
+        "rule": "Untuk setiap flight control system, jet generation diambil dari jet model ID yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Generation dari jet model ID yang tertaut"
+      },
+      "FlightControlSystems.IsTripleRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsTripleRedundant",
+        "kind": "formula",
+        "rule": "Setiap flight control system dianggap “triple redundant” jika redundancy channels tidak kurang dari 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels tidak kurang dari 3"
+      },
+      "FlightControlSystems.IsQuadRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsQuadRedundant",
+        "kind": "formula",
+        "rule": "Setiap flight control system dianggap “quad redundant” jika redundancy channels tidak kurang dari 4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels tidak kurang dari 4"
+      },
+      "FlightControlSystems.MeetsFifthGenSpec": {
+        "table": "FlightControlSystems",
+        "field": "MeetsFifthGenSpec",
+        "kind": "formula",
+        "rule": "Setiap flight control system dianggap memenuhi kondisi “meets fifth gen spec” jika semua kondisi berikut terpenuhi: penanda “quad redundant” aktif; paling sedikit satu dari kondisi berikut terpenuhi: architecture adalah “fly-by-wire” atau architecture adalah “fly-by-light”; dan jet generation tidak kurang dari 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "IsQuadRedundant",
+            "label": "is quad redundant"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetGeneration",
+            "label": "jet generation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap flight control system dianggap memenuhi kondisi “meets fifth gen spec” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "penanda “quad redundant” aktif"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "architecture adalah “fly-by-wire”"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "architecture adalah “fly-by-light”"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "jet generation tidak kurang dari 5"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is quad redundant, architecture adalah \"fly-by-wire\" atau architecture adalah \"fly-by-light\", dan jet generation tidak kurang dari 5"
+      },
+      "FlightControlSystems.TotalUnitsOrdered": {
+        "table": "FlightControlSystems",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "Untuk setiap flight control system, total units ordered adalah nilai total quantity pada seluruh order lines yang terkait dengan flight control system tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Total quantity pada semua order lines dengan syarat FCS ID adalah entri ini"
+      },
+      "FlightControlSystems.TotalRevenue": {
+        "table": "FlightControlSystems",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "Untuk setiap flight control system, total revenue adalah nilai total line total pada seluruh order lines yang terkait dengan flight control system tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Total line total pada semua order lines dengan syarat FCS ID adalah entri ini"
+      },
+      "OrderLines.Name": {
+        "table": "OrderLines",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap order line, name sama dengan line number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "Line number"
+      },
+      "OrderLines.FCSUnitPrice": {
+        "table": "OrderLines",
+        "field": "FCSUnitPrice",
+        "kind": "lookup",
+        "rule": "Untuk setiap order line, FCS unit price diambil dari FCS ID yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Unit price dari FCS ID yang tertaut"
+      },
+      "OrderLines.FCSArchitecture": {
+        "table": "OrderLines",
+        "field": "FCSArchitecture",
+        "kind": "lookup",
+        "rule": "Untuk setiap order line, FCS architecture diambil dari FCS ID yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Architecture dari FCS ID yang tertaut"
+      },
+      "OrderLines.FCSJetModel": {
+        "table": "OrderLines",
+        "field": "FCSJetModel",
+        "kind": "lookup",
+        "rule": "Untuk setiap order line, FCS jet model adalah jet model ID dari FCS ID yang tertaut pada order line tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jet model ID dari FCS ID yang tertaut"
+      },
+      "OrderLines.FCSMeetsFifthGenSpec": {
+        "table": "OrderLines",
+        "field": "FCSMeetsFifthGenSpec",
+        "kind": "lookup",
+        "rule": "Untuk setiap order line, FCS meets fifth gen spec bernilai benar jika FCS ID yang tertaut pada order line tersebut memenuhi kondisi “meets fifth gen spec”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "MeetsFifthGenSpec",
+            "label": "meets fifth gen spec"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Meets fifth gen spec dari FCS ID yang tertaut"
+      },
+      "OrderLines.OrderNumber": {
+        "table": "OrderLines",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Untuk setiap order line, order number diambil dari order ID yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number dari order ID yang tertaut"
+      },
+      "OrderLines.OrderCustomer": {
+        "table": "OrderLines",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "Untuk setiap order line, order customer diambil dari order ID yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Customer dari order ID yang tertaut"
+      },
+      "OrderLines.LineTotal": {
+        "table": "OrderLines",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "Untuk setiap order line, line total dihitung sebagai quantity dikali FCS unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSUnitPrice",
+            "label": "FCS unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity dikali FCS unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "Setiap user **harus** memiliki email dan role."
+      ],
+      "Customers": [
+        "Setiap customer **harus** memiliki email."
+      ],
+      "Orders": [
+        "Setiap order **harus** memiliki order number, order date, customer, dan total."
+      ],
+      "Payments": [
+        "Setiap payment **harus** memiliki payment number, order ID, payment date, amount, dan method."
+      ],
+      "JetModels": [
+        "Setiap jet model **harus** memiliki model code, manufacturer, dan generation."
+      ],
+      "FlightControlSystems": [
+        "Setiap flight control system **harus** memiliki FCS code, jet model ID, architecture, redundancy channels, dan unit price."
+      ],
+      "OrderLines": [
+        "Setiap order line **harus** memiliki line number, order ID, FCS ID, dan quantity."
+      ]
+    },
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Customers": "customer",
+      "Orders": "order",
+      "Payments": "payment",
+      "JetModels": "jet model",
+      "FlightControlSystems": "flight control system",
+      "OrderLines": "order line"
+    }
+  },
+  "it": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un user: name è uguale a email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Users.FullName": {
+        "table": "Users",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Un user: full name è calcolato come il last name, seguito da una virgola seguita da uno spazio, seguito da il first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Users",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name, \", \", unito a first name"
+      },
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un customer: name è uguale a email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Un customer: full name è calcolato come il last name, seguito da una virgola seguita da uno spazio, seguito da il first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name, \", \", unito a first name"
+      },
+      "Customers.LifetimeSales": {
+        "table": "Customers",
+        "field": "LifetimeSales",
+        "kind": "rollup",
+        "rule": "Un customer: lifetime sales è il totale di recent total tra i orders collegati a il customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "RecentTotal",
+            "label": "recent total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di recent total su tutti i orders il cui customer è questo"
+      },
+      "Customers.UnpaidOrderCount": {
+        "table": "Customers",
+        "field": "UnpaidOrderCount",
+        "kind": "rollup",
+        "rule": "Un customer: unpaid order count è il totale di unpaid flag tra i orders collegati a il customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "UnpaidFlag",
+            "label": "unpaid flag"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di unpaid flag su tutti i orders il cui customer è questo"
+      },
+      "Customers.LargeOrderCount": {
+        "table": "Customers",
+        "field": "LargeOrderCount",
+        "kind": "rollup",
+        "rule": "Un customer: large order count è il numero di large orders del customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di ((total per 0) più 1) dove customer è questo e total è \">500\""
+      },
+      "Customers.IsVIP": {
+        "table": "Customers",
+        "field": "IsVIP",
+        "kind": "formula",
+        "rule": "Un customer è considerato un VIP se vale tutto quanto segue: il lifetime sales è maggiore di 1000 e l'unpaid order count è al massimo 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LifetimeSales",
+            "label": "lifetime sales"
+          },
+          {
+            "table": "Customers",
+            "field": "UnpaidOrderCount",
+            "label": "unpaid order count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un customer è considerato un VIP se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "il lifetime sales è maggiore di 1000"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'unpaid order count è al massimo 1"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Lifetime sales è maggiore di 1,000 e unpaid order count è al massimo 1"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un order: name è uguale a order number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number"
+      },
+      "Orders.CustomerFirstName": {
+        "table": "Orders",
+        "field": "CustomerFirstName",
+        "kind": "lookup",
+        "rule": "Un order: customer first name — ripreso dal customer collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il first name del customer collegato"
+      },
+      "Orders.CustomerLastName": {
+        "table": "Orders",
+        "field": "CustomerLastName",
+        "kind": "lookup",
+        "rule": "Un order: customer last name — ripreso dal customer collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il last name del customer collegato"
+      },
+      "Orders.CustomerFullName": {
+        "table": "Orders",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "Un order: customer full name — ripreso dal customer collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il full name del customer collegato"
+      },
+      "Orders.CustomerEmail": {
+        "table": "Orders",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "Un order: customer email — ripreso dal customer collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il email del customer collegato"
+      },
+      "Orders.AmountPaid": {
+        "table": "Orders",
+        "field": "AmountPaid",
+        "kind": "rollup",
+        "rule": "Un order: amount paid è il totale di amount tra i payments collegati a l'order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di amount su tutti i payments il cui order ID è questo"
+      },
+      "Orders.Balance": {
+        "table": "Orders",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "Un order: balance è calcolato come il total meno l'amount paid.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          }
+        ],
+        "structure": null,
+        "plain": "Total meno amount paid"
+      },
+      "Orders.IsPaid": {
+        "table": "Orders",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "Un order è considerato un paid se il balance è al massimo 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance è al massimo 0"
+      },
+      "Orders.UnpaidFlag": {
+        "table": "Orders",
+        "field": "UnpaidFlag",
+        "kind": "formula",
+        "rule": "Il campo “unpaid flag” dell'order è determinato secondo la seguente priorità:\n1. 0, se l'indicatore “paid” è attivo;\n2. in tutti gli altri casi, 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “unpaid flag” dell'order è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “paid” è attivo"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is paid, allora 0, altrimenti 1"
+      },
+      "Orders.IsRecent": {
+        "table": "Orders",
+        "field": "IsRecent",
+        "kind": "formula",
+        "rule": "Un order è considerato recent se il numero di giorni da l'order date a la data odierna è al massimo 90.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          }
+        ],
+        "structure": null,
+        "plain": "I giorni tra oggi e order date è al massimo 90"
+      },
+      "Orders.RecentTotal": {
+        "table": "Orders",
+        "field": "RecentTotal",
+        "kind": "formula",
+        "rule": "Il campo “recent total” dell'order è determinato secondo la seguente priorità:\n1. il total, se l'indicatore “recent” è attivo;\n2. in tutti gli altri casi, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsRecent",
+            "label": "is recent"
+          },
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “recent total” dell'order è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "il total",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “recent” è attivo"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is recent, allora total, altrimenti 0"
+      },
+      "Orders.FCSSubtotal": {
+        "table": "Orders",
+        "field": "FCSSubtotal",
+        "kind": "rollup",
+        "rule": "Un order: FCS subtotal è il totale di line total tra i order lines collegati a l'order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di line total su tutti i order lines il cui order ID è questo"
+      },
+      "Orders.FCSUnitCount": {
+        "table": "Orders",
+        "field": "FCSUnitCount",
+        "kind": "rollup",
+        "rule": "Un order: FCS unit count è il totale di quantity tra i order lines collegati a l'order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di quantity su tutti i order lines il cui order ID è questo"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un payment: name è uguale a payment number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment number"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Un payment: order number — ripreso dal order ID collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il order number del order ID collegato"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "Un payment: order date — ripreso dal order ID collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il order date del order ID collegato"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "Un payment: order total — ripreso dal order ID collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il total del order ID collegato"
+      },
+      "Payments.OrderAmountPaid": {
+        "table": "Payments",
+        "field": "OrderAmountPaid",
+        "kind": "lookup",
+        "rule": "Un payment: order amount paid — ripreso dal order ID collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il amount paid del order ID collegato"
+      },
+      "Payments.OrderBalance": {
+        "table": "Payments",
+        "field": "OrderBalance",
+        "kind": "lookup",
+        "rule": "Un payment: order balance — ripreso dal order ID collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il balance del order ID collegato"
+      },
+      "Payments.OrderIsPaid": {
+        "table": "Payments",
+        "field": "OrderIsPaid",
+        "kind": "lookup",
+        "rule": "Un payment: order is paid è vero quando il order ID collegato è un paid.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il is paid del order ID collegato"
+      },
+      "Payments.OrderCustomer": {
+        "table": "Payments",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "Un payment: order customer — ripreso dal order ID collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il customer del order ID collegato"
+      },
+      "Payments.CustomerFullName": {
+        "table": "Payments",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "Un payment: customer full name — ripreso dal order ID collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerFullName",
+            "label": "customer full name"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il customer full name del order ID collegato"
+      },
+      "Payments.CustomerEmail": {
+        "table": "Payments",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "Un payment: customer email — ripreso dal order ID collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerEmail",
+            "label": "customer email"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il customer email del order ID collegato"
+      },
+      "JetModels.Name": {
+        "table": "JetModels",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un jet model: name è uguale a model code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "ModelCode",
+            "label": "model code"
+          }
+        ],
+        "structure": null,
+        "plain": "Model code"
+      },
+      "JetModels.IsFifthGen": {
+        "table": "JetModels",
+        "field": "IsFifthGen",
+        "kind": "formula",
+        "rule": "Un jet model è considerato un fifth gen se il generation è almeno 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          }
+        ],
+        "structure": null,
+        "plain": "Generation è almeno 5"
+      },
+      "JetModels.FCSVariantCount": {
+        "table": "JetModels",
+        "field": "FCSVariantCount",
+        "kind": "rollup",
+        "rule": "Un jet model: FCS variant count è il numero di FCS variants del jet model.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di ((unit price per 0) più 1) dove jet model ID è questo"
+      },
+      "JetModels.TotalUnitsOrdered": {
+        "table": "JetModels",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "Un jet model: total units ordered è di total units ordered tra i flight control systems collegati a il jet model.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalUnitsOrdered",
+            "label": "total units ordered"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di total units ordered su tutti i flight control systems il cui jet model ID è questo"
+      },
+      "JetModels.TotalRevenue": {
+        "table": "JetModels",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "Un jet model: total revenue è di total revenue tra i flight control systems collegati a il jet model.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalRevenue",
+            "label": "total revenue"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di total revenue su tutti i flight control systems il cui jet model ID è questo"
+      },
+      "FlightControlSystems.Name": {
+        "table": "FlightControlSystems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un flight control system: name è uguale a FCS code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "FCSCode",
+            "label": "FCS code"
+          }
+        ],
+        "structure": null,
+        "plain": "FCS code"
+      },
+      "FlightControlSystems.JetManufacturer": {
+        "table": "FlightControlSystems",
+        "field": "JetManufacturer",
+        "kind": "lookup",
+        "rule": "Un flight control system: jet manufacturer — ripreso dal jet model ID collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Manufacturer",
+            "label": "manufacturer"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il manufacturer del jet model ID collegato"
+      },
+      "FlightControlSystems.JetGeneration": {
+        "table": "FlightControlSystems",
+        "field": "JetGeneration",
+        "kind": "lookup",
+        "rule": "Un flight control system: jet generation — ripreso dal jet model ID collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il generation del jet model ID collegato"
+      },
+      "FlightControlSystems.IsTripleRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsTripleRedundant",
+        "kind": "formula",
+        "rule": "Un flight control system è considerato triple redundant se il redundancy channels è almeno 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels è almeno 3"
+      },
+      "FlightControlSystems.IsQuadRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsQuadRedundant",
+        "kind": "formula",
+        "rule": "Un flight control system è considerato quad redundant se il redundancy channels è almeno 4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels è almeno 4"
+      },
+      "FlightControlSystems.MeetsFifthGenSpec": {
+        "table": "FlightControlSystems",
+        "field": "MeetsFifthGenSpec",
+        "kind": "formula",
+        "rule": "Un flight control system è considerato come soddisfacente: fifth gen spec se vale tutto quanto segue: l'indicatore “quad redundant” è attivo; vale almeno una delle seguenti: l'architecture è «fly-by-wire» o l'architecture è «fly-by-light»; e il jet generation è almeno 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "IsQuadRedundant",
+            "label": "is quad redundant"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetGeneration",
+            "label": "jet generation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un flight control system è considerato come soddisfacente: fifth gen spec se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “quad redundant” è attivo"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "l'architecture è «fly-by-wire»"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "l'architecture è «fly-by-light»"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "il jet generation è almeno 5"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is quad redundant, architecture è \"fly-by-wire\" o architecture è \"fly-by-light\", e jet generation è almeno 5"
+      },
+      "FlightControlSystems.TotalUnitsOrdered": {
+        "table": "FlightControlSystems",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "Un flight control system: total units ordered è il totale di quantity tra i order lines collegati a il flight control system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di quantity su tutti i order lines il cui FCS ID è questo"
+      },
+      "FlightControlSystems.TotalRevenue": {
+        "table": "FlightControlSystems",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "Un flight control system: total revenue è il totale di line total tra i order lines collegati a il flight control system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di line total su tutti i order lines il cui FCS ID è questo"
+      },
+      "OrderLines.Name": {
+        "table": "OrderLines",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un order line: name è uguale a line number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "Line number"
+      },
+      "OrderLines.FCSUnitPrice": {
+        "table": "OrderLines",
+        "field": "FCSUnitPrice",
+        "kind": "lookup",
+        "rule": "Un order line: FCS unit price — ripreso dal FCS ID collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il unit price del FCS ID collegato"
+      },
+      "OrderLines.FCSArchitecture": {
+        "table": "OrderLines",
+        "field": "FCSArchitecture",
+        "kind": "lookup",
+        "rule": "Un order line: FCS architecture — ripreso dal FCS ID collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il architecture del FCS ID collegato"
+      },
+      "OrderLines.FCSJetModel": {
+        "table": "OrderLines",
+        "field": "FCSJetModel",
+        "kind": "lookup",
+        "rule": "Un order line: FCS jet model è il jet model ID del FCS ID collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il jet model ID del FCS ID collegato"
+      },
+      "OrderLines.FCSMeetsFifthGenSpec": {
+        "table": "OrderLines",
+        "field": "FCSMeetsFifthGenSpec",
+        "kind": "lookup",
+        "rule": "Un order line: FCS meets fifth gen spec è vero quando il FCS ID collegato è meets fifth gen spec.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "MeetsFifthGenSpec",
+            "label": "meets fifth gen spec"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il meets fifth gen spec del FCS ID collegato"
+      },
+      "OrderLines.OrderNumber": {
+        "table": "OrderLines",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Un order line: order number — ripreso dal order ID collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il order number del order ID collegato"
+      },
+      "OrderLines.OrderCustomer": {
+        "table": "OrderLines",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "Un order line: order customer — ripreso dal order ID collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il customer del order ID collegato"
+      },
+      "OrderLines.LineTotal": {
+        "table": "OrderLines",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "Un order line: line total è calcolato come il quantity per il FCS unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSUnitPrice",
+            "label": "FCS unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity per FCS unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "Un user **deve** avere un email e un role."
+      ],
+      "Customers": [
+        "Un customer **deve** avere un email."
+      ],
+      "Orders": [
+        "Un order **deve** avere un order number; un order date; un customer; e un total."
+      ],
+      "Payments": [
+        "Un payment **deve** avere un payment number; un order ID; un payment date; un amount; e un method."
+      ],
+      "JetModels": [
+        "Un jet model **deve** avere un model code; un manufacturer; e un generation."
+      ],
+      "FlightControlSystems": [
+        "Un flight control system **deve** avere un FCS code; un jet model ID; un architecture; un redundancy channels; e un unit price."
+      ],
+      "OrderLines": [
+        "Un order line **deve** avere un line number; un order ID; un FCS ID; e un quantity."
+      ]
+    },
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Customers": "customer",
+      "Orders": "order",
+      "Payments": "payment",
+      "JetModels": "jet model",
+      "FlightControlSystems": "flight control system",
+      "OrderLines": "order line"
+    }
+  },
+  "ja": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "userの「name」は email と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Users.FullName": {
+        "table": "Users",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "userの「full name」は last name、続いて コンマと空白、続いて first name として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Users",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name、\", \"、と連結してfirst name"
+      },
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "customerの「name」は email と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "customerの「full name」は last name、続いて コンマと空白、続いて first name として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name、\", \"、と連結してfirst name"
+      },
+      "Customers.LifetimeSales": {
+        "table": "Customers",
+        "field": "LifetimeSales",
+        "kind": "rollup",
+        "rule": "customerの「lifetime sales」は customerに関連する「orders」全体での「recent total」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "RecentTotal",
+            "label": "recent total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Customer が このレコード であるすべての「orders」にわたる recent total の合計"
+      },
+      "Customers.UnpaidOrderCount": {
+        "table": "Customers",
+        "field": "UnpaidOrderCount",
+        "kind": "rollup",
+        "rule": "customerの「unpaid order count」は customerに関連する「orders」全体での「unpaid flag」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "UnpaidFlag",
+            "label": "unpaid flag"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Customer が このレコード であるすべての「orders」にわたる unpaid flag の合計"
+      },
+      "Customers.LargeOrderCount": {
+        "table": "Customers",
+        "field": "LargeOrderCount",
+        "kind": "rollup",
+        "rule": "customerの「large order count」は customerの「large orders」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Customer が このレコードおよびtotal が \">500\" の場合の ((total かける 0) たす 1) の合計"
+      },
+      "Customers.IsVIP": {
+        "table": "Customers",
+        "field": "IsVIP",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: lifetime sales が 1000 より大きいおよびunpaid order count が 1 以下である場合、customerは「VIP」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LifetimeSales",
+            "label": "lifetime sales"
+          },
+          {
+            "table": "Customers",
+            "field": "UnpaidOrderCount",
+            "label": "unpaid order count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、customerは「VIP」と見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "lifetime sales が 1000 より大きい"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "unpaid order count が 1 以下である"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Lifetime sales が 1,000 より大きいおよびunpaid order count が 1 以下"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "orderの「name」は order number と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number"
+      },
+      "Orders.CustomerFirstName": {
+        "table": "Orders",
+        "field": "CustomerFirstName",
+        "kind": "lookup",
+        "rule": "orderの「customer first name」— リンクされた「customer」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「customer」の first name"
+      },
+      "Orders.CustomerLastName": {
+        "table": "Orders",
+        "field": "CustomerLastName",
+        "kind": "lookup",
+        "rule": "orderの「customer last name」— リンクされた「customer」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「customer」の last name"
+      },
+      "Orders.CustomerFullName": {
+        "table": "Orders",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "orderの「customer full name」— リンクされた「customer」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「customer」の full name"
+      },
+      "Orders.CustomerEmail": {
+        "table": "Orders",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "orderの「customer email」— リンクされた「customer」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「customer」の email"
+      },
+      "Orders.AmountPaid": {
+        "table": "Orders",
+        "field": "AmountPaid",
+        "kind": "rollup",
+        "rule": "orderの「amount paid」は orderに関連する「payments」全体での「amount」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Order ID が このレコード であるすべての「payments」にわたる amount の合計"
+      },
+      "Orders.Balance": {
+        "table": "Orders",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "orderの「balance」は total ひく amount paid として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          }
+        ],
+        "structure": null,
+        "plain": "Total ひく amount paid"
+      },
+      "Orders.IsPaid": {
+        "table": "Orders",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "balance が 0 以下である場合、orderは「Paid」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance が 0 以下"
+      },
+      "Orders.UnpaidFlag": {
+        "table": "Orders",
+        "field": "UnpaidFlag",
+        "kind": "formula",
+        "rule": "Orderの「unpaid flag」は、次の優先順位で決まります:\n1. フラグ「paid」が設定されている場合は 0;\n2. それ以外の場合は 1。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Orderの「unpaid flag」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「paid」が設定されている"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is paidなら 0、そうでなければ 1"
+      },
+      "Orders.IsRecent": {
+        "table": "Orders",
+        "field": "IsRecent",
+        "kind": "formula",
+        "rule": "order date から 今日の日付 までの日数 が 90 以下である場合、orderは「Recent」と見なされます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          }
+        ],
+        "structure": null,
+        "plain": "今日 と order date の間の日数 が 90 以下"
+      },
+      "Orders.RecentTotal": {
+        "table": "Orders",
+        "field": "RecentTotal",
+        "kind": "formula",
+        "rule": "Orderの「recent total」は、次の優先順位で決まります:\n1. フラグ「recent」が設定されている場合は total;\n2. それ以外の場合は 0。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsRecent",
+            "label": "is recent"
+          },
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Orderの「recent total」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "total",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「recent」が設定されている"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is recentなら total、そうでなければ 0"
+      },
+      "Orders.FCSSubtotal": {
+        "table": "Orders",
+        "field": "FCSSubtotal",
+        "kind": "rollup",
+        "rule": "orderの「FCS subtotal」は orderに関連する「order lines」全体での「line total」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Order ID が このレコード であるすべての「order lines」にわたる line total の合計"
+      },
+      "Orders.FCSUnitCount": {
+        "table": "Orders",
+        "field": "FCSUnitCount",
+        "kind": "rollup",
+        "rule": "orderの「FCS unit count」は orderに関連する「order lines」全体での「quantity」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Order ID が このレコード であるすべての「order lines」にわたる quantity の合計"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "paymentの「name」は payment number と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment number"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "paymentの「order number」— リンクされた「order ID」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「order ID」の order number"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "paymentの「order date」— リンクされた「order ID」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「order ID」の order date"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "paymentの「order total」— リンクされた「order ID」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「order ID」の total"
+      },
+      "Payments.OrderAmountPaid": {
+        "table": "Payments",
+        "field": "OrderAmountPaid",
+        "kind": "lookup",
+        "rule": "paymentの「order amount paid」— リンクされた「order ID」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「order ID」の amount paid"
+      },
+      "Payments.OrderBalance": {
+        "table": "Payments",
+        "field": "OrderBalance",
+        "kind": "lookup",
+        "rule": "paymentの「order balance」— リンクされた「order ID」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「order ID」の balance"
+      },
+      "Payments.OrderIsPaid": {
+        "table": "Payments",
+        "field": "OrderIsPaid",
+        "kind": "lookup",
+        "rule": "paymentの「order is paid」は、リンクされた「order ID」が「Paid」であるとき真になります。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「order ID」の is paid"
+      },
+      "Payments.OrderCustomer": {
+        "table": "Payments",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "paymentの「order customer」— リンクされた「order ID」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「order ID」の customer"
+      },
+      "Payments.CustomerFullName": {
+        "table": "Payments",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "paymentの「customer full name」— リンクされた「order ID」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerFullName",
+            "label": "customer full name"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「order ID」の customer full name"
+      },
+      "Payments.CustomerEmail": {
+        "table": "Payments",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "paymentの「customer email」— リンクされた「order ID」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerEmail",
+            "label": "customer email"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「order ID」の customer email"
+      },
+      "JetModels.Name": {
+        "table": "JetModels",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "jet modelの「name」は model code と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "ModelCode",
+            "label": "model code"
+          }
+        ],
+        "structure": null,
+        "plain": "Model code"
+      },
+      "JetModels.IsFifthGen": {
+        "table": "JetModels",
+        "field": "IsFifthGen",
+        "kind": "formula",
+        "rule": "generation が 5 以上である場合、jet modelは「Fifth Gen」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          }
+        ],
+        "structure": null,
+        "plain": "Generation が 5 以上"
+      },
+      "JetModels.FCSVariantCount": {
+        "table": "JetModels",
+        "field": "FCSVariantCount",
+        "kind": "rollup",
+        "rule": "jet modelの「FCS variant count」は jet modelの「FCS variants」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jet model ID が このレコード の場合の ((unit price かける 0) たす 1) の合計"
+      },
+      "JetModels.TotalUnitsOrdered": {
+        "table": "JetModels",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "jet modelの「total units ordered」は jet modelに関連する「flight control systems」全体での「total units ordered」の です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalUnitsOrdered",
+            "label": "total units ordered"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jet model ID が このレコード であるすべての「flight control systems」にわたる total units ordered の合計"
+      },
+      "JetModels.TotalRevenue": {
+        "table": "JetModels",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "jet modelの「total revenue」は jet modelに関連する「flight control systems」全体での「total revenue」の です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalRevenue",
+            "label": "total revenue"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jet model ID が このレコード であるすべての「flight control systems」にわたる total revenue の合計"
+      },
+      "FlightControlSystems.Name": {
+        "table": "FlightControlSystems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "flight control systemの「name」は FCS code と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "FCSCode",
+            "label": "FCS code"
+          }
+        ],
+        "structure": null,
+        "plain": "FCS code"
+      },
+      "FlightControlSystems.JetManufacturer": {
+        "table": "FlightControlSystems",
+        "field": "JetManufacturer",
+        "kind": "lookup",
+        "rule": "flight control systemの「jet manufacturer」— リンクされた「jet model ID」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Manufacturer",
+            "label": "manufacturer"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「jet model ID」の manufacturer"
+      },
+      "FlightControlSystems.JetGeneration": {
+        "table": "FlightControlSystems",
+        "field": "JetGeneration",
+        "kind": "lookup",
+        "rule": "flight control systemの「jet generation」— リンクされた「jet model ID」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「jet model ID」の generation"
+      },
+      "FlightControlSystems.IsTripleRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsTripleRedundant",
+        "kind": "formula",
+        "rule": "redundancy channels が 3 以上である場合、flight control systemは「Triple Redundant」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels が 3 以上"
+      },
+      "FlightControlSystems.IsQuadRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsQuadRedundant",
+        "kind": "formula",
+        "rule": "redundancy channels が 4 以上である場合、flight control systemは「Quad Redundant」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels が 4 以上"
+      },
+      "FlightControlSystems.MeetsFifthGenSpec": {
+        "table": "FlightControlSystems",
+        "field": "MeetsFifthGenSpec",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: フラグ「quad redundant」が設定されている、次のいずれかが成り立つ: architecture が 「fly-by-wire」 であるまたはarchitecture が 「fly-by-light」 である、およびjet generation が 5 以上である場合、flight control systemは「Fifth Gen Spec」を満たすと見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "IsQuadRedundant",
+            "label": "is quad redundant"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetGeneration",
+            "label": "jet generation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、flight control systemは「Fifth Gen Spec」を満たすと見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「quad redundant」が設定されている"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "architecture が 「fly-by-wire」 である"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "architecture が 「fly-by-light」 である"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "jet generation が 5 以上である"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is quad redundant、architecture は \"fly-by-wire\"またはarchitecture は \"fly-by-light\"、およびjet generation が 5 以上"
+      },
+      "FlightControlSystems.TotalUnitsOrdered": {
+        "table": "FlightControlSystems",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "flight control systemの「total units ordered」は flight control systemに関連する「order lines」全体での「quantity」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "FCS ID が このレコード であるすべての「order lines」にわたる quantity の合計"
+      },
+      "FlightControlSystems.TotalRevenue": {
+        "table": "FlightControlSystems",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "flight control systemの「total revenue」は flight control systemに関連する「order lines」全体での「line total」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "FCS ID が このレコード であるすべての「order lines」にわたる line total の合計"
+      },
+      "OrderLines.Name": {
+        "table": "OrderLines",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "order lineの「name」は line number と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "Line number"
+      },
+      "OrderLines.FCSUnitPrice": {
+        "table": "OrderLines",
+        "field": "FCSUnitPrice",
+        "kind": "lookup",
+        "rule": "order lineの「FCS unit price」— リンクされた「FCS ID」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「FCS ID」の unit price"
+      },
+      "OrderLines.FCSArchitecture": {
+        "table": "OrderLines",
+        "field": "FCSArchitecture",
+        "kind": "lookup",
+        "rule": "order lineの「FCS architecture」— リンクされた「FCS ID」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「FCS ID」の architecture"
+      },
+      "OrderLines.FCSJetModel": {
+        "table": "OrderLines",
+        "field": "FCSJetModel",
+        "kind": "lookup",
+        "rule": "order lineの「FCS jet model」は、リンクされた「FCS ID」の「jet model ID」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「FCS ID」の jet model ID"
+      },
+      "OrderLines.FCSMeetsFifthGenSpec": {
+        "table": "OrderLines",
+        "field": "FCSMeetsFifthGenSpec",
+        "kind": "lookup",
+        "rule": "order lineの「FCS meets fifth gen spec」は、リンクされた「FCS ID」が「Meets Fifth Gen Spec」であるとき真になります。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "MeetsFifthGenSpec",
+            "label": "meets fifth gen spec"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「FCS ID」の meets fifth gen spec"
+      },
+      "OrderLines.OrderNumber": {
+        "table": "OrderLines",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "order lineの「order number」— リンクされた「order ID」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「order ID」の order number"
+      },
+      "OrderLines.OrderCustomer": {
+        "table": "OrderLines",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "order lineの「order customer」— リンクされた「order ID」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「order ID」の customer"
+      },
+      "OrderLines.LineTotal": {
+        "table": "OrderLines",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "order lineの「line total」は quantity かける FCS unit price として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSUnitPrice",
+            "label": "FCS unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity かける FCS unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "userは emailおよびrole を持た**なければなりません**。"
+      ],
+      "Customers": [
+        "customerは email を持た**なければなりません**。"
+      ],
+      "Orders": [
+        "orderは order number、order date、customer、およびtotal を持た**なければなりません**。"
+      ],
+      "Payments": [
+        "paymentは payment number、order ID、payment date、amount、およびmethod を持た**なければなりません**。"
+      ],
+      "JetModels": [
+        "jet modelは model code、manufacturer、およびgeneration を持た**なければなりません**。"
+      ],
+      "FlightControlSystems": [
+        "flight control systemは FCS code、jet model ID、architecture、redundancy channels、およびunit price を持た**なければなりません**。"
+      ],
+      "OrderLines": [
+        "order lineは line number、order ID、FCS ID、およびquantity を持た**なければなりません**。"
+      ]
+    },
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "Users": "user",
+      "Customers": "customer",
+      "Orders": "order",
+      "Payments": "payment",
+      "JetModels": "jet model",
+      "FlightControlSystems": "flight control system",
+      "OrderLines": "order line"
+    }
+  },
+  "ko": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘user’ 레코드의 ‘name’ 값은 같은 레코드의 ‘email’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Users.FullName": {
+        "table": "Users",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "‘user’ 레코드의 ‘full name’ 값은 다음과 같이 계산됩니다: ‘last name’, 이어서 쉼표와 공백, 이어서 ‘first name’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Users",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name 이어서 \", \" 이어서 first name"
+      },
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘customer’ 레코드의 ‘name’ 값은 같은 레코드의 ‘email’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "‘customer’ 레코드의 ‘full name’ 값은 다음과 같이 계산됩니다: ‘last name’, 이어서 쉼표와 공백, 이어서 ‘first name’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name 이어서 \", \" 이어서 first name"
+      },
+      "Customers.LifetimeSales": {
+        "table": "Customers",
+        "field": "LifetimeSales",
+        "kind": "rollup",
+        "rule": "‘customer’ 레코드의 ‘lifetime sales’ 값은 해당 ‘customer’ 레코드에 연결된 모든 ‘orders’ 레코드의 총 ‘recent total’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "RecentTotal",
+            "label": "recent total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(customer 값이 이 레코드임)에 맞는 모든 orders 레코드의 recent total 합계"
+      },
+      "Customers.UnpaidOrderCount": {
+        "table": "Customers",
+        "field": "UnpaidOrderCount",
+        "kind": "rollup",
+        "rule": "‘customer’ 레코드의 ‘unpaid order count’ 값은 해당 ‘customer’ 레코드에 연결된 모든 ‘orders’ 레코드의 총 ‘unpaid flag’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "UnpaidFlag",
+            "label": "unpaid flag"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(customer 값이 이 레코드임)에 맞는 모든 orders 레코드의 unpaid flag 합계"
+      },
+      "Customers.LargeOrderCount": {
+        "table": "Customers",
+        "field": "LargeOrderCount",
+        "kind": "rollup",
+        "rule": "‘customer’ 레코드의 ‘large order count’ 값은 해당 ‘customer’ 레코드의 ‘large orders’ 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(customer 값이 이 레코드임 및 total 값이 \">500\"임)에 맞는 ((total 곱하기 0) 더하기 1) 합계"
+      },
+      "Customers.IsVIP": {
+        "table": "Customers",
+        "field": "IsVIP",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘lifetime sales’ 값이 1000보다 큰 경우 및 ‘unpaid order count’ 값이 1 이하인 경우), ‘customer’ 레코드는 ‘VIP’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LifetimeSales",
+            "label": "lifetime sales"
+          },
+          {
+            "table": "Customers",
+            "field": "UnpaidOrderCount",
+            "label": "unpaid order count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘customer’ 레코드는 ‘VIP’에 해당하는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘lifetime sales’ 값이 1000보다 큰 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘unpaid order count’ 값이 1 이하인 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Lifetime sales 값이 1,000보다 큼 및 unpaid order count 값이 1 이하임"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘order’ 레코드의 ‘name’ 값은 같은 레코드의 ‘order number’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number"
+      },
+      "Orders.CustomerFirstName": {
+        "table": "Orders",
+        "field": "CustomerFirstName",
+        "kind": "lookup",
+        "rule": "‘order’ 레코드의 ‘customer first name’ 값은 연결된 ‘customer’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 customer 레코드의 first name"
+      },
+      "Orders.CustomerLastName": {
+        "table": "Orders",
+        "field": "CustomerLastName",
+        "kind": "lookup",
+        "rule": "‘order’ 레코드의 ‘customer last name’ 값은 연결된 ‘customer’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 customer 레코드의 last name"
+      },
+      "Orders.CustomerFullName": {
+        "table": "Orders",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "‘order’ 레코드의 ‘customer full name’ 값은 연결된 ‘customer’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 customer 레코드의 full name"
+      },
+      "Orders.CustomerEmail": {
+        "table": "Orders",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "‘order’ 레코드의 ‘customer email’ 값은 연결된 ‘customer’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 customer 레코드의 email"
+      },
+      "Orders.AmountPaid": {
+        "table": "Orders",
+        "field": "AmountPaid",
+        "kind": "rollup",
+        "rule": "‘order’ 레코드의 ‘amount paid’ 값은 해당 ‘order’ 레코드에 연결된 모든 ‘payments’ 레코드의 총 ‘amount’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(order ID 값이 이 레코드임)에 맞는 모든 payments 레코드의 amount 합계"
+      },
+      "Orders.Balance": {
+        "table": "Orders",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "‘order’ 레코드의 ‘balance’ 값은 다음과 같이 계산됩니다: ‘total’ 빼기 ‘amount paid’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          }
+        ],
+        "structure": null,
+        "plain": "Total 빼기 amount paid"
+      },
+      "Orders.IsPaid": {
+        "table": "Orders",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "‘balance’ 값이 0 이하인 경우, ‘order’ 레코드는 ‘paid’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance 값이 0 이하임"
+      },
+      "Orders.UnpaidFlag": {
+        "table": "Orders",
+        "field": "UnpaidFlag",
+        "kind": "formula",
+        "rule": "‘order’ 레코드의 ‘unpaid flag’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘paid’ 플래그가 설정된 경우: 0\n2. 그 밖의 경우: 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘order’ 레코드의 ‘unpaid flag’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "‘paid’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(is paid)이 성립하면 0, 그렇지 않으면 1"
+      },
+      "Orders.IsRecent": {
+        "table": "Orders",
+        "field": "IsRecent",
+        "kind": "formula",
+        "rule": "‘order date’부터 오늘 날짜까지의 기간(일 단위) 값이 90 이하인 경우, ‘order’ 레코드는 ‘recent’에 해당하는 것으로 간주됩니다.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          }
+        ],
+        "structure": null,
+        "plain": "오늘 및 order date 사이의 기간(일 단위) 값이 90 이하임"
+      },
+      "Orders.RecentTotal": {
+        "table": "Orders",
+        "field": "RecentTotal",
+        "kind": "formula",
+        "rule": "‘order’ 레코드의 ‘recent total’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘recent’ 플래그가 설정된 경우: ‘total’\n2. 그 밖의 경우: 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsRecent",
+            "label": "is recent"
+          },
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘order’ 레코드의 ‘recent total’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "‘total’",
+              "when": {
+                "kind": "leaf",
+                "text": "‘recent’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(is recent)이 성립하면 total, 그렇지 않으면 0"
+      },
+      "Orders.FCSSubtotal": {
+        "table": "Orders",
+        "field": "FCSSubtotal",
+        "kind": "rollup",
+        "rule": "‘order’ 레코드의 ‘FCS subtotal’ 값은 해당 ‘order’ 레코드에 연결된 모든 ‘order lines’ 레코드의 총 ‘line total’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(order ID 값이 이 레코드임)에 맞는 모든 order lines 레코드의 line total 합계"
+      },
+      "Orders.FCSUnitCount": {
+        "table": "Orders",
+        "field": "FCSUnitCount",
+        "kind": "rollup",
+        "rule": "‘order’ 레코드의 ‘FCS unit count’ 값은 해당 ‘order’ 레코드에 연결된 모든 ‘order lines’ 레코드의 총 ‘quantity’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(order ID 값이 이 레코드임)에 맞는 모든 order lines 레코드의 quantity 합계"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘payment’ 레코드의 ‘name’ 값은 같은 레코드의 ‘payment number’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment number"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "‘payment’ 레코드의 ‘order number’ 값은 연결된 ‘order ID’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 order ID 레코드의 order number"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "‘payment’ 레코드의 ‘order date’ 값은 연결된 ‘order ID’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 order ID 레코드의 order date"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "‘payment’ 레코드의 ‘order total’ 값은 연결된 ‘order ID’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 order ID 레코드의 total"
+      },
+      "Payments.OrderAmountPaid": {
+        "table": "Payments",
+        "field": "OrderAmountPaid",
+        "kind": "lookup",
+        "rule": "‘payment’ 레코드의 ‘order amount paid’ 값은 연결된 ‘order ID’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 order ID 레코드의 amount paid"
+      },
+      "Payments.OrderBalance": {
+        "table": "Payments",
+        "field": "OrderBalance",
+        "kind": "lookup",
+        "rule": "‘payment’ 레코드의 ‘order balance’ 값은 연결된 ‘order ID’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 order ID 레코드의 balance"
+      },
+      "Payments.OrderIsPaid": {
+        "table": "Payments",
+        "field": "OrderIsPaid",
+        "kind": "lookup",
+        "rule": "‘payment’ 레코드의 ‘order is paid’ 값은 연결된 ‘order ID’ 레코드가 ‘paid’에 해당하는 경우에 참입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 order ID 레코드의 is paid"
+      },
+      "Payments.OrderCustomer": {
+        "table": "Payments",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "‘payment’ 레코드의 ‘order customer’ 값은 연결된 ‘order ID’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 order ID 레코드의 customer"
+      },
+      "Payments.CustomerFullName": {
+        "table": "Payments",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "‘payment’ 레코드의 ‘customer full name’ 값은 연결된 ‘order ID’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerFullName",
+            "label": "customer full name"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 order ID 레코드의 customer full name"
+      },
+      "Payments.CustomerEmail": {
+        "table": "Payments",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "‘payment’ 레코드의 ‘customer email’ 값은 연결된 ‘order ID’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerEmail",
+            "label": "customer email"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 order ID 레코드의 customer email"
+      },
+      "JetModels.Name": {
+        "table": "JetModels",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘jet model’ 레코드의 ‘name’ 값은 같은 레코드의 ‘model code’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "ModelCode",
+            "label": "model code"
+          }
+        ],
+        "structure": null,
+        "plain": "Model code"
+      },
+      "JetModels.IsFifthGen": {
+        "table": "JetModels",
+        "field": "IsFifthGen",
+        "kind": "formula",
+        "rule": "‘generation’ 값이 5 이상인 경우, ‘jet model’ 레코드는 ‘fifth gen’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          }
+        ],
+        "structure": null,
+        "plain": "Generation 값이 5 이상임"
+      },
+      "JetModels.FCSVariantCount": {
+        "table": "JetModels",
+        "field": "FCSVariantCount",
+        "kind": "rollup",
+        "rule": "‘jet model’ 레코드의 ‘FCS variant count’ 값은 해당 ‘jet model’ 레코드의 ‘FCS variants’ 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(jet model ID 값이 이 레코드임)에 맞는 ((unit price 곱하기 0) 더하기 1) 합계"
+      },
+      "JetModels.TotalUnitsOrdered": {
+        "table": "JetModels",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "‘jet model’ 레코드의 ‘total units ordered’ 값은 해당 ‘jet model’ 레코드에 연결된 모든 ‘flight control systems’ 레코드의 ‘total units ordered’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalUnitsOrdered",
+            "label": "total units ordered"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(jet model ID 값이 이 레코드임)에 맞는 모든 flight control systems 레코드의 total units ordered 합계"
+      },
+      "JetModels.TotalRevenue": {
+        "table": "JetModels",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "‘jet model’ 레코드의 ‘total revenue’ 값은 해당 ‘jet model’ 레코드에 연결된 모든 ‘flight control systems’ 레코드의 ‘total revenue’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalRevenue",
+            "label": "total revenue"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(jet model ID 값이 이 레코드임)에 맞는 모든 flight control systems 레코드의 total revenue 합계"
+      },
+      "FlightControlSystems.Name": {
+        "table": "FlightControlSystems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘flight control system’ 레코드의 ‘name’ 값은 같은 레코드의 ‘FCS code’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "FCSCode",
+            "label": "FCS code"
+          }
+        ],
+        "structure": null,
+        "plain": "FCS code"
+      },
+      "FlightControlSystems.JetManufacturer": {
+        "table": "FlightControlSystems",
+        "field": "JetManufacturer",
+        "kind": "lookup",
+        "rule": "‘flight control system’ 레코드의 ‘jet manufacturer’ 값은 연결된 ‘jet model ID’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Manufacturer",
+            "label": "manufacturer"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 jet model ID 레코드의 manufacturer"
+      },
+      "FlightControlSystems.JetGeneration": {
+        "table": "FlightControlSystems",
+        "field": "JetGeneration",
+        "kind": "lookup",
+        "rule": "‘flight control system’ 레코드의 ‘jet generation’ 값은 연결된 ‘jet model ID’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 jet model ID 레코드의 generation"
+      },
+      "FlightControlSystems.IsTripleRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsTripleRedundant",
+        "kind": "formula",
+        "rule": "‘redundancy channels’ 값이 3 이상인 경우, ‘flight control system’ 레코드는 ‘triple redundant’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels 값이 3 이상임"
+      },
+      "FlightControlSystems.IsQuadRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsQuadRedundant",
+        "kind": "formula",
+        "rule": "‘redundancy channels’ 값이 4 이상인 경우, ‘flight control system’ 레코드는 ‘quad redundant’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels 값이 4 이상임"
+      },
+      "FlightControlSystems.MeetsFifthGenSpec": {
+        "table": "FlightControlSystems",
+        "field": "MeetsFifthGenSpec",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘quad redundant’ 플래그가 설정된 경우, 다음 중 하나 이상에 해당하는 경우(‘architecture’ 값이 “fly-by-wire”인 경우 또는 ‘architecture’ 값이 “fly-by-light”인 경우) 및 ‘jet generation’ 값이 5 이상인 경우), ‘flight control system’ 레코드는 ‘meets fifth gen spec’ 조건에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "IsQuadRedundant",
+            "label": "is quad redundant"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetGeneration",
+            "label": "jet generation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘flight control system’ 레코드는 ‘meets fifth gen spec’ 조건에 해당하는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘quad redundant’ 플래그가 설정된 경우"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "‘architecture’ 값이 “fly-by-wire”인 경우"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "‘architecture’ 값이 “fly-by-light”인 경우"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘jet generation’ 값이 5 이상인 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is quad redundant, architecture 값이 \"fly-by-wire\"임 또는 architecture 값이 \"fly-by-light\"임 및 jet generation 값이 5 이상임"
+      },
+      "FlightControlSystems.TotalUnitsOrdered": {
+        "table": "FlightControlSystems",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "‘flight control system’ 레코드의 ‘total units ordered’ 값은 해당 ‘flight control system’ 레코드에 연결된 모든 ‘order lines’ 레코드의 총 ‘quantity’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(FCS ID 값이 이 레코드임)에 맞는 모든 order lines 레코드의 quantity 합계"
+      },
+      "FlightControlSystems.TotalRevenue": {
+        "table": "FlightControlSystems",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "‘flight control system’ 레코드의 ‘total revenue’ 값은 해당 ‘flight control system’ 레코드에 연결된 모든 ‘order lines’ 레코드의 총 ‘line total’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(FCS ID 값이 이 레코드임)에 맞는 모든 order lines 레코드의 line total 합계"
+      },
+      "OrderLines.Name": {
+        "table": "OrderLines",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘order line’ 레코드의 ‘name’ 값은 같은 레코드의 ‘line number’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "Line number"
+      },
+      "OrderLines.FCSUnitPrice": {
+        "table": "OrderLines",
+        "field": "FCSUnitPrice",
+        "kind": "lookup",
+        "rule": "‘order line’ 레코드의 ‘FCS unit price’ 값은 연결된 ‘FCS ID’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 FCS ID 레코드의 unit price"
+      },
+      "OrderLines.FCSArchitecture": {
+        "table": "OrderLines",
+        "field": "FCSArchitecture",
+        "kind": "lookup",
+        "rule": "‘order line’ 레코드의 ‘FCS architecture’ 값은 연결된 ‘FCS ID’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 FCS ID 레코드의 architecture"
+      },
+      "OrderLines.FCSJetModel": {
+        "table": "OrderLines",
+        "field": "FCSJetModel",
+        "kind": "lookup",
+        "rule": "‘order line’ 레코드의 ‘FCS jet model’ 값은 연결된 ‘FCS ID’ 레코드의 ‘jet model ID’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 FCS ID 레코드의 jet model ID"
+      },
+      "OrderLines.FCSMeetsFifthGenSpec": {
+        "table": "OrderLines",
+        "field": "FCSMeetsFifthGenSpec",
+        "kind": "lookup",
+        "rule": "‘order line’ 레코드의 ‘FCS meets fifth gen spec’ 값은 연결된 ‘FCS ID’ 레코드가 ‘meets fifth gen spec’에 해당하는 경우에 참입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "MeetsFifthGenSpec",
+            "label": "meets fifth gen spec"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 FCS ID 레코드의 meets fifth gen spec"
+      },
+      "OrderLines.OrderNumber": {
+        "table": "OrderLines",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "‘order line’ 레코드의 ‘order number’ 값은 연결된 ‘order ID’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 order ID 레코드의 order number"
+      },
+      "OrderLines.OrderCustomer": {
+        "table": "OrderLines",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "‘order line’ 레코드의 ‘order customer’ 값은 연결된 ‘order ID’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 order ID 레코드의 customer"
+      },
+      "OrderLines.LineTotal": {
+        "table": "OrderLines",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "‘order line’ 레코드의 ‘line total’ 값은 다음과 같이 계산됩니다: ‘quantity’ 곱하기 ‘FCS unit price’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSUnitPrice",
+            "label": "FCS unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity 곱하기 FCS unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "‘user’ 레코드는 ‘email’ 및 ‘role’ 값을 포함**해야 합니다**."
+      ],
+      "Customers": [
+        "‘customer’ 레코드는 ‘email’ 값을 포함**해야 합니다**."
+      ],
+      "Orders": [
+        "‘order’ 레코드는 ‘order number’, ‘order date’, ‘customer’ 및 ‘total’ 값을 포함**해야 합니다**."
+      ],
+      "Payments": [
+        "‘payment’ 레코드는 ‘payment number’, ‘order ID’, ‘payment date’, ‘amount’ 및 ‘method’ 값을 포함**해야 합니다**."
+      ],
+      "JetModels": [
+        "‘jet model’ 레코드는 ‘model code’, ‘manufacturer’ 및 ‘generation’ 값을 포함**해야 합니다**."
+      ],
+      "FlightControlSystems": [
+        "‘flight control system’ 레코드는 ‘FCS code’, ‘jet model ID’, ‘architecture’, ‘redundancy channels’ 및 ‘unit price’ 값을 포함**해야 합니다**."
+      ],
+      "OrderLines": [
+        "‘order line’ 레코드는 ‘line number’, ‘order ID’, ‘FCS ID’ 및 ‘quantity’ 값을 포함**해야 합니다**."
+      ]
+    },
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Customers": "customer",
+      "Orders": "order",
+      "Payments": "payment",
+      "JetModels": "jet model",
+      "FlightControlSystems": "flight control system",
+      "OrderLines": "order line"
+    }
+  },
+  "nl": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een user: name is gelijk aan email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Users.FullName": {
+        "table": "Users",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Een user: full name wordt berekend als de last name, gevolgd door een komma gevolgd door een spatie, gevolgd door de first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Users",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name, \", \", samengevoegd met first name"
+      },
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een customer: name is gelijk aan email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Een customer: full name wordt berekend als de last name, gevolgd door een komma gevolgd door een spatie, gevolgd door de first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name, \", \", samengevoegd met first name"
+      },
+      "Customers.LifetimeSales": {
+        "table": "Customers",
+        "field": "LifetimeSales",
+        "kind": "rollup",
+        "rule": "Een customer: lifetime sales is het totaal van recent total over de orders gekoppeld aan de customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "RecentTotal",
+            "label": "recent total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van recent total over alle orders waarvan customer is deze"
+      },
+      "Customers.UnpaidOrderCount": {
+        "table": "Customers",
+        "field": "UnpaidOrderCount",
+        "kind": "rollup",
+        "rule": "Een customer: unpaid order count is het totaal van unpaid flag over de orders gekoppeld aan de customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "UnpaidFlag",
+            "label": "unpaid flag"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van unpaid flag over alle orders waarvan customer is deze"
+      },
+      "Customers.LargeOrderCount": {
+        "table": "Customers",
+        "field": "LargeOrderCount",
+        "kind": "rollup",
+        "rule": "Een customer: large order count is het aantal large orders van de customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van ((total maal 0) plus 1) waarbij customer is deze en total is \">500\""
+      },
+      "Customers.IsVIP": {
+        "table": "Customers",
+        "field": "IsVIP",
+        "kind": "formula",
+        "rule": "Een customer geldt als een VIP als al het volgende geldt: de lifetime sales groter is dan 1000 en de unpaid order count ten hoogste 1 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LifetimeSales",
+            "label": "lifetime sales"
+          },
+          {
+            "table": "Customers",
+            "field": "UnpaidOrderCount",
+            "label": "unpaid order count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een customer geldt als een VIP als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de lifetime sales groter is dan 1000"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de unpaid order count ten hoogste 1 is"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Lifetime sales is groter dan 1,000 en unpaid order count is ten hoogste 1"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een order: name is gelijk aan order number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number"
+      },
+      "Orders.CustomerFirstName": {
+        "table": "Orders",
+        "field": "CustomerFirstName",
+        "kind": "lookup",
+        "rule": "Een order: customer first name — overgenomen van de gekoppelde customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De first name van de gekoppelde customer"
+      },
+      "Orders.CustomerLastName": {
+        "table": "Orders",
+        "field": "CustomerLastName",
+        "kind": "lookup",
+        "rule": "Een order: customer last name — overgenomen van de gekoppelde customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De last name van de gekoppelde customer"
+      },
+      "Orders.CustomerFullName": {
+        "table": "Orders",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "Een order: customer full name — overgenomen van de gekoppelde customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De full name van de gekoppelde customer"
+      },
+      "Orders.CustomerEmail": {
+        "table": "Orders",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "Een order: customer email — overgenomen van de gekoppelde customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De email van de gekoppelde customer"
+      },
+      "Orders.AmountPaid": {
+        "table": "Orders",
+        "field": "AmountPaid",
+        "kind": "rollup",
+        "rule": "Een order: amount paid is het totaal van amount over de payments gekoppeld aan de order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van amount over alle payments waarvan order ID is deze"
+      },
+      "Orders.Balance": {
+        "table": "Orders",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "Een order: balance wordt berekend als de total min de amount paid.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          }
+        ],
+        "structure": null,
+        "plain": "Total min amount paid"
+      },
+      "Orders.IsPaid": {
+        "table": "Orders",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "Een order geldt als een paid als de balance ten hoogste 0 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance is ten hoogste 0"
+      },
+      "Orders.UnpaidFlag": {
+        "table": "Orders",
+        "field": "UnpaidFlag",
+        "kind": "formula",
+        "rule": "Het veld ‘unpaid flag’ van de order wordt bepaald volgens de volgende prioriteit:\n1. 0, als de vlag ‘paid’ is gezet;\n2. in alle andere gevallen 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘unpaid flag’ van de order wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘paid’ is gezet"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als is paid, dan 0, anders 1"
+      },
+      "Orders.IsRecent": {
+        "table": "Orders",
+        "field": "IsRecent",
+        "kind": "formula",
+        "rule": "Een order geldt als recent als het aantal dagen van de order date tot de datum van vandaag ten hoogste 90 is.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          }
+        ],
+        "structure": null,
+        "plain": "De dagen tussen vandaag en order date is ten hoogste 90"
+      },
+      "Orders.RecentTotal": {
+        "table": "Orders",
+        "field": "RecentTotal",
+        "kind": "formula",
+        "rule": "Het veld ‘recent total’ van de order wordt bepaald volgens de volgende prioriteit:\n1. de total, als de vlag ‘recent’ is gezet;\n2. in alle andere gevallen 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsRecent",
+            "label": "is recent"
+          },
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘recent total’ van de order wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "de total",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘recent’ is gezet"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als is recent, dan total, anders 0"
+      },
+      "Orders.FCSSubtotal": {
+        "table": "Orders",
+        "field": "FCSSubtotal",
+        "kind": "rollup",
+        "rule": "Een order: FCS subtotal is het totaal van line total over de order lines gekoppeld aan de order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van line total over alle order lines waarvan order ID is deze"
+      },
+      "Orders.FCSUnitCount": {
+        "table": "Orders",
+        "field": "FCSUnitCount",
+        "kind": "rollup",
+        "rule": "Een order: FCS unit count is het totaal van quantity over de order lines gekoppeld aan de order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van quantity over alle order lines waarvan order ID is deze"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een payment: name is gelijk aan payment number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment number"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Een payment: order number — overgenomen van de gekoppelde order ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De order number van de gekoppelde order ID"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "Een payment: order date — overgenomen van de gekoppelde order ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De order date van de gekoppelde order ID"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "Een payment: order total — overgenomen van de gekoppelde order ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De total van de gekoppelde order ID"
+      },
+      "Payments.OrderAmountPaid": {
+        "table": "Payments",
+        "field": "OrderAmountPaid",
+        "kind": "lookup",
+        "rule": "Een payment: order amount paid — overgenomen van de gekoppelde order ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De amount paid van de gekoppelde order ID"
+      },
+      "Payments.OrderBalance": {
+        "table": "Payments",
+        "field": "OrderBalance",
+        "kind": "lookup",
+        "rule": "Een payment: order balance — overgenomen van de gekoppelde order ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De balance van de gekoppelde order ID"
+      },
+      "Payments.OrderIsPaid": {
+        "table": "Payments",
+        "field": "OrderIsPaid",
+        "kind": "lookup",
+        "rule": "Een payment: order is paid is waar wanneer de gekoppelde order ID is een paid.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De is paid van de gekoppelde order ID"
+      },
+      "Payments.OrderCustomer": {
+        "table": "Payments",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "Een payment: order customer — overgenomen van de gekoppelde order ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De customer van de gekoppelde order ID"
+      },
+      "Payments.CustomerFullName": {
+        "table": "Payments",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "Een payment: customer full name — overgenomen van de gekoppelde order ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerFullName",
+            "label": "customer full name"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De customer full name van de gekoppelde order ID"
+      },
+      "Payments.CustomerEmail": {
+        "table": "Payments",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "Een payment: customer email — overgenomen van de gekoppelde order ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerEmail",
+            "label": "customer email"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De customer email van de gekoppelde order ID"
+      },
+      "JetModels.Name": {
+        "table": "JetModels",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een jet model: name is gelijk aan model code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "ModelCode",
+            "label": "model code"
+          }
+        ],
+        "structure": null,
+        "plain": "Model code"
+      },
+      "JetModels.IsFifthGen": {
+        "table": "JetModels",
+        "field": "IsFifthGen",
+        "kind": "formula",
+        "rule": "Een jet model geldt als een fifth gen als de generation ten minste 5 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          }
+        ],
+        "structure": null,
+        "plain": "Generation is ten minste 5"
+      },
+      "JetModels.FCSVariantCount": {
+        "table": "JetModels",
+        "field": "FCSVariantCount",
+        "kind": "rollup",
+        "rule": "Een jet model: FCS variant count is het aantal FCS variants van de jet model.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van ((unit price maal 0) plus 1) waarbij jet model ID is deze"
+      },
+      "JetModels.TotalUnitsOrdered": {
+        "table": "JetModels",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "Een jet model: total units ordered is van total units ordered over de flight control systems gekoppeld aan de jet model.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalUnitsOrdered",
+            "label": "total units ordered"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van total units ordered over alle flight control systems waarvan jet model ID is deze"
+      },
+      "JetModels.TotalRevenue": {
+        "table": "JetModels",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "Een jet model: total revenue is van total revenue over de flight control systems gekoppeld aan de jet model.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalRevenue",
+            "label": "total revenue"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van total revenue over alle flight control systems waarvan jet model ID is deze"
+      },
+      "FlightControlSystems.Name": {
+        "table": "FlightControlSystems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een flight control system: name is gelijk aan FCS code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "FCSCode",
+            "label": "FCS code"
+          }
+        ],
+        "structure": null,
+        "plain": "FCS code"
+      },
+      "FlightControlSystems.JetManufacturer": {
+        "table": "FlightControlSystems",
+        "field": "JetManufacturer",
+        "kind": "lookup",
+        "rule": "Een flight control system: jet manufacturer — overgenomen van de gekoppelde jet model ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Manufacturer",
+            "label": "manufacturer"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De manufacturer van de gekoppelde jet model ID"
+      },
+      "FlightControlSystems.JetGeneration": {
+        "table": "FlightControlSystems",
+        "field": "JetGeneration",
+        "kind": "lookup",
+        "rule": "Een flight control system: jet generation — overgenomen van de gekoppelde jet model ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De generation van de gekoppelde jet model ID"
+      },
+      "FlightControlSystems.IsTripleRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsTripleRedundant",
+        "kind": "formula",
+        "rule": "Een flight control system geldt als triple redundant als de redundancy channels ten minste 3 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels is ten minste 3"
+      },
+      "FlightControlSystems.IsQuadRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsQuadRedundant",
+        "kind": "formula",
+        "rule": "Een flight control system geldt als quad redundant als de redundancy channels ten minste 4 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels is ten minste 4"
+      },
+      "FlightControlSystems.MeetsFifthGenSpec": {
+        "table": "FlightControlSystems",
+        "field": "MeetsFifthGenSpec",
+        "kind": "formula",
+        "rule": "Een flight control system geldt als voldoend aan: fifth gen spec als al het volgende geldt: de vlag ‘quad redundant’ is gezet; ten minste één van het volgende geldt: de architecture ‘fly-by-wire’ is of de architecture ‘fly-by-light’ is; en de jet generation ten minste 5 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "IsQuadRedundant",
+            "label": "is quad redundant"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetGeneration",
+            "label": "jet generation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een flight control system geldt als voldoend aan: fifth gen spec als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘quad redundant’ is gezet"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "de architecture ‘fly-by-wire’ is"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "de architecture ‘fly-by-light’ is"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de jet generation ten minste 5 is"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is quad redundant, architecture is \"fly-by-wire\" of architecture is \"fly-by-light\", en jet generation is ten minste 5"
+      },
+      "FlightControlSystems.TotalUnitsOrdered": {
+        "table": "FlightControlSystems",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "Een flight control system: total units ordered is het totaal van quantity over de order lines gekoppeld aan de flight control system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van quantity over alle order lines waarvan FCS ID is deze"
+      },
+      "FlightControlSystems.TotalRevenue": {
+        "table": "FlightControlSystems",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "Een flight control system: total revenue is het totaal van line total over de order lines gekoppeld aan de flight control system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van line total over alle order lines waarvan FCS ID is deze"
+      },
+      "OrderLines.Name": {
+        "table": "OrderLines",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een order line: name is gelijk aan line number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "Line number"
+      },
+      "OrderLines.FCSUnitPrice": {
+        "table": "OrderLines",
+        "field": "FCSUnitPrice",
+        "kind": "lookup",
+        "rule": "Een order line: FCS unit price — overgenomen van de gekoppelde FCS ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De unit price van de gekoppelde FCS ID"
+      },
+      "OrderLines.FCSArchitecture": {
+        "table": "OrderLines",
+        "field": "FCSArchitecture",
+        "kind": "lookup",
+        "rule": "Een order line: FCS architecture — overgenomen van de gekoppelde FCS ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De architecture van de gekoppelde FCS ID"
+      },
+      "OrderLines.FCSJetModel": {
+        "table": "OrderLines",
+        "field": "FCSJetModel",
+        "kind": "lookup",
+        "rule": "Een order line: FCS jet model is de jet model ID van de gekoppelde FCS ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De jet model ID van de gekoppelde FCS ID"
+      },
+      "OrderLines.FCSMeetsFifthGenSpec": {
+        "table": "OrderLines",
+        "field": "FCSMeetsFifthGenSpec",
+        "kind": "lookup",
+        "rule": "Een order line: FCS meets fifth gen spec geldt wanneer de gekoppelde FCS ID is meets fifth gen spec.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "MeetsFifthGenSpec",
+            "label": "meets fifth gen spec"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De meets fifth gen spec van de gekoppelde FCS ID"
+      },
+      "OrderLines.OrderNumber": {
+        "table": "OrderLines",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Een order line: order number — overgenomen van de gekoppelde order ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De order number van de gekoppelde order ID"
+      },
+      "OrderLines.OrderCustomer": {
+        "table": "OrderLines",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "Een order line: order customer — overgenomen van de gekoppelde order ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De customer van de gekoppelde order ID"
+      },
+      "OrderLines.LineTotal": {
+        "table": "OrderLines",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "Een order line: line total wordt berekend als de quantity maal de FCS unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSUnitPrice",
+            "label": "FCS unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity maal FCS unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "Een user **moet** een email en een role hebben."
+      ],
+      "Customers": [
+        "Een customer **moet** een email hebben."
+      ],
+      "Orders": [
+        "Een order **moet** een order number; een order date; een customer; en een total hebben."
+      ],
+      "Payments": [
+        "Een payment **moet** een payment number; een order ID; een payment date; een amount; en een method hebben."
+      ],
+      "JetModels": [
+        "Een jet model **moet** een model code; een manufacturer; en een generation hebben."
+      ],
+      "FlightControlSystems": [
+        "Een flight control system **moet** een FCS code; een jet model ID; een architecture; een redundancy channels; en een unit price hebben."
+      ],
+      "OrderLines": [
+        "Een order line **moet** een line number; een order ID; een FCS ID; en een quantity hebben."
+      ]
+    },
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Customers": "customer",
+      "Orders": "order",
+      "Payments": "payment",
+      "JetModels": "jet model",
+      "FlightControlSystems": "flight control system",
+      "OrderLines": "order line"
+    }
+  },
+  "pt": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um user: name é igual a email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Users.FullName": {
+        "table": "Users",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Um user: full name é calculado como o last name, seguido de uma vírgula seguida de um espaço, seguido de o first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Users",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name, \", \", unido a first name"
+      },
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um customer: name é igual a email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Um customer: full name é calculado como o last name, seguido de uma vírgula seguida de um espaço, seguido de o first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name, \", \", unido a first name"
+      },
+      "Customers.LifetimeSales": {
+        "table": "Customers",
+        "field": "LifetimeSales",
+        "kind": "rollup",
+        "rule": "Um customer: lifetime sales é o total de recent total entre os orders relacionados a o customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "RecentTotal",
+            "label": "recent total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de recent total entre todos os orders cujo customer é este"
+      },
+      "Customers.UnpaidOrderCount": {
+        "table": "Customers",
+        "field": "UnpaidOrderCount",
+        "kind": "rollup",
+        "rule": "Um customer: unpaid order count é o total de unpaid flag entre os orders relacionados a o customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "UnpaidFlag",
+            "label": "unpaid flag"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de unpaid flag entre todos os orders cujo customer é este"
+      },
+      "Customers.LargeOrderCount": {
+        "table": "Customers",
+        "field": "LargeOrderCount",
+        "kind": "rollup",
+        "rule": "Um customer: large order count é o número de large orders do customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de ((total vezes 0) mais 1) onde customer é este e total é \">500\""
+      },
+      "Customers.IsVIP": {
+        "table": "Customers",
+        "field": "IsVIP",
+        "kind": "formula",
+        "rule": "Um customer é considerado um VIP se tudo o que segue é verdadeiro: o lifetime sales é maior que 1000 e o unpaid order count é no máximo 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LifetimeSales",
+            "label": "lifetime sales"
+          },
+          {
+            "table": "Customers",
+            "field": "UnpaidOrderCount",
+            "label": "unpaid order count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um customer é considerado um VIP se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o lifetime sales é maior que 1000"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o unpaid order count é no máximo 1"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Lifetime sales é maior que 1,000 e unpaid order count é no máximo 1"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um order: name é igual a order number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number"
+      },
+      "Orders.CustomerFirstName": {
+        "table": "Orders",
+        "field": "CustomerFirstName",
+        "kind": "lookup",
+        "rule": "Um order: customer first name — obtido do customer vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O first name do customer vinculado"
+      },
+      "Orders.CustomerLastName": {
+        "table": "Orders",
+        "field": "CustomerLastName",
+        "kind": "lookup",
+        "rule": "Um order: customer last name — obtido do customer vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O last name do customer vinculado"
+      },
+      "Orders.CustomerFullName": {
+        "table": "Orders",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "Um order: customer full name — obtido do customer vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O full name do customer vinculado"
+      },
+      "Orders.CustomerEmail": {
+        "table": "Orders",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "Um order: customer email — obtido do customer vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O email do customer vinculado"
+      },
+      "Orders.AmountPaid": {
+        "table": "Orders",
+        "field": "AmountPaid",
+        "kind": "rollup",
+        "rule": "Um order: amount paid é o total de amount entre os payments relacionados a o order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de amount entre todos os payments cujo order ID é este"
+      },
+      "Orders.Balance": {
+        "table": "Orders",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "Um order: balance é calculado como o total menos o amount paid.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          }
+        ],
+        "structure": null,
+        "plain": "Total menos amount paid"
+      },
+      "Orders.IsPaid": {
+        "table": "Orders",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "Um order é considerado um paid se o balance é no máximo 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance é no máximo 0"
+      },
+      "Orders.UnpaidFlag": {
+        "table": "Orders",
+        "field": "UnpaidFlag",
+        "kind": "formula",
+        "rule": "O campo “unpaid flag” do order é determinado pela seguinte prioridade:\n1. 0, se o indicador “paid” está ativado;\n2. em todos os outros casos, 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “unpaid flag” do order é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “paid” está ativado"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is paid, então 0, caso contrário 1"
+      },
+      "Orders.IsRecent": {
+        "table": "Orders",
+        "field": "IsRecent",
+        "kind": "formula",
+        "rule": "Um order é considerado recent se o número de dias de o order date até a data de hoje é no máximo 90.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          }
+        ],
+        "structure": null,
+        "plain": "Os dias entre hoje e order date é no máximo 90"
+      },
+      "Orders.RecentTotal": {
+        "table": "Orders",
+        "field": "RecentTotal",
+        "kind": "formula",
+        "rule": "O campo “recent total” do order é determinado pela seguinte prioridade:\n1. o total, se o indicador “recent” está ativado;\n2. em todos os outros casos, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsRecent",
+            "label": "is recent"
+          },
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “recent total” do order é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "o total",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “recent” está ativado"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is recent, então total, caso contrário 0"
+      },
+      "Orders.FCSSubtotal": {
+        "table": "Orders",
+        "field": "FCSSubtotal",
+        "kind": "rollup",
+        "rule": "Um order: FCS subtotal é o total de line total entre os order lines relacionados a o order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de line total entre todos os order lines cujo order ID é este"
+      },
+      "Orders.FCSUnitCount": {
+        "table": "Orders",
+        "field": "FCSUnitCount",
+        "kind": "rollup",
+        "rule": "Um order: FCS unit count é o total de quantity entre os order lines relacionados a o order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de quantity entre todos os order lines cujo order ID é este"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um payment: name é igual a payment number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment number"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Um payment: order number — obtido do order ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O order number do order ID vinculado"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "Um payment: order date — obtido do order ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O order date do order ID vinculado"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "Um payment: order total — obtido do order ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O total do order ID vinculado"
+      },
+      "Payments.OrderAmountPaid": {
+        "table": "Payments",
+        "field": "OrderAmountPaid",
+        "kind": "lookup",
+        "rule": "Um payment: order amount paid — obtido do order ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O amount paid do order ID vinculado"
+      },
+      "Payments.OrderBalance": {
+        "table": "Payments",
+        "field": "OrderBalance",
+        "kind": "lookup",
+        "rule": "Um payment: order balance — obtido do order ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O balance do order ID vinculado"
+      },
+      "Payments.OrderIsPaid": {
+        "table": "Payments",
+        "field": "OrderIsPaid",
+        "kind": "lookup",
+        "rule": "Um payment: order is paid é verdadeiro quando o order ID vinculado é um paid.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O is paid do order ID vinculado"
+      },
+      "Payments.OrderCustomer": {
+        "table": "Payments",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "Um payment: order customer — obtido do order ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O customer do order ID vinculado"
+      },
+      "Payments.CustomerFullName": {
+        "table": "Payments",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "Um payment: customer full name — obtido do order ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerFullName",
+            "label": "customer full name"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O customer full name do order ID vinculado"
+      },
+      "Payments.CustomerEmail": {
+        "table": "Payments",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "Um payment: customer email — obtido do order ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerEmail",
+            "label": "customer email"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O customer email do order ID vinculado"
+      },
+      "JetModels.Name": {
+        "table": "JetModels",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um jet model: name é igual a model code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "ModelCode",
+            "label": "model code"
+          }
+        ],
+        "structure": null,
+        "plain": "Model code"
+      },
+      "JetModels.IsFifthGen": {
+        "table": "JetModels",
+        "field": "IsFifthGen",
+        "kind": "formula",
+        "rule": "Um jet model é considerado um fifth gen se o generation é pelo menos 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          }
+        ],
+        "structure": null,
+        "plain": "Generation é pelo menos 5"
+      },
+      "JetModels.FCSVariantCount": {
+        "table": "JetModels",
+        "field": "FCSVariantCount",
+        "kind": "rollup",
+        "rule": "Um jet model: FCS variant count é o número de FCS variants do jet model.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de ((unit price vezes 0) mais 1) onde jet model ID é este"
+      },
+      "JetModels.TotalUnitsOrdered": {
+        "table": "JetModels",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "Um jet model: total units ordered é de total units ordered entre os flight control systems relacionados a o jet model.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalUnitsOrdered",
+            "label": "total units ordered"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de total units ordered entre todos os flight control systems cujo jet model ID é este"
+      },
+      "JetModels.TotalRevenue": {
+        "table": "JetModels",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "Um jet model: total revenue é de total revenue entre os flight control systems relacionados a o jet model.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalRevenue",
+            "label": "total revenue"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de total revenue entre todos os flight control systems cujo jet model ID é este"
+      },
+      "FlightControlSystems.Name": {
+        "table": "FlightControlSystems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um flight control system: name é igual a FCS code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "FCSCode",
+            "label": "FCS code"
+          }
+        ],
+        "structure": null,
+        "plain": "FCS code"
+      },
+      "FlightControlSystems.JetManufacturer": {
+        "table": "FlightControlSystems",
+        "field": "JetManufacturer",
+        "kind": "lookup",
+        "rule": "Um flight control system: jet manufacturer — obtido do jet model ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Manufacturer",
+            "label": "manufacturer"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O manufacturer do jet model ID vinculado"
+      },
+      "FlightControlSystems.JetGeneration": {
+        "table": "FlightControlSystems",
+        "field": "JetGeneration",
+        "kind": "lookup",
+        "rule": "Um flight control system: jet generation — obtido do jet model ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O generation do jet model ID vinculado"
+      },
+      "FlightControlSystems.IsTripleRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsTripleRedundant",
+        "kind": "formula",
+        "rule": "Um flight control system é considerado triple redundant se o redundancy channels é pelo menos 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels é pelo menos 3"
+      },
+      "FlightControlSystems.IsQuadRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsQuadRedundant",
+        "kind": "formula",
+        "rule": "Um flight control system é considerado quad redundant se o redundancy channels é pelo menos 4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels é pelo menos 4"
+      },
+      "FlightControlSystems.MeetsFifthGenSpec": {
+        "table": "FlightControlSystems",
+        "field": "MeetsFifthGenSpec",
+        "kind": "formula",
+        "rule": "Um flight control system é considerado como satisfazendo: fifth gen spec se tudo o que segue é verdadeiro: o indicador “quad redundant” está ativado; pelo menos uma das seguintes é verdadeira: o architecture é “fly-by-wire” ou o architecture é “fly-by-light”; e o jet generation é pelo menos 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "IsQuadRedundant",
+            "label": "is quad redundant"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetGeneration",
+            "label": "jet generation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um flight control system é considerado como satisfazendo: fifth gen spec se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “quad redundant” está ativado"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "o architecture é “fly-by-wire”"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "o architecture é “fly-by-light”"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o jet generation é pelo menos 5"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is quad redundant, architecture é \"fly-by-wire\" ou architecture é \"fly-by-light\", e jet generation é pelo menos 5"
+      },
+      "FlightControlSystems.TotalUnitsOrdered": {
+        "table": "FlightControlSystems",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "Um flight control system: total units ordered é o total de quantity entre os order lines relacionados a o flight control system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de quantity entre todos os order lines cujo FCS ID é este"
+      },
+      "FlightControlSystems.TotalRevenue": {
+        "table": "FlightControlSystems",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "Um flight control system: total revenue é o total de line total entre os order lines relacionados a o flight control system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de line total entre todos os order lines cujo FCS ID é este"
+      },
+      "OrderLines.Name": {
+        "table": "OrderLines",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um order line: name é igual a line number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "Line number"
+      },
+      "OrderLines.FCSUnitPrice": {
+        "table": "OrderLines",
+        "field": "FCSUnitPrice",
+        "kind": "lookup",
+        "rule": "Um order line: FCS unit price — obtido do FCS ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O unit price do FCS ID vinculado"
+      },
+      "OrderLines.FCSArchitecture": {
+        "table": "OrderLines",
+        "field": "FCSArchitecture",
+        "kind": "lookup",
+        "rule": "Um order line: FCS architecture — obtido do FCS ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O architecture do FCS ID vinculado"
+      },
+      "OrderLines.FCSJetModel": {
+        "table": "OrderLines",
+        "field": "FCSJetModel",
+        "kind": "lookup",
+        "rule": "Um order line: FCS jet model é o jet model ID do FCS ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O jet model ID do FCS ID vinculado"
+      },
+      "OrderLines.FCSMeetsFifthGenSpec": {
+        "table": "OrderLines",
+        "field": "FCSMeetsFifthGenSpec",
+        "kind": "lookup",
+        "rule": "Um order line: FCS meets fifth gen spec é verdadeiro quando o FCS ID vinculado é meets fifth gen spec.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "MeetsFifthGenSpec",
+            "label": "meets fifth gen spec"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O meets fifth gen spec do FCS ID vinculado"
+      },
+      "OrderLines.OrderNumber": {
+        "table": "OrderLines",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Um order line: order number — obtido do order ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O order number do order ID vinculado"
+      },
+      "OrderLines.OrderCustomer": {
+        "table": "OrderLines",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "Um order line: order customer — obtido do order ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O customer do order ID vinculado"
+      },
+      "OrderLines.LineTotal": {
+        "table": "OrderLines",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "Um order line: line total é calculado como o quantity vezes a FCS unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSUnitPrice",
+            "label": "FCS unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity vezes FCS unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "Um user **deve** ter um email e um role."
+      ],
+      "Customers": [
+        "Um customer **deve** ter um email."
+      ],
+      "Orders": [
+        "Um order **deve** ter um order number; um order date; um customer; e um total."
+      ],
+      "Payments": [
+        "Um payment **deve** ter um payment number; um order ID; um payment date; um amount; e um method."
+      ],
+      "JetModels": [
+        "Um jet model **deve** ter um model code; um manufacturer; e um generation."
+      ],
+      "FlightControlSystems": [
+        "Um flight control system **deve** ter um FCS code; um jet model ID; um architecture; um redundancy channels; e uma unit price."
+      ],
+      "OrderLines": [
+        "Um order line **deve** ter um line number; um order ID; um FCS ID; e um quantity."
+      ]
+    },
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Customers": "customer",
+      "Orders": "order",
+      "Payments": "payment",
+      "JetModels": "jet model",
+      "FlightControlSystems": "flight control system",
+      "OrderLines": "order line"
+    }
+  },
+  "ru": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "User: «name» совпадает с email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Users.FullName": {
+        "table": "Users",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "User: «full name» вычисляется как last name, затем запятая с пробелом, затем first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Users",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name, \", \", соединено с first name"
+      },
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Customer: «name» совпадает с email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Customer: «full name» вычисляется как last name, затем запятая с пробелом, затем first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name, \", \", соединено с first name"
+      },
+      "Customers.LifetimeSales": {
+        "table": "Customers",
+        "field": "LifetimeSales",
+        "kind": "rollup",
+        "rule": "Customer: «lifetime sales» — это сумма «recent total» по записям «orders», связанным с customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "RecentTotal",
+            "label": "recent total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма recent total по всем «orders», у которых customer равно эта запись"
+      },
+      "Customers.UnpaidOrderCount": {
+        "table": "Customers",
+        "field": "UnpaidOrderCount",
+        "kind": "rollup",
+        "rule": "Customer: «unpaid order count» — это сумма «unpaid flag» по записям «orders», связанным с customer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "UnpaidFlag",
+            "label": "unpaid flag"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма unpaid flag по всем «orders», у которых customer равно эта запись"
+      },
+      "Customers.LargeOrderCount": {
+        "table": "Customers",
+        "field": "LargeOrderCount",
+        "kind": "rollup",
+        "rule": "Customer: «large order count» — это число «large orders» (customer).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма ((total умножить на 0) плюс 1), где customer равно эта запись и total равно \">500\""
+      },
+      "Customers.IsVIP": {
+        "table": "Customers",
+        "field": "IsVIP",
+        "kind": "formula",
+        "rule": "Customer считается «VIP», если выполняется всё следующее: lifetime sales больше 1000 и unpaid order count не больше 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LifetimeSales",
+            "label": "lifetime sales"
+          },
+          {
+            "table": "Customers",
+            "field": "UnpaidOrderCount",
+            "label": "unpaid order count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Customer считается «VIP», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "lifetime sales больше 1000"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "unpaid order count не больше 1"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Lifetime sales больше 1,000 и unpaid order count не больше 1"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Order: «name» совпадает с order number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number"
+      },
+      "Orders.CustomerFirstName": {
+        "table": "Orders",
+        "field": "CustomerFirstName",
+        "kind": "lookup",
+        "rule": "Order: «customer first name» — берётся из связанного «customer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "First name связанного «customer»"
+      },
+      "Orders.CustomerLastName": {
+        "table": "Orders",
+        "field": "CustomerLastName",
+        "kind": "lookup",
+        "rule": "Order: «customer last name» — берётся из связанного «customer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name связанного «customer»"
+      },
+      "Orders.CustomerFullName": {
+        "table": "Orders",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "Order: «customer full name» — берётся из связанного «customer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name связанного «customer»"
+      },
+      "Orders.CustomerEmail": {
+        "table": "Orders",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "Order: «customer email» — берётся из связанного «customer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Email связанного «customer»"
+      },
+      "Orders.AmountPaid": {
+        "table": "Orders",
+        "field": "AmountPaid",
+        "kind": "rollup",
+        "rule": "Order: «amount paid» — это сумма «amount» по записям «payments», связанным с order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма amount по всем «payments», у которых order ID равно эта запись"
+      },
+      "Orders.Balance": {
+        "table": "Orders",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "Order: «balance» вычисляется как total минус amount paid.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          }
+        ],
+        "structure": null,
+        "plain": "Total минус amount paid"
+      },
+      "Orders.IsPaid": {
+        "table": "Orders",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "Order считается «paid», если balance не больше 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance не больше 0"
+      },
+      "Orders.UnpaidFlag": {
+        "table": "Orders",
+        "field": "UnpaidFlag",
+        "kind": "formula",
+        "rule": "Поле «unpaid flag» (Order) определяется по следующему приоритету:\n1. 0, если признак «paid» установлен;\n2. во всех остальных случаях — 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «unpaid flag» (Order) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «paid» установлен"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если is paid, то 0, иначе 1"
+      },
+      "Orders.IsRecent": {
+        "table": "Orders",
+        "field": "IsRecent",
+        "kind": "formula",
+        "rule": "Order считается «recent», если число дней от order date до сегодняшняя дата не больше 90.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          }
+        ],
+        "structure": null,
+        "plain": "Дней между сегодня и order date не больше 90"
+      },
+      "Orders.RecentTotal": {
+        "table": "Orders",
+        "field": "RecentTotal",
+        "kind": "formula",
+        "rule": "Поле «recent total» (Order) определяется по следующему приоритету:\n1. total, если признак «recent» установлен;\n2. во всех остальных случаях — 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsRecent",
+            "label": "is recent"
+          },
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «recent total» (Order) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "total",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «recent» установлен"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если is recent, то total, иначе 0"
+      },
+      "Orders.FCSSubtotal": {
+        "table": "Orders",
+        "field": "FCSSubtotal",
+        "kind": "rollup",
+        "rule": "Order: «FCS subtotal» — это сумма «line total» по записям «order lines», связанным с order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма line total по всем «order lines», у которых order ID равно эта запись"
+      },
+      "Orders.FCSUnitCount": {
+        "table": "Orders",
+        "field": "FCSUnitCount",
+        "kind": "rollup",
+        "rule": "Order: «FCS unit count» — это сумма «quantity» по записям «order lines», связанным с order.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма quantity по всем «order lines», у которых order ID равно эта запись"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Payment: «name» совпадает с payment number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment number"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Payment: «order number» — берётся из связанного «order ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number связанного «order ID»"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "Payment: «order date» — берётся из связанного «order ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order date связанного «order ID»"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "Payment: «order total» — берётся из связанного «order ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total связанного «order ID»"
+      },
+      "Payments.OrderAmountPaid": {
+        "table": "Payments",
+        "field": "OrderAmountPaid",
+        "kind": "lookup",
+        "rule": "Payment: «order amount paid» — берётся из связанного «order ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Amount paid связанного «order ID»"
+      },
+      "Payments.OrderBalance": {
+        "table": "Payments",
+        "field": "OrderBalance",
+        "kind": "lookup",
+        "rule": "Payment: «order balance» — берётся из связанного «order ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance связанного «order ID»"
+      },
+      "Payments.OrderIsPaid": {
+        "table": "Payments",
+        "field": "OrderIsPaid",
+        "kind": "lookup",
+        "rule": "Payment: «order is paid» истинно, когда связанный «order ID» является «paid».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is paid связанного «order ID»"
+      },
+      "Payments.OrderCustomer": {
+        "table": "Payments",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "Payment: «order customer» — берётся из связанного «order ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Customer связанного «order ID»"
+      },
+      "Payments.CustomerFullName": {
+        "table": "Payments",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "Payment: «customer full name» — берётся из связанного «order ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerFullName",
+            "label": "customer full name"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Customer full name связанного «order ID»"
+      },
+      "Payments.CustomerEmail": {
+        "table": "Payments",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "Payment: «customer email» — берётся из связанного «order ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerEmail",
+            "label": "customer email"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Customer email связанного «order ID»"
+      },
+      "JetModels.Name": {
+        "table": "JetModels",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Jet model: «name» совпадает с model code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "ModelCode",
+            "label": "model code"
+          }
+        ],
+        "structure": null,
+        "plain": "Model code"
+      },
+      "JetModels.IsFifthGen": {
+        "table": "JetModels",
+        "field": "IsFifthGen",
+        "kind": "formula",
+        "rule": "Jet model считается «fifth gen», если generation не меньше 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          }
+        ],
+        "structure": null,
+        "plain": "Generation не меньше 5"
+      },
+      "JetModels.FCSVariantCount": {
+        "table": "JetModels",
+        "field": "FCSVariantCount",
+        "kind": "rollup",
+        "rule": "Jet model: «FCS variant count» — это число «FCS variants» (jet model).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма ((unit price умножить на 0) плюс 1), где jet model ID равно эта запись"
+      },
+      "JetModels.TotalUnitsOrdered": {
+        "table": "JetModels",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "Jet model: «total units ordered» — это «total units ordered» по записям «flight control systems», связанным с jet model.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalUnitsOrdered",
+            "label": "total units ordered"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма total units ordered по всем «flight control systems», у которых jet model ID равно эта запись"
+      },
+      "JetModels.TotalRevenue": {
+        "table": "JetModels",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "Jet model: «total revenue» — это «total revenue» по записям «flight control systems», связанным с jet model.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalRevenue",
+            "label": "total revenue"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма total revenue по всем «flight control systems», у которых jet model ID равно эта запись"
+      },
+      "FlightControlSystems.Name": {
+        "table": "FlightControlSystems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Flight control system: «name» совпадает с FCS code.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "FCSCode",
+            "label": "FCS code"
+          }
+        ],
+        "structure": null,
+        "plain": "FCS code"
+      },
+      "FlightControlSystems.JetManufacturer": {
+        "table": "FlightControlSystems",
+        "field": "JetManufacturer",
+        "kind": "lookup",
+        "rule": "Flight control system: «jet manufacturer» — берётся из связанного «jet model ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Manufacturer",
+            "label": "manufacturer"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Manufacturer связанного «jet model ID»"
+      },
+      "FlightControlSystems.JetGeneration": {
+        "table": "FlightControlSystems",
+        "field": "JetGeneration",
+        "kind": "lookup",
+        "rule": "Flight control system: «jet generation» — берётся из связанного «jet model ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Generation связанного «jet model ID»"
+      },
+      "FlightControlSystems.IsTripleRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsTripleRedundant",
+        "kind": "formula",
+        "rule": "Flight control system считается «triple redundant», если redundancy channels не меньше 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels не меньше 3"
+      },
+      "FlightControlSystems.IsQuadRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsQuadRedundant",
+        "kind": "formula",
+        "rule": "Flight control system считается «quad redundant», если redundancy channels не меньше 4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels не меньше 4"
+      },
+      "FlightControlSystems.MeetsFifthGenSpec": {
+        "table": "FlightControlSystems",
+        "field": "MeetsFifthGenSpec",
+        "kind": "formula",
+        "rule": "Flight control system считается удовлетворяющим условию «fifth gen spec», если выполняется всё следующее: признак «quad redundant» установлен; выполняется хотя бы одно из следующего: architecture равно «fly-by-wire» или architecture равно «fly-by-light»; и jet generation не меньше 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "IsQuadRedundant",
+            "label": "is quad redundant"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetGeneration",
+            "label": "jet generation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Flight control system считается удовлетворяющим условию «fifth gen spec», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "признак «quad redundant» установлен"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "architecture равно «fly-by-wire»"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "architecture равно «fly-by-light»"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "jet generation не меньше 5"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is quad redundant, architecture равно \"fly-by-wire\" или architecture равно \"fly-by-light\", и jet generation не меньше 5"
+      },
+      "FlightControlSystems.TotalUnitsOrdered": {
+        "table": "FlightControlSystems",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "Flight control system: «total units ordered» — это сумма «quantity» по записям «order lines», связанным с flight control system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма quantity по всем «order lines», у которых FCS ID равно эта запись"
+      },
+      "FlightControlSystems.TotalRevenue": {
+        "table": "FlightControlSystems",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "Flight control system: «total revenue» — это сумма «line total» по записям «order lines», связанным с flight control system.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма line total по всем «order lines», у которых FCS ID равно эта запись"
+      },
+      "OrderLines.Name": {
+        "table": "OrderLines",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Order line: «name» совпадает с line number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "Line number"
+      },
+      "OrderLines.FCSUnitPrice": {
+        "table": "OrderLines",
+        "field": "FCSUnitPrice",
+        "kind": "lookup",
+        "rule": "Order line: «FCS unit price» — берётся из связанного «FCS ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Unit price связанного «FCS ID»"
+      },
+      "OrderLines.FCSArchitecture": {
+        "table": "OrderLines",
+        "field": "FCSArchitecture",
+        "kind": "lookup",
+        "rule": "Order line: «FCS architecture» — берётся из связанного «FCS ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Architecture связанного «FCS ID»"
+      },
+      "OrderLines.FCSJetModel": {
+        "table": "OrderLines",
+        "field": "FCSJetModel",
+        "kind": "lookup",
+        "rule": "Order line: «FCS jet model» — это «jet model ID» связанного «FCS ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jet model ID связанного «FCS ID»"
+      },
+      "OrderLines.FCSMeetsFifthGenSpec": {
+        "table": "OrderLines",
+        "field": "FCSMeetsFifthGenSpec",
+        "kind": "lookup",
+        "rule": "Order line: «FCS meets fifth gen spec» истинно, когда связанный «FCS ID» является «meets fifth gen spec».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "MeetsFifthGenSpec",
+            "label": "meets fifth gen spec"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Meets fifth gen spec связанного «FCS ID»"
+      },
+      "OrderLines.OrderNumber": {
+        "table": "OrderLines",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Order line: «order number» — берётся из связанного «order ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number связанного «order ID»"
+      },
+      "OrderLines.OrderCustomer": {
+        "table": "OrderLines",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "Order line: «order customer» — берётся из связанного «order ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Customer связанного «order ID»"
+      },
+      "OrderLines.LineTotal": {
+        "table": "OrderLines",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "Order line: «line total» вычисляется как quantity умножить на FCS unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSUnitPrice",
+            "label": "FCS unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity умножить на FCS unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "User **обязан** иметь email и role."
+      ],
+      "Customers": [
+        "Customer **обязан** иметь email."
+      ],
+      "Orders": [
+        "Order **обязан** иметь order number; order date; customer; и total."
+      ],
+      "Payments": [
+        "Payment **обязан** иметь payment number; order ID; payment date; amount; и method."
+      ],
+      "JetModels": [
+        "Jet model **обязан** иметь model code; manufacturer; и generation."
+      ],
+      "FlightControlSystems": [
+        "Flight control system **обязан** иметь FCS code; jet model ID; architecture; redundancy channels; и unit price."
+      ],
+      "OrderLines": [
+        "Order line **обязан** иметь line number; order ID; FCS ID; и quantity."
+      ]
+    },
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Customers": "customer",
+      "Orders": "order",
+      "Payments": "payment",
+      "JetModels": "jet model",
+      "FlightControlSystems": "flight control system",
+      "OrderLines": "order line"
+    }
+  },
+  "tr": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“user” kaydının “name” alanı, “email” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Users.FullName": {
+        "table": "Users",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "“user” kaydının “full name” alanı, “last name” alanı, ardından bir virgül ile bir boşluk, ardından “first name” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Users",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name; \", \" ve ardından first name"
+      },
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“customer” kaydının “name” alanı, “email” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "“customer” kaydının “full name” alanı, “last name” alanı, ardından bir virgül ile bir boşluk, ardından “first name” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name; \", \" ve ardından first name"
+      },
+      "Customers.LifetimeSales": {
+        "table": "Customers",
+        "field": "LifetimeSales",
+        "kind": "rollup",
+        "rule": "“customer” kaydının “lifetime sales” alanı, “customer” kaydıyla ilişkili “orders” kayıtları üzerinden hesaplanan toplam “recent total” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "RecentTotal",
+            "label": "recent total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Customer değeri bu kayıt olan tüm orders kayıtlarındaki recent total değerlerinin toplamı"
+      },
+      "Customers.UnpaidOrderCount": {
+        "table": "Customers",
+        "field": "UnpaidOrderCount",
+        "kind": "rollup",
+        "rule": "“customer” kaydının “unpaid order count” alanı, “customer” kaydıyla ilişkili “orders” kayıtları üzerinden hesaplanan toplam “unpaid flag” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "UnpaidFlag",
+            "label": "unpaid flag"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Customer değeri bu kayıt olan tüm orders kayıtlarındaki unpaid flag değerlerinin toplamı"
+      },
+      "Customers.LargeOrderCount": {
+        "table": "Customers",
+        "field": "LargeOrderCount",
+        "kind": "rollup",
+        "rule": "“customer” kaydının “large order count” alanı, “customer” kaydının “large orders” sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Customer değeri bu kayıt ve total değeri \">500\" olan kayıtlardaki ((total çarpı 0) artı 1) değerlerinin toplamı"
+      },
+      "Customers.IsVIP": {
+        "table": "Customers",
+        "field": "IsVIP",
+        "kind": "formula",
+        "rule": "“customer” kaydı, “lifetime sales” alanı 1000 değerinden büyük ve “unpaid order count” alanı en çok 1 değerinde ise “VIP” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LifetimeSales",
+            "label": "lifetime sales"
+          },
+          {
+            "table": "Customers",
+            "field": "UnpaidOrderCount",
+            "label": "unpaid order count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“customer” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “VIP” sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“lifetime sales” alanı 1000 değerinden büyük"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“unpaid order count” alanı en çok 1 değerinde"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Lifetime sales, 1,000 değerinden büyük ve unpaid order count, en çok 1 değerinde"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“order” kaydının “name” alanı, “order number” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number"
+      },
+      "Orders.CustomerFirstName": {
+        "table": "Orders",
+        "field": "CustomerFirstName",
+        "kind": "lookup",
+        "rule": "“order” kaydının “customer first name” alanı, “customer” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı customer kaydının first name değeri"
+      },
+      "Orders.CustomerLastName": {
+        "table": "Orders",
+        "field": "CustomerLastName",
+        "kind": "lookup",
+        "rule": "“order” kaydının “customer last name” alanı, “customer” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı customer kaydının last name değeri"
+      },
+      "Orders.CustomerFullName": {
+        "table": "Orders",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "“order” kaydının “customer full name” alanı, “customer” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı customer kaydının full name değeri"
+      },
+      "Orders.CustomerEmail": {
+        "table": "Orders",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "“order” kaydının “customer email” alanı, “customer” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı customer kaydının email değeri"
+      },
+      "Orders.AmountPaid": {
+        "table": "Orders",
+        "field": "AmountPaid",
+        "kind": "rollup",
+        "rule": "“order” kaydının “amount paid” alanı, “order” kaydıyla ilişkili “payments” kayıtları üzerinden hesaplanan toplam “amount” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Order ID değeri bu kayıt olan tüm payments kayıtlarındaki amount değerlerinin toplamı"
+      },
+      "Orders.Balance": {
+        "table": "Orders",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "“order” kaydının “balance” alanı, “total” alanı eksi “amount paid” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          }
+        ],
+        "structure": null,
+        "plain": "Total eksi amount paid"
+      },
+      "Orders.IsPaid": {
+        "table": "Orders",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "“order” kaydı, “balance” alanı en çok 0 değerinde ise “paid” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance, en çok 0 değerinde"
+      },
+      "Orders.UnpaidFlag": {
+        "table": "Orders",
+        "field": "UnpaidFlag",
+        "kind": "formula",
+        "rule": "“order” kaydının “unpaid flag” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “paid” bayrağı etkin ise 0;\n2. diğer tüm durumlarda 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“order” kaydının “unpaid flag” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "“paid” bayrağı etkin"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is paid ise 0, aksi takdirde 1"
+      },
+      "Orders.IsRecent": {
+        "table": "Orders",
+        "field": "IsRecent",
+        "kind": "formula",
+        "rule": "“order” kaydı, “order date” alanı ile bugünün tarihi arasındaki gün sayısı en çok 90 değerinde ise “recent” sayılır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          }
+        ],
+        "structure": null,
+        "plain": "Bugün ile order date arasındaki gün sayısı, en çok 90 değerinde"
+      },
+      "Orders.RecentTotal": {
+        "table": "Orders",
+        "field": "RecentTotal",
+        "kind": "formula",
+        "rule": "“order” kaydının “recent total” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “recent” bayrağı etkin ise “total” alanı;\n2. diğer tüm durumlarda 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsRecent",
+            "label": "is recent"
+          },
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“order” kaydının “recent total” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“total” alanı",
+              "when": {
+                "kind": "leaf",
+                "text": "“recent” bayrağı etkin"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is recent ise total, aksi takdirde 0"
+      },
+      "Orders.FCSSubtotal": {
+        "table": "Orders",
+        "field": "FCSSubtotal",
+        "kind": "rollup",
+        "rule": "“order” kaydının “FCS subtotal” alanı, “order” kaydıyla ilişkili “order lines” kayıtları üzerinden hesaplanan toplam “line total” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Order ID değeri bu kayıt olan tüm order lines kayıtlarındaki line total değerlerinin toplamı"
+      },
+      "Orders.FCSUnitCount": {
+        "table": "Orders",
+        "field": "FCSUnitCount",
+        "kind": "rollup",
+        "rule": "“order” kaydının “FCS unit count” alanı, “order” kaydıyla ilişkili “order lines” kayıtları üzerinden hesaplanan toplam “quantity” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Order ID değeri bu kayıt olan tüm order lines kayıtlarındaki quantity değerlerinin toplamı"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“payment” kaydının “name” alanı, “payment number” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment number"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "“payment” kaydının “order number” alanı, “order ID” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı order ID kaydının order number değeri"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "“payment” kaydının “order date” alanı, “order ID” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı order ID kaydının order date değeri"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "“payment” kaydının “order total” alanı, “order ID” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı order ID kaydının total değeri"
+      },
+      "Payments.OrderAmountPaid": {
+        "table": "Payments",
+        "field": "OrderAmountPaid",
+        "kind": "lookup",
+        "rule": "“payment” kaydının “order amount paid” alanı, “order ID” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı order ID kaydının amount paid değeri"
+      },
+      "Payments.OrderBalance": {
+        "table": "Payments",
+        "field": "OrderBalance",
+        "kind": "lookup",
+        "rule": "“payment” kaydının “order balance” alanı, “order ID” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı order ID kaydının balance değeri"
+      },
+      "Payments.OrderIsPaid": {
+        "table": "Payments",
+        "field": "OrderIsPaid",
+        "kind": "lookup",
+        "rule": "“payment” kaydının “order is paid” alanı, “order ID” alanı üzerinden bağlı kayıt “paid” ise doğrudur.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı order ID kaydının is paid değeri"
+      },
+      "Payments.OrderCustomer": {
+        "table": "Payments",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "“payment” kaydının “order customer” alanı, “order ID” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı order ID kaydının customer değeri"
+      },
+      "Payments.CustomerFullName": {
+        "table": "Payments",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "“payment” kaydının “customer full name” alanı, “order ID” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerFullName",
+            "label": "customer full name"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı order ID kaydının customer full name değeri"
+      },
+      "Payments.CustomerEmail": {
+        "table": "Payments",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "“payment” kaydının “customer email” alanı, “order ID” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerEmail",
+            "label": "customer email"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı order ID kaydının customer email değeri"
+      },
+      "JetModels.Name": {
+        "table": "JetModels",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“jet model” kaydının “name” alanı, “model code” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "ModelCode",
+            "label": "model code"
+          }
+        ],
+        "structure": null,
+        "plain": "Model code"
+      },
+      "JetModels.IsFifthGen": {
+        "table": "JetModels",
+        "field": "IsFifthGen",
+        "kind": "formula",
+        "rule": "“jet model” kaydı, “generation” alanı en az 5 değerinde ise “fifth gen” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          }
+        ],
+        "structure": null,
+        "plain": "Generation, en az 5 değerinde"
+      },
+      "JetModels.FCSVariantCount": {
+        "table": "JetModels",
+        "field": "FCSVariantCount",
+        "kind": "rollup",
+        "rule": "“jet model” kaydının “FCS variant count” alanı, “jet model” kaydının “FCS variants” sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jet model ID değeri bu kayıt olan kayıtlardaki ((unit price çarpı 0) artı 1) değerlerinin toplamı"
+      },
+      "JetModels.TotalUnitsOrdered": {
+        "table": "JetModels",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "“jet model” kaydının “total units ordered” alanı, “jet model” kaydıyla ilişkili “flight control systems” kayıtları üzerinden hesaplanan “total units ordered” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalUnitsOrdered",
+            "label": "total units ordered"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jet model ID değeri bu kayıt olan tüm flight control systems kayıtlarındaki total units ordered değerlerinin toplamı"
+      },
+      "JetModels.TotalRevenue": {
+        "table": "JetModels",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "“jet model” kaydının “total revenue” alanı, “jet model” kaydıyla ilişkili “flight control systems” kayıtları üzerinden hesaplanan “total revenue” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalRevenue",
+            "label": "total revenue"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jet model ID değeri bu kayıt olan tüm flight control systems kayıtlarındaki total revenue değerlerinin toplamı"
+      },
+      "FlightControlSystems.Name": {
+        "table": "FlightControlSystems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“flight control system” kaydının “name” alanı, “FCS code” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "FCSCode",
+            "label": "FCS code"
+          }
+        ],
+        "structure": null,
+        "plain": "FCS code"
+      },
+      "FlightControlSystems.JetManufacturer": {
+        "table": "FlightControlSystems",
+        "field": "JetManufacturer",
+        "kind": "lookup",
+        "rule": "“flight control system” kaydının “jet manufacturer” alanı, “jet model ID” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Manufacturer",
+            "label": "manufacturer"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı jet model ID kaydının manufacturer değeri"
+      },
+      "FlightControlSystems.JetGeneration": {
+        "table": "FlightControlSystems",
+        "field": "JetGeneration",
+        "kind": "lookup",
+        "rule": "“flight control system” kaydının “jet generation” alanı, “jet model ID” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı jet model ID kaydının generation değeri"
+      },
+      "FlightControlSystems.IsTripleRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsTripleRedundant",
+        "kind": "formula",
+        "rule": "“flight control system” kaydı, “redundancy channels” alanı en az 3 değerinde ise “triple redundant” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels, en az 3 değerinde"
+      },
+      "FlightControlSystems.IsQuadRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsQuadRedundant",
+        "kind": "formula",
+        "rule": "“flight control system” kaydı, “redundancy channels” alanı en az 4 değerinde ise “quad redundant” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels, en az 4 değerinde"
+      },
+      "FlightControlSystems.MeetsFifthGenSpec": {
+        "table": "FlightControlSystems",
+        "field": "MeetsFifthGenSpec",
+        "kind": "formula",
+        "rule": "“flight control system” kaydı, “quad redundant” bayrağı etkin, (“architecture” alanı “fly-by-wire” değerine eşit veya “architecture” alanı “fly-by-light” değerine eşit) ve “jet generation” alanı en az 5 değerinde ise “meets fifth gen spec” koşulunu sağlamış sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "IsQuadRedundant",
+            "label": "is quad redundant"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetGeneration",
+            "label": "jet generation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“flight control system” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “meets fifth gen spec” koşulunu sağlamış sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“quad redundant” bayrağı etkin"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "“architecture” alanı “fly-by-wire” değerine eşit"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "“architecture” alanı “fly-by-light” değerine eşit"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“jet generation” alanı en az 5 değerinde"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is quad redundant; (architecture, \"fly-by-wire\" değerine eşit veya architecture, \"fly-by-light\" değerine eşit) ve jet generation, en az 5 değerinde"
+      },
+      "FlightControlSystems.TotalUnitsOrdered": {
+        "table": "FlightControlSystems",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "“flight control system” kaydının “total units ordered” alanı, “flight control system” kaydıyla ilişkili “order lines” kayıtları üzerinden hesaplanan toplam “quantity” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "FCS ID değeri bu kayıt olan tüm order lines kayıtlarındaki quantity değerlerinin toplamı"
+      },
+      "FlightControlSystems.TotalRevenue": {
+        "table": "FlightControlSystems",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "“flight control system” kaydının “total revenue” alanı, “flight control system” kaydıyla ilişkili “order lines” kayıtları üzerinden hesaplanan toplam “line total” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "FCS ID değeri bu kayıt olan tüm order lines kayıtlarındaki line total değerlerinin toplamı"
+      },
+      "OrderLines.Name": {
+        "table": "OrderLines",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“order line” kaydının “name” alanı, “line number” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "Line number"
+      },
+      "OrderLines.FCSUnitPrice": {
+        "table": "OrderLines",
+        "field": "FCSUnitPrice",
+        "kind": "lookup",
+        "rule": "“order line” kaydının “FCS unit price” alanı, “FCS ID” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı FCS ID kaydının unit price değeri"
+      },
+      "OrderLines.FCSArchitecture": {
+        "table": "OrderLines",
+        "field": "FCSArchitecture",
+        "kind": "lookup",
+        "rule": "“order line” kaydının “FCS architecture” alanı, “FCS ID” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı FCS ID kaydının architecture değeri"
+      },
+      "OrderLines.FCSJetModel": {
+        "table": "OrderLines",
+        "field": "FCSJetModel",
+        "kind": "lookup",
+        "rule": "“order line” kaydının “FCS jet model” alanı, “FCS ID” alanı üzerinden bağlı kaydın “jet model ID” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı FCS ID kaydının jet model ID değeri"
+      },
+      "OrderLines.FCSMeetsFifthGenSpec": {
+        "table": "OrderLines",
+        "field": "FCSMeetsFifthGenSpec",
+        "kind": "lookup",
+        "rule": "“order line” kaydının “FCS meets fifth gen spec” alanı, “FCS ID” alanı üzerinden bağlı kayıt “meets fifth gen spec” olarak işaretli ise doğrudur.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "MeetsFifthGenSpec",
+            "label": "meets fifth gen spec"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı FCS ID kaydının meets fifth gen spec değeri"
+      },
+      "OrderLines.OrderNumber": {
+        "table": "OrderLines",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "“order line” kaydının “order number” alanı, “order ID” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı order ID kaydının order number değeri"
+      },
+      "OrderLines.OrderCustomer": {
+        "table": "OrderLines",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "“order line” kaydının “order customer” alanı, “order ID” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı order ID kaydının customer değeri"
+      },
+      "OrderLines.LineTotal": {
+        "table": "OrderLines",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "“order line” kaydının “line total” alanı, “quantity” alanı çarpı “FCS unit price” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSUnitPrice",
+            "label": "FCS unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity çarpı FCS unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "“user” kaydı, “email” alanı ve “role” alanı dolu olmak **zorundadır**."
+      ],
+      "Customers": [
+        "“customer” kaydı, “email” alanı dolu olmak **zorundadır**."
+      ],
+      "Orders": [
+        "“order” kaydı, “order number” alanı, “order date” alanı, “customer” alanı ve “total” alanı dolu olmak **zorundadır**."
+      ],
+      "Payments": [
+        "“payment” kaydı, “payment number” alanı, “order ID” alanı, “payment date” alanı, “amount” alanı ve “method” alanı dolu olmak **zorundadır**."
+      ],
+      "JetModels": [
+        "“jet model” kaydı, “model code” alanı, “manufacturer” alanı ve “generation” alanı dolu olmak **zorundadır**."
+      ],
+      "FlightControlSystems": [
+        "“flight control system” kaydı, “FCS code” alanı, “jet model ID” alanı, “architecture” alanı, “redundancy channels” alanı ve “unit price” alanı dolu olmak **zorundadır**."
+      ],
+      "OrderLines": [
+        "“order line” kaydı, “line number” alanı, “order ID” alanı, “FCS ID” alanı ve “quantity” alanı dolu olmak **zorundadır**."
+      ]
+    },
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Customers": "customer",
+      "Orders": "order",
+      "Payments": "payment",
+      "JetModels": "jet model",
+      "FlightControlSystems": "flight control system",
+      "OrderLines": "order line"
+    }
+  },
+  "vi": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi user có cùng giá trị với trường “email” của chính user đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Users.FullName": {
+        "table": "Users",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Trường “full name” của mỗi user được tính bằng last name, tiếp theo là dấu phẩy kèm dấu cách, tiếp theo là first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Users",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name nối với \", \" nối với first name"
+      },
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi customer có cùng giá trị với trường “email” của chính customer đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Trường “full name” của mỗi customer được tính bằng last name, tiếp theo là dấu phẩy kèm dấu cách, tiếp theo là first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name nối với \", \" nối với first name"
+      },
+      "Customers.LifetimeSales": {
+        "table": "Customers",
+        "field": "LifetimeSales",
+        "kind": "rollup",
+        "rule": "Trường “lifetime sales” của mỗi customer là giá trị tổng cộng của trường “recent total” trên các orders liên quan đến customer đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "RecentTotal",
+            "label": "recent total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng recent total trên tất cả orders có customer là bản ghi này"
+      },
+      "Customers.UnpaidOrderCount": {
+        "table": "Customers",
+        "field": "UnpaidOrderCount",
+        "kind": "rollup",
+        "rule": "Trường “unpaid order count” của mỗi customer là giá trị tổng cộng của trường “unpaid flag” trên các orders liên quan đến customer đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "UnpaidFlag",
+            "label": "unpaid flag"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng unpaid flag trên tất cả orders có customer là bản ghi này"
+      },
+      "Customers.LargeOrderCount": {
+        "table": "Customers",
+        "field": "LargeOrderCount",
+        "kind": "rollup",
+        "rule": "Trường “large order count” của mỗi customer là số lượng large orders của customer đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng ((total nhân 0) cộng 1) với điều kiện customer là bản ghi này và total là \">500\""
+      },
+      "Customers.IsVIP": {
+        "table": "Customers",
+        "field": "IsVIP",
+        "kind": "formula",
+        "rule": "Mỗi customer được coi là “VIP” nếu tất cả các điều kiện sau đều đúng: lifetime sales lớn hơn 1000 và unpaid order count không lớn hơn 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LifetimeSales",
+            "label": "lifetime sales"
+          },
+          {
+            "table": "Customers",
+            "field": "UnpaidOrderCount",
+            "label": "unpaid order count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi customer được coi là “VIP” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "lifetime sales lớn hơn 1000"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "unpaid order count không lớn hơn 1"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Lifetime sales lớn hơn 1,000 và unpaid order count không lớn hơn 1"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi order có cùng giá trị với trường “order number” của chính order đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number"
+      },
+      "Orders.CustomerFirstName": {
+        "table": "Orders",
+        "field": "CustomerFirstName",
+        "kind": "lookup",
+        "rule": "Trường “customer first name” của mỗi order được lấy từ bản ghi liên kết qua trường “customer”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "First name của bản ghi liên kết qua customer"
+      },
+      "Orders.CustomerLastName": {
+        "table": "Orders",
+        "field": "CustomerLastName",
+        "kind": "lookup",
+        "rule": "Trường “customer last name” của mỗi order được lấy từ bản ghi liên kết qua trường “customer”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name của bản ghi liên kết qua customer"
+      },
+      "Orders.CustomerFullName": {
+        "table": "Orders",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "Trường “customer full name” của mỗi order được lấy từ bản ghi liên kết qua trường “customer”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name của bản ghi liên kết qua customer"
+      },
+      "Orders.CustomerEmail": {
+        "table": "Orders",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "Trường “customer email” của mỗi order được lấy từ bản ghi liên kết qua trường “customer”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Email của bản ghi liên kết qua customer"
+      },
+      "Orders.AmountPaid": {
+        "table": "Orders",
+        "field": "AmountPaid",
+        "kind": "rollup",
+        "rule": "Trường “amount paid” của mỗi order là giá trị tổng cộng của trường “amount” trên các payments liên quan đến order đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng amount trên tất cả payments có order ID là bản ghi này"
+      },
+      "Orders.Balance": {
+        "table": "Orders",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "Trường “balance” của mỗi order được tính bằng total trừ amount paid.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          }
+        ],
+        "structure": null,
+        "plain": "Total trừ amount paid"
+      },
+      "Orders.IsPaid": {
+        "table": "Orders",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "Mỗi order được coi là “paid” nếu balance không lớn hơn 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance không lớn hơn 0"
+      },
+      "Orders.UnpaidFlag": {
+        "table": "Orders",
+        "field": "UnpaidFlag",
+        "kind": "formula",
+        "rule": "Trường “unpaid flag” của mỗi order được xác định theo thứ tự ưu tiên sau:\n1. 0, nếu cờ “paid” được bật;\n2. trong mọi trường hợp còn lại, 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “unpaid flag” của mỗi order được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “paid” được bật"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu is paid thì 0, nếu không thì 1"
+      },
+      "Orders.IsRecent": {
+        "table": "Orders",
+        "field": "IsRecent",
+        "kind": "formula",
+        "rule": "Mỗi order được coi là “recent” nếu số ngày tính từ order date đến ngày hôm nay không lớn hơn 90.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          }
+        ],
+        "structure": null,
+        "plain": "Số ngày giữa hôm nay và order date không lớn hơn 90"
+      },
+      "Orders.RecentTotal": {
+        "table": "Orders",
+        "field": "RecentTotal",
+        "kind": "formula",
+        "rule": "Trường “recent total” của mỗi order được xác định theo thứ tự ưu tiên sau:\n1. total, nếu cờ “recent” được bật;\n2. trong mọi trường hợp còn lại, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsRecent",
+            "label": "is recent"
+          },
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “recent total” của mỗi order được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "total",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “recent” được bật"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu is recent thì total, nếu không thì 0"
+      },
+      "Orders.FCSSubtotal": {
+        "table": "Orders",
+        "field": "FCSSubtotal",
+        "kind": "rollup",
+        "rule": "Trường “FCS subtotal” của mỗi order là giá trị tổng cộng của trường “line total” trên các order lines liên quan đến order đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng line total trên tất cả order lines có order ID là bản ghi này"
+      },
+      "Orders.FCSUnitCount": {
+        "table": "Orders",
+        "field": "FCSUnitCount",
+        "kind": "rollup",
+        "rule": "Trường “FCS unit count” của mỗi order là giá trị tổng cộng của trường “quantity” trên các order lines liên quan đến order đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng quantity trên tất cả order lines có order ID là bản ghi này"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi payment có cùng giá trị với trường “payment number” của chính payment đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment number"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Trường “order number” của mỗi payment được lấy từ bản ghi liên kết qua trường “order ID”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number của bản ghi liên kết qua order ID"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "Trường “order date” của mỗi payment được lấy từ bản ghi liên kết qua trường “order ID”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order date của bản ghi liên kết qua order ID"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "Trường “order total” của mỗi payment được lấy từ bản ghi liên kết qua trường “order ID”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total của bản ghi liên kết qua order ID"
+      },
+      "Payments.OrderAmountPaid": {
+        "table": "Payments",
+        "field": "OrderAmountPaid",
+        "kind": "lookup",
+        "rule": "Trường “order amount paid” của mỗi payment được lấy từ bản ghi liên kết qua trường “order ID”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Amount paid của bản ghi liên kết qua order ID"
+      },
+      "Payments.OrderBalance": {
+        "table": "Payments",
+        "field": "OrderBalance",
+        "kind": "lookup",
+        "rule": "Trường “order balance” của mỗi payment được lấy từ bản ghi liên kết qua trường “order ID”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance của bản ghi liên kết qua order ID"
+      },
+      "Payments.OrderIsPaid": {
+        "table": "Payments",
+        "field": "OrderIsPaid",
+        "kind": "lookup",
+        "rule": "Trường “order is paid” của mỗi payment có giá trị đúng khi bản ghi liên kết qua trường “order ID” là “paid”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is paid của bản ghi liên kết qua order ID"
+      },
+      "Payments.OrderCustomer": {
+        "table": "Payments",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "Trường “order customer” của mỗi payment được lấy từ bản ghi liên kết qua trường “order ID”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Customer của bản ghi liên kết qua order ID"
+      },
+      "Payments.CustomerFullName": {
+        "table": "Payments",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "Trường “customer full name” của mỗi payment được lấy từ bản ghi liên kết qua trường “order ID”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerFullName",
+            "label": "customer full name"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Customer full name của bản ghi liên kết qua order ID"
+      },
+      "Payments.CustomerEmail": {
+        "table": "Payments",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "Trường “customer email” của mỗi payment được lấy từ bản ghi liên kết qua trường “order ID”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerEmail",
+            "label": "customer email"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Customer email của bản ghi liên kết qua order ID"
+      },
+      "JetModels.Name": {
+        "table": "JetModels",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi jet model có cùng giá trị với trường “model code” của chính jet model đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "ModelCode",
+            "label": "model code"
+          }
+        ],
+        "structure": null,
+        "plain": "Model code"
+      },
+      "JetModels.IsFifthGen": {
+        "table": "JetModels",
+        "field": "IsFifthGen",
+        "kind": "formula",
+        "rule": "Mỗi jet model được coi là “fifth gen” nếu generation không nhỏ hơn 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          }
+        ],
+        "structure": null,
+        "plain": "Generation không nhỏ hơn 5"
+      },
+      "JetModels.FCSVariantCount": {
+        "table": "JetModels",
+        "field": "FCSVariantCount",
+        "kind": "rollup",
+        "rule": "Trường “FCS variant count” của mỗi jet model là số lượng FCS variants của jet model đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng ((unit price nhân 0) cộng 1) với điều kiện jet model ID là bản ghi này"
+      },
+      "JetModels.TotalUnitsOrdered": {
+        "table": "JetModels",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "Trường “total units ordered” của mỗi jet model là giá trị của trường “total units ordered” trên các flight control systems liên quan đến jet model đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalUnitsOrdered",
+            "label": "total units ordered"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng total units ordered trên tất cả flight control systems có jet model ID là bản ghi này"
+      },
+      "JetModels.TotalRevenue": {
+        "table": "JetModels",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "Trường “total revenue” của mỗi jet model là giá trị của trường “total revenue” trên các flight control systems liên quan đến jet model đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalRevenue",
+            "label": "total revenue"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng total revenue trên tất cả flight control systems có jet model ID là bản ghi này"
+      },
+      "FlightControlSystems.Name": {
+        "table": "FlightControlSystems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi flight control system có cùng giá trị với trường “FCS code” của chính flight control system đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "FCSCode",
+            "label": "FCS code"
+          }
+        ],
+        "structure": null,
+        "plain": "FCS code"
+      },
+      "FlightControlSystems.JetManufacturer": {
+        "table": "FlightControlSystems",
+        "field": "JetManufacturer",
+        "kind": "lookup",
+        "rule": "Trường “jet manufacturer” của mỗi flight control system được lấy từ bản ghi liên kết qua trường “jet model ID”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Manufacturer",
+            "label": "manufacturer"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Manufacturer của bản ghi liên kết qua jet model ID"
+      },
+      "FlightControlSystems.JetGeneration": {
+        "table": "FlightControlSystems",
+        "field": "JetGeneration",
+        "kind": "lookup",
+        "rule": "Trường “jet generation” của mỗi flight control system được lấy từ bản ghi liên kết qua trường “jet model ID”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Generation của bản ghi liên kết qua jet model ID"
+      },
+      "FlightControlSystems.IsTripleRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsTripleRedundant",
+        "kind": "formula",
+        "rule": "Mỗi flight control system được coi là “triple redundant” nếu redundancy channels không nhỏ hơn 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels không nhỏ hơn 3"
+      },
+      "FlightControlSystems.IsQuadRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsQuadRedundant",
+        "kind": "formula",
+        "rule": "Mỗi flight control system được coi là “quad redundant” nếu redundancy channels không nhỏ hơn 4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels không nhỏ hơn 4"
+      },
+      "FlightControlSystems.MeetsFifthGenSpec": {
+        "table": "FlightControlSystems",
+        "field": "MeetsFifthGenSpec",
+        "kind": "formula",
+        "rule": "Mỗi flight control system được coi là thỏa điều kiện “meets fifth gen spec” nếu tất cả các điều kiện sau đều đúng: cờ “quad redundant” được bật; ít nhất một trong các điều kiện sau đúng: architecture là “fly-by-wire” hoặc architecture là “fly-by-light”; và jet generation không nhỏ hơn 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "IsQuadRedundant",
+            "label": "is quad redundant"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetGeneration",
+            "label": "jet generation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi flight control system được coi là thỏa điều kiện “meets fifth gen spec” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "cờ “quad redundant” được bật"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "architecture là “fly-by-wire”"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "architecture là “fly-by-light”"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "jet generation không nhỏ hơn 5"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is quad redundant, architecture là \"fly-by-wire\" hoặc architecture là \"fly-by-light\" và jet generation không nhỏ hơn 5"
+      },
+      "FlightControlSystems.TotalUnitsOrdered": {
+        "table": "FlightControlSystems",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "Trường “total units ordered” của mỗi flight control system là giá trị tổng cộng của trường “quantity” trên các order lines liên quan đến flight control system đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng quantity trên tất cả order lines có FCS ID là bản ghi này"
+      },
+      "FlightControlSystems.TotalRevenue": {
+        "table": "FlightControlSystems",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "Trường “total revenue” của mỗi flight control system là giá trị tổng cộng của trường “line total” trên các order lines liên quan đến flight control system đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng line total trên tất cả order lines có FCS ID là bản ghi này"
+      },
+      "OrderLines.Name": {
+        "table": "OrderLines",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi order line có cùng giá trị với trường “line number” của chính order line đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "Line number"
+      },
+      "OrderLines.FCSUnitPrice": {
+        "table": "OrderLines",
+        "field": "FCSUnitPrice",
+        "kind": "lookup",
+        "rule": "Trường “FCS unit price” của mỗi order line được lấy từ bản ghi liên kết qua trường “FCS ID”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Unit price của bản ghi liên kết qua FCS ID"
+      },
+      "OrderLines.FCSArchitecture": {
+        "table": "OrderLines",
+        "field": "FCSArchitecture",
+        "kind": "lookup",
+        "rule": "Trường “FCS architecture” của mỗi order line được lấy từ bản ghi liên kết qua trường “FCS ID”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Architecture của bản ghi liên kết qua FCS ID"
+      },
+      "OrderLines.FCSJetModel": {
+        "table": "OrderLines",
+        "field": "FCSJetModel",
+        "kind": "lookup",
+        "rule": "Trường “FCS jet model” của mỗi order line là trường “jet model ID” của bản ghi liên kết qua trường “FCS ID”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jet model ID của bản ghi liên kết qua FCS ID"
+      },
+      "OrderLines.FCSMeetsFifthGenSpec": {
+        "table": "OrderLines",
+        "field": "FCSMeetsFifthGenSpec",
+        "kind": "lookup",
+        "rule": "Trường “FCS meets fifth gen spec” của mỗi order line có giá trị đúng khi bản ghi liên kết qua trường “FCS ID” thỏa điều kiện “meets fifth gen spec”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "MeetsFifthGenSpec",
+            "label": "meets fifth gen spec"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Meets fifth gen spec của bản ghi liên kết qua FCS ID"
+      },
+      "OrderLines.OrderNumber": {
+        "table": "OrderLines",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "Trường “order number” của mỗi order line được lấy từ bản ghi liên kết qua trường “order ID”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number của bản ghi liên kết qua order ID"
+      },
+      "OrderLines.OrderCustomer": {
+        "table": "OrderLines",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "Trường “order customer” của mỗi order line được lấy từ bản ghi liên kết qua trường “order ID”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Customer của bản ghi liên kết qua order ID"
+      },
+      "OrderLines.LineTotal": {
+        "table": "OrderLines",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "Trường “line total” của mỗi order line được tính bằng quantity nhân FCS unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSUnitPrice",
+            "label": "FCS unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity nhân FCS unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "Mỗi user **phải** có email và role."
+      ],
+      "Customers": [
+        "Mỗi customer **phải** có email."
+      ],
+      "Orders": [
+        "Mỗi order **phải** có order number, order date, customer và total."
+      ],
+      "Payments": [
+        "Mỗi payment **phải** có payment number, order ID, payment date, amount và method."
+      ],
+      "JetModels": [
+        "Mỗi jet model **phải** có model code, manufacturer và generation."
+      ],
+      "FlightControlSystems": [
+        "Mỗi flight control system **phải** có FCS code, jet model ID, architecture, redundancy channels và unit price."
+      ],
+      "OrderLines": [
+        "Mỗi order line **phải** có line number, order ID, FCS ID và quantity."
+      ]
+    },
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Customers": "customer",
+      "Orders": "order",
+      "Payments": "payment",
+      "JetModels": "jet model",
+      "FlightControlSystems": "flight control system",
+      "OrderLines": "order line"
+    }
+  },
+  "zh": {
+    "fields": {
+      "Users.Name": {
+        "table": "Users",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "user的“name”与 email 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Users.FullName": {
+        "table": "Users",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "user的“full name”按 last name,接着是一个逗号加一个空格,接着是first name 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Users",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Users",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name、\", \",拼接first name"
+      },
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "customer的“name”与 email 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "customer的“full name”按 last name,接着是一个逗号加一个空格,接着是first name 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "Last name、\", \",拼接first name"
+      },
+      "Customers.LifetimeSales": {
+        "table": "Customers",
+        "field": "LifetimeSales",
+        "kind": "rollup",
+        "rule": "customer的“lifetime sales”为 与customer相关的所有“orders”的“recent total”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "RecentTotal",
+            "label": "recent total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所有customer为本记录的“orders”的recent total的总和"
+      },
+      "Customers.UnpaidOrderCount": {
+        "table": "Customers",
+        "field": "UnpaidOrderCount",
+        "kind": "rollup",
+        "rule": "customer的“unpaid order count”为 与customer相关的所有“orders”的“unpaid flag”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "UnpaidFlag",
+            "label": "unpaid flag"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所有customer为本记录的“orders”的unpaid flag的总和"
+      },
+      "Customers.LargeOrderCount": {
+        "table": "Customers",
+        "field": "LargeOrderCount",
+        "kind": "rollup",
+        "rule": "customer的“large order count”为 customer的“large orders”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "满足customer为本记录且total为\">500\"时((total乘0)加1)的总和"
+      },
+      "Customers.IsVIP": {
+        "table": "Customers",
+        "field": "IsVIP",
+        "kind": "formula",
+        "rule": "当以下全部成立:lifetime sales大于1000且unpaid order count不大于1时,customer被视为“VIP”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LifetimeSales",
+            "label": "lifetime sales"
+          },
+          {
+            "table": "Customers",
+            "field": "UnpaidOrderCount",
+            "label": "unpaid order count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,customer被视为“VIP”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "lifetime sales大于1000"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "unpaid order count不大于1"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Lifetime sales大于1,000且unpaid order count不大于1"
+      },
+      "Orders.Name": {
+        "table": "Orders",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "order的“name”与 order number 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          }
+        ],
+        "structure": null,
+        "plain": "Order number"
+      },
+      "Orders.CustomerFirstName": {
+        "table": "Orders",
+        "field": "CustomerFirstName",
+        "kind": "lookup",
+        "rule": "order的“customer first name”——取自所关联的“customer”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“customer”的first name"
+      },
+      "Orders.CustomerLastName": {
+        "table": "Orders",
+        "field": "CustomerLastName",
+        "kind": "lookup",
+        "rule": "order的“customer last name”——取自所关联的“customer”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“customer”的last name"
+      },
+      "Orders.CustomerFullName": {
+        "table": "Orders",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "order的“customer full name”——取自所关联的“customer”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“customer”的full name"
+      },
+      "Orders.CustomerEmail": {
+        "table": "Orders",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "order的“customer email”——取自所关联的“customer”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "Email",
+            "label": "email"
+          },
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Customers",
+            "field": "CustomersId",
+            "label": "customers ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“customer”的email"
+      },
+      "Orders.AmountPaid": {
+        "table": "Orders",
+        "field": "AmountPaid",
+        "kind": "rollup",
+        "rule": "order的“amount paid”为 与order相关的所有“payments”的“amount”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "Amount",
+            "label": "amount"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所有order ID为本记录的“payments”的amount的总和"
+      },
+      "Orders.Balance": {
+        "table": "Orders",
+        "field": "Balance",
+        "kind": "formula",
+        "rule": "order的“balance”按 total减amount paid 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          }
+        ],
+        "structure": null,
+        "plain": "Total减amount paid"
+      },
+      "Orders.IsPaid": {
+        "table": "Orders",
+        "field": "IsPaid",
+        "kind": "formula",
+        "rule": "当balance不大于0时,order被视为“Paid”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          }
+        ],
+        "structure": null,
+        "plain": "Balance不大于0"
+      },
+      "Orders.UnpaidFlag": {
+        "table": "Orders",
+        "field": "UnpaidFlag",
+        "kind": "formula",
+        "rule": "Order的“unpaid flag”按以下优先级确定:\n1. 当标志“paid”已设置时,取 0;\n2. 其余情况取 1。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Order的“unpaid flag”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“paid”已设置"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若is paid,则0,否则1"
+      },
+      "Orders.IsRecent": {
+        "table": "Orders",
+        "field": "IsRecent",
+        "kind": "formula",
+        "rule": "当从order date到今天的日期的天数不大于90时,order被视为“Recent”。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          }
+        ],
+        "structure": null,
+        "plain": "今天与order date之间的天数不大于90"
+      },
+      "Orders.RecentTotal": {
+        "table": "Orders",
+        "field": "RecentTotal",
+        "kind": "formula",
+        "rule": "Order的“recent total”按以下优先级确定:\n1. 当标志“recent”已设置时,取 total;\n2. 其余情况取 0。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsRecent",
+            "label": "is recent"
+          },
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Order的“recent total”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "total",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“recent”已设置"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若is recent,则total,否则0"
+      },
+      "Orders.FCSSubtotal": {
+        "table": "Orders",
+        "field": "FCSSubtotal",
+        "kind": "rollup",
+        "rule": "order的“FCS subtotal”为 与order相关的所有“order lines”的“line total”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所有order ID为本记录的“order lines”的line total的总和"
+      },
+      "Orders.FCSUnitCount": {
+        "table": "Orders",
+        "field": "FCSUnitCount",
+        "kind": "rollup",
+        "rule": "order的“FCS unit count”为 与order相关的所有“order lines”的“quantity”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所有order ID为本记录的“order lines”的quantity的总和"
+      },
+      "Payments.Name": {
+        "table": "Payments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "payment的“name”与 payment number 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Payments",
+            "field": "PaymentNumber",
+            "label": "payment number"
+          }
+        ],
+        "structure": null,
+        "plain": "Payment number"
+      },
+      "Payments.OrderNumber": {
+        "table": "Payments",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "payment的“order number”——取自所关联的“order ID”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“order ID”的order number"
+      },
+      "Payments.OrderDate": {
+        "table": "Payments",
+        "field": "OrderDate",
+        "kind": "lookup",
+        "rule": "payment的“order date”——取自所关联的“order ID”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderDate",
+            "label": "order date"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“order ID”的order date"
+      },
+      "Payments.OrderTotal": {
+        "table": "Payments",
+        "field": "OrderTotal",
+        "kind": "lookup",
+        "rule": "payment的“order total”——取自所关联的“order ID”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Total",
+            "label": "total"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“order ID”的total"
+      },
+      "Payments.OrderAmountPaid": {
+        "table": "Payments",
+        "field": "OrderAmountPaid",
+        "kind": "lookup",
+        "rule": "payment的“order amount paid”——取自所关联的“order ID”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "AmountPaid",
+            "label": "amount paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“order ID”的amount paid"
+      },
+      "Payments.OrderBalance": {
+        "table": "Payments",
+        "field": "OrderBalance",
+        "kind": "lookup",
+        "rule": "payment的“order balance”——取自所关联的“order ID”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Balance",
+            "label": "balance"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“order ID”的balance"
+      },
+      "Payments.OrderIsPaid": {
+        "table": "Payments",
+        "field": "OrderIsPaid",
+        "kind": "lookup",
+        "rule": "payment的“order is paid”在所关联的“order ID”是“Paid”时为真。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "IsPaid",
+            "label": "is paid"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“order ID”的is paid"
+      },
+      "Payments.OrderCustomer": {
+        "table": "Payments",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "payment的“order customer”——取自所关联的“order ID”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“order ID”的customer"
+      },
+      "Payments.CustomerFullName": {
+        "table": "Payments",
+        "field": "CustomerFullName",
+        "kind": "lookup",
+        "rule": "payment的“customer full name”——取自所关联的“order ID”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerFullName",
+            "label": "customer full name"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“order ID”的customer full name"
+      },
+      "Payments.CustomerEmail": {
+        "table": "Payments",
+        "field": "CustomerEmail",
+        "kind": "lookup",
+        "rule": "payment的“customer email”——取自所关联的“order ID”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "CustomerEmail",
+            "label": "customer email"
+          },
+          {
+            "table": "Payments",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“order ID”的customer email"
+      },
+      "JetModels.Name": {
+        "table": "JetModels",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "jet model的“name”与 model code 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "ModelCode",
+            "label": "model code"
+          }
+        ],
+        "structure": null,
+        "plain": "Model code"
+      },
+      "JetModels.IsFifthGen": {
+        "table": "JetModels",
+        "field": "IsFifthGen",
+        "kind": "formula",
+        "rule": "当generation不小于5时,jet model被视为“Fifth Gen”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          }
+        ],
+        "structure": null,
+        "plain": "Generation不小于5"
+      },
+      "JetModels.FCSVariantCount": {
+        "table": "JetModels",
+        "field": "FCSVariantCount",
+        "kind": "rollup",
+        "rule": "jet model的“FCS variant count”为 jet model的“FCS variants”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "满足jet model ID为本记录时((unit price乘0)加1)的总和"
+      },
+      "JetModels.TotalUnitsOrdered": {
+        "table": "JetModels",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "jet model的“total units ordered”为 与jet model相关的所有“flight control systems”的“total units ordered”的。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalUnitsOrdered",
+            "label": "total units ordered"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所有jet model ID为本记录的“flight control systems”的total units ordered的总和"
+      },
+      "JetModels.TotalRevenue": {
+        "table": "JetModels",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "jet model的“total revenue”为 与jet model相关的所有“flight control systems”的“total revenue”的。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "TotalRevenue",
+            "label": "total revenue"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所有jet model ID为本记录的“flight control systems”的total revenue的总和"
+      },
+      "FlightControlSystems.Name": {
+        "table": "FlightControlSystems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "flight control system的“name”与 FCS code 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "FCSCode",
+            "label": "FCS code"
+          }
+        ],
+        "structure": null,
+        "plain": "FCS code"
+      },
+      "FlightControlSystems.JetManufacturer": {
+        "table": "FlightControlSystems",
+        "field": "JetManufacturer",
+        "kind": "lookup",
+        "rule": "flight control system的“jet manufacturer”——取自所关联的“jet model ID”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Manufacturer",
+            "label": "manufacturer"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“jet model ID”的manufacturer"
+      },
+      "FlightControlSystems.JetGeneration": {
+        "table": "FlightControlSystems",
+        "field": "JetGeneration",
+        "kind": "lookup",
+        "rule": "flight control system的“jet generation”——取自所关联的“jet model ID”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "JetModels",
+            "field": "Generation",
+            "label": "generation"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "JetModels",
+            "field": "JetModelsId",
+            "label": "jet models ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“jet model ID”的generation"
+      },
+      "FlightControlSystems.IsTripleRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsTripleRedundant",
+        "kind": "formula",
+        "rule": "当redundancy channels不小于3时,flight control system被视为“Triple Redundant”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels不小于3"
+      },
+      "FlightControlSystems.IsQuadRedundant": {
+        "table": "FlightControlSystems",
+        "field": "IsQuadRedundant",
+        "kind": "formula",
+        "rule": "当redundancy channels不小于4时,flight control system被视为“Quad Redundant”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "RedundancyChannels",
+            "label": "redundancy channels"
+          }
+        ],
+        "structure": null,
+        "plain": "Redundancy channels不小于4"
+      },
+      "FlightControlSystems.MeetsFifthGenSpec": {
+        "table": "FlightControlSystems",
+        "field": "MeetsFifthGenSpec",
+        "kind": "formula",
+        "rule": "当以下全部成立:标志“quad redundant”已设置、以下至少一项成立:architecture为“fly-by-wire”或architecture为“fly-by-light”,且jet generation不小于5时,flight control system被视为满足“Fifth Gen Spec”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "IsQuadRedundant",
+            "label": "is quad redundant"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "JetGeneration",
+            "label": "jet generation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,flight control system被视为满足“Fifth Gen Spec”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "标志“quad redundant”已设置"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "architecture为“fly-by-wire”"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "architecture为“fly-by-light”"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "jet generation不小于5"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is quad redundant、architecture为\"fly-by-wire\"或architecture为\"fly-by-light\",且jet generation不小于5"
+      },
+      "FlightControlSystems.TotalUnitsOrdered": {
+        "table": "FlightControlSystems",
+        "field": "TotalUnitsOrdered",
+        "kind": "rollup",
+        "rule": "flight control system的“total units ordered”为 与flight control system相关的所有“order lines”的“quantity”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所有FCS ID为本记录的“order lines”的quantity的总和"
+      },
+      "FlightControlSystems.TotalRevenue": {
+        "table": "FlightControlSystems",
+        "field": "TotalRevenue",
+        "kind": "rollup",
+        "rule": "flight control system的“total revenue”为 与flight control system相关的所有“order lines”的“line total”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineTotal",
+            "label": "line total"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所有FCS ID为本记录的“order lines”的line total的总和"
+      },
+      "OrderLines.Name": {
+        "table": "OrderLines",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "order line的“name”与 line number 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "LineNumber",
+            "label": "line number"
+          }
+        ],
+        "structure": null,
+        "plain": "Line number"
+      },
+      "OrderLines.FCSUnitPrice": {
+        "table": "OrderLines",
+        "field": "FCSUnitPrice",
+        "kind": "lookup",
+        "rule": "order line的“FCS unit price”——取自所关联的“FCS ID”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“FCS ID”的unit price"
+      },
+      "OrderLines.FCSArchitecture": {
+        "table": "OrderLines",
+        "field": "FCSArchitecture",
+        "kind": "lookup",
+        "rule": "order line的“FCS architecture”——取自所关联的“FCS ID”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "Architecture",
+            "label": "architecture"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“FCS ID”的architecture"
+      },
+      "OrderLines.FCSJetModel": {
+        "table": "OrderLines",
+        "field": "FCSJetModel",
+        "kind": "lookup",
+        "rule": "order line的“FCS jet model”是所关联的“FCS ID”的“jet model ID”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "JetModelId",
+            "label": "jet model ID"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“FCS ID”的jet model ID"
+      },
+      "OrderLines.FCSMeetsFifthGenSpec": {
+        "table": "OrderLines",
+        "field": "FCSMeetsFifthGenSpec",
+        "kind": "lookup",
+        "rule": "order line的“FCS meets fifth gen spec”在所关联的“FCS ID”是“Meets Fifth Gen Spec”时为真。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FlightControlSystems",
+            "field": "MeetsFifthGenSpec",
+            "label": "meets fifth gen spec"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSId",
+            "label": "FCS ID"
+          },
+          {
+            "table": "FlightControlSystems",
+            "field": "FlightControlSystemsId",
+            "label": "flight control systems ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“FCS ID”的meets fifth gen spec"
+      },
+      "OrderLines.OrderNumber": {
+        "table": "OrderLines",
+        "field": "OrderNumber",
+        "kind": "lookup",
+        "rule": "order line的“order number”——取自所关联的“order ID”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "OrderNumber",
+            "label": "order number"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“order ID”的order number"
+      },
+      "OrderLines.OrderCustomer": {
+        "table": "OrderLines",
+        "field": "OrderCustomer",
+        "kind": "lookup",
+        "rule": "order line的“order customer”——取自所关联的“order ID”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Orders",
+            "field": "Customer",
+            "label": "customer"
+          },
+          {
+            "table": "OrderLines",
+            "field": "OrderId",
+            "label": "order ID"
+          },
+          {
+            "table": "Orders",
+            "field": "OrdersId",
+            "label": "orders ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“order ID”的customer"
+      },
+      "OrderLines.LineTotal": {
+        "table": "OrderLines",
+        "field": "LineTotal",
+        "kind": "formula",
+        "rule": "order line的“line total”按 quantity乘FCS unit price 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OrderLines",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "OrderLines",
+            "field": "FCSUnitPrice",
+            "label": "FCS unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity乘FCS unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Users": [
+        "user**必须**具有email且role。"
+      ],
+      "Customers": [
+        "customer**必须**具有email。"
+      ],
+      "Orders": [
+        "order**必须**具有order number、order date、customer,且total。"
+      ],
+      "Payments": [
+        "payment**必须**具有payment number、order ID、payment date、amount,且method。"
+      ],
+      "JetModels": [
+        "jet model**必须**具有model code、manufacturer,且generation。"
+      ],
+      "FlightControlSystems": [
+        "flight control system**必须**具有FCS code、jet model ID、architecture、redundancy channels,且unit price。"
+      ],
+      "OrderLines": [
+        "order line**必须**具有line number、order ID、FCS ID,且quantity。"
+      ]
+    },
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "Users": "user",

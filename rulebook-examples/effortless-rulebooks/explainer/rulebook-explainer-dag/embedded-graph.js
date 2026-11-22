@@ -1037,7 +1037,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {},
@@ -1077,6 +1092,771 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "ProjectMetadata": "project metadata",
+      "ExecutionSubstrates": "execution substrate",
+      "OrchestrationComponents": "orchestration component",
+      "AirtableIntegration": "airtable integration",
+      "TestingFramework": "testing framework",
+      "RulebookDomains": "rulebook domain",
+      "CoreDataFlows": "core data flow",
+      "ProjectConfiguration": "project configuration",
+      "Dependencies": "dependency"
+    }
+  },
+  "ar": {
+    "fields": {},
+    "obligations": [],
+    "structural": {
+      "ProjectMetadata": [
+        "في كل سجل «project metadata»، **يجب أن** تُحدّد قيمة حقل «name» وحقل «purpose»."
+      ],
+      "ExecutionSubstrates": [
+        "في كل سجل «execution substrate»، **يجب أن** تُحدّد قيمة حقل «name»، وحقل «technology»، وحقل «relative path»، وحقل «injector script»، وأن يُسجّل ما إذا كان مصنّفًا على أنه «production»."
+      ],
+      "OrchestrationComponents": [
+        "في كل سجل «orchestration component»، **يجب أن** تُحدّد قيمة حقل «name»، وحقل «file path»، وحقل «language»، وحقل «purpose»."
+      ],
+      "AirtableIntegration": [
+        "في كل سجل «airtable integration»، **يجب أن** تُحدّد قيمة حقل «name»، وحقل «purpose»، وحقل «role»."
+      ],
+      "TestingFramework": [
+        "في كل سجل «testing framework»، **يجب أن** تُحدّد قيمة حقل «name»، وحقل «file path»، وحقل «purpose»."
+      ],
+      "RulebookDomains": [
+        "في كل سجل «rulebook domain»، **يجب أن** تُحدّد قيمة حقل «domain name»، وحقل «relative path»، وحقل «rulebook path»."
+      ],
+      "CoreDataFlows": [
+        "في كل سجل «core data flow»، **يجب أن** تُحدّد قيمة حقل «name» وحقل «steps»."
+      ],
+      "ProjectConfiguration": [
+        "في كل سجل «project configuration»، **يجب أن** تُحدّد قيمة حقل «file name»، وحقل «file path»، وحقل «format»، وحقل «purpose»."
+      ],
+      "Dependencies": [
+        "في كل سجل «dependency»، **يجب أن** تُحدّد قيمة حقل «name»، وحقل «type»، وحقل «purpose»، وأن يُسجّل ما إذا كان موسومًا بعلامة «required»."
+      ]
+    },
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "ProjectMetadata": "project metadata",
+      "ExecutionSubstrates": "execution substrate",
+      "OrchestrationComponents": "orchestration component",
+      "AirtableIntegration": "airtable integration",
+      "TestingFramework": "testing framework",
+      "RulebookDomains": "rulebook domain",
+      "CoreDataFlows": "core data flow",
+      "ProjectConfiguration": "project configuration",
+      "Dependencies": "dependency"
+    }
+  },
+  "de": {
+    "fields": {},
+    "obligations": [],
+    "structural": {
+      "ProjectMetadata": [
+        "Ein Project Metadata **muss** eine Name und eine Purpose haben."
+      ],
+      "ExecutionSubstrates": [
+        "Eine Execution Substrate **muss** eine Name; ein Technology; ein Relative Path; und ein Injector Script haben und erfassen, ob es ist eine Production."
+      ],
+      "OrchestrationComponents": [
+        "Ein Orchestration Component **muss** eine Name; ein File Path; eine Language; und eine Purpose haben."
+      ],
+      "AirtableIntegration": [
+        "Eine Airtable Integration **muss** eine Name; eine Purpose; und eine Role haben."
+      ],
+      "TestingFramework": [
+        "Ein Testing Framework **muss** eine Name; ein File Path; und eine Purpose haben."
+      ],
+      "RulebookDomains": [
+        "Ein Rulebook Domain **muss** eine Domain Name; ein Relative Path; und ein Rulebook Path haben."
+      ],
+      "CoreDataFlows": [
+        "Ein Core Data Flow **muss** eine Name und ein Steps haben."
+      ],
+      "ProjectConfiguration": [
+        "Eine Project Configuration **muss** eine File Name; ein File Path; ein Format; und eine Purpose haben."
+      ],
+      "Dependencies": [
+        "Ein Dependency **muss** eine Name; eine Type; und eine Purpose haben und erfassen, ob es ist Required."
+      ]
+    },
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "ProjectMetadata": "Project Metadata",
+      "ExecutionSubstrates": "Execution Substrate",
+      "OrchestrationComponents": "Orchestration Component",
+      "AirtableIntegration": "Airtable Integration",
+      "TestingFramework": "Testing Framework",
+      "RulebookDomains": "Rulebook Domain",
+      "CoreDataFlows": "Core Data Flow",
+      "ProjectConfiguration": "Project Configuration",
+      "Dependencies": "Dependency"
+    }
+  },
+  "es": {
+    "fields": {},
+    "obligations": [],
+    "structural": {
+      "ProjectMetadata": [
+        "Una project metadata **debe** tener un name y un purpose."
+      ],
+      "ExecutionSubstrates": [
+        "Un execution substrate **debe** tener un name; un technology; un relative path; y un injector script, y registrar si es un production."
+      ],
+      "OrchestrationComponents": [
+        "Un orchestration component **debe** tener un name; un file path; un language; y un purpose."
+      ],
+      "AirtableIntegration": [
+        "Un airtable integration **debe** tener un name; un purpose; y un role."
+      ],
+      "TestingFramework": [
+        "Un testing framework **debe** tener un name; un file path; y un purpose."
+      ],
+      "RulebookDomains": [
+        "Un rulebook domain **debe** tener un domain name; un relative path; y un rulebook path."
+      ],
+      "CoreDataFlows": [
+        "Un core data flow **debe** tener un name y un steps."
+      ],
+      "ProjectConfiguration": [
+        "Un project configuration **debe** tener un file name; un file path; un format; y un purpose."
+      ],
+      "Dependencies": [
+        "Un dependency **debe** tener un name; un type; y un purpose, y registrar si es required."
+      ]
+    },
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "ProjectMetadata": "project metadata",
+      "ExecutionSubstrates": "execution substrate",
+      "OrchestrationComponents": "orchestration component",
+      "AirtableIntegration": "airtable integration",
+      "TestingFramework": "testing framework",
+      "RulebookDomains": "rulebook domain",
+      "CoreDataFlows": "core data flow",
+      "ProjectConfiguration": "project configuration",
+      "Dependencies": "dependency"
+    }
+  },
+  "fr": {
+    "fields": {},
+    "obligations": [],
+    "structural": {
+      "ProjectMetadata": [
+        "Un project metadata **doit** avoir un name et un purpose."
+      ],
+      "ExecutionSubstrates": [
+        "Un execution substrate **doit** avoir un name; un technology; un relative path; et un injector script, et consigner si il est une production."
+      ],
+      "OrchestrationComponents": [
+        "Un orchestration component **doit** avoir un name; un file path; un language; et un purpose."
+      ],
+      "AirtableIntegration": [
+        "Une airtable integration **doit** avoir un name; un purpose; et un role."
+      ],
+      "TestingFramework": [
+        "Un testing framework **doit** avoir un name; un file path; et un purpose."
+      ],
+      "RulebookDomains": [
+        "Un rulebook domain **doit** avoir un domain name; un relative path; et un rulebook path."
+      ],
+      "CoreDataFlows": [
+        "Un core data flow **doit** avoir un name et un steps."
+      ],
+      "ProjectConfiguration": [
+        "Une project configuration **doit** avoir un file name; un file path; un format; et un purpose."
+      ],
+      "Dependencies": [
+        "Un dependency **doit** avoir un name; un type; et un purpose, et consigner si il est required."
+      ]
+    },
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "ProjectMetadata": "project metadata",
+      "ExecutionSubstrates": "execution substrate",
+      "OrchestrationComponents": "orchestration component",
+      "AirtableIntegration": "airtable integration",
+      "TestingFramework": "testing framework",
+      "RulebookDomains": "rulebook domain",
+      "CoreDataFlows": "core data flow",
+      "ProjectConfiguration": "project configuration",
+      "Dependencies": "dependency"
+    }
+  },
+  "hi": {
+    "fields": {},
+    "obligations": [],
+    "structural": {
+      "ProjectMetadata": [
+        "project metadata को name और purpose रखना **अनिवार्य** है।"
+      ],
+      "ExecutionSubstrates": [
+        "execution substrate को name, technology, relative path और injector script रखना, तथा यह कि वह “production” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ],
+      "OrchestrationComponents": [
+        "orchestration component को name, file path, language और purpose रखना **अनिवार्य** है।"
+      ],
+      "AirtableIntegration": [
+        "airtable integration को name, purpose और role रखना **अनिवार्य** है।"
+      ],
+      "TestingFramework": [
+        "testing framework को name, file path और purpose रखना **अनिवार्य** है।"
+      ],
+      "RulebookDomains": [
+        "rulebook domain को domain name, relative path और rulebook path रखना **अनिवार्य** है।"
+      ],
+      "CoreDataFlows": [
+        "core data flow को name और steps रखना **अनिवार्य** है।"
+      ],
+      "ProjectConfiguration": [
+        "project configuration को file name, file path, format और purpose रखना **अनिवार्य** है।"
+      ],
+      "Dependencies": [
+        "dependency को name, type और purpose रखना, तथा यह कि वह “required” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ]
+    },
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "ProjectMetadata": "project metadata",
+      "ExecutionSubstrates": "execution substrate",
+      "OrchestrationComponents": "orchestration component",
+      "AirtableIntegration": "airtable integration",
+      "TestingFramework": "testing framework",
+      "RulebookDomains": "rulebook domain",
+      "CoreDataFlows": "core data flow",
+      "ProjectConfiguration": "project configuration",
+      "Dependencies": "dependency"
+    }
+  },
+  "id": {
+    "fields": {},
+    "obligations": [],
+    "structural": {
+      "ProjectMetadata": [
+        "Setiap project metadata **harus** memiliki name dan purpose."
+      ],
+      "ExecutionSubstrates": [
+        "Setiap execution substrate **harus** memiliki name, technology, relative path, dan injector script, serta menyatakan apakah tergolong “production”."
+      ],
+      "OrchestrationComponents": [
+        "Setiap orchestration component **harus** memiliki name, file path, language, dan purpose."
+      ],
+      "AirtableIntegration": [
+        "Setiap airtable integration **harus** memiliki name, purpose, dan role."
+      ],
+      "TestingFramework": [
+        "Setiap testing framework **harus** memiliki name, file path, dan purpose."
+      ],
+      "RulebookDomains": [
+        "Setiap rulebook domain **harus** memiliki domain name, relative path, dan rulebook path."
+      ],
+      "CoreDataFlows": [
+        "Setiap core data flow **harus** memiliki name dan steps."
+      ],
+      "ProjectConfiguration": [
+        "Setiap project configuration **harus** memiliki file name, file path, format, dan purpose."
+      ],
+      "Dependencies": [
+        "Setiap dependency **harus** memiliki name, type, dan purpose, serta menyatakan apakah tergolong “required”."
+      ]
+    },
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "ProjectMetadata": "project metadata",
+      "ExecutionSubstrates": "execution substrate",
+      "OrchestrationComponents": "orchestration component",
+      "AirtableIntegration": "airtable integration",
+      "TestingFramework": "testing framework",
+      "RulebookDomains": "rulebook domain",
+      "CoreDataFlows": "core data flow",
+      "ProjectConfiguration": "project configuration",
+      "Dependencies": "dependency"
+    }
+  },
+  "it": {
+    "fields": {},
+    "obligations": [],
+    "structural": {
+      "ProjectMetadata": [
+        "Una project metadata **deve** avere un name e un purpose."
+      ],
+      "ExecutionSubstrates": [
+        "Un execution substrate **deve** avere un name; un technology; un relative path; e un injector script, e registrare se è un production."
+      ],
+      "OrchestrationComponents": [
+        "Un orchestration component **deve** avere un name; un file path; un language; e un purpose."
+      ],
+      "AirtableIntegration": [
+        "Un airtable integration **deve** avere un name; un purpose; e un role."
+      ],
+      "TestingFramework": [
+        "Un testing framework **deve** avere un name; un file path; e un purpose."
+      ],
+      "RulebookDomains": [
+        "Un rulebook domain **deve** avere un domain name; un relative path; e un rulebook path."
+      ],
+      "CoreDataFlows": [
+        "Un core data flow **deve** avere un name e un steps."
+      ],
+      "ProjectConfiguration": [
+        "Un project configuration **deve** avere un file name; un file path; un format; e un purpose."
+      ],
+      "Dependencies": [
+        "Un dependency **deve** avere un name; un type; e un purpose, e registrare se è required."
+      ]
+    },
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "ProjectMetadata": "project metadata",
+      "ExecutionSubstrates": "execution substrate",
+      "OrchestrationComponents": "orchestration component",
+      "AirtableIntegration": "airtable integration",
+      "TestingFramework": "testing framework",
+      "RulebookDomains": "rulebook domain",
+      "CoreDataFlows": "core data flow",
+      "ProjectConfiguration": "project configuration",
+      "Dependencies": "dependency"
+    }
+  },
+  "ja": {
+    "fields": {},
+    "obligations": [],
+    "structural": {
+      "ProjectMetadata": [
+        "project metadataは nameおよびpurpose を持た**なければなりません**。"
+      ],
+      "ExecutionSubstrates": [
+        "execution substrateは name、technology、relative path、およびinjector script を持た、かつ 「Production」であるかどうかを記録し**なければなりません**。"
+      ],
+      "OrchestrationComponents": [
+        "orchestration componentは name、file path、language、およびpurpose を持た**なければなりません**。"
+      ],
+      "AirtableIntegration": [
+        "airtable integrationは name、purpose、およびrole を持た**なければなりません**。"
+      ],
+      "TestingFramework": [
+        "testing frameworkは name、file path、およびpurpose を持た**なければなりません**。"
+      ],
+      "RulebookDomains": [
+        "rulebook domainは domain name、relative path、およびrulebook path を持た**なければなりません**。"
+      ],
+      "CoreDataFlows": [
+        "core data flowは nameおよびsteps を持た**なければなりません**。"
+      ],
+      "ProjectConfiguration": [
+        "project configurationは file name、file path、format、およびpurpose を持た**なければなりません**。"
+      ],
+      "Dependencies": [
+        "dependencyは name、type、およびpurpose を持た、かつ 「Required」であるかどうかを記録し**なければなりません**。"
+      ]
+    },
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "ProjectMetadata": "project metadata",
+      "ExecutionSubstrates": "execution substrate",
+      "OrchestrationComponents": "orchestration component",
+      "AirtableIntegration": "airtable integration",
+      "TestingFramework": "testing framework",
+      "RulebookDomains": "rulebook domain",
+      "CoreDataFlows": "core data flow",
+      "ProjectConfiguration": "project configuration",
+      "Dependencies": "dependency"
+    }
+  },
+  "ko": {
+    "fields": {},
+    "obligations": [],
+    "structural": {
+      "ProjectMetadata": [
+        "‘project metadata’ 레코드는 ‘name’ 및 ‘purpose’ 값을 포함**해야 합니다**."
+      ],
+      "ExecutionSubstrates": [
+        "‘execution substrate’ 레코드는 ‘name’, ‘technology’, ‘relative path’ 및 ‘injector script’ 값을 포함하고, 해당 레코드가 ‘production’에 해당하는지 여부를 기록**해야 합니다**."
+      ],
+      "OrchestrationComponents": [
+        "‘orchestration component’ 레코드는 ‘name’, ‘file path’, ‘language’ 및 ‘purpose’ 값을 포함**해야 합니다**."
+      ],
+      "AirtableIntegration": [
+        "‘airtable integration’ 레코드는 ‘name’, ‘purpose’ 및 ‘role’ 값을 포함**해야 합니다**."
+      ],
+      "TestingFramework": [
+        "‘testing framework’ 레코드는 ‘name’, ‘file path’ 및 ‘purpose’ 값을 포함**해야 합니다**."
+      ],
+      "RulebookDomains": [
+        "‘rulebook domain’ 레코드는 ‘domain name’, ‘relative path’ 및 ‘rulebook path’ 값을 포함**해야 합니다**."
+      ],
+      "CoreDataFlows": [
+        "‘core data flow’ 레코드는 ‘name’ 및 ‘steps’ 값을 포함**해야 합니다**."
+      ],
+      "ProjectConfiguration": [
+        "‘project configuration’ 레코드는 ‘file name’, ‘file path’, ‘format’ 및 ‘purpose’ 값을 포함**해야 합니다**."
+      ],
+      "Dependencies": [
+        "‘dependency’ 레코드는 ‘name’, ‘type’ 및 ‘purpose’ 값을 포함하고, 해당 레코드가 ‘required’에 해당하는지 여부를 기록**해야 합니다**."
+      ]
+    },
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "ProjectMetadata": "project metadata",
+      "ExecutionSubstrates": "execution substrate",
+      "OrchestrationComponents": "orchestration component",
+      "AirtableIntegration": "airtable integration",
+      "TestingFramework": "testing framework",
+      "RulebookDomains": "rulebook domain",
+      "CoreDataFlows": "core data flow",
+      "ProjectConfiguration": "project configuration",
+      "Dependencies": "dependency"
+    }
+  },
+  "nl": {
+    "fields": {},
+    "obligations": [],
+    "structural": {
+      "ProjectMetadata": [
+        "Een project metadata **moet** een name en een purpose hebben."
+      ],
+      "ExecutionSubstrates": [
+        "Een execution substrate **moet** een name; een technology; een relative path; en een injector script hebben, en vastleggen of het is een production."
+      ],
+      "OrchestrationComponents": [
+        "Een orchestration component **moet** een name; een file path; een language; en een purpose hebben."
+      ],
+      "AirtableIntegration": [
+        "Een airtable integration **moet** een name; een purpose; en een role hebben."
+      ],
+      "TestingFramework": [
+        "Een testing framework **moet** een name; een file path; en een purpose hebben."
+      ],
+      "RulebookDomains": [
+        "Een rulebook domain **moet** een domain name; een relative path; en een rulebook path hebben."
+      ],
+      "CoreDataFlows": [
+        "Een core data flow **moet** een name en een steps hebben."
+      ],
+      "ProjectConfiguration": [
+        "Een project configuration **moet** een file name; een file path; een format; en een purpose hebben."
+      ],
+      "Dependencies": [
+        "Een dependency **moet** een name; een type; en een purpose hebben, en vastleggen of het is required."
+      ]
+    },
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "ProjectMetadata": "project metadata",
+      "ExecutionSubstrates": "execution substrate",
+      "OrchestrationComponents": "orchestration component",
+      "AirtableIntegration": "airtable integration",
+      "TestingFramework": "testing framework",
+      "RulebookDomains": "rulebook domain",
+      "CoreDataFlows": "core data flow",
+      "ProjectConfiguration": "project configuration",
+      "Dependencies": "dependency"
+    }
+  },
+  "pt": {
+    "fields": {},
+    "obligations": [],
+    "structural": {
+      "ProjectMetadata": [
+        "Uma project metadata **deve** ter um name e um purpose."
+      ],
+      "ExecutionSubstrates": [
+        "Um execution substrate **deve** ter um name; um technology; um relative path; e um injector script, e registrar se é um production."
+      ],
+      "OrchestrationComponents": [
+        "Um orchestration component **deve** ter um name; um file path; um language; e um purpose."
+      ],
+      "AirtableIntegration": [
+        "Um airtable integration **deve** ter um name; um purpose; e um role."
+      ],
+      "TestingFramework": [
+        "Um testing framework **deve** ter um name; um file path; e um purpose."
+      ],
+      "RulebookDomains": [
+        "Um rulebook domain **deve** ter um domain name; um relative path; e um rulebook path."
+      ],
+      "CoreDataFlows": [
+        "Um core data flow **deve** ter um name e um steps."
+      ],
+      "ProjectConfiguration": [
+        "Um project configuration **deve** ter um file name; um file path; um format; e um purpose."
+      ],
+      "Dependencies": [
+        "Um dependency **deve** ter um name; um type; e um purpose, e registrar se é required."
+      ]
+    },
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "ProjectMetadata": "project metadata",
+      "ExecutionSubstrates": "execution substrate",
+      "OrchestrationComponents": "orchestration component",
+      "AirtableIntegration": "airtable integration",
+      "TestingFramework": "testing framework",
+      "RulebookDomains": "rulebook domain",
+      "CoreDataFlows": "core data flow",
+      "ProjectConfiguration": "project configuration",
+      "Dependencies": "dependency"
+    }
+  },
+  "ru": {
+    "fields": {},
+    "obligations": [],
+    "structural": {
+      "ProjectMetadata": [
+        "Project metadata **обязан** иметь name и purpose."
+      ],
+      "ExecutionSubstrates": [
+        "Execution substrate **обязан** иметь name; technology; relative path; и injector script, а также фиксировать то, он является «production» ли."
+      ],
+      "OrchestrationComponents": [
+        "Orchestration component **обязан** иметь name; file path; language; и purpose."
+      ],
+      "AirtableIntegration": [
+        "Airtable integration **обязан** иметь name; purpose; и role."
+      ],
+      "TestingFramework": [
+        "Testing framework **обязан** иметь name; file path; и purpose."
+      ],
+      "RulebookDomains": [
+        "Rulebook domain **обязан** иметь domain name; relative path; и rulebook path."
+      ],
+      "CoreDataFlows": [
+        "Core data flow **обязан** иметь name и steps."
+      ],
+      "ProjectConfiguration": [
+        "Project configuration **обязан** иметь file name; file path; format; и purpose."
+      ],
+      "Dependencies": [
+        "Dependency **обязан** иметь name; type; и purpose, а также фиксировать то, он является «required» ли."
+      ]
+    },
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "ProjectMetadata": "project metadata",
+      "ExecutionSubstrates": "execution substrate",
+      "OrchestrationComponents": "orchestration component",
+      "AirtableIntegration": "airtable integration",
+      "TestingFramework": "testing framework",
+      "RulebookDomains": "rulebook domain",
+      "CoreDataFlows": "core data flow",
+      "ProjectConfiguration": "project configuration",
+      "Dependencies": "dependency"
+    }
+  },
+  "tr": {
+    "fields": {},
+    "obligations": [],
+    "structural": {
+      "ProjectMetadata": [
+        "“project metadata” kaydı, “name” alanı ve “purpose” alanı dolu olmak **zorundadır**."
+      ],
+      "ExecutionSubstrates": [
+        "“execution substrate” kaydı, “name” alanı, “technology” alanı, “relative path” alanı ve “injector script” alanı dolu olmak, ayrıca “production” olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ],
+      "OrchestrationComponents": [
+        "“orchestration component” kaydı, “name” alanı, “file path” alanı, “language” alanı ve “purpose” alanı dolu olmak **zorundadır**."
+      ],
+      "AirtableIntegration": [
+        "“airtable integration” kaydı, “name” alanı, “purpose” alanı ve “role” alanı dolu olmak **zorundadır**."
+      ],
+      "TestingFramework": [
+        "“testing framework” kaydı, “name” alanı, “file path” alanı ve “purpose” alanı dolu olmak **zorundadır**."
+      ],
+      "RulebookDomains": [
+        "“rulebook domain” kaydı, “domain name” alanı, “relative path” alanı ve “rulebook path” alanı dolu olmak **zorundadır**."
+      ],
+      "CoreDataFlows": [
+        "“core data flow” kaydı, “name” alanı ve “steps” alanı dolu olmak **zorundadır**."
+      ],
+      "ProjectConfiguration": [
+        "“project configuration” kaydı, “file name” alanı, “file path” alanı, “format” alanı ve “purpose” alanı dolu olmak **zorundadır**."
+      ],
+      "Dependencies": [
+        "“dependency” kaydı, “name” alanı, “type” alanı ve “purpose” alanı dolu olmak, ayrıca “required” olarak işaretli olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ]
+    },
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "ProjectMetadata": "project metadata",
+      "ExecutionSubstrates": "execution substrate",
+      "OrchestrationComponents": "orchestration component",
+      "AirtableIntegration": "airtable integration",
+      "TestingFramework": "testing framework",
+      "RulebookDomains": "rulebook domain",
+      "CoreDataFlows": "core data flow",
+      "ProjectConfiguration": "project configuration",
+      "Dependencies": "dependency"
+    }
+  },
+  "vi": {
+    "fields": {},
+    "obligations": [],
+    "structural": {
+      "ProjectMetadata": [
+        "Mỗi project metadata **phải** có name và purpose."
+      ],
+      "ExecutionSubstrates": [
+        "Mỗi execution substrate **phải** có name, technology, relative path và injector script, đồng thời được ghi nhận rõ là “production” hay không."
+      ],
+      "OrchestrationComponents": [
+        "Mỗi orchestration component **phải** có name, file path, language và purpose."
+      ],
+      "AirtableIntegration": [
+        "Mỗi airtable integration **phải** có name, purpose và role."
+      ],
+      "TestingFramework": [
+        "Mỗi testing framework **phải** có name, file path và purpose."
+      ],
+      "RulebookDomains": [
+        "Mỗi rulebook domain **phải** có domain name, relative path và rulebook path."
+      ],
+      "CoreDataFlows": [
+        "Mỗi core data flow **phải** có name và steps."
+      ],
+      "ProjectConfiguration": [
+        "Mỗi project configuration **phải** có file name, file path, format và purpose."
+      ],
+      "Dependencies": [
+        "Mỗi dependency **phải** có name, type và purpose, đồng thời được ghi nhận rõ là “required” hay không."
+      ]
+    },
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "ProjectMetadata": "project metadata",
+      "ExecutionSubstrates": "execution substrate",
+      "OrchestrationComponents": "orchestration component",
+      "AirtableIntegration": "airtable integration",
+      "TestingFramework": "testing framework",
+      "RulebookDomains": "rulebook domain",
+      "CoreDataFlows": "core data flow",
+      "ProjectConfiguration": "project configuration",
+      "Dependencies": "dependency"
+    }
+  },
+  "zh": {
+    "fields": {},
+    "obligations": [],
+    "structural": {
+      "ProjectMetadata": [
+        "project metadata**必须**具有name且purpose。"
+      ],
+      "ExecutionSubstrates": [
+        "execution substrate**必须**具有name、technology、relative path,且injector script,并记录其是“Production”与否。"
+      ],
+      "OrchestrationComponents": [
+        "orchestration component**必须**具有name、file path、language,且purpose。"
+      ],
+      "AirtableIntegration": [
+        "airtable integration**必须**具有name、purpose,且role。"
+      ],
+      "TestingFramework": [
+        "testing framework**必须**具有name、file path,且purpose。"
+      ],
+      "RulebookDomains": [
+        "rulebook domain**必须**具有domain name、relative path,且rulebook path。"
+      ],
+      "CoreDataFlows": [
+        "core data flow**必须**具有name且steps。"
+      ],
+      "ProjectConfiguration": [
+        "project configuration**必须**具有file name、file path、format,且purpose。"
+      ],
+      "Dependencies": [
+        "dependency**必须**具有name、type,且purpose,并记录其是“Required”与否。"
+      ]
+    },
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "ProjectMetadata": "project metadata",

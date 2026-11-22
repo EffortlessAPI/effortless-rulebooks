@@ -9743,10112 +9743,10168 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       { "BalanceId": "corpus-balance" }
     ]
   }
-}, rulespeakFields: {
-  "Loops.Name": {
-    "table": "Loops",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A loop's name is the same as its loop ID.",
-    "mechanical": false,
-    "refs": [
-      {
+}, languages: [
+  "en"
+], rulespeakByLang: {
+  "en": {
+    "fields": {
+      "Loops.Name": {
         "table": "Loops",
-        "field": "LoopId",
-        "label": "loop ID"
-      }
-    ],
-    "structure": null
-  },
-  "Loops.TraditionName": {
-    "table": "Loops",
-    "field": "TraditionName",
-    "kind": "lookup",
-    "rule": "A loop's tradition name is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[Name]).",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A loop's name is the same as its loop ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loops",
+            "field": "LoopId",
+            "label": "loop ID"
+          }
+        ],
+        "structure": null
+      },
+      "Loops.TraditionName": {
         "table": "Loops",
-        "field": "TraditionId",
-        "label": "tradition ID"
-      }
-    ],
-    "structure": null
-  },
-  "Loops.TraditionCoreConern": {
-    "table": "Loops",
-    "field": "TraditionCoreConern",
-    "kind": "lookup",
-    "rule": "A loop's tradition core conern is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[CoreConcern]).",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "TraditionName",
+        "kind": "lookup",
+        "rule": "A loop's tradition name is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loops",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          }
+        ],
+        "structure": null
+      },
+      "Loops.TraditionCoreConern": {
         "table": "Loops",
-        "field": "TraditionId",
-        "label": "tradition ID"
-      }
-    ],
-    "structure": null
-  },
-  "Loops.CommitShort": {
-    "table": "Loops",
-    "field": "CommitShort",
-    "kind": "formula",
-    "rule": "A loop's commit short is computed as the first 7 character(s) of the commit hash.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "TraditionCoreConern",
+        "kind": "lookup",
+        "rule": "A loop's tradition core conern is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[CoreConcern]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loops",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          }
+        ],
+        "structure": null
+      },
+      "Loops.CommitShort": {
         "table": "Loops",
-        "field": "CommitHash",
-        "label": "commit hash"
-      }
-    ],
-    "structure": null
-  },
-  "Studies.Name": {
-    "table": "Studies",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A study's name is the same as its study ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "Studies.TotalCases": {
-    "table": "Studies",
-    "field": "TotalCases",
-    "kind": "rollup",
-    "rule": "A study's total cases is the total cases across the case cells related to the study.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Cases",
-        "label": "cases"
+        "field": "CommitShort",
+        "kind": "formula",
+        "rule": "A loop's commit short is computed as the first 7 character(s) of the commit hash.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loops",
+            "field": "CommitHash",
+            "label": "commit hash"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
+      "Studies.Name": {
+        "table": "Studies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A study's name is the same as its study ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "Studies.TotalCases": {
         "table": "Studies",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "Studies.CellCount": {
-    "table": "Studies",
-    "field": "CellCount",
-    "kind": "rollup",
-    "rule": "A study's cell count is the number of case cells related to the study.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
+        "field": "TotalCases",
+        "kind": "rollup",
+        "rule": "A study's total cases is the total cases across the case cells related to the study.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Cases",
+            "label": "cases"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "Studies",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "Studies",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "Studies.TraditionName": {
-    "table": "Studies",
-    "field": "TraditionName",
-    "kind": "lookup",
-    "rule": "A study's tradition name is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[Name]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "TraditionId",
-        "label": "tradition ID"
-      }
-    ],
-    "structure": null
-  },
-  "Studies.TraditionCoreConern": {
-    "table": "Studies",
-    "field": "TraditionCoreConern",
-    "kind": "lookup",
-    "rule": "A study's tradition core conern is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[CoreConcern]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "TraditionId",
-        "label": "tradition ID"
-      }
-    ],
-    "structure": null
-  },
-  "Studies.PrimaryResearcherName": {
-    "table": "Studies",
-    "field": "PrimaryResearcherName",
-    "kind": "lookup",
-    "rule": "A study's primary researcher name is the value of LOOKUP(PrimaryResearcherId, Researchers[ResearcherId], Researchers[Name]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "PrimaryResearcherId",
-        "label": "primary researcher ID"
-      }
-    ],
-    "structure": null
-  },
-  "Studies.PrimaryResearcherAffiliation": {
-    "table": "Studies",
-    "field": "PrimaryResearcherAffiliation",
-    "kind": "lookup",
-    "rule": "A study's primary researcher affiliation is the value of LOOKUP(PrimaryResearcherId, Researchers[ResearcherId], Researchers[Affiliation]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "PrimaryResearcherId",
-        "label": "primary researcher ID"
-      }
-    ],
-    "structure": null
-  },
-  "Studies.DistortionType": {
-    "table": "Studies",
-    "field": "DistortionType",
-    "kind": "lookup",
-    "rule": "A study's distortion type is the value of LOOKUP(StudyId, TreatmentRankings[Study], TreatmentRankings[DistortionType]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "Studies.PolicyImplication": {
-    "table": "Studies",
-    "field": "PolicyImplication",
-    "kind": "lookup",
-    "rule": "A study's policy implication is the value of LOOKUP(StudyId, TreatmentRankings[Study], TreatmentRankings[CorrectedPolicyImplication]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "Studies.AllocationDistortion": {
-    "table": "Studies",
-    "field": "AllocationDistortion",
-    "kind": "lookup",
-    "rule": "A study's allocation distortion is the value of LOOKUP(StudyId, TreatmentRankings[Study], TreatmentRankings[AllocationDistortion]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "Studies.SignalPurity": {
-    "table": "Studies",
-    "field": "SignalPurity",
-    "kind": "lookup",
-    "rule": "A study's signal purity is the value of LOOKUP(StudyId, TreatmentRankings[Study], TreatmentRankings[SignalPurity]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "Studies.IsSignFlip": {
-    "table": "Studies",
-    "field": "IsSignFlip",
-    "kind": "lookup",
-    "rule": "A study's is sign flip is the value of LOOKUP(StudyId, TreatmentRankings[Study], TreatmentRankings[IsSignFlip]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "Studies.CorrectedWinner": {
-    "table": "Studies",
-    "field": "CorrectedWinner",
-    "kind": "lookup",
-    "rule": "A study's corrected winner is the value of LOOKUP(StudyId, TreatmentRankings[Study], TreatmentRankings[CorrectedWinner]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "Studies.ConfoundingVariable": {
-    "table": "Studies",
-    "field": "ConfoundingVariable",
-    "kind": "lookup",
-    "rule": "A study's confounding variable is the value of LOOKUP(StudyId, StratumVariables[Study], StratumVariables[VariableName]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "Studies.CausalRole": {
-    "table": "Studies",
-    "field": "CausalRole",
-    "kind": "lookup",
-    "rule": "A study's causal role is the value of LOOKUP(StudyId, StratumVariables[Study], StratumVariables[CausalRole]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "Studies.IngestionCellParity": {
-    "table": "Studies",
-    "field": "IngestionCellParity",
-    "kind": "formula",
-    "rule": "A study is flagged ingestion cell parity if the value of AND(LOOKUP(StudyId, TreatmentRankings[Study], TreatmentRankings[StratumCount]) >= 2, CellCount = LOOKUP(StudyId, TreatmentRankings[Study], TreatmentRankings[StratumCount]) * 2).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "StudyId",
-        "label": "study ID"
-      },
-      {
+      "Studies.CellCount": {
         "table": "Studies",
         "field": "CellCount",
-        "label": "cell count"
-      }
-    ],
-    "structure": null
-  },
-  "Studies.IngestionCompliance": {
-    "table": "Studies",
-    "field": "IngestionCompliance",
-    "kind": "formula",
-    "rule": "A study's ingestion compliance is computed as the value of IF(IsSynthetic, \"exempt-synthetic\", IF(AND(IngestionCellParity, LOOKUP(StudyId, StratumVariables[Study], StratumVariables[VariableName]) <> \"\"), \"all\", \"partial\")).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "IsSynthetic",
-        "label": "is synthetic"
+        "kind": "rollup",
+        "rule": "A study's cell count is the number of case cells related to the study.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "Studies",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "Studies.TraditionName": {
+        "table": "Studies",
+        "field": "TraditionName",
+        "kind": "lookup",
+        "rule": "A study's tradition name is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          }
+        ],
+        "structure": null
+      },
+      "Studies.TraditionCoreConern": {
+        "table": "Studies",
+        "field": "TraditionCoreConern",
+        "kind": "lookup",
+        "rule": "A study's tradition core conern is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[CoreConcern]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          }
+        ],
+        "structure": null
+      },
+      "Studies.PrimaryResearcherName": {
+        "table": "Studies",
+        "field": "PrimaryResearcherName",
+        "kind": "lookup",
+        "rule": "A study's primary researcher name is the value of LOOKUP(PrimaryResearcherId, Researchers[ResearcherId], Researchers[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "PrimaryResearcherId",
+            "label": "primary researcher ID"
+          }
+        ],
+        "structure": null
+      },
+      "Studies.PrimaryResearcherAffiliation": {
+        "table": "Studies",
+        "field": "PrimaryResearcherAffiliation",
+        "kind": "lookup",
+        "rule": "A study's primary researcher affiliation is the value of LOOKUP(PrimaryResearcherId, Researchers[ResearcherId], Researchers[Affiliation]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "PrimaryResearcherId",
+            "label": "primary researcher ID"
+          }
+        ],
+        "structure": null
+      },
+      "Studies.DistortionType": {
+        "table": "Studies",
+        "field": "DistortionType",
+        "kind": "lookup",
+        "rule": "A study's distortion type is the value of LOOKUP(StudyId, TreatmentRankings[Study], TreatmentRankings[DistortionType]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
+      },
+      "Studies.PolicyImplication": {
+        "table": "Studies",
+        "field": "PolicyImplication",
+        "kind": "lookup",
+        "rule": "A study's policy implication is the value of LOOKUP(StudyId, TreatmentRankings[Study], TreatmentRankings[CorrectedPolicyImplication]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
+      },
+      "Studies.AllocationDistortion": {
+        "table": "Studies",
+        "field": "AllocationDistortion",
+        "kind": "lookup",
+        "rule": "A study's allocation distortion is the value of LOOKUP(StudyId, TreatmentRankings[Study], TreatmentRankings[AllocationDistortion]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
+      },
+      "Studies.SignalPurity": {
+        "table": "Studies",
+        "field": "SignalPurity",
+        "kind": "lookup",
+        "rule": "A study's signal purity is the value of LOOKUP(StudyId, TreatmentRankings[Study], TreatmentRankings[SignalPurity]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
+      },
+      "Studies.IsSignFlip": {
+        "table": "Studies",
+        "field": "IsSignFlip",
+        "kind": "lookup",
+        "rule": "A study's is sign flip is the value of LOOKUP(StudyId, TreatmentRankings[Study], TreatmentRankings[IsSignFlip]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
+      },
+      "Studies.CorrectedWinner": {
+        "table": "Studies",
+        "field": "CorrectedWinner",
+        "kind": "lookup",
+        "rule": "A study's corrected winner is the value of LOOKUP(StudyId, TreatmentRankings[Study], TreatmentRankings[CorrectedWinner]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
+      },
+      "Studies.ConfoundingVariable": {
+        "table": "Studies",
+        "field": "ConfoundingVariable",
+        "kind": "lookup",
+        "rule": "A study's confounding variable is the value of LOOKUP(StudyId, StratumVariables[Study], StratumVariables[VariableName]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
+      },
+      "Studies.CausalRole": {
+        "table": "Studies",
+        "field": "CausalRole",
+        "kind": "lookup",
+        "rule": "A study's causal role is the value of LOOKUP(StudyId, StratumVariables[Study], StratumVariables[CausalRole]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
+      },
+      "Studies.IngestionCellParity": {
         "table": "Studies",
         "field": "IngestionCellParity",
-        "label": "ingestion cell parity"
-      },
-      {
-        "table": "Studies",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "Studies.ValidTimeMidpoint": {
-    "table": "Studies",
-    "field": "ValidTimeMidpoint",
-    "kind": "formula",
-    "rule": "The study's valid time midpoint is determined by the following priority:\n1. the valid time start plus the valid time end divided by 2, if all of the following hold: the valid time start has a value and the valid time end has a value;\n2. in all other cases, the publication year.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "ValidTimeStart",
-        "label": "valid time start"
-      },
-      {
-        "table": "Studies",
-        "field": "ValidTimeEnd",
-        "label": "valid time end"
-      },
-      {
-        "table": "Studies",
-        "field": "PublicationYear",
-        "label": "publication year"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The study's valid time midpoint is determined by the following priority:",
-      "cases": [
-        {
-          "value": "the valid time start plus the valid time end divided by 2",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the valid time start has a value"
-              },
-              {
-                "kind": "leaf",
-                "text": "the valid time end has a value"
-              }
-            ]
+        "kind": "formula",
+        "rule": "A study is flagged ingestion cell parity if the value of AND(LOOKUP(StudyId, TreatmentRankings[Study], TreatmentRankings[StratumCount]) >= 2, CellCount = LOOKUP(StudyId, TreatmentRankings[Study], TreatmentRankings[StratumCount]) * 2).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "StudyId",
+            "label": "study ID"
+          },
+          {
+            "table": "Studies",
+            "field": "CellCount",
+            "label": "cell count"
           }
-        },
-        {
-          "value": "the publication year",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "Studies.ValidTimeDecade": {
-    "table": "Studies",
-    "field": "ValidTimeDecade",
-    "kind": "formula",
-    "rule": "The study's valid time decade is determined by the following priority:\n1. an empty string, if the valid time midpoint is blank;\n2. in all other cases, the valid time midpoint divided by 10 rounded down to a whole number times 10.",
-    "mechanical": false,
-    "refs": [
-      {
+        ],
+        "structure": null
+      },
+      "Studies.IngestionCompliance": {
+        "table": "Studies",
+        "field": "IngestionCompliance",
+        "kind": "formula",
+        "rule": "A study's ingestion compliance is computed as the value of IF(IsSynthetic, \"exempt-synthetic\", IF(AND(IngestionCellParity, LOOKUP(StudyId, StratumVariables[Study], StratumVariables[VariableName]) <> \"\"), \"all\", \"partial\")).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "IsSynthetic",
+            "label": "is synthetic"
+          },
+          {
+            "table": "Studies",
+            "field": "IngestionCellParity",
+            "label": "ingestion cell parity"
+          },
+          {
+            "table": "Studies",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
+      },
+      "Studies.ValidTimeMidpoint": {
         "table": "Studies",
         "field": "ValidTimeMidpoint",
-        "label": "valid time midpoint"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The study's valid time decade is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the valid time midpoint is blank"
+        "kind": "formula",
+        "rule": "The study's valid time midpoint is determined by the following priority:\n1. the valid time start plus the valid time end divided by 2, if all of the following hold: the valid time start has a value and the valid time end has a value;\n2. in all other cases, the publication year.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "ValidTimeStart",
+            "label": "valid time start"
+          },
+          {
+            "table": "Studies",
+            "field": "ValidTimeEnd",
+            "label": "valid time end"
+          },
+          {
+            "table": "Studies",
+            "field": "PublicationYear",
+            "label": "publication year"
           }
-        },
-        {
-          "value": "the valid time midpoint divided by 10 rounded down to a whole number times 10",
-          "when": null
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The study's valid time midpoint is determined by the following priority:",
+          "cases": [
+            {
+              "value": "the valid time start plus the valid time end divided by 2",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the valid time start has a value"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the valid time end has a value"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "the publication year",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "Treatments.Name": {
-    "table": "Treatments",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A treatment's name is the same as its treatment ID.",
-    "mechanical": false,
-    "refs": [
-      {
+      },
+      "Studies.ValidTimeDecade": {
+        "table": "Studies",
+        "field": "ValidTimeDecade",
+        "kind": "formula",
+        "rule": "The study's valid time decade is determined by the following priority:\n1. an empty string, if the valid time midpoint is blank;\n2. in all other cases, the valid time midpoint divided by 10 rounded down to a whole number times 10.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "ValidTimeMidpoint",
+            "label": "valid time midpoint"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The study's valid time decade is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the valid time midpoint is blank"
+              }
+            },
+            {
+              "value": "the valid time midpoint divided by 10 rounded down to a whole number times 10",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "Treatments.Name": {
         "table": "Treatments",
-        "field": "TreatmentId",
-        "label": "treatment ID"
-      }
-    ],
-    "structure": null
-  },
-  "Treatments.TotalCases": {
-    "table": "Treatments",
-    "field": "TotalCases",
-    "kind": "rollup",
-    "rule": "A treatment's total cases is the total cases across the case cells related to the treatment.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Cases",
-        "label": "cases"
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A treatment's name is the same as its treatment ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Treatments",
+            "field": "TreatmentId",
+            "label": "treatment ID"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "Treatments",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "CaseCells",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      },
-      {
-        "table": "Treatments",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      }
-    ],
-    "structure": null
-  },
-  "Treatments.TotalSuccesses": {
-    "table": "Treatments",
-    "field": "TotalSuccesses",
-    "kind": "rollup",
-    "rule": "A treatment's total successes is the total successes across the case cells related to the treatment.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Successes",
-        "label": "successes"
-      },
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "Treatments",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "CaseCells",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      },
-      {
-        "table": "Treatments",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      }
-    ],
-    "structure": null
-  },
-  "Treatments.PooledSuccessRate": {
-    "table": "Treatments",
-    "field": "PooledSuccessRate",
-    "kind": "formula",
-    "rule": "The treatment's pooled success rate is determined by the following priority:\n1. an empty string, if the total cases is 0;\n2. in all other cases, the total successes divided by the total cases.",
-    "mechanical": false,
-    "refs": [
-      {
+      "Treatments.TotalCases": {
         "table": "Treatments",
         "field": "TotalCases",
-        "label": "total cases"
+        "kind": "rollup",
+        "rule": "A treatment's total cases is the total cases across the case cells related to the treatment.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Cases",
+            "label": "cases"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "Treatments",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "CaseCells",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          },
+          {
+            "table": "Treatments",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          }
+        ],
+        "structure": null
       },
-      {
+      "Treatments.TotalSuccesses": {
         "table": "Treatments",
         "field": "TotalSuccesses",
-        "label": "total successes"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment's pooled success rate is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the total cases is 0"
+        "kind": "rollup",
+        "rule": "A treatment's total successes is the total successes across the case cells related to the treatment.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Successes",
+            "label": "successes"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "Treatments",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "CaseCells",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          },
+          {
+            "table": "Treatments",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
           }
-        },
-        {
-          "value": "the total successes divided by the total cases",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "Strata.Name": {
-    "table": "Strata",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A strata's name is the same as its stratum ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Strata",
-        "field": "StratumId",
-        "label": "stratum ID"
-      }
-    ],
-    "structure": null
-  },
-  "Strata.TotalCases": {
-    "table": "Strata",
-    "field": "TotalCases",
-    "kind": "rollup",
-    "rule": "A strata's total cases is the total cases across the case cells related to the strata.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Cases",
-        "label": "cases"
+        ],
+        "structure": null
       },
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "Strata",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "CaseCells",
-        "field": "StratumLabel",
-        "label": "stratum label"
-      },
-      {
-        "table": "Strata",
-        "field": "StratumLabel",
-        "label": "stratum label"
-      }
-    ],
-    "structure": null
-  },
-  "CaseCells.Name": {
-    "table": "CaseCells",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A case cell's name is the same as its case cell ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "CaseCellId",
-        "label": "case cell ID"
-      }
-    ],
-    "structure": null
-  },
-  "CaseCells.CellSuccessRate": {
-    "table": "CaseCells",
-    "field": "CellSuccessRate",
-    "kind": "formula",
-    "rule": "The case cell's cell success rate is determined by the following priority:\n1. 0, if the cases is 0;\n2. in all other cases, the successes divided by the cases.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Cases",
-        "label": "cases"
-      },
-      {
-        "table": "CaseCells",
-        "field": "Successes",
-        "label": "successes"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The case cell's cell success rate is determined by the following priority:",
-      "cases": [
-        {
-          "value": "0",
-          "when": {
-            "kind": "leaf",
-            "text": "the cases is 0"
+      "Treatments.PooledSuccessRate": {
+        "table": "Treatments",
+        "field": "PooledSuccessRate",
+        "kind": "formula",
+        "rule": "The treatment's pooled success rate is determined by the following priority:\n1. an empty string, if the total cases is 0;\n2. in all other cases, the total successes divided by the total cases.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Treatments",
+            "field": "TotalCases",
+            "label": "total cases"
+          },
+          {
+            "table": "Treatments",
+            "field": "TotalSuccesses",
+            "label": "total successes"
           }
-        },
-        {
-          "value": "the successes divided by the cases",
-          "when": null
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment's pooled success rate is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the total cases is 0"
+              }
+            },
+            {
+              "value": "the total successes divided by the total cases",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "CaseCells.TotalCasesForTreatment": {
-    "table": "CaseCells",
-    "field": "TotalCasesForTreatment",
-    "kind": "rollup",
-    "rule": "A case cell's total cases for treatment is the total cases across the case cells related to the case cell.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Cases",
-        "label": "cases"
       },
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
+      "Strata.Name": {
+        "table": "Strata",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A strata's name is the same as its stratum ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Strata",
+            "field": "StratumId",
+            "label": "stratum ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "Strata.TotalCases": {
+        "table": "Strata",
+        "field": "TotalCases",
+        "kind": "rollup",
+        "rule": "A strata's total cases is the total cases across the case cells related to the strata.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Cases",
+            "label": "cases"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "Strata",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "CaseCells",
+            "field": "StratumLabel",
+            "label": "stratum label"
+          },
+          {
+            "table": "Strata",
+            "field": "StratumLabel",
+            "label": "stratum label"
+          }
+        ],
+        "structure": null
+      },
+      "CaseCells.Name": {
         "table": "CaseCells",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      }
-    ],
-    "structure": null
-  },
-  "CaseCells.TreatmentExposureFraction": {
-    "table": "CaseCells",
-    "field": "TreatmentExposureFraction",
-    "kind": "formula",
-    "rule": "The case cell's treatment exposure fraction is determined by the following priority:\n1. an empty string, if the total cases for treatment is 0;\n2. in all other cases, the cases divided by the total cases for treatment.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A case cell's name is the same as its case cell ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "CaseCellId",
+            "label": "case cell ID"
+          }
+        ],
+        "structure": null
+      },
+      "CaseCells.CellSuccessRate": {
+        "table": "CaseCells",
+        "field": "CellSuccessRate",
+        "kind": "formula",
+        "rule": "The case cell's cell success rate is determined by the following priority:\n1. 0, if the cases is 0;\n2. in all other cases, the successes divided by the cases.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Cases",
+            "label": "cases"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Successes",
+            "label": "successes"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The case cell's cell success rate is determined by the following priority:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "the cases is 0"
+              }
+            },
+            {
+              "value": "the successes divided by the cases",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CaseCells.TotalCasesForTreatment": {
         "table": "CaseCells",
         "field": "TotalCasesForTreatment",
-        "label": "total cases for treatment"
-      },
-      {
-        "table": "CaseCells",
-        "field": "Cases",
-        "label": "cases"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The case cell's treatment exposure fraction is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the total cases for treatment is 0"
+        "kind": "rollup",
+        "rule": "A case cell's total cases for treatment is the total cases across the case cells related to the case cell.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Cases",
+            "label": "cases"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "CaseCells",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
           }
-        },
-        {
-          "value": "the cases divided by the total cases for treatment",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CaseCells.IsValidIngestionCell": {
-    "table": "CaseCells",
-    "field": "IsValidIngestionCell",
-    "kind": "formula",
-    "rule": "A case cell is considered a valid ingestion cell if all of the following hold: the cases is at least 0; the successes is at least 0; and the successes is at most the cases.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Cases",
-        "label": "cases"
+        ],
+        "structure": null
       },
-      {
+      "CaseCells.TreatmentExposureFraction": {
         "table": "CaseCells",
-        "field": "Successes",
-        "label": "successes"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "A case cell is considered a valid ingestion cell if all of the following:",
-      "cases": [],
-      "children": [
-        {
-          "kind": "all",
+        "field": "TreatmentExposureFraction",
+        "kind": "formula",
+        "rule": "The case cell's treatment exposure fraction is determined by the following priority:\n1. an empty string, if the total cases for treatment is 0;\n2. in all other cases, the cases divided by the total cases for treatment.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "TotalCasesForTreatment",
+            "label": "total cases for treatment"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Cases",
+            "label": "cases"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The case cell's treatment exposure fraction is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the total cases for treatment is 0"
+              }
+            },
+            {
+              "value": "the cases divided by the total cases for treatment",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CaseCells.IsValidIngestionCell": {
+        "table": "CaseCells",
+        "field": "IsValidIngestionCell",
+        "kind": "formula",
+        "rule": "A case cell is considered a valid ingestion cell if all of the following hold: the cases is at least 0; the successes is at least 0; and the successes is at most the cases.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Cases",
+            "label": "cases"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Successes",
+            "label": "successes"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "A case cell is considered a valid ingestion cell if all of the following:",
+          "cases": [],
           "children": [
             {
-              "kind": "leaf",
-              "text": "the cases is at least 0"
-            },
-            {
-              "kind": "leaf",
-              "text": "the successes is at least 0"
-            },
-            {
-              "kind": "leaf",
-              "text": "the successes is at most the cases"
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "the cases is at least 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the successes is at least 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the successes is at most the cases"
+                }
+              ]
             }
           ]
         }
-      ]
-    }
-  },
-  "StratumSummaries.Name": {
-    "table": "StratumSummaries",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A stratum summary's name is the same as its stratum summary ID.",
-    "mechanical": false,
-    "refs": [
-      {
+      },
+      "StratumSummaries.Name": {
         "table": "StratumSummaries",
-        "field": "StratumSummaryId",
-        "label": "stratum summary ID"
-      }
-    ],
-    "structure": null
-  },
-  "StratumSummaries.StratumSuccesses": {
-    "table": "StratumSummaries",
-    "field": "StratumSuccesses",
-    "kind": "rollup",
-    "rule": "A stratum summary's stratum successes is the total successes across the case cells related to the stratum summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Successes",
-        "label": "successes"
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A stratum summary's name is the same as its stratum summary ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "StratumSummaryId",
+            "label": "stratum summary ID"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "CaseCells",
-        "field": "StratumLabel",
-        "label": "stratum label"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "StratumLabel",
-        "label": "stratum label"
-      },
-      {
-        "table": "CaseCells",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      }
-    ],
-    "structure": null
-  },
-  "StratumSummaries.StratumCases": {
-    "table": "StratumSummaries",
-    "field": "StratumCases",
-    "kind": "rollup",
-    "rule": "A stratum summary's stratum cases is the total cases across the case cells related to the stratum summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Cases",
-        "label": "cases"
-      },
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "CaseCells",
-        "field": "StratumLabel",
-        "label": "stratum label"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "StratumLabel",
-        "label": "stratum label"
-      },
-      {
-        "table": "CaseCells",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      }
-    ],
-    "structure": null
-  },
-  "StratumSummaries.StratumSuccessRate": {
-    "table": "StratumSummaries",
-    "field": "StratumSuccessRate",
-    "kind": "formula",
-    "rule": "The stratum summary's stratum success rate is determined by the following priority:\n1. an empty string, if the stratum cases is 0;\n2. in all other cases, the stratum successes divided by the stratum cases.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumSummaries",
-        "field": "StratumCases",
-        "label": "stratum cases"
-      },
-      {
+      "StratumSummaries.StratumSuccesses": {
         "table": "StratumSummaries",
         "field": "StratumSuccesses",
-        "label": "stratum successes"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The stratum summary's stratum success rate is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the stratum cases is 0"
+        "kind": "rollup",
+        "rule": "A stratum summary's stratum successes is the total successes across the case cells related to the stratum summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Successes",
+            "label": "successes"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "CaseCells",
+            "field": "StratumLabel",
+            "label": "stratum label"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "StratumLabel",
+            "label": "stratum label"
+          },
+          {
+            "table": "CaseCells",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
           }
-        },
-        {
-          "value": "the stratum successes divided by the stratum cases",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "StratumSummaries.StratumSuccessesA": {
-    "table": "StratumSummaries",
-    "field": "StratumSuccessesA",
-    "kind": "rollup",
-    "rule": "A stratum summary's stratum successes a is the total successes across the case cells related to the stratum summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Successes",
-        "label": "successes"
+        ],
+        "structure": null
       },
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
-      },
-      {
+      "StratumSummaries.StratumCases": {
         "table": "StratumSummaries",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "CaseCells",
-        "field": "StratumLabel",
-        "label": "stratum label"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "StratumLabel",
-        "label": "stratum label"
-      },
-      {
-        "table": "CaseCells",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      }
-    ],
-    "structure": null
-  },
-  "StratumSummaries.StratumCasesA": {
-    "table": "StratumSummaries",
-    "field": "StratumCasesA",
-    "kind": "rollup",
-    "rule": "A stratum summary's stratum cases a is the total cases across the case cells related to the stratum summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Cases",
-        "label": "cases"
-      },
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "CaseCells",
-        "field": "StratumLabel",
-        "label": "stratum label"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "StratumLabel",
-        "label": "stratum label"
-      },
-      {
-        "table": "CaseCells",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      }
-    ],
-    "structure": null
-  },
-  "StratumSummaries.StratumRateA": {
-    "table": "StratumSummaries",
-    "field": "StratumRateA",
-    "kind": "formula",
-    "rule": "The stratum summary's stratum rate a is determined by the following priority:\n1. an empty string, if the stratum cases a is 0;\n2. in all other cases, the stratum successes a divided by the stratum cases a.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumSummaries",
-        "field": "StratumCasesA",
-        "label": "stratum cases a"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "StratumSuccessesA",
-        "label": "stratum successes a"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The stratum summary's stratum rate a is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the stratum cases a is 0"
+        "field": "StratumCases",
+        "kind": "rollup",
+        "rule": "A stratum summary's stratum cases is the total cases across the case cells related to the stratum summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Cases",
+            "label": "cases"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "CaseCells",
+            "field": "StratumLabel",
+            "label": "stratum label"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "StratumLabel",
+            "label": "stratum label"
+          },
+          {
+            "table": "CaseCells",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
           }
-        },
-        {
-          "value": "the stratum successes a divided by the stratum cases a",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "StratumSummaries.StratumSuccessesB": {
-    "table": "StratumSummaries",
-    "field": "StratumSuccessesB",
-    "kind": "rollup",
-    "rule": "A stratum summary's stratum successes b is the total successes across the case cells related to the stratum summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Successes",
-        "label": "successes"
+        ],
+        "structure": null
       },
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "CaseCells",
-        "field": "StratumLabel",
-        "label": "stratum label"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "StratumLabel",
-        "label": "stratum label"
-      },
-      {
-        "table": "CaseCells",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      }
-    ],
-    "structure": null
-  },
-  "StratumSummaries.StratumCasesB": {
-    "table": "StratumSummaries",
-    "field": "StratumCasesB",
-    "kind": "rollup",
-    "rule": "A stratum summary's stratum cases b is the total cases across the case cells related to the stratum summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Cases",
-        "label": "cases"
-      },
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "CaseCells",
-        "field": "StratumLabel",
-        "label": "stratum label"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "StratumLabel",
-        "label": "stratum label"
-      },
-      {
-        "table": "CaseCells",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      }
-    ],
-    "structure": null
-  },
-  "StratumSummaries.StratumRateB": {
-    "table": "StratumSummaries",
-    "field": "StratumRateB",
-    "kind": "formula",
-    "rule": "The stratum summary's stratum rate b is determined by the following priority:\n1. an empty string, if the stratum cases b is 0;\n2. in all other cases, the stratum successes b divided by the stratum cases b.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumSummaries",
-        "field": "StratumCasesB",
-        "label": "stratum cases b"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "StratumSuccessesB",
-        "label": "stratum successes b"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The stratum summary's stratum rate b is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the stratum cases b is 0"
-          }
-        },
-        {
-          "value": "the stratum successes b divided by the stratum cases b",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "StratumSummaries.StratumWinner": {
-    "table": "StratumSummaries",
-    "field": "StratumWinner",
-    "kind": "formula",
-    "rule": "The stratum summary's stratum winner is determined by the following priority:\n1. “A”, if the stratum rate a is greater than the stratum rate b;\n2. in all other cases, “B”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumSummaries",
-        "field": "StratumRateA",
-        "label": "stratum rate a"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "StratumRateB",
-        "label": "stratum rate b"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The stratum summary's stratum winner is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“A”",
-          "when": {
-            "kind": "leaf",
-            "text": "the stratum rate a is greater than the stratum rate b"
-          }
-        },
-        {
-          "value": "“B”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "StratumSummaries.StudyTotalCases": {
-    "table": "StratumSummaries",
-    "field": "StudyTotalCases",
-    "kind": "rollup",
-    "rule": "A stratum summary's study total cases is the total cases across the case cells related to the stratum summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Cases",
-        "label": "cases"
-      },
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "Study",
-        "label": "study"
-      }
-    ],
-    "structure": null
-  },
-  "StratumSummaries.StratumTotalCases": {
-    "table": "StratumSummaries",
-    "field": "StratumTotalCases",
-    "kind": "rollup",
-    "rule": "A stratum summary's stratum total cases is the total cases across the case cells related to the stratum summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Cases",
-        "label": "cases"
-      },
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "CaseCells",
-        "field": "StratumLabel",
-        "label": "stratum label"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "StratumLabel",
-        "label": "stratum label"
-      }
-    ],
-    "structure": null
-  },
-  "StratumSummaries.StratumFraction": {
-    "table": "StratumSummaries",
-    "field": "StratumFraction",
-    "kind": "formula",
-    "rule": "The stratum summary's stratum fraction is determined by the following priority:\n1. an empty string, if the study total cases is 0;\n2. in all other cases, the stratum total cases divided by the study total cases.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumSummaries",
-        "field": "StudyTotalCases",
-        "label": "study total cases"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "StratumTotalCases",
-        "label": "stratum total cases"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The stratum summary's stratum fraction is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the study total cases is 0"
-          }
-        },
-        {
-          "value": "the stratum total cases divided by the study total cases",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "StratumSummaries.WeightedStratumRate": {
-    "table": "StratumSummaries",
-    "field": "WeightedStratumRate",
-    "kind": "formula",
-    "rule": "The stratum summary's weighted stratum rate is determined by the following priority:\n1. an empty string, if the stratum fraction is blank;\n2. in all other cases, the stratum fraction times the stratum success rate.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumSummaries",
-        "field": "StratumFraction",
-        "label": "stratum fraction"
-      },
-      {
+      "StratumSummaries.StratumSuccessRate": {
         "table": "StratumSummaries",
         "field": "StratumSuccessRate",
-        "label": "stratum success rate"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The stratum summary's weighted stratum rate is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the stratum fraction is blank"
+        "kind": "formula",
+        "rule": "The stratum summary's stratum success rate is determined by the following priority:\n1. an empty string, if the stratum cases is 0;\n2. in all other cases, the stratum successes divided by the stratum cases.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "StratumCases",
+            "label": "stratum cases"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "StratumSuccesses",
+            "label": "stratum successes"
           }
-        },
-        {
-          "value": "the stratum fraction times the stratum success rate",
-          "when": null
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The stratum summary's stratum success rate is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the stratum cases is 0"
+              }
+            },
+            {
+              "value": "the stratum successes divided by the stratum cases",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "StratumSummaries.TreatmentACasesHere": {
-    "table": "StratumSummaries",
-    "field": "TreatmentACasesHere",
-    "kind": "rollup",
-    "rule": "A stratum summary's treatment a cases here is the total cases across the case cells related to the stratum summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Cases",
-        "label": "cases"
       },
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
-      },
-      {
+      "StratumSummaries.StratumSuccessesA": {
         "table": "StratumSummaries",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "CaseCells",
-        "field": "StratumLabel",
-        "label": "stratum label"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "StratumLabel",
-        "label": "stratum label"
-      },
-      {
-        "table": "CaseCells",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      }
-    ],
-    "structure": null
-  },
-  "StratumSummaries.TreatmentBCasesHere": {
-    "table": "StratumSummaries",
-    "field": "TreatmentBCasesHere",
-    "kind": "rollup",
-    "rule": "A stratum summary's treatment b cases here is the total cases across the case cells related to the stratum summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Cases",
-        "label": "cases"
-      },
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "CaseCells",
-        "field": "StratumLabel",
-        "label": "stratum label"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "StratumLabel",
-        "label": "stratum label"
-      },
-      {
-        "table": "CaseCells",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      }
-    ],
-    "structure": null
-  },
-  "StratumSummaries.TreatmentATotalCases": {
-    "table": "StratumSummaries",
-    "field": "TreatmentATotalCases",
-    "kind": "rollup",
-    "rule": "A stratum summary's treatment a total cases is the total cases across the stratum summary's case cells that have a treatment label of “A”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Cases",
-        "label": "cases"
-      },
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "CaseCells",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      }
-    ],
-    "structure": null
-  },
-  "StratumSummaries.TreatmentBTotalCases": {
-    "table": "StratumSummaries",
-    "field": "TreatmentBTotalCases",
-    "kind": "rollup",
-    "rule": "A stratum summary's treatment b total cases is the total cases across the stratum summary's case cells that have a treatment label of “B”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Cases",
-        "label": "cases"
-      },
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "CaseCells",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      }
-    ],
-    "structure": null
-  },
-  "StratumSummaries.AllocationFractionA": {
-    "table": "StratumSummaries",
-    "field": "AllocationFractionA",
-    "kind": "formula",
-    "rule": "The stratum summary's allocation fraction a is determined by the following priority:\n1. an empty string, if the treatment a total cases is 0;\n2. in all other cases, the treatment a cases here divided by the treatment a total cases.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumSummaries",
-        "field": "TreatmentATotalCases",
-        "label": "treatment a total cases"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "TreatmentACasesHere",
-        "label": "treatment a cases here"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The stratum summary's allocation fraction a is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the treatment a total cases is 0"
+        "field": "StratumSuccessesA",
+        "kind": "rollup",
+        "rule": "A stratum summary's stratum successes a is the total successes across the case cells related to the stratum summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Successes",
+            "label": "successes"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "CaseCells",
+            "field": "StratumLabel",
+            "label": "stratum label"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "StratumLabel",
+            "label": "stratum label"
+          },
+          {
+            "table": "CaseCells",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
           }
-        },
-        {
-          "value": "the treatment a cases here divided by the treatment a total cases",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "StratumSummaries.AllocationFractionB": {
-    "table": "StratumSummaries",
-    "field": "AllocationFractionB",
-    "kind": "formula",
-    "rule": "The stratum summary's allocation fraction b is determined by the following priority:\n1. an empty string, if the treatment b total cases is 0;\n2. in all other cases, the treatment b cases here divided by the treatment b total cases.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumSummaries",
-        "field": "TreatmentBTotalCases",
-        "label": "treatment b total cases"
+        ],
+        "structure": null
       },
-      {
+      "StratumSummaries.StratumCasesA": {
         "table": "StratumSummaries",
-        "field": "TreatmentBCasesHere",
-        "label": "treatment b cases here"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The stratum summary's allocation fraction b is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the treatment b total cases is 0"
+        "field": "StratumCasesA",
+        "kind": "rollup",
+        "rule": "A stratum summary's stratum cases a is the total cases across the case cells related to the stratum summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Cases",
+            "label": "cases"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "CaseCells",
+            "field": "StratumLabel",
+            "label": "stratum label"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "StratumLabel",
+            "label": "stratum label"
+          },
+          {
+            "table": "CaseCells",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
           }
-        },
-        {
-          "value": "the treatment b cases here divided by the treatment b total cases",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "StratumSummaries.AllocationBias": {
-    "table": "StratumSummaries",
-    "field": "AllocationBias",
-    "kind": "formula",
-    "rule": "The stratum summary's allocation bias is determined by the following priority:\n1. an empty string, if the allocation fraction a is blank;\n2. in all other cases, the allocation fraction a minus the allocation fraction b.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumSummaries",
-        "field": "AllocationFractionA",
-        "label": "allocation fraction a"
+        ],
+        "structure": null
       },
-      {
-        "table": "StratumSummaries",
-        "field": "AllocationFractionB",
-        "label": "allocation fraction b"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The stratum summary's allocation bias is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the allocation fraction a is blank"
-          }
-        },
-        {
-          "value": "the allocation fraction a minus the allocation fraction b",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "StratumSummaries.StratumGap": {
-    "table": "StratumSummaries",
-    "field": "StratumGap",
-    "kind": "formula",
-    "rule": "The stratum summary's stratum gap is determined by the following priority:\n1. an empty string, if the stratum rate a is blank;\n2. in all other cases, the stratum rate a minus the stratum rate b.",
-    "mechanical": false,
-    "refs": [
-      {
+      "StratumSummaries.StratumRateA": {
         "table": "StratumSummaries",
         "field": "StratumRateA",
-        "label": "stratum rate a"
+        "kind": "formula",
+        "rule": "The stratum summary's stratum rate a is determined by the following priority:\n1. an empty string, if the stratum cases a is 0;\n2. in all other cases, the stratum successes a divided by the stratum cases a.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "StratumCasesA",
+            "label": "stratum cases a"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "StratumSuccessesA",
+            "label": "stratum successes a"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The stratum summary's stratum rate a is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the stratum cases a is 0"
+              }
+            },
+            {
+              "value": "the stratum successes a divided by the stratum cases a",
+              "when": null
+            }
+          ],
+          "children": null
+        }
       },
-      {
+      "StratumSummaries.StratumSuccessesB": {
+        "table": "StratumSummaries",
+        "field": "StratumSuccessesB",
+        "kind": "rollup",
+        "rule": "A stratum summary's stratum successes b is the total successes across the case cells related to the stratum summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Successes",
+            "label": "successes"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "CaseCells",
+            "field": "StratumLabel",
+            "label": "stratum label"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "StratumLabel",
+            "label": "stratum label"
+          },
+          {
+            "table": "CaseCells",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          }
+        ],
+        "structure": null
+      },
+      "StratumSummaries.StratumCasesB": {
+        "table": "StratumSummaries",
+        "field": "StratumCasesB",
+        "kind": "rollup",
+        "rule": "A stratum summary's stratum cases b is the total cases across the case cells related to the stratum summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Cases",
+            "label": "cases"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "CaseCells",
+            "field": "StratumLabel",
+            "label": "stratum label"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "StratumLabel",
+            "label": "stratum label"
+          },
+          {
+            "table": "CaseCells",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          }
+        ],
+        "structure": null
+      },
+      "StratumSummaries.StratumRateB": {
         "table": "StratumSummaries",
         "field": "StratumRateB",
-        "label": "stratum rate b"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The stratum summary's stratum gap is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the stratum rate a is blank"
+        "kind": "formula",
+        "rule": "The stratum summary's stratum rate b is determined by the following priority:\n1. an empty string, if the stratum cases b is 0;\n2. in all other cases, the stratum successes b divided by the stratum cases b.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "StratumCasesB",
+            "label": "stratum cases b"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "StratumSuccessesB",
+            "label": "stratum successes b"
           }
-        },
-        {
-          "value": "the stratum rate a minus the stratum rate b",
-          "when": null
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The stratum summary's stratum rate b is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the stratum cases b is 0"
+              }
+            },
+            {
+              "value": "the stratum successes b divided by the stratum cases b",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "StratumSummaries.WeightedStratumGap": {
-    "table": "StratumSummaries",
-    "field": "WeightedStratumGap",
-    "kind": "formula",
-    "rule": "The stratum summary's weighted stratum gap is determined by the following priority:\n1. an empty string, if the stratum gap is blank;\n2. in all other cases, the stratum gap times the stratum fraction.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumSummaries",
-        "field": "StratumGap",
-        "label": "stratum gap"
       },
-      {
+      "StratumSummaries.StratumWinner": {
+        "table": "StratumSummaries",
+        "field": "StratumWinner",
+        "kind": "formula",
+        "rule": "The stratum summary's stratum winner is determined by the following priority:\n1. “A”, if the stratum rate a is greater than the stratum rate b;\n2. in all other cases, “B”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "StratumRateA",
+            "label": "stratum rate a"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "StratumRateB",
+            "label": "stratum rate b"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The stratum summary's stratum winner is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“A”",
+              "when": {
+                "kind": "leaf",
+                "text": "the stratum rate a is greater than the stratum rate b"
+              }
+            },
+            {
+              "value": "“B”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "StratumSummaries.StudyTotalCases": {
+        "table": "StratumSummaries",
+        "field": "StudyTotalCases",
+        "kind": "rollup",
+        "rule": "A stratum summary's study total cases is the total cases across the case cells related to the stratum summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Cases",
+            "label": "cases"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "Study",
+            "label": "study"
+          }
+        ],
+        "structure": null
+      },
+      "StratumSummaries.StratumTotalCases": {
+        "table": "StratumSummaries",
+        "field": "StratumTotalCases",
+        "kind": "rollup",
+        "rule": "A stratum summary's stratum total cases is the total cases across the case cells related to the stratum summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Cases",
+            "label": "cases"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "CaseCells",
+            "field": "StratumLabel",
+            "label": "stratum label"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "StratumLabel",
+            "label": "stratum label"
+          }
+        ],
+        "structure": null
+      },
+      "StratumSummaries.StratumFraction": {
         "table": "StratumSummaries",
         "field": "StratumFraction",
-        "label": "stratum fraction"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The stratum summary's weighted stratum gap is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the stratum gap is blank"
+        "kind": "formula",
+        "rule": "The stratum summary's stratum fraction is determined by the following priority:\n1. an empty string, if the study total cases is 0;\n2. in all other cases, the stratum total cases divided by the study total cases.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "StudyTotalCases",
+            "label": "study total cases"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "StratumTotalCases",
+            "label": "stratum total cases"
           }
-        },
-        {
-          "value": "the stratum gap times the stratum fraction",
-          "when": null
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The stratum summary's stratum fraction is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the study total cases is 0"
+              }
+            },
+            {
+              "value": "the stratum total cases divided by the study total cases",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "StratumSummaries.AbsAllocationBias": {
-    "table": "StratumSummaries",
-    "field": "AbsAllocationBias",
-    "kind": "formula",
-    "rule": "The stratum summary's abs allocation bias is determined by the following priority:\n1. an empty string, if the allocation bias is blank;\n2. in all other cases, the absolute value of the allocation bias.",
-    "mechanical": false,
-    "refs": [
-      {
+      },
+      "StratumSummaries.WeightedStratumRate": {
+        "table": "StratumSummaries",
+        "field": "WeightedStratumRate",
+        "kind": "formula",
+        "rule": "The stratum summary's weighted stratum rate is determined by the following priority:\n1. an empty string, if the stratum fraction is blank;\n2. in all other cases, the stratum fraction times the stratum success rate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "StratumFraction",
+            "label": "stratum fraction"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "StratumSuccessRate",
+            "label": "stratum success rate"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The stratum summary's weighted stratum rate is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the stratum fraction is blank"
+              }
+            },
+            {
+              "value": "the stratum fraction times the stratum success rate",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "StratumSummaries.TreatmentACasesHere": {
+        "table": "StratumSummaries",
+        "field": "TreatmentACasesHere",
+        "kind": "rollup",
+        "rule": "A stratum summary's treatment a cases here is the total cases across the case cells related to the stratum summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Cases",
+            "label": "cases"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "CaseCells",
+            "field": "StratumLabel",
+            "label": "stratum label"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "StratumLabel",
+            "label": "stratum label"
+          },
+          {
+            "table": "CaseCells",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          }
+        ],
+        "structure": null
+      },
+      "StratumSummaries.TreatmentBCasesHere": {
+        "table": "StratumSummaries",
+        "field": "TreatmentBCasesHere",
+        "kind": "rollup",
+        "rule": "A stratum summary's treatment b cases here is the total cases across the case cells related to the stratum summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Cases",
+            "label": "cases"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "CaseCells",
+            "field": "StratumLabel",
+            "label": "stratum label"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "StratumLabel",
+            "label": "stratum label"
+          },
+          {
+            "table": "CaseCells",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          }
+        ],
+        "structure": null
+      },
+      "StratumSummaries.TreatmentATotalCases": {
+        "table": "StratumSummaries",
+        "field": "TreatmentATotalCases",
+        "kind": "rollup",
+        "rule": "A stratum summary's treatment a total cases is the total cases across the stratum summary's case cells that have a treatment label of “A”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Cases",
+            "label": "cases"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "CaseCells",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          }
+        ],
+        "structure": null
+      },
+      "StratumSummaries.TreatmentBTotalCases": {
+        "table": "StratumSummaries",
+        "field": "TreatmentBTotalCases",
+        "kind": "rollup",
+        "rule": "A stratum summary's treatment b total cases is the total cases across the stratum summary's case cells that have a treatment label of “B”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Cases",
+            "label": "cases"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "CaseCells",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          }
+        ],
+        "structure": null
+      },
+      "StratumSummaries.AllocationFractionA": {
+        "table": "StratumSummaries",
+        "field": "AllocationFractionA",
+        "kind": "formula",
+        "rule": "The stratum summary's allocation fraction a is determined by the following priority:\n1. an empty string, if the treatment a total cases is 0;\n2. in all other cases, the treatment a cases here divided by the treatment a total cases.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "TreatmentATotalCases",
+            "label": "treatment a total cases"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "TreatmentACasesHere",
+            "label": "treatment a cases here"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The stratum summary's allocation fraction a is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the treatment a total cases is 0"
+              }
+            },
+            {
+              "value": "the treatment a cases here divided by the treatment a total cases",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "StratumSummaries.AllocationFractionB": {
+        "table": "StratumSummaries",
+        "field": "AllocationFractionB",
+        "kind": "formula",
+        "rule": "The stratum summary's allocation fraction b is determined by the following priority:\n1. an empty string, if the treatment b total cases is 0;\n2. in all other cases, the treatment b cases here divided by the treatment b total cases.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "TreatmentBTotalCases",
+            "label": "treatment b total cases"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "TreatmentBCasesHere",
+            "label": "treatment b cases here"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The stratum summary's allocation fraction b is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the treatment b total cases is 0"
+              }
+            },
+            {
+              "value": "the treatment b cases here divided by the treatment b total cases",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "StratumSummaries.AllocationBias": {
         "table": "StratumSummaries",
         "field": "AllocationBias",
-        "label": "allocation bias"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The stratum summary's abs allocation bias is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the allocation bias is blank"
+        "kind": "formula",
+        "rule": "The stratum summary's allocation bias is determined by the following priority:\n1. an empty string, if the allocation fraction a is blank;\n2. in all other cases, the allocation fraction a minus the allocation fraction b.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "AllocationFractionA",
+            "label": "allocation fraction a"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "AllocationFractionB",
+            "label": "allocation fraction b"
           }
-        },
-        {
-          "value": "the absolute value of the allocation bias",
-          "when": null
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The stratum summary's allocation bias is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the allocation fraction a is blank"
+              }
+            },
+            {
+              "value": "the allocation fraction a minus the allocation fraction b",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "StratumSummaries.AbsStratumGap": {
-    "table": "StratumSummaries",
-    "field": "AbsStratumGap",
-    "kind": "formula",
-    "rule": "The stratum summary's abs stratum gap is determined by the following priority:\n1. an empty string, if the stratum gap is blank;\n2. in all other cases, the absolute value of the stratum gap.",
-    "mechanical": false,
-    "refs": [
-      {
+      },
+      "StratumSummaries.StratumGap": {
         "table": "StratumSummaries",
         "field": "StratumGap",
-        "label": "stratum gap"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The stratum summary's abs stratum gap is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the stratum gap is blank"
+        "kind": "formula",
+        "rule": "The stratum summary's stratum gap is determined by the following priority:\n1. an empty string, if the stratum rate a is blank;\n2. in all other cases, the stratum rate a minus the stratum rate b.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "StratumRateA",
+            "label": "stratum rate a"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "StratumRateB",
+            "label": "stratum rate b"
           }
-        },
-        {
-          "value": "the absolute value of the stratum gap",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "ModelSummary.Name": {
-    "table": "ModelSummary",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A model summary's name is the same as its model summary ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ModelSummary",
-        "field": "ModelSummaryId",
-        "label": "model summary ID"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.ReversalCount": {
-    "table": "ModelSummary",
-    "field": "ReversalCount",
-    "kind": "rollup",
-    "rule": "A model summary's reversal count is the number of treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "IsReversal",
-        "label": "is reversal"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.NonReversalCount": {
-    "table": "ModelSummary",
-    "field": "NonReversalCount",
-    "kind": "rollup",
-    "rule": "A model summary's non reversal count is the number of treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "IsReversal",
-        "label": "is reversal"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.StudyCount": {
-    "table": "ModelSummary",
-    "field": "StudyCount",
-    "kind": "formula",
-    "rule": "A model summary's study count is computed as the reversal count plus the non reversal count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ModelSummary",
-        "field": "ReversalCount",
-        "label": "reversal count"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "NonReversalCount",
-        "label": "non reversal count"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.ExplainedCount": {
-    "table": "ModelSummary",
-    "field": "ExplainedCount",
-    "kind": "rollup",
-    "rule": "A model summary's explained count is the number of treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "IsParadoxExplained",
-        "label": "is paradox explained"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.TotalParadoxStrength": {
-    "table": "ModelSummary",
-    "field": "TotalParadoxStrength",
-    "kind": "rollup",
-    "rule": "A model summary's total paradox strength is the total paradox strength across the treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "ParadoxStrength",
-        "label": "paradox strength"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "TreatmentA",
-        "label": "treatment a"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.AvgParadoxStrength": {
-    "table": "ModelSummary",
-    "field": "AvgParadoxStrength",
-    "kind": "formula",
-    "rule": "The model summary's avg paradox strength is determined by the following priority:\n1. an empty string, if the study count is 0;\n2. in all other cases, the total paradox strength divided by the study count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ModelSummary",
-        "field": "StudyCount",
-        "label": "study count"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "TotalParadoxStrength",
-        "label": "total paradox strength"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The model summary's avg paradox strength is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the study count is 0"
-          }
-        },
-        {
-          "value": "the total paradox strength divided by the study count",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "ModelSummary.TypeACount": {
-    "table": "ModelSummary",
-    "field": "TypeACount",
-    "kind": "rollup",
-    "rule": "A model summary's type a count is the number of treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.DangerTierCount": {
-    "table": "ModelSummary",
-    "field": "DangerTierCount",
-    "kind": "rollup",
-    "rule": "A model summary's danger tier count is the number of treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "ScreeningTier",
-        "label": "screening tier"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.CautionTierCount": {
-    "table": "ModelSummary",
-    "field": "CautionTierCount",
-    "kind": "rollup",
-    "rule": "A model summary's caution tier count is the number of treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "ScreeningTier",
-        "label": "screening tier"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.SafeTierCount": {
-    "table": "ModelSummary",
-    "field": "SafeTierCount",
-    "kind": "rollup",
-    "rule": "A model summary's safe tier count is the number of treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "ScreeningTier",
-        "label": "screening tier"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.TypeBCount": {
-    "table": "ModelSummary",
-    "field": "TypeBCount",
-    "kind": "rollup",
-    "rule": "A model summary's type b count is the number of treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.TypeDCount": {
-    "table": "ModelSummary",
-    "field": "TypeDCount",
-    "kind": "rollup",
-    "rule": "A model summary's type d count is the number of treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.TypeCPlusCount": {
-    "table": "ModelSummary",
-    "field": "TypeCPlusCount",
-    "kind": "rollup",
-    "rule": "A model summary's type c plus count is the number of treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.TypeCMinusCount": {
-    "table": "ModelSummary",
-    "field": "TypeCMinusCount",
-    "kind": "rollup",
-    "rule": "A model summary's type c minus count is the number of treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.TypeAFraction": {
-    "table": "ModelSummary",
-    "field": "TypeAFraction",
-    "kind": "formula",
-    "rule": "The model summary's type a fraction is determined by the following priority:\n1. an empty string, if the study count is 0;\n2. in all other cases, the type a count divided by the study count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ModelSummary",
-        "field": "StudyCount",
-        "label": "study count"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "TypeACount",
-        "label": "type a count"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The model summary's type a fraction is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the study count is 0"
-          }
-        },
-        {
-          "value": "the type a count divided by the study count",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "ModelSummary.DistortionTaxonomyCoverage": {
-    "table": "ModelSummary",
-    "field": "DistortionTaxonomyCoverage",
-    "kind": "formula",
-    "rule": "A model summary's distortion taxonomy coverage is computed as “A:”, followed by the type a count, followed by “ B:”, followed by the type b count, followed by “ C+:”, followed by the c amplification count, followed by “ C-:”, followed by the c compression count, followed by “ D:”, followed by the type d count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ModelSummary",
-        "field": "TypeACount",
-        "label": "type a count"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "TypeBCount",
-        "label": "type b count"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "CAmplificationCount",
-        "label": "c amplification count"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "CCompressionCount",
-        "label": "c compression count"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "TypeDCount",
-        "label": "type d count"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.DistortionOnlyCount": {
-    "table": "ModelSummary",
-    "field": "DistortionOnlyCount",
-    "kind": "formula",
-    "rule": "A model summary's distortion only count is computed as the c amplification count plus the c compression count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ModelSummary",
-        "field": "CAmplificationCount",
-        "label": "c amplification count"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "CCompressionCount",
-        "label": "c compression count"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.CAmplificationCount": {
-    "table": "ModelSummary",
-    "field": "CAmplificationCount",
-    "kind": "rollup",
-    "rule": "A model summary's c amplification count is the number of treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.CCompressionCount": {
-    "table": "ModelSummary",
-    "field": "CCompressionCount",
-    "kind": "rollup",
-    "rule": "A model summary's c compression count is the number of treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.AvgSignalPurity": {
-    "table": "ModelSummary",
-    "field": "AvgSignalPurity",
-    "kind": "rollup",
-    "rule": "A model summary's avg signal purity is an aggregated value computed across the model summary's related records.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "SignalPurity",
-        "label": "signal purity"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "TreatmentRankingId",
-        "label": "treatment ranking ID"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.SweepCorrectedGapMax": {
-    "table": "ModelSummary",
-    "field": "SweepCorrectedGapMax",
-    "kind": "rollup",
-    "rule": "A model summary's sweep corrected gap max is the largest sweep corrected gap across the allocation sweep related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "AllocationSweep",
-        "field": "SweepCorrectedGap",
-        "label": "sweep corrected gap"
-      },
-      {
-        "table": "AllocationSweep",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.SweepCorrectedGapMin": {
-    "table": "ModelSummary",
-    "field": "SweepCorrectedGapMin",
-    "kind": "rollup",
-    "rule": "A model summary's sweep corrected gap min is the smallest sweep corrected gap across the allocation sweep related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "AllocationSweep",
-        "field": "SweepCorrectedGap",
-        "label": "sweep corrected gap"
-      },
-      {
-        "table": "AllocationSweep",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.SweepCorrectedGapRange": {
-    "table": "ModelSummary",
-    "field": "SweepCorrectedGapRange",
-    "kind": "formula",
-    "rule": "The model summary's sweep corrected gap range is determined by the following priority:\n1. an empty string, if the sweep corrected gap max is blank;\n2. in all other cases, the sweep corrected gap max minus the sweep corrected gap min.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ModelSummary",
-        "field": "SweepCorrectedGapMax",
-        "label": "sweep corrected gap max"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "SweepCorrectedGapMin",
-        "label": "sweep corrected gap min"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The model summary's sweep corrected gap range is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the sweep corrected gap max is blank"
-          }
-        },
-        {
-          "value": "the sweep corrected gap max minus the sweep corrected gap min",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "ModelSummary.SweepPooledGapRange": {
-    "table": "ModelSummary",
-    "field": "SweepPooledGapRange",
-    "kind": "rollup",
-    "rule": "A model summary's sweep pooled gap range is an aggregated value computed across the model summary's related records.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "AllocationSweep",
-        "field": "SweepPooledGap",
-        "label": "sweep pooled gap"
-      },
-      {
-        "table": "AllocationSweep",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.RealStudyCount": {
-    "table": "ModelSummary",
-    "field": "RealStudyCount",
-    "kind": "rollup",
-    "rule": "A model summary's real study count is the number of studies related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "IsSynthetic",
-        "label": "is synthetic"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.AvgSignalPurityReversal": {
-    "table": "ModelSummary",
-    "field": "AvgSignalPurityReversal",
-    "kind": "formula",
-    "rule": "A model summary's avg signal purity reversal is the average signal purity across the treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "SignalPurity",
-        "label": "signal purity"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "AllocationDirection",
-        "label": "allocation direction"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.AvgSignalPurityNonReversal": {
-    "table": "ModelSummary",
-    "field": "AvgSignalPurityNonReversal",
-    "kind": "formula",
-    "rule": "A model summary's avg signal purity non reversal is the average signal purity across the treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "SignalPurity",
-        "label": "signal purity"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "AllocationDirection",
-        "label": "allocation direction"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.SignalPurityGap": {
-    "table": "ModelSummary",
-    "field": "SignalPurityGap",
-    "kind": "formula",
-    "rule": "A model summary's signal purity gap is computed as the avg signal purity non reversal minus the avg signal purity reversal.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ModelSummary",
-        "field": "AvgSignalPurityNonReversal",
-        "label": "avg signal purity non reversal"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "AvgSignalPurityReversal",
-        "label": "avg signal purity reversal"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.MedicineStudyCount": {
-    "table": "ModelSummary",
-    "field": "MedicineStudyCount",
-    "kind": "rollup",
-    "rule": "A model summary's medicine study count is the number of the model summary's studies that are not synthetic.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "Domain",
-        "label": "domain"
-      },
-      {
-        "table": "Studies",
-        "field": "IsSynthetic",
-        "label": "is synthetic"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.EpidemiologyStudyCount": {
-    "table": "ModelSummary",
-    "field": "EpidemiologyStudyCount",
-    "kind": "rollup",
-    "rule": "A model summary's epidemiology study count is the number of the model summary's studies that are not synthetic.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "Domain",
-        "label": "domain"
-      },
-      {
-        "table": "Studies",
-        "field": "IsSynthetic",
-        "label": "is synthetic"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.OtherDomainStudyCount": {
-    "table": "ModelSummary",
-    "field": "OtherDomainStudyCount",
-    "kind": "formula",
-    "rule": "A model summary's other domain study count is computed as the real study count minus the medicine study count minus the epidemiology study count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ModelSummary",
-        "field": "RealStudyCount",
-        "label": "real study count"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "MedicineStudyCount",
-        "label": "medicine study count"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "EpidemiologyStudyCount",
-        "label": "epidemiology study count"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.DomainDiversityNote": {
-    "table": "ModelSummary",
-    "field": "DomainDiversityNote",
-    "kind": "formula",
-    "rule": "A model summary's domain diversity note is computed as “real=”, followed by the real study count, followed by “ studies; wave2=”, followed by the expansion wave2 study count, followed by “; eduLatent=”, followed by the education latent fraction times 100 rounded to 0 decimal place(s), followed by “%; sportsLatent=”, followed by the sports latent fraction times 100 rounded to 0 decimal place(s), followed by “%; econFlipRate=”, followed by the economics sign flip rate times 100 rounded to 0 decimal place(s), followed by “%”.",
-    "mechanical": true,
-    "refs": [
-      {
-        "table": "ModelSummary",
-        "field": "RealStudyCount",
-        "label": "real study count"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "ExpansionWave2StudyCount",
-        "label": "expansion wave2 study count"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "EducationLatentFraction",
-        "label": "education latent fraction"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "SportsLatentFraction",
-        "label": "sports latent fraction"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "EconomicsSignFlipRate",
-        "label": "economics sign flip rate"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.IngestionProtocolItemCount": {
-    "table": "ModelSummary",
-    "field": "IngestionProtocolItemCount",
-    "kind": "rollup",
-    "rule": "A model summary's ingestion protocol item count is the number of ingestion protocol related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IngestionProtocol",
-        "field": "ProtocolId",
-        "label": "protocol ID"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.CorpusPassesIngestionContract": {
-    "table": "ModelSummary",
-    "field": "CorpusPassesIngestionContract",
-    "kind": "lookup",
-    "rule": "A model summary's corpus passes ingestion contract is the value of LOOKUP(\"ingestion-v1\", IngestionSummary[IngestionSummaryId], IngestionSummary[IngestionContractPasses]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.IngestionWitnessNote": {
-    "table": "ModelSummary",
-    "field": "IngestionWitnessNote",
-    "kind": "lookup",
-    "rule": "A model summary's ingestion witness note is the value of LOOKUP(\"ingestion-v1\", IngestionSummary[IngestionSummaryId], IngestionSummary[IngestionWitnessNote]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.CatalogEntryCount": {
-    "table": "ModelSummary",
-    "field": "CatalogEntryCount",
-    "kind": "lookup",
-    "rule": "A model summary's catalog entry count is the value of LOOKUP(\"catalog-v1\", CorpusCatalogSummary[CatalogSummaryId], CorpusCatalogSummary[TotalCatalogEntries]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.PendingImportCount": {
-    "table": "ModelSummary",
-    "field": "PendingImportCount",
-    "kind": "lookup",
-    "rule": "A model summary's pending import count is the value of LOOKUP(\"catalog-v1\", CorpusCatalogSummary[CatalogSummaryId], CorpusCatalogSummary[CandidateCount]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.ReadyToEncodeCount": {
-    "table": "ModelSummary",
-    "field": "ReadyToEncodeCount",
-    "kind": "lookup",
-    "rule": "A model summary's ready to encode count is the value of LOOKUP(\"catalog-v1\", CorpusCatalogSummary[CatalogSummaryId], CorpusCatalogSummary[ReadyToEncodeCount]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.ImportSessionReady": {
-    "table": "ModelSummary",
-    "field": "ImportSessionReady",
-    "kind": "lookup",
-    "rule": "A model summary's import session ready is the value of LOOKUP(\"catalog-v1\", CorpusCatalogSummary[CatalogSummaryId], CorpusCatalogSummary[ImportSessionReady]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.CatalogWitnessNote": {
-    "table": "ModelSummary",
-    "field": "CatalogWitnessNote",
-    "kind": "lookup",
-    "rule": "A model summary's catalog witness note is the value of LOOKUP(\"catalog-v1\", CorpusCatalogSummary[CatalogSummaryId], CorpusCatalogSummary[CatalogWitnessNote]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.LatentTypeDCount": {
-    "table": "ModelSummary",
-    "field": "LatentTypeDCount",
-    "kind": "formula",
-    "rule": "A model summary's latent type d count is the number of treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "LatentFlipPotential",
-        "label": "latent flip potential"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.StableTypeDCount": {
-    "table": "ModelSummary",
-    "field": "StableTypeDCount",
-    "kind": "formula",
-    "rule": "A model summary's stable type d count is the number of the model summary's treatment rankings that are not latent flip potential.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "LatentFlipPotential",
-        "label": "latent flip potential"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.LatentTypeDFraction": {
-    "table": "ModelSummary",
-    "field": "LatentTypeDFraction",
-    "kind": "formula",
-    "rule": "The model summary's latent type d fraction is determined by the following priority:\n1. an empty string, if the type d count is 0;\n2. in all other cases, the latent type d count divided by the type d count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ModelSummary",
-        "field": "TypeDCount",
-        "label": "type d count"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "LatentTypeDCount",
-        "label": "latent type d count"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The model summary's latent type d fraction is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the type d count is 0"
-          }
-        },
-        {
-          "value": "the latent type d count divided by the type d count",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "ModelSummary.CrossZeroCount": {
-    "table": "ModelSummary",
-    "field": "CrossZeroCount",
-    "kind": "formula",
-    "rule": "A model summary's cross zero count is the number of treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "PooledGapCrossesZero",
-        "label": "pooled gap crosses zero"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.SignFlipSignalPurityMax": {
-    "table": "ModelSummary",
-    "field": "SignFlipSignalPurityMax",
-    "kind": "formula",
-    "rule": "A model summary's sign flip signal purity max is the largest signal purity across the treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "SignalPurity",
-        "label": "signal purity"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "IsSignFlip",
-        "label": "is sign flip"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.EconomicsSignFlipCount": {
-    "table": "ModelSummary",
-    "field": "EconomicsSignFlipCount",
-    "kind": "formula",
-    "rule": "A model summary's economics sign flip count is the number of the model summary's treatment rankings that are sign flips.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "StudyDomain",
-        "label": "study domain"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "IsSignFlip",
-        "label": "is sign flip"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.SumPooledGapLatentD": {
-    "table": "ModelSummary",
-    "field": "SumPooledGapLatentD",
-    "kind": "rollup",
-    "rule": "A model summary's sum pooled gap latent d is the total pooled gap across the treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "PooledGap",
-        "label": "pooled gap"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "LatentFlipPotential",
-        "label": "latent flip potential"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.AvgPooledGapLatentD": {
-    "table": "ModelSummary",
-    "field": "AvgPooledGapLatentD",
-    "kind": "formula",
-    "rule": "The model summary's avg pooled gap latent d is determined by the following priority:\n1. 0, if the latent type d count is 0;\n2. in all other cases, the sum pooled gap latent d divided by the latent type d count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ModelSummary",
-        "field": "LatentTypeDCount",
-        "label": "latent type d count"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "SumPooledGapLatentD",
-        "label": "sum pooled gap latent d"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The model summary's avg pooled gap latent d is determined by the following priority:",
-      "cases": [
-        {
-          "value": "0",
-          "when": {
-            "kind": "leaf",
-            "text": "the latent type d count is 0"
-          }
-        },
-        {
-          "value": "the sum pooled gap latent d divided by the latent type d count",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "ModelSummary.SumPooledGapStableD": {
-    "table": "ModelSummary",
-    "field": "SumPooledGapStableD",
-    "kind": "rollup",
-    "rule": "A model summary's sum pooled gap stable d is the total pooled gap across the model summary's treatment rankings that are not latent flip potential.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "PooledGap",
-        "label": "pooled gap"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "LatentFlipPotential",
-        "label": "latent flip potential"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.AvgPooledGapStableD": {
-    "table": "ModelSummary",
-    "field": "AvgPooledGapStableD",
-    "kind": "formula",
-    "rule": "The model summary's avg pooled gap stable d is determined by the following priority:\n1. 0, if the stable type d count is 0;\n2. in all other cases, the sum pooled gap stable d divided by the stable type d count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ModelSummary",
-        "field": "StableTypeDCount",
-        "label": "stable type d count"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "SumPooledGapStableD",
-        "label": "sum pooled gap stable d"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The model summary's avg pooled gap stable d is determined by the following priority:",
-      "cases": [
-        {
-          "value": "0",
-          "when": {
-            "kind": "leaf",
-            "text": "the stable type d count is 0"
-          }
-        },
-        {
-          "value": "the sum pooled gap stable d divided by the stable type d count",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "ModelSummary.EpidemiologyAvgDistortion": {
-    "table": "ModelSummary",
-    "field": "EpidemiologyAvgDistortion",
-    "kind": "formula",
-    "rule": "A model summary's epidemiology avg distortion is the average allocation distortion across the treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "AllocationDistortion",
-        "label": "allocation distortion"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "StudyDomain",
-        "label": "study domain"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.EducationAvgDistortion": {
-    "table": "ModelSummary",
-    "field": "EducationAvgDistortion",
-    "kind": "formula",
-    "rule": "A model summary's education avg distortion is the average allocation distortion across the treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "AllocationDistortion",
-        "label": "allocation distortion"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "StudyDomain",
-        "label": "study domain"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.ConfounderSignFlipCount": {
-    "table": "ModelSummary",
-    "field": "ConfounderSignFlipCount",
-    "kind": "formula",
-    "rule": "A model summary's confounder sign flip count is the number of the model summary's treatment rankings that are sign flips.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "StratumCausalRole",
-        "label": "stratum causal role"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "IsSignFlip",
-        "label": "is sign flip"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.ConfounderLatentOnlyCount": {
-    "table": "ModelSummary",
-    "field": "ConfounderLatentOnlyCount",
-    "kind": "formula",
-    "rule": "A model summary's confounder latent only count is the number of the model summary's treatment rankings that are latent only flips.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "StratumCausalRole",
-        "label": "stratum causal role"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "IsLatentOnlyFlip",
-        "label": "is latent only flip"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.ColliderSelectionCount": {
-    "table": "ModelSummary",
-    "field": "ColliderSelectionCount",
-    "kind": "formula",
-    "rule": "A model summary's collider selection count is computed as the number of treatment rankings related to the model summary plus the number of treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "StratumCausalRole",
-        "label": "stratum causal role"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.ColliderSelectionManifestCount": {
-    "table": "ModelSummary",
-    "field": "ColliderSelectionManifestCount",
-    "kind": "formula",
-    "rule": "A model summary's collider selection manifest count is computed as the number of the model summary's treatment rankings that are sign flips plus the number of the model summary's treatment rankings that are sign flips.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "StratumCausalRole",
-        "label": "stratum causal role"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "IsSignFlip",
-        "label": "is sign flip"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.ColliderSelectionLatentOnlyCount": {
-    "table": "ModelSummary",
-    "field": "ColliderSelectionLatentOnlyCount",
-    "kind": "formula",
-    "rule": "A model summary's collider selection latent only count is computed as the number of the model summary's treatment rankings that are latent only flips plus the number of the model summary's treatment rankings that are latent only flips.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "StratumCausalRole",
-        "label": "stratum causal role"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "IsLatentOnlyFlip",
-        "label": "is latent only flip"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.ExplainedConfounderCount": {
-    "table": "ModelSummary",
-    "field": "ExplainedConfounderCount",
-    "kind": "rollup",
-    "rule": "A model summary's explained confounder count is the number of treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "IsParadoxExplained",
-        "label": "is paradox explained"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.ContestedOrMediatorExplainedCount": {
-    "table": "ModelSummary",
-    "field": "ContestedOrMediatorExplainedCount",
-    "kind": "rollup",
-    "rule": "A model summary's contested or mediator explained count is the number of the model summary's treatment rankings that are paradox-explained and are not adjustment appropriate.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "IsSignFlip",
-        "label": "is sign flip"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "IsParadoxExplained",
-        "label": "is paradox explained"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "AdjustmentAppropriate",
-        "label": "adjustment appropriate"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.DiscoveryWitnessNote": {
-    "table": "ModelSummary",
-    "field": "DiscoveryWitnessNote",
-    "kind": "formula",
-    "rule": "A model summary's discovery witness note is computed as “sweep: latentD=”, followed by the latent type d fraction, followed by “ purityMax=”, followed by the sign flip signal purity max, followed by “ catalogExact=”, followed by the type prediction match rate, followed by “ identities=”, followed by the confounder identity count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ModelSummary",
-        "field": "LatentTypeDFraction",
-        "label": "latent type d fraction"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "SignFlipSignalPurityMax",
-        "label": "sign flip signal purity max"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "TypePredictionMatchRate",
-        "label": "type prediction match rate"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "ConfounderIdentityCount",
-        "label": "confounder identity count"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.TypePredictionMatchCount": {
-    "table": "ModelSummary",
-    "field": "TypePredictionMatchCount",
-    "kind": "lookup",
-    "rule": "A model summary's type prediction match count is the value of LOOKUP(\"catalog-v1\", CorpusCatalogSummary[CatalogSummaryId], CorpusCatalogSummary[TypePredictionMatchCount]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.TypePredictionMismatchCount": {
-    "table": "ModelSummary",
-    "field": "TypePredictionMismatchCount",
-    "kind": "lookup",
-    "rule": "A model summary's type prediction mismatch count is the value of LOOKUP(\"catalog-v1\", CorpusCatalogSummary[CatalogSummaryId], CorpusCatalogSummary[TypePredictionMismatchCount]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.TypePredictionMatchRate": {
-    "table": "ModelSummary",
-    "field": "TypePredictionMatchRate",
-    "kind": "lookup",
-    "rule": "A model summary's type prediction match rate is the value of LOOKUP(\"catalog-v1\", CorpusCatalogSummary[CatalogSummaryId], CorpusCatalogSummary[TypePredictionMatchRate]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.SignFlipPredictionMatchRate": {
-    "table": "ModelSummary",
-    "field": "SignFlipPredictionMatchRate",
-    "kind": "lookup",
-    "rule": "A model summary's sign flip prediction match rate is the value of LOOKUP(\"catalog-v1\", CorpusCatalogSummary[CatalogSummaryId], CorpusCatalogSummary[SignFlipPredictionMatchRate]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.CatalogPredictionWitnessNote": {
-    "table": "ModelSummary",
-    "field": "CatalogPredictionWitnessNote",
-    "kind": "lookup",
-    "rule": "A model summary's catalog prediction witness note is the value of LOOKUP(\"catalog-v1\", CorpusCatalogSummary[CatalogSummaryId], CorpusCatalogSummary[CatalogPredictionWitnessNote]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.CPlusAvgDistortion": {
-    "table": "ModelSummary",
-    "field": "CPlusAvgDistortion",
-    "kind": "formula",
-    "rule": "A model summary's c plus avg distortion is the average allocation distortion across the treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "AllocationDistortion",
-        "label": "allocation distortion"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.CMinusAvgDistortion": {
-    "table": "ModelSummary",
-    "field": "CMinusAvgDistortion",
-    "kind": "formula",
-    "rule": "A model summary's c minus avg distortion is the average allocation distortion across the treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "AllocationDistortion",
-        "label": "allocation distortion"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.TypeDAvgDistortion": {
-    "table": "ModelSummary",
-    "field": "TypeDAvgDistortion",
-    "kind": "formula",
-    "rule": "A model summary's type d avg distortion is the average allocation distortion across the treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "AllocationDistortion",
-        "label": "allocation distortion"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.SweepFragileCount": {
-    "table": "ModelSummary",
-    "field": "SweepFragileCount",
-    "kind": "formula",
-    "rule": "A model summary's sweep fragile count is the number of treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "IsSweepFragile",
-        "label": "is sweep fragile"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.ExpansionWave1EconomicsExpectedACount": {
-    "table": "ModelSummary",
-    "field": "ExpansionWave1EconomicsExpectedACount",
-    "kind": "formula",
-    "rule": "A model summary's expansion wave1 economics expected a count is the number of the model summary's candidate study catalog that are imported; have a domain of “economics”; and have a expected distortion type of “A”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "ExpansionWave",
-        "label": "expansion wave"
-      },
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "Domain",
-        "label": "domain"
-      },
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "IsImported",
-        "label": "is imported"
-      },
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "ExpectedDistortionType",
-        "label": "expected distortion type"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.ExpansionWave1EconomicsExpectedADCount": {
-    "table": "ModelSummary",
-    "field": "ExpansionWave1EconomicsExpectedADCount",
-    "kind": "formula",
-    "rule": "A model summary's expansion wave1 economics expected AD count is the number of the model summary's candidate study catalog that are imported; have a domain of “economics”; have a expected distortion type of “A”; and have a observed distortion type of “D”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "ExpansionWave",
-        "label": "expansion wave"
-      },
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "Domain",
-        "label": "domain"
-      },
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "IsImported",
-        "label": "is imported"
-      },
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "ExpectedDistortionType",
-        "label": "expected distortion type"
-      },
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "ObservedDistortionType",
-        "label": "observed distortion type"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.EconomicsExpectedAMismatchRate": {
-    "table": "ModelSummary",
-    "field": "EconomicsExpectedAMismatchRate",
-    "kind": "formula",
-    "rule": "The model summary's economics expected a mismatch rate is determined by the following priority:\n1. an empty string, if the expansion wave1 economics expected a count is 0;\n2. in all other cases, the expansion wave1 economics expected AD count divided by the expansion wave1 economics expected a count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ModelSummary",
-        "field": "ExpansionWave1EconomicsExpectedACount",
-        "label": "expansion wave1 economics expected a count"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "ExpansionWave1EconomicsExpectedADCount",
-        "label": "expansion wave1 economics expected AD count"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The model summary's economics expected a mismatch rate is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the expansion wave1 economics expected a count is 0"
-          }
-        },
-        {
-          "value": "the expansion wave1 economics expected AD count divided by the expansion wave1 economics expected a count",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "ModelSummary.UnanimousSignFlipCount": {
-    "table": "ModelSummary",
-    "field": "UnanimousSignFlipCount",
-    "kind": "formula",
-    "rule": "A model summary's unanimous sign flip count is the number of the model summary's treatment rankings that are stratum-unanimous.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "IsSignFlip",
-        "label": "is sign flip"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "IsStratumUnanimous",
-        "label": "is stratum unanimous"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.MaxStudySweepCorrectedGapRange": {
-    "table": "ModelSummary",
-    "field": "MaxStudySweepCorrectedGapRange",
-    "kind": "rollup",
-    "rule": "A model summary's max study sweep corrected gap range is the largest sweep corrected gap range across the sweep study summary related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SweepStudySummary",
-        "field": "SweepCorrectedGapRange",
-        "label": "sweep corrected gap range"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.CorrectedGapInvariantFailCount": {
-    "table": "ModelSummary",
-    "field": "CorrectedGapInvariantFailCount",
-    "kind": "rollup",
-    "rule": "A model summary's corrected gap invariant fail count is the number of sweep study summary related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SweepStudySummary",
-        "field": "SweepCorrectedGapRange",
-        "label": "sweep corrected gap range"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.FalsePositiveExplainedCount": {
-    "table": "ModelSummary",
-    "field": "FalsePositiveExplainedCount",
-    "kind": "rollup",
-    "rule": "A model summary's false positive explained count is the number of the model summary's false positive explaineds.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "IsParadoxExplained",
-        "label": "is paradox explained"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "IsSignFlip",
-        "label": "is sign flip"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "StratumCausalRole",
-        "label": "stratum causal role"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.UnexplainedConfounderSignFlipCount": {
-    "table": "ModelSummary",
-    "field": "UnexplainedConfounderSignFlipCount",
-    "kind": "rollup",
-    "rule": "A model summary's unexplained confounder sign flip count is the number of the model summary's treatment rankings that are not paradox-explained and have a stratum causal role of “confounder”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "IsSignFlip",
-        "label": "is sign flip"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "StratumCausalRole",
-        "label": "stratum causal role"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "IsParadoxExplained",
-        "label": "is paradox explained"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.TheoremCount": {
-    "table": "ModelSummary",
-    "field": "TheoremCount",
-    "kind": "formula",
-    "rule": "A model summary's theorem count is the number of the model summary's conclusions that have a status of “witnessed”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Conclusions",
-        "field": "Category",
-        "label": "category"
-      },
-      {
-        "table": "Conclusions",
-        "field": "Status",
-        "label": "status"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.EducationLatentFraction": {
-    "table": "ModelSummary",
-    "field": "EducationLatentFraction",
-    "kind": "formula",
-    "rule": "The model summary's education latent fraction is determined by the following priority:\n1. an empty string, if the model summary has no treatment rankings that have a distortion type of “D”;\n2. in all other cases, the number of the model summary's treatment rankings that are latent only flips and have a distortion type of “D” divided by the number of the model summary's treatment rankings that have a distortion type of “D”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "StudyDomain",
-        "label": "study domain"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "IsLatentOnlyFlip",
-        "label": "is latent only flip"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The model summary's education latent fraction is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the model summary has no treatment rankings that have a distortion type of “D”"
-          }
-        },
-        {
-          "value": "the number of the model summary's treatment rankings that are latent only flips and have a distortion type of “D” divided by the number of the model summary's treatment rankings that have a distortion type of “D”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "ModelSummary.SportsLatentFraction": {
-    "table": "ModelSummary",
-    "field": "SportsLatentFraction",
-    "kind": "formula",
-    "rule": "The model summary's sports latent fraction is determined by the following priority:\n1. an empty string, if the model summary has no treatment rankings that have a distortion type of “D”;\n2. in all other cases, the number of the model summary's treatment rankings that are latent only flips and have a distortion type of “D” divided by the number of the model summary's treatment rankings that have a distortion type of “D”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "StudyDomain",
-        "label": "study domain"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "IsLatentOnlyFlip",
-        "label": "is latent only flip"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The model summary's sports latent fraction is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the model summary has no treatment rankings that have a distortion type of “D”"
-          }
-        },
-        {
-          "value": "the number of the model summary's treatment rankings that are latent only flips and have a distortion type of “D” divided by the number of the model summary's treatment rankings that have a distortion type of “D”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "ModelSummary.EconomicsSignFlipRate": {
-    "table": "ModelSummary",
-    "field": "EconomicsSignFlipRate",
-    "kind": "formula",
-    "rule": "The model summary's economics sign flip rate is determined by the following priority:\n1. an empty string, if the model summary has no treatment rankings;\n2. in all other cases, the number of the model summary's treatment rankings that are sign flips divided by the number of treatment rankings related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "StudyDomain",
-        "label": "study domain"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "IsSignFlip",
-        "label": "is sign flip"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The model summary's economics sign flip rate is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the model summary has no treatment rankings"
-          }
-        },
-        {
-          "value": "the number of the model summary's treatment rankings that are sign flips divided by the number of treatment rankings related to the model summary",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "ModelSummary.EducationTypeDCount": {
-    "table": "ModelSummary",
-    "field": "EducationTypeDCount",
-    "kind": "formula",
-    "rule": "A model summary's education type d count is the number of the model summary's treatment rankings that have a distortion type of “D”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "StudyDomain",
-        "label": "study domain"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.EducationLatentDCount": {
-    "table": "ModelSummary",
-    "field": "EducationLatentDCount",
-    "kind": "formula",
-    "rule": "A model summary's education latent d count is the number of the model summary's treatment rankings that are latent flip potential and have a distortion type of “D”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "StudyDomain",
-        "label": "study domain"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "LatentFlipPotential",
-        "label": "latent flip potential"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.SportsTypeDCount": {
-    "table": "ModelSummary",
-    "field": "SportsTypeDCount",
-    "kind": "formula",
-    "rule": "A model summary's sports type d count is the number of the model summary's treatment rankings that have a distortion type of “D”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "StudyDomain",
-        "label": "study domain"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.SportsLatentDCount": {
-    "table": "ModelSummary",
-    "field": "SportsLatentDCount",
-    "kind": "formula",
-    "rule": "A model summary's sports latent d count is the number of the model summary's treatment rankings that are latent flip potential and have a distortion type of “D”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "StudyDomain",
-        "label": "study domain"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "LatentFlipPotential",
-        "label": "latent flip potential"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.EconomicsStudyCount": {
-    "table": "ModelSummary",
-    "field": "EconomicsStudyCount",
-    "kind": "formula",
-    "rule": "A model summary's economics study count is the number of the model summary's studies that are not synthetic.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "Domain",
-        "label": "domain"
-      },
-      {
-        "table": "Studies",
-        "field": "IsSynthetic",
-        "label": "is synthetic"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.ExpansionWave2StudyCount": {
-    "table": "ModelSummary",
-    "field": "ExpansionWave2StudyCount",
-    "kind": "formula",
-    "rule": "A model summary's expansion wave2 study count is the number of the model summary's candidate study catalog that are imported.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "ExpansionWave",
-        "label": "expansion wave"
-      },
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "IsImported",
-        "label": "is imported"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.ConfounderIdentityCount": {
-    "table": "ModelSummary",
-    "field": "ConfounderIdentityCount",
-    "kind": "rollup",
-    "rule": "A model summary's confounder identity count is the number of confounder identities related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ConfounderIdentities",
-        "field": "ConfounderIdentityId",
-        "label": "confounder identity ID"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.MappedStratumVariableCount": {
-    "table": "ModelSummary",
-    "field": "MappedStratumVariableCount",
-    "kind": "rollup",
-    "rule": "A model summary's mapped stratum variable count is the number of stratum variable identity maps related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumVariableIdentityMaps",
-        "field": "MapId",
-        "label": "map ID"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.UnmappedStratumVariableCount": {
-    "table": "ModelSummary",
-    "field": "UnmappedStratumVariableCount",
-    "kind": "formula",
-    "rule": "A model summary's unmapped stratum variable count is computed as the number of stratum variables related to the model summary minus the mapped stratum variable count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumVariables",
-        "field": "StratumVariableId",
-        "label": "stratum variable ID"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "MappedStratumVariableCount",
-        "label": "mapped stratum variable count"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.AgeIdentityManifestFlipRate": {
-    "table": "ModelSummary",
-    "field": "AgeIdentityManifestFlipRate",
-    "kind": "formula",
-    "rule": "A model summary's age identity manifest flip rate is computed as the value of LOOKUP(\"id-age-composition\", IdentityClusterSummaries[ConfounderIdentity], IdentityClusterSummaries[ManifestFlipRate]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.AgeIdentityStudyCount": {
-    "table": "ModelSummary",
-    "field": "AgeIdentityStudyCount",
-    "kind": "formula",
-    "rule": "A model summary's age identity study count is computed as the value of LOOKUP(\"id-age-composition\", IdentityClusterSummaries[ConfounderIdentity], IdentityClusterSummaries[StudyCount]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.AgeIdentityLatentFractionAmongTypeD": {
-    "table": "ModelSummary",
-    "field": "AgeIdentityLatentFractionAmongTypeD",
-    "kind": "formula",
-    "rule": "A model summary's age identity latent fraction among type d is computed as the value of LOOKUP(\"id-age-composition\", IdentityClusterSummaries[ConfounderIdentity], IdentityClusterSummaries[LatentFractionAmongTypeD]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.SeverityIdentityLatentFractionAmongTypeD": {
-    "table": "ModelSummary",
-    "field": "SeverityIdentityLatentFractionAmongTypeD",
-    "kind": "formula",
-    "rule": "A model summary's severity identity latent fraction among type d is computed as the value of LOOKUP(\"id-disease-severity\", IdentityClusterSummaries[ConfounderIdentity], IdentityClusterSummaries[LatentFractionAmongTypeD]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.IdentityMapCoverageRate": {
-    "table": "ModelSummary",
-    "field": "IdentityMapCoverageRate",
-    "kind": "formula",
-    "rule": "The model summary's identity map coverage rate is determined by the following priority:\n1. an empty string, if the real study count is 0;\n2. in all other cases, the mapped stratum variable count divided by the real study count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ModelSummary",
-        "field": "RealStudyCount",
-        "label": "real study count"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "MappedStratumVariableCount",
-        "label": "mapped stratum variable count"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The model summary's identity map coverage rate is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the real study count is 0"
-          }
-        },
-        {
-          "value": "the mapped stratum variable count divided by the real study count",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "ModelSummary.SeverityMedicineManifestFlipRate": {
-    "table": "ModelSummary",
-    "field": "SeverityMedicineManifestFlipRate",
-    "kind": "formula",
-    "rule": "A model summary's severity medicine manifest flip rate is computed as the value of LOOKUP(\"cell-id-disease-severity-x-medicine\", IdentityDomainCells[CellId], IdentityDomainCells[ManifestFlipRate]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.SeverityEpiManifestFlipCount": {
-    "table": "ModelSummary",
-    "field": "SeverityEpiManifestFlipCount",
-    "kind": "formula",
-    "rule": "A model summary's severity epi manifest flip count is computed as the value of LOOKUP(\"cell-id-disease-severity-x-epidemiology\", IdentityDomainCells[CellId], IdentityDomainCells[ManifestFlipCount]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.IdentityDomainCellCount": {
-    "table": "ModelSummary",
-    "field": "IdentityDomainCellCount",
-    "kind": "rollup",
-    "rule": "A model summary's identity domain cell count is the number of identity domain cells related to the model summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IdentityDomainCells",
-        "field": "CellId",
-        "label": "cell ID"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.SelectionFrailtyManifestFlipCount": {
-    "table": "ModelSummary",
-    "field": "SelectionFrailtyManifestFlipCount",
-    "kind": "formula",
-    "rule": "A model summary's selection frailty manifest flip count is computed as the value of LOOKUP(\"cluster-id-selection-frailty\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[ManifestFlipCount]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.SelectionFrailtyStudyCount": {
-    "table": "ModelSummary",
-    "field": "SelectionFrailtyStudyCount",
-    "kind": "formula",
-    "rule": "A model summary's selection frailty study count is computed as the value of LOOKUP(\"cluster-id-selection-frailty\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.ColliderIdentityManifestFlipRate": {
-    "table": "ModelSummary",
-    "field": "ColliderIdentityManifestFlipRate",
-    "kind": "formula",
-    "rule": "A model summary's collider identity manifest flip rate is computed as the value of LOOKUP(\"cluster-id-collider-proxy\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[ManifestFlipRate]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.GeographicTypeDFraction": {
-    "table": "ModelSummary",
-    "field": "GeographicTypeDFraction",
-    "kind": "formula",
-    "rule": "A model summary's geographic type d fraction is computed as the value of IF(LOOKUP(\"cluster-id-geographic-composition\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount])=0, \"\", LOOKUP(\"cluster-id-geographic-composition\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[TypeDCount]) / LOOKUP(\"cluster-id-geographic-composition\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount])).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.SeverityDriftDirection": {
-    "table": "ModelSummary",
-    "field": "SeverityDriftDirection",
-    "kind": "formula",
-    "rule": "A model summary's severity drift direction is computed as the value of LOOKUP(\"id-disease-severity\", ConfounderDistortionTimeline[ConfounderIdentity], ConfounderDistortionTimeline[DriftDirection]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.GeographicDriftDirection": {
-    "table": "ModelSummary",
-    "field": "GeographicDriftDirection",
-    "kind": "formula",
-    "rule": "A model summary's geographic drift direction is computed as the value of LOOKUP(\"id-geographic-composition\", ConfounderDistortionTimeline[ConfounderIdentity], ConfounderDistortionTimeline[DriftDirection]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.SituationalDriftDirection": {
-    "table": "ModelSummary",
-    "field": "SituationalDriftDirection",
-    "kind": "formula",
-    "rule": "A model summary's situational drift direction is computed as the value of LOOKUP(\"id-situational-context\", ConfounderDistortionTimeline[ConfounderIdentity], ConfounderDistortionTimeline[DriftDirection]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.AgeDriftDirection": {
-    "table": "ModelSummary",
-    "field": "AgeDriftDirection",
-    "kind": "formula",
-    "rule": "A model summary's age drift direction is computed as the value of LOOKUP(\"id-age-composition\", ConfounderDistortionTimeline[ConfounderIdentity], ConfounderDistortionTimeline[DriftDirection]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.InstitutionalDriftDirection": {
-    "table": "ModelSummary",
-    "field": "InstitutionalDriftDirection",
-    "kind": "formula",
-    "rule": "A model summary's institutional drift direction is computed as the value of LOOKUP(\"id-institutional-unit\", ConfounderDistortionTimeline[ConfounderIdentity], ConfounderDistortionTimeline[DriftDirection]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.SocioeconomicDriftDirection": {
-    "table": "ModelSummary",
-    "field": "SocioeconomicDriftDirection",
-    "kind": "formula",
-    "rule": "A model summary's socioeconomic drift direction is computed as the value of LOOKUP(\"id-socioeconomic-status\", ConfounderDistortionTimeline[ConfounderIdentity], ConfounderDistortionTimeline[DriftDirection]).",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "ModelSummary.DomainFlipGapSurvivesGeometryControl": {
-    "table": "ModelSummary",
-    "field": "DomainFlipGapSurvivesGeometryControl",
-    "kind": "formula",
-    "rule": "A model summary is flagged domain flip gap survives geometry control if all of the following hold: the economics high imbalance sign flip count is 0 and the epidemiology high imbalance sign flip rate is greater than 0.15.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ModelSummary",
-        "field": "EconomicsHighImbalanceSignFlipCount",
-        "label": "economics high imbalance sign flip count"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "EpidemiologyHighImbalanceSignFlipRate",
-        "label": "epidemiology high imbalance sign flip rate"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "A model summary is flagged domain flip gap survives geometry control if all of the following:",
-      "cases": [],
-      "children": [
-        {
-          "kind": "all",
-          "children": [
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The stratum summary's stratum gap is determined by the following priority:",
+          "cases": [
             {
-              "kind": "leaf",
-              "text": "the economics high imbalance sign flip count is 0"
-            },
-            {
-              "kind": "leaf",
-              "text": "the epidemiology high imbalance sign flip rate is greater than 0.15"
-            }
-          ]
-        }
-      ]
-    }
-  },
-  "ModelSummary.CorpusPatternSupersededFailCount": {
-    "table": "ModelSummary",
-    "field": "CorpusPatternSupersededFailCount",
-    "kind": "formula",
-    "rule": "A model summary's corpus pattern superseded fail count is computed as the number of the model summary's discovery findings that are not confirmed plus the number of the model summary's discovery findings that are not confirmed plus the number of the model summary's discovery findings that are not confirmed plus the number of the model summary's discovery findings that are not confirmed plus the number of the model summary's discovery findings that are not confirmed plus the number of the model summary's discovery findings that are not confirmed.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "DiscoveryFindings",
-        "field": "HypothesisId",
-        "label": "hypothesis ID"
-      },
-      {
-        "table": "DiscoveryFindings",
-        "field": "IsConfirmed",
-        "label": "is confirmed"
-      }
-    ],
-    "structure": null
-  },
-  "ModelSummary.ExpansionWave3DiscoveryNote": {
-    "table": "ModelSummary",
-    "field": "ExpansionWave3DiscoveryNote",
-    "kind": "formula",
-    "rule": "A model summary's expansion wave3 discovery note is computed as “superseded=”, followed by the corpus pattern superseded fail count, followed by “; econFlips=”, followed by the economics sign flip count, followed by “; flipPred=”, followed by the sign flip prediction match rate, followed by “; catalogExact=”, followed by the type prediction match rate, followed by “; theorems=”, followed by the theorem count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ModelSummary",
-        "field": "CorpusPatternSupersededFailCount",
-        "label": "corpus pattern superseded fail count"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "EconomicsSignFlipCount",
-        "label": "economics sign flip count"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "SignFlipPredictionMatchRate",
-        "label": "sign flip prediction match rate"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "TypePredictionMatchRate",
-        "label": "type prediction match rate"
-      },
-      {
-        "table": "ModelSummary",
-        "field": "TheoremCount",
-        "label": "theorem count"
-      }
-    ],
-    "structure": null
-  },
-  "StratumVariables.Name": {
-    "table": "StratumVariables",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A stratum variable's name is the same as its stratum variable ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumVariables",
-        "field": "StratumVariableId",
-        "label": "stratum variable ID"
-      }
-    ],
-    "structure": null
-  },
-  "StratumVariables.IsConfounder": {
-    "table": "StratumVariables",
-    "field": "IsConfounder",
-    "kind": "formula",
-    "rule": "A stratum variable is considered a confounder if all of the following hold: the affects treatment assignment flag is set; the affects outcome flag is set; and the causal role is “confounder”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumVariables",
-        "field": "AffectsTreatmentAssignment",
-        "label": "affects treatment assignment"
-      },
-      {
-        "table": "StratumVariables",
-        "field": "AffectsOutcome",
-        "label": "affects outcome"
-      },
-      {
-        "table": "StratumVariables",
-        "field": "CausalRole",
-        "label": "causal role"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "A stratum variable is considered a confounder if all of the following:",
-      "cases": [],
-      "children": [
-        {
-          "kind": "all",
-          "children": [
-            {
-              "kind": "leaf",
-              "text": "the affects treatment assignment flag is set"
-            },
-            {
-              "kind": "leaf",
-              "text": "the affects outcome flag is set"
-            },
-            {
-              "kind": "leaf",
-              "text": "the causal role is “confounder”"
-            }
-          ]
-        }
-      ]
-    }
-  },
-  "StratumVariables.ConfounderIdentity": {
-    "table": "StratumVariables",
-    "field": "ConfounderIdentity",
-    "kind": "lookup",
-    "rule": "A stratum variable's confounder identity is the value of LOOKUP(StratumVariableId, StratumVariableIdentityMaps[StratumVariable], StratumVariableIdentityMaps[ConfounderIdentity]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumVariables",
-        "field": "StratumVariableId",
-        "label": "stratum variable ID"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.Name": {
-    "table": "TreatmentRankings",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A treatment ranking's name is the same as its treatment ranking ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "TreatmentRankingId",
-        "label": "treatment ranking ID"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.TotalCasesA": {
-    "table": "TreatmentRankings",
-    "field": "TotalCasesA",
-    "kind": "rollup",
-    "rule": "A treatment ranking's total cases a is the total cases across the case cells related to the treatment ranking.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Cases",
-        "label": "cases"
-      },
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "CaseCells",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "TreatmentA",
-        "label": "treatment a"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.TotalSuccessesA": {
-    "table": "TreatmentRankings",
-    "field": "TotalSuccessesA",
-    "kind": "rollup",
-    "rule": "A treatment ranking's total successes a is the total successes across the case cells related to the treatment ranking.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Successes",
-        "label": "successes"
-      },
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "CaseCells",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "TreatmentA",
-        "label": "treatment a"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.PooledRateA": {
-    "table": "TreatmentRankings",
-    "field": "PooledRateA",
-    "kind": "formula",
-    "rule": "The treatment ranking's pooled rate a is determined by the following priority:\n1. an empty string, if the total cases a is 0;\n2. in all other cases, the total successes a divided by the total cases a.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "TotalCasesA",
-        "label": "total cases a"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "TotalSuccessesA",
-        "label": "total successes a"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's pooled rate a is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the total cases a is 0"
-          }
-        },
-        {
-          "value": "the total successes a divided by the total cases a",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.TotalCasesB": {
-    "table": "TreatmentRankings",
-    "field": "TotalCasesB",
-    "kind": "rollup",
-    "rule": "A treatment ranking's total cases b is the total cases across the case cells related to the treatment ranking.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Cases",
-        "label": "cases"
-      },
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "CaseCells",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "TreatmentB",
-        "label": "treatment b"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.TotalSuccessesB": {
-    "table": "TreatmentRankings",
-    "field": "TotalSuccessesB",
-    "kind": "rollup",
-    "rule": "A treatment ranking's total successes b is the total successes across the case cells related to the treatment ranking.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "Successes",
-        "label": "successes"
-      },
-      {
-        "table": "CaseCells",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "CaseCells",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "TreatmentB",
-        "label": "treatment b"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.PooledRateB": {
-    "table": "TreatmentRankings",
-    "field": "PooledRateB",
-    "kind": "formula",
-    "rule": "The treatment ranking's pooled rate b is determined by the following priority:\n1. an empty string, if the total cases b is 0;\n2. in all other cases, the total successes b divided by the total cases b.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "TotalCasesB",
-        "label": "total cases b"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "TotalSuccessesB",
-        "label": "total successes b"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's pooled rate b is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the total cases b is 0"
-          }
-        },
-        {
-          "value": "the total successes b divided by the total cases b",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.PooledWinner": {
-    "table": "TreatmentRankings",
-    "field": "PooledWinner",
-    "kind": "formula",
-    "rule": "The treatment ranking's pooled winner is determined by the following priority:\n1. an empty string, if at least one of the following holds: the pooled rate a is blank or the pooled rate b is blank;\n2. “tie”, if the absolute value of the pooled rate a minus the pooled rate b is less than 0.0000001;\n3. the treatment a, if the pooled rate a is greater than the pooled rate b;\n4. in all other cases, the treatment b.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "PooledRateA",
-        "label": "pooled rate a"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "PooledRateB",
-        "label": "pooled rate b"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "TreatmentA",
-        "label": "treatment a"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "TreatmentB",
-        "label": "treatment b"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's pooled winner is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
+              "value": "an empty string",
+              "when": {
                 "kind": "leaf",
-                "text": "the pooled rate a is blank"
-              },
-              {
-                "kind": "leaf",
-                "text": "the pooled rate b is blank"
+                "text": "the stratum rate a is blank"
               }
-            ]
-          }
-        },
-        {
-          "value": "“tie”",
-          "when": {
-            "kind": "leaf",
-            "text": "the absolute value of the pooled rate a minus the pooled rate b is less than 0.0000001"
-          }
-        },
-        {
-          "value": "the treatment a",
-          "when": {
-            "kind": "leaf",
-            "text": "the pooled rate a is greater than the pooled rate b"
-          }
-        },
-        {
-          "value": "the treatment b",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.StratumCount": {
-    "table": "TreatmentRankings",
-    "field": "StratumCount",
-    "kind": "rollup",
-    "rule": "A treatment ranking's stratum count is the number of stratum summaries related to the treatment ranking.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumSummaries",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "TreatmentA",
-        "label": "treatment a"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.StrataWonByA": {
-    "table": "TreatmentRankings",
-    "field": "StrataWonByA",
-    "kind": "rollup",
-    "rule": "A treatment ranking's strata won by a is the number of stratum summaries related to the treatment ranking.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumSummaries",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "TreatmentA",
-        "label": "treatment a"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "StratumWinner",
-        "label": "stratum winner"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.StrataWonByB": {
-    "table": "TreatmentRankings",
-    "field": "StrataWonByB",
-    "kind": "rollup",
-    "rule": "A treatment ranking's strata won by b is the number of stratum summaries related to the treatment ranking.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumSummaries",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "TreatmentA",
-        "label": "treatment a"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "StratumWinner",
-        "label": "stratum winner"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "TreatmentB",
-        "label": "treatment b"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.PerStratumWinner": {
-    "table": "TreatmentRankings",
-    "field": "PerStratumWinner",
-    "kind": "formula",
-    "rule": "The treatment ranking's per stratum winner is determined by the following priority:\n1. the treatment a, if the strata won by a is the stratum count;\n2. the treatment b, if the strata won by b is the stratum count;\n3. in all other cases, “none”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "StrataWonByA",
-        "label": "strata won by a"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "StratumCount",
-        "label": "stratum count"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "TreatmentA",
-        "label": "treatment a"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "StrataWonByB",
-        "label": "strata won by b"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "TreatmentB",
-        "label": "treatment b"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's per stratum winner is determined by the following priority:",
-      "cases": [
-        {
-          "value": "the treatment a",
-          "when": {
-            "kind": "leaf",
-            "text": "the strata won by a is the stratum count"
-          }
-        },
-        {
-          "value": "the treatment b",
-          "when": {
-            "kind": "leaf",
-            "text": "the strata won by b is the stratum count"
-          }
-        },
-        {
-          "value": "“none”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.IsStratumUnanimous": {
-    "table": "TreatmentRankings",
-    "field": "IsStratumUnanimous",
-    "kind": "formula",
-    "rule": "A treatment ranking is considered stratum-unanimous if at least one of the following holds: the strata won by a is the stratum count or the strata won by b is the stratum count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "StrataWonByA",
-        "label": "strata won by a"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "StratumCount",
-        "label": "stratum count"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "StrataWonByB",
-        "label": "strata won by b"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "A treatment ranking is considered stratum-unanimous if all of the following:",
-      "cases": [],
-      "children": [
-        {
-          "kind": "any",
-          "children": [
-            {
-              "kind": "leaf",
-              "text": "the strata won by a is the stratum count"
             },
             {
-              "kind": "leaf",
-              "text": "the strata won by b is the stratum count"
+              "value": "the stratum rate a minus the stratum rate b",
+              "when": null
             }
-          ]
+          ],
+          "children": null
         }
-      ]
-    }
-  },
-  "TreatmentRankings.IsReversal": {
-    "table": "TreatmentRankings",
-    "field": "IsReversal",
-    "kind": "formula",
-    "rule": "A treatment ranking is considered a reversal if the sign flip flag is set.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "IsSignFlip",
-        "label": "is sign flip"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's is reversal is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the is sign flip is blank"
-          }
-        },
-        {
-          "value": "the is sign flip",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.ConfoundersInStudy": {
-    "table": "TreatmentRankings",
-    "field": "ConfoundersInStudy",
-    "kind": "rollup",
-    "rule": "A treatment ranking's confounders in study is the number of the treatment ranking's stratum variables that are confounders.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumVariables",
-        "field": "Study",
-        "label": "study"
       },
-      {
-        "table": "TreatmentRankings",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumVariables",
-        "field": "IsConfounder",
-        "label": "is confounder"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.IsParadoxExplained": {
-    "table": "TreatmentRankings",
-    "field": "IsParadoxExplained",
-    "kind": "formula",
-    "rule": "A treatment ranking is considered paradox-explained if all of the following hold: the reversal flag is set and the confounders in study is greater than 0.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "IsReversal",
-        "label": "is reversal"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "ConfoundersInStudy",
-        "label": "confounders in study"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "A treatment ranking is considered paradox-explained if all of the following:",
-      "cases": [],
-      "children": [
-        {
-          "kind": "all",
-          "children": [
-            {
-              "kind": "leaf",
-              "text": "the reversal flag is set"
-            },
-            {
-              "kind": "leaf",
-              "text": "the confounders in study is greater than 0"
-            }
-          ]
-        }
-      ]
-    }
-  },
-  "TreatmentRankings.PooledGap": {
-    "table": "TreatmentRankings",
-    "field": "PooledGap",
-    "kind": "formula",
-    "rule": "The treatment ranking's pooled gap is determined by the following priority:\n1. an empty string, if the pooled rate a is blank;\n2. in all other cases, the absolute value of the pooled rate a minus the pooled rate b.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "PooledRateA",
-        "label": "pooled rate a"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "PooledRateB",
-        "label": "pooled rate b"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's pooled gap is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the pooled rate a is blank"
-          }
-        },
-        {
-          "value": "the absolute value of the pooled rate a minus the pooled rate b",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.StrataWonByLoser": {
-    "table": "TreatmentRankings",
-    "field": "StrataWonByLoser",
-    "kind": "formula",
-    "rule": "The treatment ranking's strata won by loser is determined by the following priority:\n1. the strata won by b, if the pooled winner is the treatment a;\n2. in all other cases, the strata won by a.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "PooledWinner",
-        "label": "pooled winner"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "TreatmentA",
-        "label": "treatment a"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "StrataWonByB",
-        "label": "strata won by b"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "StrataWonByA",
-        "label": "strata won by a"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's strata won by loser is determined by the following priority:",
-      "cases": [
-        {
-          "value": "the strata won by b",
-          "when": {
-            "kind": "leaf",
-            "text": "the pooled winner is the treatment a"
-          }
-        },
-        {
-          "value": "the strata won by a",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.ParadoxStrength": {
-    "table": "TreatmentRankings",
-    "field": "ParadoxStrength",
-    "kind": "formula",
-    "rule": "The treatment ranking's paradox strength is determined by the following priority:\n1. an empty string, if the stratum count is 0;\n2. in all other cases, the pooled gap times the strata won by loser divided by the stratum count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "StratumCount",
-        "label": "stratum count"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "PooledGap",
-        "label": "pooled gap"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "StrataWonByLoser",
-        "label": "strata won by loser"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's paradox strength is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the stratum count is 0"
-          }
-        },
-        {
-          "value": "the pooled gap times the strata won by loser divided by the stratum count",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.PooledRateFromWeightsA": {
-    "table": "TreatmentRankings",
-    "field": "PooledRateFromWeightsA",
-    "kind": "rollup",
-    "rule": "A treatment ranking's pooled rate from weights a is the total weighted stratum rate across the stratum summaries related to the treatment ranking.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumSummaries",
-        "field": "WeightedStratumRate",
-        "label": "weighted stratum rate"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "TreatmentA",
-        "label": "treatment a"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.PooledRateFromWeightsB": {
-    "table": "TreatmentRankings",
-    "field": "PooledRateFromWeightsB",
-    "kind": "rollup",
-    "rule": "A treatment ranking's pooled rate from weights b is the total weighted stratum rate across the stratum summaries related to the treatment ranking.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumSummaries",
-        "field": "WeightedStratumRate",
-        "label": "weighted stratum rate"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "TreatmentB",
-        "label": "treatment b"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.ReversalIntensity": {
-    "table": "TreatmentRankings",
-    "field": "ReversalIntensity",
-    "kind": "formula",
-    "rule": "The treatment ranking's reversal intensity is determined by the following priority:\n1. an empty string, if the stratum count is 0;\n2. in all other cases, the strata won by loser divided by the stratum count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "StratumCount",
-        "label": "stratum count"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "StrataWonByLoser",
-        "label": "strata won by loser"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's reversal intensity is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the stratum count is 0"
-          }
-        },
-        {
-          "value": "the strata won by loser divided by the stratum count",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.ThresholdMargin": {
-    "table": "TreatmentRankings",
-    "field": "ThresholdMargin",
-    "kind": "formula",
-    "rule": "The treatment ranking's threshold margin is determined by the following priority:\n1. an empty string, if the stratum count is 0;\n2. in all other cases, the reversal intensity minus 0.5.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "StratumCount",
-        "label": "stratum count"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "ReversalIntensity",
-        "label": "reversal intensity"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's threshold margin is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the stratum count is 0"
-          }
-        },
-        {
-          "value": "the reversal intensity minus 0.5",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.SignedPooledGap": {
-    "table": "TreatmentRankings",
-    "field": "SignedPooledGap",
-    "kind": "formula",
-    "rule": "The treatment ranking's signed pooled gap is determined by the following priority:\n1. an empty string, if the pooled rate a is blank;\n2. in all other cases, the pooled rate a minus the pooled rate b.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "PooledRateA",
-        "label": "pooled rate a"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "PooledRateB",
-        "label": "pooled rate b"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's signed pooled gap is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the pooled rate a is blank"
-          }
-        },
-        {
-          "value": "the pooled rate a minus the pooled rate b",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.WeightedStratumGapSum": {
-    "table": "TreatmentRankings",
-    "field": "WeightedStratumGapSum",
-    "kind": "rollup",
-    "rule": "A treatment ranking's weighted stratum gap sum is the total weighted stratum gap across the stratum summaries related to the treatment ranking.",
-    "mechanical": false,
-    "refs": [
-      {
+      "StratumSummaries.WeightedStratumGap": {
         "table": "StratumSummaries",
         "field": "WeightedStratumGap",
-        "label": "weighted stratum gap"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "TreatmentA",
-        "label": "treatment a"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.IsSignFlip": {
-    "table": "TreatmentRankings",
-    "field": "IsSignFlip",
-    "kind": "formula",
-    "rule": "A treatment ranking is considered a sign flip if the signed pooled gap is less than 0 if the weighted stratum gap sum is greater than 0, in all other cases the signed pooled gap is greater than 0.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "WeightedStratumGapSum",
-        "label": "weighted stratum gap sum"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "SignedPooledGap",
-        "label": "signed pooled gap"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's is sign flip is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the weighted stratum gap sum is blank"
+        "kind": "formula",
+        "rule": "The stratum summary's weighted stratum gap is determined by the following priority:\n1. an empty string, if the stratum gap is blank;\n2. in all other cases, the stratum gap times the stratum fraction.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "StratumGap",
+            "label": "stratum gap"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "StratumFraction",
+            "label": "stratum fraction"
           }
-        },
-        {
-          "value": "the signed pooled gap is less than 0",
-          "when": {
-            "kind": "leaf",
-            "text": "the weighted stratum gap sum is greater than 0"
-          }
-        },
-        {
-          "value": "the signed pooled gap is greater than 0",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.AllocationDistortion": {
-    "table": "TreatmentRankings",
-    "field": "AllocationDistortion",
-    "kind": "formula",
-    "rule": "The treatment ranking's allocation distortion is determined by the following priority:\n1. an empty string, if the weighted stratum gap sum is blank;\n2. in all other cases, the absolute value of the weighted stratum gap sum minus the signed pooled gap.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "WeightedStratumGapSum",
-        "label": "weighted stratum gap sum"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "SignedPooledGap",
-        "label": "signed pooled gap"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's allocation distortion is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the weighted stratum gap sum is blank"
-          }
-        },
-        {
-          "value": "the absolute value of the weighted stratum gap sum minus the signed pooled gap",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.DistortionType": {
-    "table": "TreatmentRankings",
-    "field": "DistortionType",
-    "kind": "formula",
-    "rule": "The treatment ranking's distortion type is determined by the following priority:\n1. an empty string, if the allocation distortion is blank;\n2. “A” if the stratum unanimous flag is set, in all other cases “B”, if the sign flip flag is set;\n3. “C+”, if all of the following hold: the sign flip flag is not set; the allocation distortion is greater than 0.01; and the absolute value of the signed pooled gap is greater than the absolute value of the corrected gap plus 0.001;\n4. “C-”, if all of the following hold: the sign flip flag is not set; the allocation distortion is greater than 0.01; and the absolute value of the signed pooled gap is less than the absolute value of the corrected gap minus 0.001;\n5. in all other cases, “D”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "AllocationDistortion",
-        "label": "allocation distortion"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "IsSignFlip",
-        "label": "is sign flip"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "IsStratumUnanimous",
-        "label": "is stratum unanimous"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "SignedPooledGap",
-        "label": "signed pooled gap"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "CorrectedGap",
-        "label": "corrected gap"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's distortion type is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the allocation distortion is blank"
-          }
-        },
-        {
-          "value": "“A” if the stratum unanimous flag is set, in all other cases “B”",
-          "when": {
-            "kind": "leaf",
-            "text": "the sign flip flag is set"
-          }
-        },
-        {
-          "value": "“C+”",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The stratum summary's weighted stratum gap is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
                 "kind": "leaf",
-                "text": "the sign flip flag is not set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the allocation distortion is greater than 0.01"
-              },
-              {
-                "kind": "leaf",
-                "text": "the absolute value of the signed pooled gap is greater than the absolute value of the corrected gap plus 0.001"
+                "text": "the stratum gap is blank"
               }
-            ]
-          }
-        },
-        {
-          "value": "“C-”",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the sign flip flag is not set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the allocation distortion is greater than 0.01"
-              },
-              {
-                "kind": "leaf",
-                "text": "the absolute value of the signed pooled gap is less than the absolute value of the corrected gap minus 0.001"
-              }
-            ]
-          }
-        },
-        {
-          "value": "“D”",
-          "when": null
+            },
+            {
+              "value": "the stratum gap times the stratum fraction",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.PolicyImplication": {
-    "table": "TreatmentRankings",
-    "field": "PolicyImplication",
-    "kind": "formula",
-    "rule": "The treatment ranking's policy implication is determined by the following priority:\n1. an empty string, if the distortion type is blank;\n2. “stratify-immediately”, if the distortion type is “A”;\n3. “investigate-confounder”, if the distortion type is “B”;\n4. “check-allocation-bias”, if at least one of the following holds: the distortion type is “C+” or the distortion type is “C-”;\n5. in all other cases, “pooled-analysis-trustworthy”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's policy implication is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the distortion type is blank"
-          }
-        },
-        {
-          "value": "“stratify-immediately”",
-          "when": {
-            "kind": "leaf",
-            "text": "the distortion type is “A”"
-          }
-        },
-        {
-          "value": "“investigate-confounder”",
-          "when": {
-            "kind": "leaf",
-            "text": "the distortion type is “B”"
-          }
-        },
-        {
-          "value": "“check-allocation-bias”",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the distortion type is “C+”"
-              },
-              {
-                "kind": "leaf",
-                "text": "the distortion type is “C-”"
-              }
-            ]
-          }
-        },
-        {
-          "value": "“pooled-analysis-trustworthy”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.CorrectedGap": {
-    "table": "TreatmentRankings",
-    "field": "CorrectedGap",
-    "kind": "formula",
-    "rule": "A treatment ranking's corrected gap is the same as its weighted stratum gap sum.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "WeightedStratumGapSum",
-        "label": "weighted stratum gap sum"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.CorrectedWinner": {
-    "table": "TreatmentRankings",
-    "field": "CorrectedWinner",
-    "kind": "formula",
-    "rule": "The treatment ranking's corrected winner is determined by the following priority:\n1. an empty string, if the corrected gap is blank;\n2. “tie”, if the absolute value of the corrected gap is less than 0.0001;\n3. the treatment a, if the corrected gap is greater than 0;\n4. the treatment b, if the corrected gap is less than 0;\n5. in all other cases, “tie”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "CorrectedGap",
-        "label": "corrected gap"
       },
-      {
-        "table": "TreatmentRankings",
-        "field": "TreatmentA",
-        "label": "treatment a"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "TreatmentB",
-        "label": "treatment b"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's corrected winner is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the corrected gap is blank"
-          }
-        },
-        {
-          "value": "“tie”",
-          "when": {
-            "kind": "leaf",
-            "text": "the absolute value of the corrected gap is less than 0.0001"
-          }
-        },
-        {
-          "value": "the treatment a",
-          "when": {
-            "kind": "leaf",
-            "text": "the corrected gap is greater than 0"
-          }
-        },
-        {
-          "value": "the treatment b",
-          "when": {
-            "kind": "leaf",
-            "text": "the corrected gap is less than 0"
-          }
-        },
-        {
-          "value": "“tie”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.CorrectedVsPooledAgreement": {
-    "table": "TreatmentRankings",
-    "field": "CorrectedVsPooledAgreement",
-    "kind": "formula",
-    "rule": "A treatment ranking is flagged corrected vs pooled agreement if the corrected winner is the pooled winner.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "CorrectedWinner",
-        "label": "corrected winner"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "PooledWinner",
-        "label": "pooled winner"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's corrected vs pooled agreement is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the corrected winner is blank"
-          }
-        },
-        {
-          "value": "the corrected winner is the pooled winner",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.CorrectedPolicyImplication": {
-    "table": "TreatmentRankings",
-    "field": "CorrectedPolicyImplication",
-    "kind": "formula",
-    "rule": "The treatment ranking's corrected policy implication is determined by the following priority:\n1. an empty string, if the distortion type is blank;\n2. “use-corrected-winner”, if the distortion type is “A”;\n3. “use-corrected-winner-with-caution”, if the distortion type is “B”;\n4. “check-allocation-bias”, if at least one of the following holds: the distortion type is “C+” or the distortion type is “C-”;\n5. in all other cases, “pooled-analysis-trustworthy”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's corrected policy implication is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the distortion type is blank"
-          }
-        },
-        {
-          "value": "“use-corrected-winner”",
-          "when": {
-            "kind": "leaf",
-            "text": "the distortion type is “A”"
-          }
-        },
-        {
-          "value": "“use-corrected-winner-with-caution”",
-          "when": {
-            "kind": "leaf",
-            "text": "the distortion type is “B”"
-          }
-        },
-        {
-          "value": "“check-allocation-bias”",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the distortion type is “C+”"
-              },
-              {
-                "kind": "leaf",
-                "text": "the distortion type is “C-”"
-              }
-            ]
-          }
-        },
-        {
-          "value": "“pooled-analysis-trustworthy”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.AllocationDirection": {
-    "table": "TreatmentRankings",
-    "field": "AllocationDirection",
-    "kind": "formula",
-    "rule": "The treatment ranking's allocation direction is determined by the following priority:\n1. an empty string, if the corrected gap is blank;\n2. “reversal”, if the sign flip flag is set;\n3. “amplification”, if the absolute value of the signed pooled gap is greater than the absolute value of the corrected gap plus 0.001;\n4. “compression”, if the absolute value of the signed pooled gap is less than the absolute value of the corrected gap minus 0.001;\n5. in all other cases, “neutral”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "CorrectedGap",
-        "label": "corrected gap"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "IsSignFlip",
-        "label": "is sign flip"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "SignedPooledGap",
-        "label": "signed pooled gap"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's allocation direction is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the corrected gap is blank"
-          }
-        },
-        {
-          "value": "“reversal”",
-          "when": {
-            "kind": "leaf",
-            "text": "the sign flip flag is set"
-          }
-        },
-        {
-          "value": "“amplification”",
-          "when": {
-            "kind": "leaf",
-            "text": "the absolute value of the signed pooled gap is greater than the absolute value of the corrected gap plus 0.001"
-          }
-        },
-        {
-          "value": "“compression”",
-          "when": {
-            "kind": "leaf",
-            "text": "the absolute value of the signed pooled gap is less than the absolute value of the corrected gap minus 0.001"
-          }
-        },
-        {
-          "value": "“neutral”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.SignalPurity": {
-    "table": "TreatmentRankings",
-    "field": "SignalPurity",
-    "kind": "formula",
-    "rule": "The treatment ranking's signal purity is determined by the following priority:\n1. an empty string, if the corrected gap is blank;\n2. 1, if the absolute value of the corrected gap plus the allocation distortion is 0;\n3. in all other cases, the absolute value of the corrected gap divided by the absolute value of the corrected gap plus the allocation distortion.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "CorrectedGap",
-        "label": "corrected gap"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "AllocationDistortion",
-        "label": "allocation distortion"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's signal purity is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the corrected gap is blank"
-          }
-        },
-        {
-          "value": "1",
-          "when": {
-            "kind": "leaf",
-            "text": "the absolute value of the corrected gap plus the allocation distortion is 0"
-          }
-        },
-        {
-          "value": "the absolute value of the corrected gap divided by the absolute value of the corrected gap plus the allocation distortion",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.PooledGapCrossesZero": {
-    "table": "TreatmentRankings",
-    "field": "PooledGapCrossesZero",
-    "kind": "formula",
-    "rule": "A treatment ranking is flagged pooled gap crosses zero if the value of LOOKUP(Study, SweepStudySummary[SweepStudyId], SweepStudySummary[PooledGapCrossesZero]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "Study",
-        "label": "study"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.SweepPooledGapRange": {
-    "table": "TreatmentRankings",
-    "field": "SweepPooledGapRange",
-    "kind": "formula",
-    "rule": "A treatment ranking's sweep pooled gap range is computed as the value of LOOKUP(Study, SweepStudySummary[SweepStudyId], SweepStudySummary[SweepPooledGapRange]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "Study",
-        "label": "study"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.LatentFlipPotential": {
-    "table": "TreatmentRankings",
-    "field": "LatentFlipPotential",
-    "kind": "formula",
-    "rule": "A treatment ranking is flagged latent flip potential if all of the following hold: the distortion type is “D” and the pooled gap crosses zero is true.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "PooledGapCrossesZero",
-        "label": "pooled gap crosses zero"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's latent flip potential is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the distortion type is blank"
-          }
-        },
-        {
-          "value": "the AND of the distortion type is “D” and the pooled gap crosses zero is true",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.AllocationFragility": {
-    "table": "TreatmentRankings",
-    "field": "AllocationFragility",
-    "kind": "formula",
-    "rule": "The treatment ranking's allocation fragility is determined by the following priority:\n1. 0, if at least one of the following holds: the sweep pooled gap range is blank; the pooled gap is blank; or the pooled gap is 0;\n2. in all other cases, the sweep pooled gap range divided by the absolute value of the pooled gap.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "SweepPooledGapRange",
-        "label": "sweep pooled gap range"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "PooledGap",
-        "label": "pooled gap"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's allocation fragility is determined by the following priority:",
-      "cases": [
-        {
-          "value": "0",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the sweep pooled gap range is blank"
-              },
-              {
-                "kind": "leaf",
-                "text": "the pooled gap is blank"
-              },
-              {
-                "kind": "leaf",
-                "text": "the pooled gap is 0"
-              }
-            ]
-          }
-        },
-        {
-          "value": "the sweep pooled gap range divided by the absolute value of the pooled gap",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.MaxStratumImbalance": {
-    "table": "TreatmentRankings",
-    "field": "MaxStratumImbalance",
-    "kind": "rollup",
-    "rule": "A treatment ranking's max stratum imbalance is the largest abs allocation bias across the treatment ranking's stratum summaries that have a treatment label of “A”.",
-    "mechanical": false,
-    "refs": [
-      {
+      "StratumSummaries.AbsAllocationBias": {
         "table": "StratumSummaries",
         "field": "AbsAllocationBias",
-        "label": "abs allocation bias"
+        "kind": "formula",
+        "rule": "The stratum summary's abs allocation bias is determined by the following priority:\n1. an empty string, if the allocation bias is blank;\n2. in all other cases, the absolute value of the allocation bias.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "AllocationBias",
+            "label": "allocation bias"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The stratum summary's abs allocation bias is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the allocation bias is blank"
+              }
+            },
+            {
+              "value": "the absolute value of the allocation bias",
+              "when": null
+            }
+          ],
+          "children": null
+        }
       },
-      {
-        "table": "StratumSummaries",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumSummaries",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.MaxStratumGap": {
-    "table": "TreatmentRankings",
-    "field": "MaxStratumGap",
-    "kind": "rollup",
-    "rule": "A treatment ranking's max stratum gap is the largest abs stratum gap across the treatment ranking's stratum summaries that have a treatment label of “A”.",
-    "mechanical": false,
-    "refs": [
-      {
+      "StratumSummaries.AbsStratumGap": {
         "table": "StratumSummaries",
         "field": "AbsStratumGap",
-        "label": "abs stratum gap"
+        "kind": "formula",
+        "rule": "The stratum summary's abs stratum gap is determined by the following priority:\n1. an empty string, if the stratum gap is blank;\n2. in all other cases, the absolute value of the stratum gap.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "StratumGap",
+            "label": "stratum gap"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The stratum summary's abs stratum gap is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the stratum gap is blank"
+              }
+            },
+            {
+              "value": "the absolute value of the stratum gap",
+              "when": null
+            }
+          ],
+          "children": null
+        }
       },
-      {
-        "table": "StratumSummaries",
-        "field": "Study",
-        "label": "study"
+      "ModelSummary.Name": {
+        "table": "ModelSummary",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A model summary's name is the same as its model summary ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ModelSummary",
+            "field": "ModelSummaryId",
+            "label": "model summary ID"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "TreatmentRankings",
-        "field": "Study",
-        "label": "study"
+      "ModelSummary.ReversalCount": {
+        "table": "ModelSummary",
+        "field": "ReversalCount",
+        "kind": "rollup",
+        "rule": "A model summary's reversal count is the number of treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "IsReversal",
+            "label": "is reversal"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "StratumSummaries",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.IsSweepFragile": {
-    "table": "TreatmentRankings",
-    "field": "IsSweepFragile",
-    "kind": "formula",
-    "rule": "A treatment ranking is considered a sweep fragile if all of the following hold: the distortion type is “D”; the signal purity is 1; the allocation distortion is 0; the sweep pooled gap range is greater than 0.3; and the allocation fragility is at least 10.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "DistortionType",
-        "label": "distortion type"
+      "ModelSummary.NonReversalCount": {
+        "table": "ModelSummary",
+        "field": "NonReversalCount",
+        "kind": "rollup",
+        "rule": "A model summary's non reversal count is the number of treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "IsReversal",
+            "label": "is reversal"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "TreatmentRankings",
-        "field": "SignalPurity",
-        "label": "signal purity"
+      "ModelSummary.StudyCount": {
+        "table": "ModelSummary",
+        "field": "StudyCount",
+        "kind": "formula",
+        "rule": "A model summary's study count is computed as the reversal count plus the non reversal count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ModelSummary",
+            "field": "ReversalCount",
+            "label": "reversal count"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "NonReversalCount",
+            "label": "non reversal count"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "TreatmentRankings",
-        "field": "AllocationDistortion",
-        "label": "allocation distortion"
+      "ModelSummary.ExplainedCount": {
+        "table": "ModelSummary",
+        "field": "ExplainedCount",
+        "kind": "rollup",
+        "rule": "A model summary's explained count is the number of treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "IsParadoxExplained",
+            "label": "is paradox explained"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "TreatmentRankings",
+      "ModelSummary.TotalParadoxStrength": {
+        "table": "ModelSummary",
+        "field": "TotalParadoxStrength",
+        "kind": "rollup",
+        "rule": "A model summary's total paradox strength is the total paradox strength across the treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "ParadoxStrength",
+            "label": "paradox strength"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TreatmentA",
+            "label": "treatment a"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.AvgParadoxStrength": {
+        "table": "ModelSummary",
+        "field": "AvgParadoxStrength",
+        "kind": "formula",
+        "rule": "The model summary's avg paradox strength is determined by the following priority:\n1. an empty string, if the study count is 0;\n2. in all other cases, the total paradox strength divided by the study count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ModelSummary",
+            "field": "StudyCount",
+            "label": "study count"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "TotalParadoxStrength",
+            "label": "total paradox strength"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The model summary's avg paradox strength is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the study count is 0"
+              }
+            },
+            {
+              "value": "the total paradox strength divided by the study count",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "ModelSummary.TypeACount": {
+        "table": "ModelSummary",
+        "field": "TypeACount",
+        "kind": "rollup",
+        "rule": "A model summary's type a count is the number of treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.DangerTierCount": {
+        "table": "ModelSummary",
+        "field": "DangerTierCount",
+        "kind": "rollup",
+        "rule": "A model summary's danger tier count is the number of treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "ScreeningTier",
+            "label": "screening tier"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.CautionTierCount": {
+        "table": "ModelSummary",
+        "field": "CautionTierCount",
+        "kind": "rollup",
+        "rule": "A model summary's caution tier count is the number of treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "ScreeningTier",
+            "label": "screening tier"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.SafeTierCount": {
+        "table": "ModelSummary",
+        "field": "SafeTierCount",
+        "kind": "rollup",
+        "rule": "A model summary's safe tier count is the number of treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "ScreeningTier",
+            "label": "screening tier"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.TypeBCount": {
+        "table": "ModelSummary",
+        "field": "TypeBCount",
+        "kind": "rollup",
+        "rule": "A model summary's type b count is the number of treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.TypeDCount": {
+        "table": "ModelSummary",
+        "field": "TypeDCount",
+        "kind": "rollup",
+        "rule": "A model summary's type d count is the number of treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.TypeCPlusCount": {
+        "table": "ModelSummary",
+        "field": "TypeCPlusCount",
+        "kind": "rollup",
+        "rule": "A model summary's type c plus count is the number of treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.TypeCMinusCount": {
+        "table": "ModelSummary",
+        "field": "TypeCMinusCount",
+        "kind": "rollup",
+        "rule": "A model summary's type c minus count is the number of treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.TypeAFraction": {
+        "table": "ModelSummary",
+        "field": "TypeAFraction",
+        "kind": "formula",
+        "rule": "The model summary's type a fraction is determined by the following priority:\n1. an empty string, if the study count is 0;\n2. in all other cases, the type a count divided by the study count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ModelSummary",
+            "field": "StudyCount",
+            "label": "study count"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "TypeACount",
+            "label": "type a count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The model summary's type a fraction is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the study count is 0"
+              }
+            },
+            {
+              "value": "the type a count divided by the study count",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "ModelSummary.DistortionTaxonomyCoverage": {
+        "table": "ModelSummary",
+        "field": "DistortionTaxonomyCoverage",
+        "kind": "formula",
+        "rule": "A model summary's distortion taxonomy coverage is computed as “A:”, followed by the type a count, followed by “ B:”, followed by the type b count, followed by “ C+:”, followed by the c amplification count, followed by “ C-:”, followed by the c compression count, followed by “ D:”, followed by the type d count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ModelSummary",
+            "field": "TypeACount",
+            "label": "type a count"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "TypeBCount",
+            "label": "type b count"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "CAmplificationCount",
+            "label": "c amplification count"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "CCompressionCount",
+            "label": "c compression count"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "TypeDCount",
+            "label": "type d count"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.DistortionOnlyCount": {
+        "table": "ModelSummary",
+        "field": "DistortionOnlyCount",
+        "kind": "formula",
+        "rule": "A model summary's distortion only count is computed as the c amplification count plus the c compression count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ModelSummary",
+            "field": "CAmplificationCount",
+            "label": "c amplification count"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "CCompressionCount",
+            "label": "c compression count"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.CAmplificationCount": {
+        "table": "ModelSummary",
+        "field": "CAmplificationCount",
+        "kind": "rollup",
+        "rule": "A model summary's c amplification count is the number of treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.CCompressionCount": {
+        "table": "ModelSummary",
+        "field": "CCompressionCount",
+        "kind": "rollup",
+        "rule": "A model summary's c compression count is the number of treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.AvgSignalPurity": {
+        "table": "ModelSummary",
+        "field": "AvgSignalPurity",
+        "kind": "rollup",
+        "rule": "A model summary's avg signal purity is an aggregated value computed across the model summary's related records.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "SignalPurity",
+            "label": "signal purity"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TreatmentRankingId",
+            "label": "treatment ranking ID"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.SweepCorrectedGapMax": {
+        "table": "ModelSummary",
+        "field": "SweepCorrectedGapMax",
+        "kind": "rollup",
+        "rule": "A model summary's sweep corrected gap max is the largest sweep corrected gap across the allocation sweep related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AllocationSweep",
+            "field": "SweepCorrectedGap",
+            "label": "sweep corrected gap"
+          },
+          {
+            "table": "AllocationSweep",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.SweepCorrectedGapMin": {
+        "table": "ModelSummary",
+        "field": "SweepCorrectedGapMin",
+        "kind": "rollup",
+        "rule": "A model summary's sweep corrected gap min is the smallest sweep corrected gap across the allocation sweep related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AllocationSweep",
+            "field": "SweepCorrectedGap",
+            "label": "sweep corrected gap"
+          },
+          {
+            "table": "AllocationSweep",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.SweepCorrectedGapRange": {
+        "table": "ModelSummary",
+        "field": "SweepCorrectedGapRange",
+        "kind": "formula",
+        "rule": "The model summary's sweep corrected gap range is determined by the following priority:\n1. an empty string, if the sweep corrected gap max is blank;\n2. in all other cases, the sweep corrected gap max minus the sweep corrected gap min.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ModelSummary",
+            "field": "SweepCorrectedGapMax",
+            "label": "sweep corrected gap max"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "SweepCorrectedGapMin",
+            "label": "sweep corrected gap min"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The model summary's sweep corrected gap range is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the sweep corrected gap max is blank"
+              }
+            },
+            {
+              "value": "the sweep corrected gap max minus the sweep corrected gap min",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "ModelSummary.SweepPooledGapRange": {
+        "table": "ModelSummary",
         "field": "SweepPooledGapRange",
-        "label": "sweep pooled gap range"
+        "kind": "rollup",
+        "rule": "A model summary's sweep pooled gap range is an aggregated value computed across the model summary's related records.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AllocationSweep",
+            "field": "SweepPooledGap",
+            "label": "sweep pooled gap"
+          },
+          {
+            "table": "AllocationSweep",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "TreatmentRankings",
-        "field": "AllocationFragility",
-        "label": "allocation fragility"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "A treatment ranking is considered a sweep fragile if all of the following:",
-      "cases": [],
-      "children": [
-        {
-          "kind": "all",
+      "ModelSummary.RealStudyCount": {
+        "table": "ModelSummary",
+        "field": "RealStudyCount",
+        "kind": "rollup",
+        "rule": "A model summary's real study count is the number of studies related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "IsSynthetic",
+            "label": "is synthetic"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.AvgSignalPurityReversal": {
+        "table": "ModelSummary",
+        "field": "AvgSignalPurityReversal",
+        "kind": "formula",
+        "rule": "A model summary's avg signal purity reversal is the average signal purity across the treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "SignalPurity",
+            "label": "signal purity"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "AllocationDirection",
+            "label": "allocation direction"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.AvgSignalPurityNonReversal": {
+        "table": "ModelSummary",
+        "field": "AvgSignalPurityNonReversal",
+        "kind": "formula",
+        "rule": "A model summary's avg signal purity non reversal is the average signal purity across the treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "SignalPurity",
+            "label": "signal purity"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "AllocationDirection",
+            "label": "allocation direction"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.SignalPurityGap": {
+        "table": "ModelSummary",
+        "field": "SignalPurityGap",
+        "kind": "formula",
+        "rule": "A model summary's signal purity gap is computed as the avg signal purity non reversal minus the avg signal purity reversal.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ModelSummary",
+            "field": "AvgSignalPurityNonReversal",
+            "label": "avg signal purity non reversal"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "AvgSignalPurityReversal",
+            "label": "avg signal purity reversal"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.MedicineStudyCount": {
+        "table": "ModelSummary",
+        "field": "MedicineStudyCount",
+        "kind": "rollup",
+        "rule": "A model summary's medicine study count is the number of the model summary's studies that are not synthetic.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "Domain",
+            "label": "domain"
+          },
+          {
+            "table": "Studies",
+            "field": "IsSynthetic",
+            "label": "is synthetic"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.EpidemiologyStudyCount": {
+        "table": "ModelSummary",
+        "field": "EpidemiologyStudyCount",
+        "kind": "rollup",
+        "rule": "A model summary's epidemiology study count is the number of the model summary's studies that are not synthetic.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "Domain",
+            "label": "domain"
+          },
+          {
+            "table": "Studies",
+            "field": "IsSynthetic",
+            "label": "is synthetic"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.OtherDomainStudyCount": {
+        "table": "ModelSummary",
+        "field": "OtherDomainStudyCount",
+        "kind": "formula",
+        "rule": "A model summary's other domain study count is computed as the real study count minus the medicine study count minus the epidemiology study count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ModelSummary",
+            "field": "RealStudyCount",
+            "label": "real study count"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "MedicineStudyCount",
+            "label": "medicine study count"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "EpidemiologyStudyCount",
+            "label": "epidemiology study count"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.DomainDiversityNote": {
+        "table": "ModelSummary",
+        "field": "DomainDiversityNote",
+        "kind": "formula",
+        "rule": "A model summary's domain diversity note is computed as “real=”, followed by the real study count, followed by “ studies; wave2=”, followed by the expansion wave2 study count, followed by “; eduLatent=”, followed by the education latent fraction times 100 rounded to 0 decimal place(s), followed by “%; sportsLatent=”, followed by the sports latent fraction times 100 rounded to 0 decimal place(s), followed by “%; econFlipRate=”, followed by the economics sign flip rate times 100 rounded to 0 decimal place(s), followed by “%”.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "ModelSummary",
+            "field": "RealStudyCount",
+            "label": "real study count"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "ExpansionWave2StudyCount",
+            "label": "expansion wave2 study count"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "EducationLatentFraction",
+            "label": "education latent fraction"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "SportsLatentFraction",
+            "label": "sports latent fraction"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "EconomicsSignFlipRate",
+            "label": "economics sign flip rate"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.IngestionProtocolItemCount": {
+        "table": "ModelSummary",
+        "field": "IngestionProtocolItemCount",
+        "kind": "rollup",
+        "rule": "A model summary's ingestion protocol item count is the number of ingestion protocol related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IngestionProtocol",
+            "field": "ProtocolId",
+            "label": "protocol ID"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.CorpusPassesIngestionContract": {
+        "table": "ModelSummary",
+        "field": "CorpusPassesIngestionContract",
+        "kind": "lookup",
+        "rule": "A model summary's corpus passes ingestion contract is the value of LOOKUP(\"ingestion-v1\", IngestionSummary[IngestionSummaryId], IngestionSummary[IngestionContractPasses]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.IngestionWitnessNote": {
+        "table": "ModelSummary",
+        "field": "IngestionWitnessNote",
+        "kind": "lookup",
+        "rule": "A model summary's ingestion witness note is the value of LOOKUP(\"ingestion-v1\", IngestionSummary[IngestionSummaryId], IngestionSummary[IngestionWitnessNote]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.CatalogEntryCount": {
+        "table": "ModelSummary",
+        "field": "CatalogEntryCount",
+        "kind": "lookup",
+        "rule": "A model summary's catalog entry count is the value of LOOKUP(\"catalog-v1\", CorpusCatalogSummary[CatalogSummaryId], CorpusCatalogSummary[TotalCatalogEntries]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.PendingImportCount": {
+        "table": "ModelSummary",
+        "field": "PendingImportCount",
+        "kind": "lookup",
+        "rule": "A model summary's pending import count is the value of LOOKUP(\"catalog-v1\", CorpusCatalogSummary[CatalogSummaryId], CorpusCatalogSummary[CandidateCount]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.ReadyToEncodeCount": {
+        "table": "ModelSummary",
+        "field": "ReadyToEncodeCount",
+        "kind": "lookup",
+        "rule": "A model summary's ready to encode count is the value of LOOKUP(\"catalog-v1\", CorpusCatalogSummary[CatalogSummaryId], CorpusCatalogSummary[ReadyToEncodeCount]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.ImportSessionReady": {
+        "table": "ModelSummary",
+        "field": "ImportSessionReady",
+        "kind": "lookup",
+        "rule": "A model summary's import session ready is the value of LOOKUP(\"catalog-v1\", CorpusCatalogSummary[CatalogSummaryId], CorpusCatalogSummary[ImportSessionReady]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.CatalogWitnessNote": {
+        "table": "ModelSummary",
+        "field": "CatalogWitnessNote",
+        "kind": "lookup",
+        "rule": "A model summary's catalog witness note is the value of LOOKUP(\"catalog-v1\", CorpusCatalogSummary[CatalogSummaryId], CorpusCatalogSummary[CatalogWitnessNote]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.LatentTypeDCount": {
+        "table": "ModelSummary",
+        "field": "LatentTypeDCount",
+        "kind": "formula",
+        "rule": "A model summary's latent type d count is the number of treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "LatentFlipPotential",
+            "label": "latent flip potential"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.StableTypeDCount": {
+        "table": "ModelSummary",
+        "field": "StableTypeDCount",
+        "kind": "formula",
+        "rule": "A model summary's stable type d count is the number of the model summary's treatment rankings that are not latent flip potential.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "LatentFlipPotential",
+            "label": "latent flip potential"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.LatentTypeDFraction": {
+        "table": "ModelSummary",
+        "field": "LatentTypeDFraction",
+        "kind": "formula",
+        "rule": "The model summary's latent type d fraction is determined by the following priority:\n1. an empty string, if the type d count is 0;\n2. in all other cases, the latent type d count divided by the type d count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ModelSummary",
+            "field": "TypeDCount",
+            "label": "type d count"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "LatentTypeDCount",
+            "label": "latent type d count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The model summary's latent type d fraction is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the type d count is 0"
+              }
+            },
+            {
+              "value": "the latent type d count divided by the type d count",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "ModelSummary.CrossZeroCount": {
+        "table": "ModelSummary",
+        "field": "CrossZeroCount",
+        "kind": "formula",
+        "rule": "A model summary's cross zero count is the number of treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "PooledGapCrossesZero",
+            "label": "pooled gap crosses zero"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.SignFlipSignalPurityMax": {
+        "table": "ModelSummary",
+        "field": "SignFlipSignalPurityMax",
+        "kind": "formula",
+        "rule": "A model summary's sign flip signal purity max is the largest signal purity across the treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "SignalPurity",
+            "label": "signal purity"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "IsSignFlip",
+            "label": "is sign flip"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.EconomicsSignFlipCount": {
+        "table": "ModelSummary",
+        "field": "EconomicsSignFlipCount",
+        "kind": "formula",
+        "rule": "A model summary's economics sign flip count is the number of the model summary's treatment rankings that are sign flips.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "StudyDomain",
+            "label": "study domain"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "IsSignFlip",
+            "label": "is sign flip"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.SumPooledGapLatentD": {
+        "table": "ModelSummary",
+        "field": "SumPooledGapLatentD",
+        "kind": "rollup",
+        "rule": "A model summary's sum pooled gap latent d is the total pooled gap across the treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "PooledGap",
+            "label": "pooled gap"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "LatentFlipPotential",
+            "label": "latent flip potential"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.AvgPooledGapLatentD": {
+        "table": "ModelSummary",
+        "field": "AvgPooledGapLatentD",
+        "kind": "formula",
+        "rule": "The model summary's avg pooled gap latent d is determined by the following priority:\n1. 0, if the latent type d count is 0;\n2. in all other cases, the sum pooled gap latent d divided by the latent type d count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ModelSummary",
+            "field": "LatentTypeDCount",
+            "label": "latent type d count"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "SumPooledGapLatentD",
+            "label": "sum pooled gap latent d"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The model summary's avg pooled gap latent d is determined by the following priority:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "the latent type d count is 0"
+              }
+            },
+            {
+              "value": "the sum pooled gap latent d divided by the latent type d count",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "ModelSummary.SumPooledGapStableD": {
+        "table": "ModelSummary",
+        "field": "SumPooledGapStableD",
+        "kind": "rollup",
+        "rule": "A model summary's sum pooled gap stable d is the total pooled gap across the model summary's treatment rankings that are not latent flip potential.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "PooledGap",
+            "label": "pooled gap"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "LatentFlipPotential",
+            "label": "latent flip potential"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.AvgPooledGapStableD": {
+        "table": "ModelSummary",
+        "field": "AvgPooledGapStableD",
+        "kind": "formula",
+        "rule": "The model summary's avg pooled gap stable d is determined by the following priority:\n1. 0, if the stable type d count is 0;\n2. in all other cases, the sum pooled gap stable d divided by the stable type d count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ModelSummary",
+            "field": "StableTypeDCount",
+            "label": "stable type d count"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "SumPooledGapStableD",
+            "label": "sum pooled gap stable d"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The model summary's avg pooled gap stable d is determined by the following priority:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "the stable type d count is 0"
+              }
+            },
+            {
+              "value": "the sum pooled gap stable d divided by the stable type d count",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "ModelSummary.EpidemiologyAvgDistortion": {
+        "table": "ModelSummary",
+        "field": "EpidemiologyAvgDistortion",
+        "kind": "formula",
+        "rule": "A model summary's epidemiology avg distortion is the average allocation distortion across the treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "AllocationDistortion",
+            "label": "allocation distortion"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "StudyDomain",
+            "label": "study domain"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.EducationAvgDistortion": {
+        "table": "ModelSummary",
+        "field": "EducationAvgDistortion",
+        "kind": "formula",
+        "rule": "A model summary's education avg distortion is the average allocation distortion across the treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "AllocationDistortion",
+            "label": "allocation distortion"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "StudyDomain",
+            "label": "study domain"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.ConfounderSignFlipCount": {
+        "table": "ModelSummary",
+        "field": "ConfounderSignFlipCount",
+        "kind": "formula",
+        "rule": "A model summary's confounder sign flip count is the number of the model summary's treatment rankings that are sign flips.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "StratumCausalRole",
+            "label": "stratum causal role"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "IsSignFlip",
+            "label": "is sign flip"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.ConfounderLatentOnlyCount": {
+        "table": "ModelSummary",
+        "field": "ConfounderLatentOnlyCount",
+        "kind": "formula",
+        "rule": "A model summary's confounder latent only count is the number of the model summary's treatment rankings that are latent only flips.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "StratumCausalRole",
+            "label": "stratum causal role"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "IsLatentOnlyFlip",
+            "label": "is latent only flip"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.ColliderSelectionCount": {
+        "table": "ModelSummary",
+        "field": "ColliderSelectionCount",
+        "kind": "formula",
+        "rule": "A model summary's collider selection count is computed as the number of treatment rankings related to the model summary plus the number of treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "StratumCausalRole",
+            "label": "stratum causal role"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.ColliderSelectionManifestCount": {
+        "table": "ModelSummary",
+        "field": "ColliderSelectionManifestCount",
+        "kind": "formula",
+        "rule": "A model summary's collider selection manifest count is computed as the number of the model summary's treatment rankings that are sign flips plus the number of the model summary's treatment rankings that are sign flips.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "StratumCausalRole",
+            "label": "stratum causal role"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "IsSignFlip",
+            "label": "is sign flip"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.ColliderSelectionLatentOnlyCount": {
+        "table": "ModelSummary",
+        "field": "ColliderSelectionLatentOnlyCount",
+        "kind": "formula",
+        "rule": "A model summary's collider selection latent only count is computed as the number of the model summary's treatment rankings that are latent only flips plus the number of the model summary's treatment rankings that are latent only flips.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "StratumCausalRole",
+            "label": "stratum causal role"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "IsLatentOnlyFlip",
+            "label": "is latent only flip"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.ExplainedConfounderCount": {
+        "table": "ModelSummary",
+        "field": "ExplainedConfounderCount",
+        "kind": "rollup",
+        "rule": "A model summary's explained confounder count is the number of treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "IsParadoxExplained",
+            "label": "is paradox explained"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.ContestedOrMediatorExplainedCount": {
+        "table": "ModelSummary",
+        "field": "ContestedOrMediatorExplainedCount",
+        "kind": "rollup",
+        "rule": "A model summary's contested or mediator explained count is the number of the model summary's treatment rankings that are paradox-explained and are not adjustment appropriate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "IsSignFlip",
+            "label": "is sign flip"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "IsParadoxExplained",
+            "label": "is paradox explained"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "AdjustmentAppropriate",
+            "label": "adjustment appropriate"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.DiscoveryWitnessNote": {
+        "table": "ModelSummary",
+        "field": "DiscoveryWitnessNote",
+        "kind": "formula",
+        "rule": "A model summary's discovery witness note is computed as “sweep: latentD=”, followed by the latent type d fraction, followed by “ purityMax=”, followed by the sign flip signal purity max, followed by “ catalogExact=”, followed by the type prediction match rate, followed by “ identities=”, followed by the confounder identity count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ModelSummary",
+            "field": "LatentTypeDFraction",
+            "label": "latent type d fraction"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "SignFlipSignalPurityMax",
+            "label": "sign flip signal purity max"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "TypePredictionMatchRate",
+            "label": "type prediction match rate"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "ConfounderIdentityCount",
+            "label": "confounder identity count"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.TypePredictionMatchCount": {
+        "table": "ModelSummary",
+        "field": "TypePredictionMatchCount",
+        "kind": "lookup",
+        "rule": "A model summary's type prediction match count is the value of LOOKUP(\"catalog-v1\", CorpusCatalogSummary[CatalogSummaryId], CorpusCatalogSummary[TypePredictionMatchCount]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.TypePredictionMismatchCount": {
+        "table": "ModelSummary",
+        "field": "TypePredictionMismatchCount",
+        "kind": "lookup",
+        "rule": "A model summary's type prediction mismatch count is the value of LOOKUP(\"catalog-v1\", CorpusCatalogSummary[CatalogSummaryId], CorpusCatalogSummary[TypePredictionMismatchCount]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.TypePredictionMatchRate": {
+        "table": "ModelSummary",
+        "field": "TypePredictionMatchRate",
+        "kind": "lookup",
+        "rule": "A model summary's type prediction match rate is the value of LOOKUP(\"catalog-v1\", CorpusCatalogSummary[CatalogSummaryId], CorpusCatalogSummary[TypePredictionMatchRate]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.SignFlipPredictionMatchRate": {
+        "table": "ModelSummary",
+        "field": "SignFlipPredictionMatchRate",
+        "kind": "lookup",
+        "rule": "A model summary's sign flip prediction match rate is the value of LOOKUP(\"catalog-v1\", CorpusCatalogSummary[CatalogSummaryId], CorpusCatalogSummary[SignFlipPredictionMatchRate]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.CatalogPredictionWitnessNote": {
+        "table": "ModelSummary",
+        "field": "CatalogPredictionWitnessNote",
+        "kind": "lookup",
+        "rule": "A model summary's catalog prediction witness note is the value of LOOKUP(\"catalog-v1\", CorpusCatalogSummary[CatalogSummaryId], CorpusCatalogSummary[CatalogPredictionWitnessNote]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.CPlusAvgDistortion": {
+        "table": "ModelSummary",
+        "field": "CPlusAvgDistortion",
+        "kind": "formula",
+        "rule": "A model summary's c plus avg distortion is the average allocation distortion across the treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "AllocationDistortion",
+            "label": "allocation distortion"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.CMinusAvgDistortion": {
+        "table": "ModelSummary",
+        "field": "CMinusAvgDistortion",
+        "kind": "formula",
+        "rule": "A model summary's c minus avg distortion is the average allocation distortion across the treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "AllocationDistortion",
+            "label": "allocation distortion"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.TypeDAvgDistortion": {
+        "table": "ModelSummary",
+        "field": "TypeDAvgDistortion",
+        "kind": "formula",
+        "rule": "A model summary's type d avg distortion is the average allocation distortion across the treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "AllocationDistortion",
+            "label": "allocation distortion"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.SweepFragileCount": {
+        "table": "ModelSummary",
+        "field": "SweepFragileCount",
+        "kind": "formula",
+        "rule": "A model summary's sweep fragile count is the number of treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "IsSweepFragile",
+            "label": "is sweep fragile"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.ExpansionWave1EconomicsExpectedACount": {
+        "table": "ModelSummary",
+        "field": "ExpansionWave1EconomicsExpectedACount",
+        "kind": "formula",
+        "rule": "A model summary's expansion wave1 economics expected a count is the number of the model summary's candidate study catalog that are imported; have a domain of “economics”; and have a expected distortion type of “A”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "ExpansionWave",
+            "label": "expansion wave"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "Domain",
+            "label": "domain"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "IsImported",
+            "label": "is imported"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "ExpectedDistortionType",
+            "label": "expected distortion type"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.ExpansionWave1EconomicsExpectedADCount": {
+        "table": "ModelSummary",
+        "field": "ExpansionWave1EconomicsExpectedADCount",
+        "kind": "formula",
+        "rule": "A model summary's expansion wave1 economics expected AD count is the number of the model summary's candidate study catalog that are imported; have a domain of “economics”; have a expected distortion type of “A”; and have a observed distortion type of “D”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "ExpansionWave",
+            "label": "expansion wave"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "Domain",
+            "label": "domain"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "IsImported",
+            "label": "is imported"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "ExpectedDistortionType",
+            "label": "expected distortion type"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "ObservedDistortionType",
+            "label": "observed distortion type"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.EconomicsExpectedAMismatchRate": {
+        "table": "ModelSummary",
+        "field": "EconomicsExpectedAMismatchRate",
+        "kind": "formula",
+        "rule": "The model summary's economics expected a mismatch rate is determined by the following priority:\n1. an empty string, if the expansion wave1 economics expected a count is 0;\n2. in all other cases, the expansion wave1 economics expected AD count divided by the expansion wave1 economics expected a count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ModelSummary",
+            "field": "ExpansionWave1EconomicsExpectedACount",
+            "label": "expansion wave1 economics expected a count"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "ExpansionWave1EconomicsExpectedADCount",
+            "label": "expansion wave1 economics expected AD count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The model summary's economics expected a mismatch rate is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the expansion wave1 economics expected a count is 0"
+              }
+            },
+            {
+              "value": "the expansion wave1 economics expected AD count divided by the expansion wave1 economics expected a count",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "ModelSummary.UnanimousSignFlipCount": {
+        "table": "ModelSummary",
+        "field": "UnanimousSignFlipCount",
+        "kind": "formula",
+        "rule": "A model summary's unanimous sign flip count is the number of the model summary's treatment rankings that are stratum-unanimous.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "IsSignFlip",
+            "label": "is sign flip"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "IsStratumUnanimous",
+            "label": "is stratum unanimous"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.MaxStudySweepCorrectedGapRange": {
+        "table": "ModelSummary",
+        "field": "MaxStudySweepCorrectedGapRange",
+        "kind": "rollup",
+        "rule": "A model summary's max study sweep corrected gap range is the largest sweep corrected gap range across the sweep study summary related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SweepStudySummary",
+            "field": "SweepCorrectedGapRange",
+            "label": "sweep corrected gap range"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.CorrectedGapInvariantFailCount": {
+        "table": "ModelSummary",
+        "field": "CorrectedGapInvariantFailCount",
+        "kind": "rollup",
+        "rule": "A model summary's corrected gap invariant fail count is the number of sweep study summary related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SweepStudySummary",
+            "field": "SweepCorrectedGapRange",
+            "label": "sweep corrected gap range"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.FalsePositiveExplainedCount": {
+        "table": "ModelSummary",
+        "field": "FalsePositiveExplainedCount",
+        "kind": "rollup",
+        "rule": "A model summary's false positive explained count is the number of the model summary's false positive explaineds.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "IsParadoxExplained",
+            "label": "is paradox explained"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "IsSignFlip",
+            "label": "is sign flip"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "StratumCausalRole",
+            "label": "stratum causal role"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.UnexplainedConfounderSignFlipCount": {
+        "table": "ModelSummary",
+        "field": "UnexplainedConfounderSignFlipCount",
+        "kind": "rollup",
+        "rule": "A model summary's unexplained confounder sign flip count is the number of the model summary's treatment rankings that are not paradox-explained and have a stratum causal role of “confounder”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "IsSignFlip",
+            "label": "is sign flip"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "StratumCausalRole",
+            "label": "stratum causal role"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "IsParadoxExplained",
+            "label": "is paradox explained"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.TheoremCount": {
+        "table": "ModelSummary",
+        "field": "TheoremCount",
+        "kind": "formula",
+        "rule": "A model summary's theorem count is the number of the model summary's conclusions that have a status of “witnessed”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Conclusions",
+            "field": "Category",
+            "label": "category"
+          },
+          {
+            "table": "Conclusions",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.EducationLatentFraction": {
+        "table": "ModelSummary",
+        "field": "EducationLatentFraction",
+        "kind": "formula",
+        "rule": "The model summary's education latent fraction is determined by the following priority:\n1. an empty string, if the model summary has no treatment rankings that have a distortion type of “D”;\n2. in all other cases, the number of the model summary's treatment rankings that are latent only flips and have a distortion type of “D” divided by the number of the model summary's treatment rankings that have a distortion type of “D”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "StudyDomain",
+            "label": "study domain"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "IsLatentOnlyFlip",
+            "label": "is latent only flip"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The model summary's education latent fraction is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the model summary has no treatment rankings that have a distortion type of “D”"
+              }
+            },
+            {
+              "value": "the number of the model summary's treatment rankings that are latent only flips and have a distortion type of “D” divided by the number of the model summary's treatment rankings that have a distortion type of “D”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "ModelSummary.SportsLatentFraction": {
+        "table": "ModelSummary",
+        "field": "SportsLatentFraction",
+        "kind": "formula",
+        "rule": "The model summary's sports latent fraction is determined by the following priority:\n1. an empty string, if the model summary has no treatment rankings that have a distortion type of “D”;\n2. in all other cases, the number of the model summary's treatment rankings that are latent only flips and have a distortion type of “D” divided by the number of the model summary's treatment rankings that have a distortion type of “D”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "StudyDomain",
+            "label": "study domain"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "IsLatentOnlyFlip",
+            "label": "is latent only flip"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The model summary's sports latent fraction is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the model summary has no treatment rankings that have a distortion type of “D”"
+              }
+            },
+            {
+              "value": "the number of the model summary's treatment rankings that are latent only flips and have a distortion type of “D” divided by the number of the model summary's treatment rankings that have a distortion type of “D”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "ModelSummary.EconomicsSignFlipRate": {
+        "table": "ModelSummary",
+        "field": "EconomicsSignFlipRate",
+        "kind": "formula",
+        "rule": "The model summary's economics sign flip rate is determined by the following priority:\n1. an empty string, if the model summary has no treatment rankings;\n2. in all other cases, the number of the model summary's treatment rankings that are sign flips divided by the number of treatment rankings related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "StudyDomain",
+            "label": "study domain"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "IsSignFlip",
+            "label": "is sign flip"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The model summary's economics sign flip rate is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the model summary has no treatment rankings"
+              }
+            },
+            {
+              "value": "the number of the model summary's treatment rankings that are sign flips divided by the number of treatment rankings related to the model summary",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "ModelSummary.EducationTypeDCount": {
+        "table": "ModelSummary",
+        "field": "EducationTypeDCount",
+        "kind": "formula",
+        "rule": "A model summary's education type d count is the number of the model summary's treatment rankings that have a distortion type of “D”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "StudyDomain",
+            "label": "study domain"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.EducationLatentDCount": {
+        "table": "ModelSummary",
+        "field": "EducationLatentDCount",
+        "kind": "formula",
+        "rule": "A model summary's education latent d count is the number of the model summary's treatment rankings that are latent flip potential and have a distortion type of “D”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "StudyDomain",
+            "label": "study domain"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "LatentFlipPotential",
+            "label": "latent flip potential"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.SportsTypeDCount": {
+        "table": "ModelSummary",
+        "field": "SportsTypeDCount",
+        "kind": "formula",
+        "rule": "A model summary's sports type d count is the number of the model summary's treatment rankings that have a distortion type of “D”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "StudyDomain",
+            "label": "study domain"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.SportsLatentDCount": {
+        "table": "ModelSummary",
+        "field": "SportsLatentDCount",
+        "kind": "formula",
+        "rule": "A model summary's sports latent d count is the number of the model summary's treatment rankings that are latent flip potential and have a distortion type of “D”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "StudyDomain",
+            "label": "study domain"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "LatentFlipPotential",
+            "label": "latent flip potential"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.EconomicsStudyCount": {
+        "table": "ModelSummary",
+        "field": "EconomicsStudyCount",
+        "kind": "formula",
+        "rule": "A model summary's economics study count is the number of the model summary's studies that are not synthetic.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "Domain",
+            "label": "domain"
+          },
+          {
+            "table": "Studies",
+            "field": "IsSynthetic",
+            "label": "is synthetic"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.ExpansionWave2StudyCount": {
+        "table": "ModelSummary",
+        "field": "ExpansionWave2StudyCount",
+        "kind": "formula",
+        "rule": "A model summary's expansion wave2 study count is the number of the model summary's candidate study catalog that are imported.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "ExpansionWave",
+            "label": "expansion wave"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "IsImported",
+            "label": "is imported"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.ConfounderIdentityCount": {
+        "table": "ModelSummary",
+        "field": "ConfounderIdentityCount",
+        "kind": "rollup",
+        "rule": "A model summary's confounder identity count is the number of confounder identities related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ConfounderIdentities",
+            "field": "ConfounderIdentityId",
+            "label": "confounder identity ID"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.MappedStratumVariableCount": {
+        "table": "ModelSummary",
+        "field": "MappedStratumVariableCount",
+        "kind": "rollup",
+        "rule": "A model summary's mapped stratum variable count is the number of stratum variable identity maps related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumVariableIdentityMaps",
+            "field": "MapId",
+            "label": "map ID"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.UnmappedStratumVariableCount": {
+        "table": "ModelSummary",
+        "field": "UnmappedStratumVariableCount",
+        "kind": "formula",
+        "rule": "A model summary's unmapped stratum variable count is computed as the number of stratum variables related to the model summary minus the mapped stratum variable count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumVariables",
+            "field": "StratumVariableId",
+            "label": "stratum variable ID"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "MappedStratumVariableCount",
+            "label": "mapped stratum variable count"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.AgeIdentityManifestFlipRate": {
+        "table": "ModelSummary",
+        "field": "AgeIdentityManifestFlipRate",
+        "kind": "formula",
+        "rule": "A model summary's age identity manifest flip rate is computed as the value of LOOKUP(\"id-age-composition\", IdentityClusterSummaries[ConfounderIdentity], IdentityClusterSummaries[ManifestFlipRate]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.AgeIdentityStudyCount": {
+        "table": "ModelSummary",
+        "field": "AgeIdentityStudyCount",
+        "kind": "formula",
+        "rule": "A model summary's age identity study count is computed as the value of LOOKUP(\"id-age-composition\", IdentityClusterSummaries[ConfounderIdentity], IdentityClusterSummaries[StudyCount]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.AgeIdentityLatentFractionAmongTypeD": {
+        "table": "ModelSummary",
+        "field": "AgeIdentityLatentFractionAmongTypeD",
+        "kind": "formula",
+        "rule": "A model summary's age identity latent fraction among type d is computed as the value of LOOKUP(\"id-age-composition\", IdentityClusterSummaries[ConfounderIdentity], IdentityClusterSummaries[LatentFractionAmongTypeD]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.SeverityIdentityLatentFractionAmongTypeD": {
+        "table": "ModelSummary",
+        "field": "SeverityIdentityLatentFractionAmongTypeD",
+        "kind": "formula",
+        "rule": "A model summary's severity identity latent fraction among type d is computed as the value of LOOKUP(\"id-disease-severity\", IdentityClusterSummaries[ConfounderIdentity], IdentityClusterSummaries[LatentFractionAmongTypeD]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.IdentityMapCoverageRate": {
+        "table": "ModelSummary",
+        "field": "IdentityMapCoverageRate",
+        "kind": "formula",
+        "rule": "The model summary's identity map coverage rate is determined by the following priority:\n1. an empty string, if the real study count is 0;\n2. in all other cases, the mapped stratum variable count divided by the real study count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ModelSummary",
+            "field": "RealStudyCount",
+            "label": "real study count"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "MappedStratumVariableCount",
+            "label": "mapped stratum variable count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The model summary's identity map coverage rate is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the real study count is 0"
+              }
+            },
+            {
+              "value": "the mapped stratum variable count divided by the real study count",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "ModelSummary.SeverityMedicineManifestFlipRate": {
+        "table": "ModelSummary",
+        "field": "SeverityMedicineManifestFlipRate",
+        "kind": "formula",
+        "rule": "A model summary's severity medicine manifest flip rate is computed as the value of LOOKUP(\"cell-id-disease-severity-x-medicine\", IdentityDomainCells[CellId], IdentityDomainCells[ManifestFlipRate]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.SeverityEpiManifestFlipCount": {
+        "table": "ModelSummary",
+        "field": "SeverityEpiManifestFlipCount",
+        "kind": "formula",
+        "rule": "A model summary's severity epi manifest flip count is computed as the value of LOOKUP(\"cell-id-disease-severity-x-epidemiology\", IdentityDomainCells[CellId], IdentityDomainCells[ManifestFlipCount]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.IdentityDomainCellCount": {
+        "table": "ModelSummary",
+        "field": "IdentityDomainCellCount",
+        "kind": "rollup",
+        "rule": "A model summary's identity domain cell count is the number of identity domain cells related to the model summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IdentityDomainCells",
+            "field": "CellId",
+            "label": "cell ID"
+          }
+        ],
+        "structure": null
+      },
+      "ModelSummary.SelectionFrailtyManifestFlipCount": {
+        "table": "ModelSummary",
+        "field": "SelectionFrailtyManifestFlipCount",
+        "kind": "formula",
+        "rule": "A model summary's selection frailty manifest flip count is computed as the value of LOOKUP(\"cluster-id-selection-frailty\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[ManifestFlipCount]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.SelectionFrailtyStudyCount": {
+        "table": "ModelSummary",
+        "field": "SelectionFrailtyStudyCount",
+        "kind": "formula",
+        "rule": "A model summary's selection frailty study count is computed as the value of LOOKUP(\"cluster-id-selection-frailty\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.ColliderIdentityManifestFlipRate": {
+        "table": "ModelSummary",
+        "field": "ColliderIdentityManifestFlipRate",
+        "kind": "formula",
+        "rule": "A model summary's collider identity manifest flip rate is computed as the value of LOOKUP(\"cluster-id-collider-proxy\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[ManifestFlipRate]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.GeographicTypeDFraction": {
+        "table": "ModelSummary",
+        "field": "GeographicTypeDFraction",
+        "kind": "formula",
+        "rule": "A model summary's geographic type d fraction is computed as the value of IF(LOOKUP(\"cluster-id-geographic-composition\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount])=0, \"\", LOOKUP(\"cluster-id-geographic-composition\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[TypeDCount]) / LOOKUP(\"cluster-id-geographic-composition\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount])).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.SeverityDriftDirection": {
+        "table": "ModelSummary",
+        "field": "SeverityDriftDirection",
+        "kind": "formula",
+        "rule": "A model summary's severity drift direction is computed as the value of LOOKUP(\"id-disease-severity\", ConfounderDistortionTimeline[ConfounderIdentity], ConfounderDistortionTimeline[DriftDirection]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.GeographicDriftDirection": {
+        "table": "ModelSummary",
+        "field": "GeographicDriftDirection",
+        "kind": "formula",
+        "rule": "A model summary's geographic drift direction is computed as the value of LOOKUP(\"id-geographic-composition\", ConfounderDistortionTimeline[ConfounderIdentity], ConfounderDistortionTimeline[DriftDirection]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.SituationalDriftDirection": {
+        "table": "ModelSummary",
+        "field": "SituationalDriftDirection",
+        "kind": "formula",
+        "rule": "A model summary's situational drift direction is computed as the value of LOOKUP(\"id-situational-context\", ConfounderDistortionTimeline[ConfounderIdentity], ConfounderDistortionTimeline[DriftDirection]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.AgeDriftDirection": {
+        "table": "ModelSummary",
+        "field": "AgeDriftDirection",
+        "kind": "formula",
+        "rule": "A model summary's age drift direction is computed as the value of LOOKUP(\"id-age-composition\", ConfounderDistortionTimeline[ConfounderIdentity], ConfounderDistortionTimeline[DriftDirection]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.InstitutionalDriftDirection": {
+        "table": "ModelSummary",
+        "field": "InstitutionalDriftDirection",
+        "kind": "formula",
+        "rule": "A model summary's institutional drift direction is computed as the value of LOOKUP(\"id-institutional-unit\", ConfounderDistortionTimeline[ConfounderIdentity], ConfounderDistortionTimeline[DriftDirection]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.SocioeconomicDriftDirection": {
+        "table": "ModelSummary",
+        "field": "SocioeconomicDriftDirection",
+        "kind": "formula",
+        "rule": "A model summary's socioeconomic drift direction is computed as the value of LOOKUP(\"id-socioeconomic-status\", ConfounderDistortionTimeline[ConfounderIdentity], ConfounderDistortionTimeline[DriftDirection]).",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "ModelSummary.DomainFlipGapSurvivesGeometryControl": {
+        "table": "ModelSummary",
+        "field": "DomainFlipGapSurvivesGeometryControl",
+        "kind": "formula",
+        "rule": "A model summary is flagged domain flip gap survives geometry control if all of the following hold: the economics high imbalance sign flip count is 0 and the epidemiology high imbalance sign flip rate is greater than 0.15.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ModelSummary",
+            "field": "EconomicsHighImbalanceSignFlipCount",
+            "label": "economics high imbalance sign flip count"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "EpidemiologyHighImbalanceSignFlipRate",
+            "label": "epidemiology high imbalance sign flip rate"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "A model summary is flagged domain flip gap survives geometry control if all of the following:",
+          "cases": [],
           "children": [
             {
-              "kind": "leaf",
-              "text": "the distortion type is “D”"
-            },
-            {
-              "kind": "leaf",
-              "text": "the signal purity is 1"
-            },
-            {
-              "kind": "leaf",
-              "text": "the allocation distortion is 0"
-            },
-            {
-              "kind": "leaf",
-              "text": "the sweep pooled gap range is greater than 0.3"
-            },
-            {
-              "kind": "leaf",
-              "text": "the allocation fragility is at least 10"
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "the economics high imbalance sign flip count is 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the epidemiology high imbalance sign flip rate is greater than 0.15"
+                }
+              ]
             }
           ]
         }
-      ]
-    }
-  },
-  "TreatmentRankings.StudyDomain": {
-    "table": "TreatmentRankings",
-    "field": "StudyDomain",
-    "kind": "formula",
-    "rule": "A treatment ranking's study domain is computed as the value of LOOKUP(Study, Studies[StudyId], Studies[Domain]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "Study",
-        "label": "study"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.StratumCausalRole": {
-    "table": "TreatmentRankings",
-    "field": "StratumCausalRole",
-    "kind": "lookup",
-    "rule": "A treatment ranking's stratum causal role is the value of LOOKUP(Study, StratumVariables[Study], StratumVariables[CausalRole]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "Study",
-        "label": "study"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.IsLatentOnlyFlip": {
-    "table": "TreatmentRankings",
-    "field": "IsLatentOnlyFlip",
-    "kind": "formula",
-    "rule": "A treatment ranking is considered a latent only flip if all of the following hold: the pooled gap crosses zero is true and the is sign flip is false.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "PooledGapCrossesZero",
-        "label": "pooled gap crosses zero"
       },
-      {
-        "table": "TreatmentRankings",
-        "field": "IsSignFlip",
-        "label": "is sign flip"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's is latent only flip is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the pooled gap crosses zero is blank"
+      "ModelSummary.CorpusPatternSupersededFailCount": {
+        "table": "ModelSummary",
+        "field": "CorpusPatternSupersededFailCount",
+        "kind": "formula",
+        "rule": "A model summary's corpus pattern superseded fail count is computed as the number of the model summary's discovery findings that are not confirmed plus the number of the model summary's discovery findings that are not confirmed plus the number of the model summary's discovery findings that are not confirmed plus the number of the model summary's discovery findings that are not confirmed plus the number of the model summary's discovery findings that are not confirmed plus the number of the model summary's discovery findings that are not confirmed.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DiscoveryFindings",
+            "field": "HypothesisId",
+            "label": "hypothesis ID"
+          },
+          {
+            "table": "DiscoveryFindings",
+            "field": "IsConfirmed",
+            "label": "is confirmed"
           }
-        },
-        {
-          "value": "the AND of the pooled gap crosses zero is true and the is sign flip is false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.ConfirmedCausalRoleCount": {
-    "table": "TreatmentRankings",
-    "field": "ConfirmedCausalRoleCount",
-    "kind": "rollup",
-    "rule": "A treatment ranking's confirmed causal role count is the number of the treatment ranking's stratum variables that have a causal role of “confounder”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumVariables",
-        "field": "Study",
-        "label": "study"
+        ],
+        "structure": null
       },
-      {
-        "table": "TreatmentRankings",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumVariables",
-        "field": "CausalRole",
-        "label": "causal role"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.MediatorRiskCount": {
-    "table": "TreatmentRankings",
-    "field": "MediatorRiskCount",
-    "kind": "rollup",
-    "rule": "A treatment ranking's mediator risk count is the number of the treatment ranking's mediator risks.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumVariables",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumVariables",
-        "field": "ConditioningRisk",
-        "label": "conditioning risk"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.ContestedStratumCount": {
-    "table": "TreatmentRankings",
-    "field": "ContestedStratumCount",
-    "kind": "rollup",
-    "rule": "A treatment ranking's contested stratum count is the number of the treatment ranking's stratum variables that have a causal role of “contested”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumVariables",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumVariables",
-        "field": "CausalRole",
-        "label": "causal role"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.UnknownCausalRoleCount": {
-    "table": "TreatmentRankings",
-    "field": "UnknownCausalRoleCount",
-    "kind": "rollup",
-    "rule": "A treatment ranking's unknown causal role count is the number of the treatment ranking's stratum variables that have a causal role of “unknown”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumVariables",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "Study",
-        "label": "study"
-      },
-      {
-        "table": "StratumVariables",
-        "field": "CausalRole",
-        "label": "causal role"
-      }
-    ],
-    "structure": null
-  },
-  "TreatmentRankings.CausalClaimStatus": {
-    "table": "TreatmentRankings",
-    "field": "CausalClaimStatus",
-    "kind": "formula",
-    "rule": "The treatment ranking's causal claim status is determined by the following priority:\n1. “contested”, if the contested stratum count is greater than 0;\n2. “geometric-only”, if the unknown causal role count is greater than 0;\n3. “established”, if the confirmed causal role count is greater than 0;\n4. in all other cases, “geometric-only”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "ContestedStratumCount",
-        "label": "contested stratum count"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "UnknownCausalRoleCount",
-        "label": "unknown causal role count"
-      },
-      {
-        "table": "TreatmentRankings",
-        "field": "ConfirmedCausalRoleCount",
-        "label": "confirmed causal role count"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's causal claim status is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“contested”",
-          "when": {
-            "kind": "leaf",
-            "text": "the contested stratum count is greater than 0"
+      "ModelSummary.ExpansionWave3DiscoveryNote": {
+        "table": "ModelSummary",
+        "field": "ExpansionWave3DiscoveryNote",
+        "kind": "formula",
+        "rule": "A model summary's expansion wave3 discovery note is computed as “superseded=”, followed by the corpus pattern superseded fail count, followed by “; econFlips=”, followed by the economics sign flip count, followed by “; flipPred=”, followed by the sign flip prediction match rate, followed by “; catalogExact=”, followed by the type prediction match rate, followed by “; theorems=”, followed by the theorem count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ModelSummary",
+            "field": "CorpusPatternSupersededFailCount",
+            "label": "corpus pattern superseded fail count"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "EconomicsSignFlipCount",
+            "label": "economics sign flip count"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "SignFlipPredictionMatchRate",
+            "label": "sign flip prediction match rate"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "TypePredictionMatchRate",
+            "label": "type prediction match rate"
+          },
+          {
+            "table": "ModelSummary",
+            "field": "TheoremCount",
+            "label": "theorem count"
           }
-        },
-        {
-          "value": "“geometric-only”",
-          "when": {
-            "kind": "leaf",
-            "text": "the unknown causal role count is greater than 0"
-          }
-        },
-        {
-          "value": "“established”",
-          "when": {
-            "kind": "leaf",
-            "text": "the confirmed causal role count is greater than 0"
-          }
-        },
-        {
-          "value": "“geometric-only”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.AdjustmentAppropriate": {
-    "table": "TreatmentRankings",
-    "field": "AdjustmentAppropriate",
-    "kind": "formula",
-    "rule": "A treatment ranking is flagged adjustment appropriate if all of the following hold: the mediator risk count is 0 and the causal claim status is “established”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "MediatorRiskCount",
-        "label": "mediator risk count"
+        ],
+        "structure": null
       },
-      {
-        "table": "TreatmentRankings",
-        "field": "CausalClaimStatus",
-        "label": "causal claim status"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "A treatment ranking is flagged adjustment appropriate if all of the following:",
-      "cases": [],
-      "children": [
-        {
-          "kind": "all",
+      "StratumVariables.Name": {
+        "table": "StratumVariables",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A stratum variable's name is the same as its stratum variable ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumVariables",
+            "field": "StratumVariableId",
+            "label": "stratum variable ID"
+          }
+        ],
+        "structure": null
+      },
+      "StratumVariables.IsConfounder": {
+        "table": "StratumVariables",
+        "field": "IsConfounder",
+        "kind": "formula",
+        "rule": "A stratum variable is considered a confounder if all of the following hold: the affects treatment assignment flag is set; the affects outcome flag is set; and the causal role is “confounder”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumVariables",
+            "field": "AffectsTreatmentAssignment",
+            "label": "affects treatment assignment"
+          },
+          {
+            "table": "StratumVariables",
+            "field": "AffectsOutcome",
+            "label": "affects outcome"
+          },
+          {
+            "table": "StratumVariables",
+            "field": "CausalRole",
+            "label": "causal role"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "A stratum variable is considered a confounder if all of the following:",
+          "cases": [],
           "children": [
             {
-              "kind": "leaf",
-              "text": "the mediator risk count is 0"
-            },
-            {
-              "kind": "leaf",
-              "text": "the causal claim status is “established”"
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "the affects treatment assignment flag is set"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the affects outcome flag is set"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the causal role is “confounder”"
+                }
+              ]
             }
           ]
         }
-      ]
-    }
-  },
-  "TreatmentRankings.PurityTrapFlag": {
-    "table": "TreatmentRankings",
-    "field": "PurityTrapFlag",
-    "kind": "formula",
-    "rule": "A treatment ranking's purity trap flag is a defined attribute of the treatment ranking.",
-    "mechanical": false,
-    "refs": [],
-    "structure": null
-  },
-  "TreatmentRankings.DistortionRatio": {
-    "table": "TreatmentRankings",
-    "field": "DistortionRatio",
-    "kind": "formula",
-    "rule": "The treatment ranking's distortion ratio is determined by the following priority:\n1. 0, if the weighted stratum gap sum is 0;\n2. in all other cases, the signed pooled gap divided by the weighted stratum gap sum.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "WeightedStratumGapSum",
-        "label": "weighted stratum gap sum"
       },
-      {
+      "StratumVariables.ConfounderIdentity": {
+        "table": "StratumVariables",
+        "field": "ConfounderIdentity",
+        "kind": "lookup",
+        "rule": "A stratum variable's confounder identity is the value of LOOKUP(StratumVariableId, StratumVariableIdentityMaps[StratumVariable], StratumVariableIdentityMaps[ConfounderIdentity]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumVariables",
+            "field": "StratumVariableId",
+            "label": "stratum variable ID"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.Name": {
+        "table": "TreatmentRankings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A treatment ranking's name is the same as its treatment ranking ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "TreatmentRankingId",
+            "label": "treatment ranking ID"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.TotalCasesA": {
+        "table": "TreatmentRankings",
+        "field": "TotalCasesA",
+        "kind": "rollup",
+        "rule": "A treatment ranking's total cases a is the total cases across the case cells related to the treatment ranking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Cases",
+            "label": "cases"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "CaseCells",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TreatmentA",
+            "label": "treatment a"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.TotalSuccessesA": {
+        "table": "TreatmentRankings",
+        "field": "TotalSuccessesA",
+        "kind": "rollup",
+        "rule": "A treatment ranking's total successes a is the total successes across the case cells related to the treatment ranking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Successes",
+            "label": "successes"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "CaseCells",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TreatmentA",
+            "label": "treatment a"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.PooledRateA": {
+        "table": "TreatmentRankings",
+        "field": "PooledRateA",
+        "kind": "formula",
+        "rule": "The treatment ranking's pooled rate a is determined by the following priority:\n1. an empty string, if the total cases a is 0;\n2. in all other cases, the total successes a divided by the total cases a.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "TotalCasesA",
+            "label": "total cases a"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TotalSuccessesA",
+            "label": "total successes a"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's pooled rate a is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the total cases a is 0"
+              }
+            },
+            {
+              "value": "the total successes a divided by the total cases a",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.TotalCasesB": {
+        "table": "TreatmentRankings",
+        "field": "TotalCasesB",
+        "kind": "rollup",
+        "rule": "A treatment ranking's total cases b is the total cases across the case cells related to the treatment ranking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Cases",
+            "label": "cases"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "CaseCells",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TreatmentB",
+            "label": "treatment b"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.TotalSuccessesB": {
+        "table": "TreatmentRankings",
+        "field": "TotalSuccessesB",
+        "kind": "rollup",
+        "rule": "A treatment ranking's total successes b is the total successes across the case cells related to the treatment ranking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "Successes",
+            "label": "successes"
+          },
+          {
+            "table": "CaseCells",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "CaseCells",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TreatmentB",
+            "label": "treatment b"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.PooledRateB": {
+        "table": "TreatmentRankings",
+        "field": "PooledRateB",
+        "kind": "formula",
+        "rule": "The treatment ranking's pooled rate b is determined by the following priority:\n1. an empty string, if the total cases b is 0;\n2. in all other cases, the total successes b divided by the total cases b.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "TotalCasesB",
+            "label": "total cases b"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TotalSuccessesB",
+            "label": "total successes b"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's pooled rate b is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the total cases b is 0"
+              }
+            },
+            {
+              "value": "the total successes b divided by the total cases b",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.PooledWinner": {
+        "table": "TreatmentRankings",
+        "field": "PooledWinner",
+        "kind": "formula",
+        "rule": "The treatment ranking's pooled winner is determined by the following priority:\n1. an empty string, if at least one of the following holds: the pooled rate a is blank or the pooled rate b is blank;\n2. “tie”, if the absolute value of the pooled rate a minus the pooled rate b is less than 0.0000001;\n3. the treatment a, if the pooled rate a is greater than the pooled rate b;\n4. in all other cases, the treatment b.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "PooledRateA",
+            "label": "pooled rate a"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "PooledRateB",
+            "label": "pooled rate b"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TreatmentA",
+            "label": "treatment a"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TreatmentB",
+            "label": "treatment b"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's pooled winner is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the pooled rate a is blank"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the pooled rate b is blank"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“tie”",
+              "when": {
+                "kind": "leaf",
+                "text": "the absolute value of the pooled rate a minus the pooled rate b is less than 0.0000001"
+              }
+            },
+            {
+              "value": "the treatment a",
+              "when": {
+                "kind": "leaf",
+                "text": "the pooled rate a is greater than the pooled rate b"
+              }
+            },
+            {
+              "value": "the treatment b",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.StratumCount": {
+        "table": "TreatmentRankings",
+        "field": "StratumCount",
+        "kind": "rollup",
+        "rule": "A treatment ranking's stratum count is the number of stratum summaries related to the treatment ranking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TreatmentA",
+            "label": "treatment a"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.StrataWonByA": {
+        "table": "TreatmentRankings",
+        "field": "StrataWonByA",
+        "kind": "rollup",
+        "rule": "A treatment ranking's strata won by a is the number of stratum summaries related to the treatment ranking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TreatmentA",
+            "label": "treatment a"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "StratumWinner",
+            "label": "stratum winner"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.StrataWonByB": {
+        "table": "TreatmentRankings",
+        "field": "StrataWonByB",
+        "kind": "rollup",
+        "rule": "A treatment ranking's strata won by b is the number of stratum summaries related to the treatment ranking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TreatmentA",
+            "label": "treatment a"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "StratumWinner",
+            "label": "stratum winner"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TreatmentB",
+            "label": "treatment b"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.PerStratumWinner": {
+        "table": "TreatmentRankings",
+        "field": "PerStratumWinner",
+        "kind": "formula",
+        "rule": "The treatment ranking's per stratum winner is determined by the following priority:\n1. the treatment a, if the strata won by a is the stratum count;\n2. the treatment b, if the strata won by b is the stratum count;\n3. in all other cases, “none”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "StrataWonByA",
+            "label": "strata won by a"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "StratumCount",
+            "label": "stratum count"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TreatmentA",
+            "label": "treatment a"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "StrataWonByB",
+            "label": "strata won by b"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TreatmentB",
+            "label": "treatment b"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's per stratum winner is determined by the following priority:",
+          "cases": [
+            {
+              "value": "the treatment a",
+              "when": {
+                "kind": "leaf",
+                "text": "the strata won by a is the stratum count"
+              }
+            },
+            {
+              "value": "the treatment b",
+              "when": {
+                "kind": "leaf",
+                "text": "the strata won by b is the stratum count"
+              }
+            },
+            {
+              "value": "“none”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.IsStratumUnanimous": {
+        "table": "TreatmentRankings",
+        "field": "IsStratumUnanimous",
+        "kind": "formula",
+        "rule": "A treatment ranking is considered stratum-unanimous if at least one of the following holds: the strata won by a is the stratum count or the strata won by b is the stratum count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "StrataWonByA",
+            "label": "strata won by a"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "StratumCount",
+            "label": "stratum count"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "StrataWonByB",
+            "label": "strata won by b"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "A treatment ranking is considered stratum-unanimous if all of the following:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "the strata won by a is the stratum count"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the strata won by b is the stratum count"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "TreatmentRankings.IsReversal": {
+        "table": "TreatmentRankings",
+        "field": "IsReversal",
+        "kind": "formula",
+        "rule": "A treatment ranking is considered reversal if the sign flip flag is set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "IsSignFlip",
+            "label": "is sign flip"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's is reversal is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the is sign flip is blank"
+              }
+            },
+            {
+              "value": "the is sign flip",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.ConfoundersInStudy": {
+        "table": "TreatmentRankings",
+        "field": "ConfoundersInStudy",
+        "kind": "rollup",
+        "rule": "A treatment ranking's confounders in study is the number of the treatment ranking's stratum variables that are confounders.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumVariables",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumVariables",
+            "field": "IsConfounder",
+            "label": "is confounder"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.IsParadoxExplained": {
+        "table": "TreatmentRankings",
+        "field": "IsParadoxExplained",
+        "kind": "formula",
+        "rule": "A treatment ranking is considered paradox-explained if all of the following hold: the reversal flag is set and the confounders in study is greater than 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "IsReversal",
+            "label": "is reversal"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "ConfoundersInStudy",
+            "label": "confounders in study"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "A treatment ranking is considered paradox-explained if all of the following:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "the reversal flag is set"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the confounders in study is greater than 0"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "TreatmentRankings.PooledGap": {
+        "table": "TreatmentRankings",
+        "field": "PooledGap",
+        "kind": "formula",
+        "rule": "The treatment ranking's pooled gap is determined by the following priority:\n1. an empty string, if the pooled rate a is blank;\n2. in all other cases, the absolute value of the pooled rate a minus the pooled rate b.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "PooledRateA",
+            "label": "pooled rate a"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "PooledRateB",
+            "label": "pooled rate b"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's pooled gap is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the pooled rate a is blank"
+              }
+            },
+            {
+              "value": "the absolute value of the pooled rate a minus the pooled rate b",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.StrataWonByLoser": {
+        "table": "TreatmentRankings",
+        "field": "StrataWonByLoser",
+        "kind": "formula",
+        "rule": "The treatment ranking's strata won by loser is determined by the following priority:\n1. the strata won by b, if the pooled winner is the treatment a;\n2. in all other cases, the strata won by a.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "PooledWinner",
+            "label": "pooled winner"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TreatmentA",
+            "label": "treatment a"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "StrataWonByB",
+            "label": "strata won by b"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "StrataWonByA",
+            "label": "strata won by a"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's strata won by loser is determined by the following priority:",
+          "cases": [
+            {
+              "value": "the strata won by b",
+              "when": {
+                "kind": "leaf",
+                "text": "the pooled winner is the treatment a"
+              }
+            },
+            {
+              "value": "the strata won by a",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.ParadoxStrength": {
+        "table": "TreatmentRankings",
+        "field": "ParadoxStrength",
+        "kind": "formula",
+        "rule": "The treatment ranking's paradox strength is determined by the following priority:\n1. an empty string, if the stratum count is 0;\n2. in all other cases, the pooled gap times the strata won by loser divided by the stratum count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "StratumCount",
+            "label": "stratum count"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "PooledGap",
+            "label": "pooled gap"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "StrataWonByLoser",
+            "label": "strata won by loser"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's paradox strength is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the stratum count is 0"
+              }
+            },
+            {
+              "value": "the pooled gap times the strata won by loser divided by the stratum count",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.PooledRateFromWeightsA": {
+        "table": "TreatmentRankings",
+        "field": "PooledRateFromWeightsA",
+        "kind": "rollup",
+        "rule": "A treatment ranking's pooled rate from weights a is the total weighted stratum rate across the stratum summaries related to the treatment ranking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "WeightedStratumRate",
+            "label": "weighted stratum rate"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TreatmentA",
+            "label": "treatment a"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.PooledRateFromWeightsB": {
+        "table": "TreatmentRankings",
+        "field": "PooledRateFromWeightsB",
+        "kind": "rollup",
+        "rule": "A treatment ranking's pooled rate from weights b is the total weighted stratum rate across the stratum summaries related to the treatment ranking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "WeightedStratumRate",
+            "label": "weighted stratum rate"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TreatmentB",
+            "label": "treatment b"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.ReversalIntensity": {
+        "table": "TreatmentRankings",
+        "field": "ReversalIntensity",
+        "kind": "formula",
+        "rule": "The treatment ranking's reversal intensity is determined by the following priority:\n1. an empty string, if the stratum count is 0;\n2. in all other cases, the strata won by loser divided by the stratum count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "StratumCount",
+            "label": "stratum count"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "StrataWonByLoser",
+            "label": "strata won by loser"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's reversal intensity is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the stratum count is 0"
+              }
+            },
+            {
+              "value": "the strata won by loser divided by the stratum count",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.ThresholdMargin": {
+        "table": "TreatmentRankings",
+        "field": "ThresholdMargin",
+        "kind": "formula",
+        "rule": "The treatment ranking's threshold margin is determined by the following priority:\n1. an empty string, if the stratum count is 0;\n2. in all other cases, the reversal intensity minus 0.5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "StratumCount",
+            "label": "stratum count"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "ReversalIntensity",
+            "label": "reversal intensity"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's threshold margin is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the stratum count is 0"
+              }
+            },
+            {
+              "value": "the reversal intensity minus 0.5",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.SignedPooledGap": {
         "table": "TreatmentRankings",
         "field": "SignedPooledGap",
-        "label": "signed pooled gap"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's distortion ratio is determined by the following priority:",
-      "cases": [
-        {
-          "value": "0",
-          "when": {
-            "kind": "leaf",
-            "text": "the weighted stratum gap sum is 0"
+        "kind": "formula",
+        "rule": "The treatment ranking's signed pooled gap is determined by the following priority:\n1. an empty string, if the pooled rate a is blank;\n2. in all other cases, the pooled rate a minus the pooled rate b.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "PooledRateA",
+            "label": "pooled rate a"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "PooledRateB",
+            "label": "pooled rate b"
           }
-        },
-        {
-          "value": "the signed pooled gap divided by the weighted stratum gap sum",
-          "when": null
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's signed pooled gap is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the pooled rate a is blank"
+              }
+            },
+            {
+              "value": "the pooled rate a minus the pooled rate b",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.ScreeningTier": {
-    "table": "TreatmentRankings",
-    "field": "ScreeningTier",
-    "kind": "formula",
-    "rule": "The treatment ranking's screening tier is determined by the following priority:\n1. “DANGER”, if at least one of the following holds: the distortion type is “A” or the distortion type is “B”;\n2. “CAUTION”, if at least one of the following holds: the distortion type is “C+” or the distortion type is “C-”;\n3. “SAFE”, if the distortion type is “D”;\n4. in all other cases, an empty string.",
-    "mechanical": false,
-    "refs": [
-      {
+      },
+      "TreatmentRankings.WeightedStratumGapSum": {
+        "table": "TreatmentRankings",
+        "field": "WeightedStratumGapSum",
+        "kind": "rollup",
+        "rule": "A treatment ranking's weighted stratum gap sum is the total weighted stratum gap across the stratum summaries related to the treatment ranking.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "WeightedStratumGap",
+            "label": "weighted stratum gap"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TreatmentA",
+            "label": "treatment a"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.IsSignFlip": {
+        "table": "TreatmentRankings",
+        "field": "IsSignFlip",
+        "kind": "formula",
+        "rule": "A treatment ranking is considered a sign flip if the signed pooled gap is less than 0 if the weighted stratum gap sum is greater than 0, in all other cases the signed pooled gap is greater than 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "WeightedStratumGapSum",
+            "label": "weighted stratum gap sum"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "SignedPooledGap",
+            "label": "signed pooled gap"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's is sign flip is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the weighted stratum gap sum is blank"
+              }
+            },
+            {
+              "value": "the signed pooled gap is less than 0",
+              "when": {
+                "kind": "leaf",
+                "text": "the weighted stratum gap sum is greater than 0"
+              }
+            },
+            {
+              "value": "the signed pooled gap is greater than 0",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.AllocationDistortion": {
+        "table": "TreatmentRankings",
+        "field": "AllocationDistortion",
+        "kind": "formula",
+        "rule": "The treatment ranking's allocation distortion is determined by the following priority:\n1. an empty string, if the weighted stratum gap sum is blank;\n2. in all other cases, the absolute value of the weighted stratum gap sum minus the signed pooled gap.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "WeightedStratumGapSum",
+            "label": "weighted stratum gap sum"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "SignedPooledGap",
+            "label": "signed pooled gap"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's allocation distortion is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the weighted stratum gap sum is blank"
+              }
+            },
+            {
+              "value": "the absolute value of the weighted stratum gap sum minus the signed pooled gap",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.DistortionType": {
         "table": "TreatmentRankings",
         "field": "DistortionType",
-        "label": "distortion type"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's screening tier is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“DANGER”",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
+        "kind": "formula",
+        "rule": "The treatment ranking's distortion type is determined by the following priority:\n1. an empty string, if the allocation distortion is blank;\n2. “A” if the stratum unanimous flag is set, in all other cases “B”, if the sign flip flag is set;\n3. “C+”, if all of the following hold: the sign flip flag is not set; the allocation distortion is greater than 0.01; and the absolute value of the signed pooled gap is greater than the absolute value of the corrected gap plus 0.001;\n4. “C-”, if all of the following hold: the sign flip flag is not set; the allocation distortion is greater than 0.01; and the absolute value of the signed pooled gap is less than the absolute value of the corrected gap minus 0.001;\n5. in all other cases, “D”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "AllocationDistortion",
+            "label": "allocation distortion"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "IsSignFlip",
+            "label": "is sign flip"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "IsStratumUnanimous",
+            "label": "is stratum unanimous"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "SignedPooledGap",
+            "label": "signed pooled gap"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "CorrectedGap",
+            "label": "corrected gap"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's distortion type is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the allocation distortion is blank"
+              }
+            },
+            {
+              "value": "“A” if the stratum unanimous flag is set, in all other cases “B”",
+              "when": {
+                "kind": "leaf",
+                "text": "the sign flip flag is set"
+              }
+            },
+            {
+              "value": "“C+”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the sign flip flag is not set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the allocation distortion is greater than 0.01"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the absolute value of the signed pooled gap is greater than the absolute value of the corrected gap plus 0.001"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“C-”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the sign flip flag is not set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the allocation distortion is greater than 0.01"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the absolute value of the signed pooled gap is less than the absolute value of the corrected gap minus 0.001"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“D”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.PolicyImplication": {
+        "table": "TreatmentRankings",
+        "field": "PolicyImplication",
+        "kind": "formula",
+        "rule": "The treatment ranking's policy implication is determined by the following priority:\n1. an empty string, if the distortion type is blank;\n2. “stratify-immediately”, if the distortion type is “A”;\n3. “investigate-confounder”, if the distortion type is “B”;\n4. “check-allocation-bias”, if at least one of the following holds: the distortion type is “C+” or the distortion type is “C-”;\n5. in all other cases, “pooled-analysis-trustworthy”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's policy implication is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the distortion type is blank"
+              }
+            },
+            {
+              "value": "“stratify-immediately”",
+              "when": {
                 "kind": "leaf",
                 "text": "the distortion type is “A”"
-              },
-              {
+              }
+            },
+            {
+              "value": "“investigate-confounder”",
+              "when": {
                 "kind": "leaf",
                 "text": "the distortion type is “B”"
               }
-            ]
-          }
-        },
-        {
-          "value": "“CAUTION”",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the distortion type is “C+”"
-              },
-              {
-                "kind": "leaf",
-                "text": "the distortion type is “C-”"
+            },
+            {
+              "value": "“check-allocation-bias”",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the distortion type is “C+”"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the distortion type is “C-”"
+                  }
+                ]
               }
-            ]
-          }
-        },
-        {
-          "value": "“SAFE”",
-          "when": {
-            "kind": "leaf",
-            "text": "the distortion type is “D”"
-          }
-        },
-        {
-          "value": "an empty string",
-          "when": null
+            },
+            {
+              "value": "“pooled-analysis-trustworthy”",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.ArmSizeRatio": {
-    "table": "TreatmentRankings",
-    "field": "ArmSizeRatio",
-    "kind": "formula",
-    "rule": "The treatment ranking's arm size ratio is determined by the following priority:\n1. 0, if the total cases a plus the total cases b is 0;\n2. in all other cases, the total cases a divided by the total cases a plus the total cases b.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TreatmentRankings",
-        "field": "TotalCasesA",
-        "label": "total cases a"
       },
-      {
+      "TreatmentRankings.CorrectedGap": {
         "table": "TreatmentRankings",
-        "field": "TotalCasesB",
-        "label": "total cases b"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment ranking's arm size ratio is determined by the following priority:",
-      "cases": [
-        {
-          "value": "0",
-          "when": {
-            "kind": "leaf",
-            "text": "the total cases a plus the total cases b is 0"
+        "field": "CorrectedGap",
+        "kind": "formula",
+        "rule": "A treatment ranking's corrected gap is the same as its weighted stratum gap sum.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "WeightedStratumGapSum",
+            "label": "weighted stratum gap sum"
           }
-        },
-        {
-          "value": "the total cases a divided by the total cases a plus the total cases b",
-          "when": null
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.CorrectedWinner": {
+        "table": "TreatmentRankings",
+        "field": "CorrectedWinner",
+        "kind": "formula",
+        "rule": "The treatment ranking's corrected winner is determined by the following priority:\n1. an empty string, if the corrected gap is blank;\n2. “tie”, if the absolute value of the corrected gap is less than 0.0001;\n3. the treatment a, if the corrected gap is greater than 0;\n4. the treatment b, if the corrected gap is less than 0;\n5. in all other cases, “tie”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "CorrectedGap",
+            "label": "corrected gap"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TreatmentA",
+            "label": "treatment a"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TreatmentB",
+            "label": "treatment b"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's corrected winner is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the corrected gap is blank"
+              }
+            },
+            {
+              "value": "“tie”",
+              "when": {
+                "kind": "leaf",
+                "text": "the absolute value of the corrected gap is less than 0.0001"
+              }
+            },
+            {
+              "value": "the treatment a",
+              "when": {
+                "kind": "leaf",
+                "text": "the corrected gap is greater than 0"
+              }
+            },
+            {
+              "value": "the treatment b",
+              "when": {
+                "kind": "leaf",
+                "text": "the corrected gap is less than 0"
+              }
+            },
+            {
+              "value": "“tie”",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "TreatmentRankings.SymmetryDeparture": {
-    "table": "TreatmentRankings",
-    "field": "SymmetryDeparture",
-    "kind": "formula",
-    "rule": "A treatment ranking's symmetry departure is computed as the absolute value of the arm size ratio minus 0.5.",
-    "mechanical": false,
-    "refs": [
-      {
+      },
+      "TreatmentRankings.CorrectedVsPooledAgreement": {
+        "table": "TreatmentRankings",
+        "field": "CorrectedVsPooledAgreement",
+        "kind": "formula",
+        "rule": "A treatment ranking is flagged corrected vs pooled agreement if the corrected winner is the pooled winner.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "CorrectedWinner",
+            "label": "corrected winner"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "PooledWinner",
+            "label": "pooled winner"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's corrected vs pooled agreement is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the corrected winner is blank"
+              }
+            },
+            {
+              "value": "the corrected winner is the pooled winner",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.CorrectedPolicyImplication": {
+        "table": "TreatmentRankings",
+        "field": "CorrectedPolicyImplication",
+        "kind": "formula",
+        "rule": "The treatment ranking's corrected policy implication is determined by the following priority:\n1. an empty string, if the distortion type is blank;\n2. “use-corrected-winner”, if the distortion type is “A”;\n3. “use-corrected-winner-with-caution”, if the distortion type is “B”;\n4. “check-allocation-bias”, if at least one of the following holds: the distortion type is “C+” or the distortion type is “C-”;\n5. in all other cases, “pooled-analysis-trustworthy”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's corrected policy implication is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the distortion type is blank"
+              }
+            },
+            {
+              "value": "“use-corrected-winner”",
+              "when": {
+                "kind": "leaf",
+                "text": "the distortion type is “A”"
+              }
+            },
+            {
+              "value": "“use-corrected-winner-with-caution”",
+              "when": {
+                "kind": "leaf",
+                "text": "the distortion type is “B”"
+              }
+            },
+            {
+              "value": "“check-allocation-bias”",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the distortion type is “C+”"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the distortion type is “C-”"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“pooled-analysis-trustworthy”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.AllocationDirection": {
+        "table": "TreatmentRankings",
+        "field": "AllocationDirection",
+        "kind": "formula",
+        "rule": "The treatment ranking's allocation direction is determined by the following priority:\n1. an empty string, if the corrected gap is blank;\n2. “reversal”, if the sign flip flag is set;\n3. “amplification”, if the absolute value of the signed pooled gap is greater than the absolute value of the corrected gap plus 0.001;\n4. “compression”, if the absolute value of the signed pooled gap is less than the absolute value of the corrected gap minus 0.001;\n5. in all other cases, “neutral”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "CorrectedGap",
+            "label": "corrected gap"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "IsSignFlip",
+            "label": "is sign flip"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "SignedPooledGap",
+            "label": "signed pooled gap"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's allocation direction is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the corrected gap is blank"
+              }
+            },
+            {
+              "value": "“reversal”",
+              "when": {
+                "kind": "leaf",
+                "text": "the sign flip flag is set"
+              }
+            },
+            {
+              "value": "“amplification”",
+              "when": {
+                "kind": "leaf",
+                "text": "the absolute value of the signed pooled gap is greater than the absolute value of the corrected gap plus 0.001"
+              }
+            },
+            {
+              "value": "“compression”",
+              "when": {
+                "kind": "leaf",
+                "text": "the absolute value of the signed pooled gap is less than the absolute value of the corrected gap minus 0.001"
+              }
+            },
+            {
+              "value": "“neutral”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.SignalPurity": {
+        "table": "TreatmentRankings",
+        "field": "SignalPurity",
+        "kind": "formula",
+        "rule": "The treatment ranking's signal purity is determined by the following priority:\n1. an empty string, if the corrected gap is blank;\n2. 1, if the absolute value of the corrected gap plus the allocation distortion is 0;\n3. in all other cases, the absolute value of the corrected gap divided by the absolute value of the corrected gap plus the allocation distortion.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "CorrectedGap",
+            "label": "corrected gap"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "AllocationDistortion",
+            "label": "allocation distortion"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's signal purity is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the corrected gap is blank"
+              }
+            },
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "the absolute value of the corrected gap plus the allocation distortion is 0"
+              }
+            },
+            {
+              "value": "the absolute value of the corrected gap divided by the absolute value of the corrected gap plus the allocation distortion",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.PooledGapCrossesZero": {
+        "table": "TreatmentRankings",
+        "field": "PooledGapCrossesZero",
+        "kind": "formula",
+        "rule": "A treatment ranking is flagged pooled gap crosses zero if the value of LOOKUP(Study, SweepStudySummary[SweepStudyId], SweepStudySummary[PooledGapCrossesZero]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "Study",
+            "label": "study"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.SweepPooledGapRange": {
+        "table": "TreatmentRankings",
+        "field": "SweepPooledGapRange",
+        "kind": "formula",
+        "rule": "A treatment ranking's sweep pooled gap range is computed as the value of LOOKUP(Study, SweepStudySummary[SweepStudyId], SweepStudySummary[SweepPooledGapRange]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "Study",
+            "label": "study"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.LatentFlipPotential": {
+        "table": "TreatmentRankings",
+        "field": "LatentFlipPotential",
+        "kind": "formula",
+        "rule": "A treatment ranking is flagged latent flip potential if all of the following hold: the distortion type is “D” and the pooled gap crosses zero is true.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "PooledGapCrossesZero",
+            "label": "pooled gap crosses zero"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's latent flip potential is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the distortion type is blank"
+              }
+            },
+            {
+              "value": "the AND of the distortion type is “D” and the pooled gap crosses zero is true",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.AllocationFragility": {
+        "table": "TreatmentRankings",
+        "field": "AllocationFragility",
+        "kind": "formula",
+        "rule": "The treatment ranking's allocation fragility is determined by the following priority:\n1. 0, if at least one of the following holds: the sweep pooled gap range is blank; the pooled gap is blank; or the pooled gap is 0;\n2. in all other cases, the sweep pooled gap range divided by the absolute value of the pooled gap.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "SweepPooledGapRange",
+            "label": "sweep pooled gap range"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "PooledGap",
+            "label": "pooled gap"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's allocation fragility is determined by the following priority:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the sweep pooled gap range is blank"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the pooled gap is blank"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the pooled gap is 0"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "the sweep pooled gap range divided by the absolute value of the pooled gap",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.MaxStratumImbalance": {
+        "table": "TreatmentRankings",
+        "field": "MaxStratumImbalance",
+        "kind": "rollup",
+        "rule": "A treatment ranking's max stratum imbalance is the largest abs allocation bias across the treatment ranking's stratum summaries that have a treatment label of “A”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "AbsAllocationBias",
+            "label": "abs allocation bias"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.MaxStratumGap": {
+        "table": "TreatmentRankings",
+        "field": "MaxStratumGap",
+        "kind": "rollup",
+        "rule": "A treatment ranking's max stratum gap is the largest abs stratum gap across the treatment ranking's stratum summaries that have a treatment label of “A”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumSummaries",
+            "field": "AbsStratumGap",
+            "label": "abs stratum gap"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumSummaries",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.IsSweepFragile": {
+        "table": "TreatmentRankings",
+        "field": "IsSweepFragile",
+        "kind": "formula",
+        "rule": "A treatment ranking is considered a sweep fragile if all of the following hold: the distortion type is “D”; the signal purity is 1; the allocation distortion is 0; the sweep pooled gap range is greater than 0.3; and the allocation fragility is at least 10.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "SignalPurity",
+            "label": "signal purity"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "AllocationDistortion",
+            "label": "allocation distortion"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "SweepPooledGapRange",
+            "label": "sweep pooled gap range"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "AllocationFragility",
+            "label": "allocation fragility"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "A treatment ranking is considered a sweep fragile if all of the following:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "the distortion type is “D”"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the signal purity is 1"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the allocation distortion is 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the sweep pooled gap range is greater than 0.3"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the allocation fragility is at least 10"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "TreatmentRankings.StudyDomain": {
+        "table": "TreatmentRankings",
+        "field": "StudyDomain",
+        "kind": "formula",
+        "rule": "A treatment ranking's study domain is computed as the value of LOOKUP(Study, Studies[StudyId], Studies[Domain]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "Study",
+            "label": "study"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.StratumCausalRole": {
+        "table": "TreatmentRankings",
+        "field": "StratumCausalRole",
+        "kind": "lookup",
+        "rule": "A treatment ranking's stratum causal role is the value of LOOKUP(Study, StratumVariables[Study], StratumVariables[CausalRole]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "Study",
+            "label": "study"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.IsLatentOnlyFlip": {
+        "table": "TreatmentRankings",
+        "field": "IsLatentOnlyFlip",
+        "kind": "formula",
+        "rule": "A treatment ranking is considered a latent only flip if all of the following hold: the pooled gap crosses zero is true and the is sign flip is false.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "PooledGapCrossesZero",
+            "label": "pooled gap crosses zero"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "IsSignFlip",
+            "label": "is sign flip"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's is latent only flip is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the pooled gap crosses zero is blank"
+              }
+            },
+            {
+              "value": "the AND of the pooled gap crosses zero is true and the is sign flip is false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.ConfirmedCausalRoleCount": {
+        "table": "TreatmentRankings",
+        "field": "ConfirmedCausalRoleCount",
+        "kind": "rollup",
+        "rule": "A treatment ranking's confirmed causal role count is the number of the treatment ranking's stratum variables that have a causal role of “confounder”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumVariables",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumVariables",
+            "field": "CausalRole",
+            "label": "causal role"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.MediatorRiskCount": {
+        "table": "TreatmentRankings",
+        "field": "MediatorRiskCount",
+        "kind": "rollup",
+        "rule": "A treatment ranking's mediator risk count is the number of the treatment ranking's mediator risks.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumVariables",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumVariables",
+            "field": "ConditioningRisk",
+            "label": "conditioning risk"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.ContestedStratumCount": {
+        "table": "TreatmentRankings",
+        "field": "ContestedStratumCount",
+        "kind": "rollup",
+        "rule": "A treatment ranking's contested stratum count is the number of the treatment ranking's stratum variables that have a causal role of “contested”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumVariables",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumVariables",
+            "field": "CausalRole",
+            "label": "causal role"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.UnknownCausalRoleCount": {
+        "table": "TreatmentRankings",
+        "field": "UnknownCausalRoleCount",
+        "kind": "rollup",
+        "rule": "A treatment ranking's unknown causal role count is the number of the treatment ranking's stratum variables that have a causal role of “unknown”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumVariables",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "Study",
+            "label": "study"
+          },
+          {
+            "table": "StratumVariables",
+            "field": "CausalRole",
+            "label": "causal role"
+          }
+        ],
+        "structure": null
+      },
+      "TreatmentRankings.CausalClaimStatus": {
+        "table": "TreatmentRankings",
+        "field": "CausalClaimStatus",
+        "kind": "formula",
+        "rule": "The treatment ranking's causal claim status is determined by the following priority:\n1. “contested”, if the contested stratum count is greater than 0;\n2. “geometric-only”, if the unknown causal role count is greater than 0;\n3. “established”, if the confirmed causal role count is greater than 0;\n4. in all other cases, “geometric-only”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "ContestedStratumCount",
+            "label": "contested stratum count"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "UnknownCausalRoleCount",
+            "label": "unknown causal role count"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "ConfirmedCausalRoleCount",
+            "label": "confirmed causal role count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's causal claim status is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“contested”",
+              "when": {
+                "kind": "leaf",
+                "text": "the contested stratum count is greater than 0"
+              }
+            },
+            {
+              "value": "“geometric-only”",
+              "when": {
+                "kind": "leaf",
+                "text": "the unknown causal role count is greater than 0"
+              }
+            },
+            {
+              "value": "“established”",
+              "when": {
+                "kind": "leaf",
+                "text": "the confirmed causal role count is greater than 0"
+              }
+            },
+            {
+              "value": "“geometric-only”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.AdjustmentAppropriate": {
+        "table": "TreatmentRankings",
+        "field": "AdjustmentAppropriate",
+        "kind": "formula",
+        "rule": "A treatment ranking is flagged adjustment appropriate if all of the following hold: the mediator risk count is 0 and the causal claim status is “established”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "MediatorRiskCount",
+            "label": "mediator risk count"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "CausalClaimStatus",
+            "label": "causal claim status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "A treatment ranking is flagged adjustment appropriate if all of the following:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "the mediator risk count is 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the causal claim status is “established”"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "TreatmentRankings.PurityTrapFlag": {
+        "table": "TreatmentRankings",
+        "field": "PurityTrapFlag",
+        "kind": "formula",
+        "rule": "A treatment ranking's purity trap flag is a defined attribute of the treatment ranking.",
+        "mechanical": false,
+        "refs": [],
+        "structure": null
+      },
+      "TreatmentRankings.DistortionRatio": {
+        "table": "TreatmentRankings",
+        "field": "DistortionRatio",
+        "kind": "formula",
+        "rule": "The treatment ranking's distortion ratio is determined by the following priority:\n1. 0, if the weighted stratum gap sum is 0;\n2. in all other cases, the signed pooled gap divided by the weighted stratum gap sum.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "WeightedStratumGapSum",
+            "label": "weighted stratum gap sum"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "SignedPooledGap",
+            "label": "signed pooled gap"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's distortion ratio is determined by the following priority:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "the weighted stratum gap sum is 0"
+              }
+            },
+            {
+              "value": "the signed pooled gap divided by the weighted stratum gap sum",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.ScreeningTier": {
+        "table": "TreatmentRankings",
+        "field": "ScreeningTier",
+        "kind": "formula",
+        "rule": "The treatment ranking's screening tier is determined by the following priority:\n1. “DANGER”, if at least one of the following holds: the distortion type is “A” or the distortion type is “B”;\n2. “CAUTION”, if at least one of the following holds: the distortion type is “C+” or the distortion type is “C-”;\n3. “SAFE”, if the distortion type is “D”;\n4. in all other cases, an empty string.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "DistortionType",
+            "label": "distortion type"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's screening tier is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“DANGER”",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the distortion type is “A”"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the distortion type is “B”"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“CAUTION”",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the distortion type is “C+”"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the distortion type is “C-”"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“SAFE”",
+              "when": {
+                "kind": "leaf",
+                "text": "the distortion type is “D”"
+              }
+            },
+            {
+              "value": "an empty string",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "TreatmentRankings.ArmSizeRatio": {
         "table": "TreatmentRankings",
         "field": "ArmSizeRatio",
-        "label": "arm size ratio"
-      }
-    ],
-    "structure": null
-  },
-  "InvariantChecks.Name": {
-    "table": "InvariantChecks",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "An invariant check's name is the same as its invariant check ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "InvariantChecks",
-        "field": "InvariantCheckId",
-        "label": "invariant check ID"
-      }
-    ],
-    "structure": null
-  },
-  "InvariantChecks.UniverseCount": {
-    "table": "InvariantChecks",
-    "field": "UniverseCount",
-    "kind": "formula",
-    "rule": "An invariant check's universe count is computed as the pass count plus the fail count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "InvariantChecks",
-        "field": "PassCount",
-        "label": "pass count"
+        "kind": "formula",
+        "rule": "The treatment ranking's arm size ratio is determined by the following priority:\n1. 0, if the total cases a plus the total cases b is 0;\n2. in all other cases, the total cases a divided by the total cases a plus the total cases b.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "TotalCasesA",
+            "label": "total cases a"
+          },
+          {
+            "table": "TreatmentRankings",
+            "field": "TotalCasesB",
+            "label": "total cases b"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment ranking's arm size ratio is determined by the following priority:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "the total cases a plus the total cases b is 0"
+              }
+            },
+            {
+              "value": "the total cases a divided by the total cases a plus the total cases b",
+              "when": null
+            }
+          ],
+          "children": null
+        }
       },
-      {
+      "TreatmentRankings.SymmetryDeparture": {
+        "table": "TreatmentRankings",
+        "field": "SymmetryDeparture",
+        "kind": "formula",
+        "rule": "A treatment ranking's symmetry departure is computed as the absolute value of the arm size ratio minus 0.5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TreatmentRankings",
+            "field": "ArmSizeRatio",
+            "label": "arm size ratio"
+          }
+        ],
+        "structure": null
+      },
+      "InvariantChecks.Name": {
         "table": "InvariantChecks",
-        "field": "FailCount",
-        "label": "fail count"
-      }
-    ],
-    "structure": null
-  },
-  "InvariantChecks.IsGreen": {
-    "table": "InvariantChecks",
-    "field": "IsGreen",
-    "kind": "formula",
-    "rule": "An invariant check is considered a green if the fail count is 0.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "An invariant check's name is the same as its invariant check ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "InvariantCheckId",
+            "label": "invariant check ID"
+          }
+        ],
+        "structure": null
+      },
+      "InvariantChecks.UniverseCount": {
         "table": "InvariantChecks",
-        "field": "FailCount",
-        "label": "fail count"
-      }
-    ],
-    "structure": null
-  },
-  "InvariantChecks.StatusLabel": {
-    "table": "InvariantChecks",
-    "field": "StatusLabel",
-    "kind": "formula",
-    "rule": "The invariant check's status label is determined by the following priority:\n1. “PASS”, if the green flag is set;\n2. in all other cases, “FAIL(”, followed by the fail count, followed by “)”.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "UniverseCount",
+        "kind": "formula",
+        "rule": "An invariant check's universe count is computed as the pass count plus the fail count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "PassCount",
+            "label": "pass count"
+          },
+          {
+            "table": "InvariantChecks",
+            "field": "FailCount",
+            "label": "fail count"
+          }
+        ],
+        "structure": null
+      },
+      "InvariantChecks.IsGreen": {
         "table": "InvariantChecks",
         "field": "IsGreen",
-        "label": "is green"
-      },
-      {
-        "table": "InvariantChecks",
-        "field": "FailCount",
-        "label": "fail count"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The invariant check's status label is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“PASS”",
-          "when": {
-            "kind": "leaf",
-            "text": "the green flag is set"
+        "kind": "formula",
+        "rule": "An invariant check is considered a green if the fail count is 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "FailCount",
+            "label": "fail count"
           }
-        },
-        {
-          "value": "“FAIL(”, followed by the fail count, followed by “)”",
-          "when": null
+        ],
+        "structure": null
+      },
+      "InvariantChecks.StatusLabel": {
+        "table": "InvariantChecks",
+        "field": "StatusLabel",
+        "kind": "formula",
+        "rule": "The invariant check's status label is determined by the following priority:\n1. “PASS”, if the green flag is set;\n2. in all other cases, “FAIL(”, followed by the fail count, followed by “)”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "IsGreen",
+            "label": "is green"
+          },
+          {
+            "table": "InvariantChecks",
+            "field": "FailCount",
+            "label": "fail count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The invariant check's status label is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“PASS”",
+              "when": {
+                "kind": "leaf",
+                "text": "the green flag is set"
+              }
+            },
+            {
+              "value": "“FAIL(”, followed by the fail count, followed by “)”",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "InvariantChecks.TraditionName": {
-    "table": "InvariantChecks",
-    "field": "TraditionName",
-    "kind": "lookup",
-    "rule": "An invariant check's tradition name is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[Name]).",
-    "mechanical": false,
-    "refs": [
-      {
+      },
+      "InvariantChecks.TraditionName": {
         "table": "InvariantChecks",
-        "field": "TraditionId",
-        "label": "tradition ID"
-      }
-    ],
-    "structure": null
-  },
-  "InvariantChecks.TraditionKeyClaimSummary": {
-    "table": "InvariantChecks",
-    "field": "TraditionKeyClaimSummary",
-    "kind": "lookup",
-    "rule": "An invariant check's tradition key claim summary is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[KeyClaim]).",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "TraditionName",
+        "kind": "lookup",
+        "rule": "An invariant check's tradition name is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          }
+        ],
+        "structure": null
+      },
+      "InvariantChecks.TraditionKeyClaimSummary": {
         "table": "InvariantChecks",
-        "field": "TraditionId",
-        "label": "tradition ID"
-      }
-    ],
-    "structure": null
-  },
-  "InvariantChecks.ProtectsConclusionTitle": {
-    "table": "InvariantChecks",
-    "field": "ProtectsConclusionTitle",
-    "kind": "lookup",
-    "rule": "An invariant check's protects conclusion title is the value of LOOKUP(ProtectsConclusion, Conclusions[ConclusionId], Conclusions[Title]).",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "TraditionKeyClaimSummary",
+        "kind": "lookup",
+        "rule": "An invariant check's tradition key claim summary is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[KeyClaim]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          }
+        ],
+        "structure": null
+      },
+      "InvariantChecks.ProtectsConclusionTitle": {
         "table": "InvariantChecks",
-        "field": "ProtectsConclusion",
-        "label": "protects conclusion"
-      }
-    ],
-    "structure": null
-  },
-  "InvariantChecks.ProtectsConclusionCategory": {
-    "table": "InvariantChecks",
-    "field": "ProtectsConclusionCategory",
-    "kind": "lookup",
-    "rule": "An invariant check's protects conclusion category is the value of LOOKUP(ProtectsConclusion, Conclusions[ConclusionId], Conclusions[Category]).",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "ProtectsConclusionTitle",
+        "kind": "lookup",
+        "rule": "An invariant check's protects conclusion title is the value of LOOKUP(ProtectsConclusion, Conclusions[ConclusionId], Conclusions[Title]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "ProtectsConclusion",
+            "label": "protects conclusion"
+          }
+        ],
+        "structure": null
+      },
+      "InvariantChecks.ProtectsConclusionCategory": {
         "table": "InvariantChecks",
-        "field": "ProtectsConclusion",
-        "label": "protects conclusion"
-      }
-    ],
-    "structure": null
-  },
-  "MaterializedEntities.Name": {
-    "table": "MaterializedEntities",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A materialized entity's name is the same as its materialized entity ID.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "ProtectsConclusionCategory",
+        "kind": "lookup",
+        "rule": "An invariant check's protects conclusion category is the value of LOOKUP(ProtectsConclusion, Conclusions[ConclusionId], Conclusions[Category]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "ProtectsConclusion",
+            "label": "protects conclusion"
+          }
+        ],
+        "structure": null
+      },
+      "MaterializedEntities.Name": {
         "table": "MaterializedEntities",
-        "field": "MaterializedEntityId",
-        "label": "materialized entity ID"
-      }
-    ],
-    "structure": null
-  },
-  "Methodology.Name": {
-    "table": "Methodology",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A methodology's name is the same as its methodology ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Methodology",
-        "field": "MethodologyId",
-        "label": "methodology ID"
-      }
-    ],
-    "structure": null
-  },
-  "Methodology.TraditionName": {
-    "table": "Methodology",
-    "field": "TraditionName",
-    "kind": "lookup",
-    "rule": "A methodology's tradition name is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[Name]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Methodology",
-        "field": "TraditionId",
-        "label": "tradition ID"
-      }
-    ],
-    "structure": null
-  },
-  "Methodology.TraditionPrimaryVenue": {
-    "table": "Methodology",
-    "field": "TraditionPrimaryVenue",
-    "kind": "lookup",
-    "rule": "A methodology's tradition primary venue is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[PrimaryVenue]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Methodology",
-        "field": "TraditionId",
-        "label": "tradition ID"
-      }
-    ],
-    "structure": null
-  },
-  "Methodology.PioneeringResearcherName": {
-    "table": "Methodology",
-    "field": "PioneeringResearcherName",
-    "kind": "lookup",
-    "rule": "A methodology's pioneering researcher name is the value of LOOKUP(PioneeringResearcher, Researchers[ResearcherId], Researchers[Name]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Methodology",
-        "field": "PioneeringResearcher",
-        "label": "pioneering researcher"
-      }
-    ],
-    "structure": null
-  },
-  "Methodology.PioneeringResearcherAffiliation": {
-    "table": "Methodology",
-    "field": "PioneeringResearcherAffiliation",
-    "kind": "lookup",
-    "rule": "A methodology's pioneering researcher affiliation is the value of LOOKUP(PioneeringResearcher, Researchers[ResearcherId], Researchers[Affiliation]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Methodology",
-        "field": "PioneeringResearcher",
-        "label": "pioneering researcher"
-      }
-    ],
-    "structure": null
-  },
-  "Methodology.LoopCount": {
-    "table": "Methodology",
-    "field": "LoopCount",
-    "kind": "rollup",
-    "rule": "A methodology's loop count is the number of loops related to the methodology.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Loops",
-        "field": "TraditionId",
-        "label": "tradition ID"
-      },
-      {
-        "table": "Methodology",
-        "field": "TraditionId",
-        "label": "tradition ID"
-      }
-    ],
-    "structure": null
-  },
-  "Conclusions.Name": {
-    "table": "Conclusions",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A conclusion's name is the same as its conclusion ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Conclusions",
-        "field": "ConclusionId",
-        "label": "conclusion ID"
-      }
-    ],
-    "structure": null
-  },
-  "Conclusions.LiveStatusConfirmed": {
-    "table": "Conclusions",
-    "field": "LiveStatusConfirmed",
-    "kind": "lookup",
-    "rule": "A conclusion's live status confirmed is the value of LOOKUP(ValidatingHypothesis, DiscoveryFindings[HypothesisId], DiscoveryFindings[IsConfirmed]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Conclusions",
-        "field": "ValidatingHypothesis",
-        "label": "validating hypothesis"
-      }
-    ],
-    "structure": null
-  },
-  "Conclusions.LiveStatusObservedMetric": {
-    "table": "Conclusions",
-    "field": "LiveStatusObservedMetric",
-    "kind": "lookup",
-    "rule": "A conclusion's live status observed metric is the value of LOOKUP(ValidatingHypothesis, DiscoveryFindings[HypothesisId], DiscoveryFindings[ObservedMetric]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Conclusions",
-        "field": "ValidatingHypothesis",
-        "label": "validating hypothesis"
-      }
-    ],
-    "structure": null
-  },
-  "Conclusions.TraditionName": {
-    "table": "Conclusions",
-    "field": "TraditionName",
-    "kind": "lookup",
-    "rule": "A conclusion's tradition name is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[Name]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Conclusions",
-        "field": "TraditionId",
-        "label": "tradition ID"
-      }
-    ],
-    "structure": null
-  },
-  "Conclusions.TraditionKeyClaimSummary": {
-    "table": "Conclusions",
-    "field": "TraditionKeyClaimSummary",
-    "kind": "lookup",
-    "rule": "A conclusion's tradition key claim summary is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[KeyClaim]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Conclusions",
-        "field": "TraditionId",
-        "label": "tradition ID"
-      }
-    ],
-    "structure": null
-  },
-  "Conclusions.ResearcherName": {
-    "table": "Conclusions",
-    "field": "ResearcherName",
-    "kind": "lookup",
-    "rule": "A conclusion's researcher name is the value of LOOKUP(ResearcherId, Researchers[ResearcherId], Researchers[Name]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Conclusions",
-        "field": "ResearcherId",
-        "label": "researcher ID"
-      }
-    ],
-    "structure": null
-  },
-  "Conclusions.ResearcherAffiliation": {
-    "table": "Conclusions",
-    "field": "ResearcherAffiliation",
-    "kind": "lookup",
-    "rule": "A conclusion's researcher affiliation is the value of LOOKUP(ResearcherId, Researchers[ResearcherId], Researchers[Affiliation]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Conclusions",
-        "field": "ResearcherId",
-        "label": "researcher ID"
-      }
-    ],
-    "structure": null
-  },
-  "Conclusions.ChallengesResearcherName": {
-    "table": "Conclusions",
-    "field": "ChallengesResearcherName",
-    "kind": "lookup",
-    "rule": "A conclusion's challenges researcher name is the value of LOOKUP(ChallengesResearcher, Researchers[ResearcherId], Researchers[Name]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Conclusions",
-        "field": "ChallengesResearcher",
-        "label": "challenges researcher"
-      }
-    ],
-    "structure": null
-  },
-  "Conclusions.WitnessedInLoopTitle": {
-    "table": "Conclusions",
-    "field": "WitnessedInLoopTitle",
-    "kind": "lookup",
-    "rule": "A conclusion's witnessed in loop title is the value of LOOKUP(WitnessedInLoop, Loops[LoopId], Loops[Title]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Conclusions",
-        "field": "WitnessedInLoop",
-        "label": "witnessed in loop"
-      }
-    ],
-    "structure": null
-  },
-  "Conclusions.WitnessedInLoopCommitHash": {
-    "table": "Conclusions",
-    "field": "WitnessedInLoopCommitHash",
-    "kind": "lookup",
-    "rule": "A conclusion's witnessed in loop commit hash is the value of LOOKUP(WitnessedInLoop, Loops[LoopId], Loops[CommitHash]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Conclusions",
-        "field": "WitnessedInLoop",
-        "label": "witnessed in loop"
-      }
-    ],
-    "structure": null
-  },
-  "Conclusions.WitnessedInLoopCommitShort": {
-    "table": "Conclusions",
-    "field": "WitnessedInLoopCommitShort",
-    "kind": "lookup",
-    "rule": "A conclusion's witnessed in loop commit short is the value of LOOKUP(WitnessedInLoop, Loops[LoopId], Loops[CommitShort]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Conclusions",
-        "field": "WitnessedInLoop",
-        "label": "witnessed in loop"
-      }
-    ],
-    "structure": null
-  },
-  "Conclusions.WitnessedInLoopCommitDate": {
-    "table": "Conclusions",
-    "field": "WitnessedInLoopCommitDate",
-    "kind": "lookup",
-    "rule": "A conclusion's witnessed in loop commit date is the value of LOOKUP(WitnessedInLoop, Loops[LoopId], Loops[CommitDate]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Conclusions",
-        "field": "WitnessedInLoop",
-        "label": "witnessed in loop"
-      }
-    ],
-    "structure": null
-  },
-  "Conclusions.WitnessedInLoopGitTag": {
-    "table": "Conclusions",
-    "field": "WitnessedInLoopGitTag",
-    "kind": "lookup",
-    "rule": "A conclusion's witnessed in loop git tag is the value of LOOKUP(WitnessedInLoop, Loops[LoopId], Loops[GitTag]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Conclusions",
-        "field": "WitnessedInLoop",
-        "label": "witnessed in loop"
-      }
-    ],
-    "structure": null
-  },
-  "Conclusions.InvariantProtectingCount": {
-    "table": "Conclusions",
-    "field": "InvariantProtectingCount",
-    "kind": "rollup",
-    "rule": "A conclusion's invariant protecting count is the number of invariant checks related to the conclusion.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "InvariantChecks",
-        "field": "ProtectsConclusion",
-        "label": "protects conclusion"
-      },
-      {
-        "table": "Conclusions",
-        "field": "ConclusionId",
-        "label": "conclusion ID"
-      }
-    ],
-    "structure": null
-  },
-  "UIScreens.Name": {
-    "table": "UIScreens",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A UI screen's name is the same as its screen ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "UIScreens",
-        "field": "ScreenId",
-        "label": "screen ID"
-      }
-    ],
-    "structure": null
-  },
-  "UIScreens.TraditionName": {
-    "table": "UIScreens",
-    "field": "TraditionName",
-    "kind": "lookup",
-    "rule": "A UI screen's tradition name is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[Name]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "UIScreens",
-        "field": "TraditionId",
-        "label": "tradition ID"
-      }
-    ],
-    "structure": null
-  },
-  "UIScreens.TraditionCoreConern": {
-    "table": "UIScreens",
-    "field": "TraditionCoreConern",
-    "kind": "lookup",
-    "rule": "A UI screen's tradition core conern is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[CoreConcern]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "UIScreens",
-        "field": "TraditionId",
-        "label": "tradition ID"
-      }
-    ],
-    "structure": null
-  },
-  "UIScreens.PrimaryConclusionTitle": {
-    "table": "UIScreens",
-    "field": "PrimaryConclusionTitle",
-    "kind": "lookup",
-    "rule": "A UI screen's primary conclusion title is the value of LOOKUP(PrimaryConclusion, Conclusions[ConclusionId], Conclusions[Title]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "UIScreens",
-        "field": "PrimaryConclusion",
-        "label": "primary conclusion"
-      }
-    ],
-    "structure": null
-  },
-  "UIScreens.PrimaryConclusionEvidence": {
-    "table": "UIScreens",
-    "field": "PrimaryConclusionEvidence",
-    "kind": "lookup",
-    "rule": "A UI screen's primary conclusion evidence is the value of LOOKUP(PrimaryConclusion, Conclusions[ConclusionId], Conclusions[Evidence]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "UIScreens",
-        "field": "PrimaryConclusion",
-        "label": "primary conclusion"
-      }
-    ],
-    "structure": null
-  },
-  "UIComponents.Name": {
-    "table": "UIComponents",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A UI component's name is the same as its component ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "UIComponents",
-        "field": "ComponentId",
-        "label": "component ID"
-      }
-    ],
-    "structure": null
-  },
-  "InstrumentSpec.Name": {
-    "table": "InstrumentSpec",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "An instrument spec's name is the same as its spec ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "InstrumentSpec",
-        "field": "SpecId",
-        "label": "spec ID"
-      }
-    ],
-    "structure": null
-  },
-  "AllocationSweep.Name": {
-    "table": "AllocationSweep",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "An allocation sweep's name is the same as its sweep ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "AllocationSweep",
-        "field": "SweepId",
-        "label": "sweep ID"
-      }
-    ],
-    "structure": null
-  },
-  "AllocationSweep.IsOriginal": {
-    "table": "AllocationSweep",
-    "field": "IsOriginal",
-    "kind": "formula",
-    "rule": "An allocation sweep is considered an original if the value of ABS(AllocFractionA - LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[OriginalAllocFractionA])) < 0.03.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "AllocationSweep",
-        "field": "AllocFractionA",
-        "label": "alloc fraction a"
-      },
-      {
-        "table": "AllocationSweep",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "AllocationSweep.NSweepStratumTotal": {
-    "table": "AllocationSweep",
-    "field": "NSweepStratumTotal",
-    "kind": "formula",
-    "rule": "An allocation sweep's n sweep stratum total is computed as the value of LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[NSweepStratumTotal]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "AllocationSweep",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "AllocationSweep.NSweepA": {
-    "table": "AllocationSweep",
-    "field": "NSweepA",
-    "kind": "formula",
-    "rule": "An allocation sweep's n sweep a is computed as the n sweep stratum total times the alloc fraction a rounded to the nearest whole number.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "AllocationSweep",
-        "field": "NSweepStratumTotal",
-        "label": "n sweep stratum total"
-      },
-      {
-        "table": "AllocationSweep",
-        "field": "AllocFractionA",
-        "label": "alloc fraction a"
-      }
-    ],
-    "structure": null
-  },
-  "AllocationSweep.NSweepB": {
-    "table": "AllocationSweep",
-    "field": "NSweepB",
-    "kind": "formula",
-    "rule": "An allocation sweep's n sweep b is computed as the n sweep stratum total minus the n sweep a.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "AllocationSweep",
-        "field": "NSweepStratumTotal",
-        "label": "n sweep stratum total"
-      },
-      {
-        "table": "AllocationSweep",
-        "field": "NSweepA",
-        "label": "n sweep a"
-      }
-    ],
-    "structure": null
-  },
-  "AllocationSweep.NFixedA": {
-    "table": "AllocationSweep",
-    "field": "NFixedA",
-    "kind": "formula",
-    "rule": "An allocation sweep's n fixed a is computed as the value of LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[NFixedA]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "AllocationSweep",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "AllocationSweep.NFixedB": {
-    "table": "AllocationSweep",
-    "field": "NFixedB",
-    "kind": "formula",
-    "rule": "An allocation sweep's n fixed b is computed as the value of LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[NFixedB]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "AllocationSweep",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "AllocationSweep.SweepRateA": {
-    "table": "AllocationSweep",
-    "field": "SweepRateA",
-    "kind": "formula",
-    "rule": "An allocation sweep's sweep rate a is computed as the value of LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[SweepRateA]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "AllocationSweep",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "AllocationSweep.SweepRateB": {
-    "table": "AllocationSweep",
-    "field": "SweepRateB",
-    "kind": "formula",
-    "rule": "An allocation sweep's sweep rate b is computed as the value of LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[SweepRateB]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "AllocationSweep",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "AllocationSweep.FixedRateA": {
-    "table": "AllocationSweep",
-    "field": "FixedRateA",
-    "kind": "formula",
-    "rule": "An allocation sweep's fixed rate a is computed as the value of LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[FixedRateA]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "AllocationSweep",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "AllocationSweep.FixedRateB": {
-    "table": "AllocationSweep",
-    "field": "FixedRateB",
-    "kind": "formula",
-    "rule": "An allocation sweep's fixed rate b is computed as the value of LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[FixedRateB]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "AllocationSweep",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "AllocationSweep.SweepPooledRateA": {
-    "table": "AllocationSweep",
-    "field": "SweepPooledRateA",
-    "kind": "formula",
-    "rule": "The allocation sweep's sweep pooled rate a is determined by the following priority:\n1. an empty string, if the n sweep a plus the n fixed a is 0;\n2. in all other cases, the n sweep a times the sweep rate a plus the n fixed a times the fixed rate a divided by the n sweep a plus the n fixed a.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "AllocationSweep",
-        "field": "NSweepA",
-        "label": "n sweep a"
-      },
-      {
-        "table": "AllocationSweep",
-        "field": "NFixedA",
-        "label": "n fixed a"
-      },
-      {
-        "table": "AllocationSweep",
-        "field": "SweepRateA",
-        "label": "sweep rate a"
-      },
-      {
-        "table": "AllocationSweep",
-        "field": "FixedRateA",
-        "label": "fixed rate a"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The allocation sweep's sweep pooled rate a is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the n sweep a plus the n fixed a is 0"
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A materialized entity's name is the same as its materialized entity ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MaterializedEntities",
+            "field": "MaterializedEntityId",
+            "label": "materialized entity ID"
           }
-        },
-        {
-          "value": "the n sweep a times the sweep rate a plus the n fixed a times the fixed rate a divided by the n sweep a plus the n fixed a",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "AllocationSweep.SweepPooledRateB": {
-    "table": "AllocationSweep",
-    "field": "SweepPooledRateB",
-    "kind": "formula",
-    "rule": "The allocation sweep's sweep pooled rate b is determined by the following priority:\n1. an empty string, if the n sweep b plus the n fixed b is 0;\n2. in all other cases, the n sweep b times the sweep rate b plus the n fixed b times the fixed rate b divided by the n sweep b plus the n fixed b.",
-    "mechanical": false,
-    "refs": [
-      {
+        ],
+        "structure": null
+      },
+      "Methodology.Name": {
+        "table": "Methodology",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A methodology's name is the same as its methodology ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Methodology",
+            "field": "MethodologyId",
+            "label": "methodology ID"
+          }
+        ],
+        "structure": null
+      },
+      "Methodology.TraditionName": {
+        "table": "Methodology",
+        "field": "TraditionName",
+        "kind": "lookup",
+        "rule": "A methodology's tradition name is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Methodology",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          }
+        ],
+        "structure": null
+      },
+      "Methodology.TraditionPrimaryVenue": {
+        "table": "Methodology",
+        "field": "TraditionPrimaryVenue",
+        "kind": "lookup",
+        "rule": "A methodology's tradition primary venue is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[PrimaryVenue]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Methodology",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          }
+        ],
+        "structure": null
+      },
+      "Methodology.PioneeringResearcherName": {
+        "table": "Methodology",
+        "field": "PioneeringResearcherName",
+        "kind": "lookup",
+        "rule": "A methodology's pioneering researcher name is the value of LOOKUP(PioneeringResearcher, Researchers[ResearcherId], Researchers[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Methodology",
+            "field": "PioneeringResearcher",
+            "label": "pioneering researcher"
+          }
+        ],
+        "structure": null
+      },
+      "Methodology.PioneeringResearcherAffiliation": {
+        "table": "Methodology",
+        "field": "PioneeringResearcherAffiliation",
+        "kind": "lookup",
+        "rule": "A methodology's pioneering researcher affiliation is the value of LOOKUP(PioneeringResearcher, Researchers[ResearcherId], Researchers[Affiliation]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Methodology",
+            "field": "PioneeringResearcher",
+            "label": "pioneering researcher"
+          }
+        ],
+        "structure": null
+      },
+      "Methodology.LoopCount": {
+        "table": "Methodology",
+        "field": "LoopCount",
+        "kind": "rollup",
+        "rule": "A methodology's loop count is the number of loops related to the methodology.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loops",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          },
+          {
+            "table": "Methodology",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          }
+        ],
+        "structure": null
+      },
+      "Conclusions.Name": {
+        "table": "Conclusions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A conclusion's name is the same as its conclusion ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Conclusions",
+            "field": "ConclusionId",
+            "label": "conclusion ID"
+          }
+        ],
+        "structure": null
+      },
+      "Conclusions.LiveStatusConfirmed": {
+        "table": "Conclusions",
+        "field": "LiveStatusConfirmed",
+        "kind": "lookup",
+        "rule": "A conclusion's live status confirmed is the value of LOOKUP(ValidatingHypothesis, DiscoveryFindings[HypothesisId], DiscoveryFindings[IsConfirmed]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Conclusions",
+            "field": "ValidatingHypothesis",
+            "label": "validating hypothesis"
+          }
+        ],
+        "structure": null
+      },
+      "Conclusions.LiveStatusObservedMetric": {
+        "table": "Conclusions",
+        "field": "LiveStatusObservedMetric",
+        "kind": "lookup",
+        "rule": "A conclusion's live status observed metric is the value of LOOKUP(ValidatingHypothesis, DiscoveryFindings[HypothesisId], DiscoveryFindings[ObservedMetric]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Conclusions",
+            "field": "ValidatingHypothesis",
+            "label": "validating hypothesis"
+          }
+        ],
+        "structure": null
+      },
+      "Conclusions.TraditionName": {
+        "table": "Conclusions",
+        "field": "TraditionName",
+        "kind": "lookup",
+        "rule": "A conclusion's tradition name is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Conclusions",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          }
+        ],
+        "structure": null
+      },
+      "Conclusions.TraditionKeyClaimSummary": {
+        "table": "Conclusions",
+        "field": "TraditionKeyClaimSummary",
+        "kind": "lookup",
+        "rule": "A conclusion's tradition key claim summary is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[KeyClaim]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Conclusions",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          }
+        ],
+        "structure": null
+      },
+      "Conclusions.ResearcherName": {
+        "table": "Conclusions",
+        "field": "ResearcherName",
+        "kind": "lookup",
+        "rule": "A conclusion's researcher name is the value of LOOKUP(ResearcherId, Researchers[ResearcherId], Researchers[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Conclusions",
+            "field": "ResearcherId",
+            "label": "researcher ID"
+          }
+        ],
+        "structure": null
+      },
+      "Conclusions.ResearcherAffiliation": {
+        "table": "Conclusions",
+        "field": "ResearcherAffiliation",
+        "kind": "lookup",
+        "rule": "A conclusion's researcher affiliation is the value of LOOKUP(ResearcherId, Researchers[ResearcherId], Researchers[Affiliation]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Conclusions",
+            "field": "ResearcherId",
+            "label": "researcher ID"
+          }
+        ],
+        "structure": null
+      },
+      "Conclusions.ChallengesResearcherName": {
+        "table": "Conclusions",
+        "field": "ChallengesResearcherName",
+        "kind": "lookup",
+        "rule": "A conclusion's challenges researcher name is the value of LOOKUP(ChallengesResearcher, Researchers[ResearcherId], Researchers[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Conclusions",
+            "field": "ChallengesResearcher",
+            "label": "challenges researcher"
+          }
+        ],
+        "structure": null
+      },
+      "Conclusions.WitnessedInLoopTitle": {
+        "table": "Conclusions",
+        "field": "WitnessedInLoopTitle",
+        "kind": "lookup",
+        "rule": "A conclusion's witnessed in loop title is the value of LOOKUP(WitnessedInLoop, Loops[LoopId], Loops[Title]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Conclusions",
+            "field": "WitnessedInLoop",
+            "label": "witnessed in loop"
+          }
+        ],
+        "structure": null
+      },
+      "Conclusions.WitnessedInLoopCommitHash": {
+        "table": "Conclusions",
+        "field": "WitnessedInLoopCommitHash",
+        "kind": "lookup",
+        "rule": "A conclusion's witnessed in loop commit hash is the value of LOOKUP(WitnessedInLoop, Loops[LoopId], Loops[CommitHash]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Conclusions",
+            "field": "WitnessedInLoop",
+            "label": "witnessed in loop"
+          }
+        ],
+        "structure": null
+      },
+      "Conclusions.WitnessedInLoopCommitShort": {
+        "table": "Conclusions",
+        "field": "WitnessedInLoopCommitShort",
+        "kind": "lookup",
+        "rule": "A conclusion's witnessed in loop commit short is the value of LOOKUP(WitnessedInLoop, Loops[LoopId], Loops[CommitShort]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Conclusions",
+            "field": "WitnessedInLoop",
+            "label": "witnessed in loop"
+          }
+        ],
+        "structure": null
+      },
+      "Conclusions.WitnessedInLoopCommitDate": {
+        "table": "Conclusions",
+        "field": "WitnessedInLoopCommitDate",
+        "kind": "lookup",
+        "rule": "A conclusion's witnessed in loop commit date is the value of LOOKUP(WitnessedInLoop, Loops[LoopId], Loops[CommitDate]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Conclusions",
+            "field": "WitnessedInLoop",
+            "label": "witnessed in loop"
+          }
+        ],
+        "structure": null
+      },
+      "Conclusions.WitnessedInLoopGitTag": {
+        "table": "Conclusions",
+        "field": "WitnessedInLoopGitTag",
+        "kind": "lookup",
+        "rule": "A conclusion's witnessed in loop git tag is the value of LOOKUP(WitnessedInLoop, Loops[LoopId], Loops[GitTag]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Conclusions",
+            "field": "WitnessedInLoop",
+            "label": "witnessed in loop"
+          }
+        ],
+        "structure": null
+      },
+      "Conclusions.InvariantProtectingCount": {
+        "table": "Conclusions",
+        "field": "InvariantProtectingCount",
+        "kind": "rollup",
+        "rule": "A conclusion's invariant protecting count is the number of invariant checks related to the conclusion.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InvariantChecks",
+            "field": "ProtectsConclusion",
+            "label": "protects conclusion"
+          },
+          {
+            "table": "Conclusions",
+            "field": "ConclusionId",
+            "label": "conclusion ID"
+          }
+        ],
+        "structure": null
+      },
+      "UIScreens.Name": {
+        "table": "UIScreens",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A UI screen's name is the same as its screen ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "UIScreens",
+            "field": "ScreenId",
+            "label": "screen ID"
+          }
+        ],
+        "structure": null
+      },
+      "UIScreens.TraditionName": {
+        "table": "UIScreens",
+        "field": "TraditionName",
+        "kind": "lookup",
+        "rule": "A UI screen's tradition name is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "UIScreens",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          }
+        ],
+        "structure": null
+      },
+      "UIScreens.TraditionCoreConern": {
+        "table": "UIScreens",
+        "field": "TraditionCoreConern",
+        "kind": "lookup",
+        "rule": "A UI screen's tradition core conern is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[CoreConcern]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "UIScreens",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          }
+        ],
+        "structure": null
+      },
+      "UIScreens.PrimaryConclusionTitle": {
+        "table": "UIScreens",
+        "field": "PrimaryConclusionTitle",
+        "kind": "lookup",
+        "rule": "A UI screen's primary conclusion title is the value of LOOKUP(PrimaryConclusion, Conclusions[ConclusionId], Conclusions[Title]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "UIScreens",
+            "field": "PrimaryConclusion",
+            "label": "primary conclusion"
+          }
+        ],
+        "structure": null
+      },
+      "UIScreens.PrimaryConclusionEvidence": {
+        "table": "UIScreens",
+        "field": "PrimaryConclusionEvidence",
+        "kind": "lookup",
+        "rule": "A UI screen's primary conclusion evidence is the value of LOOKUP(PrimaryConclusion, Conclusions[ConclusionId], Conclusions[Evidence]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "UIScreens",
+            "field": "PrimaryConclusion",
+            "label": "primary conclusion"
+          }
+        ],
+        "structure": null
+      },
+      "UIComponents.Name": {
+        "table": "UIComponents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A UI component's name is the same as its component ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "UIComponents",
+            "field": "ComponentId",
+            "label": "component ID"
+          }
+        ],
+        "structure": null
+      },
+      "InstrumentSpec.Name": {
+        "table": "InstrumentSpec",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "An instrument spec's name is the same as its spec ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InstrumentSpec",
+            "field": "SpecId",
+            "label": "spec ID"
+          }
+        ],
+        "structure": null
+      },
+      "AllocationSweep.Name": {
+        "table": "AllocationSweep",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "An allocation sweep's name is the same as its sweep ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AllocationSweep",
+            "field": "SweepId",
+            "label": "sweep ID"
+          }
+        ],
+        "structure": null
+      },
+      "AllocationSweep.IsOriginal": {
+        "table": "AllocationSweep",
+        "field": "IsOriginal",
+        "kind": "formula",
+        "rule": "An allocation sweep is considered original if the value of ABS(AllocFractionA - LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[OriginalAllocFractionA])) < 0.03.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AllocationSweep",
+            "field": "AllocFractionA",
+            "label": "alloc fraction a"
+          },
+          {
+            "table": "AllocationSweep",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
+      },
+      "AllocationSweep.NSweepStratumTotal": {
+        "table": "AllocationSweep",
+        "field": "NSweepStratumTotal",
+        "kind": "formula",
+        "rule": "An allocation sweep's n sweep stratum total is computed as the value of LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[NSweepStratumTotal]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AllocationSweep",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
+      },
+      "AllocationSweep.NSweepA": {
+        "table": "AllocationSweep",
+        "field": "NSweepA",
+        "kind": "formula",
+        "rule": "An allocation sweep's n sweep a is computed as the n sweep stratum total times the alloc fraction a rounded to the nearest whole number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AllocationSweep",
+            "field": "NSweepStratumTotal",
+            "label": "n sweep stratum total"
+          },
+          {
+            "table": "AllocationSweep",
+            "field": "AllocFractionA",
+            "label": "alloc fraction a"
+          }
+        ],
+        "structure": null
+      },
+      "AllocationSweep.NSweepB": {
         "table": "AllocationSweep",
         "field": "NSweepB",
-        "label": "n sweep b"
+        "kind": "formula",
+        "rule": "An allocation sweep's n sweep b is computed as the n sweep stratum total minus the n sweep a.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AllocationSweep",
+            "field": "NSweepStratumTotal",
+            "label": "n sweep stratum total"
+          },
+          {
+            "table": "AllocationSweep",
+            "field": "NSweepA",
+            "label": "n sweep a"
+          }
+        ],
+        "structure": null
       },
-      {
+      "AllocationSweep.NFixedA": {
+        "table": "AllocationSweep",
+        "field": "NFixedA",
+        "kind": "formula",
+        "rule": "An allocation sweep's n fixed a is computed as the value of LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[NFixedA]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AllocationSweep",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
+      },
+      "AllocationSweep.NFixedB": {
         "table": "AllocationSweep",
         "field": "NFixedB",
-        "label": "n fixed b"
+        "kind": "formula",
+        "rule": "An allocation sweep's n fixed b is computed as the value of LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[NFixedB]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AllocationSweep",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "AllocationSweep.SweepRateA": {
+        "table": "AllocationSweep",
+        "field": "SweepRateA",
+        "kind": "formula",
+        "rule": "An allocation sweep's sweep rate a is computed as the value of LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[SweepRateA]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AllocationSweep",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
+      },
+      "AllocationSweep.SweepRateB": {
         "table": "AllocationSweep",
         "field": "SweepRateB",
-        "label": "sweep rate b"
+        "kind": "formula",
+        "rule": "An allocation sweep's sweep rate b is computed as the value of LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[SweepRateB]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AllocationSweep",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "AllocationSweep.FixedRateA": {
+        "table": "AllocationSweep",
+        "field": "FixedRateA",
+        "kind": "formula",
+        "rule": "An allocation sweep's fixed rate a is computed as the value of LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[FixedRateA]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AllocationSweep",
+            "field": "StudyId",
+            "label": "study ID"
+          }
+        ],
+        "structure": null
+      },
+      "AllocationSweep.FixedRateB": {
         "table": "AllocationSweep",
         "field": "FixedRateB",
-        "label": "fixed rate b"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The allocation sweep's sweep pooled rate b is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the n sweep b plus the n fixed b is 0"
+        "kind": "formula",
+        "rule": "An allocation sweep's fixed rate b is computed as the value of LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[FixedRateB]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AllocationSweep",
+            "field": "StudyId",
+            "label": "study ID"
           }
-        },
-        {
-          "value": "the n sweep b times the sweep rate b plus the n fixed b times the fixed rate b divided by the n sweep b plus the n fixed b",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "AllocationSweep.SweepPooledGap": {
-    "table": "AllocationSweep",
-    "field": "SweepPooledGap",
-    "kind": "formula",
-    "rule": "The allocation sweep's sweep pooled gap is determined by the following priority:\n1. an empty string, if the sweep pooled rate a is blank;\n2. in all other cases, the sweep pooled rate a minus the sweep pooled rate b.",
-    "mechanical": false,
-    "refs": [
-      {
+        ],
+        "structure": null
+      },
+      "AllocationSweep.SweepPooledRateA": {
         "table": "AllocationSweep",
         "field": "SweepPooledRateA",
-        "label": "sweep pooled rate a"
+        "kind": "formula",
+        "rule": "The allocation sweep's sweep pooled rate a is determined by the following priority:\n1. an empty string, if the n sweep a plus the n fixed a is 0;\n2. in all other cases, the n sweep a times the sweep rate a plus the n fixed a times the fixed rate a divided by the n sweep a plus the n fixed a.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AllocationSweep",
+            "field": "NSweepA",
+            "label": "n sweep a"
+          },
+          {
+            "table": "AllocationSweep",
+            "field": "NFixedA",
+            "label": "n fixed a"
+          },
+          {
+            "table": "AllocationSweep",
+            "field": "SweepRateA",
+            "label": "sweep rate a"
+          },
+          {
+            "table": "AllocationSweep",
+            "field": "FixedRateA",
+            "label": "fixed rate a"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The allocation sweep's sweep pooled rate a is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the n sweep a plus the n fixed a is 0"
+              }
+            },
+            {
+              "value": "the n sweep a times the sweep rate a plus the n fixed a times the fixed rate a divided by the n sweep a plus the n fixed a",
+              "when": null
+            }
+          ],
+          "children": null
+        }
       },
-      {
+      "AllocationSweep.SweepPooledRateB": {
         "table": "AllocationSweep",
         "field": "SweepPooledRateB",
-        "label": "sweep pooled rate b"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The allocation sweep's sweep pooled gap is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the sweep pooled rate a is blank"
+        "kind": "formula",
+        "rule": "The allocation sweep's sweep pooled rate b is determined by the following priority:\n1. an empty string, if the n sweep b plus the n fixed b is 0;\n2. in all other cases, the n sweep b times the sweep rate b plus the n fixed b times the fixed rate b divided by the n sweep b plus the n fixed b.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AllocationSweep",
+            "field": "NSweepB",
+            "label": "n sweep b"
+          },
+          {
+            "table": "AllocationSweep",
+            "field": "NFixedB",
+            "label": "n fixed b"
+          },
+          {
+            "table": "AllocationSweep",
+            "field": "SweepRateB",
+            "label": "sweep rate b"
+          },
+          {
+            "table": "AllocationSweep",
+            "field": "FixedRateB",
+            "label": "fixed rate b"
           }
-        },
-        {
-          "value": "the sweep pooled rate a minus the sweep pooled rate b",
-          "when": null
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The allocation sweep's sweep pooled rate b is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the n sweep b plus the n fixed b is 0"
+              }
+            },
+            {
+              "value": "the n sweep b times the sweep rate b plus the n fixed b times the fixed rate b divided by the n sweep b plus the n fixed b",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "AllocationSweep.SweepCorrectedGap": {
-    "table": "AllocationSweep",
-    "field": "SweepCorrectedGap",
-    "kind": "formula",
-    "rule": "An allocation sweep's sweep corrected gap is computed as the value of LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[SweepCorrectedGap]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "AllocationSweep",
-        "field": "StudyId",
-        "label": "study ID"
-      }
-    ],
-    "structure": null
-  },
-  "AllocationSweep.AllocationDistortionWitness": {
-    "table": "AllocationSweep",
-    "field": "AllocationDistortionWitness",
-    "kind": "formula",
-    "rule": "The allocation sweep's allocation distortion witness is determined by the following priority:\n1. an empty string, if the sweep pooled gap is blank;\n2. in all other cases, the sweep pooled gap minus the sweep corrected gap.",
-    "mechanical": false,
-    "refs": [
-      {
+      },
+      "AllocationSweep.SweepPooledGap": {
         "table": "AllocationSweep",
         "field": "SweepPooledGap",
-        "label": "sweep pooled gap"
+        "kind": "formula",
+        "rule": "The allocation sweep's sweep pooled gap is determined by the following priority:\n1. an empty string, if the sweep pooled rate a is blank;\n2. in all other cases, the sweep pooled rate a minus the sweep pooled rate b.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AllocationSweep",
+            "field": "SweepPooledRateA",
+            "label": "sweep pooled rate a"
+          },
+          {
+            "table": "AllocationSweep",
+            "field": "SweepPooledRateB",
+            "label": "sweep pooled rate b"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The allocation sweep's sweep pooled gap is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the sweep pooled rate a is blank"
+              }
+            },
+            {
+              "value": "the sweep pooled rate a minus the sweep pooled rate b",
+              "when": null
+            }
+          ],
+          "children": null
+        }
       },
-      {
+      "AllocationSweep.SweepCorrectedGap": {
         "table": "AllocationSweep",
         "field": "SweepCorrectedGap",
-        "label": "sweep corrected gap"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The allocation sweep's allocation distortion witness is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the sweep pooled gap is blank"
+        "kind": "formula",
+        "rule": "An allocation sweep's sweep corrected gap is computed as the value of LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[SweepCorrectedGap]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AllocationSweep",
+            "field": "StudyId",
+            "label": "study ID"
           }
-        },
-        {
-          "value": "the sweep pooled gap minus the sweep corrected gap",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "SweepStudySummary.Name": {
-    "table": "SweepStudySummary",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A sweep study summary's name is the same as its sweep study ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SweepStudySummary",
-        "field": "SweepStudyId",
-        "label": "sweep study ID"
-      }
-    ],
-    "structure": null
-  },
-  "SweepStudySummary.DistortionTypeLabel": {
-    "table": "SweepStudySummary",
-    "field": "DistortionTypeLabel",
-    "kind": "formula",
-    "rule": "A sweep study summary's distortion type label is computed as the value of LOOKUP(SweepStudyId, TreatmentRankings[Study], TreatmentRankings[DistortionType]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SweepStudySummary",
-        "field": "SweepStudyId",
-        "label": "sweep study ID"
-      }
-    ],
-    "structure": null
-  },
-  "SweepStudySummary.InvariantWitness": {
-    "table": "SweepStudySummary",
-    "field": "InvariantWitness",
-    "kind": "formula",
-    "rule": "The sweep study summary's invariant witness is determined by the following priority:\n1. “PASS: CorrectedGap invariant across allocation sweep”, if the sweep corrected gap range is less than 0.0001;\n2. in all other cases, “FAIL: CorrectedGap varies — formula error”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SweepStudySummary",
-        "field": "SweepCorrectedGapRange",
-        "label": "sweep corrected gap range"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The sweep study summary's invariant witness is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“PASS: CorrectedGap invariant across allocation sweep”",
-          "when": {
-            "kind": "leaf",
-            "text": "the sweep corrected gap range is less than 0.0001"
+        ],
+        "structure": null
+      },
+      "AllocationSweep.AllocationDistortionWitness": {
+        "table": "AllocationSweep",
+        "field": "AllocationDistortionWitness",
+        "kind": "formula",
+        "rule": "The allocation sweep's allocation distortion witness is determined by the following priority:\n1. an empty string, if the sweep pooled gap is blank;\n2. in all other cases, the sweep pooled gap minus the sweep corrected gap.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AllocationSweep",
+            "field": "SweepPooledGap",
+            "label": "sweep pooled gap"
+          },
+          {
+            "table": "AllocationSweep",
+            "field": "SweepCorrectedGap",
+            "label": "sweep corrected gap"
           }
-        },
-        {
-          "value": "“FAIL: CorrectedGap varies — formula error”",
-          "when": null
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The allocation sweep's allocation distortion witness is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the sweep pooled gap is blank"
+              }
+            },
+            {
+              "value": "the sweep pooled gap minus the sweep corrected gap",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "SweepStudySummary.SweepStratumLabel": {
-    "table": "SweepStudySummary",
-    "field": "SweepStratumLabel",
-    "kind": "formula",
-    "rule": "A sweep study summary's sweep stratum label is computed as the value of LOOKUP(SweepStudyId, SweepStudyConfig[StudyId], SweepStudyConfig[SweepStratumLabel]).",
-    "mechanical": false,
-    "refs": [
-      {
+      },
+      "SweepStudySummary.Name": {
         "table": "SweepStudySummary",
-        "field": "SweepStudyId",
-        "label": "sweep study ID"
-      }
-    ],
-    "structure": null
-  },
-  "ResearchTraditions.IllustratedByStudyTitle": {
-    "table": "ResearchTraditions",
-    "field": "IllustratedByStudyTitle",
-    "kind": "lookup",
-    "rule": "A research tradition's illustrated by study title is the value of LOOKUP(IllustratedByStudy, Studies[StudyId], Studies[Title]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ResearchTraditions",
-        "field": "IllustratedByStudy",
-        "label": "illustrated by study"
-      }
-    ],
-    "structure": null
-  },
-  "ResearchTraditions.IllustratedByStudySource": {
-    "table": "ResearchTraditions",
-    "field": "IllustratedByStudySource",
-    "kind": "lookup",
-    "rule": "A research tradition's illustrated by study source is the value of LOOKUP(IllustratedByStudy, Studies[StudyId], Studies[Source]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ResearchTraditions",
-        "field": "IllustratedByStudy",
-        "label": "illustrated by study"
-      }
-    ],
-    "structure": null
-  },
-  "ResearchTraditions.IllustratedByStudyDistortionType": {
-    "table": "ResearchTraditions",
-    "field": "IllustratedByStudyDistortionType",
-    "kind": "lookup",
-    "rule": "A research tradition's illustrated by study distortion type is the value of LOOKUP(IllustratedByStudy, TreatmentRankings[Study], TreatmentRankings[DistortionType]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ResearchTraditions",
-        "field": "IllustratedByStudy",
-        "label": "illustrated by study"
-      }
-    ],
-    "structure": null
-  },
-  "ResearchTraditions.SupportingConclusionTitle": {
-    "table": "ResearchTraditions",
-    "field": "SupportingConclusionTitle",
-    "kind": "lookup",
-    "rule": "A research tradition's supporting conclusion title is the value of LOOKUP(SupportingConclusion, Conclusions[ConclusionId], Conclusions[Title]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ResearchTraditions",
-        "field": "SupportingConclusion",
-        "label": "supporting conclusion"
-      }
-    ],
-    "structure": null
-  },
-  "ResearchTraditions.SupportingConclusionCategory": {
-    "table": "ResearchTraditions",
-    "field": "SupportingConclusionCategory",
-    "kind": "lookup",
-    "rule": "A research tradition's supporting conclusion category is the value of LOOKUP(SupportingConclusion, Conclusions[ConclusionId], Conclusions[Category]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ResearchTraditions",
-        "field": "SupportingConclusion",
-        "label": "supporting conclusion"
-      }
-    ],
-    "structure": null
-  },
-  "ResearchTraditions.ResearcherCount": {
-    "table": "ResearchTraditions",
-    "field": "ResearcherCount",
-    "kind": "rollup",
-    "rule": "A research tradition's researcher count is the number of researchers related to the research tradition.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Researchers",
-        "field": "TraditionId",
-        "label": "tradition ID"
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A sweep study summary's name is the same as its sweep study ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SweepStudySummary",
+            "field": "SweepStudyId",
+            "label": "sweep study ID"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "ResearchTraditions",
-        "field": "TraditionId",
-        "label": "tradition ID"
-      }
-    ],
-    "structure": null
-  },
-  "ResearchTraditions.StudyCount": {
-    "table": "ResearchTraditions",
-    "field": "StudyCount",
-    "kind": "rollup",
-    "rule": "A research tradition's study count is the number of studies related to the research tradition.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "TraditionId",
-        "label": "tradition ID"
+      "SweepStudySummary.DistortionTypeLabel": {
+        "table": "SweepStudySummary",
+        "field": "DistortionTypeLabel",
+        "kind": "formula",
+        "rule": "A sweep study summary's distortion type label is computed as the value of LOOKUP(SweepStudyId, TreatmentRankings[Study], TreatmentRankings[DistortionType]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SweepStudySummary",
+            "field": "SweepStudyId",
+            "label": "sweep study ID"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "ResearchTraditions",
-        "field": "TraditionId",
-        "label": "tradition ID"
-      }
-    ],
-    "structure": null
-  },
-  "ResearchTraditions.LoopCount": {
-    "table": "ResearchTraditions",
-    "field": "LoopCount",
-    "kind": "rollup",
-    "rule": "A research tradition's loop count is the number of loops related to the research tradition.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Loops",
-        "field": "TraditionId",
-        "label": "tradition ID"
+      "SweepStudySummary.InvariantWitness": {
+        "table": "SweepStudySummary",
+        "field": "InvariantWitness",
+        "kind": "formula",
+        "rule": "The sweep study summary's invariant witness is determined by the following priority:\n1. “PASS: CorrectedGap invariant across allocation sweep”, if the sweep corrected gap range is less than 0.0001;\n2. in all other cases, “FAIL: CorrectedGap varies — formula error”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SweepStudySummary",
+            "field": "SweepCorrectedGapRange",
+            "label": "sweep corrected gap range"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The sweep study summary's invariant witness is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“PASS: CorrectedGap invariant across allocation sweep”",
+              "when": {
+                "kind": "leaf",
+                "text": "the sweep corrected gap range is less than 0.0001"
+              }
+            },
+            {
+              "value": "“FAIL: CorrectedGap varies — formula error”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
       },
-      {
+      "SweepStudySummary.SweepStratumLabel": {
+        "table": "SweepStudySummary",
+        "field": "SweepStratumLabel",
+        "kind": "formula",
+        "rule": "A sweep study summary's sweep stratum label is computed as the value of LOOKUP(SweepStudyId, SweepStudyConfig[StudyId], SweepStudyConfig[SweepStratumLabel]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SweepStudySummary",
+            "field": "SweepStudyId",
+            "label": "sweep study ID"
+          }
+        ],
+        "structure": null
+      },
+      "ResearchTraditions.IllustratedByStudyTitle": {
         "table": "ResearchTraditions",
-        "field": "TraditionId",
-        "label": "tradition ID"
-      }
-    ],
-    "structure": null
-  },
-  "Researchers.TraditionName": {
-    "table": "Researchers",
-    "field": "TraditionName",
-    "kind": "lookup",
-    "rule": "A researcher's tradition name is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[Name]).",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "IllustratedByStudyTitle",
+        "kind": "lookup",
+        "rule": "A research tradition's illustrated by study title is the value of LOOKUP(IllustratedByStudy, Studies[StudyId], Studies[Title]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ResearchTraditions",
+            "field": "IllustratedByStudy",
+            "label": "illustrated by study"
+          }
+        ],
+        "structure": null
+      },
+      "ResearchTraditions.IllustratedByStudySource": {
+        "table": "ResearchTraditions",
+        "field": "IllustratedByStudySource",
+        "kind": "lookup",
+        "rule": "A research tradition's illustrated by study source is the value of LOOKUP(IllustratedByStudy, Studies[StudyId], Studies[Source]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ResearchTraditions",
+            "field": "IllustratedByStudy",
+            "label": "illustrated by study"
+          }
+        ],
+        "structure": null
+      },
+      "ResearchTraditions.IllustratedByStudyDistortionType": {
+        "table": "ResearchTraditions",
+        "field": "IllustratedByStudyDistortionType",
+        "kind": "lookup",
+        "rule": "A research tradition's illustrated by study distortion type is the value of LOOKUP(IllustratedByStudy, TreatmentRankings[Study], TreatmentRankings[DistortionType]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ResearchTraditions",
+            "field": "IllustratedByStudy",
+            "label": "illustrated by study"
+          }
+        ],
+        "structure": null
+      },
+      "ResearchTraditions.SupportingConclusionTitle": {
+        "table": "ResearchTraditions",
+        "field": "SupportingConclusionTitle",
+        "kind": "lookup",
+        "rule": "A research tradition's supporting conclusion title is the value of LOOKUP(SupportingConclusion, Conclusions[ConclusionId], Conclusions[Title]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ResearchTraditions",
+            "field": "SupportingConclusion",
+            "label": "supporting conclusion"
+          }
+        ],
+        "structure": null
+      },
+      "ResearchTraditions.SupportingConclusionCategory": {
+        "table": "ResearchTraditions",
+        "field": "SupportingConclusionCategory",
+        "kind": "lookup",
+        "rule": "A research tradition's supporting conclusion category is the value of LOOKUP(SupportingConclusion, Conclusions[ConclusionId], Conclusions[Category]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ResearchTraditions",
+            "field": "SupportingConclusion",
+            "label": "supporting conclusion"
+          }
+        ],
+        "structure": null
+      },
+      "ResearchTraditions.ResearcherCount": {
+        "table": "ResearchTraditions",
+        "field": "ResearcherCount",
+        "kind": "rollup",
+        "rule": "A research tradition's researcher count is the number of researchers related to the research tradition.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Researchers",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          },
+          {
+            "table": "ResearchTraditions",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          }
+        ],
+        "structure": null
+      },
+      "ResearchTraditions.StudyCount": {
+        "table": "ResearchTraditions",
+        "field": "StudyCount",
+        "kind": "rollup",
+        "rule": "A research tradition's study count is the number of studies related to the research tradition.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          },
+          {
+            "table": "ResearchTraditions",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          }
+        ],
+        "structure": null
+      },
+      "ResearchTraditions.LoopCount": {
+        "table": "ResearchTraditions",
+        "field": "LoopCount",
+        "kind": "rollup",
+        "rule": "A research tradition's loop count is the number of loops related to the research tradition.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Loops",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          },
+          {
+            "table": "ResearchTraditions",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          }
+        ],
+        "structure": null
+      },
+      "Researchers.TraditionName": {
         "table": "Researchers",
-        "field": "TraditionId",
-        "label": "tradition ID"
-      }
-    ],
-    "structure": null
-  },
-  "Researchers.TraditionEra": {
-    "table": "Researchers",
-    "field": "TraditionEra",
-    "kind": "lookup",
-    "rule": "A researcher's tradition era is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[Era]).",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "TraditionName",
+        "kind": "lookup",
+        "rule": "A researcher's tradition name is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[Name]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Researchers",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          }
+        ],
+        "structure": null
+      },
+      "Researchers.TraditionEra": {
         "table": "Researchers",
-        "field": "TraditionId",
-        "label": "tradition ID"
-      }
-    ],
-    "structure": null
-  },
-  "Researchers.CanonicalStudyTitle": {
-    "table": "Researchers",
-    "field": "CanonicalStudyTitle",
-    "kind": "lookup",
-    "rule": "A researcher's canonical study title is the value of LOOKUP(CanonicalStudyId, Studies[StudyId], Studies[Title]).",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "TraditionEra",
+        "kind": "lookup",
+        "rule": "A researcher's tradition era is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[Era]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Researchers",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          }
+        ],
+        "structure": null
+      },
+      "Researchers.CanonicalStudyTitle": {
         "table": "Researchers",
-        "field": "CanonicalStudyId",
-        "label": "canonical study ID"
-      }
-    ],
-    "structure": null
-  },
-  "Researchers.CanonicalStudyDistortionType": {
-    "table": "Researchers",
-    "field": "CanonicalStudyDistortionType",
-    "kind": "lookup",
-    "rule": "A researcher's canonical study distortion type is the value of LOOKUP(CanonicalStudyId, TreatmentRankings[Study], TreatmentRankings[DistortionType]).",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "CanonicalStudyTitle",
+        "kind": "lookup",
+        "rule": "A researcher's canonical study title is the value of LOOKUP(CanonicalStudyId, Studies[StudyId], Studies[Title]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Researchers",
+            "field": "CanonicalStudyId",
+            "label": "canonical study ID"
+          }
+        ],
+        "structure": null
+      },
+      "Researchers.CanonicalStudyDistortionType": {
         "table": "Researchers",
-        "field": "CanonicalStudyId",
-        "label": "canonical study ID"
-      }
-    ],
-    "structure": null
-  },
-  "Researchers.CanonicalStudyPolicyImplication": {
-    "table": "Researchers",
-    "field": "CanonicalStudyPolicyImplication",
-    "kind": "lookup",
-    "rule": "A researcher's canonical study policy implication is the value of LOOKUP(CanonicalStudyId, TreatmentRankings[Study], TreatmentRankings[CorrectedPolicyImplication]).",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "CanonicalStudyDistortionType",
+        "kind": "lookup",
+        "rule": "A researcher's canonical study distortion type is the value of LOOKUP(CanonicalStudyId, TreatmentRankings[Study], TreatmentRankings[DistortionType]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Researchers",
+            "field": "CanonicalStudyId",
+            "label": "canonical study ID"
+          }
+        ],
+        "structure": null
+      },
+      "Researchers.CanonicalStudyPolicyImplication": {
         "table": "Researchers",
-        "field": "CanonicalStudyId",
-        "label": "canonical study ID"
-      }
-    ],
-    "structure": null
-  },
-  "Researchers.IllustratesConclusionTitle": {
-    "table": "Researchers",
-    "field": "IllustratesConclusionTitle",
-    "kind": "lookup",
-    "rule": "A researcher's illustrates conclusion title is the value of LOOKUP(IllustratesConclusion, Conclusions[ConclusionId], Conclusions[Title]).",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "CanonicalStudyPolicyImplication",
+        "kind": "lookup",
+        "rule": "A researcher's canonical study policy implication is the value of LOOKUP(CanonicalStudyId, TreatmentRankings[Study], TreatmentRankings[CorrectedPolicyImplication]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Researchers",
+            "field": "CanonicalStudyId",
+            "label": "canonical study ID"
+          }
+        ],
+        "structure": null
+      },
+      "Researchers.IllustratesConclusionTitle": {
         "table": "Researchers",
-        "field": "IllustratesConclusion",
-        "label": "illustrates conclusion"
-      }
-    ],
-    "structure": null
-  },
-  "Researchers.TraditionKeyClaimSummary": {
-    "table": "Researchers",
-    "field": "TraditionKeyClaimSummary",
-    "kind": "lookup",
-    "rule": "A researcher's tradition key claim summary is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[KeyClaim]).",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "IllustratesConclusionTitle",
+        "kind": "lookup",
+        "rule": "A researcher's illustrates conclusion title is the value of LOOKUP(IllustratesConclusion, Conclusions[ConclusionId], Conclusions[Title]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Researchers",
+            "field": "IllustratesConclusion",
+            "label": "illustrates conclusion"
+          }
+        ],
+        "structure": null
+      },
+      "Researchers.TraditionKeyClaimSummary": {
         "table": "Researchers",
-        "field": "TraditionId",
-        "label": "tradition ID"
-      }
-    ],
-    "structure": null
-  },
-  "SyntheticPhase.Name": {
-    "table": "SyntheticPhase",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A synthetic phase's name is the same as its phase ID.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "TraditionKeyClaimSummary",
+        "kind": "lookup",
+        "rule": "A researcher's tradition key claim summary is the value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[KeyClaim]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Researchers",
+            "field": "TraditionId",
+            "label": "tradition ID"
+          }
+        ],
+        "structure": null
+      },
+      "SyntheticPhase.Name": {
         "table": "SyntheticPhase",
-        "field": "PhaseId",
-        "label": "phase ID"
-      }
-    ],
-    "structure": null
-  },
-  "SyntheticPhase.PhaseS1Total": {
-    "table": "SyntheticPhase",
-    "field": "PhaseS1Total",
-    "kind": "formula",
-    "rule": "A synthetic phase's phase s1 total is computed as 200 times the param stratum fraction rounded to the nearest whole number.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SyntheticPhase",
-        "field": "ParamStratumFraction",
-        "label": "param stratum fraction"
-      }
-    ],
-    "structure": null
-  },
-  "SyntheticPhase.PhaseNA1": {
-    "table": "SyntheticPhase",
-    "field": "PhaseNA1",
-    "kind": "formula",
-    "rule": "A synthetic phase's phase NA1 is computed as the phase s1 total times 0.5 plus the param allocation bias divided by 2 rounded to the nearest whole number.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A synthetic phase's name is the same as its phase ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseId",
+            "label": "phase ID"
+          }
+        ],
+        "structure": null
+      },
+      "SyntheticPhase.PhaseS1Total": {
         "table": "SyntheticPhase",
         "field": "PhaseS1Total",
-        "label": "phase s1 total"
+        "kind": "formula",
+        "rule": "A synthetic phase's phase s1 total is computed as 200 times the param stratum fraction rounded to the nearest whole number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SyntheticPhase",
+            "field": "ParamStratumFraction",
+            "label": "param stratum fraction"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "SyntheticPhase",
-        "field": "ParamAllocationBias",
-        "label": "param allocation bias"
-      }
-    ],
-    "structure": null
-  },
-  "SyntheticPhase.PhaseNB1": {
-    "table": "SyntheticPhase",
-    "field": "PhaseNB1",
-    "kind": "formula",
-    "rule": "A synthetic phase's phase NB1 is computed as the phase s1 total minus the phase NA1.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SyntheticPhase",
-        "field": "PhaseS1Total",
-        "label": "phase s1 total"
-      },
-      {
+      "SyntheticPhase.PhaseNA1": {
         "table": "SyntheticPhase",
         "field": "PhaseNA1",
-        "label": "phase NA1"
-      }
-    ],
-    "structure": null
-  },
-  "SyntheticPhase.PhaseNA2": {
-    "table": "SyntheticPhase",
-    "field": "PhaseNA2",
-    "kind": "formula",
-    "rule": "A synthetic phase's phase NA2 is computed as 100 minus the phase NA1.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SyntheticPhase",
-        "field": "PhaseNA1",
-        "label": "phase NA1"
-      }
-    ],
-    "structure": null
-  },
-  "SyntheticPhase.PhaseNB2": {
-    "table": "SyntheticPhase",
-    "field": "PhaseNB2",
-    "kind": "formula",
-    "rule": "A synthetic phase's phase NB2 is computed as 100 minus the phase NB1.",
-    "mechanical": false,
-    "refs": [
-      {
+        "kind": "formula",
+        "rule": "A synthetic phase's phase NA1 is computed as the phase s1 total times 0.5 plus the param allocation bias divided by 2 rounded to the nearest whole number.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseS1Total",
+            "label": "phase s1 total"
+          },
+          {
+            "table": "SyntheticPhase",
+            "field": "ParamAllocationBias",
+            "label": "param allocation bias"
+          }
+        ],
+        "structure": null
+      },
+      "SyntheticPhase.PhaseNB1": {
         "table": "SyntheticPhase",
         "field": "PhaseNB1",
-        "label": "phase NB1"
-      }
-    ],
-    "structure": null
-  },
-  "SyntheticPhase.PhaseRateA1": {
-    "table": "SyntheticPhase",
-    "field": "PhaseRateA1",
-    "kind": "formula",
-    "rule": "A synthetic phase's phase rate a1 is computed as 0.45 plus the param stratum gap1 divided by 2.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SyntheticPhase",
-        "field": "ParamStratumGap1",
-        "label": "param stratum gap1"
-      }
-    ],
-    "structure": null
-  },
-  "SyntheticPhase.PhaseRateB1": {
-    "table": "SyntheticPhase",
-    "field": "PhaseRateB1",
-    "kind": "formula",
-    "rule": "A synthetic phase's phase rate b1 is computed as 0.45 minus the param stratum gap1 divided by 2.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SyntheticPhase",
-        "field": "ParamStratumGap1",
-        "label": "param stratum gap1"
-      }
-    ],
-    "structure": null
-  },
-  "SyntheticPhase.PhaseRateA2": {
-    "table": "SyntheticPhase",
-    "field": "PhaseRateA2",
-    "kind": "formula",
-    "rule": "A synthetic phase's phase rate a2 is computed as 0.75 plus the param stratum gap2 divided by 2.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SyntheticPhase",
-        "field": "ParamStratumGap2",
-        "label": "param stratum gap2"
-      }
-    ],
-    "structure": null
-  },
-  "SyntheticPhase.PhaseRateB2": {
-    "table": "SyntheticPhase",
-    "field": "PhaseRateB2",
-    "kind": "formula",
-    "rule": "A synthetic phase's phase rate b2 is computed as 0.75 minus the param stratum gap2 divided by 2.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SyntheticPhase",
-        "field": "ParamStratumGap2",
-        "label": "param stratum gap2"
-      }
-    ],
-    "structure": null
-  },
-  "SyntheticPhase.PhasePooledRateA": {
-    "table": "SyntheticPhase",
-    "field": "PhasePooledRateA",
-    "kind": "formula",
-    "rule": "A synthetic phase's phase pooled rate a is computed as the phase NA1 times the phase rate a1 plus the phase NA2 times the phase rate a2 divided by 100.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SyntheticPhase",
-        "field": "PhaseNA1",
-        "label": "phase NA1"
+        "kind": "formula",
+        "rule": "A synthetic phase's phase NB1 is computed as the phase s1 total minus the phase NA1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseS1Total",
+            "label": "phase s1 total"
+          },
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseNA1",
+            "label": "phase NA1"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "SyntheticPhase",
-        "field": "PhaseRateA1",
-        "label": "phase rate a1"
-      },
-      {
+      "SyntheticPhase.PhaseNA2": {
         "table": "SyntheticPhase",
         "field": "PhaseNA2",
-        "label": "phase NA2"
+        "kind": "formula",
+        "rule": "A synthetic phase's phase NA2 is computed as 100 minus the phase NA1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseNA1",
+            "label": "phase NA1"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "SyntheticPhase",
-        "field": "PhaseRateA2",
-        "label": "phase rate a2"
-      }
-    ],
-    "structure": null
-  },
-  "SyntheticPhase.PhasePooledRateB": {
-    "table": "SyntheticPhase",
-    "field": "PhasePooledRateB",
-    "kind": "formula",
-    "rule": "A synthetic phase's phase pooled rate b is computed as the phase NB1 times the phase rate b1 plus the phase NB2 times the phase rate b2 divided by 100.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SyntheticPhase",
-        "field": "PhaseNB1",
-        "label": "phase NB1"
-      },
-      {
-        "table": "SyntheticPhase",
-        "field": "PhaseRateB1",
-        "label": "phase rate b1"
-      },
-      {
+      "SyntheticPhase.PhaseNB2": {
         "table": "SyntheticPhase",
         "field": "PhaseNB2",
-        "label": "phase NB2"
+        "kind": "formula",
+        "rule": "A synthetic phase's phase NB2 is computed as 100 minus the phase NB1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseNB1",
+            "label": "phase NB1"
+          }
+        ],
+        "structure": null
       },
-      {
+      "SyntheticPhase.PhaseRateA1": {
+        "table": "SyntheticPhase",
+        "field": "PhaseRateA1",
+        "kind": "formula",
+        "rule": "A synthetic phase's phase rate a1 is computed as 0.45 plus the param stratum gap1 divided by 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SyntheticPhase",
+            "field": "ParamStratumGap1",
+            "label": "param stratum gap1"
+          }
+        ],
+        "structure": null
+      },
+      "SyntheticPhase.PhaseRateB1": {
+        "table": "SyntheticPhase",
+        "field": "PhaseRateB1",
+        "kind": "formula",
+        "rule": "A synthetic phase's phase rate b1 is computed as 0.45 minus the param stratum gap1 divided by 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SyntheticPhase",
+            "field": "ParamStratumGap1",
+            "label": "param stratum gap1"
+          }
+        ],
+        "structure": null
+      },
+      "SyntheticPhase.PhaseRateA2": {
+        "table": "SyntheticPhase",
+        "field": "PhaseRateA2",
+        "kind": "formula",
+        "rule": "A synthetic phase's phase rate a2 is computed as 0.75 plus the param stratum gap2 divided by 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SyntheticPhase",
+            "field": "ParamStratumGap2",
+            "label": "param stratum gap2"
+          }
+        ],
+        "structure": null
+      },
+      "SyntheticPhase.PhaseRateB2": {
         "table": "SyntheticPhase",
         "field": "PhaseRateB2",
-        "label": "phase rate b2"
-      }
-    ],
-    "structure": null
-  },
-  "SyntheticPhase.PhaseSignedPooledGap": {
-    "table": "SyntheticPhase",
-    "field": "PhaseSignedPooledGap",
-    "kind": "formula",
-    "rule": "A synthetic phase's phase signed pooled gap is computed as the phase pooled rate a minus the phase pooled rate b.",
-    "mechanical": false,
-    "refs": [
-      {
+        "kind": "formula",
+        "rule": "A synthetic phase's phase rate b2 is computed as 0.75 minus the param stratum gap2 divided by 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SyntheticPhase",
+            "field": "ParamStratumGap2",
+            "label": "param stratum gap2"
+          }
+        ],
+        "structure": null
+      },
+      "SyntheticPhase.PhasePooledRateA": {
         "table": "SyntheticPhase",
         "field": "PhasePooledRateA",
-        "label": "phase pooled rate a"
+        "kind": "formula",
+        "rule": "A synthetic phase's phase pooled rate a is computed as the phase NA1 times the phase rate a1 plus the phase NA2 times the phase rate a2 divided by 100.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseNA1",
+            "label": "phase NA1"
+          },
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseRateA1",
+            "label": "phase rate a1"
+          },
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseNA2",
+            "label": "phase NA2"
+          },
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseRateA2",
+            "label": "phase rate a2"
+          }
+        ],
+        "structure": null
       },
-      {
+      "SyntheticPhase.PhasePooledRateB": {
         "table": "SyntheticPhase",
         "field": "PhasePooledRateB",
-        "label": "phase pooled rate b"
-      }
-    ],
-    "structure": null
-  },
-  "SyntheticPhase.PhaseCorrectedGap": {
-    "table": "SyntheticPhase",
-    "field": "PhaseCorrectedGap",
-    "kind": "formula",
-    "rule": "A synthetic phase's phase corrected gap is computed as the param stratum fraction times the param stratum gap1 plus 1 minus the param stratum fraction times the param stratum gap2.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SyntheticPhase",
-        "field": "ParamStratumFraction",
-        "label": "param stratum fraction"
+        "kind": "formula",
+        "rule": "A synthetic phase's phase pooled rate b is computed as the phase NB1 times the phase rate b1 plus the phase NB2 times the phase rate b2 divided by 100.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseNB1",
+            "label": "phase NB1"
+          },
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseRateB1",
+            "label": "phase rate b1"
+          },
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseNB2",
+            "label": "phase NB2"
+          },
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseRateB2",
+            "label": "phase rate b2"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "SyntheticPhase",
-        "field": "ParamStratumGap1",
-        "label": "param stratum gap1"
-      },
-      {
-        "table": "SyntheticPhase",
-        "field": "ParamStratumGap2",
-        "label": "param stratum gap2"
-      }
-    ],
-    "structure": null
-  },
-  "SyntheticPhase.PhaseStrataWonByLoser": {
-    "table": "SyntheticPhase",
-    "field": "PhaseStrataWonByLoser",
-    "kind": "formula",
-    "rule": "The synthetic phase's phase strata won by loser is determined by the following priority:\n1. the count of the following that hold: the param stratum gap1 is less than 0 and the param stratum gap2 is less than 0, if the phase signed pooled gap is greater than 0;\n2. in all other cases, the count of the following that hold: the param stratum gap1 is greater than 0 and the param stratum gap2 is greater than 0.",
-    "mechanical": false,
-    "refs": [
-      {
+      "SyntheticPhase.PhaseSignedPooledGap": {
         "table": "SyntheticPhase",
         "field": "PhaseSignedPooledGap",
-        "label": "phase signed pooled gap"
-      },
-      {
-        "table": "SyntheticPhase",
-        "field": "ParamStratumGap1",
-        "label": "param stratum gap1"
-      },
-      {
-        "table": "SyntheticPhase",
-        "field": "ParamStratumGap2",
-        "label": "param stratum gap2"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The synthetic phase's phase strata won by loser is determined by the following priority:",
-      "cases": [
-        {
-          "value": "the count of the following that hold: the param stratum gap1 is less than 0 and the param stratum gap2 is less than 0",
-          "when": {
-            "kind": "leaf",
-            "text": "the phase signed pooled gap is greater than 0"
+        "kind": "formula",
+        "rule": "A synthetic phase's phase signed pooled gap is computed as the phase pooled rate a minus the phase pooled rate b.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SyntheticPhase",
+            "field": "PhasePooledRateA",
+            "label": "phase pooled rate a"
+          },
+          {
+            "table": "SyntheticPhase",
+            "field": "PhasePooledRateB",
+            "label": "phase pooled rate b"
           }
-        },
-        {
-          "value": "the count of the following that hold: the param stratum gap1 is greater than 0 and the param stratum gap2 is greater than 0",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "SyntheticPhase.PhaseReversalIntensity": {
-    "table": "SyntheticPhase",
-    "field": "PhaseReversalIntensity",
-    "kind": "formula",
-    "rule": "A synthetic phase's phase reversal intensity is computed as the phase strata won by loser divided by 2.",
-    "mechanical": false,
-    "refs": [
-      {
+        ],
+        "structure": null
+      },
+      "SyntheticPhase.PhaseCorrectedGap": {
+        "table": "SyntheticPhase",
+        "field": "PhaseCorrectedGap",
+        "kind": "formula",
+        "rule": "A synthetic phase's phase corrected gap is computed as the param stratum fraction times the param stratum gap1 plus 1 minus the param stratum fraction times the param stratum gap2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SyntheticPhase",
+            "field": "ParamStratumFraction",
+            "label": "param stratum fraction"
+          },
+          {
+            "table": "SyntheticPhase",
+            "field": "ParamStratumGap1",
+            "label": "param stratum gap1"
+          },
+          {
+            "table": "SyntheticPhase",
+            "field": "ParamStratumGap2",
+            "label": "param stratum gap2"
+          }
+        ],
+        "structure": null
+      },
+      "SyntheticPhase.PhaseStrataWonByLoser": {
         "table": "SyntheticPhase",
         "field": "PhaseStrataWonByLoser",
-        "label": "phase strata won by loser"
-      }
-    ],
-    "structure": null
-  },
-  "SyntheticPhase.PhaseIsSignFlip": {
-    "table": "SyntheticPhase",
-    "field": "PhaseIsSignFlip",
-    "kind": "formula",
-    "rule": "A synthetic phase is flagged phase is sign flip if the phase signed pooled gap is less than 0 if the phase corrected gap is greater than 0, in all other cases the phase signed pooled gap is greater than 0.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SyntheticPhase",
-        "field": "PhaseCorrectedGap",
-        "label": "phase corrected gap"
-      },
-      {
-        "table": "SyntheticPhase",
-        "field": "PhaseSignedPooledGap",
-        "label": "phase signed pooled gap"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The synthetic phase's phase is sign flip is determined by the following priority:",
-      "cases": [
-        {
-          "value": "the phase signed pooled gap is less than 0",
-          "when": {
-            "kind": "leaf",
-            "text": "the phase corrected gap is greater than 0"
+        "kind": "formula",
+        "rule": "The synthetic phase's phase strata won by loser is determined by the following priority:\n1. the count of the following that hold: the param stratum gap1 is less than 0 and the param stratum gap2 is less than 0, if the phase signed pooled gap is greater than 0;\n2. in all other cases, the count of the following that hold: the param stratum gap1 is greater than 0 and the param stratum gap2 is greater than 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseSignedPooledGap",
+            "label": "phase signed pooled gap"
+          },
+          {
+            "table": "SyntheticPhase",
+            "field": "ParamStratumGap1",
+            "label": "param stratum gap1"
+          },
+          {
+            "table": "SyntheticPhase",
+            "field": "ParamStratumGap2",
+            "label": "param stratum gap2"
           }
-        },
-        {
-          "value": "the phase signed pooled gap is greater than 0",
-          "when": null
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The synthetic phase's phase strata won by loser is determined by the following priority:",
+          "cases": [
+            {
+              "value": "the count of the following that hold: the param stratum gap1 is less than 0 and the param stratum gap2 is less than 0",
+              "when": {
+                "kind": "leaf",
+                "text": "the phase signed pooled gap is greater than 0"
+              }
+            },
+            {
+              "value": "the count of the following that hold: the param stratum gap1 is greater than 0 and the param stratum gap2 is greater than 0",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "SyntheticPhase.PhaseAllocationDistortion": {
-    "table": "SyntheticPhase",
-    "field": "PhaseAllocationDistortion",
-    "kind": "formula",
-    "rule": "A synthetic phase's phase allocation distortion is computed as the absolute value of the phase corrected gap minus the phase signed pooled gap.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SyntheticPhase",
-        "field": "PhaseCorrectedGap",
-        "label": "phase corrected gap"
       },
-      {
-        "table": "SyntheticPhase",
-        "field": "PhaseSignedPooledGap",
-        "label": "phase signed pooled gap"
-      }
-    ],
-    "structure": null
-  },
-  "SyntheticPhase.PhaseDistortionType": {
-    "table": "SyntheticPhase",
-    "field": "PhaseDistortionType",
-    "kind": "formula",
-    "rule": "The synthetic phase's phase distortion type is determined by the following priority:\n1. “A”, if all of the following hold: the phase is sign flip flag is set and the phase reversal intensity is 1;\n2. “B”, if all of the following hold: the phase is sign flip flag is set and the phase reversal intensity is less than 1;\n3. “C+”, if all of the following hold: the phase is sign flip flag is not set; the phase allocation distortion is greater than 0.01; and the absolute value of the phase signed pooled gap is greater than the absolute value of the phase corrected gap plus 0.001;\n4. “C-”, if all of the following hold: the phase is sign flip flag is not set; the phase allocation distortion is greater than 0.01; and the absolute value of the phase signed pooled gap is less than the absolute value of the phase corrected gap minus 0.001;\n5. in all other cases, “D”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SyntheticPhase",
-        "field": "PhaseIsSignFlip",
-        "label": "phase is sign flip"
-      },
-      {
+      "SyntheticPhase.PhaseReversalIntensity": {
         "table": "SyntheticPhase",
         "field": "PhaseReversalIntensity",
-        "label": "phase reversal intensity"
+        "kind": "formula",
+        "rule": "A synthetic phase's phase reversal intensity is computed as the phase strata won by loser divided by 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseStrataWonByLoser",
+            "label": "phase strata won by loser"
+          }
+        ],
+        "structure": null
       },
-      {
+      "SyntheticPhase.PhaseIsSignFlip": {
+        "table": "SyntheticPhase",
+        "field": "PhaseIsSignFlip",
+        "kind": "formula",
+        "rule": "A synthetic phase is flagged phase is sign flip if the phase signed pooled gap is less than 0 if the phase corrected gap is greater than 0, in all other cases the phase signed pooled gap is greater than 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseCorrectedGap",
+            "label": "phase corrected gap"
+          },
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseSignedPooledGap",
+            "label": "phase signed pooled gap"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The synthetic phase's phase is sign flip is determined by the following priority:",
+          "cases": [
+            {
+              "value": "the phase signed pooled gap is less than 0",
+              "when": {
+                "kind": "leaf",
+                "text": "the phase corrected gap is greater than 0"
+              }
+            },
+            {
+              "value": "the phase signed pooled gap is greater than 0",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "SyntheticPhase.PhaseAllocationDistortion": {
         "table": "SyntheticPhase",
         "field": "PhaseAllocationDistortion",
-        "label": "phase allocation distortion"
+        "kind": "formula",
+        "rule": "A synthetic phase's phase allocation distortion is computed as the absolute value of the phase corrected gap minus the phase signed pooled gap.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseCorrectedGap",
+            "label": "phase corrected gap"
+          },
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseSignedPooledGap",
+            "label": "phase signed pooled gap"
+          }
+        ],
+        "structure": null
       },
-      {
+      "SyntheticPhase.PhaseDistortionType": {
         "table": "SyntheticPhase",
-        "field": "PhaseSignedPooledGap",
-        "label": "phase signed pooled gap"
-      },
-      {
-        "table": "SyntheticPhase",
-        "field": "PhaseCorrectedGap",
-        "label": "phase corrected gap"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The synthetic phase's phase distortion type is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“A”",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the phase is sign flip flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the phase reversal intensity is 1"
-              }
-            ]
+        "field": "PhaseDistortionType",
+        "kind": "formula",
+        "rule": "The synthetic phase's phase distortion type is determined by the following priority:\n1. “A”, if all of the following hold: the phase is sign flip flag is set and the phase reversal intensity is 1;\n2. “B”, if all of the following hold: the phase is sign flip flag is set and the phase reversal intensity is less than 1;\n3. “C+”, if all of the following hold: the phase is sign flip flag is not set; the phase allocation distortion is greater than 0.01; and the absolute value of the phase signed pooled gap is greater than the absolute value of the phase corrected gap plus 0.001;\n4. “C-”, if all of the following hold: the phase is sign flip flag is not set; the phase allocation distortion is greater than 0.01; and the absolute value of the phase signed pooled gap is less than the absolute value of the phase corrected gap minus 0.001;\n5. in all other cases, “D”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseIsSignFlip",
+            "label": "phase is sign flip"
+          },
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseReversalIntensity",
+            "label": "phase reversal intensity"
+          },
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseAllocationDistortion",
+            "label": "phase allocation distortion"
+          },
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseSignedPooledGap",
+            "label": "phase signed pooled gap"
+          },
+          {
+            "table": "SyntheticPhase",
+            "field": "PhaseCorrectedGap",
+            "label": "phase corrected gap"
           }
-        },
-        {
-          "value": "“B”",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the phase is sign flip flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the phase reversal intensity is less than 1"
-              }
-            ]
-          }
-        },
-        {
-          "value": "“C+”",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the phase is sign flip flag is not set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the phase allocation distortion is greater than 0.01"
-              },
-              {
-                "kind": "leaf",
-                "text": "the absolute value of the phase signed pooled gap is greater than the absolute value of the phase corrected gap plus 0.001"
-              }
-            ]
-          }
-        },
-        {
-          "value": "“C-”",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the phase is sign flip flag is not set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the phase allocation distortion is greater than 0.01"
-              },
-              {
-                "kind": "leaf",
-                "text": "the absolute value of the phase signed pooled gap is less than the absolute value of the phase corrected gap minus 0.001"
-              }
-            ]
-          }
-        },
-        {
-          "value": "“D”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "PhaseDiagramSummary.Name": {
-    "table": "PhaseDiagramSummary",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A phase diagram summary's name is the same as its phase diagram ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "PhaseDiagramSummary",
-        "field": "PhaseDiagramId",
-        "label": "phase diagram ID"
-      }
-    ],
-    "structure": null
-  },
-  "PhaseDiagramSummary.PhasePointCount": {
-    "table": "PhaseDiagramSummary",
-    "field": "PhasePointCount",
-    "kind": "formula",
-    "rule": "A phase diagram summary's phase point count is computed as the phase type a count plus the phase type b count plus the phase type c plus count plus the phase type c minus count plus the phase type d count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "PhaseDiagramSummary",
-        "field": "PhaseTypeACount",
-        "label": "phase type a count"
-      },
-      {
-        "table": "PhaseDiagramSummary",
-        "field": "PhaseTypeBCount",
-        "label": "phase type b count"
-      },
-      {
-        "table": "PhaseDiagramSummary",
-        "field": "PhaseTypeCPlusCount",
-        "label": "phase type c plus count"
-      },
-      {
-        "table": "PhaseDiagramSummary",
-        "field": "PhaseTypeCMinusCount",
-        "label": "phase type c minus count"
-      },
-      {
-        "table": "PhaseDiagramSummary",
-        "field": "PhaseTypeDCount",
-        "label": "phase type d count"
-      }
-    ],
-    "structure": null
-  },
-  "PhaseDiagramSummary.AllFiveTypesPresent": {
-    "table": "PhaseDiagramSummary",
-    "field": "AllFiveTypesPresent",
-    "kind": "formula",
-    "rule": "A phase diagram summary is flagged all five types present if all of the following hold: the phase type a count is greater than 0; the phase type b count is greater than 0; the phase type c plus count is greater than 0; the phase type c minus count is greater than 0; and the phase type d count is greater than 0.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "PhaseDiagramSummary",
-        "field": "PhaseTypeACount",
-        "label": "phase type a count"
-      },
-      {
-        "table": "PhaseDiagramSummary",
-        "field": "PhaseTypeBCount",
-        "label": "phase type b count"
-      },
-      {
-        "table": "PhaseDiagramSummary",
-        "field": "PhaseTypeCPlusCount",
-        "label": "phase type c plus count"
-      },
-      {
-        "table": "PhaseDiagramSummary",
-        "field": "PhaseTypeCMinusCount",
-        "label": "phase type c minus count"
-      },
-      {
-        "table": "PhaseDiagramSummary",
-        "field": "PhaseTypeDCount",
-        "label": "phase type d count"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "A phase diagram summary is flagged all five types present if all of the following:",
-      "cases": [],
-      "children": [
-        {
-          "kind": "all",
-          "children": [
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The synthetic phase's phase distortion type is determined by the following priority:",
+          "cases": [
             {
-              "kind": "leaf",
-              "text": "the phase type a count is greater than 0"
+              "value": "“A”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the phase is sign flip flag is set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the phase reversal intensity is 1"
+                  }
+                ]
+              }
             },
             {
-              "kind": "leaf",
-              "text": "the phase type b count is greater than 0"
+              "value": "“B”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the phase is sign flip flag is set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the phase reversal intensity is less than 1"
+                  }
+                ]
+              }
             },
             {
-              "kind": "leaf",
-              "text": "the phase type c plus count is greater than 0"
+              "value": "“C+”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the phase is sign flip flag is not set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the phase allocation distortion is greater than 0.01"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the absolute value of the phase signed pooled gap is greater than the absolute value of the phase corrected gap plus 0.001"
+                  }
+                ]
+              }
             },
             {
-              "kind": "leaf",
-              "text": "the phase type c minus count is greater than 0"
+              "value": "“C-”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the phase is sign flip flag is not set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the phase allocation distortion is greater than 0.01"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the absolute value of the phase signed pooled gap is less than the absolute value of the phase corrected gap minus 0.001"
+                  }
+                ]
+              }
             },
             {
-              "kind": "leaf",
-              "text": "the phase type d count is greater than 0"
+              "value": "“D”",
+              "when": null
             }
-          ]
+          ],
+          "children": null
         }
-      ]
-    }
-  },
-  "PhaseDiagramSummary.PhaseTaxonomyWitness": {
-    "table": "PhaseDiagramSummary",
-    "field": "PhaseTaxonomyWitness",
-    "kind": "formula",
-    "rule": "A phase diagram summary's phase taxonomy witness is computed as “A:”, followed by the phase type a count, followed by “ B:”, followed by the phase type b count, followed by “ C+:”, followed by the phase type c plus count, followed by “ C-:”, followed by the phase type c minus count, followed by “ D:”, followed by the phase type d count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "PhaseDiagramSummary",
-        "field": "PhaseTypeACount",
-        "label": "phase type a count"
       },
-      {
+      "PhaseDiagramSummary.Name": {
         "table": "PhaseDiagramSummary",
-        "field": "PhaseTypeBCount",
-        "label": "phase type b count"
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A phase diagram summary's name is the same as its phase diagram ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "PhaseDiagramSummary",
+            "field": "PhaseDiagramId",
+            "label": "phase diagram ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "PhaseDiagramSummary.PhasePointCount": {
         "table": "PhaseDiagramSummary",
-        "field": "PhaseTypeCPlusCount",
-        "label": "phase type c plus count"
+        "field": "PhasePointCount",
+        "kind": "formula",
+        "rule": "A phase diagram summary's phase point count is computed as the phase type a count plus the phase type b count plus the phase type c plus count plus the phase type c minus count plus the phase type d count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "PhaseDiagramSummary",
+            "field": "PhaseTypeACount",
+            "label": "phase type a count"
+          },
+          {
+            "table": "PhaseDiagramSummary",
+            "field": "PhaseTypeBCount",
+            "label": "phase type b count"
+          },
+          {
+            "table": "PhaseDiagramSummary",
+            "field": "PhaseTypeCPlusCount",
+            "label": "phase type c plus count"
+          },
+          {
+            "table": "PhaseDiagramSummary",
+            "field": "PhaseTypeCMinusCount",
+            "label": "phase type c minus count"
+          },
+          {
+            "table": "PhaseDiagramSummary",
+            "field": "PhaseTypeDCount",
+            "label": "phase type d count"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "PhaseDiagramSummary",
-        "field": "PhaseTypeCMinusCount",
-        "label": "phase type c minus count"
-      },
-      {
-        "table": "PhaseDiagramSummary",
-        "field": "PhaseTypeDCount",
-        "label": "phase type d count"
-      }
-    ],
-    "structure": null
-  },
-  "PhaseDiagramSummary.PhaseWitnessNote": {
-    "table": "PhaseDiagramSummary",
-    "field": "PhaseWitnessNote",
-    "kind": "formula",
-    "rule": "The phase diagram summary's phase witness note is determined by the following priority:\n1. “PASS: all five distortion types populated in parameter space”, if the all five types present flag is set;\n2. in all other cases, “FAIL: missing distortion type in grid”.",
-    "mechanical": false,
-    "refs": [
-      {
+      "PhaseDiagramSummary.AllFiveTypesPresent": {
         "table": "PhaseDiagramSummary",
         "field": "AllFiveTypesPresent",
-        "label": "all five types present"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The phase diagram summary's phase witness note is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“PASS: all five distortion types populated in parameter space”",
-          "when": {
-            "kind": "leaf",
-            "text": "the all five types present flag is set"
+        "kind": "formula",
+        "rule": "A phase diagram summary is flagged all five types present if all of the following hold: the phase type a count is greater than 0; the phase type b count is greater than 0; the phase type c plus count is greater than 0; the phase type c minus count is greater than 0; and the phase type d count is greater than 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "PhaseDiagramSummary",
+            "field": "PhaseTypeACount",
+            "label": "phase type a count"
+          },
+          {
+            "table": "PhaseDiagramSummary",
+            "field": "PhaseTypeBCount",
+            "label": "phase type b count"
+          },
+          {
+            "table": "PhaseDiagramSummary",
+            "field": "PhaseTypeCPlusCount",
+            "label": "phase type c plus count"
+          },
+          {
+            "table": "PhaseDiagramSummary",
+            "field": "PhaseTypeCMinusCount",
+            "label": "phase type c minus count"
+          },
+          {
+            "table": "PhaseDiagramSummary",
+            "field": "PhaseTypeDCount",
+            "label": "phase type d count"
           }
-        },
-        {
-          "value": "“FAIL: missing distortion type in grid”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IngestionProtocol.Name": {
-    "table": "IngestionProtocol",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "An ingestion protocol's name is the same as its protocol ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IngestionProtocol",
-        "field": "ProtocolId",
-        "label": "protocol ID"
-      }
-    ],
-    "structure": null
-  },
-  "IngestionSummary.Name": {
-    "table": "IngestionSummary",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "An ingestion summary's name is the same as its ingestion summary ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IngestionSummary",
-        "field": "IngestionSummaryId",
-        "label": "ingestion summary ID"
-      }
-    ],
-    "structure": null
-  },
-  "IngestionSummary.ProtocolItemCount": {
-    "table": "IngestionSummary",
-    "field": "ProtocolItemCount",
-    "kind": "rollup",
-    "rule": "An ingestion summary's protocol item count is the number of ingestion protocol related to the ingestion summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IngestionProtocol",
-        "field": "ProtocolId",
-        "label": "protocol ID"
-      }
-    ],
-    "structure": null
-  },
-  "IngestionSummary.CorpusCellCount": {
-    "table": "IngestionSummary",
-    "field": "CorpusCellCount",
-    "kind": "rollup",
-    "rule": "An ingestion summary's corpus cell count is the number of case cells related to the ingestion summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "CaseCellId",
-        "label": "case cell ID"
-      }
-    ],
-    "structure": null
-  },
-  "IngestionSummary.ValidCellCount": {
-    "table": "IngestionSummary",
-    "field": "ValidCellCount",
-    "kind": "rollup",
-    "rule": "An ingestion summary's valid cell count is the number of case cells related to the ingestion summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CaseCells",
-        "field": "IsValidIngestionCell",
-        "label": "is valid ingestion cell"
-      }
-    ],
-    "structure": null
-  },
-  "IngestionSummary.AllCellsValid": {
-    "table": "IngestionSummary",
-    "field": "AllCellsValid",
-    "kind": "formula",
-    "rule": "An ingestion summary is flagged all cells valid if the valid cell count is the corpus cell count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IngestionSummary",
-        "field": "ValidCellCount",
-        "label": "valid cell count"
-      },
-      {
-        "table": "IngestionSummary",
-        "field": "CorpusCellCount",
-        "label": "corpus cell count"
-      }
-    ],
-    "structure": null
-  },
-  "IngestionSummary.StudyCount": {
-    "table": "IngestionSummary",
-    "field": "StudyCount",
-    "kind": "rollup",
-    "rule": "An ingestion summary's study count is the number of studies related to the ingestion summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "IsControlStudy",
-        "label": "is control study"
-      }
-    ],
-    "structure": null
-  },
-  "IngestionSummary.StructuralCompliantCount": {
-    "table": "IngestionSummary",
-    "field": "StructuralCompliantCount",
-    "kind": "rollup",
-    "rule": "An ingestion summary's structural compliant count is the number of studies related to the ingestion summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "IngestionCellParity",
-        "label": "ingestion cell parity"
-      }
-    ],
-    "structure": null
-  },
-  "IngestionSummary.AllStudiesStructural": {
-    "table": "IngestionSummary",
-    "field": "AllStudiesStructural",
-    "kind": "formula",
-    "rule": "An ingestion summary is flagged all studies structural if the structural compliant count is the study count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IngestionSummary",
-        "field": "StructuralCompliantCount",
-        "label": "structural compliant count"
-      },
-      {
-        "table": "IngestionSummary",
-        "field": "StudyCount",
-        "label": "study count"
-      }
-    ],
-    "structure": null
-  },
-  "IngestionSummary.RealStudyCount": {
-    "table": "IngestionSummary",
-    "field": "RealStudyCount",
-    "kind": "rollup",
-    "rule": "An ingestion summary's real study count is the number of the ingestion summary's studies that are not control studies.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "IsSynthetic",
-        "label": "is synthetic"
-      },
-      {
-        "table": "Studies",
-        "field": "IsControlStudy",
-        "label": "is control study"
-      }
-    ],
-    "structure": null
-  },
-  "IngestionSummary.RealFullyCompliantCount": {
-    "table": "IngestionSummary",
-    "field": "RealFullyCompliantCount",
-    "kind": "rollup",
-    "rule": "An ingestion summary's real fully compliant count is the number of studies related to the ingestion summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "IngestionCompliance",
-        "label": "ingestion compliance"
-      }
-    ],
-    "structure": null
-  },
-  "IngestionSummary.AllRealStudiesCompliant": {
-    "table": "IngestionSummary",
-    "field": "AllRealStudiesCompliant",
-    "kind": "formula",
-    "rule": "An ingestion summary is flagged all real studies compliant if the real fully compliant count is the real study count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IngestionSummary",
-        "field": "RealFullyCompliantCount",
-        "label": "real fully compliant count"
-      },
-      {
-        "table": "IngestionSummary",
-        "field": "RealStudyCount",
-        "label": "real study count"
-      }
-    ],
-    "structure": null
-  },
-  "IngestionSummary.IngestionContractPasses": {
-    "table": "IngestionSummary",
-    "field": "IngestionContractPasses",
-    "kind": "formula",
-    "rule": "An ingestion summary is flagged ingestion contract passes if all of the following hold: the all cells valid flag is set; the all studies structural flag is set; and the all real studies compliant flag is set.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IngestionSummary",
-        "field": "AllCellsValid",
-        "label": "all cells valid"
-      },
-      {
-        "table": "IngestionSummary",
-        "field": "AllStudiesStructural",
-        "label": "all studies structural"
-      },
-      {
-        "table": "IngestionSummary",
-        "field": "AllRealStudiesCompliant",
-        "label": "all real studies compliant"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "An ingestion summary is flagged ingestion contract passes if all of the following:",
-      "cases": [],
-      "children": [
-        {
-          "kind": "all",
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "A phase diagram summary is flagged all five types present if all of the following:",
+          "cases": [],
           "children": [
             {
-              "kind": "leaf",
-              "text": "the all cells valid flag is set"
-            },
-            {
-              "kind": "leaf",
-              "text": "the all studies structural flag is set"
-            },
-            {
-              "kind": "leaf",
-              "text": "the all real studies compliant flag is set"
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "the phase type a count is greater than 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the phase type b count is greater than 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the phase type c plus count is greater than 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the phase type c minus count is greater than 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the phase type d count is greater than 0"
+                }
+              ]
             }
           ]
         }
-      ]
-    }
-  },
-  "IngestionSummary.IngestionWitnessNote": {
-    "table": "IngestionSummary",
-    "field": "IngestionWitnessNote",
-    "kind": "formula",
-    "rule": "The ingestion summary's ingestion witness note is determined by the following priority:\n1. “PASS: ”, followed by the protocol item count, followed by “ contract items; ”, followed by the corpus cell count, followed by “ cells valid; ”, followed by the real fully compliant count, followed by a slash, followed by the real study count, followed by “ real studies fully compliant”, if the ingestion contract passes flag is set;\n2. in all other cases, “FAIL: ingestion contract violated”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IngestionSummary",
-        "field": "IngestionContractPasses",
-        "label": "ingestion contract passes"
       },
-      {
+      "PhaseDiagramSummary.PhaseTaxonomyWitness": {
+        "table": "PhaseDiagramSummary",
+        "field": "PhaseTaxonomyWitness",
+        "kind": "formula",
+        "rule": "A phase diagram summary's phase taxonomy witness is computed as “A:”, followed by the phase type a count, followed by “ B:”, followed by the phase type b count, followed by “ C+:”, followed by the phase type c plus count, followed by “ C-:”, followed by the phase type c minus count, followed by “ D:”, followed by the phase type d count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "PhaseDiagramSummary",
+            "field": "PhaseTypeACount",
+            "label": "phase type a count"
+          },
+          {
+            "table": "PhaseDiagramSummary",
+            "field": "PhaseTypeBCount",
+            "label": "phase type b count"
+          },
+          {
+            "table": "PhaseDiagramSummary",
+            "field": "PhaseTypeCPlusCount",
+            "label": "phase type c plus count"
+          },
+          {
+            "table": "PhaseDiagramSummary",
+            "field": "PhaseTypeCMinusCount",
+            "label": "phase type c minus count"
+          },
+          {
+            "table": "PhaseDiagramSummary",
+            "field": "PhaseTypeDCount",
+            "label": "phase type d count"
+          }
+        ],
+        "structure": null
+      },
+      "PhaseDiagramSummary.PhaseWitnessNote": {
+        "table": "PhaseDiagramSummary",
+        "field": "PhaseWitnessNote",
+        "kind": "formula",
+        "rule": "The phase diagram summary's phase witness note is determined by the following priority:\n1. “PASS: all five distortion types populated in parameter space”, if the all five types present flag is set;\n2. in all other cases, “FAIL: missing distortion type in grid”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "PhaseDiagramSummary",
+            "field": "AllFiveTypesPresent",
+            "label": "all five types present"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The phase diagram summary's phase witness note is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“PASS: all five distortion types populated in parameter space”",
+              "when": {
+                "kind": "leaf",
+                "text": "the all five types present flag is set"
+              }
+            },
+            {
+              "value": "“FAIL: missing distortion type in grid”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IngestionProtocol.Name": {
+        "table": "IngestionProtocol",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "An ingestion protocol's name is the same as its protocol ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IngestionProtocol",
+            "field": "ProtocolId",
+            "label": "protocol ID"
+          }
+        ],
+        "structure": null
+      },
+      "IngestionSummary.Name": {
+        "table": "IngestionSummary",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "An ingestion summary's name is the same as its ingestion summary ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IngestionSummary",
+            "field": "IngestionSummaryId",
+            "label": "ingestion summary ID"
+          }
+        ],
+        "structure": null
+      },
+      "IngestionSummary.ProtocolItemCount": {
         "table": "IngestionSummary",
         "field": "ProtocolItemCount",
-        "label": "protocol item count"
+        "kind": "rollup",
+        "rule": "An ingestion summary's protocol item count is the number of ingestion protocol related to the ingestion summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IngestionProtocol",
+            "field": "ProtocolId",
+            "label": "protocol ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "IngestionSummary.CorpusCellCount": {
         "table": "IngestionSummary",
         "field": "CorpusCellCount",
-        "label": "corpus cell count"
+        "kind": "rollup",
+        "rule": "An ingestion summary's corpus cell count is the number of case cells related to the ingestion summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "CaseCellId",
+            "label": "case cell ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "IngestionSummary.ValidCellCount": {
         "table": "IngestionSummary",
-        "field": "RealFullyCompliantCount",
-        "label": "real fully compliant count"
+        "field": "ValidCellCount",
+        "kind": "rollup",
+        "rule": "An ingestion summary's valid cell count is the number of case cells related to the ingestion summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CaseCells",
+            "field": "IsValidIngestionCell",
+            "label": "is valid ingestion cell"
+          }
+        ],
+        "structure": null
       },
-      {
+      "IngestionSummary.AllCellsValid": {
+        "table": "IngestionSummary",
+        "field": "AllCellsValid",
+        "kind": "formula",
+        "rule": "An ingestion summary is flagged all cells valid if the valid cell count is the corpus cell count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IngestionSummary",
+            "field": "ValidCellCount",
+            "label": "valid cell count"
+          },
+          {
+            "table": "IngestionSummary",
+            "field": "CorpusCellCount",
+            "label": "corpus cell count"
+          }
+        ],
+        "structure": null
+      },
+      "IngestionSummary.StudyCount": {
+        "table": "IngestionSummary",
+        "field": "StudyCount",
+        "kind": "rollup",
+        "rule": "An ingestion summary's study count is the number of studies related to the ingestion summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "IsControlStudy",
+            "label": "is control study"
+          }
+        ],
+        "structure": null
+      },
+      "IngestionSummary.StructuralCompliantCount": {
+        "table": "IngestionSummary",
+        "field": "StructuralCompliantCount",
+        "kind": "rollup",
+        "rule": "An ingestion summary's structural compliant count is the number of studies related to the ingestion summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "IngestionCellParity",
+            "label": "ingestion cell parity"
+          }
+        ],
+        "structure": null
+      },
+      "IngestionSummary.AllStudiesStructural": {
+        "table": "IngestionSummary",
+        "field": "AllStudiesStructural",
+        "kind": "formula",
+        "rule": "An ingestion summary is flagged all studies structural if the structural compliant count is the study count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IngestionSummary",
+            "field": "StructuralCompliantCount",
+            "label": "structural compliant count"
+          },
+          {
+            "table": "IngestionSummary",
+            "field": "StudyCount",
+            "label": "study count"
+          }
+        ],
+        "structure": null
+      },
+      "IngestionSummary.RealStudyCount": {
         "table": "IngestionSummary",
         "field": "RealStudyCount",
-        "label": "real study count"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The ingestion summary's ingestion witness note is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“PASS: ”, followed by the protocol item count, followed by “ contract items; ”, followed by the corpus cell count, followed by “ cells valid; ”, followed by the real fully compliant count, followed by a slash, followed by the real study count, followed by “ real studies fully compliant”",
-          "when": {
-            "kind": "leaf",
-            "text": "the ingestion contract passes flag is set"
+        "kind": "rollup",
+        "rule": "An ingestion summary's real study count is the number of the ingestion summary's studies that are not control-study.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "IsSynthetic",
+            "label": "is synthetic"
+          },
+          {
+            "table": "Studies",
+            "field": "IsControlStudy",
+            "label": "is control study"
           }
-        },
-        {
-          "value": "“FAIL: ingestion contract violated”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CandidateStudyCatalog.Name": {
-    "table": "CandidateStudyCatalog",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A candidate study catalog's name is the same as its candidate ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "CandidateId",
-        "label": "candidate ID"
-      }
-    ],
-    "structure": null
-  },
-  "CandidateStudyCatalog.IsReadyToEncode": {
-    "table": "CandidateStudyCatalog",
-    "field": "IsReadyToEncode",
-    "kind": "formula",
-    "rule": "A candidate study catalog is considered a ready to encode if all of the following hold: the ingestion status is “candidate”; the proposed study ID has a value; the citation has a value; and the stratum variable name has a value.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "IngestionStatus",
-        "label": "ingestion status"
+        ],
+        "structure": null
       },
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "ProposedStudyId",
-        "label": "proposed study ID"
+      "IngestionSummary.RealFullyCompliantCount": {
+        "table": "IngestionSummary",
+        "field": "RealFullyCompliantCount",
+        "kind": "rollup",
+        "rule": "An ingestion summary's real fully compliant count is the number of studies related to the ingestion summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "IngestionCompliance",
+            "label": "ingestion compliance"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "Citation",
-        "label": "citation"
+      "IngestionSummary.AllRealStudiesCompliant": {
+        "table": "IngestionSummary",
+        "field": "AllRealStudiesCompliant",
+        "kind": "formula",
+        "rule": "An ingestion summary is flagged all real studies compliant if the real fully compliant count is the real study count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IngestionSummary",
+            "field": "RealFullyCompliantCount",
+            "label": "real fully compliant count"
+          },
+          {
+            "table": "IngestionSummary",
+            "field": "RealStudyCount",
+            "label": "real study count"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "StratumVariableName",
-        "label": "stratum variable name"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "A candidate study catalog is considered a ready to encode if all of the following:",
-      "cases": [],
-      "children": [
-        {
-          "kind": "all",
+      "IngestionSummary.IngestionContractPasses": {
+        "table": "IngestionSummary",
+        "field": "IngestionContractPasses",
+        "kind": "formula",
+        "rule": "An ingestion summary is flagged ingestion contract passes if all of the following hold: the all cells valid flag is set; the all studies structural flag is set; and the all real studies compliant flag is set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IngestionSummary",
+            "field": "AllCellsValid",
+            "label": "all cells valid"
+          },
+          {
+            "table": "IngestionSummary",
+            "field": "AllStudiesStructural",
+            "label": "all studies structural"
+          },
+          {
+            "table": "IngestionSummary",
+            "field": "AllRealStudiesCompliant",
+            "label": "all real studies compliant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "An ingestion summary is flagged ingestion contract passes if all of the following:",
+          "cases": [],
           "children": [
             {
-              "kind": "leaf",
-              "text": "the ingestion status is “candidate”"
-            },
-            {
-              "kind": "leaf",
-              "text": "the proposed study ID has a value"
-            },
-            {
-              "kind": "leaf",
-              "text": "the citation has a value"
-            },
-            {
-              "kind": "leaf",
-              "text": "the stratum variable name has a value"
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "the all cells valid flag is set"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the all studies structural flag is set"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the all real studies compliant flag is set"
+                }
+              ]
             }
           ]
         }
-      ]
-    }
-  },
-  "CandidateStudyCatalog.IsImported": {
-    "table": "CandidateStudyCatalog",
-    "field": "IsImported",
-    "kind": "formula",
-    "rule": "A candidate study catalog is considered imported if the ingestion status is “imported”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "IngestionStatus",
-        "label": "ingestion status"
-      }
-    ],
-    "structure": null
-  },
-  "CandidateStudyCatalog.ObservedDistortionType": {
-    "table": "CandidateStudyCatalog",
-    "field": "ObservedDistortionType",
-    "kind": "lookup",
-    "rule": "A candidate study catalog's observed distortion type is the value of LOOKUP(LinkedStudyId, TreatmentRankings[Study], TreatmentRankings[DistortionType]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "LinkedStudyId",
-        "label": "linked study ID"
-      }
-    ],
-    "structure": null
-  },
-  "CandidateStudyCatalog.TypePredictionMatch": {
-    "table": "CandidateStudyCatalog",
-    "field": "TypePredictionMatch",
-    "kind": "formula",
-    "rule": "A candidate study catalog is flagged type prediction match if the imported flag is set and the observed distortion type is the expected distortion type.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "IsImported",
-        "label": "is imported"
       },
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "ObservedDistortionType",
-        "label": "observed distortion type"
-      },
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "ExpectedDistortionType",
-        "label": "expected distortion type"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The candidate study catalog's type prediction match is determined by the following priority:",
-      "cases": [
-        {
-          "value": "the observed distortion type is the expected distortion type",
-          "when": {
-            "kind": "leaf",
-            "text": "the imported flag is set"
+      "IngestionSummary.IngestionWitnessNote": {
+        "table": "IngestionSummary",
+        "field": "IngestionWitnessNote",
+        "kind": "formula",
+        "rule": "The ingestion summary's ingestion witness note is determined by the following priority:\n1. “PASS: ”, followed by the protocol item count, followed by “ contract items; ”, followed by the corpus cell count, followed by “ cells valid; ”, followed by the real fully compliant count, followed by a slash, followed by the real study count, followed by “ real studies fully compliant”, if the ingestion contract passes flag is set;\n2. in all other cases, “FAIL: ingestion contract violated”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IngestionSummary",
+            "field": "IngestionContractPasses",
+            "label": "ingestion contract passes"
+          },
+          {
+            "table": "IngestionSummary",
+            "field": "ProtocolItemCount",
+            "label": "protocol item count"
+          },
+          {
+            "table": "IngestionSummary",
+            "field": "CorpusCellCount",
+            "label": "corpus cell count"
+          },
+          {
+            "table": "IngestionSummary",
+            "field": "RealFullyCompliantCount",
+            "label": "real fully compliant count"
+          },
+          {
+            "table": "IngestionSummary",
+            "field": "RealStudyCount",
+            "label": "real study count"
           }
-        },
-        {
-          "value": "an empty string",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CandidateStudyCatalog.ExpectedSignFlip": {
-    "table": "CandidateStudyCatalog",
-    "field": "ExpectedSignFlip",
-    "kind": "formula",
-    "rule": "A candidate study catalog is flagged expected sign flip if at least one of the following holds: the expected distortion type is “A” or the expected distortion type is “B”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "ExpectedDistortionType",
-        "label": "expected distortion type"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "A candidate study catalog is flagged expected sign flip if all of the following:",
-      "cases": [],
-      "children": [
-        {
-          "kind": "any",
-          "children": [
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The ingestion summary's ingestion witness note is determined by the following priority:",
+          "cases": [
             {
-              "kind": "leaf",
-              "text": "the expected distortion type is “A”"
+              "value": "“PASS: ”, followed by the protocol item count, followed by “ contract items; ”, followed by the corpus cell count, followed by “ cells valid; ”, followed by the real fully compliant count, followed by a slash, followed by the real study count, followed by “ real studies fully compliant”",
+              "when": {
+                "kind": "leaf",
+                "text": "the ingestion contract passes flag is set"
+              }
             },
             {
-              "kind": "leaf",
-              "text": "the expected distortion type is “B”"
+              "value": "“FAIL: ingestion contract violated”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CandidateStudyCatalog.Name": {
+        "table": "CandidateStudyCatalog",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A candidate study catalog's name is the same as its candidate ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "CandidateId",
+            "label": "candidate ID"
+          }
+        ],
+        "structure": null
+      },
+      "CandidateStudyCatalog.IsReadyToEncode": {
+        "table": "CandidateStudyCatalog",
+        "field": "IsReadyToEncode",
+        "kind": "formula",
+        "rule": "A candidate study catalog is considered a ready to encode if all of the following hold: the ingestion status is “candidate”; the proposed study ID has a value; the citation has a value; and the stratum variable name has a value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "IngestionStatus",
+            "label": "ingestion status"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "ProposedStudyId",
+            "label": "proposed study ID"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "Citation",
+            "label": "citation"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "StratumVariableName",
+            "label": "stratum variable name"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "A candidate study catalog is considered a ready to encode if all of the following:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "the ingestion status is “candidate”"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the proposed study ID has a value"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the citation has a value"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the stratum variable name has a value"
+                }
+              ]
             }
           ]
         }
-      ]
-    }
-  },
-  "CandidateStudyCatalog.ObservedSignFlipType": {
-    "table": "CandidateStudyCatalog",
-    "field": "ObservedSignFlipType",
-    "kind": "formula",
-    "rule": "A candidate study catalog is flagged observed sign flip type if the imported flag is set and at least one of the following holds: the observed distortion type is “A” or the observed distortion type is “B”.",
-    "mechanical": false,
-    "refs": [
-      {
+      },
+      "CandidateStudyCatalog.IsImported": {
         "table": "CandidateStudyCatalog",
         "field": "IsImported",
-        "label": "is imported"
+        "kind": "formula",
+        "rule": "A candidate study catalog is considered imported if the ingestion status is “imported”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "IngestionStatus",
+            "label": "ingestion status"
+          }
+        ],
+        "structure": null
       },
-      {
+      "CandidateStudyCatalog.ObservedDistortionType": {
         "table": "CandidateStudyCatalog",
         "field": "ObservedDistortionType",
-        "label": "observed distortion type"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The candidate study catalog's observed sign flip type is determined by the following priority:",
-      "cases": [
-        {
-          "value": "the OR of the observed distortion type is “A” and the observed distortion type is “B”",
-          "when": {
-            "kind": "leaf",
-            "text": "the imported flag is set"
+        "kind": "lookup",
+        "rule": "A candidate study catalog's observed distortion type is the value of LOOKUP(LinkedStudyId, TreatmentRankings[Study], TreatmentRankings[DistortionType]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "LinkedStudyId",
+            "label": "linked study ID"
           }
-        },
-        {
-          "value": "an empty string",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CandidateStudyCatalog.SignFlipPredictionMatch": {
-    "table": "CandidateStudyCatalog",
-    "field": "SignFlipPredictionMatch",
-    "kind": "formula",
-    "rule": "A candidate study catalog is flagged sign flip prediction match if all of the following hold: the imported flag is set and the expected sign flip flag is set and the observed sign flip type flag is set.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "IsImported",
-        "label": "is imported"
+        ],
+        "structure": null
       },
-      {
+      "CandidateStudyCatalog.TypePredictionMatch": {
         "table": "CandidateStudyCatalog",
-        "field": "ExpectedSignFlip",
-        "label": "expected sign flip"
-      },
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "ObservedSignFlipType",
-        "label": "observed sign flip type"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The candidate study catalog's sign flip prediction match is determined by the following priority:",
-      "cases": [
-        {
-          "value": "the observed sign flip type",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
+        "field": "TypePredictionMatch",
+        "kind": "formula",
+        "rule": "A candidate study catalog is flagged type prediction match if the imported flag is set and the observed distortion type is the expected distortion type.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "IsImported",
+            "label": "is imported"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "ObservedDistortionType",
+            "label": "observed distortion type"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "ExpectedDistortionType",
+            "label": "expected distortion type"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The candidate study catalog's type prediction match is determined by the following priority:",
+          "cases": [
+            {
+              "value": "the observed distortion type is the expected distortion type",
+              "when": {
                 "kind": "leaf",
                 "text": "the imported flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the expected sign flip flag is set"
               }
-            ]
-          }
-        },
-        {
-          "value": "an empty string",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CandidateStudyCatalog.IsDataReady": {
-    "table": "CandidateStudyCatalog",
-    "field": "IsDataReady",
-    "kind": "formula",
-    "rule": "A candidate study catalog is considered a data ready if at least one of the following holds: the data acquisition status is “downloaded” or the data acquisition status is “manual_only”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "DataAcquisitionStatus",
-        "label": "data acquisition status"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "A candidate study catalog is considered a data ready if all of the following:",
-      "cases": [],
-      "children": [
-        {
-          "kind": "any",
-          "children": [
-            {
-              "kind": "leaf",
-              "text": "the data acquisition status is “downloaded”"
             },
             {
-              "kind": "leaf",
-              "text": "the data acquisition status is “manual_only”"
+              "value": "an empty string",
+              "when": null
             }
-          ]
+          ],
+          "children": null
         }
-      ]
-    }
-  },
-  "CorpusCatalogSummary.Name": {
-    "table": "CorpusCatalogSummary",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A corpus catalog summary's name is the same as its catalog summary ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CorpusCatalogSummary",
-        "field": "CatalogSummaryId",
-        "label": "catalog summary ID"
-      }
-    ],
-    "structure": null
-  },
-  "CorpusCatalogSummary.TotalCatalogEntries": {
-    "table": "CorpusCatalogSummary",
-    "field": "TotalCatalogEntries",
-    "kind": "rollup",
-    "rule": "A corpus catalog summary's total catalog entries is the number of candidate study catalog related to the corpus catalog summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "CandidateId",
-        "label": "candidate ID"
-      }
-    ],
-    "structure": null
-  },
-  "CorpusCatalogSummary.ImportedCount": {
-    "table": "CorpusCatalogSummary",
-    "field": "ImportedCount",
-    "kind": "rollup",
-    "rule": "A corpus catalog summary's imported count is the number of candidate study catalog related to the corpus catalog summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "IngestionStatus",
-        "label": "ingestion status"
-      }
-    ],
-    "structure": null
-  },
-  "CorpusCatalogSummary.CandidateCount": {
-    "table": "CorpusCatalogSummary",
-    "field": "CandidateCount",
-    "kind": "rollup",
-    "rule": "A corpus catalog summary's candidate count is the number of candidate study catalog related to the corpus catalog summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "IngestionStatus",
-        "label": "ingestion status"
-      }
-    ],
-    "structure": null
-  },
-  "CorpusCatalogSummary.BlockedCount": {
-    "table": "CorpusCatalogSummary",
-    "field": "BlockedCount",
-    "kind": "rollup",
-    "rule": "A corpus catalog summary's blocked count is the number of candidate study catalog related to the corpus catalog summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "IngestionStatus",
-        "label": "ingestion status"
-      }
-    ],
-    "structure": null
-  },
-  "CorpusCatalogSummary.ReadyToEncodeCount": {
-    "table": "CorpusCatalogSummary",
-    "field": "ReadyToEncodeCount",
-    "kind": "rollup",
-    "rule": "A corpus catalog summary's ready to encode count is the number of candidate study catalog related to the corpus catalog summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "IsReadyToEncode",
-        "label": "is ready to encode"
-      }
-    ],
-    "structure": null
-  },
-  "CorpusCatalogSummary.HighPriorityCount": {
-    "table": "CorpusCatalogSummary",
-    "field": "HighPriorityCount",
-    "kind": "rollup",
-    "rule": "A corpus catalog summary's high priority count is the number of the corpus catalog summary's high priorities.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "IngestionStatus",
-        "label": "ingestion status"
       },
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "Priority",
-        "label": "priority"
-      }
-    ],
-    "structure": null
-  },
-  "CorpusCatalogSummary.ImportSessionReady": {
-    "table": "CorpusCatalogSummary",
-    "field": "ImportSessionReady",
-    "kind": "formula",
-    "rule": "A corpus catalog summary is flagged import session ready if all of the following hold: the candidate count is at least 20 and the ready to encode count is at least 15.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CorpusCatalogSummary",
-        "field": "CandidateCount",
-        "label": "candidate count"
-      },
-      {
-        "table": "CorpusCatalogSummary",
-        "field": "ReadyToEncodeCount",
-        "label": "ready to encode count"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "A corpus catalog summary is flagged import session ready if all of the following:",
-      "cases": [],
-      "children": [
-        {
-          "kind": "all",
-          "children": [
-            {
-              "kind": "leaf",
-              "text": "the candidate count is at least 20"
-            },
-            {
-              "kind": "leaf",
-              "text": "the ready to encode count is at least 15"
-            }
-          ]
-        }
-      ]
-    }
-  },
-  "CorpusCatalogSummary.TypePredictionMatchCount": {
-    "table": "CorpusCatalogSummary",
-    "field": "TypePredictionMatchCount",
-    "kind": "rollup",
-    "rule": "A corpus catalog summary's type prediction match count is the number of candidate study catalog related to the corpus catalog summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "TypePredictionMatch",
-        "label": "type prediction match"
-      }
-    ],
-    "structure": null
-  },
-  "CorpusCatalogSummary.TypePredictionMismatchCount": {
-    "table": "CorpusCatalogSummary",
-    "field": "TypePredictionMismatchCount",
-    "kind": "rollup",
-    "rule": "A corpus catalog summary's type prediction mismatch count is the number of the corpus catalog summary's candidate study catalog that are not type prediction match.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "IsImported",
-        "label": "is imported"
-      },
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "TypePredictionMatch",
-        "label": "type prediction match"
-      }
-    ],
-    "structure": null
-  },
-  "CorpusCatalogSummary.SignFlipPredictionEligibleCount": {
-    "table": "CorpusCatalogSummary",
-    "field": "SignFlipPredictionEligibleCount",
-    "kind": "rollup",
-    "rule": "A corpus catalog summary's sign flip prediction eligible count is the number of the corpus catalog summary's candidate study catalog that are expected sign flip.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "IsImported",
-        "label": "is imported"
-      },
-      {
+      "CandidateStudyCatalog.ExpectedSignFlip": {
         "table": "CandidateStudyCatalog",
         "field": "ExpectedSignFlip",
-        "label": "expected sign flip"
-      }
-    ],
-    "structure": null
-  },
-  "CorpusCatalogSummary.SignFlipPredictionMatchCount": {
-    "table": "CorpusCatalogSummary",
-    "field": "SignFlipPredictionMatchCount",
-    "kind": "rollup",
-    "rule": "A corpus catalog summary's sign flip prediction match count is the number of candidate study catalog related to the corpus catalog summary.",
-    "mechanical": false,
-    "refs": [
-      {
+        "kind": "formula",
+        "rule": "A candidate study catalog is flagged expected sign flip if at least one of the following holds: the expected distortion type is “A” or the expected distortion type is “B”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "ExpectedDistortionType",
+            "label": "expected distortion type"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "A candidate study catalog is flagged expected sign flip if all of the following:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "the expected distortion type is “A”"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the expected distortion type is “B”"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "CandidateStudyCatalog.ObservedSignFlipType": {
+        "table": "CandidateStudyCatalog",
+        "field": "ObservedSignFlipType",
+        "kind": "formula",
+        "rule": "A candidate study catalog is flagged observed sign flip type if the imported flag is set and at least one of the following holds: the observed distortion type is “A” or the observed distortion type is “B”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "IsImported",
+            "label": "is imported"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "ObservedDistortionType",
+            "label": "observed distortion type"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The candidate study catalog's observed sign flip type is determined by the following priority:",
+          "cases": [
+            {
+              "value": "the OR of the observed distortion type is “A” and the observed distortion type is “B”",
+              "when": {
+                "kind": "leaf",
+                "text": "the imported flag is set"
+              }
+            },
+            {
+              "value": "an empty string",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CandidateStudyCatalog.SignFlipPredictionMatch": {
         "table": "CandidateStudyCatalog",
         "field": "SignFlipPredictionMatch",
-        "label": "sign flip prediction match"
-      }
-    ],
-    "structure": null
-  },
-  "CorpusCatalogSummary.TypePredictionMatchRate": {
-    "table": "CorpusCatalogSummary",
-    "field": "TypePredictionMatchRate",
-    "kind": "formula",
-    "rule": "The corpus catalog summary's type prediction match rate is determined by the following priority:\n1. an empty string, if the imported count is 0;\n2. in all other cases, the type prediction match count divided by the imported count.",
-    "mechanical": false,
-    "refs": [
-      {
+        "kind": "formula",
+        "rule": "A candidate study catalog is flagged sign flip prediction match if all of the following hold: the imported flag is set and the expected sign flip flag is set and the observed sign flip type flag is set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "IsImported",
+            "label": "is imported"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "ExpectedSignFlip",
+            "label": "expected sign flip"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "ObservedSignFlipType",
+            "label": "observed sign flip type"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The candidate study catalog's sign flip prediction match is determined by the following priority:",
+          "cases": [
+            {
+              "value": "the observed sign flip type",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the imported flag is set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the expected sign flip flag is set"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "an empty string",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CandidateStudyCatalog.IsDataReady": {
+        "table": "CandidateStudyCatalog",
+        "field": "IsDataReady",
+        "kind": "formula",
+        "rule": "A candidate study catalog is considered data-ready if at least one of the following holds: the data acquisition status is “downloaded” or the data acquisition status is “manual_only”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "DataAcquisitionStatus",
+            "label": "data acquisition status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "A candidate study catalog is considered data-ready if all of the following:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "the data acquisition status is “downloaded”"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the data acquisition status is “manual_only”"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "CorpusCatalogSummary.Name": {
+        "table": "CorpusCatalogSummary",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A corpus catalog summary's name is the same as its catalog summary ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CorpusCatalogSummary",
+            "field": "CatalogSummaryId",
+            "label": "catalog summary ID"
+          }
+        ],
+        "structure": null
+      },
+      "CorpusCatalogSummary.TotalCatalogEntries": {
+        "table": "CorpusCatalogSummary",
+        "field": "TotalCatalogEntries",
+        "kind": "rollup",
+        "rule": "A corpus catalog summary's total catalog entries is the number of candidate study catalog related to the corpus catalog summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "CandidateId",
+            "label": "candidate ID"
+          }
+        ],
+        "structure": null
+      },
+      "CorpusCatalogSummary.ImportedCount": {
         "table": "CorpusCatalogSummary",
         "field": "ImportedCount",
-        "label": "imported count"
-      },
-      {
-        "table": "CorpusCatalogSummary",
-        "field": "TypePredictionMatchCount",
-        "label": "type prediction match count"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The corpus catalog summary's type prediction match rate is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the imported count is 0"
+        "kind": "rollup",
+        "rule": "A corpus catalog summary's imported count is the number of candidate study catalog related to the corpus catalog summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "IngestionStatus",
+            "label": "ingestion status"
           }
-        },
-        {
-          "value": "the type prediction match count divided by the imported count",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CorpusCatalogSummary.SignFlipPredictionMatchRate": {
-    "table": "CorpusCatalogSummary",
-    "field": "SignFlipPredictionMatchRate",
-    "kind": "formula",
-    "rule": "The corpus catalog summary's sign flip prediction match rate is determined by the following priority:\n1. an empty string, if the sign flip prediction eligible count is 0;\n2. in all other cases, the sign flip prediction match count divided by the sign flip prediction eligible count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CorpusCatalogSummary",
-        "field": "SignFlipPredictionEligibleCount",
-        "label": "sign flip prediction eligible count"
+        ],
+        "structure": null
       },
-      {
-        "table": "CorpusCatalogSummary",
-        "field": "SignFlipPredictionMatchCount",
-        "label": "sign flip prediction match count"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The corpus catalog summary's sign flip prediction match rate is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the sign flip prediction eligible count is 0"
-          }
-        },
-        {
-          "value": "the sign flip prediction match count divided by the sign flip prediction eligible count",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CorpusCatalogSummary.CatalogWitnessNote": {
-    "table": "CorpusCatalogSummary",
-    "field": "CatalogWitnessNote",
-    "kind": "formula",
-    "rule": "The corpus catalog summary's catalog witness note is determined by the following priority:\n1. “READY: ”, followed by the ready to encode count, followed by “ encode-ready (”, followed by the data ready count, followed by “ data-ready) of ”, followed by the candidate count, followed by “ candidates”, if the import session ready flag is set;\n2. in all other cases, “BUILDING: ”, followed by the candidate count, followed by “ candidates — ”, followed by the data ready count, followed by “ data-ready, ”, followed by the ready to encode count, followed by “ encode-ready”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CorpusCatalogSummary",
-        "field": "ImportSessionReady",
-        "label": "import session ready"
-      },
-      {
-        "table": "CorpusCatalogSummary",
-        "field": "ReadyToEncodeCount",
-        "label": "ready to encode count"
-      },
-      {
-        "table": "CorpusCatalogSummary",
-        "field": "DataReadyCount",
-        "label": "data ready count"
-      },
-      {
+      "CorpusCatalogSummary.CandidateCount": {
         "table": "CorpusCatalogSummary",
         "field": "CandidateCount",
-        "label": "candidate count"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The corpus catalog summary's catalog witness note is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“READY: ”, followed by the ready to encode count, followed by “ encode-ready (”, followed by the data ready count, followed by “ data-ready) of ”, followed by the candidate count, followed by “ candidates”",
-          "when": {
-            "kind": "leaf",
-            "text": "the import session ready flag is set"
+        "kind": "rollup",
+        "rule": "A corpus catalog summary's candidate count is the number of candidate study catalog related to the corpus catalog summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "IngestionStatus",
+            "label": "ingestion status"
           }
-        },
-        {
-          "value": "“BUILDING: ”, followed by the candidate count, followed by “ candidates — ”, followed by the data ready count, followed by “ data-ready, ”, followed by the ready to encode count, followed by “ encode-ready”",
-          "when": null
+        ],
+        "structure": null
+      },
+      "CorpusCatalogSummary.BlockedCount": {
+        "table": "CorpusCatalogSummary",
+        "field": "BlockedCount",
+        "kind": "rollup",
+        "rule": "A corpus catalog summary's blocked count is the number of candidate study catalog related to the corpus catalog summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "IngestionStatus",
+            "label": "ingestion status"
+          }
+        ],
+        "structure": null
+      },
+      "CorpusCatalogSummary.ReadyToEncodeCount": {
+        "table": "CorpusCatalogSummary",
+        "field": "ReadyToEncodeCount",
+        "kind": "rollup",
+        "rule": "A corpus catalog summary's ready to encode count is the number of candidate study catalog related to the corpus catalog summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "IsReadyToEncode",
+            "label": "is ready to encode"
+          }
+        ],
+        "structure": null
+      },
+      "CorpusCatalogSummary.HighPriorityCount": {
+        "table": "CorpusCatalogSummary",
+        "field": "HighPriorityCount",
+        "kind": "rollup",
+        "rule": "A corpus catalog summary's high priority count is the number of the corpus catalog summary's high priorities.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "IngestionStatus",
+            "label": "ingestion status"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "Priority",
+            "label": "priority"
+          }
+        ],
+        "structure": null
+      },
+      "CorpusCatalogSummary.ImportSessionReady": {
+        "table": "CorpusCatalogSummary",
+        "field": "ImportSessionReady",
+        "kind": "formula",
+        "rule": "A corpus catalog summary is flagged import session ready if all of the following hold: the candidate count is at least 20 and the ready to encode count is at least 15.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CorpusCatalogSummary",
+            "field": "CandidateCount",
+            "label": "candidate count"
+          },
+          {
+            "table": "CorpusCatalogSummary",
+            "field": "ReadyToEncodeCount",
+            "label": "ready to encode count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "A corpus catalog summary is flagged import session ready if all of the following:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "the candidate count is at least 20"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the ready to encode count is at least 15"
+                }
+              ]
+            }
+          ]
         }
-      ],
-      "children": null
-    }
-  },
-  "CorpusCatalogSummary.CatalogPredictionWitnessNote": {
-    "table": "CorpusCatalogSummary",
-    "field": "CatalogPredictionWitnessNote",
-    "kind": "formula",
-    "rule": "A corpus catalog summary's catalog prediction witness note is computed as “exact=”, followed by the type prediction match count, followed by a slash, followed by the imported count, followed by “ (”, followed by the type prediction match rate times 100 rounded to 1 decimal place(s), followed by “%); flipPred=”, followed by the sign flip prediction match count, followed by a slash, followed by the sign flip prediction eligible count, followed by “ (”, followed by the sign flip prediction match rate times 100 rounded to 1 decimal place(s), followed by “%)”.",
-    "mechanical": true,
-    "refs": [
-      {
+      },
+      "CorpusCatalogSummary.TypePredictionMatchCount": {
         "table": "CorpusCatalogSummary",
         "field": "TypePredictionMatchCount",
-        "label": "type prediction match count"
+        "kind": "rollup",
+        "rule": "A corpus catalog summary's type prediction match count is the number of candidate study catalog related to the corpus catalog summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "TypePredictionMatch",
+            "label": "type prediction match"
+          }
+        ],
+        "structure": null
       },
-      {
+      "CorpusCatalogSummary.TypePredictionMismatchCount": {
         "table": "CorpusCatalogSummary",
-        "field": "ImportedCount",
-        "label": "imported count"
+        "field": "TypePredictionMismatchCount",
+        "kind": "rollup",
+        "rule": "A corpus catalog summary's type prediction mismatch count is the number of the corpus catalog summary's candidate study catalog that are not type prediction match.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "IsImported",
+            "label": "is imported"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "TypePredictionMatch",
+            "label": "type prediction match"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "CorpusCatalogSummary",
-        "field": "TypePredictionMatchRate",
-        "label": "type prediction match rate"
-      },
-      {
-        "table": "CorpusCatalogSummary",
-        "field": "SignFlipPredictionMatchCount",
-        "label": "sign flip prediction match count"
-      },
-      {
+      "CorpusCatalogSummary.SignFlipPredictionEligibleCount": {
         "table": "CorpusCatalogSummary",
         "field": "SignFlipPredictionEligibleCount",
-        "label": "sign flip prediction eligible count"
+        "kind": "rollup",
+        "rule": "A corpus catalog summary's sign flip prediction eligible count is the number of the corpus catalog summary's candidate study catalog that are expected sign flip.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "IsImported",
+            "label": "is imported"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "ExpectedSignFlip",
+            "label": "expected sign flip"
+          }
+        ],
+        "structure": null
       },
-      {
+      "CorpusCatalogSummary.SignFlipPredictionMatchCount": {
+        "table": "CorpusCatalogSummary",
+        "field": "SignFlipPredictionMatchCount",
+        "kind": "rollup",
+        "rule": "A corpus catalog summary's sign flip prediction match count is the number of candidate study catalog related to the corpus catalog summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "SignFlipPredictionMatch",
+            "label": "sign flip prediction match"
+          }
+        ],
+        "structure": null
+      },
+      "CorpusCatalogSummary.TypePredictionMatchRate": {
+        "table": "CorpusCatalogSummary",
+        "field": "TypePredictionMatchRate",
+        "kind": "formula",
+        "rule": "The corpus catalog summary's type prediction match rate is determined by the following priority:\n1. an empty string, if the imported count is 0;\n2. in all other cases, the type prediction match count divided by the imported count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CorpusCatalogSummary",
+            "field": "ImportedCount",
+            "label": "imported count"
+          },
+          {
+            "table": "CorpusCatalogSummary",
+            "field": "TypePredictionMatchCount",
+            "label": "type prediction match count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The corpus catalog summary's type prediction match rate is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the imported count is 0"
+              }
+            },
+            {
+              "value": "the type prediction match count divided by the imported count",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CorpusCatalogSummary.SignFlipPredictionMatchRate": {
         "table": "CorpusCatalogSummary",
         "field": "SignFlipPredictionMatchRate",
-        "label": "sign flip prediction match rate"
-      }
-    ],
-    "structure": null
-  },
-  "CorpusCatalogSummary.DataReadyCount": {
-    "table": "CorpusCatalogSummary",
-    "field": "DataReadyCount",
-    "kind": "rollup",
-    "rule": "A corpus catalog summary's data ready count is the number of the corpus catalog summary's candidate study catalog that have a ingestion status of “candidate”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "IsDataReady",
-        "label": "is data ready"
+        "kind": "formula",
+        "rule": "The corpus catalog summary's sign flip prediction match rate is determined by the following priority:\n1. an empty string, if the sign flip prediction eligible count is 0;\n2. in all other cases, the sign flip prediction match count divided by the sign flip prediction eligible count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CorpusCatalogSummary",
+            "field": "SignFlipPredictionEligibleCount",
+            "label": "sign flip prediction eligible count"
+          },
+          {
+            "table": "CorpusCatalogSummary",
+            "field": "SignFlipPredictionMatchCount",
+            "label": "sign flip prediction match count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The corpus catalog summary's sign flip prediction match rate is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the sign flip prediction eligible count is 0"
+              }
+            },
+            {
+              "value": "the sign flip prediction match count divided by the sign flip prediction eligible count",
+              "when": null
+            }
+          ],
+          "children": null
+        }
       },
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "IngestionStatus",
-        "label": "ingestion status"
-      }
-    ],
-    "structure": null
-  },
-  "CorpusCatalogSummary.EncodePipelineReadyCount": {
-    "table": "CorpusCatalogSummary",
-    "field": "EncodePipelineReadyCount",
-    "kind": "rollup",
-    "rule": "A corpus catalog summary's encode pipeline ready count is the number of the corpus catalog summary's candidate study catalog that are data readies.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "IsReadyToEncode",
-        "label": "is ready to encode"
+      "CorpusCatalogSummary.CatalogWitnessNote": {
+        "table": "CorpusCatalogSummary",
+        "field": "CatalogWitnessNote",
+        "kind": "formula",
+        "rule": "The corpus catalog summary's catalog witness note is determined by the following priority:\n1. “READY: ”, followed by the ready to encode count, followed by “ encode-ready (”, followed by the data ready count, followed by “ data-ready) of ”, followed by the candidate count, followed by “ candidates”, if the import session ready flag is set;\n2. in all other cases, “BUILDING: ”, followed by the candidate count, followed by “ candidates — ”, followed by the data ready count, followed by “ data-ready, ”, followed by the ready to encode count, followed by “ encode-ready”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CorpusCatalogSummary",
+            "field": "ImportSessionReady",
+            "label": "import session ready"
+          },
+          {
+            "table": "CorpusCatalogSummary",
+            "field": "ReadyToEncodeCount",
+            "label": "ready to encode count"
+          },
+          {
+            "table": "CorpusCatalogSummary",
+            "field": "DataReadyCount",
+            "label": "data ready count"
+          },
+          {
+            "table": "CorpusCatalogSummary",
+            "field": "CandidateCount",
+            "label": "candidate count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The corpus catalog summary's catalog witness note is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“READY: ”, followed by the ready to encode count, followed by “ encode-ready (”, followed by the data ready count, followed by “ data-ready) of ”, followed by the candidate count, followed by “ candidates”",
+              "when": {
+                "kind": "leaf",
+                "text": "the import session ready flag is set"
+              }
+            },
+            {
+              "value": "“BUILDING: ”, followed by the candidate count, followed by “ candidates — ”, followed by the data ready count, followed by “ data-ready, ”, followed by the ready to encode count, followed by “ encode-ready”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
       },
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "IsDataReady",
-        "label": "is data ready"
-      }
-    ],
-    "structure": null
-  },
-  "CorpusCatalogSummary.ExpansionCandidateCount": {
-    "table": "CorpusCatalogSummary",
-    "field": "ExpansionCandidateCount",
-    "kind": "rollup",
-    "rule": "A corpus catalog summary's expansion candidate count is the number of candidate study catalog related to the corpus catalog summary.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "ExpansionWave",
-        "label": "expansion wave"
-      }
-    ],
-    "structure": null
-  },
-  "DomainExpansionTargets.Name": {
-    "table": "DomainExpansionTargets",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A domain expansion target's name is the same as its domain target ID.",
-    "mechanical": false,
-    "refs": [
-      {
+      "CorpusCatalogSummary.CatalogPredictionWitnessNote": {
+        "table": "CorpusCatalogSummary",
+        "field": "CatalogPredictionWitnessNote",
+        "kind": "formula",
+        "rule": "A corpus catalog summary's catalog prediction witness note is computed as “exact=”, followed by the type prediction match count, followed by a slash, followed by the imported count, followed by “ (”, followed by the type prediction match rate times 100 rounded to 1 decimal place(s), followed by “%); flipPred=”, followed by the sign flip prediction match count, followed by a slash, followed by the sign flip prediction eligible count, followed by “ (”, followed by the sign flip prediction match rate times 100 rounded to 1 decimal place(s), followed by “%)”.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "CorpusCatalogSummary",
+            "field": "TypePredictionMatchCount",
+            "label": "type prediction match count"
+          },
+          {
+            "table": "CorpusCatalogSummary",
+            "field": "ImportedCount",
+            "label": "imported count"
+          },
+          {
+            "table": "CorpusCatalogSummary",
+            "field": "TypePredictionMatchRate",
+            "label": "type prediction match rate"
+          },
+          {
+            "table": "CorpusCatalogSummary",
+            "field": "SignFlipPredictionMatchCount",
+            "label": "sign flip prediction match count"
+          },
+          {
+            "table": "CorpusCatalogSummary",
+            "field": "SignFlipPredictionEligibleCount",
+            "label": "sign flip prediction eligible count"
+          },
+          {
+            "table": "CorpusCatalogSummary",
+            "field": "SignFlipPredictionMatchRate",
+            "label": "sign flip prediction match rate"
+          }
+        ],
+        "structure": null
+      },
+      "CorpusCatalogSummary.DataReadyCount": {
+        "table": "CorpusCatalogSummary",
+        "field": "DataReadyCount",
+        "kind": "rollup",
+        "rule": "A corpus catalog summary's data ready count is the number of the corpus catalog summary's candidate study catalog that have a ingestion status of “candidate”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "IsDataReady",
+            "label": "is data ready"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "IngestionStatus",
+            "label": "ingestion status"
+          }
+        ],
+        "structure": null
+      },
+      "CorpusCatalogSummary.EncodePipelineReadyCount": {
+        "table": "CorpusCatalogSummary",
+        "field": "EncodePipelineReadyCount",
+        "kind": "rollup",
+        "rule": "A corpus catalog summary's encode pipeline ready count is the number of the corpus catalog summary's candidate study catalog that are data-ready.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "IsReadyToEncode",
+            "label": "is ready to encode"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "IsDataReady",
+            "label": "is data ready"
+          }
+        ],
+        "structure": null
+      },
+      "CorpusCatalogSummary.ExpansionCandidateCount": {
+        "table": "CorpusCatalogSummary",
+        "field": "ExpansionCandidateCount",
+        "kind": "rollup",
+        "rule": "A corpus catalog summary's expansion candidate count is the number of candidate study catalog related to the corpus catalog summary.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "ExpansionWave",
+            "label": "expansion wave"
+          }
+        ],
+        "structure": null
+      },
+      "DomainExpansionTargets.Name": {
         "table": "DomainExpansionTargets",
-        "field": "DomainTargetId",
-        "label": "domain target ID"
-      }
-    ],
-    "structure": null
-  },
-  "DomainExpansionTargets.CurrentImportedCount": {
-    "table": "DomainExpansionTargets",
-    "field": "CurrentImportedCount",
-    "kind": "rollup",
-    "rule": "A domain expansion target's current imported count is the number of the domain expansion target's studies that are not synthetic.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "Domain",
-        "label": "domain"
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A domain expansion target's name is the same as its domain target ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DomainExpansionTargets",
+            "field": "DomainTargetId",
+            "label": "domain target ID"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "DomainExpansionTargets",
-        "field": "LegacyDomainAlias",
-        "label": "legacy domain alias"
-      },
-      {
-        "table": "DomainExpansionTargets",
-        "field": "Domain",
-        "label": "domain"
-      },
-      {
-        "table": "Studies",
-        "field": "IsSynthetic",
-        "label": "is synthetic"
-      }
-    ],
-    "structure": null
-  },
-  "DomainExpansionTargets.CandidateQueuedCount": {
-    "table": "DomainExpansionTargets",
-    "field": "CandidateQueuedCount",
-    "kind": "rollup",
-    "rule": "A domain expansion target's candidate queued count is the number of the domain expansion target's candidate study catalog that have a ingestion status of “candidate”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "Domain",
-        "label": "domain"
-      },
-      {
-        "table": "DomainExpansionTargets",
-        "field": "Domain",
-        "label": "domain"
-      },
-      {
-        "table": "CandidateStudyCatalog",
-        "field": "IngestionStatus",
-        "label": "ingestion status"
-      }
-    ],
-    "structure": null
-  },
-  "DomainExpansionTargets.ProjectedCount": {
-    "table": "DomainExpansionTargets",
-    "field": "ProjectedCount",
-    "kind": "formula",
-    "rule": "A domain expansion target's projected count is computed as the current imported count plus the candidate queued count.",
-    "mechanical": false,
-    "refs": [
-      {
+      "DomainExpansionTargets.CurrentImportedCount": {
         "table": "DomainExpansionTargets",
         "field": "CurrentImportedCount",
-        "label": "current imported count"
+        "kind": "rollup",
+        "rule": "A domain expansion target's current imported count is the number of the domain expansion target's studies that are not synthetic.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "Domain",
+            "label": "domain"
+          },
+          {
+            "table": "DomainExpansionTargets",
+            "field": "LegacyDomainAlias",
+            "label": "legacy domain alias"
+          },
+          {
+            "table": "DomainExpansionTargets",
+            "field": "Domain",
+            "label": "domain"
+          },
+          {
+            "table": "Studies",
+            "field": "IsSynthetic",
+            "label": "is synthetic"
+          }
+        ],
+        "structure": null
       },
-      {
+      "DomainExpansionTargets.CandidateQueuedCount": {
         "table": "DomainExpansionTargets",
         "field": "CandidateQueuedCount",
-        "label": "candidate queued count"
-      }
-    ],
-    "structure": null
-  },
-  "DomainExpansionTargets.GapCount": {
-    "table": "DomainExpansionTargets",
-    "field": "GapCount",
-    "kind": "formula",
-    "rule": "A domain expansion target's gap count is computed as the largest of 0 and the target min count minus the projected count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "DomainExpansionTargets",
-        "field": "TargetMinCount",
-        "label": "target min count"
+        "kind": "rollup",
+        "rule": "A domain expansion target's candidate queued count is the number of the domain expansion target's candidate study catalog that have a ingestion status of “candidate”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "Domain",
+            "label": "domain"
+          },
+          {
+            "table": "DomainExpansionTargets",
+            "field": "Domain",
+            "label": "domain"
+          },
+          {
+            "table": "CandidateStudyCatalog",
+            "field": "IngestionStatus",
+            "label": "ingestion status"
+          }
+        ],
+        "structure": null
       },
-      {
+      "DomainExpansionTargets.ProjectedCount": {
         "table": "DomainExpansionTargets",
         "field": "ProjectedCount",
-        "label": "projected count"
-      }
-    ],
-    "structure": null
-  },
-  "DomainExpansionTargets.IsUnderRepresented": {
-    "table": "DomainExpansionTargets",
-    "field": "IsUnderRepresented",
-    "kind": "formula",
-    "rule": "A domain expansion target is considered under-represented if the projected count is less than the target min count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "DomainExpansionTargets",
-        "field": "ProjectedCount",
-        "label": "projected count"
+        "kind": "formula",
+        "rule": "A domain expansion target's projected count is computed as the current imported count plus the candidate queued count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DomainExpansionTargets",
+            "field": "CurrentImportedCount",
+            "label": "current imported count"
+          },
+          {
+            "table": "DomainExpansionTargets",
+            "field": "CandidateQueuedCount",
+            "label": "candidate queued count"
+          }
+        ],
+        "structure": null
       },
-      {
+      "DomainExpansionTargets.GapCount": {
         "table": "DomainExpansionTargets",
-        "field": "TargetMinCount",
-        "label": "target min count"
-      }
-    ],
-    "structure": null
-  },
-  "StudyImportTemplate.Name": {
-    "table": "StudyImportTemplate",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A study import template's name is the same as its template step ID.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "GapCount",
+        "kind": "formula",
+        "rule": "A domain expansion target's gap count is computed as the largest of 0 and the target min count minus the projected count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DomainExpansionTargets",
+            "field": "TargetMinCount",
+            "label": "target min count"
+          },
+          {
+            "table": "DomainExpansionTargets",
+            "field": "ProjectedCount",
+            "label": "projected count"
+          }
+        ],
+        "structure": null
+      },
+      "DomainExpansionTargets.IsUnderRepresented": {
+        "table": "DomainExpansionTargets",
+        "field": "IsUnderRepresented",
+        "kind": "formula",
+        "rule": "A domain expansion target is considered under-represented if the projected count is less than the target min count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DomainExpansionTargets",
+            "field": "ProjectedCount",
+            "label": "projected count"
+          },
+          {
+            "table": "DomainExpansionTargets",
+            "field": "TargetMinCount",
+            "label": "target min count"
+          }
+        ],
+        "structure": null
+      },
+      "StudyImportTemplate.Name": {
         "table": "StudyImportTemplate",
-        "field": "TemplateStepId",
-        "label": "template step ID"
-      }
-    ],
-    "structure": null
-  },
-  "SweepStudyConfig.Name": {
-    "table": "SweepStudyConfig",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A sweep study config's name is the same as its config ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SweepStudyConfig",
-        "field": "ConfigId",
-        "label": "config ID"
-      }
-    ],
-    "structure": null
-  },
-  "SubstrateConformanceFields.Name": {
-    "table": "SubstrateConformanceFields",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A substrate conformance field's name is the same as its field ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SubstrateConformanceFields",
-        "field": "FieldId",
-        "label": "field ID"
-      }
-    ],
-    "structure": null
-  },
-  "DiscoveryHypotheses.Name": {
-    "table": "DiscoveryHypotheses",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A discovery hypothes's name is the same as its hypothesis ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "DiscoveryHypotheses",
-        "field": "HypothesisId",
-        "label": "hypothesis ID"
-      }
-    ],
-    "structure": null
-  },
-  "DiscoveryFindings.Name": {
-    "table": "DiscoveryFindings",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A discovery finding's name is the same as its finding ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "DiscoveryFindings",
-        "field": "FindingId",
-        "label": "finding ID"
-      }
-    ],
-    "structure": null
-  },
-  "DiscoveryFindings.HypothesisStatement": {
-    "table": "DiscoveryFindings",
-    "field": "HypothesisStatement",
-    "kind": "lookup",
-    "rule": "A discovery finding's hypothesis statement is the value of LOOKUP(HypothesisId, DiscoveryHypotheses[HypothesisId], DiscoveryHypotheses[Statement]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "DiscoveryFindings",
-        "field": "HypothesisId",
-        "label": "hypothesis ID"
-      }
-    ],
-    "structure": null
-  },
-  "DiscoveryFindings.ObservedMetric": {
-    "table": "DiscoveryFindings",
-    "field": "ObservedMetric",
-    "kind": "formula",
-    "rule": "A discovery finding's observed metric is computed as the value of IF(HypothesisId = \"H-latent-d\", CONCAT(\"fraction=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction])), IF(HypothesisId = \"H-purity\", CONCAT(\"maxPurity=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax])), IF(HypothesisId = \"H-small-effect\", CONCAT(\"stable=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]), \" latent=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD])), IF(HypothesisId = \"H-econ-zero\", CONCAT(\"flips=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount])), IF(HypothesisId = \"H-domain-dist\", CONCAT(\"epi=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]), \" edu=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion])), IF(HypothesisId = \"H-causal-manifest\", CONCAT(\"confFlip=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), \" collManifest=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount])), IF(HypothesisId = \"H-causal-latent\", CONCAT(\"collManifest=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]), \" collLatent=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionLatentOnlyCount]), \" collN=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionCount])), IF(HypothesisId = \"H-explained-confounder\", CONCAT(\"ExplainedConfounderCount=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]), \", ConfounderSignFlipCount=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount])), IF(HypothesisId = \"H-unexplained-nonconfounder\", CONCAT(\"ContestedOrMediatorExplainedCount=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ContestedOrMediatorExplainedCount])), IF(HypothesisId = \"H-catalog-exact-match\", CONCAT(\"exactRate=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[TypePredictionMatchRate])), IF(HypothesisId = \"H-catalog-flip-prediction\", CONCAT(\"flipPredRate=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SignFlipPredictionMatchRate])), IF(HypothesisId = \"H-domain-flip-geometry-controlled\", CONCAT(\"econHighImbFlips=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsHighImbalanceSignFlipCount]), \"; epiRate=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyHighImbalanceSignFlipRate]), \"; legal=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[LegalHighImbalanceSignFlipRate]), \"; sports=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SportsHighImbalanceSignFlipRate])), IF(HypothesisId = \"H-collider-no-manifest-v2\", CONCAT(\"collManifest=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount])), IF(HypothesisId = \"H-cplus-magnitude\", CONCAT(\"C+=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[CPlusAvgDistortion]), \" C-=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[CMinusAvgDistortion]), \" D=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[TypeDAvgDistortion])), IF(HypothesisId = \"H-econ-encoding-selection\", CONCAT(\"EconExpectedAMismatchRate=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsExpectedAMismatchRate])), IF(HypothesisId = \"H-domain-profiles-stable\", CONCAT(\"eduLatent=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EducationLatentFraction]), \" sportsLatent=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SportsLatentFraction]), \" econFlipRate=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipRate])), IF(HypothesisId = \"H-corrected-gap-invariant\", CONCAT(\"maxRange=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[MaxStudySweepCorrectedGapRange]), \" fails=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[CorrectedGapInvariantFailCount])), IF(HypothesisId = \"H-explained-bidirectional\", CONCAT(\"explained=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]), \" confFlip=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), \" falsePos=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[FalsePositiveExplainedCount]), \" unexplained=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount])), IF(HypothesisId = \"H-collider-no-manifest-theorem\", CONCAT(\"collN=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionCount]), \" collManifest=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount])), IF(HypothesisId = \"H-theorem-portfolio\", CONCAT(\"theoremCount=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[TheoremCount])), IF(HypothesisId = \"H-age-identity-flip-rate\", CONCAT(\"rate=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityManifestFlipRate]), \", n=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityStudyCount])), IF(HypothesisId = \"H-identity-map-coverage\", CONCAT(\"coverage=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[IdentityMapCoverageRate])), IF(HypothesisId = \"H-severity-medicine-manifest\", CONCAT(\"medicine_flip_rate=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SeverityMedicineManifestFlipRate])), IF(HypothesisId = \"H-severity-epi-latent-only\", CONCAT(\"epi_manifest_count=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SeverityEpiManifestFlipCount])), IF(HypothesisId = \"H-mechanism-other-drain\", CONCAT(\"other_count=\", LOOKUP(\"cluster-id-mechanism-other\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount])), IF(HypothesisId = \"H-selection-frailty-zero-manifest\", CONCAT(\"manifest=\", LOOKUP(\"cluster-id-selection-frailty\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[ManifestFlipCount]), \", n=\", LOOKUP(\"cluster-id-selection-frailty\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount])), IF(HypothesisId = \"H-collider-identity-low-manifest\", CONCAT(\"rate=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderIdentityManifestFlipRate])), IF(HypothesisId = \"H-geographic-stable-type-d\", CONCAT(\"type_d_frac=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[GeographicTypeDFraction])), IF(HypothesisId = \"H-unexplained-flips-only-nonconfounders\", CONCAT(\"unexplained_confounder_flips=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount])), IF(HypothesisId = \"H-confounder-drift-type-d\", CONCAT(\"severity=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SeverityDriftDirection]), \" geography=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[GeographicDriftDirection]), \" situational=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SituationalDriftDirection]), \" age=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AgeDriftDirection]), \" institutional=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[InstitutionalDriftDirection]), \" socioeconomic=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SocioeconomicDriftDirection])), \"\"))))))))))))))))))))))))))))).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "DiscoveryFindings",
-        "field": "HypothesisId",
-        "label": "hypothesis ID"
-      }
-    ],
-    "structure": null
-  },
-  "DiscoveryFindings.IsConfirmed": {
-    "table": "DiscoveryFindings",
-    "field": "IsConfirmed",
-    "kind": "formula",
-    "rule": "A discovery finding is considered confirmed if the value of IF(HypothesisId = \"H-latent-d\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) > 0.5, IF(HypothesisId = \"H-purity\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) < 0.5, IF(HypothesisId = \"H-small-effect\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) > LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF(HypothesisId = \"H-econ-zero\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF(HypothesisId = \"H-domain-dist\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) > LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), IF(HypothesisId = \"H-causal-manifest\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]) > LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]), LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]) >= 10), IF(HypothesisId = \"H-causal-latent\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]) = 0, LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionLatentOnlyCount]) >= 5), IF(HypothesisId = \"H-explained-confounder\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]) = LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]) >= 10), IF(HypothesisId = \"H-unexplained-nonconfounder\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ContestedOrMediatorExplainedCount]) = 0, IF(HypothesisId = \"H-catalog-exact-match\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[TypePredictionMatchRate]) < 0.5, IF(HypothesisId = \"H-catalog-flip-prediction\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SignFlipPredictionMatchRate]) < 0.5, IF(HypothesisId = \"H-domain-flip-geometry-controlled\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsHighImbalanceSignFlipCount]) = 0, LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyHighImbalanceSignFlipRate]) > 0.15), IF(HypothesisId = \"H-collider-no-manifest-v2\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]) = 0, IF(HypothesisId = \"H-cplus-magnitude\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[CPlusAvgDistortion]) > LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[CMinusAvgDistortion]), LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[CPlusAvgDistortion]) > LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[TypeDAvgDistortion])), IF(HypothesisId = \"H-econ-encoding-selection\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsExpectedAMismatchRate]) > 0.5, IF(HypothesisId = \"H-domain-profiles-stable\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EducationLatentFraction]) > 0.5, LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SportsLatentFraction]) > 0.5, LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipRate]) < 0.05), IF(HypothesisId = \"H-corrected-gap-invariant\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[MaxStudySweepCorrectedGapRange]) < 0.0001, LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[CorrectedGapInvariantFailCount]) = 0), IF(HypothesisId = \"H-explained-bidirectional\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]) = LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[FalsePositiveExplainedCount]) = 0, LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount]) = 0), IF(HypothesisId = \"H-collider-no-manifest-theorem\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]) = 0, LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionCount]) >= 10), IF(HypothesisId = \"H-theorem-portfolio\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[TheoremCount]) >= 4, IF(HypothesisId = \"H-age-identity-flip-rate\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityManifestFlipRate]) >= 0.40, LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityStudyCount]) >= 10), IF(HypothesisId = \"H-identity-map-coverage\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[IdentityMapCoverageRate]) >= 0.95, IF(HypothesisId = \"H-severity-medicine-manifest\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SeverityMedicineManifestFlipRate]) >= 0.45, IF(HypothesisId = \"H-severity-epi-latent-only\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SeverityEpiManifestFlipCount]) = 0, IF(HypothesisId = \"H-mechanism-other-drain\", LOOKUP(\"cluster-id-mechanism-other\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) <= 5, IF(HypothesisId = \"H-selection-frailty-zero-manifest\", AND(LOOKUP(\"cluster-id-selection-frailty\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[ManifestFlipCount]) = 0, LOOKUP(\"cluster-id-selection-frailty\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) >= 3), IF(HypothesisId = \"H-collider-identity-low-manifest\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderIdentityManifestFlipRate]) <= 0.15, LOOKUP(\"cluster-id-collider-proxy\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) >= 5), IF(HypothesisId = \"H-geographic-stable-type-d\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[GeographicTypeDFraction]) >= 0.25, LOOKUP(\"cluster-id-geographic-composition\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) >= 3), IF(HypothesisId = \"H-unexplained-flips-only-nonconfounders\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount]) = 0, IF(HypothesisId = \"H-confounder-drift-type-d\", AND(OR(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SeverityDriftDirection]) = \"rising\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SeverityDriftDirection]) = \"single-decade\"), OR(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[GeographicDriftDirection]) = \"rising\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[GeographicDriftDirection]) = \"single-decade\"), OR(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SituationalDriftDirection]) = \"rising\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SituationalDriftDirection]) = \"single-decade\"), LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AgeDriftDirection]) <> \"rising\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[InstitutionalDriftDirection]) <> \"rising\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SocioeconomicDriftDirection]) <> \"rising\"), FALSE())))))))))))))))))))))))))))))).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "DiscoveryFindings",
-        "field": "HypothesisId",
-        "label": "hypothesis ID"
-      }
-    ],
-    "structure": null
-  },
-  "DiscoveryFindings.Evidence": {
-    "table": "DiscoveryFindings",
-    "field": "Evidence",
-    "kind": "formula",
-    "rule": "The discovery finding's evidence is determined by the following priority:\n1. “PASS: ”, followed by the observed metric, if the is confirmed is true;\n2. “FAIL: ”, followed by the observed metric, if the is confirmed is false;\n3. in all other cases, an empty string.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "DiscoveryFindings",
-        "field": "IsConfirmed",
-        "label": "is confirmed"
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A study import template's name is the same as its template step ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StudyImportTemplate",
+            "field": "TemplateStepId",
+            "label": "template step ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "SweepStudyConfig.Name": {
+        "table": "SweepStudyConfig",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A sweep study config's name is the same as its config ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SweepStudyConfig",
+            "field": "ConfigId",
+            "label": "config ID"
+          }
+        ],
+        "structure": null
+      },
+      "SubstrateConformanceFields.Name": {
+        "table": "SubstrateConformanceFields",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A substrate conformance field's name is the same as its field ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SubstrateConformanceFields",
+            "field": "FieldId",
+            "label": "field ID"
+          }
+        ],
+        "structure": null
+      },
+      "DiscoveryHypotheses.Name": {
+        "table": "DiscoveryHypotheses",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A discovery hypothesis's name is the same as its hypothesis ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DiscoveryHypotheses",
+            "field": "HypothesisId",
+            "label": "hypothesis ID"
+          }
+        ],
+        "structure": null
+      },
+      "DiscoveryFindings.Name": {
+        "table": "DiscoveryFindings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A discovery finding's name is the same as its finding ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DiscoveryFindings",
+            "field": "FindingId",
+            "label": "finding ID"
+          }
+        ],
+        "structure": null
+      },
+      "DiscoveryFindings.HypothesisStatement": {
+        "table": "DiscoveryFindings",
+        "field": "HypothesisStatement",
+        "kind": "lookup",
+        "rule": "A discovery finding's hypothesis statement is the value of LOOKUP(HypothesisId, DiscoveryHypotheses[HypothesisId], DiscoveryHypotheses[Statement]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DiscoveryFindings",
+            "field": "HypothesisId",
+            "label": "hypothesis ID"
+          }
+        ],
+        "structure": null
+      },
+      "DiscoveryFindings.ObservedMetric": {
         "table": "DiscoveryFindings",
         "field": "ObservedMetric",
-        "label": "observed metric"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The discovery finding's evidence is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“PASS: ”, followed by the observed metric",
-          "when": {
-            "kind": "leaf",
-            "text": "the is confirmed is true"
+        "kind": "formula",
+        "rule": "A discovery finding's observed metric is computed as the value of IF(HypothesisId = \"H-latent-d\", CONCAT(\"fraction=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction])), IF(HypothesisId = \"H-purity\", CONCAT(\"maxPurity=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax])), IF(HypothesisId = \"H-small-effect\", CONCAT(\"stable=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]), \" latent=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD])), IF(HypothesisId = \"H-econ-zero\", CONCAT(\"flips=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount])), IF(HypothesisId = \"H-domain-dist\", CONCAT(\"epi=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]), \" edu=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion])), IF(HypothesisId = \"H-causal-manifest\", CONCAT(\"confFlip=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), \" collManifest=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount])), IF(HypothesisId = \"H-causal-latent\", CONCAT(\"collManifest=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]), \" collLatent=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionLatentOnlyCount]), \" collN=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionCount])), IF(HypothesisId = \"H-explained-confounder\", CONCAT(\"ExplainedConfounderCount=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]), \", ConfounderSignFlipCount=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount])), IF(HypothesisId = \"H-unexplained-nonconfounder\", CONCAT(\"ContestedOrMediatorExplainedCount=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ContestedOrMediatorExplainedCount])), IF(HypothesisId = \"H-catalog-exact-match\", CONCAT(\"exactRate=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[TypePredictionMatchRate])), IF(HypothesisId = \"H-catalog-flip-prediction\", CONCAT(\"flipPredRate=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SignFlipPredictionMatchRate])), IF(HypothesisId = \"H-domain-flip-geometry-controlled\", CONCAT(\"econHighImbFlips=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsHighImbalanceSignFlipCount]), \"; epiRate=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyHighImbalanceSignFlipRate]), \"; legal=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[LegalHighImbalanceSignFlipRate]), \"; sports=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SportsHighImbalanceSignFlipRate])), IF(HypothesisId = \"H-collider-no-manifest-v2\", CONCAT(\"collManifest=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount])), IF(HypothesisId = \"H-cplus-magnitude\", CONCAT(\"C+=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[CPlusAvgDistortion]), \" C-=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[CMinusAvgDistortion]), \" D=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[TypeDAvgDistortion])), IF(HypothesisId = \"H-econ-encoding-selection\", CONCAT(\"EconExpectedAMismatchRate=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsExpectedAMismatchRate])), IF(HypothesisId = \"H-domain-profiles-stable\", CONCAT(\"eduLatent=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EducationLatentFraction]), \" sportsLatent=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SportsLatentFraction]), \" econFlipRate=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipRate])), IF(HypothesisId = \"H-corrected-gap-invariant\", CONCAT(\"maxRange=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[MaxStudySweepCorrectedGapRange]), \" fails=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[CorrectedGapInvariantFailCount])), IF(HypothesisId = \"H-explained-bidirectional\", CONCAT(\"explained=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]), \" confFlip=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), \" falsePos=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[FalsePositiveExplainedCount]), \" unexplained=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount])), IF(HypothesisId = \"H-collider-no-manifest-theorem\", CONCAT(\"collN=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionCount]), \" collManifest=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount])), IF(HypothesisId = \"H-theorem-portfolio\", CONCAT(\"theoremCount=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[TheoremCount])), IF(HypothesisId = \"H-age-identity-flip-rate\", CONCAT(\"rate=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityManifestFlipRate]), \", n=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityStudyCount])), IF(HypothesisId = \"H-identity-map-coverage\", CONCAT(\"coverage=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[IdentityMapCoverageRate])), IF(HypothesisId = \"H-severity-medicine-manifest\", CONCAT(\"medicine_flip_rate=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SeverityMedicineManifestFlipRate])), IF(HypothesisId = \"H-severity-epi-latent-only\", CONCAT(\"epi_manifest_count=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SeverityEpiManifestFlipCount])), IF(HypothesisId = \"H-mechanism-other-drain\", CONCAT(\"other_count=\", LOOKUP(\"cluster-id-mechanism-other\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount])), IF(HypothesisId = \"H-selection-frailty-zero-manifest\", CONCAT(\"manifest=\", LOOKUP(\"cluster-id-selection-frailty\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[ManifestFlipCount]), \", n=\", LOOKUP(\"cluster-id-selection-frailty\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount])), IF(HypothesisId = \"H-collider-identity-low-manifest\", CONCAT(\"rate=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderIdentityManifestFlipRate])), IF(HypothesisId = \"H-geographic-stable-type-d\", CONCAT(\"type_d_frac=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[GeographicTypeDFraction])), IF(HypothesisId = \"H-unexplained-flips-only-nonconfounders\", CONCAT(\"unexplained_confounder_flips=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount])), IF(HypothesisId = \"H-confounder-drift-type-d\", CONCAT(\"severity=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SeverityDriftDirection]), \" geography=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[GeographicDriftDirection]), \" situational=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SituationalDriftDirection]), \" age=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AgeDriftDirection]), \" institutional=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[InstitutionalDriftDirection]), \" socioeconomic=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SocioeconomicDriftDirection])), \"\"))))))))))))))))))))))))))))).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DiscoveryFindings",
+            "field": "HypothesisId",
+            "label": "hypothesis ID"
           }
-        },
-        {
-          "value": "“FAIL: ”, followed by the observed metric",
-          "when": {
-            "kind": "leaf",
-            "text": "the is confirmed is false"
+        ],
+        "structure": null
+      },
+      "DiscoveryFindings.IsConfirmed": {
+        "table": "DiscoveryFindings",
+        "field": "IsConfirmed",
+        "kind": "formula",
+        "rule": "A discovery finding is considered confirmed if the value of IF(HypothesisId = \"H-latent-d\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) > 0.5, IF(HypothesisId = \"H-purity\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) < 0.5, IF(HypothesisId = \"H-small-effect\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) > LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF(HypothesisId = \"H-econ-zero\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF(HypothesisId = \"H-domain-dist\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) > LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), IF(HypothesisId = \"H-causal-manifest\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]) > LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]), LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]) >= 10), IF(HypothesisId = \"H-causal-latent\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]) = 0, LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionLatentOnlyCount]) >= 5), IF(HypothesisId = \"H-explained-confounder\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]) = LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]) >= 10), IF(HypothesisId = \"H-unexplained-nonconfounder\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ContestedOrMediatorExplainedCount]) = 0, IF(HypothesisId = \"H-catalog-exact-match\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[TypePredictionMatchRate]) < 0.5, IF(HypothesisId = \"H-catalog-flip-prediction\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SignFlipPredictionMatchRate]) < 0.5, IF(HypothesisId = \"H-domain-flip-geometry-controlled\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsHighImbalanceSignFlipCount]) = 0, LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyHighImbalanceSignFlipRate]) > 0.15), IF(HypothesisId = \"H-collider-no-manifest-v2\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]) = 0, IF(HypothesisId = \"H-cplus-magnitude\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[CPlusAvgDistortion]) > LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[CMinusAvgDistortion]), LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[CPlusAvgDistortion]) > LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[TypeDAvgDistortion])), IF(HypothesisId = \"H-econ-encoding-selection\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsExpectedAMismatchRate]) > 0.5, IF(HypothesisId = \"H-domain-profiles-stable\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EducationLatentFraction]) > 0.5, LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SportsLatentFraction]) > 0.5, LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipRate]) < 0.05), IF(HypothesisId = \"H-corrected-gap-invariant\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[MaxStudySweepCorrectedGapRange]) < 0.0001, LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[CorrectedGapInvariantFailCount]) = 0), IF(HypothesisId = \"H-explained-bidirectional\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]) = LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[FalsePositiveExplainedCount]) = 0, LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount]) = 0), IF(HypothesisId = \"H-collider-no-manifest-theorem\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]) = 0, LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionCount]) >= 10), IF(HypothesisId = \"H-theorem-portfolio\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[TheoremCount]) >= 4, IF(HypothesisId = \"H-age-identity-flip-rate\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityManifestFlipRate]) >= 0.40, LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityStudyCount]) >= 10), IF(HypothesisId = \"H-identity-map-coverage\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[IdentityMapCoverageRate]) >= 0.95, IF(HypothesisId = \"H-severity-medicine-manifest\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SeverityMedicineManifestFlipRate]) >= 0.45, IF(HypothesisId = \"H-severity-epi-latent-only\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SeverityEpiManifestFlipCount]) = 0, IF(HypothesisId = \"H-mechanism-other-drain\", LOOKUP(\"cluster-id-mechanism-other\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) <= 5, IF(HypothesisId = \"H-selection-frailty-zero-manifest\", AND(LOOKUP(\"cluster-id-selection-frailty\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[ManifestFlipCount]) = 0, LOOKUP(\"cluster-id-selection-frailty\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) >= 3), IF(HypothesisId = \"H-collider-identity-low-manifest\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[ColliderIdentityManifestFlipRate]) <= 0.15, LOOKUP(\"cluster-id-collider-proxy\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) >= 5), IF(HypothesisId = \"H-geographic-stable-type-d\", AND(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[GeographicTypeDFraction]) >= 0.25, LOOKUP(\"cluster-id-geographic-composition\", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) >= 3), IF(HypothesisId = \"H-unexplained-flips-only-nonconfounders\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount]) = 0, IF(HypothesisId = \"H-confounder-drift-type-d\", AND(OR(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SeverityDriftDirection]) = \"rising\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SeverityDriftDirection]) = \"single-decade\"), OR(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[GeographicDriftDirection]) = \"rising\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[GeographicDriftDirection]) = \"single-decade\"), OR(LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SituationalDriftDirection]) = \"rising\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SituationalDriftDirection]) = \"single-decade\"), LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AgeDriftDirection]) <> \"rising\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[InstitutionalDriftDirection]) <> \"rising\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SocioeconomicDriftDirection]) <> \"rising\"), FALSE())))))))))))))))))))))))))))))).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DiscoveryFindings",
+            "field": "HypothesisId",
+            "label": "hypothesis ID"
           }
-        },
-        {
-          "value": "an empty string",
-          "when": null
+        ],
+        "structure": null
+      },
+      "DiscoveryFindings.Evidence": {
+        "table": "DiscoveryFindings",
+        "field": "Evidence",
+        "kind": "formula",
+        "rule": "The discovery finding's evidence is determined by the following priority:\n1. “PASS: ”, followed by the observed metric, if the is confirmed is true;\n2. “FAIL: ”, followed by the observed metric, if the is confirmed is false;\n3. in all other cases, an empty string.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DiscoveryFindings",
+            "field": "IsConfirmed",
+            "label": "is confirmed"
+          },
+          {
+            "table": "DiscoveryFindings",
+            "field": "ObservedMetric",
+            "label": "observed metric"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The discovery finding's evidence is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“PASS: ”, followed by the observed metric",
+              "when": {
+                "kind": "leaf",
+                "text": "the is confirmed is true"
+              }
+            },
+            {
+              "value": "“FAIL: ”, followed by the observed metric",
+              "when": {
+                "kind": "leaf",
+                "text": "the is confirmed is false"
+              }
+            },
+            {
+              "value": "an empty string",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "CorpusDomains.Name": {
-    "table": "CorpusDomains",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A corpus domain's name is the same as its domain ID.",
-    "mechanical": false,
-    "refs": [
-      {
+      },
+      "CorpusDomains.Name": {
         "table": "CorpusDomains",
-        "field": "DomainId",
-        "label": "domain ID"
-      }
-    ],
-    "structure": null
-  },
-  "ConfounderIdentities.Name": {
-    "table": "ConfounderIdentities",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A confounder identity's name is the same as its confounder identity ID.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A corpus domain's name is the same as its domain ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CorpusDomains",
+            "field": "DomainId",
+            "label": "domain ID"
+          }
+        ],
+        "structure": null
+      },
+      "ConfounderIdentities.Name": {
         "table": "ConfounderIdentities",
-        "field": "ConfounderIdentityId",
-        "label": "confounder identity ID"
-      }
-    ],
-    "structure": null
-  },
-  "ConfounderIdentities.StudyCount": {
-    "table": "ConfounderIdentities",
-    "field": "StudyCount",
-    "kind": "rollup",
-    "rule": "A confounder identity's study count is the number of the confounder identity's studies.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StratumVariableIdentityMaps",
-        "field": "MapId",
-        "label": "map ID"
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A confounder identity's name is the same as its confounder identity ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ConfounderIdentities",
+            "field": "ConfounderIdentityId",
+            "label": "confounder identity ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "ConfounderIdentities.StudyCount": {
         "table": "ConfounderIdentities",
-        "field": "ConfounderIdentityId",
-        "label": "confounder identity ID"
-      }
-    ],
-    "structure": null
-  },
-  "StratumVariableIdentityMaps.Name": {
-    "table": "StratumVariableIdentityMaps",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A stratum variable identity map's name is the same as its map ID.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "StudyCount",
+        "kind": "rollup",
+        "rule": "A confounder identity's study count is the number of the confounder identity's studies.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumVariableIdentityMaps",
+            "field": "MapId",
+            "label": "map ID"
+          },
+          {
+            "table": "ConfounderIdentities",
+            "field": "ConfounderIdentityId",
+            "label": "confounder identity ID"
+          }
+        ],
+        "structure": null
+      },
+      "StratumVariableIdentityMaps.Name": {
         "table": "StratumVariableIdentityMaps",
-        "field": "MapId",
-        "label": "map ID"
-      }
-    ],
-    "structure": null
-  },
-  "IdentityClusterSummaries.Name": {
-    "table": "IdentityClusterSummaries",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "An identity cluster summary's name is the same as its identity cluster ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IdentityClusterSummaries",
-        "field": "IdentityClusterId",
-        "label": "identity cluster ID"
-      }
-    ],
-    "structure": null
-  },
-  "IdentityClusterSummaries.DisplayName": {
-    "table": "IdentityClusterSummaries",
-    "field": "DisplayName",
-    "kind": "lookup",
-    "rule": "An identity cluster summary's display name is the value of LOOKUP(ConfounderIdentity, ConfounderIdentities[ConfounderIdentityId], ConfounderIdentities[DisplayName]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IdentityClusterSummaries",
-        "field": "ConfounderIdentity",
-        "label": "confounder identity"
-      }
-    ],
-    "structure": null
-  },
-  "IdentityClusterSummaries.ManifestFlipRate": {
-    "table": "IdentityClusterSummaries",
-    "field": "ManifestFlipRate",
-    "kind": "formula",
-    "rule": "The identity cluster summary's manifest flip rate is determined by the following priority:\n1. an empty string, if the study count is 0;\n2. in all other cases, the manifest flip count divided by the study count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IdentityClusterSummaries",
-        "field": "StudyCount",
-        "label": "study count"
-      },
-      {
-        "table": "IdentityClusterSummaries",
-        "field": "ManifestFlipCount",
-        "label": "manifest flip count"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The identity cluster summary's manifest flip rate is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the study count is 0"
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A stratum variable identity map's name is the same as its map ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StratumVariableIdentityMaps",
+            "field": "MapId",
+            "label": "map ID"
           }
-        },
-        {
-          "value": "the manifest flip count divided by the study count",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IdentityDomainCells.Name": {
-    "table": "IdentityDomainCells",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "An identity domain cell's name is the same as its cell ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IdentityDomainCells",
-        "field": "CellId",
-        "label": "cell ID"
-      }
-    ],
-    "structure": null
-  },
-  "IdentityDomainCells.ManifestFlipRate": {
-    "table": "IdentityDomainCells",
-    "field": "ManifestFlipRate",
-    "kind": "formula",
-    "rule": "The identity domain cell's manifest flip rate is determined by the following priority:\n1. an empty string, if the study count is 0;\n2. in all other cases, the manifest flip count divided by the study count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IdentityDomainCells",
-        "field": "StudyCount",
-        "label": "study count"
+        ],
+        "structure": null
       },
-      {
-        "table": "IdentityDomainCells",
-        "field": "ManifestFlipCount",
-        "label": "manifest flip count"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The identity domain cell's manifest flip rate is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the study count is 0"
+      "IdentityClusterSummaries.Name": {
+        "table": "IdentityClusterSummaries",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "An identity cluster summary's name is the same as its identity cluster ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IdentityClusterSummaries",
+            "field": "IdentityClusterId",
+            "label": "identity cluster ID"
           }
-        },
-        {
-          "value": "the manifest flip count divided by the study count",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IdentityDomainCells.IdentityDisplayName": {
-    "table": "IdentityDomainCells",
-    "field": "IdentityDisplayName",
-    "kind": "lookup",
-    "rule": "An identity domain cell's identity display name is the value of LOOKUP(ConfounderIdentity, ConfounderIdentities[ConfounderIdentityId], ConfounderIdentities[DisplayName]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IdentityDomainCells",
-        "field": "ConfounderIdentity",
-        "label": "confounder identity"
-      }
-    ],
-    "structure": null
-  },
-  "ConfounderDistortionTimeline.Name": {
-    "table": "ConfounderDistortionTimeline",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A confounder distortion timeline's name is the same as its cell ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ConfounderDistortionTimeline",
-        "field": "CellId",
-        "label": "cell ID"
-      }
-    ],
-    "structure": null
-  },
-  "ConfounderDistortionTimeline.TypeDFraction": {
-    "table": "ConfounderDistortionTimeline",
-    "field": "TypeDFraction",
-    "kind": "formula",
-    "rule": "The confounder distortion timeline's type d fraction is determined by the following priority:\n1. an empty string, if at least one of the following holds: the study count is blank or the study count is 0;\n2. in all other cases, the type d count divided by the study count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ConfounderDistortionTimeline",
-        "field": "StudyCount",
-        "label": "study count"
+        ],
+        "structure": null
       },
-      {
-        "table": "ConfounderDistortionTimeline",
-        "field": "TypeDCount",
-        "label": "type d count"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The confounder distortion timeline's type d fraction is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the study count is blank"
-              },
-              {
+      "IdentityClusterSummaries.DisplayName": {
+        "table": "IdentityClusterSummaries",
+        "field": "DisplayName",
+        "kind": "lookup",
+        "rule": "An identity cluster summary's display name is the value of LOOKUP(ConfounderIdentity, ConfounderIdentities[ConfounderIdentityId], ConfounderIdentities[DisplayName]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IdentityClusterSummaries",
+            "field": "ConfounderIdentity",
+            "label": "confounder identity"
+          }
+        ],
+        "structure": null
+      },
+      "IdentityClusterSummaries.ManifestFlipRate": {
+        "table": "IdentityClusterSummaries",
+        "field": "ManifestFlipRate",
+        "kind": "formula",
+        "rule": "The identity cluster summary's manifest flip rate is determined by the following priority:\n1. an empty string, if the study count is 0;\n2. in all other cases, the manifest flip count divided by the study count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IdentityClusterSummaries",
+            "field": "StudyCount",
+            "label": "study count"
+          },
+          {
+            "table": "IdentityClusterSummaries",
+            "field": "ManifestFlipCount",
+            "label": "manifest flip count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The identity cluster summary's manifest flip rate is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
                 "kind": "leaf",
                 "text": "the study count is 0"
               }
-            ]
-          }
-        },
-        {
-          "value": "the type d count divided by the study count",
-          "when": null
+            },
+            {
+              "value": "the manifest flip count divided by the study count",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "ConfounderDistortionTimeline.SignFlipFraction": {
-    "table": "ConfounderDistortionTimeline",
-    "field": "SignFlipFraction",
-    "kind": "formula",
-    "rule": "The confounder distortion timeline's sign flip fraction is determined by the following priority:\n1. an empty string, if at least one of the following holds: the study count is blank or the study count is 0;\n2. in all other cases, the sign flip count divided by the study count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ConfounderDistortionTimeline",
-        "field": "StudyCount",
-        "label": "study count"
       },
-      {
-        "table": "ConfounderDistortionTimeline",
-        "field": "SignFlipCount",
-        "label": "sign flip count"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The confounder distortion timeline's sign flip fraction is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the study count is blank"
-              },
-              {
+      "IdentityDomainCells.Name": {
+        "table": "IdentityDomainCells",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "An identity domain cell's name is the same as its cell ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IdentityDomainCells",
+            "field": "CellId",
+            "label": "cell ID"
+          }
+        ],
+        "structure": null
+      },
+      "IdentityDomainCells.ManifestFlipRate": {
+        "table": "IdentityDomainCells",
+        "field": "ManifestFlipRate",
+        "kind": "formula",
+        "rule": "The identity domain cell's manifest flip rate is determined by the following priority:\n1. an empty string, if the study count is 0;\n2. in all other cases, the manifest flip count divided by the study count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IdentityDomainCells",
+            "field": "StudyCount",
+            "label": "study count"
+          },
+          {
+            "table": "IdentityDomainCells",
+            "field": "ManifestFlipCount",
+            "label": "manifest flip count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The identity domain cell's manifest flip rate is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
                 "kind": "leaf",
                 "text": "the study count is 0"
               }
-            ]
-          }
-        },
-        {
-          "value": "the sign flip count divided by the study count",
-          "when": null
+            },
+            {
+              "value": "the manifest flip count divided by the study count",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "ConfounderDistortionTimeline.MeanSignalPurity": {
-    "table": "ConfounderDistortionTimeline",
-    "field": "MeanSignalPurity",
-    "kind": "formula",
-    "rule": "The confounder distortion timeline's mean signal purity is determined by the following priority:\n1. an empty string, if at least one of the following holds: the study count is blank or the study count is 0;\n2. in all other cases, the sum signal purity divided by the study count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ConfounderDistortionTimeline",
-        "field": "StudyCount",
-        "label": "study count"
       },
-      {
+      "IdentityDomainCells.IdentityDisplayName": {
+        "table": "IdentityDomainCells",
+        "field": "IdentityDisplayName",
+        "kind": "lookup",
+        "rule": "An identity domain cell's identity display name is the value of LOOKUP(ConfounderIdentity, ConfounderIdentities[ConfounderIdentityId], ConfounderIdentities[DisplayName]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IdentityDomainCells",
+            "field": "ConfounderIdentity",
+            "label": "confounder identity"
+          }
+        ],
+        "structure": null
+      },
+      "ConfounderDistortionTimeline.Name": {
         "table": "ConfounderDistortionTimeline",
-        "field": "SumSignalPurity",
-        "label": "sum signal purity"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The confounder distortion timeline's mean signal purity is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the study count is blank"
-              },
-              {
-                "kind": "leaf",
-                "text": "the study count is 0"
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A confounder distortion timeline's name is the same as its cell ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "CellId",
+            "label": "cell ID"
+          }
+        ],
+        "structure": null
+      },
+      "ConfounderDistortionTimeline.TypeDFraction": {
+        "table": "ConfounderDistortionTimeline",
+        "field": "TypeDFraction",
+        "kind": "formula",
+        "rule": "The confounder distortion timeline's type d fraction is determined by the following priority:\n1. an empty string, if at least one of the following holds: the study count is blank or the study count is 0;\n2. in all other cases, the type d count divided by the study count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "StudyCount",
+            "label": "study count"
+          },
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "TypeDCount",
+            "label": "type d count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The confounder distortion timeline's type d fraction is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the study count is blank"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the study count is 0"
+                  }
+                ]
               }
-            ]
-          }
-        },
-        {
-          "value": "the sum signal purity divided by the study count",
-          "when": null
+            },
+            {
+              "value": "the type d count divided by the study count",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "ConfounderDistortionTimeline.MeanAllocationDistortion": {
-    "table": "ConfounderDistortionTimeline",
-    "field": "MeanAllocationDistortion",
-    "kind": "formula",
-    "rule": "The confounder distortion timeline's mean allocation distortion is determined by the following priority:\n1. an empty string, if at least one of the following holds: the study count is blank or the study count is 0;\n2. in all other cases, the sum allocation distortion divided by the study count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ConfounderDistortionTimeline",
-        "field": "StudyCount",
-        "label": "study count"
       },
-      {
+      "ConfounderDistortionTimeline.SignFlipFraction": {
         "table": "ConfounderDistortionTimeline",
-        "field": "SumAllocationDistortion",
-        "label": "sum allocation distortion"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The confounder distortion timeline's mean allocation distortion is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the study count is blank"
-              },
-              {
-                "kind": "leaf",
-                "text": "the study count is 0"
+        "field": "SignFlipFraction",
+        "kind": "formula",
+        "rule": "The confounder distortion timeline's sign flip fraction is determined by the following priority:\n1. an empty string, if at least one of the following holds: the study count is blank or the study count is 0;\n2. in all other cases, the sign flip count divided by the study count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "StudyCount",
+            "label": "study count"
+          },
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "SignFlipCount",
+            "label": "sign flip count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The confounder distortion timeline's sign flip fraction is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the study count is blank"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the study count is 0"
+                  }
+                ]
               }
-            ]
-          }
-        },
-        {
-          "value": "the sum allocation distortion divided by the study count",
-          "when": null
+            },
+            {
+              "value": "the sign flip count divided by the study count",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "ConfounderDistortionTimeline.IdentityDisplayName": {
-    "table": "ConfounderDistortionTimeline",
-    "field": "IdentityDisplayName",
-    "kind": "lookup",
-    "rule": "A confounder distortion timeline's identity display name is the value of LOOKUP(ConfounderIdentity, ConfounderIdentities[ConfounderIdentityId], ConfounderIdentities[DisplayName]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ConfounderDistortionTimeline",
-        "field": "ConfounderIdentity",
-        "label": "confounder identity"
-      }
-    ],
-    "structure": null
-  },
-  "ConfounderDistortionTimeline.MechanismClass": {
-    "table": "ConfounderDistortionTimeline",
-    "field": "MechanismClass",
-    "kind": "lookup",
-    "rule": "A confounder distortion timeline's mechanism class is the value of LOOKUP(ConfounderIdentity, ConfounderIdentities[ConfounderIdentityId], ConfounderIdentities[MechanismClass]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ConfounderDistortionTimeline",
-        "field": "ConfounderIdentity",
-        "label": "confounder identity"
-      }
-    ],
-    "structure": null
-  },
-  "ConfounderDistortionTimeline.IdentityEarliestDecade": {
-    "table": "ConfounderDistortionTimeline",
-    "field": "IdentityEarliestDecade",
-    "kind": "rollup",
-    "rule": "A confounder distortion timeline's identity earliest decade is the smallest valid time decade across the confounder distortion timeline related to the confounder distortion timeline.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ConfounderDistortionTimeline",
-        "field": "ValidTimeDecade",
-        "label": "valid time decade"
       },
-      {
+      "ConfounderDistortionTimeline.MeanSignalPurity": {
         "table": "ConfounderDistortionTimeline",
-        "field": "ConfounderIdentity",
-        "label": "confounder identity"
-      }
-    ],
-    "structure": null
-  },
-  "ConfounderDistortionTimeline.IdentityLatestDecade": {
-    "table": "ConfounderDistortionTimeline",
-    "field": "IdentityLatestDecade",
-    "kind": "rollup",
-    "rule": "A confounder distortion timeline's identity latest decade is the largest valid time decade across the confounder distortion timeline related to the confounder distortion timeline.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ConfounderDistortionTimeline",
-        "field": "ValidTimeDecade",
-        "label": "valid time decade"
+        "field": "MeanSignalPurity",
+        "kind": "formula",
+        "rule": "The confounder distortion timeline's mean signal purity is determined by the following priority:\n1. an empty string, if at least one of the following holds: the study count is blank or the study count is 0;\n2. in all other cases, the sum signal purity divided by the study count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "StudyCount",
+            "label": "study count"
+          },
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "SumSignalPurity",
+            "label": "sum signal purity"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The confounder distortion timeline's mean signal purity is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the study count is blank"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the study count is 0"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "the sum signal purity divided by the study count",
+              "when": null
+            }
+          ],
+          "children": null
+        }
       },
-      {
+      "ConfounderDistortionTimeline.MeanAllocationDistortion": {
         "table": "ConfounderDistortionTimeline",
-        "field": "ConfounderIdentity",
-        "label": "confounder identity"
-      }
-    ],
-    "structure": null
-  },
-  "ConfounderDistortionTimeline.IdentityEarliestTypeDFraction": {
-    "table": "ConfounderDistortionTimeline",
-    "field": "IdentityEarliestTypeDFraction",
-    "kind": "lookup",
-    "rule": "A confounder distortion timeline's identity earliest type d fraction is the value of LOOKUP(CONCAT(ConfounderIdentity, \"-x-\", IdentityEarliestDecade), ConfounderDistortionTimeline[CellId], ConfounderDistortionTimeline[TypeDFraction]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ConfounderDistortionTimeline",
-        "field": "ConfounderIdentity",
-        "label": "confounder identity"
+        "field": "MeanAllocationDistortion",
+        "kind": "formula",
+        "rule": "The confounder distortion timeline's mean allocation distortion is determined by the following priority:\n1. an empty string, if at least one of the following holds: the study count is blank or the study count is 0;\n2. in all other cases, the sum allocation distortion divided by the study count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "StudyCount",
+            "label": "study count"
+          },
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "SumAllocationDistortion",
+            "label": "sum allocation distortion"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The confounder distortion timeline's mean allocation distortion is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the study count is blank"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the study count is 0"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "the sum allocation distortion divided by the study count",
+              "when": null
+            }
+          ],
+          "children": null
+        }
       },
-      {
+      "ConfounderDistortionTimeline.IdentityDisplayName": {
+        "table": "ConfounderDistortionTimeline",
+        "field": "IdentityDisplayName",
+        "kind": "lookup",
+        "rule": "A confounder distortion timeline's identity display name is the value of LOOKUP(ConfounderIdentity, ConfounderIdentities[ConfounderIdentityId], ConfounderIdentities[DisplayName]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "ConfounderIdentity",
+            "label": "confounder identity"
+          }
+        ],
+        "structure": null
+      },
+      "ConfounderDistortionTimeline.MechanismClass": {
+        "table": "ConfounderDistortionTimeline",
+        "field": "MechanismClass",
+        "kind": "lookup",
+        "rule": "A confounder distortion timeline's mechanism class is the value of LOOKUP(ConfounderIdentity, ConfounderIdentities[ConfounderIdentityId], ConfounderIdentities[MechanismClass]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "ConfounderIdentity",
+            "label": "confounder identity"
+          }
+        ],
+        "structure": null
+      },
+      "ConfounderDistortionTimeline.IdentityEarliestDecade": {
         "table": "ConfounderDistortionTimeline",
         "field": "IdentityEarliestDecade",
-        "label": "identity earliest decade"
-      }
-    ],
-    "structure": null
-  },
-  "ConfounderDistortionTimeline.IdentityLatestTypeDFraction": {
-    "table": "ConfounderDistortionTimeline",
-    "field": "IdentityLatestTypeDFraction",
-    "kind": "lookup",
-    "rule": "A confounder distortion timeline's identity latest type d fraction is the value of LOOKUP(CONCAT(ConfounderIdentity, \"-x-\", IdentityLatestDecade), ConfounderDistortionTimeline[CellId], ConfounderDistortionTimeline[TypeDFraction]).",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ConfounderDistortionTimeline",
-        "field": "ConfounderIdentity",
-        "label": "confounder identity"
+        "kind": "rollup",
+        "rule": "A confounder distortion timeline's identity earliest decade is the smallest valid time decade across the confounder distortion timeline related to the confounder distortion timeline.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "ValidTimeDecade",
+            "label": "valid time decade"
+          },
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "ConfounderIdentity",
+            "label": "confounder identity"
+          }
+        ],
+        "structure": null
       },
-      {
+      "ConfounderDistortionTimeline.IdentityLatestDecade": {
         "table": "ConfounderDistortionTimeline",
         "field": "IdentityLatestDecade",
-        "label": "identity latest decade"
-      }
-    ],
-    "structure": null
-  },
-  "ConfounderDistortionTimeline.DriftDirection": {
-    "table": "ConfounderDistortionTimeline",
-    "field": "DriftDirection",
-    "kind": "formula",
-    "rule": "The confounder distortion timeline's drift direction is determined by the following priority:\n1. “single-decade”, if the identity earliest decade is the identity latest decade;\n2. an empty string, if at least one of the following holds: the identity earliest type d fraction is blank or the identity latest type d fraction is blank;\n3. “rising”, if the identity latest type d fraction is greater than the identity earliest type d fraction plus 0.05;\n4. “falling”, if the identity latest type d fraction is less than the identity earliest type d fraction minus 0.05;\n5. in all other cases, “flat”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ConfounderDistortionTimeline",
-        "field": "IdentityEarliestDecade",
-        "label": "identity earliest decade"
+        "kind": "rollup",
+        "rule": "A confounder distortion timeline's identity latest decade is the largest valid time decade across the confounder distortion timeline related to the confounder distortion timeline.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "ValidTimeDecade",
+            "label": "valid time decade"
+          },
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "ConfounderIdentity",
+            "label": "confounder identity"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "ConfounderDistortionTimeline",
-        "field": "IdentityLatestDecade",
-        "label": "identity latest decade"
-      },
-      {
+      "ConfounderDistortionTimeline.IdentityEarliestTypeDFraction": {
         "table": "ConfounderDistortionTimeline",
         "field": "IdentityEarliestTypeDFraction",
-        "label": "identity earliest type d fraction"
+        "kind": "lookup",
+        "rule": "A confounder distortion timeline's identity earliest type d fraction is the value of LOOKUP(CONCAT(ConfounderIdentity, \"-x-\", IdentityEarliestDecade), ConfounderDistortionTimeline[CellId], ConfounderDistortionTimeline[TypeDFraction]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "ConfounderIdentity",
+            "label": "confounder identity"
+          },
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "IdentityEarliestDecade",
+            "label": "identity earliest decade"
+          }
+        ],
+        "structure": null
       },
-      {
+      "ConfounderDistortionTimeline.IdentityLatestTypeDFraction": {
         "table": "ConfounderDistortionTimeline",
         "field": "IdentityLatestTypeDFraction",
-        "label": "identity latest type d fraction"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The confounder distortion timeline's drift direction is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“single-decade”",
-          "when": {
-            "kind": "leaf",
-            "text": "the identity earliest decade is the identity latest decade"
+        "kind": "lookup",
+        "rule": "A confounder distortion timeline's identity latest type d fraction is the value of LOOKUP(CONCAT(ConfounderIdentity, \"-x-\", IdentityLatestDecade), ConfounderDistortionTimeline[CellId], ConfounderDistortionTimeline[TypeDFraction]).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "ConfounderIdentity",
+            "label": "confounder identity"
+          },
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "IdentityLatestDecade",
+            "label": "identity latest decade"
           }
-        },
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the identity earliest type d fraction is blank"
-              },
-              {
-                "kind": "leaf",
-                "text": "the identity latest type d fraction is blank"
-              }
-            ]
-          }
-        },
-        {
-          "value": "“rising”",
-          "when": {
-            "kind": "leaf",
-            "text": "the identity latest type d fraction is greater than the identity earliest type d fraction plus 0.05"
-          }
-        },
-        {
-          "value": "“falling”",
-          "when": {
-            "kind": "leaf",
-            "text": "the identity latest type d fraction is less than the identity earliest type d fraction minus 0.05"
-          }
-        },
-        {
-          "value": "“flat”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CorpusBalance.Name": {
-    "table": "CorpusBalance",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A corpus balance's name is the same as its balance ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CorpusBalance",
-        "field": "BalanceId",
-        "label": "balance ID"
-      }
-    ],
-    "structure": null
-  },
-  "CorpusBalance.TotalStudyCount": {
-    "table": "CorpusBalance",
-    "field": "TotalStudyCount",
-    "kind": "formula",
-    "rule": "A corpus balance's total study count is computed as the simpson study count plus the control study count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CorpusBalance",
-        "field": "SimpsonStudyCount",
-        "label": "simpson study count"
+        ],
+        "structure": null
       },
-      {
+      "ConfounderDistortionTimeline.DriftDirection": {
+        "table": "ConfounderDistortionTimeline",
+        "field": "DriftDirection",
+        "kind": "formula",
+        "rule": "The confounder distortion timeline's drift direction is determined by the following priority:\n1. “single-decade”, if the identity earliest decade is the identity latest decade;\n2. an empty string, if at least one of the following holds: the identity earliest type d fraction is blank or the identity latest type d fraction is blank;\n3. “rising”, if the identity latest type d fraction is greater than the identity earliest type d fraction plus 0.05;\n4. “falling”, if the identity latest type d fraction is less than the identity earliest type d fraction minus 0.05;\n5. in all other cases, “flat”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "IdentityEarliestDecade",
+            "label": "identity earliest decade"
+          },
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "IdentityLatestDecade",
+            "label": "identity latest decade"
+          },
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "IdentityEarliestTypeDFraction",
+            "label": "identity earliest type d fraction"
+          },
+          {
+            "table": "ConfounderDistortionTimeline",
+            "field": "IdentityLatestTypeDFraction",
+            "label": "identity latest type d fraction"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The confounder distortion timeline's drift direction is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“single-decade”",
+              "when": {
+                "kind": "leaf",
+                "text": "the identity earliest decade is the identity latest decade"
+              }
+            },
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the identity earliest type d fraction is blank"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the identity latest type d fraction is blank"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“rising”",
+              "when": {
+                "kind": "leaf",
+                "text": "the identity latest type d fraction is greater than the identity earliest type d fraction plus 0.05"
+              }
+            },
+            {
+              "value": "“falling”",
+              "when": {
+                "kind": "leaf",
+                "text": "the identity latest type d fraction is less than the identity earliest type d fraction minus 0.05"
+              }
+            },
+            {
+              "value": "“flat”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CorpusBalance.Name": {
         "table": "CorpusBalance",
-        "field": "ControlStudyCount",
-        "label": "control study count"
-      }
-    ],
-    "structure": null
-  },
-  "CorpusBalance.SimpsonStudyCount": {
-    "table": "CorpusBalance",
-    "field": "SimpsonStudyCount",
-    "kind": "rollup",
-    "rule": "A corpus balance's simpson study count is the number of studies related to the corpus balance.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "IsControlStudy",
-        "label": "is control study"
-      }
-    ],
-    "structure": null
-  },
-  "CorpusBalance.ControlStudyCount": {
-    "table": "CorpusBalance",
-    "field": "ControlStudyCount",
-    "kind": "rollup",
-    "rule": "A corpus balance's control study count is the number of studies related to the corpus balance.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Studies",
-        "field": "IsControlStudy",
-        "label": "is control study"
-      }
-    ],
-    "structure": null
-  },
-  "CorpusBalance.ControlFraction": {
-    "table": "CorpusBalance",
-    "field": "ControlFraction",
-    "kind": "formula",
-    "rule": "The corpus balance's control fraction is determined by the following priority:\n1. 0, if the total study count is 0;\n2. in all other cases, the control study count divided by the total study count.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A corpus balance's name is the same as its balance ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CorpusBalance",
+            "field": "BalanceId",
+            "label": "balance ID"
+          }
+        ],
+        "structure": null
+      },
+      "CorpusBalance.TotalStudyCount": {
         "table": "CorpusBalance",
         "field": "TotalStudyCount",
-        "label": "total study count"
+        "kind": "formula",
+        "rule": "A corpus balance's total study count is computed as the simpson study count plus the control study count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CorpusBalance",
+            "field": "SimpsonStudyCount",
+            "label": "simpson study count"
+          },
+          {
+            "table": "CorpusBalance",
+            "field": "ControlStudyCount",
+            "label": "control study count"
+          }
+        ],
+        "structure": null
       },
-      {
+      "CorpusBalance.SimpsonStudyCount": {
+        "table": "CorpusBalance",
+        "field": "SimpsonStudyCount",
+        "kind": "rollup",
+        "rule": "A corpus balance's simpson study count is the number of studies related to the corpus balance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "IsControlStudy",
+            "label": "is control study"
+          }
+        ],
+        "structure": null
+      },
+      "CorpusBalance.ControlStudyCount": {
         "table": "CorpusBalance",
         "field": "ControlStudyCount",
-        "label": "control study count"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The corpus balance's control fraction is determined by the following priority:",
-      "cases": [
-        {
-          "value": "0",
-          "when": {
-            "kind": "leaf",
-            "text": "the total study count is 0"
+        "kind": "rollup",
+        "rule": "A corpus balance's control study count is the number of studies related to the corpus balance.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Studies",
+            "field": "IsControlStudy",
+            "label": "is control study"
           }
-        },
-        {
-          "value": "the control study count divided by the total study count",
-          "when": null
+        ],
+        "structure": null
+      },
+      "CorpusBalance.ControlFraction": {
+        "table": "CorpusBalance",
+        "field": "ControlFraction",
+        "kind": "formula",
+        "rule": "The corpus balance's control fraction is determined by the following priority:\n1. 0, if the total study count is 0;\n2. in all other cases, the control study count divided by the total study count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CorpusBalance",
+            "field": "TotalStudyCount",
+            "label": "total study count"
+          },
+          {
+            "table": "CorpusBalance",
+            "field": "ControlStudyCount",
+            "label": "control study count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The corpus balance's control fraction is determined by the following priority:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "the total study count is 0"
+              }
+            },
+            {
+              "value": "the control study count divided by the total study count",
+              "when": null
+            }
+          ],
+          "children": null
         }
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Loops": [
+        "A loop **must** have a title and a status."
       ],
-      "children": null
+      "Studies": [
+        "A study **must** record whether it is control study."
+      ],
+      "Treatments": [
+        "A treatment **must** reference exactly one study.",
+        "A treatment **must** have a treatment label."
+      ],
+      "Strata": [
+        "A strata **must** reference exactly one study.",
+        "A strata **must** have a stratum label."
+      ],
+      "CaseCells": [
+        "A case cell **must** reference exactly one study.",
+        "A case cell **must** have a stratum label; a treatment label; a successes; and a cases."
+      ],
+      "StratumSummaries": [
+        "A stratum summary **must** reference exactly one study.",
+        "A stratum summary **must** have a stratum label and a treatment label."
+      ],
+      "StratumVariables": [
+        "A stratum variable **must** reference exactly one study.",
+        "A stratum variable **must** have a variable name and a causal role, and record whether it is affects treatment assignment and whether it is affects outcome."
+      ],
+      "TreatmentRankings": [
+        "A treatment ranking **must** reference exactly one study.",
+        "A treatment ranking **must** have a treatment a and a treatment b."
+      ],
+      "InvariantChecks": [
+        "An invariant check **must** have an algebraic statement; a natural language; a source table; an assertion expression; an SQL assertion; a pass count; a fail count; and a severity."
+      ],
+      "MaterializedEntities": [
+        "A materialized entity **must** have an entity table; a refresh contract; a refresh function; and an upstream tables."
+      ],
+      "Methodology": [
+        "A methodology **must** have a phase; a title; and a statement."
+      ],
+      "Conclusions": [
+        "A conclusion **must** have a category; a status; a report tier; and a title."
+      ],
+      "UIScreens": [
+        "A UI screen **must** have a title; a route; a primary entity; and a purpose."
+      ],
+      "UIComponents": [
+        "A UI component **must** have a component name; a primary entity; and a description."
+      ],
+      "InstrumentSpec": [
+        "An instrument spec **must** have a component type; a field name; and a natural language."
+      ],
+      "AllocationSweep": [
+        "An allocation sweep **must** have a study ID and an alloc fraction a."
+      ],
+      "ResearchTraditions": [
+        "A research tradition **must** have a name, and record whether it is verified by deep research."
+      ],
+      "Researchers": [
+        "A researcher **must** have a name; a tradition ID; and a key contribution, and record whether it is verified by deep research."
+      ],
+      "SyntheticPhase": [
+        "A synthetic phase **must** have a param stratum fraction; a param stratum gap1; a param stratum gap2; and a param allocation bias."
+      ],
+      "PhaseDiagramSummary": [
+        "A phase diagram summary **must** have a phase type a count; a phase type b count; a phase type c plus count; a phase type c minus count; and a phase type d count."
+      ],
+      "IngestionProtocol": [
+        "An ingestion protocol **must** have a rule type; a target table; a requirement statement; a mechanical check; and a sort order."
+      ],
+      "CandidateStudyCatalog": [
+        "A candidate study catalog **must** have a proposed study ID; a title; a citation; a domain; a stratum variable name; an expected distortion type; an ingestion status; a priority; a stratum count estimate; a data source note; a data acquisition status; a reversal mechanism; and a paradox confirmation."
+      ],
+      "DomainExpansionTargets": [
+        "A domain expansion target **must** have a domain and a target min count."
+      ],
+      "StudyImportTemplate": [
+        "A study import template **must** have a sort order; a target table; a row description; a required fields; and a mechanical check."
+      ],
+      "SweepStudyConfig": [
+        "A sweep study config **must** have a study ID; a sweep stratum label; a n sweep stratum total; a sweep rate a; a sweep rate b; a n fixed a; a n fixed b; a fixed rate a; a fixed rate b; an original alloc fraction a; and a sweep corrected gap."
+      ],
+      "SubstrateConformanceFields": [
+        "A substrate conformance field **must** have a source table; a field name; a pg column; an owl local name; and a data type, and record whether it is assert from postgres and whether it is in compare set."
+      ],
+      "DiscoveryHypotheses": [
+        "A discovery hypothesis **must** have a statement; an expected outcome; a registered in loop; and an epistemic tier."
+      ],
+      "DiscoveryFindings": [
+        "A discovery finding **must** have a hypothesis ID and a witnessed in loop."
+      ],
+      "CorpusDomains": [
+        "A corpus domain **must** have a display name; an expansion target; and a plan source section."
+      ],
+      "ConfounderIdentities": [
+        "A confounder identity **must** have a display name and a mechanism class."
+      ],
+      "StratumVariableIdentityMaps": [
+        "A stratum variable identity map **must** reference exactly one stratum variable.",
+        "A stratum variable identity map **must** reference exactly one confounder identity.",
+        "A stratum variable identity map **must** have a variable name normalized."
+      ],
+      "IdentityClusterSummaries": [
+        "An identity cluster summary **must** reference exactly one confounder identity."
+      ],
+      "IdentityDomainCells": [
+        "An identity domain cell **must** reference exactly one confounder identity.",
+        "An identity domain cell **must** have a domain."
+      ],
+      "ConfounderDistortionTimeline": [
+        "A confounder distortion timeline **must** reference exactly one confounder identity.",
+        "A confounder distortion timeline **must** have a valid time decade."
+      ]
+    },
+    "connectors": {
+      "allOf": "all of these hold",
+      "anyOf": "any of these hold",
+      "if": "if",
+      "otherwise": "in all other cases",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Loops": "loop",
+      "Studies": "study",
+      "Treatments": "treatment",
+      "Strata": "strata",
+      "CaseCells": "case cell",
+      "StratumSummaries": "stratum summary",
+      "ModelSummary": "model summary",
+      "StratumVariables": "stratum variable",
+      "TreatmentRankings": "treatment ranking",
+      "InvariantChecks": "invariant check",
+      "MaterializedEntities": "materialized entity",
+      "Methodology": "methodology",
+      "Conclusions": "conclusion",
+      "UIScreens": "UI screen",
+      "UIComponents": "UI component",
+      "InstrumentSpec": "instrument spec",
+      "AllocationSweep": "allocation sweep",
+      "SweepStudySummary": "sweep study summary",
+      "ResearchTraditions": "research tradition",
+      "Researchers": "researcher",
+      "SyntheticPhase": "synthetic phase",
+      "PhaseDiagramSummary": "phase diagram summary",
+      "IngestionProtocol": "ingestion protocol",
+      "IngestionSummary": "ingestion summary",
+      "CandidateStudyCatalog": "candidate study catalog",
+      "CorpusCatalogSummary": "corpus catalog summary",
+      "DomainExpansionTargets": "domain expansion target",
+      "StudyImportTemplate": "study import template",
+      "SweepStudyConfig": "sweep study config",
+      "SubstrateConformanceFields": "substrate conformance field",
+      "DiscoveryHypotheses": "discovery hypothesis",
+      "DiscoveryFindings": "discovery finding",
+      "CorpusDomains": "corpus domain",
+      "ConfounderIdentities": "confounder identity",
+      "StratumVariableIdentityMaps": "stratum variable identity map",
+      "IdentityClusterSummaries": "identity cluster summary",
+      "IdentityDomainCells": "identity domain cell",
+      "ConfounderDistortionTimeline": "confounder distortion timeline",
+      "CorpusBalance": "corpus balance"
     }
   }
-}, rulespeakObligations: [], rulespeakStructural: {
-  "Loops": [
-    "A loop **must** have a title and a status."
-  ],
-  "Studies": [
-    "A study **must** record whether it is a control study."
-  ],
-  "Treatments": [
-    "A treatment **must** reference exactly one study.",
-    "A treatment **must** have a treatment label."
-  ],
-  "Strata": [
-    "A strata **must** reference exactly one study.",
-    "A strata **must** have a stratum label."
-  ],
-  "CaseCells": [
-    "A case cell **must** reference exactly one study.",
-    "A case cell **must** have a stratum label, a treatment label, a successes, and a cases."
-  ],
-  "StratumSummaries": [
-    "A stratum summary **must** reference exactly one study.",
-    "A stratum summary **must** have a stratum label and a treatment label."
-  ],
-  "StratumVariables": [
-    "A stratum variable **must** reference exactly one study.",
-    "A stratum variable **must** have a variable name and a causal role, and record whether it is affects treatment assignment and whether it is affects outcome."
-  ],
-  "TreatmentRankings": [
-    "A treatment ranking **must** reference exactly one study.",
-    "A treatment ranking **must** have a treatment a and a treatment b."
-  ],
-  "InvariantChecks": [
-    "An invariant check **must** have an algebraic statement, a natural language, a source table, an assertion expression, an SQL assertion, a pass count, a fail count, and a severity."
-  ],
-  "MaterializedEntities": [
-    "A materialized entity **must** have an entity table, a refresh contract, a refresh function, and an upstream tables."
-  ],
-  "Methodology": [
-    "A methodology **must** have a phase, a title, and a statement."
-  ],
-  "Conclusions": [
-    "A conclusion **must** have a category, a status, a report tier, and a title."
-  ],
-  "UIScreens": [
-    "A UI screen **must** have a title, a route, a primary entity, and a purpose."
-  ],
-  "UIComponents": [
-    "A UI component **must** have a component name, a primary entity, and a description."
-  ],
-  "InstrumentSpec": [
-    "An instrument spec **must** have a component type, a field name, and a natural language."
-  ],
-  "AllocationSweep": [
-    "An allocation sweep **must** have a study ID and an alloc fraction a."
-  ],
-  "ResearchTraditions": [
-    "A research tradition **must** have a name, and record whether it is verified by deep research."
-  ],
-  "Researchers": [
-    "A researcher **must** have a name, a tradition ID, and a key contribution, and record whether it is verified by deep research."
-  ],
-  "SyntheticPhase": [
-    "A synthetic phase **must** have a param stratum fraction, a param stratum gap1, a param stratum gap2, and a param allocation bias."
-  ],
-  "PhaseDiagramSummary": [
-    "A phase diagram summary **must** have a phase type a count, a phase type b count, a phase type c plus count, a phase type c minus count, and a phase type d count."
-  ],
-  "IngestionProtocol": [
-    "An ingestion protocol **must** have a rule type, a target table, a requirement statement, a mechanical check, and a sort order."
-  ],
-  "CandidateStudyCatalog": [
-    "A candidate study catalog **must** have a proposed study ID, a title, a citation, a domain, a stratum variable name, an expected distortion type, an ingestion status, a priority, a stratum count estimate, a data source note, a data acquisition status, a reversal mechanism, and a paradox confirmation."
-  ],
-  "DomainExpansionTargets": [
-    "A domain expansion target **must** have a domain and a target min count."
-  ],
-  "StudyImportTemplate": [
-    "A study import template **must** have a sort order, a target table, a row description, a required fields, and a mechanical check."
-  ],
-  "SweepStudyConfig": [
-    "A sweep study config **must** have a study ID, a sweep stratum label, a n sweep stratum total, a sweep rate a, a sweep rate b, a n fixed a, a n fixed b, a fixed rate a, a fixed rate b, an original alloc fraction a, and a sweep corrected gap."
-  ],
-  "SubstrateConformanceFields": [
-    "A substrate conformance field **must** have a source table, a field name, a pg column, an owl local name, and a data type, and record whether it is assert from postgres and whether it is in compare set."
-  ],
-  "DiscoveryHypotheses": [
-    "A discovery hypothes **must** have a statement, an expected outcome, a registered in loop, and an epistemic tier."
-  ],
-  "DiscoveryFindings": [
-    "A discovery finding **must** have a hypothesis ID and a witnessed in loop."
-  ],
-  "CorpusDomains": [
-    "A corpus domain **must** have a display name, an expansion target, and a plan source section."
-  ],
-  "ConfounderIdentities": [
-    "A confounder identity **must** have a display name and a mechanism class."
-  ],
-  "StratumVariableIdentityMaps": [
-    "A stratum variable identity map **must** reference exactly one stratum variable.",
-    "A stratum variable identity map **must** reference exactly one confounder identity.",
-    "A stratum variable identity map **must** have a variable name normalized."
-  ],
-  "IdentityClusterSummaries": [
-    "An identity cluster summary **must** reference exactly one confounder identity."
-  ],
-  "IdentityDomainCells": [
-    "An identity domain cell **must** reference exactly one confounder identity.",
-    "An identity domain cell **must** have a domain."
-  ],
-  "ConfounderDistortionTimeline": [
-    "A confounder distortion timeline **must** reference exactly one confounder identity.",
-    "A confounder distortion timeline **must** have a valid time decade."
-  ]
 } };

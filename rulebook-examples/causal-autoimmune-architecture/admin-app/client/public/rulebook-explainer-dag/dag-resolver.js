@@ -255,14 +255,42 @@
   }
 
   // ── RuleSpeak® accessors (mirrors lib/rulespeak.ts) ──────────────────────────
-  function ruleSpeakForField(table, field) {
-    const b = getBundle();
-    return (b.rulespeakFields || {})[`${table}.${field}`] || null;
+  // RuleSpeak® is baked once per language (rulespeakByLang). A host may offer a
+  // language the build did not bake, so fall back to English rather than blank.
+  function ruleSpeakSlice(lang) {
+    const byLang = getBundle().rulespeakByLang || {};
+    return byLang[lang] || byLang.en || {};
   }
 
-  function obligationsForEntity(table) {
-    const b = getBundle();
-    const obl = b.rulespeakObligations || [];
+  function ruleSpeakForField(table, field, lang) {
+    return (ruleSpeakSlice(lang).fields || {})[`${table}.${field}`] || null;
+  }
+
+  // The formula read as a plain sentence in `lang`, by the engine, where the build
+  // baked one (every language but English). Only that language's: no fallback here,
+  // the caller reads the formula itself when there is none.
+  function plainReadingForField(table, field, lang) {
+    const byLang = getBundle().rulespeakByLang || {};
+    const f = ((byLang[lang] || {}).fields || {})[`${table}.${field}`];
+    return (f && f.plain) || null;
+  }
+
+  // The language pack's rule-tree connector words ({ allOf, anyOf, if, otherwise }),
+  // and how a sentence ends in it (sentenceEnd).
+  function ruleSpeakConnectors(lang) {
+    return ruleSpeakSlice(lang).connectors || {};
+  }
+
+  // What ONE row of a table is called ("case" for Cases): the noun the rule sentences
+  // themselves use, baked per language. Only that language's word is returned, never
+  // another's: the sentence it goes into is the caller's, in a language of its own.
+  function ruleSpeakNoun(table, lang) {
+    const byLang = getBundle().rulespeakByLang || {};
+    return ((byLang[lang] || {}).nouns || {})[table] || null;
+  }
+
+  function obligationsForEntity(table, lang) {
+    const obl = ruleSpeakSlice(lang).obligations || [];
     if (!obl.length) return [];
     const norm = (s) => String(s || "").replace(/[^a-z0-9]/gi, "").toLowerCase();
     const singular = (s) => String(s || "").replace(/ies$/i, "y").replace(/s$/i, "");
@@ -270,8 +298,8 @@
     return obl.filter((o) => norm(singular(o.entity)) === target);
   }
 
-  function obligationsForField(table, field) {
-    return obligationsForEntity(table).filter((o) => o.predicate === field);
+  function obligationsForField(table, field, lang) {
+    return obligationsForEntity(table, lang).filter((o) => o.predicate === field);
   }
 
   // ════════════════════════════════════════════════════════════════════════
@@ -281,8 +309,290 @@
   const OP_2CHAR = new Set(["<=", ">=", "<>"]);
   const OP_1CHAR = new Set(["+", "-", "*", "/", "&", "=", "<", ">"]);
 
+  // ---------------------------------------------------------------------------
+  // Multiple-choice forms: every common way of writing a multiple choice is
+  // accepted in a rulebook formula, as equals:
+  //
+  //   IF(c1, v1, IF(c2, v2, d))                        nested IF
+  //   IFS(c1, v1, c2, v2)                              Excel IFS
+  //   SWITCH(x, p1, r1, p2, r2, d)                     Excel/Airtable SWITCH
+  //   CHOOSE(i, v1, v2, v3)                            Excel CHOOSE (i counts from 1)
+  //   CASE WHEN c1 THEN v1 WHEN c2 THEN v2 ELSE d END  SQL searched CASE
+  //   CASE x WHEN p1 THEN r1 ELSE d END                SQL simple CASE
+  //
+  // Before a formula is parsed, normalizeMultiChoice rewrites its text so only
+  // IF and SWITCH remain:
+  //
+  //   IFS(c1, v1, c2, v2)                   -> IF(c1, v1, IF(c2, v2))
+  //   CASE WHEN c1 THEN v1 ... ELSE d END   -> IF(c1, v1, ... d)
+  //   CASE x WHEN p1 THEN r1 ... ELSE d END -> SWITCH(x, p1, r1, ..., d)
+  //   CHOOSE(i, v1, v2)                     -> SWITCH(i, 1, v1, 2, v2)
+  //
+  // Same semantics in every tool: the first condition (or pattern) that matches
+  // wins, only the branch taken is evaluated, and a choice with no ELSE/default
+  // that matches nothing is blank. Keywords are case-insensitive. A formula that
+  // uses none of CASE / IFS / CHOOSE comes back unchanged, character for
+  // character.
+  //
+  // Plain-JS form of rulebook-to-explainer-dag-react's lib/multiChoiceForms.ts, itself a
+  // verbatim port of normalize_multi_choice in rulebook-to-python's
+  // workload/python/orchestration/formula_parser.py (the reference); change the
+  // reference and every copy together.
+  // ---------------------------------------------------------------------------
+  const normalizeMultiChoice = (function () {
+    class MultiChoiceFormError extends Error {
+    }
+    const KEYWORDS = new Set(['CASE', 'IFS', 'CHOOSE']);
+    const CASE_STOPS = new Set(['WHEN', 'THEN', 'ELSE', 'END']);
+    function isAlpha(c) {
+        return /[A-Za-z_]/.test(c) || (c.toLowerCase() !== c.toUpperCase());
+    }
+    function isAlnum(c) {
+        return isAlpha(c) || /[0-9]/.test(c);
+    }
+    function tokenize(text) {
+        const toks = [];
+        let i = 0;
+        const n = text.length;
+        while (i < n) {
+            const c = text[i];
+            let j;
+            if (c === '"' || c === "'") {
+                j = i + 1;
+                while (j < n && text[j] !== c)
+                    j += text[j] === '\\' ? 2 : 1;
+                j = Math.min(j + 1, n);
+                toks.push({ kind: 'other', text: text.slice(i, j), pos: i });
+                i = j;
+                continue;
+            }
+            if (c === '{') {
+                const close = text.startsWith('{{', i) ? '}}' : '}';
+                j = text.indexOf(close, i);
+                j = j === -1 ? n : j + close.length;
+                toks.push({ kind: 'other', text: text.slice(i, j), pos: i });
+                i = j;
+                continue;
+            }
+            if (c === '[') {
+                j = text.indexOf(']', i);
+                j = j === -1 ? n : j + 1;
+                toks.push({ kind: 'other', text: text.slice(i, j), pos: i });
+                i = j;
+                continue;
+            }
+            if (isAlpha(c)) {
+                j = i;
+                while (j < n && isAlnum(text[j]))
+                    j++;
+                toks.push({ kind: 'ident', text: text.slice(i, j), pos: i });
+                i = j;
+                continue;
+            }
+            if (c === '(' || c === ')' || c === ',') {
+                toks.push({ kind: c, text: c, pos: i });
+                i++;
+                continue;
+            }
+            if (/\s/.test(c)) {
+                j = i;
+                while (j < n && /\s/.test(text[j]))
+                    j++;
+                toks.push({ kind: 'space', text: text.slice(i, j), pos: i });
+                i = j;
+                continue;
+            }
+            toks.push({ kind: 'other', text: c, pos: i });
+            i++;
+        }
+        return toks;
+    }
+    function ifChain(pairs, dflt) {
+        let out = dflt;
+        for (let k = pairs.length - 1; k >= 0; k--) {
+            const [cond, value] = pairs[k];
+            out = out !== null ? `IF(${cond}, ${value}, ${out})` : `IF(${cond}, ${value})`;
+        }
+        return out;
+    }
+    class Rewriter {
+        constructor(text, toks) {
+            this.i = 0;
+            this.text = text;
+            this.toks = toks;
+        }
+        fail(message, pos) {
+            throw new MultiChoiceFormError(`${message} at position ${pos} in formula: ${this.text}`);
+        }
+        peek() {
+            let j = this.i;
+            while (j < this.toks.length && this.toks[j].kind === 'space')
+                j++;
+            return j < this.toks.length ? this.toks[j] : null;
+        }
+        peekAfter() {
+            let j = this.i + 1;
+            while (j < this.toks.length && this.toks[j].kind === 'space')
+                j++;
+            return j < this.toks.length ? this.toks[j] : null;
+        }
+        skipSpace() {
+            while (this.i < this.toks.length && this.toks[this.i].kind === 'space')
+                this.i++;
+        }
+        keyword() {
+            const t = this.peek();
+            if (t && t.kind === 'ident' && CASE_STOPS.has(t.text.toUpperCase()))
+                return t.text.toUpperCase();
+            return null;
+        }
+        /** Rewrite tokens up to a top-level ',' or ')', the end, or (inside a CASE)
+         *  one of WHEN / THEN / ELSE / END. */
+        seq(inCase) {
+            let out = '';
+            while (this.i < this.toks.length) {
+                const { kind, text: tok, pos } = this.toks[this.i];
+                if (kind === ',' || kind === ')')
+                    break;
+                if (kind === 'ident') {
+                    const upper = tok.toUpperCase();
+                    if (inCase && CASE_STOPS.has(upper))
+                        break;
+                    const next = this.peekAfter();
+                    const callFollows = !!next && next.kind === '(';
+                    if (upper === 'CASE' && !callFollows) {
+                        this.i++;
+                        out += this.caseExpr(pos);
+                        continue;
+                    }
+                    if (callFollows) {
+                        this.i++;
+                        this.skipSpace();
+                        const args = this.args();
+                        out += this.call(tok, upper, args, pos);
+                        continue;
+                    }
+                }
+                if (kind === '(') {
+                    out += '(' + this.args().join(',') + ')';
+                    continue;
+                }
+                out += tok;
+                this.i++;
+            }
+            return out;
+        }
+        /** At '(' : rewrite each argument up to the matching ')', consuming both. */
+        args() {
+            const openPos = this.toks[this.i].pos;
+            this.i++;
+            const args = [this.seq(false)];
+            while (this.i < this.toks.length && this.toks[this.i].kind === ',') {
+                this.i++;
+                args.push(this.seq(false));
+            }
+            if (this.i >= this.toks.length)
+                this.fail("Unclosed '('", openPos);
+            this.i++; // ')'
+            if (args.length === 1 && !args[0].trim())
+                return [];
+            return args;
+        }
+        call(name, upper, args, pos) {
+            if (upper === 'IFS') {
+                const parts = args.map((a) => a.trim());
+                if (parts.length < 2 || parts.length % 2 || parts.some((p) => !p)) {
+                    this.fail(`IFS takes condition/value pairs, got ${parts.length} argument(s)`, pos);
+                }
+                const pairs = [];
+                for (let k = 0; k < parts.length; k += 2)
+                    pairs.push([parts[k], parts[k + 1]]);
+                return ifChain(pairs, null);
+            }
+            if (upper === 'CHOOSE') {
+                const parts = args.map((a) => a.trim());
+                if (parts.length < 2 || parts.some((p) => !p)) {
+                    this.fail(`CHOOSE takes an index and at least one value, got ${parts.length} argument(s)`, pos);
+                }
+                const flat = parts.slice(1).map((v, k) => `${k + 1}, ${v}`).join(', ');
+                return `SWITCH(${parts[0]}, ${flat})`;
+            }
+            return name + '(' + args.join(',') + ')';
+        }
+        caseExpr(pos) {
+            let subject = null;
+            if (this.keyword() !== 'WHEN') {
+                subject = this.seq(true).trim();
+                if (!subject || this.keyword() !== 'WHEN')
+                    this.fail('CASE needs WHEN', pos);
+            }
+            const pairs = [];
+            let dflt = null;
+            for (;;) {
+                const kw = this.keyword();
+                if (kw === 'WHEN') {
+                    this.skipSpace();
+                    const whenPos = this.toks[this.i].pos;
+                    this.i++;
+                    const cond = this.seq(true).trim();
+                    if (this.keyword() !== 'THEN' || !cond)
+                        this.fail('WHEN needs a condition and THEN', whenPos);
+                    this.skipSpace();
+                    this.i++;
+                    const value = this.seq(true).trim();
+                    if (!value)
+                        this.fail('THEN needs a value', whenPos);
+                    pairs.push([cond, value]);
+                    continue;
+                }
+                if (kw === 'ELSE' && pairs.length && dflt === null) {
+                    this.skipSpace();
+                    const elsePos = this.toks[this.i].pos;
+                    this.i++;
+                    dflt = this.seq(true).trim();
+                    if (!dflt || this.keyword() !== 'END')
+                        this.fail('ELSE needs a value and then END', elsePos);
+                    continue;
+                }
+                if (kw === 'END' && pairs.length) {
+                    this.skipSpace();
+                    this.i++;
+                    break;
+                }
+                if (this.peek() === null)
+                    this.fail('CASE has no END', pos);
+                this.fail('CASE needs WHEN ... THEN ... and END', pos);
+            }
+            if (subject === null)
+                return ifChain(pairs, dflt);
+            const flat = pairs.map(([p, r]) => `${p}, ${r}`).join(', ');
+            return `SWITCH(${subject}, ${flat}` + (dflt !== null ? `, ${dflt})` : ')');
+        }
+    }
+    /** Rewrite CASE / IFS / CHOOSE into IF and SWITCH. Returns the text unchanged
+     *  when it uses none of them. */
+    function normalizeMultiChoice(formula) {
+        if (!formula)
+            return formula;
+        const toks = tokenize(formula);
+        if (!toks.some((t) => t.kind === 'ident' && KEYWORDS.has(t.text.toUpperCase())))
+            return formula;
+        const rw = new Rewriter(formula, toks);
+        let out = rw.seq(false);
+        while (rw.i < toks.length) {
+            // A stray ',' or ')' at the top level: keep it, so the parser reports it.
+            out += toks[rw.i].text;
+            rw.i++;
+            out += rw.seq(false);
+        }
+        return out;
+    }
+    return normalizeMultiChoice;
+  })();
+
   function tokenize(src) {
-    let s = String(src || "").trim();
+    // CASE (searched and simple), IFS and CHOOSE read as the IF and SWITCH they mean.
+    let s = String(normalizeMultiChoice(String(src || "")) || "").trim();
     if (s.startsWith("=")) s = s.slice(1);
     const toks = [];
     let i = 0;
@@ -590,9 +900,13 @@
     getBundle,
     humanizeField,
     ruleSpeakForField,
+    ruleSpeakConnectors,
+    plainReadingForField,
+    ruleSpeakNoun,
     obligationsForEntity,
     obligationsForField,
     tryParseFormula,
+    extractFormulaRefs,
     renderEnglish,
     englishForFormula,
   };

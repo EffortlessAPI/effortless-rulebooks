@@ -13,7 +13,17 @@
   <script src="../routing.js"></script>
   <script src="../explainer-dag.js"></script>
   <script>
-    EffortlessExplainer.init({ mode: "path", indexPath: "/dag", fieldPath: "/dag/:table/:field", tablePath: "/dag/:table" });
+    var lang = EffortlessExplainer.preferredLanguage();   // ?lang=, else the one chosen in the gear, else English
+    document.documentElement.lang = lang;
+    document.documentElement.dir = EffortlessExplainer.rightToLeft(lang) ? "rtl" : "ltr";
+    // Opened as the file it is (…/rulebook-explainer-dag/pages/index.html#/dag/Table/Field):
+    // this page draws every explainer page itself, by hash, and Home goes back to the
+    // app page the person came from. Served by a host's own /dag route instead: the
+    // host's paths.
+    var own = /\/pages\/(index|table|field)\.html$/.test(location.pathname);
+    EffortlessExplainer.init(own
+      ? { mode: "hash", ownPage: true, lang: lang, homePath: EffortlessExplainerRouting.rememberedHome() || "/" }
+      : { mode: "path", lang: lang, indexPath: "/dag", fieldPath: "/dag/:table/:field", tablePath: "/dag/:table" });
   </script>
 </body>
 </html>

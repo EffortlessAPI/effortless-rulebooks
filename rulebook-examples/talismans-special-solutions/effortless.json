@@ -59,7 +59,7 @@
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.22.1404",
+      "LastVersionUsed": "v2026.11.22.1524",
       "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-09-12-2353-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -73,9 +73,9 @@
       "IsSSoTTranspiler": false,
       "Name": "rulebooktoexplainerdag",
       "RelativePath": "/app/frontend/src",
-      "CommandLine": "rulebook-to-explainer-dag -i ../../../effortless-rulebook/talismans-special-solutions-rulebook.json -p react=true",
+      "CommandLine": "rulebook-to-explainer-dag -i ../../../effortless-rulebook/talismans-special-solutions-rulebook.json -p react=true -p languages=all",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.22.1423"
+      "LastVersionUsed": "v2026.11.22.1618"
     },
     {
       "IsSSoTTranspiler": false,

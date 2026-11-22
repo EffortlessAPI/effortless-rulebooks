@@ -629,7 +629,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -1321,6 +1336,10806 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "Policies": "policy",
+      "Claimants": "claimant",
+      "Incidents": "incident",
+      "Claims": "claim"
+    }
+  },
+  "ar": {
+    "fields": {
+      "Policies.Name": {
+        "table": "Policies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «policy» يطابق حقل «policy ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy ID"
+      },
+      "Policies.CountOfCoveredClaimants": {
+        "table": "Policies",
+        "field": "CountOfCoveredClaimants",
+        "kind": "rollup",
+        "rule": "حقل «count of covered claimants» في سجل «policy» هو عدد سجلات «claimants» المرتبطة بسجل «policy».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «claimants» التي يتحقق فيها أنّ حقل «policy» يساوي policy ID"
+      },
+      "Claimants.Name": {
+        "table": "Claimants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «claimant» يطابق حقل «claimant name» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant name"
+      },
+      "Claimants.CountOfIncidents": {
+        "table": "Claimants",
+        "field": "CountOfIncidents",
+        "kind": "rollup",
+        "rule": "حقل «count of incidents» في سجل «claimant» هو عدد سجلات «incidents» المرتبطة بسجل «claimant».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «incidents» التي يتحقق فيها أنّ حقل «claimant» يساوي claimant ID"
+      },
+      "Claimants.IsHighRisk": {
+        "table": "Claimants",
+        "field": "IsHighRisk",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «claimant» على أنه «high risk» إذا تحقق أنّ حقل «count of incidents» أكبر من 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of incidents أكبر من 2"
+      },
+      "Claimants.PolicyIsActive": {
+        "table": "Claimants",
+        "field": "PolicyIsActive",
+        "kind": "lookup",
+        "rule": "حقل «policy is active» في سجل «claimant» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «policy» مصنّفًا على أنه «active».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "IsActive",
+            "label": "is active"
+          },
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «is active» من السجل المرتبط عبر «policy»"
+      },
+      "Incidents.Name": {
+        "table": "Incidents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «incident» يطابق حقل «incident ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident ID"
+      },
+      "Incidents.IncidentClaimantName": {
+        "table": "Incidents",
+        "field": "IncidentClaimantName",
+        "kind": "lookup",
+        "rule": "حقل «incident claimant name» في سجل «incident» مأخوذ من السجل المرتبط به عبر حقل «claimant».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          },
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «claimant name» من السجل المرتبط عبر «claimant»"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «claim» يطابق حقل «claim ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ClaimId",
+            "label": "claim ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claim ID"
+      },
+      "Claims.ReferencesIncident": {
+        "table": "Claims",
+        "field": "ReferencesIncident",
+        "kind": "formula",
+        "rule": "يُعدّ سجل «claim» محققًا لشرط «references incident» إذا تحقق أنّ حقل «incident» له قيمة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident لا يساوي \"\""
+      },
+      "Claims.HasAdditionalClaimant": {
+        "table": "Claims",
+        "field": "HasAdditionalClaimant",
+        "kind": "formula",
+        "rule": "يُعدّ سجل «claim» حائزًا على «additional claimant» إذا تحقق أنّ حقل «additional claimant» له قيمة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          }
+        ],
+        "structure": null,
+        "plain": "Additional claimant لا يساوي \"\""
+      },
+      "Claims.IncidentClaimant": {
+        "table": "Claims",
+        "field": "IncidentClaimant",
+        "kind": "lookup",
+        "rule": "حقل «incident claimant» في سجل «claim» مأخوذ من السجل المرتبط به عبر حقل «incident».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          },
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «claimant» من السجل المرتبط عبر «incident»"
+      },
+      "Claims.ClaimantOfRecord": {
+        "table": "Claims",
+        "field": "ClaimantOfRecord",
+        "kind": "formula",
+        "rule": "حقل «claimant of record» في سجل «claim» يتحدد وفق ترتيب الأولوية الآتي:\n1. حقل «additional claimant»، إذا تحقق أنّ علامة «additional claimant» مفعّلة؛\n2. حقل «incident claimant»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «claimant of record» في سجل «claim» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "حقل «additional claimant»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «additional claimant» مفعّلة"
+              }
+            },
+            {
+              "value": "حقل «incident claimant»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ has additional claimant فالناتج additional claimant، وإلا فالناتج incident claimant"
+      },
+      "Claims.IncidentClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "IncidentClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "حقل «incident claimant policy active» في سجل «claim» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «incident claimant» مصنّفًا على أنه «active».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «policy is active» من السجل المرتبط عبر «incident claimant»"
+      },
+      "Claims.AdditionalClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "AdditionalClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "حقل «additional claimant policy active» في سجل «claim» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «additional claimant» مصنّفًا على أنه «active».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «policy is active» من السجل المرتبط عبر «additional claimant»"
+      },
+      "Claims.AdditionalClaimantFavoriteColor": {
+        "table": "Claims",
+        "field": "AdditionalClaimantFavoriteColor",
+        "kind": "lookup",
+        "rule": "حقل «additional claimant favorite color» في سجل «claim» مأخوذ من السجل المرتبط به عبر حقل «additional claimant».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "FavoriteColor",
+            "label": "favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «favorite color» من السجل المرتبط عبر «additional claimant»"
+      },
+      "Claims.ClaimantOfRecordIncidentCount": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIncidentCount",
+        "kind": "lookup",
+        "rule": "حقل «claimant of record incident count» في سجل «claim» يأخذ قيمة حقل «count of incidents» من السجل المرتبط به عبر حقل «claimant of record».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «count of incidents» من السجل المرتبط عبر «claimant of record»"
+      },
+      "Claims.ClaimantOfRecordIsHighRisk": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIsHighRisk",
+        "kind": "lookup",
+        "rule": "حقل «claimant of record is high risk» في سجل «claim» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «claimant of record» مصنّفًا على أنه «high risk».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "IsHighRisk",
+            "label": "is high risk"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «is high risk» من السجل المرتبط عبر «claimant of record»"
+      },
+      "Claims.IsValid": {
+        "table": "Claims",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «claim» على أنه «valid» إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «references incident» مفعّلة؛ وواحد على الأقل من الشروط الآتية متحقق: علامة «incident claimant policy active» مفعّلة أو علامة «additional claimant policy active» مفعّلة؛ وواحد على الأقل من الشروط الآتية متحقق: علامة «additional claimant» غير مفعّلة أو حقل «additional claimant favorite color» يساوي «red»؛ وعلامة «claimant of record is high risk» غير مفعّلة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُصنّف سجل «claim» على أنه «valid» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "علامة «references incident» مفعّلة"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "علامة «incident claimant policy active» مفعّلة"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "علامة «additional claimant policy active» مفعّلة"
+                    }
+                  ]
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "علامة «additional claimant» غير مفعّلة"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "حقل «additional claimant favorite color» يساوي «red»"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "علامة «claimant of record is high risk» غير مفعّلة"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "References incident، وincident claimant policy active أو additional claimant policy active، والشرط (has additional claimant) غير متحقق أو additional claimant favorite color بأحرف صغيرة هو \"red\"، والشرط (claimant of record is high risk) غير متحقق"
+      },
+      "Claims.ValidityDecidingFactor": {
+        "table": "Claims",
+        "field": "ValidityDecidingFactor",
+        "kind": "formula",
+        "rule": "حقل «validity deciding factor» في سجل «claim» يتحدد وفق ترتيب الأولوية الآتي:\n1. «Valid — all conditions met»، إذا تحقق أنّ علامة «valid» مفعّلة؛\n2. «No incident referenced»، إذا تحقق أنّ علامة «references incident» غير مفعّلة؛\n3. «No active policy on incident claimant or additional claimant»، إذا تحقق أنّ الشرط الآتي غير متحقق: واحد على الأقل من الشروط الآتية متحقق: علامة «incident claimant policy active» مفعّلة أو علامة «additional claimant policy active» مفعّلة؛\n4. «Additional claimant's favorite color is not red»، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «additional claimant» مفعّلة وحقل «additional claimant favorite color» لا يساوي «red»؛\n5. «Claimant of record is high-risk (DR-2)»، إذا تحقق أنّ علامة «claimant of record is high risk» مفعّلة؛\n6. «Undetermined»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «validity deciding factor» في سجل «claim» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«Valid — all conditions met»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «valid» مفعّلة"
+              }
+            },
+            {
+              "value": "«No incident referenced»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «references incident» غير مفعّلة"
+              }
+            },
+            {
+              "value": "«No active policy on incident claimant or additional claimant»",
+              "when": {
+                "kind": "leaf",
+                "text": "الشرط الآتي غير متحقق: واحد على الأقل من الشروط الآتية متحقق: علامة «incident claimant policy active» مفعّلة أو علامة «additional claimant policy active» مفعّلة"
+              }
+            },
+            {
+              "value": "«Additional claimant's favorite color is not red»",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "علامة «additional claimant» مفعّلة"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "حقل «additional claimant favorite color» لا يساوي «red»"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "«Claimant of record is high-risk (DR-2)»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «claimant of record is high risk» مفعّلة"
+              }
+            },
+            {
+              "value": "«Undetermined»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ is valid فالناتج \"Valid — all conditions met\"، وإلا فالناتج إذا تحقق أنّ الشرط (references incident) غير متحقق فالناتج \"No incident referenced\"، وإلا فالناتج إذا تحقق أنّ الشرط (incident claimant policy active أو additional claimant policy active) غير متحقق فالناتج \"No active policy on incident claimant or additional claimant\"، وإلا فالناتج إذا تحقق أنّ has additional claimant وadditional claimant favorite color بأحرف صغيرة لا يساوي \"red\" فالناتج \"Additional claimant's favorite color is not red\"، وإلا فالناتج إذا تحقق أنّ claimant of record is high risk فالناتج \"Claimant of record is high-risk (DR-2)\"، وإلا فالناتج \"Undetermined\""
+      },
+      "Claims.IsApprovable": {
+        "table": "Claims",
+        "field": "IsApprovable",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «claim» على أنه «approvable» إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «valid» مفعّلة وعلامة «flagged for review» غير مفعّلة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُصنّف سجل «claim» على أنه «approvable» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "علامة «valid» مفعّلة"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "علامة «flagged for review» غير مفعّلة"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is valid والشرط (is flagged for review) غير متحقق"
+      },
+      "Claims.ApprovabilityDecidingFactor": {
+        "table": "Claims",
+        "field": "ApprovabilityDecidingFactor",
+        "kind": "formula",
+        "rule": "حقل «approvability deciding factor» في سجل «claim» يتحدد وفق ترتيب الأولوية الآتي:\n1. «Approvable»، إذا تحقق أنّ علامة «approvable» مفعّلة؛\n2. «Not approvable — claim is not valid»، إذا تحقق أنّ علامة «valid» غير مفعّلة؛\n3. «Valid, but flagged for review»، إذا تحقق أنّ علامة «flagged for review» مفعّلة؛\n4. «Undetermined»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsApprovable",
+            "label": "is approvable"
+          },
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «approvability deciding factor» في سجل «claim» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«Approvable»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «approvable» مفعّلة"
+              }
+            },
+            {
+              "value": "«Not approvable — claim is not valid»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «valid» غير مفعّلة"
+              }
+            },
+            {
+              "value": "«Valid, but flagged for review»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «flagged for review» مفعّلة"
+              }
+            },
+            {
+              "value": "«Undetermined»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ is approvable فالناتج \"Approvable\"، وإلا فالناتج إذا تحقق أنّ الشرط (is valid) غير متحقق فالناتج \"Not approvable — claim is not valid\"، وإلا فالناتج إذا تحقق أنّ is flagged for review فالناتج \"Valid, but flagged for review\"، وإلا فالناتج \"Undetermined\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Policies": [
+        "في كل سجل «policy»، **يجب أن** تُحدّد قيمة حقل «policyholder name»، وأن يُسجّل ما إذا كان مصنّفًا على أنه «active»."
+      ],
+      "Claimants": [
+        "في كل سجل «claimant»، **يجب أن** تُحدّد قيمة حقل «claimant name» وحقل «favorite color»."
+      ],
+      "Incidents": [
+        "في كل سجل «incident»، **يجب أن** تُحدّد قيمة حقل «incident description» وحقل «claimant»."
+      ],
+      "Claims": [
+        "في كل سجل «claim»، **يجب أن** تُحدّد قيمة حقل «incident»، وأن يُسجّل ما إذا كان مصنّفًا على أنه «flagged for review»."
+      ]
+    },
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Policies": "policy",
+      "Claimants": "claimant",
+      "Incidents": "incident",
+      "Claims": "claim"
+    }
+  },
+  "de": {
+    "fields": {
+      "Policies.Name": {
+        "table": "Policies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Policy: Name entspricht Policy ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy ID"
+      },
+      "Policies.CountOfCoveredClaimants": {
+        "table": "Policies",
+        "field": "CountOfCoveredClaimants",
+        "kind": "rollup",
+        "rule": "Ein Policy: Count of Covered Claimants ist die Anzahl der mit dem Policy verbundenen Claimants.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Claimants, deren Policy ist Policy ID"
+      },
+      "Claimants.Name": {
+        "table": "Claimants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Claimant: Name entspricht Claimant Name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant Name"
+      },
+      "Claimants.CountOfIncidents": {
+        "table": "Claimants",
+        "field": "CountOfIncidents",
+        "kind": "rollup",
+        "rule": "Ein Claimant: Count of Incidents ist die Anzahl der mit dem Claimant verbundenen Incidents.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Incidents, deren Claimant ist Claimant ID"
+      },
+      "Claimants.IsHighRisk": {
+        "table": "Claimants",
+        "field": "IsHighRisk",
+        "kind": "formula",
+        "rule": "Ein Claimant gilt als ein High Risk, wenn der Count of Incidents größer ist als 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of Incidents größer als 2 ist"
+      },
+      "Claimants.PolicyIsActive": {
+        "table": "Claimants",
+        "field": "PolicyIsActive",
+        "kind": "lookup",
+        "rule": "Ein Claimant: Policy is Active ist wahr, wenn der zugehörige Policy des Claimant ist active.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "IsActive",
+            "label": "is active"
+          },
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Is Active des verknüpften Policy"
+      },
+      "Incidents.Name": {
+        "table": "Incidents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Incident: Name entspricht Incident ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident ID"
+      },
+      "Incidents.IncidentClaimantName": {
+        "table": "Incidents",
+        "field": "IncidentClaimantName",
+        "kind": "lookup",
+        "rule": "Ein Incident: Incident Claimant Name — aus dem zugehörigen Claimant übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          },
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Claimant Name des verknüpften Claimant"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Claim: Name entspricht Claim ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ClaimId",
+            "label": "claim ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claim ID"
+      },
+      "Claims.ReferencesIncident": {
+        "table": "Claims",
+        "field": "ReferencesIncident",
+        "kind": "formula",
+        "rule": "Ein Claim gilt als Incident erfüllend, wenn der Incident einen Wert hat.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident nicht \"\" ist"
+      },
+      "Claims.HasAdditionalClaimant": {
+        "table": "Claims",
+        "field": "HasAdditionalClaimant",
+        "kind": "formula",
+        "rule": "Ein Claim gilt als über einen Additional Claimant verfügend, wenn der Additional Claimant einen Wert hat.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          }
+        ],
+        "structure": null,
+        "plain": "Additional Claimant nicht \"\" ist"
+      },
+      "Claims.IncidentClaimant": {
+        "table": "Claims",
+        "field": "IncidentClaimant",
+        "kind": "lookup",
+        "rule": "Ein Claim: Incident Claimant — aus dem zugehörigen Incident übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          },
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Claimant des verknüpften Incident"
+      },
+      "Claims.ClaimantOfRecord": {
+        "table": "Claims",
+        "field": "ClaimantOfRecord",
+        "kind": "formula",
+        "rule": "Das Feld „Claimant of Record“ des Claim wird nach folgender Priorität bestimmt:\n1. der Additional Claimant, wenn das Kennzeichen „Has Additional Claimant“ gesetzt ist;\n2. andernfalls der Incident Claimant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Claimant of Record“ des Claim wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "der Additional Claimant",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Has Additional Claimant“ gesetzt ist"
+              }
+            },
+            {
+              "value": "der Incident Claimant",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Has Additional Claimant, dann Additional Claimant, andernfalls Incident Claimant"
+      },
+      "Claims.IncidentClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "IncidentClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "Ein Claim: Incident Claimant Policy Active ist wahr, wenn der zugehörige Incident Claimant des Claim ist active.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Policy is Active des verknüpften Incident Claimant"
+      },
+      "Claims.AdditionalClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "AdditionalClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "Ein Claim: Additional Claimant Policy Active ist wahr, wenn der zugehörige Additional Claimant des Claim ist active.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Policy is Active des verknüpften Additional Claimant"
+      },
+      "Claims.AdditionalClaimantFavoriteColor": {
+        "table": "Claims",
+        "field": "AdditionalClaimantFavoriteColor",
+        "kind": "lookup",
+        "rule": "Ein Claim: Additional Claimant Favorite Color — aus dem zugehörigen Additional Claimant übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "FavoriteColor",
+            "label": "favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Favorite Color des verknüpften Additional Claimant"
+      },
+      "Claims.ClaimantOfRecordIncidentCount": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIncidentCount",
+        "kind": "lookup",
+        "rule": "Ein Claim: Claimant of Record Incident Count ist der Count of Incidents des zugehörigen Claimant of Record des Claim.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Count of Incidents des verknüpften Claimant of Record"
+      },
+      "Claims.ClaimantOfRecordIsHighRisk": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIsHighRisk",
+        "kind": "lookup",
+        "rule": "Ein Claim: Claimant of Record is High Risk ist wahr, wenn der zugehörige Claimant of Record des Claim ist ein High Risk.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "IsHighRisk",
+            "label": "is high risk"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Is High Risk des verknüpften Claimant of Record"
+      },
+      "Claims.IsValid": {
+        "table": "Claims",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "Ein Claim gilt als valid, wenn alles Folgende gilt: das Kennzeichen „References Incident“ gesetzt ist; mindestens eines des Folgenden gilt: das Kennzeichen „Incident Claimant Policy Active“ gesetzt ist oder das Kennzeichen „Additional Claimant Policy Active“ gesetzt ist; mindestens eines des Folgenden gilt: das Kennzeichen „Has Additional Claimant“ nicht gesetzt ist oder der Additional Claimant Favorite Color „red“ ist; und das Kennzeichen „Claimant of Record is High Risk“ nicht gesetzt ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Ein Claim gilt als valid, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „References Incident“ gesetzt ist"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "das Kennzeichen „Incident Claimant Policy Active“ gesetzt ist"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "das Kennzeichen „Additional Claimant Policy Active“ gesetzt ist"
+                    }
+                  ]
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "das Kennzeichen „Has Additional Claimant“ nicht gesetzt ist"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "der Additional Claimant Favorite Color „red“ ist"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Claimant of Record is High Risk“ nicht gesetzt ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "References Incident, Incident Claimant Policy Active oder Additional Claimant Policy Active, nicht Has Additional Claimant oder Additional Claimant Favorite Color kleingeschrieben ist \"red\", und nicht Claimant of Record is High Risk"
+      },
+      "Claims.ValidityDecidingFactor": {
+        "table": "Claims",
+        "field": "ValidityDecidingFactor",
+        "kind": "formula",
+        "rule": "Das Feld „Validity Deciding Factor“ des Claim wird nach folgender Priorität bestimmt:\n1. „Valid — all conditions met“, wenn das Kennzeichen „Is Valid“ gesetzt ist;\n2. „No incident referenced“, wenn das Kennzeichen „References Incident“ nicht gesetzt ist;\n3. „No active policy on incident claimant or additional claimant“, wenn es nicht der Fall ist, dass mindestens eines des Folgenden gilt: das Kennzeichen „Incident Claimant Policy Active“ gesetzt ist oder das Kennzeichen „Additional Claimant Policy Active“ gesetzt ist;\n4. „Additional claimant's favorite color is not red“, wenn alles Folgende gilt: das Kennzeichen „Has Additional Claimant“ gesetzt ist und der Additional Claimant Favorite Color nicht „red“ ist;\n5. „Claimant of record is high-risk (DR-2)“, wenn das Kennzeichen „Claimant of Record is High Risk“ gesetzt ist;\n6. andernfalls „Undetermined“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Validity Deciding Factor“ des Claim wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„Valid — all conditions met“",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Is Valid“ gesetzt ist"
+              }
+            },
+            {
+              "value": "„No incident referenced“",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „References Incident“ nicht gesetzt ist"
+              }
+            },
+            {
+              "value": "„No active policy on incident claimant or additional claimant“",
+              "when": {
+                "kind": "leaf",
+                "text": "es nicht der Fall ist, dass mindestens eines des Folgenden gilt: das Kennzeichen „Incident Claimant Policy Active“ gesetzt ist oder das Kennzeichen „Additional Claimant Policy Active“ gesetzt ist"
+              }
+            },
+            {
+              "value": "„Additional claimant's favorite color is not red“",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "das Kennzeichen „Has Additional Claimant“ gesetzt ist"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "der Additional Claimant Favorite Color nicht „red“ ist"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "„Claimant of record is high-risk (DR-2)“",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Claimant of Record is High Risk“ gesetzt ist"
+              }
+            },
+            {
+              "value": "„Undetermined“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Is Valid, dann \"Valid — all conditions met\", andernfalls wenn nicht References Incident, dann \"No incident referenced\", andernfalls wenn nicht Incident Claimant Policy Active oder Additional Claimant Policy Active, dann \"No active policy on incident claimant or additional claimant\", andernfalls wenn Has Additional Claimant und Additional Claimant Favorite Color kleingeschrieben nicht \"red\" ist, dann \"Additional claimant's favorite color is not red\", andernfalls wenn Claimant of Record is High Risk, dann \"Claimant of record is high-risk (DR-2)\", andernfalls \"Undetermined\""
+      },
+      "Claims.IsApprovable": {
+        "table": "Claims",
+        "field": "IsApprovable",
+        "kind": "formula",
+        "rule": "Ein Claim gilt als eine Approvable, wenn alles Folgende gilt: das Kennzeichen „Is Valid“ gesetzt ist und das Kennzeichen „Is Flagged for Review“ nicht gesetzt ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Ein Claim gilt als eine Approvable, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Is Valid“ gesetzt ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Is Flagged for Review“ nicht gesetzt ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is Valid und nicht Is Flagged for Review"
+      },
+      "Claims.ApprovabilityDecidingFactor": {
+        "table": "Claims",
+        "field": "ApprovabilityDecidingFactor",
+        "kind": "formula",
+        "rule": "Das Feld „Approvability Deciding Factor“ des Claim wird nach folgender Priorität bestimmt:\n1. „Approvable“, wenn das Kennzeichen „Is Approvable“ gesetzt ist;\n2. „Not approvable — claim is not valid“, wenn das Kennzeichen „Is Valid“ nicht gesetzt ist;\n3. „Valid, but flagged for review“, wenn das Kennzeichen „Is Flagged for Review“ gesetzt ist;\n4. andernfalls „Undetermined“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsApprovable",
+            "label": "is approvable"
+          },
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Approvability Deciding Factor“ des Claim wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„Approvable“",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Is Approvable“ gesetzt ist"
+              }
+            },
+            {
+              "value": "„Not approvable — claim is not valid“",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Is Valid“ nicht gesetzt ist"
+              }
+            },
+            {
+              "value": "„Valid, but flagged for review“",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Is Flagged for Review“ gesetzt ist"
+              }
+            },
+            {
+              "value": "„Undetermined“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Is Approvable, dann \"Approvable\", andernfalls wenn nicht Is Valid, dann \"Not approvable — claim is not valid\", andernfalls wenn Is Flagged for Review, dann \"Valid, but flagged for review\", andernfalls \"Undetermined\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Policies": [
+        "Ein Policy **muss** eine Policyholder Name haben und erfassen, ob es ist active."
+      ],
+      "Claimants": [
+        "Ein Claimant **muss** eine Claimant Name und ein Favorite Color haben."
+      ],
+      "Incidents": [
+        "Ein Incident **muss** eine Incident Description und ein Claimant haben."
+      ],
+      "Claims": [
+        "Ein Claim **muss** ein Incident haben und erfassen, ob es ist ein Flagged for Review."
+      ]
+    },
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Policies": "Policy",
+      "Claimants": "Claimant",
+      "Incidents": "Incident",
+      "Claims": "Claim"
+    }
+  },
+  "es": {
+    "fields": {
+      "Policies.Name": {
+        "table": "Policies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un policy: name es igual a policy ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy ID"
+      },
+      "Policies.CountOfCoveredClaimants": {
+        "table": "Policies",
+        "field": "CountOfCoveredClaimants",
+        "kind": "rollup",
+        "rule": "Un policy: count of covered claimants es el número de claimants relacionados con el policy.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de claimants cuyo policy es policy ID"
+      },
+      "Claimants.Name": {
+        "table": "Claimants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un claimant: name es igual a claimant name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant name"
+      },
+      "Claimants.CountOfIncidents": {
+        "table": "Claimants",
+        "field": "CountOfIncidents",
+        "kind": "rollup",
+        "rule": "Un claimant: count of incidents es el número de incidents relacionados con el claimant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de incidents cuyo claimant es claimant ID"
+      },
+      "Claimants.IsHighRisk": {
+        "table": "Claimants",
+        "field": "IsHighRisk",
+        "kind": "formula",
+        "rule": "Un claimant se considera high risk si el count of incidents es mayor que 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of incidents es mayor que 2"
+      },
+      "Claimants.PolicyIsActive": {
+        "table": "Claimants",
+        "field": "PolicyIsActive",
+        "kind": "lookup",
+        "rule": "Un claimant: policy is active es verdadero cuando el policy vinculado es active.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "IsActive",
+            "label": "is active"
+          },
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El is active del policy vinculado"
+      },
+      "Incidents.Name": {
+        "table": "Incidents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un incident: name es igual a incident ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident ID"
+      },
+      "Incidents.IncidentClaimantName": {
+        "table": "Incidents",
+        "field": "IncidentClaimantName",
+        "kind": "lookup",
+        "rule": "Un incident: incident claimant name — tomado del claimant vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          },
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El claimant name del claimant vinculado"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un claim: name es igual a claim ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ClaimId",
+            "label": "claim ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claim ID"
+      },
+      "Claims.ReferencesIncident": {
+        "table": "Claims",
+        "field": "ReferencesIncident",
+        "kind": "formula",
+        "rule": "Un claim se considera que cumple: incident si el incident tiene valor.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident no es \"\""
+      },
+      "Claims.HasAdditionalClaimant": {
+        "table": "Claims",
+        "field": "HasAdditionalClaimant",
+        "kind": "formula",
+        "rule": "Un claim se considera que tiene un additional claimant si el additional claimant tiene valor.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          }
+        ],
+        "structure": null,
+        "plain": "Additional claimant no es \"\""
+      },
+      "Claims.IncidentClaimant": {
+        "table": "Claims",
+        "field": "IncidentClaimant",
+        "kind": "lookup",
+        "rule": "Un claim: incident claimant — tomado del incident vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          },
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El claimant del incident vinculado"
+      },
+      "Claims.ClaimantOfRecord": {
+        "table": "Claims",
+        "field": "ClaimantOfRecord",
+        "kind": "formula",
+        "rule": "El campo «claimant of record» del claim se determina según la siguiente prioridad:\n1. el additional claimant, si el indicador «additional claimant» está activado;\n2. en todos los demás casos, el incident claimant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «claimant of record» del claim se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "el additional claimant",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «additional claimant» está activado"
+              }
+            },
+            {
+              "value": "el incident claimant",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si has additional claimant, entonces additional claimant, de lo contrario incident claimant"
+      },
+      "Claims.IncidentClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "IncidentClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "Un claim: incident claimant policy active es verdadero cuando el incident claimant vinculado es active.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El policy is active del incident claimant vinculado"
+      },
+      "Claims.AdditionalClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "AdditionalClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "Un claim: additional claimant policy active es verdadero cuando el additional claimant vinculado es active.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El policy is active del additional claimant vinculado"
+      },
+      "Claims.AdditionalClaimantFavoriteColor": {
+        "table": "Claims",
+        "field": "AdditionalClaimantFavoriteColor",
+        "kind": "lookup",
+        "rule": "Un claim: additional claimant favorite color — tomado del additional claimant vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "FavoriteColor",
+            "label": "favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El favorite color del additional claimant vinculado"
+      },
+      "Claims.ClaimantOfRecordIncidentCount": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIncidentCount",
+        "kind": "lookup",
+        "rule": "Un claim: claimant of record incident count es el count of incidents del claimant of record vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El count of incidents del claimant of record vinculado"
+      },
+      "Claims.ClaimantOfRecordIsHighRisk": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIsHighRisk",
+        "kind": "lookup",
+        "rule": "Un claim: claimant of record is high risk es verdadero cuando el claimant of record vinculado es high risk.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "IsHighRisk",
+            "label": "is high risk"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El is high risk del claimant of record vinculado"
+      },
+      "Claims.IsValid": {
+        "table": "Claims",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "Un claim se considera valid si se cumple todo lo siguiente: el indicador «references incident» está activado; se cumple al menos una de las siguientes: el indicador «incident claimant policy active» está activado o el indicador «additional claimant policy active» está activado; se cumple al menos una de las siguientes: el indicador «additional claimant» no está activado o el additional claimant favorite color es «red»; y el indicador «claimant of record is high risk» no está activado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un claim se considera valid si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «references incident» está activado"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "el indicador «incident claimant policy active» está activado"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "el indicador «additional claimant policy active» está activado"
+                    }
+                  ]
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "el indicador «additional claimant» no está activado"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "el additional claimant favorite color es «red»"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «claimant of record is high risk» no está activado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "References incident, incident claimant policy active o additional claimant policy active, no has additional claimant o additional claimant favorite color en minúsculas es \"red\", y no claimant of record is high risk"
+      },
+      "Claims.ValidityDecidingFactor": {
+        "table": "Claims",
+        "field": "ValidityDecidingFactor",
+        "kind": "formula",
+        "rule": "El campo «validity deciding factor» del claim se determina según la siguiente prioridad:\n1. «Valid — all conditions met», si el indicador «valid» está activado;\n2. «No incident referenced», si el indicador «references incident» no está activado;\n3. «No active policy on incident claimant or additional claimant», si no se da el caso de que se cumple al menos una de las siguientes: el indicador «incident claimant policy active» está activado o el indicador «additional claimant policy active» está activado;\n4. «Additional claimant's favorite color is not red», si se cumple todo lo siguiente: el indicador «additional claimant» está activado y el additional claimant favorite color no es «red»;\n5. «Claimant of record is high-risk (DR-2)», si el indicador «claimant of record is high risk» está activado;\n6. en todos los demás casos, «Undetermined».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «validity deciding factor» del claim se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«Valid — all conditions met»",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «valid» está activado"
+              }
+            },
+            {
+              "value": "«No incident referenced»",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «references incident» no está activado"
+              }
+            },
+            {
+              "value": "«No active policy on incident claimant or additional claimant»",
+              "when": {
+                "kind": "leaf",
+                "text": "no se da el caso de que se cumple al menos una de las siguientes: el indicador «incident claimant policy active» está activado o el indicador «additional claimant policy active» está activado"
+              }
+            },
+            {
+              "value": "«Additional claimant's favorite color is not red»",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "el indicador «additional claimant» está activado"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "el additional claimant favorite color no es «red»"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "«Claimant of record is high-risk (DR-2)»",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «claimant of record is high risk» está activado"
+              }
+            },
+            {
+              "value": "«Undetermined»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is valid, entonces \"Valid — all conditions met\", de lo contrario si no references incident, entonces \"No incident referenced\", de lo contrario si no incident claimant policy active o additional claimant policy active, entonces \"No active policy on incident claimant or additional claimant\", de lo contrario si has additional claimant y additional claimant favorite color en minúsculas no es \"red\", entonces \"Additional claimant's favorite color is not red\", de lo contrario si claimant of record is high risk, entonces \"Claimant of record is high-risk (DR-2)\", de lo contrario \"Undetermined\""
+      },
+      "Claims.IsApprovable": {
+        "table": "Claims",
+        "field": "IsApprovable",
+        "kind": "formula",
+        "rule": "Un claim se considera approvable si se cumple todo lo siguiente: el indicador «valid» está activado y el indicador «flagged for review» no está activado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un claim se considera approvable si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «valid» está activado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «flagged for review» no está activado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is valid y no is flagged for review"
+      },
+      "Claims.ApprovabilityDecidingFactor": {
+        "table": "Claims",
+        "field": "ApprovabilityDecidingFactor",
+        "kind": "formula",
+        "rule": "El campo «approvability deciding factor» del claim se determina según la siguiente prioridad:\n1. «Approvable», si el indicador «approvable» está activado;\n2. «Not approvable — claim is not valid», si el indicador «valid» no está activado;\n3. «Valid, but flagged for review», si el indicador «flagged for review» está activado;\n4. en todos los demás casos, «Undetermined».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsApprovable",
+            "label": "is approvable"
+          },
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «approvability deciding factor» del claim se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«Approvable»",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «approvable» está activado"
+              }
+            },
+            {
+              "value": "«Not approvable — claim is not valid»",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «valid» no está activado"
+              }
+            },
+            {
+              "value": "«Valid, but flagged for review»",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «flagged for review» está activado"
+              }
+            },
+            {
+              "value": "«Undetermined»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is approvable, entonces \"Approvable\", de lo contrario si no is valid, entonces \"Not approvable — claim is not valid\", de lo contrario si is flagged for review, entonces \"Valid, but flagged for review\", de lo contrario \"Undetermined\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Policies": [
+        "Un policy **debe** tener un policyholder name, y registrar si es active."
+      ],
+      "Claimants": [
+        "Un claimant **debe** tener un claimant name y un favorite color."
+      ],
+      "Incidents": [
+        "Un incident **debe** tener un incident description y un claimant."
+      ],
+      "Claims": [
+        "Un claim **debe** tener un incident, y registrar si es un flagged for review."
+      ]
+    },
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Policies": "policy",
+      "Claimants": "claimant",
+      "Incidents": "incident",
+      "Claims": "claim"
+    }
+  },
+  "fr": {
+    "fields": {
+      "Policies.Name": {
+        "table": "Policies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un policy : name est identique à policy ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy ID"
+      },
+      "Policies.CountOfCoveredClaimants": {
+        "table": "Policies",
+        "field": "CountOfCoveredClaimants",
+        "kind": "rollup",
+        "rule": "Un policy : count of covered claimants est le nombre de claimants liés à le policy.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des claimants dont policy est policy ID"
+      },
+      "Claimants.Name": {
+        "table": "Claimants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un claimant : name est identique à claimant name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant name"
+      },
+      "Claimants.CountOfIncidents": {
+        "table": "Claimants",
+        "field": "CountOfIncidents",
+        "kind": "rollup",
+        "rule": "Un claimant : count of incidents est le nombre de incidents liés à le claimant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des incidents dont claimant est claimant ID"
+      },
+      "Claimants.IsHighRisk": {
+        "table": "Claimants",
+        "field": "IsHighRisk",
+        "kind": "formula",
+        "rule": "Un claimant est considéré comme high risk si le count of incidents est supérieur à 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of incidents est supérieur à 2"
+      },
+      "Claimants.PolicyIsActive": {
+        "table": "Claimants",
+        "field": "PolicyIsActive",
+        "kind": "lookup",
+        "rule": "Un claimant : policy is active est vrai lorsque le policy lié est active.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "IsActive",
+            "label": "is active"
+          },
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le is active du policy lié"
+      },
+      "Incidents.Name": {
+        "table": "Incidents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un incident : name est identique à incident ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident ID"
+      },
+      "Incidents.IncidentClaimantName": {
+        "table": "Incidents",
+        "field": "IncidentClaimantName",
+        "kind": "lookup",
+        "rule": "Un incident : incident claimant name — repris du claimant lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          },
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le claimant name du claimant lié"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un claim : name est identique à claim ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ClaimId",
+            "label": "claim ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claim ID"
+      },
+      "Claims.ReferencesIncident": {
+        "table": "Claims",
+        "field": "ReferencesIncident",
+        "kind": "formula",
+        "rule": "Un claim est considéré comme satisfaisant : incident si l'incident a une valeur.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident n'est pas \"\""
+      },
+      "Claims.HasAdditionalClaimant": {
+        "table": "Claims",
+        "field": "HasAdditionalClaimant",
+        "kind": "formula",
+        "rule": "Un claim est considéré comme disposant de un additional claimant si l'additional claimant a une valeur.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          }
+        ],
+        "structure": null,
+        "plain": "Additional claimant n'est pas \"\""
+      },
+      "Claims.IncidentClaimant": {
+        "table": "Claims",
+        "field": "IncidentClaimant",
+        "kind": "lookup",
+        "rule": "Un claim : incident claimant — repris du incident lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          },
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le claimant du incident lié"
+      },
+      "Claims.ClaimantOfRecord": {
+        "table": "Claims",
+        "field": "ClaimantOfRecord",
+        "kind": "formula",
+        "rule": "Le champ « claimant of record » du claim est déterminé selon la priorité suivante :\n1. l'additional claimant, si l'indicateur « additional claimant » est activé ;\n2. dans tous les autres cas, l'incident claimant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « claimant of record » du claim est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "l'additional claimant",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « additional claimant » est activé"
+              }
+            },
+            {
+              "value": "l'incident claimant",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si has additional claimant, alors additional claimant, sinon incident claimant"
+      },
+      "Claims.IncidentClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "IncidentClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "Un claim : incident claimant policy active est vrai lorsque le incident claimant lié est active.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le policy is active du incident claimant lié"
+      },
+      "Claims.AdditionalClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "AdditionalClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "Un claim : additional claimant policy active est vrai lorsque le additional claimant lié est active.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le policy is active du additional claimant lié"
+      },
+      "Claims.AdditionalClaimantFavoriteColor": {
+        "table": "Claims",
+        "field": "AdditionalClaimantFavoriteColor",
+        "kind": "lookup",
+        "rule": "Un claim : additional claimant favorite color — repris du additional claimant lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "FavoriteColor",
+            "label": "favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le favorite color du additional claimant lié"
+      },
+      "Claims.ClaimantOfRecordIncidentCount": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIncidentCount",
+        "kind": "lookup",
+        "rule": "Un claim : claimant of record incident count est le count of incidents du claimant of record lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le count of incidents du claimant of record lié"
+      },
+      "Claims.ClaimantOfRecordIsHighRisk": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIsHighRisk",
+        "kind": "lookup",
+        "rule": "Un claim : claimant of record is high risk est vrai lorsque le claimant of record lié est high risk.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "IsHighRisk",
+            "label": "is high risk"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le is high risk du claimant of record lié"
+      },
+      "Claims.IsValid": {
+        "table": "Claims",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "Un claim est considéré comme valid si tout ce qui suit est vrai : l'indicateur « references incident » est activé; au moins une des conditions suivantes est vraie : l'indicateur « incident claimant policy active » est activé ou l'indicateur « additional claimant policy active » est activé; au moins une des conditions suivantes est vraie : l'indicateur « additional claimant » n'est pas activé ou l'additional claimant favorite color est « red »; et l'indicateur « claimant of record is high risk » n'est pas activé.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un claim est considéré comme valid si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « references incident » est activé"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "l'indicateur « incident claimant policy active » est activé"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "l'indicateur « additional claimant policy active » est activé"
+                    }
+                  ]
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "l'indicateur « additional claimant » n'est pas activé"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "l'additional claimant favorite color est « red »"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « claimant of record is high risk » n'est pas activé"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "References incident, incident claimant policy active ou additional claimant policy active, non has additional claimant ou additional claimant favorite color en minuscules est \"red\", et non claimant of record is high risk"
+      },
+      "Claims.ValidityDecidingFactor": {
+        "table": "Claims",
+        "field": "ValidityDecidingFactor",
+        "kind": "formula",
+        "rule": "Le champ « validity deciding factor » du claim est déterminé selon la priorité suivante :\n1. « Valid — all conditions met », si l'indicateur « valid » est activé ;\n2. « No incident referenced », si l'indicateur « references incident » n'est pas activé ;\n3. « No active policy on incident claimant or additional claimant », si il n'est pas vrai que au moins une des conditions suivantes est vraie : l'indicateur « incident claimant policy active » est activé ou l'indicateur « additional claimant policy active » est activé ;\n4. « Additional claimant's favorite color is not red », si tout ce qui suit est vrai : l'indicateur « additional claimant » est activé et l'additional claimant favorite color n'est pas « red » ;\n5. « Claimant of record is high-risk (DR-2) », si l'indicateur « claimant of record is high risk » est activé ;\n6. dans tous les autres cas, « Undetermined ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « validity deciding factor » du claim est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« Valid — all conditions met »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « valid » est activé"
+              }
+            },
+            {
+              "value": "« No incident referenced »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « references incident » n'est pas activé"
+              }
+            },
+            {
+              "value": "« No active policy on incident claimant or additional claimant »",
+              "when": {
+                "kind": "leaf",
+                "text": "il n'est pas vrai que au moins une des conditions suivantes est vraie : l'indicateur « incident claimant policy active » est activé ou l'indicateur « additional claimant policy active » est activé"
+              }
+            },
+            {
+              "value": "« Additional claimant's favorite color is not red »",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "l'indicateur « additional claimant » est activé"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "l'additional claimant favorite color n'est pas « red »"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "« Claimant of record is high-risk (DR-2) »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « claimant of record is high risk » est activé"
+              }
+            },
+            {
+              "value": "« Undetermined »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is valid, alors \"Valid — all conditions met\", sinon si non references incident, alors \"No incident referenced\", sinon si non incident claimant policy active ou additional claimant policy active, alors \"No active policy on incident claimant or additional claimant\", sinon si has additional claimant et additional claimant favorite color en minuscules n'est pas \"red\", alors \"Additional claimant's favorite color is not red\", sinon si claimant of record is high risk, alors \"Claimant of record is high-risk (DR-2)\", sinon \"Undetermined\""
+      },
+      "Claims.IsApprovable": {
+        "table": "Claims",
+        "field": "IsApprovable",
+        "kind": "formula",
+        "rule": "Un claim est considéré comme approvable si tout ce qui suit est vrai : l'indicateur « valid » est activé et l'indicateur « flagged for review » n'est pas activé.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un claim est considéré comme approvable si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « valid » est activé"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « flagged for review » n'est pas activé"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is valid et non is flagged for review"
+      },
+      "Claims.ApprovabilityDecidingFactor": {
+        "table": "Claims",
+        "field": "ApprovabilityDecidingFactor",
+        "kind": "formula",
+        "rule": "Le champ « approvability deciding factor » du claim est déterminé selon la priorité suivante :\n1. « Approvable », si l'indicateur « approvable » est activé ;\n2. « Not approvable — claim is not valid », si l'indicateur « valid » n'est pas activé ;\n3. « Valid, but flagged for review », si l'indicateur « flagged for review » est activé ;\n4. dans tous les autres cas, « Undetermined ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsApprovable",
+            "label": "is approvable"
+          },
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « approvability deciding factor » du claim est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« Approvable »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « approvable » est activé"
+              }
+            },
+            {
+              "value": "« Not approvable — claim is not valid »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « valid » n'est pas activé"
+              }
+            },
+            {
+              "value": "« Valid, but flagged for review »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « flagged for review » est activé"
+              }
+            },
+            {
+              "value": "« Undetermined »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is approvable, alors \"Approvable\", sinon si non is valid, alors \"Not approvable — claim is not valid\", sinon si is flagged for review, alors \"Valid, but flagged for review\", sinon \"Undetermined\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Policies": [
+        "Un policy **doit** avoir un policyholder name, et consigner si il est active."
+      ],
+      "Claimants": [
+        "Un claimant **doit** avoir un claimant name et un favorite color."
+      ],
+      "Incidents": [
+        "Un incident **doit** avoir une incident description et un claimant."
+      ],
+      "Claims": [
+        "Un claim **doit** avoir un incident, et consigner si il est un flagged for review."
+      ]
+    },
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Policies": "policy",
+      "Claimants": "claimant",
+      "Incidents": "incident",
+      "Claims": "claim"
+    }
+  },
+  "hi": {
+    "fields": {
+      "Policies.Name": {
+        "table": "Policies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "policy का “name” उसके “policy ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy ID"
+      },
+      "Policies.CountOfCoveredClaimants": {
+        "table": "Policies",
+        "field": "CountOfCoveredClaimants",
+        "kind": "rollup",
+        "rule": "policy का “count of covered claimants” policy से संबंधित “claimants” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “claimants” की संख्या, जिनका policy policy ID है"
+      },
+      "Claimants.Name": {
+        "table": "Claimants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "claimant का “name” उसके “claimant name” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant name"
+      },
+      "Claimants.CountOfIncidents": {
+        "table": "Claimants",
+        "field": "CountOfIncidents",
+        "kind": "rollup",
+        "rule": "claimant का “count of incidents” claimant से संबंधित “incidents” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “incidents” की संख्या, जिनका claimant claimant ID है"
+      },
+      "Claimants.IsHighRisk": {
+        "table": "Claimants",
+        "field": "IsHighRisk",
+        "kind": "formula",
+        "rule": "यदि count of incidents 2 से अधिक है, तो claimant “high risk” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of incidents 2 से अधिक है"
+      },
+      "Claimants.PolicyIsActive": {
+        "table": "Claimants",
+        "field": "PolicyIsActive",
+        "kind": "lookup",
+        "rule": "claimant का “policy is active” तब सत्य होता है, जब लिंक किए गए “policy” का “active” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "IsActive",
+            "label": "is active"
+          },
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “policy” का is active"
+      },
+      "Incidents.Name": {
+        "table": "Incidents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "incident का “name” उसके “incident ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident ID"
+      },
+      "Incidents.IncidentClaimantName": {
+        "table": "Incidents",
+        "field": "IncidentClaimantName",
+        "kind": "lookup",
+        "rule": "incident का “incident claimant name” — लिंक किए गए “claimant” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          },
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “claimant” का claimant name"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "claim का “name” उसके “claim ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ClaimId",
+            "label": "claim ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claim ID"
+      },
+      "Claims.ReferencesIncident": {
+        "table": "Claims",
+        "field": "ReferencesIncident",
+        "kind": "formula",
+        "rule": "यदि incident में कोई मान है, तो claim “incident” की शर्त पूरी करने वाला माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident \"\" नहीं है"
+      },
+      "Claims.HasAdditionalClaimant": {
+        "table": "Claims",
+        "field": "HasAdditionalClaimant",
+        "kind": "formula",
+        "rule": "यदि additional claimant में कोई मान है, तो claim “additional claimant” रखने वाला माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          }
+        ],
+        "structure": null,
+        "plain": "Additional claimant \"\" नहीं है"
+      },
+      "Claims.IncidentClaimant": {
+        "table": "Claims",
+        "field": "IncidentClaimant",
+        "kind": "lookup",
+        "rule": "claim का “incident claimant” — लिंक किए गए “incident” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          },
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “incident” का claimant"
+      },
+      "Claims.ClaimantOfRecord": {
+        "table": "Claims",
+        "field": "ClaimantOfRecord",
+        "kind": "formula",
+        "rule": "Claim का “claimant of record” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. additional claimant, यदि “additional claimant” ध्वज लगा हुआ है;\n2. अन्य सभी स्थितियों में, incident claimant।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Claim का “claimant of record” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "additional claimant",
+              "when": {
+                "kind": "leaf",
+                "text": "“additional claimant” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "incident claimant",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि has additional claimant, तो additional claimant, अन्यथा incident claimant"
+      },
+      "Claims.IncidentClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "IncidentClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "claim का “incident claimant policy active” तब सत्य होता है, जब लिंक किए गए “incident claimant” का “active” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “incident claimant” का policy is active"
+      },
+      "Claims.AdditionalClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "AdditionalClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "claim का “additional claimant policy active” तब सत्य होता है, जब लिंक किए गए “additional claimant” का “active” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “additional claimant” का policy is active"
+      },
+      "Claims.AdditionalClaimantFavoriteColor": {
+        "table": "Claims",
+        "field": "AdditionalClaimantFavoriteColor",
+        "kind": "lookup",
+        "rule": "claim का “additional claimant favorite color” — लिंक किए गए “additional claimant” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "FavoriteColor",
+            "label": "favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “additional claimant” का favorite color"
+      },
+      "Claims.ClaimantOfRecordIncidentCount": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIncidentCount",
+        "kind": "lookup",
+        "rule": "claim का “claimant of record incident count” लिंक किए गए “claimant of record” का “count of incidents” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “claimant of record” का count of incidents"
+      },
+      "Claims.ClaimantOfRecordIsHighRisk": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIsHighRisk",
+        "kind": "lookup",
+        "rule": "claim का “claimant of record is high risk” तब सत्य होता है, जब लिंक किए गए “claimant of record” का “high risk” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "IsHighRisk",
+            "label": "is high risk"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “claimant of record” का is high risk"
+      },
+      "Claims.IsValid": {
+        "table": "Claims",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: “references incident” ध्वज लगा हुआ है, निम्नलिखित में से कम से कम एक सही है: “incident claimant policy active” ध्वज लगा हुआ है या “additional claimant policy active” ध्वज लगा हुआ है, निम्नलिखित में से कम से कम एक सही है: “additional claimant” ध्वज लगा हुआ नहीं है या additional claimant favorite color “red” है और “claimant of record is high risk” ध्वज लगा हुआ नहीं है, तो claim “valid” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "claim “valid” माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“references incident” ध्वज लगा हुआ है"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "“incident claimant policy active” ध्वज लगा हुआ है"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "“additional claimant policy active” ध्वज लगा हुआ है"
+                    }
+                  ]
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "“additional claimant” ध्वज लगा हुआ नहीं है"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "additional claimant favorite color “red” है"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“claimant of record is high risk” ध्वज लगा हुआ नहीं है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "References incident, incident claimant policy active या additional claimant policy active, has additional claimant नहीं या additional claimant favorite color छोटे अक्षरों में \"red\" है और claimant of record is high risk नहीं"
+      },
+      "Claims.ValidityDecidingFactor": {
+        "table": "Claims",
+        "field": "ValidityDecidingFactor",
+        "kind": "formula",
+        "rule": "Claim का “validity deciding factor” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “Valid — all conditions met”, यदि “valid” ध्वज लगा हुआ है;\n2. “No incident referenced”, यदि “references incident” ध्वज लगा हुआ नहीं है;\n3. “No active policy on incident claimant or additional claimant”, यदि ऐसा नहीं है कि निम्नलिखित में से कम से कम एक सही है: “incident claimant policy active” ध्वज लगा हुआ है या “additional claimant policy active” ध्वज लगा हुआ है;\n4. “Additional claimant's favorite color is not red”, यदि निम्नलिखित सभी सही हैं: “additional claimant” ध्वज लगा हुआ है और additional claimant favorite color “red” नहीं है;\n5. “Claimant of record is high-risk (DR-2)”, यदि “claimant of record is high risk” ध्वज लगा हुआ है;\n6. अन्य सभी स्थितियों में, “Undetermined”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Claim का “validity deciding factor” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“Valid — all conditions met”",
+              "when": {
+                "kind": "leaf",
+                "text": "“valid” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "“No incident referenced”",
+              "when": {
+                "kind": "leaf",
+                "text": "“references incident” ध्वज लगा हुआ नहीं है"
+              }
+            },
+            {
+              "value": "“No active policy on incident claimant or additional claimant”",
+              "when": {
+                "kind": "leaf",
+                "text": "ऐसा नहीं है कि निम्नलिखित में से कम से कम एक सही है: “incident claimant policy active” ध्वज लगा हुआ है या “additional claimant policy active” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "“Additional claimant's favorite color is not red”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "“additional claimant” ध्वज लगा हुआ है"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "additional claimant favorite color “red” नहीं है"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Claimant of record is high-risk (DR-2)”",
+              "when": {
+                "kind": "leaf",
+                "text": "“claimant of record is high risk” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "“Undetermined”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि is valid, तो \"Valid — all conditions met\", अन्यथा यदि references incident नहीं, तो \"No incident referenced\", अन्यथा यदि incident claimant policy active या additional claimant policy active नहीं, तो \"No active policy on incident claimant or additional claimant\", अन्यथा यदि has additional claimant और additional claimant favorite color छोटे अक्षरों में \"red\" नहीं है, तो \"Additional claimant's favorite color is not red\", अन्यथा यदि claimant of record is high risk, तो \"Claimant of record is high-risk (DR-2)\", अन्यथा \"Undetermined\""
+      },
+      "Claims.IsApprovable": {
+        "table": "Claims",
+        "field": "IsApprovable",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: “valid” ध्वज लगा हुआ है और “flagged for review” ध्वज लगा हुआ नहीं है, तो claim “approvable” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "claim “approvable” माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“valid” ध्वज लगा हुआ है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“flagged for review” ध्वज लगा हुआ नहीं है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is valid और is flagged for review नहीं"
+      },
+      "Claims.ApprovabilityDecidingFactor": {
+        "table": "Claims",
+        "field": "ApprovabilityDecidingFactor",
+        "kind": "formula",
+        "rule": "Claim का “approvability deciding factor” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “Approvable”, यदि “approvable” ध्वज लगा हुआ है;\n2. “Not approvable — claim is not valid”, यदि “valid” ध्वज लगा हुआ नहीं है;\n3. “Valid, but flagged for review”, यदि “flagged for review” ध्वज लगा हुआ है;\n4. अन्य सभी स्थितियों में, “Undetermined”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsApprovable",
+            "label": "is approvable"
+          },
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Claim का “approvability deciding factor” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“Approvable”",
+              "when": {
+                "kind": "leaf",
+                "text": "“approvable” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "“Not approvable — claim is not valid”",
+              "when": {
+                "kind": "leaf",
+                "text": "“valid” ध्वज लगा हुआ नहीं है"
+              }
+            },
+            {
+              "value": "“Valid, but flagged for review”",
+              "when": {
+                "kind": "leaf",
+                "text": "“flagged for review” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "“Undetermined”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि is approvable, तो \"Approvable\", अन्यथा यदि is valid नहीं, तो \"Not approvable — claim is not valid\", अन्यथा यदि is flagged for review, तो \"Valid, but flagged for review\", अन्यथा \"Undetermined\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Policies": [
+        "policy को policyholder name रखना, तथा यह कि वह “active” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ],
+      "Claimants": [
+        "claimant को claimant name और favorite color रखना **अनिवार्य** है।"
+      ],
+      "Incidents": [
+        "incident को incident description और claimant रखना **अनिवार्य** है।"
+      ],
+      "Claims": [
+        "claim को incident रखना, तथा यह कि वह “flagged for review” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ]
+    },
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "Policies": "policy",
+      "Claimants": "claimant",
+      "Incidents": "incident",
+      "Claims": "claim"
+    }
+  },
+  "id": {
+    "fields": {
+      "Policies.Name": {
+        "table": "Policies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap policy, name sama dengan policy ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy ID"
+      },
+      "Policies.CountOfCoveredClaimants": {
+        "table": "Policies",
+        "field": "CountOfCoveredClaimants",
+        "kind": "rollup",
+        "rule": "Untuk setiap policy, count of covered claimants adalah jumlah claimants yang terkait dengan policy tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah claimants dengan syarat policy adalah policy ID"
+      },
+      "Claimants.Name": {
+        "table": "Claimants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap claimant, name sama dengan claimant name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant name"
+      },
+      "Claimants.CountOfIncidents": {
+        "table": "Claimants",
+        "field": "CountOfIncidents",
+        "kind": "rollup",
+        "rule": "Untuk setiap claimant, count of incidents adalah jumlah incidents yang terkait dengan claimant tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah incidents dengan syarat claimant adalah claimant ID"
+      },
+      "Claimants.IsHighRisk": {
+        "table": "Claimants",
+        "field": "IsHighRisk",
+        "kind": "formula",
+        "rule": "Setiap claimant dianggap “high risk” jika count of incidents lebih dari 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of incidents lebih dari 2"
+      },
+      "Claimants.PolicyIsActive": {
+        "table": "Claimants",
+        "field": "PolicyIsActive",
+        "kind": "lookup",
+        "rule": "Untuk setiap claimant, policy is active bernilai benar jika policy yang tertaut pada claimant tersebut tergolong “active”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "IsActive",
+            "label": "is active"
+          },
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is active dari policy yang tertaut"
+      },
+      "Incidents.Name": {
+        "table": "Incidents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap incident, name sama dengan incident ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident ID"
+      },
+      "Incidents.IncidentClaimantName": {
+        "table": "Incidents",
+        "field": "IncidentClaimantName",
+        "kind": "lookup",
+        "rule": "Untuk setiap incident, incident claimant name diambil dari claimant yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          },
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant name dari claimant yang tertaut"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap claim, name sama dengan claim ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ClaimId",
+            "label": "claim ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claim ID"
+      },
+      "Claims.ReferencesIncident": {
+        "table": "Claims",
+        "field": "ReferencesIncident",
+        "kind": "formula",
+        "rule": "Setiap claim dianggap memenuhi kondisi “references incident” jika incident memiliki nilai.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident tidak sama dengan \"\""
+      },
+      "Claims.HasAdditionalClaimant": {
+        "table": "Claims",
+        "field": "HasAdditionalClaimant",
+        "kind": "formula",
+        "rule": "Setiap claim dianggap memiliki “additional claimant” jika additional claimant memiliki nilai.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          }
+        ],
+        "structure": null,
+        "plain": "Additional claimant tidak sama dengan \"\""
+      },
+      "Claims.IncidentClaimant": {
+        "table": "Claims",
+        "field": "IncidentClaimant",
+        "kind": "lookup",
+        "rule": "Untuk setiap claim, incident claimant diambil dari incident yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          },
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant dari incident yang tertaut"
+      },
+      "Claims.ClaimantOfRecord": {
+        "table": "Claims",
+        "field": "ClaimantOfRecord",
+        "kind": "formula",
+        "rule": "Untuk setiap claim, claimant of record ditentukan menurut urutan prioritas berikut:\n1. additional claimant, jika penanda “additional claimant” aktif;\n2. dalam semua kasus lainnya, incident claimant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap claim, claimant of record ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "additional claimant",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “additional claimant” aktif"
+              }
+            },
+            {
+              "value": "incident claimant",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika has additional claimant maka additional claimant, selain itu incident claimant"
+      },
+      "Claims.IncidentClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "IncidentClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "Untuk setiap claim, incident claimant policy active bernilai benar jika incident claimant yang tertaut pada claim tersebut tergolong “active”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy is active dari incident claimant yang tertaut"
+      },
+      "Claims.AdditionalClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "AdditionalClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "Untuk setiap claim, additional claimant policy active bernilai benar jika additional claimant yang tertaut pada claim tersebut tergolong “active”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy is active dari additional claimant yang tertaut"
+      },
+      "Claims.AdditionalClaimantFavoriteColor": {
+        "table": "Claims",
+        "field": "AdditionalClaimantFavoriteColor",
+        "kind": "lookup",
+        "rule": "Untuk setiap claim, additional claimant favorite color diambil dari additional claimant yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "FavoriteColor",
+            "label": "favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Favorite color dari additional claimant yang tertaut"
+      },
+      "Claims.ClaimantOfRecordIncidentCount": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIncidentCount",
+        "kind": "lookup",
+        "rule": "Untuk setiap claim, claimant of record incident count adalah count of incidents dari claimant of record yang tertaut pada claim tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of incidents dari claimant of record yang tertaut"
+      },
+      "Claims.ClaimantOfRecordIsHighRisk": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIsHighRisk",
+        "kind": "lookup",
+        "rule": "Untuk setiap claim, claimant of record is high risk bernilai benar jika claimant of record yang tertaut pada claim tersebut tergolong “high risk”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "IsHighRisk",
+            "label": "is high risk"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is high risk dari claimant of record yang tertaut"
+      },
+      "Claims.IsValid": {
+        "table": "Claims",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "Setiap claim dianggap “valid” jika semua kondisi berikut terpenuhi: penanda “references incident” aktif; paling sedikit satu dari kondisi berikut terpenuhi: penanda “incident claimant policy active” aktif atau penanda “additional claimant policy active” aktif; paling sedikit satu dari kondisi berikut terpenuhi: penanda “additional claimant” tidak aktif atau additional claimant favorite color adalah “red”; dan penanda “claimant of record is high risk” tidak aktif.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap claim dianggap “valid” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "penanda “references incident” aktif"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "penanda “incident claimant policy active” aktif"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "penanda “additional claimant policy active” aktif"
+                    }
+                  ]
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "penanda “additional claimant” tidak aktif"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "additional claimant favorite color adalah “red”"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "penanda “claimant of record is high risk” tidak aktif"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "References incident, incident claimant policy active atau additional claimant policy active, tidak benar bahwa has additional claimant atau additional claimant favorite color dalam huruf kecil adalah \"red\", dan tidak benar bahwa claimant of record is high risk"
+      },
+      "Claims.ValidityDecidingFactor": {
+        "table": "Claims",
+        "field": "ValidityDecidingFactor",
+        "kind": "formula",
+        "rule": "Untuk setiap claim, validity deciding factor ditentukan menurut urutan prioritas berikut:\n1. “Valid — all conditions met”, jika penanda “valid” aktif;\n2. “No incident referenced”, jika penanda “references incident” tidak aktif;\n3. “No active policy on incident claimant or additional claimant”, jika tidak benar bahwa paling sedikit satu dari kondisi berikut terpenuhi: penanda “incident claimant policy active” aktif atau penanda “additional claimant policy active” aktif;\n4. “Additional claimant's favorite color is not red”, jika semua kondisi berikut terpenuhi: penanda “additional claimant” aktif dan additional claimant favorite color bukan “red”;\n5. “Claimant of record is high-risk (DR-2)”, jika penanda “claimant of record is high risk” aktif;\n6. dalam semua kasus lainnya, “Undetermined”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap claim, validity deciding factor ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“Valid — all conditions met”",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “valid” aktif"
+              }
+            },
+            {
+              "value": "“No incident referenced”",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “references incident” tidak aktif"
+              }
+            },
+            {
+              "value": "“No active policy on incident claimant or additional claimant”",
+              "when": {
+                "kind": "leaf",
+                "text": "tidak benar bahwa paling sedikit satu dari kondisi berikut terpenuhi: penanda “incident claimant policy active” aktif atau penanda “additional claimant policy active” aktif"
+              }
+            },
+            {
+              "value": "“Additional claimant's favorite color is not red”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "penanda “additional claimant” aktif"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "additional claimant favorite color bukan “red”"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Claimant of record is high-risk (DR-2)”",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “claimant of record is high risk” aktif"
+              }
+            },
+            {
+              "value": "“Undetermined”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika is valid maka \"Valid — all conditions met\", selain itu jika tidak benar bahwa references incident maka \"No incident referenced\", selain itu jika tidak benar bahwa incident claimant policy active atau additional claimant policy active maka \"No active policy on incident claimant or additional claimant\", selain itu jika has additional claimant dan additional claimant favorite color dalam huruf kecil tidak sama dengan \"red\" maka \"Additional claimant's favorite color is not red\", selain itu jika claimant of record is high risk maka \"Claimant of record is high-risk (DR-2)\", selain itu \"Undetermined\""
+      },
+      "Claims.IsApprovable": {
+        "table": "Claims",
+        "field": "IsApprovable",
+        "kind": "formula",
+        "rule": "Setiap claim dianggap “approvable” jika semua kondisi berikut terpenuhi: penanda “valid” aktif dan penanda “flagged for review” tidak aktif.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap claim dianggap “approvable” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "penanda “valid” aktif"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "penanda “flagged for review” tidak aktif"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is valid dan tidak benar bahwa is flagged for review"
+      },
+      "Claims.ApprovabilityDecidingFactor": {
+        "table": "Claims",
+        "field": "ApprovabilityDecidingFactor",
+        "kind": "formula",
+        "rule": "Untuk setiap claim, approvability deciding factor ditentukan menurut urutan prioritas berikut:\n1. “Approvable”, jika penanda “approvable” aktif;\n2. “Not approvable — claim is not valid”, jika penanda “valid” tidak aktif;\n3. “Valid, but flagged for review”, jika penanda “flagged for review” aktif;\n4. dalam semua kasus lainnya, “Undetermined”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsApprovable",
+            "label": "is approvable"
+          },
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap claim, approvability deciding factor ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“Approvable”",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “approvable” aktif"
+              }
+            },
+            {
+              "value": "“Not approvable — claim is not valid”",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “valid” tidak aktif"
+              }
+            },
+            {
+              "value": "“Valid, but flagged for review”",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “flagged for review” aktif"
+              }
+            },
+            {
+              "value": "“Undetermined”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika is approvable maka \"Approvable\", selain itu jika tidak benar bahwa is valid maka \"Not approvable — claim is not valid\", selain itu jika is flagged for review maka \"Valid, but flagged for review\", selain itu \"Undetermined\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Policies": [
+        "Setiap policy **harus** memiliki policyholder name, serta menyatakan apakah tergolong “active”."
+      ],
+      "Claimants": [
+        "Setiap claimant **harus** memiliki claimant name dan favorite color."
+      ],
+      "Incidents": [
+        "Setiap incident **harus** memiliki incident description dan claimant."
+      ],
+      "Claims": [
+        "Setiap claim **harus** memiliki incident, serta menyatakan apakah tergolong “flagged for review”."
+      ]
+    },
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Policies": "policy",
+      "Claimants": "claimant",
+      "Incidents": "incident",
+      "Claims": "claim"
+    }
+  },
+  "it": {
+    "fields": {
+      "Policies.Name": {
+        "table": "Policies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un policy: name è uguale a policy ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy ID"
+      },
+      "Policies.CountOfCoveredClaimants": {
+        "table": "Policies",
+        "field": "CountOfCoveredClaimants",
+        "kind": "rollup",
+        "rule": "Un policy: count of covered claimants è il numero di claimants collegati a il policy.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei claimants il cui policy è policy ID"
+      },
+      "Claimants.Name": {
+        "table": "Claimants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un claimant: name è uguale a claimant name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant name"
+      },
+      "Claimants.CountOfIncidents": {
+        "table": "Claimants",
+        "field": "CountOfIncidents",
+        "kind": "rollup",
+        "rule": "Un claimant: count of incidents è il numero di incidents collegati a il claimant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei incidents il cui claimant è claimant ID"
+      },
+      "Claimants.IsHighRisk": {
+        "table": "Claimants",
+        "field": "IsHighRisk",
+        "kind": "formula",
+        "rule": "Un claimant è considerato high risk se il count of incidents è maggiore di 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of incidents è maggiore di 2"
+      },
+      "Claimants.PolicyIsActive": {
+        "table": "Claimants",
+        "field": "PolicyIsActive",
+        "kind": "lookup",
+        "rule": "Un claimant: policy is active è vero quando il policy collegato è active.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "IsActive",
+            "label": "is active"
+          },
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il is active del policy collegato"
+      },
+      "Incidents.Name": {
+        "table": "Incidents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un incident: name è uguale a incident ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident ID"
+      },
+      "Incidents.IncidentClaimantName": {
+        "table": "Incidents",
+        "field": "IncidentClaimantName",
+        "kind": "lookup",
+        "rule": "Un incident: incident claimant name — ripreso dal claimant collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          },
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il claimant name del claimant collegato"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un claim: name è uguale a claim ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ClaimId",
+            "label": "claim ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claim ID"
+      },
+      "Claims.ReferencesIncident": {
+        "table": "Claims",
+        "field": "ReferencesIncident",
+        "kind": "formula",
+        "rule": "Un claim è considerato come soddisfacente: incident se l'incident ha un valore.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident non è \"\""
+      },
+      "Claims.HasAdditionalClaimant": {
+        "table": "Claims",
+        "field": "HasAdditionalClaimant",
+        "kind": "formula",
+        "rule": "Un claim è considerato come dotato di un additional claimant se l'additional claimant ha un valore.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          }
+        ],
+        "structure": null,
+        "plain": "Additional claimant non è \"\""
+      },
+      "Claims.IncidentClaimant": {
+        "table": "Claims",
+        "field": "IncidentClaimant",
+        "kind": "lookup",
+        "rule": "Un claim: incident claimant — ripreso dal incident collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          },
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il claimant del incident collegato"
+      },
+      "Claims.ClaimantOfRecord": {
+        "table": "Claims",
+        "field": "ClaimantOfRecord",
+        "kind": "formula",
+        "rule": "Il campo “claimant of record” del claim è determinato secondo la seguente priorità:\n1. l'additional claimant, se l'indicatore “additional claimant” è attivo;\n2. in tutti gli altri casi, l'incident claimant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “claimant of record” del claim è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "l'additional claimant",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “additional claimant” è attivo"
+              }
+            },
+            {
+              "value": "l'incident claimant",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se has additional claimant, allora additional claimant, altrimenti incident claimant"
+      },
+      "Claims.IncidentClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "IncidentClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "Un claim: incident claimant policy active è vero quando il incident claimant collegato è active.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il policy is active del incident claimant collegato"
+      },
+      "Claims.AdditionalClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "AdditionalClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "Un claim: additional claimant policy active è vero quando il additional claimant collegato è active.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il policy is active del additional claimant collegato"
+      },
+      "Claims.AdditionalClaimantFavoriteColor": {
+        "table": "Claims",
+        "field": "AdditionalClaimantFavoriteColor",
+        "kind": "lookup",
+        "rule": "Un claim: additional claimant favorite color — ripreso dal additional claimant collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "FavoriteColor",
+            "label": "favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il favorite color del additional claimant collegato"
+      },
+      "Claims.ClaimantOfRecordIncidentCount": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIncidentCount",
+        "kind": "lookup",
+        "rule": "Un claim: claimant of record incident count è il count of incidents del claimant of record collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il count of incidents del claimant of record collegato"
+      },
+      "Claims.ClaimantOfRecordIsHighRisk": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIsHighRisk",
+        "kind": "lookup",
+        "rule": "Un claim: claimant of record is high risk è vero quando il claimant of record collegato è high risk.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "IsHighRisk",
+            "label": "is high risk"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il is high risk del claimant of record collegato"
+      },
+      "Claims.IsValid": {
+        "table": "Claims",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "Un claim è considerato valid se vale tutto quanto segue: l'indicatore “references incident” è attivo; vale almeno una delle seguenti: l'indicatore “incident claimant policy active” è attivo o l'indicatore “additional claimant policy active” è attivo; vale almeno una delle seguenti: l'indicatore “additional claimant” non è attivo o l'additional claimant favorite color è «red»; e l'indicatore “claimant of record is high risk” non è attivo.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un claim è considerato valid se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “references incident” è attivo"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "l'indicatore “incident claimant policy active” è attivo"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "l'indicatore “additional claimant policy active” è attivo"
+                    }
+                  ]
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "l'indicatore “additional claimant” non è attivo"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "l'additional claimant favorite color è «red»"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “claimant of record is high risk” non è attivo"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "References incident, incident claimant policy active o additional claimant policy active, non has additional claimant o additional claimant favorite color in minuscolo è \"red\", e non claimant of record is high risk"
+      },
+      "Claims.ValidityDecidingFactor": {
+        "table": "Claims",
+        "field": "ValidityDecidingFactor",
+        "kind": "formula",
+        "rule": "Il campo “validity deciding factor” del claim è determinato secondo la seguente priorità:\n1. «Valid — all conditions met», se l'indicatore “valid” è attivo;\n2. «No incident referenced», se l'indicatore “references incident” non è attivo;\n3. «No active policy on incident claimant or additional claimant», se non è il caso che vale almeno una delle seguenti: l'indicatore “incident claimant policy active” è attivo o l'indicatore “additional claimant policy active” è attivo;\n4. «Additional claimant's favorite color is not red», se vale tutto quanto segue: l'indicatore “additional claimant” è attivo e l'additional claimant favorite color non è «red»;\n5. «Claimant of record is high-risk (DR-2)», se l'indicatore “claimant of record is high risk” è attivo;\n6. in tutti gli altri casi, «Undetermined».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “validity deciding factor” del claim è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«Valid — all conditions met»",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “valid” è attivo"
+              }
+            },
+            {
+              "value": "«No incident referenced»",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “references incident” non è attivo"
+              }
+            },
+            {
+              "value": "«No active policy on incident claimant or additional claimant»",
+              "when": {
+                "kind": "leaf",
+                "text": "non è il caso che vale almeno una delle seguenti: l'indicatore “incident claimant policy active” è attivo o l'indicatore “additional claimant policy active” è attivo"
+              }
+            },
+            {
+              "value": "«Additional claimant's favorite color is not red»",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "l'indicatore “additional claimant” è attivo"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "l'additional claimant favorite color non è «red»"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "«Claimant of record is high-risk (DR-2)»",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “claimant of record is high risk” è attivo"
+              }
+            },
+            {
+              "value": "«Undetermined»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is valid, allora \"Valid — all conditions met\", altrimenti se non references incident, allora \"No incident referenced\", altrimenti se non incident claimant policy active o additional claimant policy active, allora \"No active policy on incident claimant or additional claimant\", altrimenti se has additional claimant e additional claimant favorite color in minuscolo non è \"red\", allora \"Additional claimant's favorite color is not red\", altrimenti se claimant of record is high risk, allora \"Claimant of record is high-risk (DR-2)\", altrimenti \"Undetermined\""
+      },
+      "Claims.IsApprovable": {
+        "table": "Claims",
+        "field": "IsApprovable",
+        "kind": "formula",
+        "rule": "Un claim è considerato approvable se vale tutto quanto segue: l'indicatore “valid” è attivo e l'indicatore “flagged for review” non è attivo.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un claim è considerato approvable se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “valid” è attivo"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “flagged for review” non è attivo"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is valid e non is flagged for review"
+      },
+      "Claims.ApprovabilityDecidingFactor": {
+        "table": "Claims",
+        "field": "ApprovabilityDecidingFactor",
+        "kind": "formula",
+        "rule": "Il campo “approvability deciding factor” del claim è determinato secondo la seguente priorità:\n1. «Approvable», se l'indicatore “approvable” è attivo;\n2. «Not approvable — claim is not valid», se l'indicatore “valid” non è attivo;\n3. «Valid, but flagged for review», se l'indicatore “flagged for review” è attivo;\n4. in tutti gli altri casi, «Undetermined».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsApprovable",
+            "label": "is approvable"
+          },
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “approvability deciding factor” del claim è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«Approvable»",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “approvable” è attivo"
+              }
+            },
+            {
+              "value": "«Not approvable — claim is not valid»",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “valid” non è attivo"
+              }
+            },
+            {
+              "value": "«Valid, but flagged for review»",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “flagged for review” è attivo"
+              }
+            },
+            {
+              "value": "«Undetermined»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is approvable, allora \"Approvable\", altrimenti se non is valid, allora \"Not approvable — claim is not valid\", altrimenti se is flagged for review, allora \"Valid, but flagged for review\", altrimenti \"Undetermined\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Policies": [
+        "Un policy **deve** avere un policyholder name, e registrare se è active."
+      ],
+      "Claimants": [
+        "Un claimant **deve** avere un claimant name e un favorite color."
+      ],
+      "Incidents": [
+        "Un incident **deve** avere un incident description e un claimant."
+      ],
+      "Claims": [
+        "Un claim **deve** avere un incident, e registrare se è un flagged for review."
+      ]
+    },
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Policies": "policy",
+      "Claimants": "claimant",
+      "Incidents": "incident",
+      "Claims": "claim"
+    }
+  },
+  "ja": {
+    "fields": {
+      "Policies.Name": {
+        "table": "Policies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "policyの「name」は policy ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy ID"
+      },
+      "Policies.CountOfCoveredClaimants": {
+        "table": "Policies",
+        "field": "CountOfCoveredClaimants",
+        "kind": "rollup",
+        "rule": "policyの「count of covered claimants」は policyに関連する「claimants」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy が policy ID である「claimants」の件数"
+      },
+      "Claimants.Name": {
+        "table": "Claimants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "claimantの「name」は claimant name と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant name"
+      },
+      "Claimants.CountOfIncidents": {
+        "table": "Claimants",
+        "field": "CountOfIncidents",
+        "kind": "rollup",
+        "rule": "claimantの「count of incidents」は claimantに関連する「incidents」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant が claimant ID である「incidents」の件数"
+      },
+      "Claimants.IsHighRisk": {
+        "table": "Claimants",
+        "field": "IsHighRisk",
+        "kind": "formula",
+        "rule": "count of incidents が 2 より大きい場合、claimantは「High Risk」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of incidents が 2 より大きい"
+      },
+      "Claimants.PolicyIsActive": {
+        "table": "Claimants",
+        "field": "PolicyIsActive",
+        "kind": "lookup",
+        "rule": "claimantの「policy is active」は、リンクされた「policy」が「Active」であるとき真になります。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "IsActive",
+            "label": "is active"
+          },
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「policy」の is active"
+      },
+      "Incidents.Name": {
+        "table": "Incidents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "incidentの「name」は incident ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident ID"
+      },
+      "Incidents.IncidentClaimantName": {
+        "table": "Incidents",
+        "field": "IncidentClaimantName",
+        "kind": "lookup",
+        "rule": "incidentの「incident claimant name」— リンクされた「claimant」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          },
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「claimant」の claimant name"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "claimの「name」は claim ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ClaimId",
+            "label": "claim ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claim ID"
+      },
+      "Claims.ReferencesIncident": {
+        "table": "Claims",
+        "field": "ReferencesIncident",
+        "kind": "formula",
+        "rule": "incident に値がある場合、claimは「Incident」を満たすと見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident が \"\" でない"
+      },
+      "Claims.HasAdditionalClaimant": {
+        "table": "Claims",
+        "field": "HasAdditionalClaimant",
+        "kind": "formula",
+        "rule": "additional claimant に値がある場合、claimは「Additional Claimant」を持つと見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          }
+        ],
+        "structure": null,
+        "plain": "Additional claimant が \"\" でない"
+      },
+      "Claims.IncidentClaimant": {
+        "table": "Claims",
+        "field": "IncidentClaimant",
+        "kind": "lookup",
+        "rule": "claimの「incident claimant」— リンクされた「incident」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          },
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「incident」の claimant"
+      },
+      "Claims.ClaimantOfRecord": {
+        "table": "Claims",
+        "field": "ClaimantOfRecord",
+        "kind": "formula",
+        "rule": "Claimの「claimant of record」は、次の優先順位で決まります:\n1. フラグ「additional claimant」が設定されている場合は additional claimant;\n2. それ以外の場合は incident claimant。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Claimの「claimant of record」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "additional claimant",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「additional claimant」が設定されている"
+              }
+            },
+            {
+              "value": "incident claimant",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Has additional claimantなら additional claimant、そうでなければ incident claimant"
+      },
+      "Claims.IncidentClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "IncidentClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "claimの「incident claimant policy active」は、リンクされた「incident claimant」が「Active」であるとき真になります。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「incident claimant」の policy is active"
+      },
+      "Claims.AdditionalClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "AdditionalClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "claimの「additional claimant policy active」は、リンクされた「additional claimant」が「Active」であるとき真になります。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「additional claimant」の policy is active"
+      },
+      "Claims.AdditionalClaimantFavoriteColor": {
+        "table": "Claims",
+        "field": "AdditionalClaimantFavoriteColor",
+        "kind": "lookup",
+        "rule": "claimの「additional claimant favorite color」— リンクされた「additional claimant」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "FavoriteColor",
+            "label": "favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「additional claimant」の favorite color"
+      },
+      "Claims.ClaimantOfRecordIncidentCount": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIncidentCount",
+        "kind": "lookup",
+        "rule": "claimの「claimant of record incident count」は、リンクされた「claimant of record」の「count of incidents」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「claimant of record」の count of incidents"
+      },
+      "Claims.ClaimantOfRecordIsHighRisk": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIsHighRisk",
+        "kind": "lookup",
+        "rule": "claimの「claimant of record is high risk」は、リンクされた「claimant of record」が「High Risk」であるとき真になります。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "IsHighRisk",
+            "label": "is high risk"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「claimant of record」の is high risk"
+      },
+      "Claims.IsValid": {
+        "table": "Claims",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: フラグ「references incident」が設定されている、次のいずれかが成り立つ: フラグ「incident claimant policy active」が設定されているまたはフラグ「additional claimant policy active」が設定されている、次のいずれかが成り立つ: フラグ「additional claimant」が設定されていないまたはadditional claimant favorite color が 「red」 である、およびフラグ「claimant of record is high risk」が設定されていない場合、claimは「Valid」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、claimは「Valid」と見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「references incident」が設定されている"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "フラグ「incident claimant policy active」が設定されている"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "フラグ「additional claimant policy active」が設定されている"
+                    }
+                  ]
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "フラグ「additional claimant」が設定されていない"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "additional claimant favorite color が 「red」 である"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「claimant of record is high risk」が設定されていない"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "References incident、incident claimant policy activeまたはadditional claimant policy active、has additional claimant でないまたはadditional claimant favorite color を小文字にしたもの は \"red\"、およびclaimant of record is high risk でない"
+      },
+      "Claims.ValidityDecidingFactor": {
+        "table": "Claims",
+        "field": "ValidityDecidingFactor",
+        "kind": "formula",
+        "rule": "Claimの「validity deciding factor」は、次の優先順位で決まります:\n1. フラグ「valid」が設定されている場合は 「Valid — all conditions met」;\n2. フラグ「references incident」が設定されていない場合は 「No incident referenced」;\n3. 次のいずれかが成り立つ: フラグ「incident claimant policy active」が設定されているまたはフラグ「additional claimant policy active」が設定されているということはない場合は 「No active policy on incident claimant or additional claimant」;\n4. 次のすべてが成り立つ: フラグ「additional claimant」が設定されているおよびadditional claimant favorite color が 「red」 でない場合は 「Additional claimant's favorite color is not red」;\n5. フラグ「claimant of record is high risk」が設定されている場合は 「Claimant of record is high-risk (DR-2)」;\n6. それ以外の場合は 「Undetermined」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Claimの「validity deciding factor」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「Valid — all conditions met」",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「valid」が設定されている"
+              }
+            },
+            {
+              "value": "「No incident referenced」",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「references incident」が設定されていない"
+              }
+            },
+            {
+              "value": "「No active policy on incident claimant or additional claimant」",
+              "when": {
+                "kind": "leaf",
+                "text": "次のいずれかが成り立つ: フラグ「incident claimant policy active」が設定されているまたはフラグ「additional claimant policy active」が設定されているということはない"
+              }
+            },
+            {
+              "value": "「Additional claimant's favorite color is not red」",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "フラグ「additional claimant」が設定されている"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "additional claimant favorite color が 「red」 でない"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "「Claimant of record is high-risk (DR-2)」",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「claimant of record is high risk」が設定されている"
+              }
+            },
+            {
+              "value": "「Undetermined」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is validなら \"Valid — all conditions met\"、そうでなければ references incident でないなら \"No incident referenced\"、そうでなければ incident claimant policy activeまたはadditional claimant policy active でないなら \"No active policy on incident claimant or additional claimant\"、そうでなければ has additional claimantおよびadditional claimant favorite color を小文字にしたもの が \"red\" でないなら \"Additional claimant's favorite color is not red\"、そうでなければ claimant of record is high riskなら \"Claimant of record is high-risk (DR-2)\"、そうでなければ \"Undetermined\""
+      },
+      "Claims.IsApprovable": {
+        "table": "Claims",
+        "field": "IsApprovable",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: フラグ「valid」が設定されているおよびフラグ「flagged for review」が設定されていない場合、claimは「Approvable」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、claimは「Approvable」と見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「valid」が設定されている"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「flagged for review」が設定されていない"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is validおよびis flagged for review でない"
+      },
+      "Claims.ApprovabilityDecidingFactor": {
+        "table": "Claims",
+        "field": "ApprovabilityDecidingFactor",
+        "kind": "formula",
+        "rule": "Claimの「approvability deciding factor」は、次の優先順位で決まります:\n1. フラグ「approvable」が設定されている場合は 「Approvable」;\n2. フラグ「valid」が設定されていない場合は 「Not approvable — claim is not valid」;\n3. フラグ「flagged for review」が設定されている場合は 「Valid, but flagged for review」;\n4. それ以外の場合は 「Undetermined」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsApprovable",
+            "label": "is approvable"
+          },
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Claimの「approvability deciding factor」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「Approvable」",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「approvable」が設定されている"
+              }
+            },
+            {
+              "value": "「Not approvable — claim is not valid」",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「valid」が設定されていない"
+              }
+            },
+            {
+              "value": "「Valid, but flagged for review」",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「flagged for review」が設定されている"
+              }
+            },
+            {
+              "value": "「Undetermined」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is approvableなら \"Approvable\"、そうでなければ is valid でないなら \"Not approvable — claim is not valid\"、そうでなければ is flagged for reviewなら \"Valid, but flagged for review\"、そうでなければ \"Undetermined\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Policies": [
+        "policyは policyholder name を持た、かつ 「Active」であるかどうかを記録し**なければなりません**。"
+      ],
+      "Claimants": [
+        "claimantは claimant nameおよびfavorite color を持た**なければなりません**。"
+      ],
+      "Incidents": [
+        "incidentは incident descriptionおよびclaimant を持た**なければなりません**。"
+      ],
+      "Claims": [
+        "claimは incident を持た、かつ 「Flagged for Review」であるかどうかを記録し**なければなりません**。"
+      ]
+    },
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "Policies": "policy",
+      "Claimants": "claimant",
+      "Incidents": "incident",
+      "Claims": "claim"
+    }
+  },
+  "ko": {
+    "fields": {
+      "Policies.Name": {
+        "table": "Policies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘policy’ 레코드의 ‘name’ 값은 같은 레코드의 ‘policy ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy ID"
+      },
+      "Policies.CountOfCoveredClaimants": {
+        "table": "Policies",
+        "field": "CountOfCoveredClaimants",
+        "kind": "rollup",
+        "rule": "‘policy’ 레코드의 ‘count of covered claimants’ 값은 해당 ‘policy’ 레코드에 연결된 ‘claimants’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(policy 값이 policy ID임)에 맞는 claimants 레코드의 개수"
+      },
+      "Claimants.Name": {
+        "table": "Claimants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘claimant’ 레코드의 ‘name’ 값은 같은 레코드의 ‘claimant name’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant name"
+      },
+      "Claimants.CountOfIncidents": {
+        "table": "Claimants",
+        "field": "CountOfIncidents",
+        "kind": "rollup",
+        "rule": "‘claimant’ 레코드의 ‘count of incidents’ 값은 해당 ‘claimant’ 레코드에 연결된 ‘incidents’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(claimant 값이 claimant ID임)에 맞는 incidents 레코드의 개수"
+      },
+      "Claimants.IsHighRisk": {
+        "table": "Claimants",
+        "field": "IsHighRisk",
+        "kind": "formula",
+        "rule": "‘count of incidents’ 값이 2보다 큰 경우, ‘claimant’ 레코드는 ‘high risk’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of incidents 값이 2보다 큼"
+      },
+      "Claimants.PolicyIsActive": {
+        "table": "Claimants",
+        "field": "PolicyIsActive",
+        "kind": "lookup",
+        "rule": "‘claimant’ 레코드의 ‘policy is active’ 값은 연결된 ‘policy’ 레코드가 ‘active’에 해당하는 경우에 참입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "IsActive",
+            "label": "is active"
+          },
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 policy 레코드의 is active"
+      },
+      "Incidents.Name": {
+        "table": "Incidents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘incident’ 레코드의 ‘name’ 값은 같은 레코드의 ‘incident ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident ID"
+      },
+      "Incidents.IncidentClaimantName": {
+        "table": "Incidents",
+        "field": "IncidentClaimantName",
+        "kind": "lookup",
+        "rule": "‘incident’ 레코드의 ‘incident claimant name’ 값은 연결된 ‘claimant’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          },
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 claimant 레코드의 claimant name"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘claim’ 레코드의 ‘name’ 값은 같은 레코드의 ‘claim ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ClaimId",
+            "label": "claim ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claim ID"
+      },
+      "Claims.ReferencesIncident": {
+        "table": "Claims",
+        "field": "ReferencesIncident",
+        "kind": "formula",
+        "rule": "‘incident’ 값이 있는 경우, ‘claim’ 레코드는 ‘references incident’ 조건에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident 값이 \"\" 값과 다름"
+      },
+      "Claims.HasAdditionalClaimant": {
+        "table": "Claims",
+        "field": "HasAdditionalClaimant",
+        "kind": "formula",
+        "rule": "‘additional claimant’ 값이 있는 경우, ‘claim’ 레코드는 ‘additional claimant’ 항목이 있는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          }
+        ],
+        "structure": null,
+        "plain": "Additional claimant 값이 \"\" 값과 다름"
+      },
+      "Claims.IncidentClaimant": {
+        "table": "Claims",
+        "field": "IncidentClaimant",
+        "kind": "lookup",
+        "rule": "‘claim’ 레코드의 ‘incident claimant’ 값은 연결된 ‘incident’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          },
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 incident 레코드의 claimant"
+      },
+      "Claims.ClaimantOfRecord": {
+        "table": "Claims",
+        "field": "ClaimantOfRecord",
+        "kind": "formula",
+        "rule": "‘claim’ 레코드의 ‘claimant of record’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘additional claimant’ 플래그가 설정된 경우: ‘additional claimant’\n2. 그 밖의 경우: ‘incident claimant’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘claim’ 레코드의 ‘claimant of record’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "‘additional claimant’",
+              "when": {
+                "kind": "leaf",
+                "text": "‘additional claimant’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "‘incident claimant’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(has additional claimant)이 성립하면 additional claimant, 그렇지 않으면 incident claimant"
+      },
+      "Claims.IncidentClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "IncidentClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "‘claim’ 레코드의 ‘incident claimant policy active’ 값은 연결된 ‘incident claimant’ 레코드가 ‘active’에 해당하는 경우에 참입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 incident claimant 레코드의 policy is active"
+      },
+      "Claims.AdditionalClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "AdditionalClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "‘claim’ 레코드의 ‘additional claimant policy active’ 값은 연결된 ‘additional claimant’ 레코드가 ‘active’에 해당하는 경우에 참입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 additional claimant 레코드의 policy is active"
+      },
+      "Claims.AdditionalClaimantFavoriteColor": {
+        "table": "Claims",
+        "field": "AdditionalClaimantFavoriteColor",
+        "kind": "lookup",
+        "rule": "‘claim’ 레코드의 ‘additional claimant favorite color’ 값은 연결된 ‘additional claimant’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "FavoriteColor",
+            "label": "favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 additional claimant 레코드의 favorite color"
+      },
+      "Claims.ClaimantOfRecordIncidentCount": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIncidentCount",
+        "kind": "lookup",
+        "rule": "‘claim’ 레코드의 ‘claimant of record incident count’ 값은 연결된 ‘claimant of record’ 레코드의 ‘count of incidents’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 claimant of record 레코드의 count of incidents"
+      },
+      "Claims.ClaimantOfRecordIsHighRisk": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIsHighRisk",
+        "kind": "lookup",
+        "rule": "‘claim’ 레코드의 ‘claimant of record is high risk’ 값은 연결된 ‘claimant of record’ 레코드가 ‘high risk’에 해당하는 경우에 참입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "IsHighRisk",
+            "label": "is high risk"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 claimant of record 레코드의 is high risk"
+      },
+      "Claims.IsValid": {
+        "table": "Claims",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘references incident’ 플래그가 설정된 경우, 다음 중 하나 이상에 해당하는 경우(‘incident claimant policy active’ 플래그가 설정된 경우 또는 ‘additional claimant policy active’ 플래그가 설정된 경우), 다음 중 하나 이상에 해당하는 경우(‘additional claimant’ 플래그가 설정되지 않은 경우 또는 ‘additional claimant favorite color’ 값이 “red”인 경우) 및 ‘claimant of record is high risk’ 플래그가 설정되지 않은 경우), ‘claim’ 레코드는 ‘valid’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘claim’ 레코드는 ‘valid’에 해당하는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘references incident’ 플래그가 설정된 경우"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "‘incident claimant policy active’ 플래그가 설정된 경우"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "‘additional claimant policy active’ 플래그가 설정된 경우"
+                    }
+                  ]
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "‘additional claimant’ 플래그가 설정되지 않은 경우"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "‘additional claimant favorite color’ 값이 “red”인 경우"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘claimant of record is high risk’ 플래그가 설정되지 않은 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "References incident, incident claimant policy active 또는 additional claimant policy active, 조건(has additional claimant)이 성립하지 않음 또는 additional claimant favorite color의 소문자 변환 결과 값이 \"red\"임 및 조건(claimant of record is high risk)이 성립하지 않음"
+      },
+      "Claims.ValidityDecidingFactor": {
+        "table": "Claims",
+        "field": "ValidityDecidingFactor",
+        "kind": "formula",
+        "rule": "‘claim’ 레코드의 ‘validity deciding factor’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘valid’ 플래그가 설정된 경우: “Valid — all conditions met”\n2. ‘references incident’ 플래그가 설정되지 않은 경우: “No incident referenced”\n3. 다음이 사실이 아닌 경우(다음 중 하나 이상에 해당하는 경우(‘incident claimant policy active’ 플래그가 설정된 경우 또는 ‘additional claimant policy active’ 플래그가 설정된 경우)): “No active policy on incident claimant or additional claimant”\n4. 다음 모두에 해당하는 경우(‘additional claimant’ 플래그가 설정된 경우 및 ‘additional claimant favorite color’ 값이 “red” 이외의 값인 경우): “Additional claimant's favorite color is not red”\n5. ‘claimant of record is high risk’ 플래그가 설정된 경우: “Claimant of record is high-risk (DR-2)”\n6. 그 밖의 경우: “Undetermined”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘claim’ 레코드의 ‘validity deciding factor’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“Valid — all conditions met”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘valid’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "“No incident referenced”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘references incident’ 플래그가 설정되지 않은 경우"
+              }
+            },
+            {
+              "value": "“No active policy on incident claimant or additional claimant”",
+              "when": {
+                "kind": "leaf",
+                "text": "다음이 사실이 아닌 경우(다음 중 하나 이상에 해당하는 경우(‘incident claimant policy active’ 플래그가 설정된 경우 또는 ‘additional claimant policy active’ 플래그가 설정된 경우))"
+              }
+            },
+            {
+              "value": "“Additional claimant's favorite color is not red”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "‘additional claimant’ 플래그가 설정된 경우"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "‘additional claimant favorite color’ 값이 “red” 이외의 값인 경우"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Claimant of record is high-risk (DR-2)”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘claimant of record is high risk’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "“Undetermined”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(is valid)이 성립하면 \"Valid — all conditions met\", 그렇지 않으면 조건(조건(references incident)이 성립하지 않음)이 성립하면 \"No incident referenced\", 그렇지 않으면 조건(조건(incident claimant policy active 또는 additional claimant policy active)이 성립하지 않음)이 성립하면 \"No active policy on incident claimant or additional claimant\", 그렇지 않으면 조건(has additional claimant 및 additional claimant favorite color의 소문자 변환 결과 값이 \"red\" 값과 다름)이 성립하면 \"Additional claimant's favorite color is not red\", 그렇지 않으면 조건(claimant of record is high risk)이 성립하면 \"Claimant of record is high-risk (DR-2)\", 그렇지 않으면 \"Undetermined\""
+      },
+      "Claims.IsApprovable": {
+        "table": "Claims",
+        "field": "IsApprovable",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘valid’ 플래그가 설정된 경우 및 ‘flagged for review’ 플래그가 설정되지 않은 경우), ‘claim’ 레코드는 ‘approvable’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘claim’ 레코드는 ‘approvable’에 해당하는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘valid’ 플래그가 설정된 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘flagged for review’ 플래그가 설정되지 않은 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is valid 및 조건(is flagged for review)이 성립하지 않음"
+      },
+      "Claims.ApprovabilityDecidingFactor": {
+        "table": "Claims",
+        "field": "ApprovabilityDecidingFactor",
+        "kind": "formula",
+        "rule": "‘claim’ 레코드의 ‘approvability deciding factor’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘approvable’ 플래그가 설정된 경우: “Approvable”\n2. ‘valid’ 플래그가 설정되지 않은 경우: “Not approvable — claim is not valid”\n3. ‘flagged for review’ 플래그가 설정된 경우: “Valid, but flagged for review”\n4. 그 밖의 경우: “Undetermined”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsApprovable",
+            "label": "is approvable"
+          },
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘claim’ 레코드의 ‘approvability deciding factor’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“Approvable”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘approvable’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "“Not approvable — claim is not valid”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘valid’ 플래그가 설정되지 않은 경우"
+              }
+            },
+            {
+              "value": "“Valid, but flagged for review”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘flagged for review’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "“Undetermined”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(is approvable)이 성립하면 \"Approvable\", 그렇지 않으면 조건(조건(is valid)이 성립하지 않음)이 성립하면 \"Not approvable — claim is not valid\", 그렇지 않으면 조건(is flagged for review)이 성립하면 \"Valid, but flagged for review\", 그렇지 않으면 \"Undetermined\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Policies": [
+        "‘policy’ 레코드는 ‘policyholder name’ 값을 포함하고, 해당 레코드가 ‘active’에 해당하는지 여부를 기록**해야 합니다**."
+      ],
+      "Claimants": [
+        "‘claimant’ 레코드는 ‘claimant name’ 및 ‘favorite color’ 값을 포함**해야 합니다**."
+      ],
+      "Incidents": [
+        "‘incident’ 레코드는 ‘incident description’ 및 ‘claimant’ 값을 포함**해야 합니다**."
+      ],
+      "Claims": [
+        "‘claim’ 레코드는 ‘incident’ 값을 포함하고, 해당 레코드가 ‘flagged for review’에 해당하는지 여부를 기록**해야 합니다**."
+      ]
+    },
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Policies": "policy",
+      "Claimants": "claimant",
+      "Incidents": "incident",
+      "Claims": "claim"
+    }
+  },
+  "nl": {
+    "fields": {
+      "Policies.Name": {
+        "table": "Policies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een policy: name is gelijk aan policy ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy ID"
+      },
+      "Policies.CountOfCoveredClaimants": {
+        "table": "Policies",
+        "field": "CountOfCoveredClaimants",
+        "kind": "rollup",
+        "rule": "Een policy: count of covered claimants is het aantal claimants dat is gekoppeld aan de policy.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal claimants waarvan policy is policy ID"
+      },
+      "Claimants.Name": {
+        "table": "Claimants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een claimant: name is gelijk aan claimant name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant name"
+      },
+      "Claimants.CountOfIncidents": {
+        "table": "Claimants",
+        "field": "CountOfIncidents",
+        "kind": "rollup",
+        "rule": "Een claimant: count of incidents is het aantal incidents dat is gekoppeld aan de claimant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal incidents waarvan claimant is claimant ID"
+      },
+      "Claimants.IsHighRisk": {
+        "table": "Claimants",
+        "field": "IsHighRisk",
+        "kind": "formula",
+        "rule": "Een claimant geldt als high risk als de count of incidents groter is dan 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of incidents is groter dan 2"
+      },
+      "Claimants.PolicyIsActive": {
+        "table": "Claimants",
+        "field": "PolicyIsActive",
+        "kind": "lookup",
+        "rule": "Een claimant: policy is active geldt wanneer de gekoppelde policy is active.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "IsActive",
+            "label": "is active"
+          },
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De is active van de gekoppelde policy"
+      },
+      "Incidents.Name": {
+        "table": "Incidents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een incident: name is gelijk aan incident ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident ID"
+      },
+      "Incidents.IncidentClaimantName": {
+        "table": "Incidents",
+        "field": "IncidentClaimantName",
+        "kind": "lookup",
+        "rule": "Een incident: incident claimant name — overgenomen van de gekoppelde claimant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          },
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De claimant name van de gekoppelde claimant"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een claim: name is gelijk aan claim ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ClaimId",
+            "label": "claim ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claim ID"
+      },
+      "Claims.ReferencesIncident": {
+        "table": "Claims",
+        "field": "ReferencesIncident",
+        "kind": "formula",
+        "rule": "Een claim geldt als voldoend aan: incident als de incident een waarde heeft.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident is niet \"\""
+      },
+      "Claims.HasAdditionalClaimant": {
+        "table": "Claims",
+        "field": "HasAdditionalClaimant",
+        "kind": "formula",
+        "rule": "Een claim geldt als beschikkend over een additional claimant als de additional claimant een waarde heeft.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          }
+        ],
+        "structure": null,
+        "plain": "Additional claimant is niet \"\""
+      },
+      "Claims.IncidentClaimant": {
+        "table": "Claims",
+        "field": "IncidentClaimant",
+        "kind": "lookup",
+        "rule": "Een claim: incident claimant — overgenomen van de gekoppelde incident.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          },
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De claimant van de gekoppelde incident"
+      },
+      "Claims.ClaimantOfRecord": {
+        "table": "Claims",
+        "field": "ClaimantOfRecord",
+        "kind": "formula",
+        "rule": "Het veld ‘claimant of record’ van de claim wordt bepaald volgens de volgende prioriteit:\n1. de additional claimant, als de vlag ‘additional claimant’ is gezet;\n2. in alle andere gevallen de incident claimant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘claimant of record’ van de claim wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "de additional claimant",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘additional claimant’ is gezet"
+              }
+            },
+            {
+              "value": "de incident claimant",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als has additional claimant, dan additional claimant, anders incident claimant"
+      },
+      "Claims.IncidentClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "IncidentClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "Een claim: incident claimant policy active geldt wanneer de gekoppelde incident claimant is active.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De policy is active van de gekoppelde incident claimant"
+      },
+      "Claims.AdditionalClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "AdditionalClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "Een claim: additional claimant policy active geldt wanneer de gekoppelde additional claimant is active.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De policy is active van de gekoppelde additional claimant"
+      },
+      "Claims.AdditionalClaimantFavoriteColor": {
+        "table": "Claims",
+        "field": "AdditionalClaimantFavoriteColor",
+        "kind": "lookup",
+        "rule": "Een claim: additional claimant favorite color — overgenomen van de gekoppelde additional claimant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "FavoriteColor",
+            "label": "favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De favorite color van de gekoppelde additional claimant"
+      },
+      "Claims.ClaimantOfRecordIncidentCount": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIncidentCount",
+        "kind": "lookup",
+        "rule": "Een claim: claimant of record incident count is de count of incidents van de gekoppelde claimant of record.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De count of incidents van de gekoppelde claimant of record"
+      },
+      "Claims.ClaimantOfRecordIsHighRisk": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIsHighRisk",
+        "kind": "lookup",
+        "rule": "Een claim: claimant of record is high risk geldt wanneer de gekoppelde claimant of record is high risk.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "IsHighRisk",
+            "label": "is high risk"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De is high risk van de gekoppelde claimant of record"
+      },
+      "Claims.IsValid": {
+        "table": "Claims",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "Een claim geldt als valid als al het volgende geldt: de vlag ‘references incident’ is gezet; ten minste één van het volgende geldt: de vlag ‘incident claimant policy active’ is gezet of de vlag ‘additional claimant policy active’ is gezet; ten minste één van het volgende geldt: de vlag ‘additional claimant’ niet is gezet of de additional claimant favorite color ‘red’ is; en de vlag ‘claimant of record is high risk’ niet is gezet.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een claim geldt als valid als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘references incident’ is gezet"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "de vlag ‘incident claimant policy active’ is gezet"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "de vlag ‘additional claimant policy active’ is gezet"
+                    }
+                  ]
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "de vlag ‘additional claimant’ niet is gezet"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "de additional claimant favorite color ‘red’ is"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘claimant of record is high risk’ niet is gezet"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "References incident, incident claimant policy active of additional claimant policy active, niet has additional claimant of additional claimant favorite color in kleine letters is \"red\", en niet claimant of record is high risk"
+      },
+      "Claims.ValidityDecidingFactor": {
+        "table": "Claims",
+        "field": "ValidityDecidingFactor",
+        "kind": "formula",
+        "rule": "Het veld ‘validity deciding factor’ van de claim wordt bepaald volgens de volgende prioriteit:\n1. ‘Valid — all conditions met’, als de vlag ‘valid’ is gezet;\n2. ‘No incident referenced’, als de vlag ‘references incident’ niet is gezet;\n3. ‘No active policy on incident claimant or additional claimant’, als het niet het geval is dat ten minste één van het volgende geldt: de vlag ‘incident claimant policy active’ is gezet of de vlag ‘additional claimant policy active’ is gezet;\n4. ‘Additional claimant's favorite color is not red’, als al het volgende geldt: de vlag ‘additional claimant’ is gezet en de additional claimant favorite color niet ‘red’ is;\n5. ‘Claimant of record is high-risk (DR-2)’, als de vlag ‘claimant of record is high risk’ is gezet;\n6. in alle andere gevallen ‘Undetermined’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘validity deciding factor’ van de claim wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘Valid — all conditions met’",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘valid’ is gezet"
+              }
+            },
+            {
+              "value": "‘No incident referenced’",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘references incident’ niet is gezet"
+              }
+            },
+            {
+              "value": "‘No active policy on incident claimant or additional claimant’",
+              "when": {
+                "kind": "leaf",
+                "text": "het niet het geval is dat ten minste één van het volgende geldt: de vlag ‘incident claimant policy active’ is gezet of de vlag ‘additional claimant policy active’ is gezet"
+              }
+            },
+            {
+              "value": "‘Additional claimant's favorite color is not red’",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "de vlag ‘additional claimant’ is gezet"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "de additional claimant favorite color niet ‘red’ is"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "‘Claimant of record is high-risk (DR-2)’",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘claimant of record is high risk’ is gezet"
+              }
+            },
+            {
+              "value": "‘Undetermined’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als is valid, dan \"Valid — all conditions met\", anders als niet references incident, dan \"No incident referenced\", anders als niet incident claimant policy active of additional claimant policy active, dan \"No active policy on incident claimant or additional claimant\", anders als has additional claimant en additional claimant favorite color in kleine letters is niet \"red\", dan \"Additional claimant's favorite color is not red\", anders als claimant of record is high risk, dan \"Claimant of record is high-risk (DR-2)\", anders \"Undetermined\""
+      },
+      "Claims.IsApprovable": {
+        "table": "Claims",
+        "field": "IsApprovable",
+        "kind": "formula",
+        "rule": "Een claim geldt als approvable als al het volgende geldt: de vlag ‘valid’ is gezet en de vlag ‘flagged for review’ niet is gezet.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een claim geldt als approvable als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘valid’ is gezet"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘flagged for review’ niet is gezet"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is valid en niet is flagged for review"
+      },
+      "Claims.ApprovabilityDecidingFactor": {
+        "table": "Claims",
+        "field": "ApprovabilityDecidingFactor",
+        "kind": "formula",
+        "rule": "Het veld ‘approvability deciding factor’ van de claim wordt bepaald volgens de volgende prioriteit:\n1. ‘Approvable’, als de vlag ‘approvable’ is gezet;\n2. ‘Not approvable — claim is not valid’, als de vlag ‘valid’ niet is gezet;\n3. ‘Valid, but flagged for review’, als de vlag ‘flagged for review’ is gezet;\n4. in alle andere gevallen ‘Undetermined’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsApprovable",
+            "label": "is approvable"
+          },
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘approvability deciding factor’ van de claim wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘Approvable’",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘approvable’ is gezet"
+              }
+            },
+            {
+              "value": "‘Not approvable — claim is not valid’",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘valid’ niet is gezet"
+              }
+            },
+            {
+              "value": "‘Valid, but flagged for review’",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘flagged for review’ is gezet"
+              }
+            },
+            {
+              "value": "‘Undetermined’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als is approvable, dan \"Approvable\", anders als niet is valid, dan \"Not approvable — claim is not valid\", anders als is flagged for review, dan \"Valid, but flagged for review\", anders \"Undetermined\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Policies": [
+        "Een policy **moet** een policyholder name hebben, en vastleggen of het is active."
+      ],
+      "Claimants": [
+        "Een claimant **moet** een claimant name en een favorite color hebben."
+      ],
+      "Incidents": [
+        "Een incident **moet** een incident description en een claimant hebben."
+      ],
+      "Claims": [
+        "Een claim **moet** een incident hebben, en vastleggen of het is een flagged for review."
+      ]
+    },
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Policies": "policy",
+      "Claimants": "claimant",
+      "Incidents": "incident",
+      "Claims": "claim"
+    }
+  },
+  "pt": {
+    "fields": {
+      "Policies.Name": {
+        "table": "Policies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um policy: name é igual a policy ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy ID"
+      },
+      "Policies.CountOfCoveredClaimants": {
+        "table": "Policies",
+        "field": "CountOfCoveredClaimants",
+        "kind": "rollup",
+        "rule": "Um policy: count of covered claimants é o número de claimants relacionados a o policy.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de claimants cujo policy é policy ID"
+      },
+      "Claimants.Name": {
+        "table": "Claimants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um claimant: name é igual a claimant name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant name"
+      },
+      "Claimants.CountOfIncidents": {
+        "table": "Claimants",
+        "field": "CountOfIncidents",
+        "kind": "rollup",
+        "rule": "Um claimant: count of incidents é o número de incidents relacionados a o claimant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de incidents cujo claimant é claimant ID"
+      },
+      "Claimants.IsHighRisk": {
+        "table": "Claimants",
+        "field": "IsHighRisk",
+        "kind": "formula",
+        "rule": "Um claimant é considerado high risk se o count of incidents é maior que 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of incidents é maior que 2"
+      },
+      "Claimants.PolicyIsActive": {
+        "table": "Claimants",
+        "field": "PolicyIsActive",
+        "kind": "lookup",
+        "rule": "Um claimant: policy is active é verdadeiro quando o policy vinculado é active.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "IsActive",
+            "label": "is active"
+          },
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O is active do policy vinculado"
+      },
+      "Incidents.Name": {
+        "table": "Incidents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um incident: name é igual a incident ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident ID"
+      },
+      "Incidents.IncidentClaimantName": {
+        "table": "Incidents",
+        "field": "IncidentClaimantName",
+        "kind": "lookup",
+        "rule": "Um incident: incident claimant name — obtido do claimant vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          },
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O claimant name do claimant vinculado"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um claim: name é igual a claim ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ClaimId",
+            "label": "claim ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claim ID"
+      },
+      "Claims.ReferencesIncident": {
+        "table": "Claims",
+        "field": "ReferencesIncident",
+        "kind": "formula",
+        "rule": "Um claim é considerado como satisfazendo: incident se o incident tem valor.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident não é \"\""
+      },
+      "Claims.HasAdditionalClaimant": {
+        "table": "Claims",
+        "field": "HasAdditionalClaimant",
+        "kind": "formula",
+        "rule": "Um claim é considerado como tendo um additional claimant se o additional claimant tem valor.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          }
+        ],
+        "structure": null,
+        "plain": "Additional claimant não é \"\""
+      },
+      "Claims.IncidentClaimant": {
+        "table": "Claims",
+        "field": "IncidentClaimant",
+        "kind": "lookup",
+        "rule": "Um claim: incident claimant — obtido do incident vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          },
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O claimant do incident vinculado"
+      },
+      "Claims.ClaimantOfRecord": {
+        "table": "Claims",
+        "field": "ClaimantOfRecord",
+        "kind": "formula",
+        "rule": "O campo “claimant of record” do claim é determinado pela seguinte prioridade:\n1. o additional claimant, se o indicador “additional claimant” está ativado;\n2. em todos os outros casos, o incident claimant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “claimant of record” do claim é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "o additional claimant",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “additional claimant” está ativado"
+              }
+            },
+            {
+              "value": "o incident claimant",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se has additional claimant, então additional claimant, caso contrário incident claimant"
+      },
+      "Claims.IncidentClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "IncidentClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "Um claim: incident claimant policy active é verdadeiro quando o incident claimant vinculado é active.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O policy is active do incident claimant vinculado"
+      },
+      "Claims.AdditionalClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "AdditionalClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "Um claim: additional claimant policy active é verdadeiro quando o additional claimant vinculado é active.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O policy is active do additional claimant vinculado"
+      },
+      "Claims.AdditionalClaimantFavoriteColor": {
+        "table": "Claims",
+        "field": "AdditionalClaimantFavoriteColor",
+        "kind": "lookup",
+        "rule": "Um claim: additional claimant favorite color — obtido do additional claimant vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "FavoriteColor",
+            "label": "favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O favorite color do additional claimant vinculado"
+      },
+      "Claims.ClaimantOfRecordIncidentCount": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIncidentCount",
+        "kind": "lookup",
+        "rule": "Um claim: claimant of record incident count é o count of incidents do claimant of record vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O count of incidents do claimant of record vinculado"
+      },
+      "Claims.ClaimantOfRecordIsHighRisk": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIsHighRisk",
+        "kind": "lookup",
+        "rule": "Um claim: claimant of record is high risk é verdadeiro quando o claimant of record vinculado é high risk.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "IsHighRisk",
+            "label": "is high risk"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O is high risk do claimant of record vinculado"
+      },
+      "Claims.IsValid": {
+        "table": "Claims",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "Um claim é considerado valid se tudo o que segue é verdadeiro: o indicador “references incident” está ativado; pelo menos uma das seguintes é verdadeira: o indicador “incident claimant policy active” está ativado ou o indicador “additional claimant policy active” está ativado; pelo menos uma das seguintes é verdadeira: o indicador “additional claimant” não está ativado ou o additional claimant favorite color é “red”; e o indicador “claimant of record is high risk” não está ativado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um claim é considerado valid se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “references incident” está ativado"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "o indicador “incident claimant policy active” está ativado"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "o indicador “additional claimant policy active” está ativado"
+                    }
+                  ]
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "o indicador “additional claimant” não está ativado"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "o additional claimant favorite color é “red”"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “claimant of record is high risk” não está ativado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "References incident, incident claimant policy active ou additional claimant policy active, não has additional claimant ou additional claimant favorite color em minúsculas é \"red\", e não claimant of record is high risk"
+      },
+      "Claims.ValidityDecidingFactor": {
+        "table": "Claims",
+        "field": "ValidityDecidingFactor",
+        "kind": "formula",
+        "rule": "O campo “validity deciding factor” do claim é determinado pela seguinte prioridade:\n1. “Valid — all conditions met”, se o indicador “valid” está ativado;\n2. “No incident referenced”, se o indicador “references incident” não está ativado;\n3. “No active policy on incident claimant or additional claimant”, se não é o caso de que pelo menos uma das seguintes é verdadeira: o indicador “incident claimant policy active” está ativado ou o indicador “additional claimant policy active” está ativado;\n4. “Additional claimant's favorite color is not red”, se tudo o que segue é verdadeiro: o indicador “additional claimant” está ativado e o additional claimant favorite color não é “red”;\n5. “Claimant of record is high-risk (DR-2)”, se o indicador “claimant of record is high risk” está ativado;\n6. em todos os outros casos, “Undetermined”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “validity deciding factor” do claim é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“Valid — all conditions met”",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “valid” está ativado"
+              }
+            },
+            {
+              "value": "“No incident referenced”",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “references incident” não está ativado"
+              }
+            },
+            {
+              "value": "“No active policy on incident claimant or additional claimant”",
+              "when": {
+                "kind": "leaf",
+                "text": "não é o caso de que pelo menos uma das seguintes é verdadeira: o indicador “incident claimant policy active” está ativado ou o indicador “additional claimant policy active” está ativado"
+              }
+            },
+            {
+              "value": "“Additional claimant's favorite color is not red”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "o indicador “additional claimant” está ativado"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "o additional claimant favorite color não é “red”"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Claimant of record is high-risk (DR-2)”",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “claimant of record is high risk” está ativado"
+              }
+            },
+            {
+              "value": "“Undetermined”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is valid, então \"Valid — all conditions met\", caso contrário se não references incident, então \"No incident referenced\", caso contrário se não incident claimant policy active ou additional claimant policy active, então \"No active policy on incident claimant or additional claimant\", caso contrário se has additional claimant e additional claimant favorite color em minúsculas não é \"red\", então \"Additional claimant's favorite color is not red\", caso contrário se claimant of record is high risk, então \"Claimant of record is high-risk (DR-2)\", caso contrário \"Undetermined\""
+      },
+      "Claims.IsApprovable": {
+        "table": "Claims",
+        "field": "IsApprovable",
+        "kind": "formula",
+        "rule": "Um claim é considerado approvable se tudo o que segue é verdadeiro: o indicador “valid” está ativado e o indicador “flagged for review” não está ativado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um claim é considerado approvable se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “valid” está ativado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “flagged for review” não está ativado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is valid e não is flagged for review"
+      },
+      "Claims.ApprovabilityDecidingFactor": {
+        "table": "Claims",
+        "field": "ApprovabilityDecidingFactor",
+        "kind": "formula",
+        "rule": "O campo “approvability deciding factor” do claim é determinado pela seguinte prioridade:\n1. “Approvable”, se o indicador “approvable” está ativado;\n2. “Not approvable — claim is not valid”, se o indicador “valid” não está ativado;\n3. “Valid, but flagged for review”, se o indicador “flagged for review” está ativado;\n4. em todos os outros casos, “Undetermined”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsApprovable",
+            "label": "is approvable"
+          },
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “approvability deciding factor” do claim é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“Approvable”",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “approvable” está ativado"
+              }
+            },
+            {
+              "value": "“Not approvable — claim is not valid”",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “valid” não está ativado"
+              }
+            },
+            {
+              "value": "“Valid, but flagged for review”",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “flagged for review” está ativado"
+              }
+            },
+            {
+              "value": "“Undetermined”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is approvable, então \"Approvable\", caso contrário se não is valid, então \"Not approvable — claim is not valid\", caso contrário se is flagged for review, então \"Valid, but flagged for review\", caso contrário \"Undetermined\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Policies": [
+        "Um policy **deve** ter um policyholder name, e registrar se é active."
+      ],
+      "Claimants": [
+        "Um claimant **deve** ter um claimant name e um favorite color."
+      ],
+      "Incidents": [
+        "Um incident **deve** ter um incident description e um claimant."
+      ],
+      "Claims": [
+        "Um claim **deve** ter um incident, e registrar se é um flagged for review."
+      ]
+    },
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Policies": "policy",
+      "Claimants": "claimant",
+      "Incidents": "incident",
+      "Claims": "claim"
+    }
+  },
+  "ru": {
+    "fields": {
+      "Policies.Name": {
+        "table": "Policies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Policy: «name» совпадает с policy ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy ID"
+      },
+      "Policies.CountOfCoveredClaimants": {
+        "table": "Policies",
+        "field": "CountOfCoveredClaimants",
+        "kind": "rollup",
+        "rule": "Policy: «count of covered claimants» — это число записей «claimants», связанных с policy.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «claimants», у которых policy равно policy ID"
+      },
+      "Claimants.Name": {
+        "table": "Claimants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Claimant: «name» совпадает с claimant name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant name"
+      },
+      "Claimants.CountOfIncidents": {
+        "table": "Claimants",
+        "field": "CountOfIncidents",
+        "kind": "rollup",
+        "rule": "Claimant: «count of incidents» — это число записей «incidents», связанных с claimant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «incidents», у которых claimant равно claimant ID"
+      },
+      "Claimants.IsHighRisk": {
+        "table": "Claimants",
+        "field": "IsHighRisk",
+        "kind": "formula",
+        "rule": "Claimant считается «high risk», если count of incidents больше 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of incidents больше 2"
+      },
+      "Claimants.PolicyIsActive": {
+        "table": "Claimants",
+        "field": "PolicyIsActive",
+        "kind": "lookup",
+        "rule": "Claimant: «policy is active» истинно, когда связанный «policy» является «active».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "IsActive",
+            "label": "is active"
+          },
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is active связанного «policy»"
+      },
+      "Incidents.Name": {
+        "table": "Incidents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Incident: «name» совпадает с incident ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident ID"
+      },
+      "Incidents.IncidentClaimantName": {
+        "table": "Incidents",
+        "field": "IncidentClaimantName",
+        "kind": "lookup",
+        "rule": "Incident: «incident claimant name» — берётся из связанного «claimant».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          },
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant name связанного «claimant»"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Claim: «name» совпадает с claim ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ClaimId",
+            "label": "claim ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claim ID"
+      },
+      "Claims.ReferencesIncident": {
+        "table": "Claims",
+        "field": "ReferencesIncident",
+        "kind": "formula",
+        "rule": "Claim считается удовлетворяющим условию «incident», если incident имеет значение.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident не равно \"\""
+      },
+      "Claims.HasAdditionalClaimant": {
+        "table": "Claims",
+        "field": "HasAdditionalClaimant",
+        "kind": "formula",
+        "rule": "Claim считается имеющим «additional claimant», если additional claimant имеет значение.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          }
+        ],
+        "structure": null,
+        "plain": "Additional claimant не равно \"\""
+      },
+      "Claims.IncidentClaimant": {
+        "table": "Claims",
+        "field": "IncidentClaimant",
+        "kind": "lookup",
+        "rule": "Claim: «incident claimant» — берётся из связанного «incident».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          },
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant связанного «incident»"
+      },
+      "Claims.ClaimantOfRecord": {
+        "table": "Claims",
+        "field": "ClaimantOfRecord",
+        "kind": "formula",
+        "rule": "Поле «claimant of record» (Claim) определяется по следующему приоритету:\n1. additional claimant, если признак «additional claimant» установлен;\n2. во всех остальных случаях — incident claimant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «claimant of record» (Claim) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "additional claimant",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «additional claimant» установлен"
+              }
+            },
+            {
+              "value": "incident claimant",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если has additional claimant, то additional claimant, иначе incident claimant"
+      },
+      "Claims.IncidentClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "IncidentClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "Claim: «incident claimant policy active» истинно, когда связанный «incident claimant» является «active».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy is active связанного «incident claimant»"
+      },
+      "Claims.AdditionalClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "AdditionalClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "Claim: «additional claimant policy active» истинно, когда связанный «additional claimant» является «active».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy is active связанного «additional claimant»"
+      },
+      "Claims.AdditionalClaimantFavoriteColor": {
+        "table": "Claims",
+        "field": "AdditionalClaimantFavoriteColor",
+        "kind": "lookup",
+        "rule": "Claim: «additional claimant favorite color» — берётся из связанного «additional claimant».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "FavoriteColor",
+            "label": "favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Favorite color связанного «additional claimant»"
+      },
+      "Claims.ClaimantOfRecordIncidentCount": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIncidentCount",
+        "kind": "lookup",
+        "rule": "Claim: «claimant of record incident count» — это «count of incidents» связанного «claimant of record».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of incidents связанного «claimant of record»"
+      },
+      "Claims.ClaimantOfRecordIsHighRisk": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIsHighRisk",
+        "kind": "lookup",
+        "rule": "Claim: «claimant of record is high risk» истинно, когда связанный «claimant of record» является «high risk».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "IsHighRisk",
+            "label": "is high risk"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is high risk связанного «claimant of record»"
+      },
+      "Claims.IsValid": {
+        "table": "Claims",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "Claim считается «valid», если выполняется всё следующее: признак «references incident» установлен; выполняется хотя бы одно из следующего: признак «incident claimant policy active» установлен или признак «additional claimant policy active» установлен; выполняется хотя бы одно из следующего: признак «additional claimant» не установлен или additional claimant favorite color равно «red»; и признак «claimant of record is high risk» не установлен.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Claim считается «valid», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "признак «references incident» установлен"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "признак «incident claimant policy active» установлен"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "признак «additional claimant policy active» установлен"
+                    }
+                  ]
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "признак «additional claimant» не установлен"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "additional claimant favorite color равно «red»"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "признак «claimant of record is high risk» не установлен"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "References incident, incident claimant policy active или additional claimant policy active, не has additional claimant или additional claimant favorite color в нижнем регистре равно \"red\", и не claimant of record is high risk"
+      },
+      "Claims.ValidityDecidingFactor": {
+        "table": "Claims",
+        "field": "ValidityDecidingFactor",
+        "kind": "formula",
+        "rule": "Поле «validity deciding factor» (Claim) определяется по следующему приоритету:\n1. «Valid — all conditions met», если признак «valid» установлен;\n2. «No incident referenced», если признак «references incident» не установлен;\n3. «No active policy on incident claimant or additional claimant», если неверно, что выполняется хотя бы одно из следующего: признак «incident claimant policy active» установлен или признак «additional claimant policy active» установлен;\n4. «Additional claimant's favorite color is not red», если выполняется всё следующее: признак «additional claimant» установлен и additional claimant favorite color не равно «red»;\n5. «Claimant of record is high-risk (DR-2)», если признак «claimant of record is high risk» установлен;\n6. во всех остальных случаях — «Undetermined».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «validity deciding factor» (Claim) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«Valid — all conditions met»",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «valid» установлен"
+              }
+            },
+            {
+              "value": "«No incident referenced»",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «references incident» не установлен"
+              }
+            },
+            {
+              "value": "«No active policy on incident claimant or additional claimant»",
+              "when": {
+                "kind": "leaf",
+                "text": "неверно, что выполняется хотя бы одно из следующего: признак «incident claimant policy active» установлен или признак «additional claimant policy active» установлен"
+              }
+            },
+            {
+              "value": "«Additional claimant's favorite color is not red»",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "признак «additional claimant» установлен"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "additional claimant favorite color не равно «red»"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "«Claimant of record is high-risk (DR-2)»",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «claimant of record is high risk» установлен"
+              }
+            },
+            {
+              "value": "«Undetermined»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если is valid, то \"Valid — all conditions met\", иначе если не references incident, то \"No incident referenced\", иначе если не incident claimant policy active или additional claimant policy active, то \"No active policy on incident claimant or additional claimant\", иначе если has additional claimant и additional claimant favorite color в нижнем регистре не равно \"red\", то \"Additional claimant's favorite color is not red\", иначе если claimant of record is high risk, то \"Claimant of record is high-risk (DR-2)\", иначе \"Undetermined\""
+      },
+      "Claims.IsApprovable": {
+        "table": "Claims",
+        "field": "IsApprovable",
+        "kind": "formula",
+        "rule": "Claim считается «approvable», если выполняется всё следующее: признак «valid» установлен и признак «flagged for review» не установлен.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Claim считается «approvable», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "признак «valid» установлен"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "признак «flagged for review» не установлен"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is valid и не is flagged for review"
+      },
+      "Claims.ApprovabilityDecidingFactor": {
+        "table": "Claims",
+        "field": "ApprovabilityDecidingFactor",
+        "kind": "formula",
+        "rule": "Поле «approvability deciding factor» (Claim) определяется по следующему приоритету:\n1. «Approvable», если признак «approvable» установлен;\n2. «Not approvable — claim is not valid», если признак «valid» не установлен;\n3. «Valid, but flagged for review», если признак «flagged for review» установлен;\n4. во всех остальных случаях — «Undetermined».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsApprovable",
+            "label": "is approvable"
+          },
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «approvability deciding factor» (Claim) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«Approvable»",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «approvable» установлен"
+              }
+            },
+            {
+              "value": "«Not approvable — claim is not valid»",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «valid» не установлен"
+              }
+            },
+            {
+              "value": "«Valid, but flagged for review»",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «flagged for review» установлен"
+              }
+            },
+            {
+              "value": "«Undetermined»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если is approvable, то \"Approvable\", иначе если не is valid, то \"Not approvable — claim is not valid\", иначе если is flagged for review, то \"Valid, but flagged for review\", иначе \"Undetermined\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Policies": [
+        "Policy **обязан** иметь policyholder name, а также фиксировать то, он является «active» ли."
+      ],
+      "Claimants": [
+        "Claimant **обязан** иметь claimant name и favorite color."
+      ],
+      "Incidents": [
+        "Incident **обязан** иметь incident description и claimant."
+      ],
+      "Claims": [
+        "Claim **обязан** иметь incident, а также фиксировать то, он является «flagged for review» ли."
+      ]
+    },
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Policies": "policy",
+      "Claimants": "claimant",
+      "Incidents": "incident",
+      "Claims": "claim"
+    }
+  },
+  "tr": {
+    "fields": {
+      "Policies.Name": {
+        "table": "Policies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“policy” kaydının “name” alanı, “policy ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy ID"
+      },
+      "Policies.CountOfCoveredClaimants": {
+        "table": "Policies",
+        "field": "CountOfCoveredClaimants",
+        "kind": "rollup",
+        "rule": "“policy” kaydının “count of covered claimants” alanı, “policy” kaydıyla ilişkili “claimants” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy değeri policy ID olan claimants kayıtlarının sayısı"
+      },
+      "Claimants.Name": {
+        "table": "Claimants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“claimant” kaydının “name” alanı, “claimant name” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant name"
+      },
+      "Claimants.CountOfIncidents": {
+        "table": "Claimants",
+        "field": "CountOfIncidents",
+        "kind": "rollup",
+        "rule": "“claimant” kaydının “count of incidents” alanı, “claimant” kaydıyla ilişkili “incidents” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant değeri claimant ID olan incidents kayıtlarının sayısı"
+      },
+      "Claimants.IsHighRisk": {
+        "table": "Claimants",
+        "field": "IsHighRisk",
+        "kind": "formula",
+        "rule": "“claimant” kaydı, “count of incidents” alanı 2 değerinden büyük ise “high risk” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of incidents, 2 değerinden büyük"
+      },
+      "Claimants.PolicyIsActive": {
+        "table": "Claimants",
+        "field": "PolicyIsActive",
+        "kind": "lookup",
+        "rule": "“claimant” kaydının “policy is active” alanı, “policy” alanı üzerinden bağlı kayıt “active” ise doğrudur.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "IsActive",
+            "label": "is active"
+          },
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı policy kaydının is active değeri"
+      },
+      "Incidents.Name": {
+        "table": "Incidents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“incident” kaydının “name” alanı, “incident ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident ID"
+      },
+      "Incidents.IncidentClaimantName": {
+        "table": "Incidents",
+        "field": "IncidentClaimantName",
+        "kind": "lookup",
+        "rule": "“incident” kaydının “incident claimant name” alanı, “claimant” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          },
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı claimant kaydının claimant name değeri"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“claim” kaydının “name” alanı, “claim ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ClaimId",
+            "label": "claim ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claim ID"
+      },
+      "Claims.ReferencesIncident": {
+        "table": "Claims",
+        "field": "ReferencesIncident",
+        "kind": "formula",
+        "rule": "“claim” kaydı, “incident” alanı boş değil ise “references incident” koşulunu sağlamış sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident, \"\" değerine eşit değil"
+      },
+      "Claims.HasAdditionalClaimant": {
+        "table": "Claims",
+        "field": "HasAdditionalClaimant",
+        "kind": "formula",
+        "rule": "“claim” kaydı, “additional claimant” alanı boş değil ise “additional claimant” sahibi sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          }
+        ],
+        "structure": null,
+        "plain": "Additional claimant, \"\" değerine eşit değil"
+      },
+      "Claims.IncidentClaimant": {
+        "table": "Claims",
+        "field": "IncidentClaimant",
+        "kind": "lookup",
+        "rule": "“claim” kaydının “incident claimant” alanı, “incident” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          },
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı incident kaydının claimant değeri"
+      },
+      "Claims.ClaimantOfRecord": {
+        "table": "Claims",
+        "field": "ClaimantOfRecord",
+        "kind": "formula",
+        "rule": "“claim” kaydının “claimant of record” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “additional claimant” bayrağı etkin ise “additional claimant” alanı;\n2. diğer tüm durumlarda “incident claimant” alanı.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“claim” kaydının “claimant of record” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“additional claimant” alanı",
+              "when": {
+                "kind": "leaf",
+                "text": "“additional claimant” bayrağı etkin"
+              }
+            },
+            {
+              "value": "“incident claimant” alanı",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Has additional claimant ise additional claimant, aksi takdirde incident claimant"
+      },
+      "Claims.IncidentClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "IncidentClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "“claim” kaydının “incident claimant policy active” alanı, “incident claimant” alanı üzerinden bağlı kayıt “active” ise doğrudur.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı incident claimant kaydının policy is active değeri"
+      },
+      "Claims.AdditionalClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "AdditionalClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "“claim” kaydının “additional claimant policy active” alanı, “additional claimant” alanı üzerinden bağlı kayıt “active” ise doğrudur.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı additional claimant kaydının policy is active değeri"
+      },
+      "Claims.AdditionalClaimantFavoriteColor": {
+        "table": "Claims",
+        "field": "AdditionalClaimantFavoriteColor",
+        "kind": "lookup",
+        "rule": "“claim” kaydının “additional claimant favorite color” alanı, “additional claimant” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "FavoriteColor",
+            "label": "favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı additional claimant kaydının favorite color değeri"
+      },
+      "Claims.ClaimantOfRecordIncidentCount": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIncidentCount",
+        "kind": "lookup",
+        "rule": "“claim” kaydının “claimant of record incident count” alanı, “claimant of record” alanı üzerinden bağlı kaydın “count of incidents” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı claimant of record kaydının count of incidents değeri"
+      },
+      "Claims.ClaimantOfRecordIsHighRisk": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIsHighRisk",
+        "kind": "lookup",
+        "rule": "“claim” kaydının “claimant of record is high risk” alanı, “claimant of record” alanı üzerinden bağlı kayıt “high risk” ise doğrudur.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "IsHighRisk",
+            "label": "is high risk"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı claimant of record kaydının is high risk değeri"
+      },
+      "Claims.IsValid": {
+        "table": "Claims",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "“claim” kaydı, “references incident” bayrağı etkin, (“incident claimant policy active” bayrağı etkin veya “additional claimant policy active” bayrağı etkin), (“additional claimant” bayrağı etkin değil veya “additional claimant favorite color” alanı “red” değerine eşit) ve “claimant of record is high risk” bayrağı etkin değil ise “valid” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“claim” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “valid” sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“references incident” bayrağı etkin"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "“incident claimant policy active” bayrağı etkin"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "“additional claimant policy active” bayrağı etkin"
+                    }
+                  ]
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "“additional claimant” bayrağı etkin değil"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "“additional claimant favorite color” alanı “red” değerine eşit"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“claimant of record is high risk” bayrağı etkin değil"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "References incident; (incident claimant policy active veya additional claimant policy active); ((has additional claimant) koşulu sağlanmıyor veya küçük harfe çevrilmiş additional claimant favorite color, \"red\" değerine eşit) ve (claimant of record is high risk) koşulu sağlanmıyor"
+      },
+      "Claims.ValidityDecidingFactor": {
+        "table": "Claims",
+        "field": "ValidityDecidingFactor",
+        "kind": "formula",
+        "rule": "“claim” kaydının “validity deciding factor” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “valid” bayrağı etkin ise “Valid — all conditions met”;\n2. “references incident” bayrağı etkin değil ise “No incident referenced”;\n3. (“incident claimant policy active” bayrağı etkin veya “additional claimant policy active” bayrağı etkin) koşulu sağlanmıyor ise “No active policy on incident claimant or additional claimant”;\n4. “additional claimant” bayrağı etkin ve “additional claimant favorite color” alanı “red” değerine eşit değil ise “Additional claimant's favorite color is not red”;\n5. “claimant of record is high risk” bayrağı etkin ise “Claimant of record is high-risk (DR-2)”;\n6. diğer tüm durumlarda “Undetermined”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“claim” kaydının “validity deciding factor” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“Valid — all conditions met”",
+              "when": {
+                "kind": "leaf",
+                "text": "“valid” bayrağı etkin"
+              }
+            },
+            {
+              "value": "“No incident referenced”",
+              "when": {
+                "kind": "leaf",
+                "text": "“references incident” bayrağı etkin değil"
+              }
+            },
+            {
+              "value": "“No active policy on incident claimant or additional claimant”",
+              "when": {
+                "kind": "leaf",
+                "text": "(“incident claimant policy active” bayrağı etkin veya “additional claimant policy active” bayrağı etkin) koşulu sağlanmıyor"
+              }
+            },
+            {
+              "value": "“Additional claimant's favorite color is not red”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "“additional claimant” bayrağı etkin"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "“additional claimant favorite color” alanı “red” değerine eşit değil"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Claimant of record is high-risk (DR-2)”",
+              "when": {
+                "kind": "leaf",
+                "text": "“claimant of record is high risk” bayrağı etkin"
+              }
+            },
+            {
+              "value": "“Undetermined”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is valid ise \"Valid — all conditions met\", aksi takdirde (references incident) koşulu sağlanmıyor ise \"No incident referenced\", aksi takdirde (incident claimant policy active veya additional claimant policy active) koşulu sağlanmıyor ise \"No active policy on incident claimant or additional claimant\", aksi takdirde has additional claimant ve küçük harfe çevrilmiş additional claimant favorite color, \"red\" değerine eşit değil ise \"Additional claimant's favorite color is not red\", aksi takdirde claimant of record is high risk ise \"Claimant of record is high-risk (DR-2)\", aksi takdirde \"Undetermined\""
+      },
+      "Claims.IsApprovable": {
+        "table": "Claims",
+        "field": "IsApprovable",
+        "kind": "formula",
+        "rule": "“claim” kaydı, “valid” bayrağı etkin ve “flagged for review” bayrağı etkin değil ise “approvable” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“claim” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “approvable” sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“valid” bayrağı etkin"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“flagged for review” bayrağı etkin değil"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is valid ve (is flagged for review) koşulu sağlanmıyor"
+      },
+      "Claims.ApprovabilityDecidingFactor": {
+        "table": "Claims",
+        "field": "ApprovabilityDecidingFactor",
+        "kind": "formula",
+        "rule": "“claim” kaydının “approvability deciding factor” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “approvable” bayrağı etkin ise “Approvable”;\n2. “valid” bayrağı etkin değil ise “Not approvable — claim is not valid”;\n3. “flagged for review” bayrağı etkin ise “Valid, but flagged for review”;\n4. diğer tüm durumlarda “Undetermined”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsApprovable",
+            "label": "is approvable"
+          },
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“claim” kaydının “approvability deciding factor” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“Approvable”",
+              "when": {
+                "kind": "leaf",
+                "text": "“approvable” bayrağı etkin"
+              }
+            },
+            {
+              "value": "“Not approvable — claim is not valid”",
+              "when": {
+                "kind": "leaf",
+                "text": "“valid” bayrağı etkin değil"
+              }
+            },
+            {
+              "value": "“Valid, but flagged for review”",
+              "when": {
+                "kind": "leaf",
+                "text": "“flagged for review” bayrağı etkin"
+              }
+            },
+            {
+              "value": "“Undetermined”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is approvable ise \"Approvable\", aksi takdirde (is valid) koşulu sağlanmıyor ise \"Not approvable — claim is not valid\", aksi takdirde is flagged for review ise \"Valid, but flagged for review\", aksi takdirde \"Undetermined\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Policies": [
+        "“policy” kaydı, “policyholder name” alanı dolu olmak, ayrıca “active” olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ],
+      "Claimants": [
+        "“claimant” kaydı, “claimant name” alanı ve “favorite color” alanı dolu olmak **zorundadır**."
+      ],
+      "Incidents": [
+        "“incident” kaydı, “incident description” alanı ve “claimant” alanı dolu olmak **zorundadır**."
+      ],
+      "Claims": [
+        "“claim” kaydı, “incident” alanı dolu olmak, ayrıca “flagged for review” olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ]
+    },
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Policies": "policy",
+      "Claimants": "claimant",
+      "Incidents": "incident",
+      "Claims": "claim"
+    }
+  },
+  "vi": {
+    "fields": {
+      "Policies.Name": {
+        "table": "Policies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi policy có cùng giá trị với trường “policy ID” của chính policy đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy ID"
+      },
+      "Policies.CountOfCoveredClaimants": {
+        "table": "Policies",
+        "field": "CountOfCoveredClaimants",
+        "kind": "rollup",
+        "rule": "Trường “count of covered claimants” của mỗi policy là số lượng claimants liên quan đến policy đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng claimants có policy là policy ID"
+      },
+      "Claimants.Name": {
+        "table": "Claimants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi claimant có cùng giá trị với trường “claimant name” của chính claimant đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant name"
+      },
+      "Claimants.CountOfIncidents": {
+        "table": "Claimants",
+        "field": "CountOfIncidents",
+        "kind": "rollup",
+        "rule": "Trường “count of incidents” của mỗi claimant là số lượng incidents liên quan đến claimant đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng incidents có claimant là claimant ID"
+      },
+      "Claimants.IsHighRisk": {
+        "table": "Claimants",
+        "field": "IsHighRisk",
+        "kind": "formula",
+        "rule": "Mỗi claimant được coi là “high risk” nếu count of incidents lớn hơn 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of incidents lớn hơn 2"
+      },
+      "Claimants.PolicyIsActive": {
+        "table": "Claimants",
+        "field": "PolicyIsActive",
+        "kind": "lookup",
+        "rule": "Trường “policy is active” của mỗi claimant có giá trị đúng khi bản ghi liên kết qua trường “policy” là “active”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "IsActive",
+            "label": "is active"
+          },
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is active của bản ghi liên kết qua policy"
+      },
+      "Incidents.Name": {
+        "table": "Incidents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi incident có cùng giá trị với trường “incident ID” của chính incident đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident ID"
+      },
+      "Incidents.IncidentClaimantName": {
+        "table": "Incidents",
+        "field": "IncidentClaimantName",
+        "kind": "lookup",
+        "rule": "Trường “incident claimant name” của mỗi incident được lấy từ bản ghi liên kết qua trường “claimant”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          },
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant name của bản ghi liên kết qua claimant"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi claim có cùng giá trị với trường “claim ID” của chính claim đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ClaimId",
+            "label": "claim ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claim ID"
+      },
+      "Claims.ReferencesIncident": {
+        "table": "Claims",
+        "field": "ReferencesIncident",
+        "kind": "formula",
+        "rule": "Mỗi claim được coi là thỏa điều kiện “references incident” nếu incident có giá trị.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident khác \"\""
+      },
+      "Claims.HasAdditionalClaimant": {
+        "table": "Claims",
+        "field": "HasAdditionalClaimant",
+        "kind": "formula",
+        "rule": "Mỗi claim được coi là có “additional claimant” nếu additional claimant có giá trị.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          }
+        ],
+        "structure": null,
+        "plain": "Additional claimant khác \"\""
+      },
+      "Claims.IncidentClaimant": {
+        "table": "Claims",
+        "field": "IncidentClaimant",
+        "kind": "lookup",
+        "rule": "Trường “incident claimant” của mỗi claim được lấy từ bản ghi liên kết qua trường “incident”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          },
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant của bản ghi liên kết qua incident"
+      },
+      "Claims.ClaimantOfRecord": {
+        "table": "Claims",
+        "field": "ClaimantOfRecord",
+        "kind": "formula",
+        "rule": "Trường “claimant of record” của mỗi claim được xác định theo thứ tự ưu tiên sau:\n1. additional claimant, nếu cờ “additional claimant” được bật;\n2. trong mọi trường hợp còn lại, incident claimant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “claimant of record” của mỗi claim được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "additional claimant",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “additional claimant” được bật"
+              }
+            },
+            {
+              "value": "incident claimant",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu has additional claimant thì additional claimant, nếu không thì incident claimant"
+      },
+      "Claims.IncidentClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "IncidentClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "Trường “incident claimant policy active” của mỗi claim có giá trị đúng khi bản ghi liên kết qua trường “incident claimant” là “active”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy is active của bản ghi liên kết qua incident claimant"
+      },
+      "Claims.AdditionalClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "AdditionalClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "Trường “additional claimant policy active” của mỗi claim có giá trị đúng khi bản ghi liên kết qua trường “additional claimant” là “active”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy is active của bản ghi liên kết qua additional claimant"
+      },
+      "Claims.AdditionalClaimantFavoriteColor": {
+        "table": "Claims",
+        "field": "AdditionalClaimantFavoriteColor",
+        "kind": "lookup",
+        "rule": "Trường “additional claimant favorite color” của mỗi claim được lấy từ bản ghi liên kết qua trường “additional claimant”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "FavoriteColor",
+            "label": "favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Favorite color của bản ghi liên kết qua additional claimant"
+      },
+      "Claims.ClaimantOfRecordIncidentCount": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIncidentCount",
+        "kind": "lookup",
+        "rule": "Trường “claimant of record incident count” của mỗi claim là trường “count of incidents” của bản ghi liên kết qua trường “claimant of record”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of incidents của bản ghi liên kết qua claimant of record"
+      },
+      "Claims.ClaimantOfRecordIsHighRisk": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIsHighRisk",
+        "kind": "lookup",
+        "rule": "Trường “claimant of record is high risk” của mỗi claim có giá trị đúng khi bản ghi liên kết qua trường “claimant of record” là “high risk”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "IsHighRisk",
+            "label": "is high risk"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Is high risk của bản ghi liên kết qua claimant of record"
+      },
+      "Claims.IsValid": {
+        "table": "Claims",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "Mỗi claim được coi là “valid” nếu tất cả các điều kiện sau đều đúng: cờ “references incident” được bật; ít nhất một trong các điều kiện sau đúng: cờ “incident claimant policy active” được bật hoặc cờ “additional claimant policy active” được bật; ít nhất một trong các điều kiện sau đúng: cờ “additional claimant” không được bật hoặc additional claimant favorite color là “red”; và cờ “claimant of record is high risk” không được bật.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi claim được coi là “valid” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "cờ “references incident” được bật"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "cờ “incident claimant policy active” được bật"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "cờ “additional claimant policy active” được bật"
+                    }
+                  ]
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "cờ “additional claimant” không được bật"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "additional claimant favorite color là “red”"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "cờ “claimant of record is high risk” không được bật"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "References incident, incident claimant policy active hoặc additional claimant policy active, không phải has additional claimant hoặc additional claimant favorite color viết bằng chữ thường là \"red\" và không phải claimant of record is high risk"
+      },
+      "Claims.ValidityDecidingFactor": {
+        "table": "Claims",
+        "field": "ValidityDecidingFactor",
+        "kind": "formula",
+        "rule": "Trường “validity deciding factor” của mỗi claim được xác định theo thứ tự ưu tiên sau:\n1. “Valid — all conditions met”, nếu cờ “valid” được bật;\n2. “No incident referenced”, nếu cờ “references incident” không được bật;\n3. “No active policy on incident claimant or additional claimant”, nếu không xảy ra việc ít nhất một trong các điều kiện sau đúng: cờ “incident claimant policy active” được bật hoặc cờ “additional claimant policy active” được bật;\n4. “Additional claimant's favorite color is not red”, nếu tất cả các điều kiện sau đều đúng: cờ “additional claimant” được bật và additional claimant favorite color khác “red”;\n5. “Claimant of record is high-risk (DR-2)”, nếu cờ “claimant of record is high risk” được bật;\n6. trong mọi trường hợp còn lại, “Undetermined”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “validity deciding factor” của mỗi claim được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“Valid — all conditions met”",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “valid” được bật"
+              }
+            },
+            {
+              "value": "“No incident referenced”",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “references incident” không được bật"
+              }
+            },
+            {
+              "value": "“No active policy on incident claimant or additional claimant”",
+              "when": {
+                "kind": "leaf",
+                "text": "không xảy ra việc ít nhất một trong các điều kiện sau đúng: cờ “incident claimant policy active” được bật hoặc cờ “additional claimant policy active” được bật"
+              }
+            },
+            {
+              "value": "“Additional claimant's favorite color is not red”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "cờ “additional claimant” được bật"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "additional claimant favorite color khác “red”"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Claimant of record is high-risk (DR-2)”",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “claimant of record is high risk” được bật"
+              }
+            },
+            {
+              "value": "“Undetermined”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu is valid thì \"Valid — all conditions met\", nếu không thì nếu không phải references incident thì \"No incident referenced\", nếu không thì nếu không phải incident claimant policy active hoặc additional claimant policy active thì \"No active policy on incident claimant or additional claimant\", nếu không thì nếu has additional claimant và additional claimant favorite color viết bằng chữ thường khác \"red\" thì \"Additional claimant's favorite color is not red\", nếu không thì nếu claimant of record is high risk thì \"Claimant of record is high-risk (DR-2)\", nếu không thì \"Undetermined\""
+      },
+      "Claims.IsApprovable": {
+        "table": "Claims",
+        "field": "IsApprovable",
+        "kind": "formula",
+        "rule": "Mỗi claim được coi là “approvable” nếu tất cả các điều kiện sau đều đúng: cờ “valid” được bật và cờ “flagged for review” không được bật.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi claim được coi là “approvable” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "cờ “valid” được bật"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "cờ “flagged for review” không được bật"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is valid và không phải is flagged for review"
+      },
+      "Claims.ApprovabilityDecidingFactor": {
+        "table": "Claims",
+        "field": "ApprovabilityDecidingFactor",
+        "kind": "formula",
+        "rule": "Trường “approvability deciding factor” của mỗi claim được xác định theo thứ tự ưu tiên sau:\n1. “Approvable”, nếu cờ “approvable” được bật;\n2. “Not approvable — claim is not valid”, nếu cờ “valid” không được bật;\n3. “Valid, but flagged for review”, nếu cờ “flagged for review” được bật;\n4. trong mọi trường hợp còn lại, “Undetermined”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsApprovable",
+            "label": "is approvable"
+          },
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “approvability deciding factor” của mỗi claim được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“Approvable”",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “approvable” được bật"
+              }
+            },
+            {
+              "value": "“Not approvable — claim is not valid”",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “valid” không được bật"
+              }
+            },
+            {
+              "value": "“Valid, but flagged for review”",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “flagged for review” được bật"
+              }
+            },
+            {
+              "value": "“Undetermined”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu is approvable thì \"Approvable\", nếu không thì nếu không phải is valid thì \"Not approvable — claim is not valid\", nếu không thì nếu is flagged for review thì \"Valid, but flagged for review\", nếu không thì \"Undetermined\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Policies": [
+        "Mỗi policy **phải** có policyholder name, đồng thời được ghi nhận rõ là “active” hay không."
+      ],
+      "Claimants": [
+        "Mỗi claimant **phải** có claimant name và favorite color."
+      ],
+      "Incidents": [
+        "Mỗi incident **phải** có incident description và claimant."
+      ],
+      "Claims": [
+        "Mỗi claim **phải** có incident, đồng thời được ghi nhận rõ là “flagged for review” hay không."
+      ]
+    },
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Policies": "policy",
+      "Claimants": "claimant",
+      "Incidents": "incident",
+      "Claims": "claim"
+    }
+  },
+  "zh": {
+    "fields": {
+      "Policies.Name": {
+        "table": "Policies",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "policy的“name”与 policy ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy ID"
+      },
+      "Policies.CountOfCoveredClaimants": {
+        "table": "Policies",
+        "field": "CountOfCoveredClaimants",
+        "kind": "rollup",
+        "rule": "policy的“count of covered claimants”为 与policy相关的“claimants”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Policy为policy ID的“claimants”的数量"
+      },
+      "Claimants.Name": {
+        "table": "Claimants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "claimant的“name”与 claimant name 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant name"
+      },
+      "Claimants.CountOfIncidents": {
+        "table": "Claimants",
+        "field": "CountOfIncidents",
+        "kind": "rollup",
+        "rule": "claimant的“count of incidents”为 与claimant相关的“incidents”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claimant为claimant ID的“incidents”的数量"
+      },
+      "Claimants.IsHighRisk": {
+        "table": "Claimants",
+        "field": "IsHighRisk",
+        "kind": "formula",
+        "rule": "当count of incidents大于2时,claimant被视为“High Risk”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          }
+        ],
+        "structure": null,
+        "plain": "Count of incidents大于2"
+      },
+      "Claimants.PolicyIsActive": {
+        "table": "Claimants",
+        "field": "PolicyIsActive",
+        "kind": "lookup",
+        "rule": "claimant的“policy is active”在所关联的“policy”是“Active”时为真。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Policies",
+            "field": "IsActive",
+            "label": "is active"
+          },
+          {
+            "table": "Claimants",
+            "field": "Policy",
+            "label": "policy"
+          },
+          {
+            "table": "Policies",
+            "field": "PolicyId",
+            "label": "policy ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“policy”的is active"
+      },
+      "Incidents.Name": {
+        "table": "Incidents",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "incident的“name”与 incident ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident ID"
+      },
+      "Incidents.IncidentClaimantName": {
+        "table": "Incidents",
+        "field": "IncidentClaimantName",
+        "kind": "lookup",
+        "rule": "incident的“incident claimant name”——取自所关联的“claimant”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "ClaimantName",
+            "label": "claimant name"
+          },
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“claimant”的claimant name"
+      },
+      "Claims.Name": {
+        "table": "Claims",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "claim的“name”与 claim ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ClaimId",
+            "label": "claim ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Claim ID"
+      },
+      "Claims.ReferencesIncident": {
+        "table": "Claims",
+        "field": "ReferencesIncident",
+        "kind": "formula",
+        "rule": "当incident有值时,claim被视为满足“Incident”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          }
+        ],
+        "structure": null,
+        "plain": "Incident不为\"\""
+      },
+      "Claims.HasAdditionalClaimant": {
+        "table": "Claims",
+        "field": "HasAdditionalClaimant",
+        "kind": "formula",
+        "rule": "当additional claimant有值时,claim被视为具有“Additional Claimant”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          }
+        ],
+        "structure": null,
+        "plain": "Additional claimant不为\"\""
+      },
+      "Claims.IncidentClaimant": {
+        "table": "Claims",
+        "field": "IncidentClaimant",
+        "kind": "lookup",
+        "rule": "claim的“incident claimant”——取自所关联的“incident”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Incidents",
+            "field": "Claimant",
+            "label": "claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "Incident",
+            "label": "incident"
+          },
+          {
+            "table": "Incidents",
+            "field": "IncidentId",
+            "label": "incident ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“incident”的claimant"
+      },
+      "Claims.ClaimantOfRecord": {
+        "table": "Claims",
+        "field": "ClaimantOfRecord",
+        "kind": "formula",
+        "rule": "Claim的“claimant of record”按以下优先级确定:\n1. 当标志“additional claimant”已设置时,取 additional claimant;\n2. 其余情况取 incident claimant。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Claim的“claimant of record”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "additional claimant",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“additional claimant”已设置"
+              }
+            },
+            {
+              "value": "incident claimant",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若has additional claimant,则additional claimant,否则incident claimant"
+      },
+      "Claims.IncidentClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "IncidentClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "claim的“incident claimant policy active”在所关联的“incident claimant”是“Active”时为真。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimant",
+            "label": "incident claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“incident claimant”的policy is active"
+      },
+      "Claims.AdditionalClaimantPolicyActive": {
+        "table": "Claims",
+        "field": "AdditionalClaimantPolicyActive",
+        "kind": "lookup",
+        "rule": "claim的“additional claimant policy active”在所关联的“additional claimant”是“Active”时为真。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "PolicyIsActive",
+            "label": "policy is active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“additional claimant”的policy is active"
+      },
+      "Claims.AdditionalClaimantFavoriteColor": {
+        "table": "Claims",
+        "field": "AdditionalClaimantFavoriteColor",
+        "kind": "lookup",
+        "rule": "claim的“additional claimant favorite color”——取自所关联的“additional claimant”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "FavoriteColor",
+            "label": "favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimant",
+            "label": "additional claimant"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“additional claimant”的favorite color"
+      },
+      "Claims.ClaimantOfRecordIncidentCount": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIncidentCount",
+        "kind": "lookup",
+        "rule": "claim的“claimant of record incident count”是所关联的“claimant of record”的“count of incidents”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "CountOfIncidents",
+            "label": "count of incidents"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“claimant of record”的count of incidents"
+      },
+      "Claims.ClaimantOfRecordIsHighRisk": {
+        "table": "Claims",
+        "field": "ClaimantOfRecordIsHighRisk",
+        "kind": "lookup",
+        "rule": "claim的“claimant of record is high risk”在所关联的“claimant of record”是“High Risk”时为真。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claimants",
+            "field": "IsHighRisk",
+            "label": "is high risk"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecord",
+            "label": "claimant of record"
+          },
+          {
+            "table": "Claimants",
+            "field": "ClaimantId",
+            "label": "claimant ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“claimant of record”的is high risk"
+      },
+      "Claims.IsValid": {
+        "table": "Claims",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "当以下全部成立:标志“references incident”已设置、以下至少一项成立:标志“incident claimant policy active”已设置或标志“additional claimant policy active”已设置、以下至少一项成立:标志“additional claimant”未设置或additional claimant favorite color为“red”,且标志“claimant of record is high risk”未设置时,claim被视为“Valid”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,claim被视为“Valid”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "标志“references incident”已设置"
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "标志“incident claimant policy active”已设置"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "标志“additional claimant policy active”已设置"
+                    }
+                  ]
+                },
+                {
+                  "kind": "any",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "标志“additional claimant”未设置"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "additional claimant favorite color为“red”"
+                    }
+                  ]
+                },
+                {
+                  "kind": "leaf",
+                  "text": "标志“claimant of record is high risk”未设置"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "References incident、incident claimant policy active或additional claimant policy active、并非has additional claimant或转为小写的additional claimant favorite color为\"red\",且并非claimant of record is high risk"
+      },
+      "Claims.ValidityDecidingFactor": {
+        "table": "Claims",
+        "field": "ValidityDecidingFactor",
+        "kind": "formula",
+        "rule": "Claim的“validity deciding factor”按以下优先级确定:\n1. 当标志“valid”已设置时,取 “Valid — all conditions met”;\n2. 当标志“references incident”未设置时,取 “No incident referenced”;\n3. 当并非以下至少一项成立:标志“incident claimant policy active”已设置或标志“additional claimant policy active”已设置时,取 “No active policy on incident claimant or additional claimant”;\n4. 当以下全部成立:标志“additional claimant”已设置且additional claimant favorite color不为“red”时,取 “Additional claimant's favorite color is not red”;\n5. 当标志“claimant of record is high risk”已设置时,取 “Claimant of record is high-risk (DR-2)”;\n6. 其余情况取 “Undetermined”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "ReferencesIncident",
+            "label": "references incident"
+          },
+          {
+            "table": "Claims",
+            "field": "IncidentClaimantPolicyActive",
+            "label": "incident claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantPolicyActive",
+            "label": "additional claimant policy active"
+          },
+          {
+            "table": "Claims",
+            "field": "HasAdditionalClaimant",
+            "label": "has additional claimant"
+          },
+          {
+            "table": "Claims",
+            "field": "AdditionalClaimantFavoriteColor",
+            "label": "additional claimant favorite color"
+          },
+          {
+            "table": "Claims",
+            "field": "ClaimantOfRecordIsHighRisk",
+            "label": "claimant of record is high risk"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Claim的“validity deciding factor”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“Valid — all conditions met”",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“valid”已设置"
+              }
+            },
+            {
+              "value": "“No incident referenced”",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“references incident”未设置"
+              }
+            },
+            {
+              "value": "“No active policy on incident claimant or additional claimant”",
+              "when": {
+                "kind": "leaf",
+                "text": "并非以下至少一项成立:标志“incident claimant policy active”已设置或标志“additional claimant policy active”已设置"
+              }
+            },
+            {
+              "value": "“Additional claimant's favorite color is not red”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "标志“additional claimant”已设置"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "additional claimant favorite color不为“red”"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Claimant of record is high-risk (DR-2)”",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“claimant of record is high risk”已设置"
+              }
+            },
+            {
+              "value": "“Undetermined”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若is valid,则\"Valid — all conditions met\",否则若并非references incident,则\"No incident referenced\",否则若并非incident claimant policy active或additional claimant policy active,则\"No active policy on incident claimant or additional claimant\",否则若has additional claimant且转为小写的additional claimant favorite color不为\"red\",则\"Additional claimant's favorite color is not red\",否则若claimant of record is high risk,则\"Claimant of record is high-risk (DR-2)\",否则\"Undetermined\""
+      },
+      "Claims.IsApprovable": {
+        "table": "Claims",
+        "field": "IsApprovable",
+        "kind": "formula",
+        "rule": "当以下全部成立:标志“valid”已设置且标志“flagged for review”未设置时,claim被视为“Approvable”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,claim被视为“Approvable”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "标志“valid”已设置"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "标志“flagged for review”未设置"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is valid且并非is flagged for review"
+      },
+      "Claims.ApprovabilityDecidingFactor": {
+        "table": "Claims",
+        "field": "ApprovabilityDecidingFactor",
+        "kind": "formula",
+        "rule": "Claim的“approvability deciding factor”按以下优先级确定:\n1. 当标志“approvable”已设置时,取 “Approvable”;\n2. 当标志“valid”未设置时,取 “Not approvable — claim is not valid”;\n3. 当标志“flagged for review”已设置时,取 “Valid, but flagged for review”;\n4. 其余情况取 “Undetermined”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Claims",
+            "field": "IsApprovable",
+            "label": "is approvable"
+          },
+          {
+            "table": "Claims",
+            "field": "IsValid",
+            "label": "is valid"
+          },
+          {
+            "table": "Claims",
+            "field": "IsFlaggedForReview",
+            "label": "is flagged for review"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Claim的“approvability deciding factor”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“Approvable”",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“approvable”已设置"
+              }
+            },
+            {
+              "value": "“Not approvable — claim is not valid”",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“valid”未设置"
+              }
+            },
+            {
+              "value": "“Valid, but flagged for review”",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“flagged for review”已设置"
+              }
+            },
+            {
+              "value": "“Undetermined”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若is approvable,则\"Approvable\",否则若并非is valid,则\"Not approvable — claim is not valid\",否则若is flagged for review,则\"Valid, but flagged for review\",否则\"Undetermined\""
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Policies": [
+        "policy**必须**具有policyholder name,并记录其是“Active”与否。"
+      ],
+      "Claimants": [
+        "claimant**必须**具有claimant name且favorite color。"
+      ],
+      "Incidents": [
+        "incident**必须**具有incident description且claimant。"
+      ],
+      "Claims": [
+        "claim**必须**具有incident,并记录其是“Flagged for Review”与否。"
+      ]
+    },
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "Policies": "policy",

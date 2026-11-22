@@ -435,7 +435,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -674,6 +689,3816 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "TransactionTypes": "transaction type",
+      "Products": "product",
+      "Transactions": "transaction"
+    }
+  },
+  "ar": {
+    "fields": {
+      "TransactionTypes.Name": {
+        "table": "TransactionTypes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «transaction type» يطابق حقل «transaction type ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction type ID"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «product» يطابق حقل «product ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Product ID"
+      },
+      "Products.CurrentQuantity": {
+        "table": "Products",
+        "field": "CurrentQuantity",
+        "kind": "rollup",
+        "rule": "حقل «current quantity» في سجل «product» هو مجموع قيم حقل «quantity» عبر سجلات «transactions» المرتبطة بسجل «product».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «quantity» في جميع سجلات «transactions» التي يتحقق فيها أنّ حقل «product» يساوي product ID"
+      },
+      "Products.IsLowStock": {
+        "table": "Products",
+        "field": "IsLowStock",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «product» على أنه «low stock» إذا تحقق أنّ حقل «current quantity» أقل من حقل «reorder level».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "CurrentQuantity",
+            "label": "current quantity"
+          },
+          {
+            "table": "Products",
+            "field": "ReorderLevel",
+            "label": "reorder level"
+          }
+        ],
+        "structure": null,
+        "plain": "Current quantity أقل من reorder level"
+      },
+      "Products.ReorderStatus": {
+        "table": "Products",
+        "field": "ReorderStatus",
+        "kind": "formula",
+        "rule": "حقل «reorder status» في سجل «product» يتحدد وفق ترتيب الأولوية الآتي:\n1. «This needs to be reordered IMMEDIATELY!!»، إذا تحقق أنّ علامة «low stock» مفعّلة؛\n2. «In Stock»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "IsLowStock",
+            "label": "is low stock"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «reorder status» في سجل «product» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«This needs to be reordered IMMEDIATELY!!»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «low stock» مفعّلة"
+              }
+            },
+            {
+              "value": "«In Stock»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ is low stock فالناتج \"This needs to be reordered IMMEDIATELY!!\"، وإلا فالناتج \"In Stock\""
+      },
+      "Transactions.Name": {
+        "table": "Transactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «transaction» يطابق حقل «transaction ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "TransactionId",
+            "label": "transaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction ID"
+      },
+      "Transactions.ProductName": {
+        "table": "Transactions",
+        "field": "ProductName",
+        "kind": "lookup",
+        "rule": "حقل «product name» في سجل «transaction» مأخوذ من السجل المرتبط به عبر حقل «product».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «product»"
+      },
+      "Transactions.ProductUnitPrice": {
+        "table": "Transactions",
+        "field": "ProductUnitPrice",
+        "kind": "lookup",
+        "rule": "حقل «product unit price» في سجل «transaction» مأخوذ من السجل المرتبط به عبر حقل «product».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «unit price» من السجل المرتبط عبر «product»"
+      },
+      "Transactions.TransactionTypeName": {
+        "table": "Transactions",
+        "field": "TransactionTypeName",
+        "kind": "lookup",
+        "rule": "حقل «transaction type name» في سجل «transaction» مأخوذ من السجل المرتبط به عبر حقل «transaction type».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "TransactionType",
+            "label": "transaction type"
+          },
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «transaction type»"
+      },
+      "Transactions.Amount": {
+        "table": "Transactions",
+        "field": "Amount",
+        "kind": "formula",
+        "rule": "حقل «amount» في سجل «transaction» يُحسب على النحو الآتي: حقل «quantity» مضروبًا في حقل «product unit price».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "ProductUnitPrice",
+            "label": "product unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity ضرب product unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Products": [
+        "في كل سجل «product»، **يجب أن** تُحدّد قيمة حقل «unit price» وحقل «reorder level»."
+      ],
+      "Transactions": [
+        "**يجب أن** يشير كل سجل «transaction» إلى سجل «product» واحد فقط.",
+        "**يجب أن** يشير كل سجل «transaction» إلى سجل «transaction type» واحد فقط.",
+        "في كل سجل «transaction»، **يجب أن** تُحدّد قيمة حقل «quantity» وحقل «transaction date»."
+      ]
+    },
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TransactionTypes": "transaction type",
+      "Products": "product",
+      "Transactions": "transaction"
+    }
+  },
+  "de": {
+    "fields": {
+      "TransactionTypes.Name": {
+        "table": "TransactionTypes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Transaction Type: Name entspricht Transaction Type ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction Type ID"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Product: Name entspricht Product ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Product ID"
+      },
+      "Products.CurrentQuantity": {
+        "table": "Products",
+        "field": "CurrentQuantity",
+        "kind": "rollup",
+        "rule": "Ein Product: Current Quantity ist die Gesamtsumme von Quantity über die mit dem Product verbundenen Transactions.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Quantity über alle Transactions, deren Product ist Product ID"
+      },
+      "Products.IsLowStock": {
+        "table": "Products",
+        "field": "IsLowStock",
+        "kind": "formula",
+        "rule": "Ein Product gilt als ein Low Stock, wenn der Current Quantity kleiner ist als der Reorder Level.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "CurrentQuantity",
+            "label": "current quantity"
+          },
+          {
+            "table": "Products",
+            "field": "ReorderLevel",
+            "label": "reorder level"
+          }
+        ],
+        "structure": null,
+        "plain": "Current Quantity kleiner als Reorder Level ist"
+      },
+      "Products.ReorderStatus": {
+        "table": "Products",
+        "field": "ReorderStatus",
+        "kind": "formula",
+        "rule": "Das Feld „Reorder Status“ des Product wird nach folgender Priorität bestimmt:\n1. „This needs to be reordered IMMEDIATELY!!“, wenn das Kennzeichen „Is Low Stock“ gesetzt ist;\n2. andernfalls „In Stock“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "IsLowStock",
+            "label": "is low stock"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Reorder Status“ des Product wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„This needs to be reordered IMMEDIATELY!!“",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Is Low Stock“ gesetzt ist"
+              }
+            },
+            {
+              "value": "„In Stock“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Is Low Stock, dann \"This needs to be reordered IMMEDIATELY!!\", andernfalls \"In Stock\""
+      },
+      "Transactions.Name": {
+        "table": "Transactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Transaction: Name entspricht Transaction ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "TransactionId",
+            "label": "transaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction ID"
+      },
+      "Transactions.ProductName": {
+        "table": "Transactions",
+        "field": "ProductName",
+        "kind": "lookup",
+        "rule": "Eine Transaction: Product Name — aus dem zugehörigen Product übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Product"
+      },
+      "Transactions.ProductUnitPrice": {
+        "table": "Transactions",
+        "field": "ProductUnitPrice",
+        "kind": "lookup",
+        "rule": "Eine Transaction: Product Unit Price — aus dem zugehörigen Product übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Unit Price des verknüpften Product"
+      },
+      "Transactions.TransactionTypeName": {
+        "table": "Transactions",
+        "field": "TransactionTypeName",
+        "kind": "lookup",
+        "rule": "Eine Transaction: Transaction Type Name — aus dem zugehörigen Transaction Type übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "TransactionType",
+            "label": "transaction type"
+          },
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Transaction Type"
+      },
+      "Transactions.Amount": {
+        "table": "Transactions",
+        "field": "Amount",
+        "kind": "formula",
+        "rule": "Eine Transaction: Amount wird berechnet als der Quantity mal die Product Unit Price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "ProductUnitPrice",
+            "label": "product unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity mal Product Unit Price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Products": [
+        "Ein Product **muss** eine Unit Price und ein Reorder Level haben."
+      ],
+      "Transactions": [
+        "Eine Transaction **muss** auf genau einen Product verweisen.",
+        "Eine Transaction **muss** auf genau einen Transaction Type verweisen.",
+        "Eine Transaction **muss** ein Quantity und eine Transaction Date haben."
+      ]
+    },
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TransactionTypes": "Transaction Type",
+      "Products": "Product",
+      "Transactions": "Transaction"
+    }
+  },
+  "es": {
+    "fields": {
+      "TransactionTypes.Name": {
+        "table": "TransactionTypes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un transaction type: name es igual a transaction type ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction type ID"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un product: name es igual a product ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Product ID"
+      },
+      "Products.CurrentQuantity": {
+        "table": "Products",
+        "field": "CurrentQuantity",
+        "kind": "rollup",
+        "rule": "Un product: current quantity es el total de quantity entre los transactions relacionados con el product.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de quantity entre todos los transactions cuyo product es product ID"
+      },
+      "Products.IsLowStock": {
+        "table": "Products",
+        "field": "IsLowStock",
+        "kind": "formula",
+        "rule": "Un product se considera un low stock si el current quantity es menor que el reorder level.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "CurrentQuantity",
+            "label": "current quantity"
+          },
+          {
+            "table": "Products",
+            "field": "ReorderLevel",
+            "label": "reorder level"
+          }
+        ],
+        "structure": null,
+        "plain": "Current quantity es menor que reorder level"
+      },
+      "Products.ReorderStatus": {
+        "table": "Products",
+        "field": "ReorderStatus",
+        "kind": "formula",
+        "rule": "El campo «reorder status» del product se determina según la siguiente prioridad:\n1. «This needs to be reordered IMMEDIATELY!!», si el indicador «low stock» está activado;\n2. en todos los demás casos, «In Stock».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "IsLowStock",
+            "label": "is low stock"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «reorder status» del product se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«This needs to be reordered IMMEDIATELY!!»",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «low stock» está activado"
+              }
+            },
+            {
+              "value": "«In Stock»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is low stock, entonces \"This needs to be reordered IMMEDIATELY!!\", de lo contrario \"In Stock\""
+      },
+      "Transactions.Name": {
+        "table": "Transactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un transaction: name es igual a transaction ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "TransactionId",
+            "label": "transaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction ID"
+      },
+      "Transactions.ProductName": {
+        "table": "Transactions",
+        "field": "ProductName",
+        "kind": "lookup",
+        "rule": "Un transaction: product name — tomado del product vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del product vinculado"
+      },
+      "Transactions.ProductUnitPrice": {
+        "table": "Transactions",
+        "field": "ProductUnitPrice",
+        "kind": "lookup",
+        "rule": "Un transaction: product unit price — tomado del product vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El unit price del product vinculado"
+      },
+      "Transactions.TransactionTypeName": {
+        "table": "Transactions",
+        "field": "TransactionTypeName",
+        "kind": "lookup",
+        "rule": "Un transaction: transaction type name — tomado del transaction type vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "TransactionType",
+            "label": "transaction type"
+          },
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del transaction type vinculado"
+      },
+      "Transactions.Amount": {
+        "table": "Transactions",
+        "field": "Amount",
+        "kind": "formula",
+        "rule": "Un transaction: amount se calcula como el quantity por el product unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "ProductUnitPrice",
+            "label": "product unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity por product unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Products": [
+        "Un product **debe** tener un unit price y un reorder level."
+      ],
+      "Transactions": [
+        "Un transaction **debe** referenciar exactamente un product.",
+        "Un transaction **debe** referenciar exactamente un transaction type.",
+        "Un transaction **debe** tener un quantity y un transaction date."
+      ]
+    },
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TransactionTypes": "transaction type",
+      "Products": "product",
+      "Transactions": "transaction"
+    }
+  },
+  "fr": {
+    "fields": {
+      "TransactionTypes.Name": {
+        "table": "TransactionTypes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un transaction type : name est identique à transaction type ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction type ID"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un product : name est identique à product ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Product ID"
+      },
+      "Products.CurrentQuantity": {
+        "table": "Products",
+        "field": "CurrentQuantity",
+        "kind": "rollup",
+        "rule": "Un product : current quantity est le total de quantity sur les transactions liés à le product.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de quantity sur tous les transactions dont product est product ID"
+      },
+      "Products.IsLowStock": {
+        "table": "Products",
+        "field": "IsLowStock",
+        "kind": "formula",
+        "rule": "Un product est considéré comme un low stock si le current quantity est inférieur à le reorder level.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "CurrentQuantity",
+            "label": "current quantity"
+          },
+          {
+            "table": "Products",
+            "field": "ReorderLevel",
+            "label": "reorder level"
+          }
+        ],
+        "structure": null,
+        "plain": "Current quantity est inférieur à reorder level"
+      },
+      "Products.ReorderStatus": {
+        "table": "Products",
+        "field": "ReorderStatus",
+        "kind": "formula",
+        "rule": "Le champ « reorder status » du product est déterminé selon la priorité suivante :\n1. « This needs to be reordered IMMEDIATELY!! », si l'indicateur « low stock » est activé ;\n2. dans tous les autres cas, « In Stock ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "IsLowStock",
+            "label": "is low stock"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « reorder status » du product est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« This needs to be reordered IMMEDIATELY!! »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « low stock » est activé"
+              }
+            },
+            {
+              "value": "« In Stock »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is low stock, alors \"This needs to be reordered IMMEDIATELY!!\", sinon \"In Stock\""
+      },
+      "Transactions.Name": {
+        "table": "Transactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Une transaction : name est identique à transaction ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "TransactionId",
+            "label": "transaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction ID"
+      },
+      "Transactions.ProductName": {
+        "table": "Transactions",
+        "field": "ProductName",
+        "kind": "lookup",
+        "rule": "Une transaction : product name — repris du product lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du product lié"
+      },
+      "Transactions.ProductUnitPrice": {
+        "table": "Transactions",
+        "field": "ProductUnitPrice",
+        "kind": "lookup",
+        "rule": "Une transaction : product unit price — repris du product lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le unit price du product lié"
+      },
+      "Transactions.TransactionTypeName": {
+        "table": "Transactions",
+        "field": "TransactionTypeName",
+        "kind": "lookup",
+        "rule": "Une transaction : transaction type name — repris du transaction type lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "TransactionType",
+            "label": "transaction type"
+          },
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du transaction type lié"
+      },
+      "Transactions.Amount": {
+        "table": "Transactions",
+        "field": "Amount",
+        "kind": "formula",
+        "rule": "Une transaction : amount est calculé comme le quantity multiplié par le product unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "ProductUnitPrice",
+            "label": "product unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity fois product unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Products": [
+        "Un product **doit** avoir un unit price et un reorder level."
+      ],
+      "Transactions": [
+        "Une transaction **doit** référencer exactement un product.",
+        "Une transaction **doit** référencer exactement un transaction type.",
+        "Une transaction **doit** avoir un quantity et un transaction date."
+      ]
+    },
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TransactionTypes": "transaction type",
+      "Products": "product",
+      "Transactions": "transaction"
+    }
+  },
+  "hi": {
+    "fields": {
+      "TransactionTypes.Name": {
+        "table": "TransactionTypes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "transaction type का “name” उसके “transaction type ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction type ID"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "product का “name” उसके “product ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Product ID"
+      },
+      "Products.CurrentQuantity": {
+        "table": "Products",
+        "field": "CurrentQuantity",
+        "kind": "rollup",
+        "rule": "product का “current quantity” product से संबंधित “transactions” पर कुल “quantity” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “transactions” पर योग quantity, जिनका product product ID है"
+      },
+      "Products.IsLowStock": {
+        "table": "Products",
+        "field": "IsLowStock",
+        "kind": "formula",
+        "rule": "यदि current quantity reorder level से कम है, तो product “low stock” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "CurrentQuantity",
+            "label": "current quantity"
+          },
+          {
+            "table": "Products",
+            "field": "ReorderLevel",
+            "label": "reorder level"
+          }
+        ],
+        "structure": null,
+        "plain": "Current quantity reorder level से कम है"
+      },
+      "Products.ReorderStatus": {
+        "table": "Products",
+        "field": "ReorderStatus",
+        "kind": "formula",
+        "rule": "Product का “reorder status” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “This needs to be reordered IMMEDIATELY!!”, यदि “low stock” ध्वज लगा हुआ है;\n2. अन्य सभी स्थितियों में, “In Stock”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "IsLowStock",
+            "label": "is low stock"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Product का “reorder status” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“This needs to be reordered IMMEDIATELY!!”",
+              "when": {
+                "kind": "leaf",
+                "text": "“low stock” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "“In Stock”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि is low stock, तो \"This needs to be reordered IMMEDIATELY!!\", अन्यथा \"In Stock\""
+      },
+      "Transactions.Name": {
+        "table": "Transactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "transaction का “name” उसके “transaction ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "TransactionId",
+            "label": "transaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction ID"
+      },
+      "Transactions.ProductName": {
+        "table": "Transactions",
+        "field": "ProductName",
+        "kind": "lookup",
+        "rule": "transaction का “product name” — लिंक किए गए “product” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “product” का name"
+      },
+      "Transactions.ProductUnitPrice": {
+        "table": "Transactions",
+        "field": "ProductUnitPrice",
+        "kind": "lookup",
+        "rule": "transaction का “product unit price” — लिंक किए गए “product” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “product” का unit price"
+      },
+      "Transactions.TransactionTypeName": {
+        "table": "Transactions",
+        "field": "TransactionTypeName",
+        "kind": "lookup",
+        "rule": "transaction का “transaction type name” — लिंक किए गए “transaction type” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "TransactionType",
+            "label": "transaction type"
+          },
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “transaction type” का name"
+      },
+      "Transactions.Amount": {
+        "table": "Transactions",
+        "field": "Amount",
+        "kind": "formula",
+        "rule": "transaction का “amount” quantity गुणा product unit price के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "ProductUnitPrice",
+            "label": "product unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity गुणा product unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Products": [
+        "product को unit price और reorder level रखना **अनिवार्य** है।"
+      ],
+      "Transactions": [
+        "transaction को ठीक एक “product” का संदर्भ देना **अनिवार्य** है।",
+        "transaction को ठीक एक “transaction type” का संदर्भ देना **अनिवार्य** है।",
+        "transaction को quantity और transaction date रखना **अनिवार्य** है।"
+      ]
+    },
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "TransactionTypes": "transaction type",
+      "Products": "product",
+      "Transactions": "transaction"
+    }
+  },
+  "id": {
+    "fields": {
+      "TransactionTypes.Name": {
+        "table": "TransactionTypes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap transaction type, name sama dengan transaction type ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction type ID"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap product, name sama dengan product ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Product ID"
+      },
+      "Products.CurrentQuantity": {
+        "table": "Products",
+        "field": "CurrentQuantity",
+        "kind": "rollup",
+        "rule": "Untuk setiap product, current quantity adalah nilai total quantity pada seluruh transactions yang terkait dengan product tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total quantity pada semua transactions dengan syarat product adalah product ID"
+      },
+      "Products.IsLowStock": {
+        "table": "Products",
+        "field": "IsLowStock",
+        "kind": "formula",
+        "rule": "Setiap product dianggap “low stock” jika current quantity kurang dari reorder level.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "CurrentQuantity",
+            "label": "current quantity"
+          },
+          {
+            "table": "Products",
+            "field": "ReorderLevel",
+            "label": "reorder level"
+          }
+        ],
+        "structure": null,
+        "plain": "Current quantity kurang dari reorder level"
+      },
+      "Products.ReorderStatus": {
+        "table": "Products",
+        "field": "ReorderStatus",
+        "kind": "formula",
+        "rule": "Untuk setiap product, reorder status ditentukan menurut urutan prioritas berikut:\n1. “This needs to be reordered IMMEDIATELY!!”, jika penanda “low stock” aktif;\n2. dalam semua kasus lainnya, “In Stock”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "IsLowStock",
+            "label": "is low stock"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap product, reorder status ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“This needs to be reordered IMMEDIATELY!!”",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “low stock” aktif"
+              }
+            },
+            {
+              "value": "“In Stock”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika is low stock maka \"This needs to be reordered IMMEDIATELY!!\", selain itu \"In Stock\""
+      },
+      "Transactions.Name": {
+        "table": "Transactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap transaction, name sama dengan transaction ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "TransactionId",
+            "label": "transaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction ID"
+      },
+      "Transactions.ProductName": {
+        "table": "Transactions",
+        "field": "ProductName",
+        "kind": "lookup",
+        "rule": "Untuk setiap transaction, product name diambil dari product yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari product yang tertaut"
+      },
+      "Transactions.ProductUnitPrice": {
+        "table": "Transactions",
+        "field": "ProductUnitPrice",
+        "kind": "lookup",
+        "rule": "Untuk setiap transaction, product unit price diambil dari product yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Unit price dari product yang tertaut"
+      },
+      "Transactions.TransactionTypeName": {
+        "table": "Transactions",
+        "field": "TransactionTypeName",
+        "kind": "lookup",
+        "rule": "Untuk setiap transaction, transaction type name diambil dari transaction type yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "TransactionType",
+            "label": "transaction type"
+          },
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari transaction type yang tertaut"
+      },
+      "Transactions.Amount": {
+        "table": "Transactions",
+        "field": "Amount",
+        "kind": "formula",
+        "rule": "Untuk setiap transaction, amount dihitung sebagai quantity dikali product unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "ProductUnitPrice",
+            "label": "product unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity dikali product unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Products": [
+        "Setiap product **harus** memiliki unit price dan reorder level."
+      ],
+      "Transactions": [
+        "Setiap transaction **harus** merujuk pada tepat satu product.",
+        "Setiap transaction **harus** merujuk pada tepat satu transaction type.",
+        "Setiap transaction **harus** memiliki quantity dan transaction date."
+      ]
+    },
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TransactionTypes": "transaction type",
+      "Products": "product",
+      "Transactions": "transaction"
+    }
+  },
+  "it": {
+    "fields": {
+      "TransactionTypes.Name": {
+        "table": "TransactionTypes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un transaction type: name è uguale a transaction type ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction type ID"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un product: name è uguale a product ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Product ID"
+      },
+      "Products.CurrentQuantity": {
+        "table": "Products",
+        "field": "CurrentQuantity",
+        "kind": "rollup",
+        "rule": "Un product: current quantity è il totale di quantity tra i transactions collegati a il product.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di quantity su tutti i transactions il cui product è product ID"
+      },
+      "Products.IsLowStock": {
+        "table": "Products",
+        "field": "IsLowStock",
+        "kind": "formula",
+        "rule": "Un product è considerato un low stock se il current quantity è minore di il reorder level.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "CurrentQuantity",
+            "label": "current quantity"
+          },
+          {
+            "table": "Products",
+            "field": "ReorderLevel",
+            "label": "reorder level"
+          }
+        ],
+        "structure": null,
+        "plain": "Current quantity è minore di reorder level"
+      },
+      "Products.ReorderStatus": {
+        "table": "Products",
+        "field": "ReorderStatus",
+        "kind": "formula",
+        "rule": "Il campo “reorder status” del product è determinato secondo la seguente priorità:\n1. «This needs to be reordered IMMEDIATELY!!», se l'indicatore “low stock” è attivo;\n2. in tutti gli altri casi, «In Stock».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "IsLowStock",
+            "label": "is low stock"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “reorder status” del product è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«This needs to be reordered IMMEDIATELY!!»",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “low stock” è attivo"
+              }
+            },
+            {
+              "value": "«In Stock»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is low stock, allora \"This needs to be reordered IMMEDIATELY!!\", altrimenti \"In Stock\""
+      },
+      "Transactions.Name": {
+        "table": "Transactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un transaction: name è uguale a transaction ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "TransactionId",
+            "label": "transaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction ID"
+      },
+      "Transactions.ProductName": {
+        "table": "Transactions",
+        "field": "ProductName",
+        "kind": "lookup",
+        "rule": "Un transaction: product name — ripreso dal product collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del product collegato"
+      },
+      "Transactions.ProductUnitPrice": {
+        "table": "Transactions",
+        "field": "ProductUnitPrice",
+        "kind": "lookup",
+        "rule": "Un transaction: product unit price — ripreso dal product collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il unit price del product collegato"
+      },
+      "Transactions.TransactionTypeName": {
+        "table": "Transactions",
+        "field": "TransactionTypeName",
+        "kind": "lookup",
+        "rule": "Un transaction: transaction type name — ripreso dal transaction type collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "TransactionType",
+            "label": "transaction type"
+          },
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del transaction type collegato"
+      },
+      "Transactions.Amount": {
+        "table": "Transactions",
+        "field": "Amount",
+        "kind": "formula",
+        "rule": "Un transaction: amount è calcolato come il quantity per il product unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "ProductUnitPrice",
+            "label": "product unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity per product unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Products": [
+        "Un product **deve** avere un unit price e un reorder level."
+      ],
+      "Transactions": [
+        "Un transaction **deve** referenziare esattamente un product.",
+        "Un transaction **deve** referenziare esattamente un transaction type.",
+        "Un transaction **deve** avere un quantity e un transaction date."
+      ]
+    },
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TransactionTypes": "transaction type",
+      "Products": "product",
+      "Transactions": "transaction"
+    }
+  },
+  "ja": {
+    "fields": {
+      "TransactionTypes.Name": {
+        "table": "TransactionTypes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "transaction typeの「name」は transaction type ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction type ID"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "productの「name」は product ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Product ID"
+      },
+      "Products.CurrentQuantity": {
+        "table": "Products",
+        "field": "CurrentQuantity",
+        "kind": "rollup",
+        "rule": "productの「current quantity」は productに関連する「transactions」全体での「quantity」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Product が product ID であるすべての「transactions」にわたる quantity の合計"
+      },
+      "Products.IsLowStock": {
+        "table": "Products",
+        "field": "IsLowStock",
+        "kind": "formula",
+        "rule": "current quantity が reorder level より小さい場合、productは「Low Stock」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "CurrentQuantity",
+            "label": "current quantity"
+          },
+          {
+            "table": "Products",
+            "field": "ReorderLevel",
+            "label": "reorder level"
+          }
+        ],
+        "structure": null,
+        "plain": "Current quantity が reorder level より小さい"
+      },
+      "Products.ReorderStatus": {
+        "table": "Products",
+        "field": "ReorderStatus",
+        "kind": "formula",
+        "rule": "Productの「reorder status」は、次の優先順位で決まります:\n1. フラグ「low stock」が設定されている場合は 「This needs to be reordered IMMEDIATELY!!」;\n2. それ以外の場合は 「In Stock」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "IsLowStock",
+            "label": "is low stock"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Productの「reorder status」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「This needs to be reordered IMMEDIATELY!!」",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「low stock」が設定されている"
+              }
+            },
+            {
+              "value": "「In Stock」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is low stockなら \"This needs to be reordered IMMEDIATELY!!\"、そうでなければ \"In Stock\""
+      },
+      "Transactions.Name": {
+        "table": "Transactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "transactionの「name」は transaction ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "TransactionId",
+            "label": "transaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction ID"
+      },
+      "Transactions.ProductName": {
+        "table": "Transactions",
+        "field": "ProductName",
+        "kind": "lookup",
+        "rule": "transactionの「product name」— リンクされた「product」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「product」の name"
+      },
+      "Transactions.ProductUnitPrice": {
+        "table": "Transactions",
+        "field": "ProductUnitPrice",
+        "kind": "lookup",
+        "rule": "transactionの「product unit price」— リンクされた「product」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「product」の unit price"
+      },
+      "Transactions.TransactionTypeName": {
+        "table": "Transactions",
+        "field": "TransactionTypeName",
+        "kind": "lookup",
+        "rule": "transactionの「transaction type name」— リンクされた「transaction type」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "TransactionType",
+            "label": "transaction type"
+          },
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「transaction type」の name"
+      },
+      "Transactions.Amount": {
+        "table": "Transactions",
+        "field": "Amount",
+        "kind": "formula",
+        "rule": "transactionの「amount」は quantity かける product unit price として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "ProductUnitPrice",
+            "label": "product unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity かける product unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Products": [
+        "productは unit priceおよびreorder level を持た**なければなりません**。"
+      ],
+      "Transactions": [
+        "transactionは「product」をちょうど 1 件参照し**なければなりません**。",
+        "transactionは「transaction type」をちょうど 1 件参照し**なければなりません**。",
+        "transactionは quantityおよびtransaction date を持た**なければなりません**。"
+      ]
+    },
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "TransactionTypes": "transaction type",
+      "Products": "product",
+      "Transactions": "transaction"
+    }
+  },
+  "ko": {
+    "fields": {
+      "TransactionTypes.Name": {
+        "table": "TransactionTypes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘transaction type’ 레코드의 ‘name’ 값은 같은 레코드의 ‘transaction type ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction type ID"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘product’ 레코드의 ‘name’ 값은 같은 레코드의 ‘product ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Product ID"
+      },
+      "Products.CurrentQuantity": {
+        "table": "Products",
+        "field": "CurrentQuantity",
+        "kind": "rollup",
+        "rule": "‘product’ 레코드의 ‘current quantity’ 값은 해당 ‘product’ 레코드에 연결된 모든 ‘transactions’ 레코드의 총 ‘quantity’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(product 값이 product ID임)에 맞는 모든 transactions 레코드의 quantity 합계"
+      },
+      "Products.IsLowStock": {
+        "table": "Products",
+        "field": "IsLowStock",
+        "kind": "formula",
+        "rule": "‘current quantity’ 값이 ‘reorder level’보다 작은 경우, ‘product’ 레코드는 ‘low stock’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "CurrentQuantity",
+            "label": "current quantity"
+          },
+          {
+            "table": "Products",
+            "field": "ReorderLevel",
+            "label": "reorder level"
+          }
+        ],
+        "structure": null,
+        "plain": "Current quantity 값이 reorder level보다 작음"
+      },
+      "Products.ReorderStatus": {
+        "table": "Products",
+        "field": "ReorderStatus",
+        "kind": "formula",
+        "rule": "‘product’ 레코드의 ‘reorder status’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘low stock’ 플래그가 설정된 경우: “This needs to be reordered IMMEDIATELY!!”\n2. 그 밖의 경우: “In Stock”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "IsLowStock",
+            "label": "is low stock"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘product’ 레코드의 ‘reorder status’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“This needs to be reordered IMMEDIATELY!!”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘low stock’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "“In Stock”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(is low stock)이 성립하면 \"This needs to be reordered IMMEDIATELY!!\", 그렇지 않으면 \"In Stock\""
+      },
+      "Transactions.Name": {
+        "table": "Transactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘transaction’ 레코드의 ‘name’ 값은 같은 레코드의 ‘transaction ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "TransactionId",
+            "label": "transaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction ID"
+      },
+      "Transactions.ProductName": {
+        "table": "Transactions",
+        "field": "ProductName",
+        "kind": "lookup",
+        "rule": "‘transaction’ 레코드의 ‘product name’ 값은 연결된 ‘product’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 product 레코드의 name"
+      },
+      "Transactions.ProductUnitPrice": {
+        "table": "Transactions",
+        "field": "ProductUnitPrice",
+        "kind": "lookup",
+        "rule": "‘transaction’ 레코드의 ‘product unit price’ 값은 연결된 ‘product’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 product 레코드의 unit price"
+      },
+      "Transactions.TransactionTypeName": {
+        "table": "Transactions",
+        "field": "TransactionTypeName",
+        "kind": "lookup",
+        "rule": "‘transaction’ 레코드의 ‘transaction type name’ 값은 연결된 ‘transaction type’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "TransactionType",
+            "label": "transaction type"
+          },
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 transaction type 레코드의 name"
+      },
+      "Transactions.Amount": {
+        "table": "Transactions",
+        "field": "Amount",
+        "kind": "formula",
+        "rule": "‘transaction’ 레코드의 ‘amount’ 값은 다음과 같이 계산됩니다: ‘quantity’ 곱하기 ‘product unit price’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "ProductUnitPrice",
+            "label": "product unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity 곱하기 product unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Products": [
+        "‘product’ 레코드는 ‘unit price’ 및 ‘reorder level’ 값을 포함**해야 합니다**."
+      ],
+      "Transactions": [
+        "‘transaction’ 레코드는 ‘product’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘transaction’ 레코드는 ‘transaction type’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘transaction’ 레코드는 ‘quantity’ 및 ‘transaction date’ 값을 포함**해야 합니다**."
+      ]
+    },
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TransactionTypes": "transaction type",
+      "Products": "product",
+      "Transactions": "transaction"
+    }
+  },
+  "nl": {
+    "fields": {
+      "TransactionTypes.Name": {
+        "table": "TransactionTypes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een transaction type: name is gelijk aan transaction type ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction type ID"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een product: name is gelijk aan product ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Product ID"
+      },
+      "Products.CurrentQuantity": {
+        "table": "Products",
+        "field": "CurrentQuantity",
+        "kind": "rollup",
+        "rule": "Een product: current quantity is het totaal van quantity over de transactions gekoppeld aan de product.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van quantity over alle transactions waarvan product is product ID"
+      },
+      "Products.IsLowStock": {
+        "table": "Products",
+        "field": "IsLowStock",
+        "kind": "formula",
+        "rule": "Een product geldt als een low stock als de current quantity kleiner is dan de reorder level.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "CurrentQuantity",
+            "label": "current quantity"
+          },
+          {
+            "table": "Products",
+            "field": "ReorderLevel",
+            "label": "reorder level"
+          }
+        ],
+        "structure": null,
+        "plain": "Current quantity is kleiner dan reorder level"
+      },
+      "Products.ReorderStatus": {
+        "table": "Products",
+        "field": "ReorderStatus",
+        "kind": "formula",
+        "rule": "Het veld ‘reorder status’ van de product wordt bepaald volgens de volgende prioriteit:\n1. ‘This needs to be reordered IMMEDIATELY!!’, als de vlag ‘low stock’ is gezet;\n2. in alle andere gevallen ‘In Stock’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "IsLowStock",
+            "label": "is low stock"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘reorder status’ van de product wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘This needs to be reordered IMMEDIATELY!!’",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘low stock’ is gezet"
+              }
+            },
+            {
+              "value": "‘In Stock’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als is low stock, dan \"This needs to be reordered IMMEDIATELY!!\", anders \"In Stock\""
+      },
+      "Transactions.Name": {
+        "table": "Transactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een transaction: name is gelijk aan transaction ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "TransactionId",
+            "label": "transaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction ID"
+      },
+      "Transactions.ProductName": {
+        "table": "Transactions",
+        "field": "ProductName",
+        "kind": "lookup",
+        "rule": "Een transaction: product name — overgenomen van de gekoppelde product.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde product"
+      },
+      "Transactions.ProductUnitPrice": {
+        "table": "Transactions",
+        "field": "ProductUnitPrice",
+        "kind": "lookup",
+        "rule": "Een transaction: product unit price — overgenomen van de gekoppelde product.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De unit price van de gekoppelde product"
+      },
+      "Transactions.TransactionTypeName": {
+        "table": "Transactions",
+        "field": "TransactionTypeName",
+        "kind": "lookup",
+        "rule": "Een transaction: transaction type name — overgenomen van de gekoppelde transaction type.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "TransactionType",
+            "label": "transaction type"
+          },
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde transaction type"
+      },
+      "Transactions.Amount": {
+        "table": "Transactions",
+        "field": "Amount",
+        "kind": "formula",
+        "rule": "Een transaction: amount wordt berekend als de quantity maal de product unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "ProductUnitPrice",
+            "label": "product unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity maal product unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Products": [
+        "Een product **moet** een unit price en een reorder level hebben."
+      ],
+      "Transactions": [
+        "Een transaction **moet** naar precies één product verwijzen.",
+        "Een transaction **moet** naar precies één transaction type verwijzen.",
+        "Een transaction **moet** een quantity en een transaction date hebben."
+      ]
+    },
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TransactionTypes": "transaction type",
+      "Products": "product",
+      "Transactions": "transaction"
+    }
+  },
+  "pt": {
+    "fields": {
+      "TransactionTypes.Name": {
+        "table": "TransactionTypes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um transaction type: name é igual a transaction type ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction type ID"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um product: name é igual a product ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Product ID"
+      },
+      "Products.CurrentQuantity": {
+        "table": "Products",
+        "field": "CurrentQuantity",
+        "kind": "rollup",
+        "rule": "Um product: current quantity é o total de quantity entre os transactions relacionados a o product.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de quantity entre todos os transactions cujo product é product ID"
+      },
+      "Products.IsLowStock": {
+        "table": "Products",
+        "field": "IsLowStock",
+        "kind": "formula",
+        "rule": "Um product é considerado um low stock se o current quantity é menor que o reorder level.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "CurrentQuantity",
+            "label": "current quantity"
+          },
+          {
+            "table": "Products",
+            "field": "ReorderLevel",
+            "label": "reorder level"
+          }
+        ],
+        "structure": null,
+        "plain": "Current quantity é menor que reorder level"
+      },
+      "Products.ReorderStatus": {
+        "table": "Products",
+        "field": "ReorderStatus",
+        "kind": "formula",
+        "rule": "O campo “reorder status” do product é determinado pela seguinte prioridade:\n1. “This needs to be reordered IMMEDIATELY!!”, se o indicador “low stock” está ativado;\n2. em todos os outros casos, “In Stock”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "IsLowStock",
+            "label": "is low stock"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “reorder status” do product é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“This needs to be reordered IMMEDIATELY!!”",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “low stock” está ativado"
+              }
+            },
+            {
+              "value": "“In Stock”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is low stock, então \"This needs to be reordered IMMEDIATELY!!\", caso contrário \"In Stock\""
+      },
+      "Transactions.Name": {
+        "table": "Transactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um transaction: name é igual a transaction ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "TransactionId",
+            "label": "transaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction ID"
+      },
+      "Transactions.ProductName": {
+        "table": "Transactions",
+        "field": "ProductName",
+        "kind": "lookup",
+        "rule": "Um transaction: product name — obtido do product vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do product vinculado"
+      },
+      "Transactions.ProductUnitPrice": {
+        "table": "Transactions",
+        "field": "ProductUnitPrice",
+        "kind": "lookup",
+        "rule": "Um transaction: product unit price — obtido do product vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O unit price do product vinculado"
+      },
+      "Transactions.TransactionTypeName": {
+        "table": "Transactions",
+        "field": "TransactionTypeName",
+        "kind": "lookup",
+        "rule": "Um transaction: transaction type name — obtido do transaction type vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "TransactionType",
+            "label": "transaction type"
+          },
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do transaction type vinculado"
+      },
+      "Transactions.Amount": {
+        "table": "Transactions",
+        "field": "Amount",
+        "kind": "formula",
+        "rule": "Um transaction: amount é calculado como o quantity vezes a product unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "ProductUnitPrice",
+            "label": "product unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity vezes product unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Products": [
+        "Um product **deve** ter uma unit price e um reorder level."
+      ],
+      "Transactions": [
+        "Um transaction **deve** referenciar exatamente um product.",
+        "Um transaction **deve** referenciar exatamente um transaction type.",
+        "Um transaction **deve** ter um quantity e um transaction date."
+      ]
+    },
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TransactionTypes": "transaction type",
+      "Products": "product",
+      "Transactions": "transaction"
+    }
+  },
+  "ru": {
+    "fields": {
+      "TransactionTypes.Name": {
+        "table": "TransactionTypes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Transaction type: «name» совпадает с transaction type ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction type ID"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Product: «name» совпадает с product ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Product ID"
+      },
+      "Products.CurrentQuantity": {
+        "table": "Products",
+        "field": "CurrentQuantity",
+        "kind": "rollup",
+        "rule": "Product: «current quantity» — это сумма «quantity» по записям «transactions», связанным с product.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма quantity по всем «transactions», у которых product равно product ID"
+      },
+      "Products.IsLowStock": {
+        "table": "Products",
+        "field": "IsLowStock",
+        "kind": "formula",
+        "rule": "Product считается «low stock», если current quantity меньше reorder level.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "CurrentQuantity",
+            "label": "current quantity"
+          },
+          {
+            "table": "Products",
+            "field": "ReorderLevel",
+            "label": "reorder level"
+          }
+        ],
+        "structure": null,
+        "plain": "Current quantity меньше reorder level"
+      },
+      "Products.ReorderStatus": {
+        "table": "Products",
+        "field": "ReorderStatus",
+        "kind": "formula",
+        "rule": "Поле «reorder status» (Product) определяется по следующему приоритету:\n1. «This needs to be reordered IMMEDIATELY!!», если признак «low stock» установлен;\n2. во всех остальных случаях — «In Stock».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "IsLowStock",
+            "label": "is low stock"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «reorder status» (Product) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«This needs to be reordered IMMEDIATELY!!»",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «low stock» установлен"
+              }
+            },
+            {
+              "value": "«In Stock»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если is low stock, то \"This needs to be reordered IMMEDIATELY!!\", иначе \"In Stock\""
+      },
+      "Transactions.Name": {
+        "table": "Transactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Transaction: «name» совпадает с transaction ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "TransactionId",
+            "label": "transaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction ID"
+      },
+      "Transactions.ProductName": {
+        "table": "Transactions",
+        "field": "ProductName",
+        "kind": "lookup",
+        "rule": "Transaction: «product name» — берётся из связанного «product».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «product»"
+      },
+      "Transactions.ProductUnitPrice": {
+        "table": "Transactions",
+        "field": "ProductUnitPrice",
+        "kind": "lookup",
+        "rule": "Transaction: «product unit price» — берётся из связанного «product».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Unit price связанного «product»"
+      },
+      "Transactions.TransactionTypeName": {
+        "table": "Transactions",
+        "field": "TransactionTypeName",
+        "kind": "lookup",
+        "rule": "Transaction: «transaction type name» — берётся из связанного «transaction type».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "TransactionType",
+            "label": "transaction type"
+          },
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «transaction type»"
+      },
+      "Transactions.Amount": {
+        "table": "Transactions",
+        "field": "Amount",
+        "kind": "formula",
+        "rule": "Transaction: «amount» вычисляется как quantity умножить на product unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "ProductUnitPrice",
+            "label": "product unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity умножить на product unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Products": [
+        "Product **обязан** иметь unit price и reorder level."
+      ],
+      "Transactions": [
+        "Transaction **обязан** ссылаться ровно на один «product».",
+        "Transaction **обязан** ссылаться ровно на один «transaction type».",
+        "Transaction **обязан** иметь quantity и transaction date."
+      ]
+    },
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TransactionTypes": "transaction type",
+      "Products": "product",
+      "Transactions": "transaction"
+    }
+  },
+  "tr": {
+    "fields": {
+      "TransactionTypes.Name": {
+        "table": "TransactionTypes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“transaction type” kaydının “name” alanı, “transaction type ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction type ID"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“product” kaydının “name” alanı, “product ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Product ID"
+      },
+      "Products.CurrentQuantity": {
+        "table": "Products",
+        "field": "CurrentQuantity",
+        "kind": "rollup",
+        "rule": "“product” kaydının “current quantity” alanı, “product” kaydıyla ilişkili “transactions” kayıtları üzerinden hesaplanan toplam “quantity” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Product değeri product ID olan tüm transactions kayıtlarındaki quantity değerlerinin toplamı"
+      },
+      "Products.IsLowStock": {
+        "table": "Products",
+        "field": "IsLowStock",
+        "kind": "formula",
+        "rule": "“product” kaydı, “current quantity” alanı “reorder level” alanı değerinden küçük ise “low stock” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "CurrentQuantity",
+            "label": "current quantity"
+          },
+          {
+            "table": "Products",
+            "field": "ReorderLevel",
+            "label": "reorder level"
+          }
+        ],
+        "structure": null,
+        "plain": "Current quantity, reorder level değerinden küçük"
+      },
+      "Products.ReorderStatus": {
+        "table": "Products",
+        "field": "ReorderStatus",
+        "kind": "formula",
+        "rule": "“product” kaydının “reorder status” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “low stock” bayrağı etkin ise “This needs to be reordered IMMEDIATELY!!”;\n2. diğer tüm durumlarda “In Stock”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "IsLowStock",
+            "label": "is low stock"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“product” kaydının “reorder status” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“This needs to be reordered IMMEDIATELY!!”",
+              "when": {
+                "kind": "leaf",
+                "text": "“low stock” bayrağı etkin"
+              }
+            },
+            {
+              "value": "“In Stock”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is low stock ise \"This needs to be reordered IMMEDIATELY!!\", aksi takdirde \"In Stock\""
+      },
+      "Transactions.Name": {
+        "table": "Transactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“transaction” kaydının “name” alanı, “transaction ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "TransactionId",
+            "label": "transaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction ID"
+      },
+      "Transactions.ProductName": {
+        "table": "Transactions",
+        "field": "ProductName",
+        "kind": "lookup",
+        "rule": "“transaction” kaydının “product name” alanı, “product” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı product kaydının name değeri"
+      },
+      "Transactions.ProductUnitPrice": {
+        "table": "Transactions",
+        "field": "ProductUnitPrice",
+        "kind": "lookup",
+        "rule": "“transaction” kaydının “product unit price” alanı, “product” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı product kaydının unit price değeri"
+      },
+      "Transactions.TransactionTypeName": {
+        "table": "Transactions",
+        "field": "TransactionTypeName",
+        "kind": "lookup",
+        "rule": "“transaction” kaydının “transaction type name” alanı, “transaction type” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "TransactionType",
+            "label": "transaction type"
+          },
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı transaction type kaydının name değeri"
+      },
+      "Transactions.Amount": {
+        "table": "Transactions",
+        "field": "Amount",
+        "kind": "formula",
+        "rule": "“transaction” kaydının “amount” alanı, “quantity” alanı çarpı “product unit price” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "ProductUnitPrice",
+            "label": "product unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity çarpı product unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Products": [
+        "“product” kaydı, “unit price” alanı ve “reorder level” alanı dolu olmak **zorundadır**."
+      ],
+      "Transactions": [
+        "“transaction” kaydı, tam olarak bir “product” kaydına referans vermek **zorundadır**.",
+        "“transaction” kaydı, tam olarak bir “transaction type” kaydına referans vermek **zorundadır**.",
+        "“transaction” kaydı, “quantity” alanı ve “transaction date” alanı dolu olmak **zorundadır**."
+      ]
+    },
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TransactionTypes": "transaction type",
+      "Products": "product",
+      "Transactions": "transaction"
+    }
+  },
+  "vi": {
+    "fields": {
+      "TransactionTypes.Name": {
+        "table": "TransactionTypes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi transaction type có cùng giá trị với trường “transaction type ID” của chính transaction type đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction type ID"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi product có cùng giá trị với trường “product ID” của chính product đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Product ID"
+      },
+      "Products.CurrentQuantity": {
+        "table": "Products",
+        "field": "CurrentQuantity",
+        "kind": "rollup",
+        "rule": "Trường “current quantity” của mỗi product là giá trị tổng cộng của trường “quantity” trên các transactions liên quan đến product đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng quantity trên tất cả transactions có product là product ID"
+      },
+      "Products.IsLowStock": {
+        "table": "Products",
+        "field": "IsLowStock",
+        "kind": "formula",
+        "rule": "Mỗi product được coi là “low stock” nếu current quantity nhỏ hơn reorder level.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "CurrentQuantity",
+            "label": "current quantity"
+          },
+          {
+            "table": "Products",
+            "field": "ReorderLevel",
+            "label": "reorder level"
+          }
+        ],
+        "structure": null,
+        "plain": "Current quantity nhỏ hơn reorder level"
+      },
+      "Products.ReorderStatus": {
+        "table": "Products",
+        "field": "ReorderStatus",
+        "kind": "formula",
+        "rule": "Trường “reorder status” của mỗi product được xác định theo thứ tự ưu tiên sau:\n1. “This needs to be reordered IMMEDIATELY!!”, nếu cờ “low stock” được bật;\n2. trong mọi trường hợp còn lại, “In Stock”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "IsLowStock",
+            "label": "is low stock"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “reorder status” của mỗi product được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“This needs to be reordered IMMEDIATELY!!”",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “low stock” được bật"
+              }
+            },
+            {
+              "value": "“In Stock”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu is low stock thì \"This needs to be reordered IMMEDIATELY!!\", nếu không thì \"In Stock\""
+      },
+      "Transactions.Name": {
+        "table": "Transactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi transaction có cùng giá trị với trường “transaction ID” của chính transaction đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "TransactionId",
+            "label": "transaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction ID"
+      },
+      "Transactions.ProductName": {
+        "table": "Transactions",
+        "field": "ProductName",
+        "kind": "lookup",
+        "rule": "Trường “product name” của mỗi transaction được lấy từ bản ghi liên kết qua trường “product”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua product"
+      },
+      "Transactions.ProductUnitPrice": {
+        "table": "Transactions",
+        "field": "ProductUnitPrice",
+        "kind": "lookup",
+        "rule": "Trường “product unit price” của mỗi transaction được lấy từ bản ghi liên kết qua trường “product”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Unit price của bản ghi liên kết qua product"
+      },
+      "Transactions.TransactionTypeName": {
+        "table": "Transactions",
+        "field": "TransactionTypeName",
+        "kind": "lookup",
+        "rule": "Trường “transaction type name” của mỗi transaction được lấy từ bản ghi liên kết qua trường “transaction type”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "TransactionType",
+            "label": "transaction type"
+          },
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua transaction type"
+      },
+      "Transactions.Amount": {
+        "table": "Transactions",
+        "field": "Amount",
+        "kind": "formula",
+        "rule": "Trường “amount” của mỗi transaction được tính bằng quantity nhân product unit price.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "ProductUnitPrice",
+            "label": "product unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity nhân product unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Products": [
+        "Mỗi product **phải** có unit price và reorder level."
+      ],
+      "Transactions": [
+        "Mỗi transaction **phải** tham chiếu đến đúng một product.",
+        "Mỗi transaction **phải** tham chiếu đến đúng một transaction type.",
+        "Mỗi transaction **phải** có quantity và transaction date."
+      ]
+    },
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "TransactionTypes": "transaction type",
+      "Products": "product",
+      "Transactions": "transaction"
+    }
+  },
+  "zh": {
+    "fields": {
+      "TransactionTypes.Name": {
+        "table": "TransactionTypes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "transaction type的“name”与 transaction type ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction type ID"
+      },
+      "Products.Name": {
+        "table": "Products",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "product的“name”与 product ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Product ID"
+      },
+      "Products.CurrentQuantity": {
+        "table": "Products",
+        "field": "CurrentQuantity",
+        "kind": "rollup",
+        "rule": "product的“current quantity”为 与product相关的所有“transactions”的“quantity”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有product为product ID的“transactions”的quantity的总和"
+      },
+      "Products.IsLowStock": {
+        "table": "Products",
+        "field": "IsLowStock",
+        "kind": "formula",
+        "rule": "当current quantity小于reorder level时,product被视为“Low Stock”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "CurrentQuantity",
+            "label": "current quantity"
+          },
+          {
+            "table": "Products",
+            "field": "ReorderLevel",
+            "label": "reorder level"
+          }
+        ],
+        "structure": null,
+        "plain": "Current quantity小于reorder level"
+      },
+      "Products.ReorderStatus": {
+        "table": "Products",
+        "field": "ReorderStatus",
+        "kind": "formula",
+        "rule": "Product的“reorder status”按以下优先级确定:\n1. 当标志“low stock”已设置时,取 “This needs to be reordered IMMEDIATELY!!”;\n2. 其余情况取 “In Stock”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "IsLowStock",
+            "label": "is low stock"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Product的“reorder status”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“This needs to be reordered IMMEDIATELY!!”",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“low stock”已设置"
+              }
+            },
+            {
+              "value": "“In Stock”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若is low stock,则\"This needs to be reordered IMMEDIATELY!!\",否则\"In Stock\""
+      },
+      "Transactions.Name": {
+        "table": "Transactions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "transaction的“name”与 transaction ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "TransactionId",
+            "label": "transaction ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Transaction ID"
+      },
+      "Transactions.ProductName": {
+        "table": "Transactions",
+        "field": "ProductName",
+        "kind": "lookup",
+        "rule": "transaction的“product name”——取自所关联的“product”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“product”的name"
+      },
+      "Transactions.ProductUnitPrice": {
+        "table": "Transactions",
+        "field": "ProductUnitPrice",
+        "kind": "lookup",
+        "rule": "transaction的“product unit price”——取自所关联的“product”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Products",
+            "field": "UnitPrice",
+            "label": "unit price"
+          },
+          {
+            "table": "Transactions",
+            "field": "Product",
+            "label": "product"
+          },
+          {
+            "table": "Products",
+            "field": "ProductId",
+            "label": "product ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“product”的unit price"
+      },
+      "Transactions.TransactionTypeName": {
+        "table": "Transactions",
+        "field": "TransactionTypeName",
+        "kind": "lookup",
+        "rule": "transaction的“transaction type name”——取自所关联的“transaction type”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TransactionTypes",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Transactions",
+            "field": "TransactionType",
+            "label": "transaction type"
+          },
+          {
+            "table": "TransactionTypes",
+            "field": "TransactionTypeId",
+            "label": "transaction type ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“transaction type”的name"
+      },
+      "Transactions.Amount": {
+        "table": "Transactions",
+        "field": "Amount",
+        "kind": "formula",
+        "rule": "transaction的“amount”按 quantity乘product unit price 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Transactions",
+            "field": "Quantity",
+            "label": "quantity"
+          },
+          {
+            "table": "Transactions",
+            "field": "ProductUnitPrice",
+            "label": "product unit price"
+          }
+        ],
+        "structure": null,
+        "plain": "Quantity乘product unit price"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Products": [
+        "product**必须**具有unit price且reorder level。"
+      ],
+      "Transactions": [
+        "transaction**必须**恰好引用一个“product”。",
+        "transaction**必须**恰好引用一个“transaction type”。",
+        "transaction**必须**具有quantity且transaction date。"
+      ]
+    },
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "TransactionTypes": "transaction type",

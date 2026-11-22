@@ -468,7 +468,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -742,6 +757,4356 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "Capabilities": "capability",
+      "Intelligences": "intelligence",
+      "Assessments": "assessment"
+    }
+  },
+  "ar": {
+    "fields": {
+      "Capabilities.Name": {
+        "table": "Capabilities",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «capability» يطابق حقل «capabilities ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Capabilities ID"
+      },
+      "Intelligences.Name": {
+        "table": "Intelligences",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «intelligence» يطابق حقل «intelligences ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Intelligences ID"
+      },
+      "Intelligences.AssessmentCount": {
+        "table": "Intelligences",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "حقل «assessment count» في سجل «intelligence» هو عدد سجلات «assessments» المرتبطة بسجل «intelligence».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «assessments» التي يتحقق فيها أنّ حقل «intelligence» يساوي intelligences ID"
+      },
+      "Intelligences.TotalWeightedScore": {
+        "table": "Intelligences",
+        "field": "TotalWeightedScore",
+        "kind": "rollup",
+        "rule": "حقل «total weighted score» في سجل «intelligence» هو مجموع قيم حقل «weighted score» عبر سجلات «assessments» المرتبطة بسجل «intelligence».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "WeightedScore",
+            "label": "weighted score"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «weighted score» في جميع سجلات «assessments» التي يتحقق فيها أنّ حقل «intelligence» يساوي intelligences ID"
+      },
+      "Intelligences.TaxonomyClass": {
+        "table": "Intelligences",
+        "field": "TaxonomyClass",
+        "kind": "formula",
+        "rule": "حقل «taxonomy class» في سجل «intelligence» يتحدد وفق ترتيب الأولوية الآتي:\n1. «Generalist»، إذا تحقق أنّ حقل «total weighted score» لا يقل عن 350؛\n2. «Broad»، إذا تحقق أنّ حقل «total weighted score» لا يقل عن 220؛\n3. «Narrow»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "TotalWeightedScore",
+            "label": "total weighted score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «taxonomy class» في سجل «intelligence» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«Generalist»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «total weighted score» لا يقل عن 350"
+              }
+            },
+            {
+              "value": "«Broad»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «total weighted score» لا يقل عن 220"
+              }
+            },
+            {
+              "value": "«Narrow»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ total weighted score لا يقل عن 350 فالناتج \"Generalist\"، وإلا فالناتج إذا تحقق أنّ total weighted score لا يقل عن 220 فالناتج \"Broad\"، وإلا فالناتج \"Narrow\""
+      },
+      "Assessments.Name": {
+        "table": "Assessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «assessment» يطابق حقل «assessments ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "AssessmentsId",
+            "label": "assessments ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assessments ID"
+      },
+      "Assessments.IntelligenceName": {
+        "table": "Assessments",
+        "field": "IntelligenceName",
+        "kind": "lookup",
+        "rule": "حقل «intelligence name» في سجل «assessment» مأخوذ من السجل المرتبط به عبر حقل «intelligence».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «intelligence»"
+      },
+      "Assessments.CapabilityName": {
+        "table": "Assessments",
+        "field": "CapabilityName",
+        "kind": "lookup",
+        "rule": "حقل «capability name» في سجل «assessment» مأخوذ من السجل المرتبط به عبر حقل «capability».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «capability»"
+      },
+      "Assessments.CapabilityTier": {
+        "table": "Assessments",
+        "field": "CapabilityTier",
+        "kind": "lookup",
+        "rule": "حقل «capability tier» في سجل «assessment» مأخوذ من السجل المرتبط به عبر حقل «capability».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Tier",
+            "label": "tier"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «tier» من السجل المرتبط عبر «capability»"
+      },
+      "Assessments.CapabilityWeight": {
+        "table": "Assessments",
+        "field": "CapabilityWeight",
+        "kind": "lookup",
+        "rule": "حقل «capability weight» في سجل «assessment» مأخوذ من السجل المرتبط به عبر حقل «capability».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «weight» من السجل المرتبط عبر «capability»"
+      },
+      "Assessments.WeightedScore": {
+        "table": "Assessments",
+        "field": "WeightedScore",
+        "kind": "formula",
+        "rule": "حقل «weighted score» في سجل «assessment» يُحسب على النحو الآتي: حقل «raw score» مضروبًا في حقل «capability weight».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "RawScore",
+            "label": "raw score"
+          },
+          {
+            "table": "Assessments",
+            "field": "CapabilityWeight",
+            "label": "capability weight"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw score ضرب capability weight"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Capabilities": [
+        "في كل سجل «capability»، **يجب أن** تُحدّد قيمة حقل «tier» وحقل «weight»."
+      ],
+      "Intelligences": [
+        "في كل سجل «intelligence»، **يجب أن** تُحدّد قيمة حقل «substrate»."
+      ],
+      "Assessments": [
+        "**يجب أن** يشير كل سجل «assessment» إلى سجل «intelligence» واحد فقط.",
+        "**يجب أن** يشير كل سجل «assessment» إلى سجل «capability» واحد فقط.",
+        "في كل سجل «assessment»، **يجب أن** تُحدّد قيمة حقل «raw score»."
+      ]
+    },
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Capabilities": "capability",
+      "Intelligences": "intelligence",
+      "Assessments": "assessment"
+    }
+  },
+  "de": {
+    "fields": {
+      "Capabilities.Name": {
+        "table": "Capabilities",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Capability: Name entspricht Capabilities ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Capabilities ID"
+      },
+      "Intelligences.Name": {
+        "table": "Intelligences",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Intelligence: Name entspricht Intelligences ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Intelligences ID"
+      },
+      "Intelligences.AssessmentCount": {
+        "table": "Intelligences",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "Eine Intelligence: Assessment Count ist die Anzahl der mit der Intelligence verbundenen Assessments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Assessments, deren Intelligence ist Intelligences ID"
+      },
+      "Intelligences.TotalWeightedScore": {
+        "table": "Intelligences",
+        "field": "TotalWeightedScore",
+        "kind": "rollup",
+        "rule": "Eine Intelligence: Total Weighted Score ist die Gesamtsumme von Weighted Score über die mit der Intelligence verbundenen Assessments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "WeightedScore",
+            "label": "weighted score"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Weighted Score über alle Assessments, deren Intelligence ist Intelligences ID"
+      },
+      "Intelligences.TaxonomyClass": {
+        "table": "Intelligences",
+        "field": "TaxonomyClass",
+        "kind": "formula",
+        "rule": "Das Feld „Taxonomy Class“ der Intelligence wird nach folgender Priorität bestimmt:\n1. „Generalist“, wenn die Total Weighted Score mindestens 350 ist;\n2. „Broad“, wenn die Total Weighted Score mindestens 220 ist;\n3. andernfalls „Narrow“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "TotalWeightedScore",
+            "label": "total weighted score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Taxonomy Class“ der Intelligence wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„Generalist“",
+              "when": {
+                "kind": "leaf",
+                "text": "die Total Weighted Score mindestens 350 ist"
+              }
+            },
+            {
+              "value": "„Broad“",
+              "when": {
+                "kind": "leaf",
+                "text": "die Total Weighted Score mindestens 220 ist"
+              }
+            },
+            {
+              "value": "„Narrow“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Total Weighted Score mindestens 350 ist, dann \"Generalist\", andernfalls wenn Total Weighted Score mindestens 220 ist, dann \"Broad\", andernfalls \"Narrow\""
+      },
+      "Assessments.Name": {
+        "table": "Assessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Assessment: Name entspricht Assessments ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "AssessmentsId",
+            "label": "assessments ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assessments ID"
+      },
+      "Assessments.IntelligenceName": {
+        "table": "Assessments",
+        "field": "IntelligenceName",
+        "kind": "lookup",
+        "rule": "Ein Assessment: Intelligence Name — aus dem zugehörigen Intelligence übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Intelligence"
+      },
+      "Assessments.CapabilityName": {
+        "table": "Assessments",
+        "field": "CapabilityName",
+        "kind": "lookup",
+        "rule": "Ein Assessment: Capability Name — aus dem zugehörigen Capability übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Capability"
+      },
+      "Assessments.CapabilityTier": {
+        "table": "Assessments",
+        "field": "CapabilityTier",
+        "kind": "lookup",
+        "rule": "Ein Assessment: Capability Tier — aus dem zugehörigen Capability übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Tier",
+            "label": "tier"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Tier des verknüpften Capability"
+      },
+      "Assessments.CapabilityWeight": {
+        "table": "Assessments",
+        "field": "CapabilityWeight",
+        "kind": "lookup",
+        "rule": "Ein Assessment: Capability Weight — aus dem zugehörigen Capability übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Weight des verknüpften Capability"
+      },
+      "Assessments.WeightedScore": {
+        "table": "Assessments",
+        "field": "WeightedScore",
+        "kind": "formula",
+        "rule": "Ein Assessment: Weighted Score wird berechnet als die Raw Score mal der Capability Weight.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "RawScore",
+            "label": "raw score"
+          },
+          {
+            "table": "Assessments",
+            "field": "CapabilityWeight",
+            "label": "capability weight"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw Score mal Capability Weight"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Capabilities": [
+        "Ein Capability **muss** ein Tier und ein Weight haben."
+      ],
+      "Intelligences": [
+        "Eine Intelligence **muss** eine Substrate haben."
+      ],
+      "Assessments": [
+        "Ein Assessment **muss** auf genau einen Intelligence verweisen.",
+        "Ein Assessment **muss** auf genau einen Capability verweisen.",
+        "Ein Assessment **muss** eine Raw Score haben."
+      ]
+    },
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Capabilities": "Capability",
+      "Intelligences": "Intelligence",
+      "Assessments": "Assessment"
+    }
+  },
+  "es": {
+    "fields": {
+      "Capabilities.Name": {
+        "table": "Capabilities",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un capability: name es igual a capabilities ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Capabilities ID"
+      },
+      "Intelligences.Name": {
+        "table": "Intelligences",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un intelligence: name es igual a intelligences ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Intelligences ID"
+      },
+      "Intelligences.AssessmentCount": {
+        "table": "Intelligences",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "Un intelligence: assessment count es el número de assessments relacionados con el intelligence.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de assessments cuyo intelligence es intelligences ID"
+      },
+      "Intelligences.TotalWeightedScore": {
+        "table": "Intelligences",
+        "field": "TotalWeightedScore",
+        "kind": "rollup",
+        "rule": "Un intelligence: total weighted score es el total de weighted score entre los assessments relacionados con el intelligence.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "WeightedScore",
+            "label": "weighted score"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de weighted score entre todos los assessments cuyo intelligence es intelligences ID"
+      },
+      "Intelligences.TaxonomyClass": {
+        "table": "Intelligences",
+        "field": "TaxonomyClass",
+        "kind": "formula",
+        "rule": "El campo «taxonomy class» del intelligence se determina según la siguiente prioridad:\n1. «Generalist», si el total weighted score es al menos 350;\n2. «Broad», si el total weighted score es al menos 220;\n3. en todos los demás casos, «Narrow».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "TotalWeightedScore",
+            "label": "total weighted score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «taxonomy class» del intelligence se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«Generalist»",
+              "when": {
+                "kind": "leaf",
+                "text": "el total weighted score es al menos 350"
+              }
+            },
+            {
+              "value": "«Broad»",
+              "when": {
+                "kind": "leaf",
+                "text": "el total weighted score es al menos 220"
+              }
+            },
+            {
+              "value": "«Narrow»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si total weighted score es al menos 350, entonces \"Generalist\", de lo contrario si total weighted score es al menos 220, entonces \"Broad\", de lo contrario \"Narrow\""
+      },
+      "Assessments.Name": {
+        "table": "Assessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un assessment: name es igual a assessments ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "AssessmentsId",
+            "label": "assessments ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assessments ID"
+      },
+      "Assessments.IntelligenceName": {
+        "table": "Assessments",
+        "field": "IntelligenceName",
+        "kind": "lookup",
+        "rule": "Un assessment: intelligence name — tomado del intelligence vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del intelligence vinculado"
+      },
+      "Assessments.CapabilityName": {
+        "table": "Assessments",
+        "field": "CapabilityName",
+        "kind": "lookup",
+        "rule": "Un assessment: capability name — tomado del capability vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del capability vinculado"
+      },
+      "Assessments.CapabilityTier": {
+        "table": "Assessments",
+        "field": "CapabilityTier",
+        "kind": "lookup",
+        "rule": "Un assessment: capability tier — tomado del capability vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Tier",
+            "label": "tier"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El tier del capability vinculado"
+      },
+      "Assessments.CapabilityWeight": {
+        "table": "Assessments",
+        "field": "CapabilityWeight",
+        "kind": "lookup",
+        "rule": "Un assessment: capability weight — tomado del capability vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El weight del capability vinculado"
+      },
+      "Assessments.WeightedScore": {
+        "table": "Assessments",
+        "field": "WeightedScore",
+        "kind": "formula",
+        "rule": "Un assessment: weighted score se calcula como el raw score por el capability weight.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "RawScore",
+            "label": "raw score"
+          },
+          {
+            "table": "Assessments",
+            "field": "CapabilityWeight",
+            "label": "capability weight"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw score por capability weight"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Capabilities": [
+        "Un capability **debe** tener un tier y un weight."
+      ],
+      "Intelligences": [
+        "Un intelligence **debe** tener un substrate."
+      ],
+      "Assessments": [
+        "Un assessment **debe** referenciar exactamente un intelligence.",
+        "Un assessment **debe** referenciar exactamente un capability.",
+        "Un assessment **debe** tener un raw score."
+      ]
+    },
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Capabilities": "capability",
+      "Intelligences": "intelligence",
+      "Assessments": "assessment"
+    }
+  },
+  "fr": {
+    "fields": {
+      "Capabilities.Name": {
+        "table": "Capabilities",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un capability : name est identique à capabilities ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Capabilities ID"
+      },
+      "Intelligences.Name": {
+        "table": "Intelligences",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Une intelligence : name est identique à intelligences ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Intelligences ID"
+      },
+      "Intelligences.AssessmentCount": {
+        "table": "Intelligences",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "Une intelligence : assessment count est le nombre de assessments liés à l'intelligence.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des assessments dont intelligence est intelligences ID"
+      },
+      "Intelligences.TotalWeightedScore": {
+        "table": "Intelligences",
+        "field": "TotalWeightedScore",
+        "kind": "rollup",
+        "rule": "Une intelligence : total weighted score est le total de weighted score sur les assessments liés à l'intelligence.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "WeightedScore",
+            "label": "weighted score"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de weighted score sur tous les assessments dont intelligence est intelligences ID"
+      },
+      "Intelligences.TaxonomyClass": {
+        "table": "Intelligences",
+        "field": "TaxonomyClass",
+        "kind": "formula",
+        "rule": "Le champ « taxonomy class » de l'intelligence est déterminé selon la priorité suivante :\n1. « Generalist », si le total weighted score est au moins 350 ;\n2. « Broad », si le total weighted score est au moins 220 ;\n3. dans tous les autres cas, « Narrow ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "TotalWeightedScore",
+            "label": "total weighted score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « taxonomy class » de l'intelligence est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« Generalist »",
+              "when": {
+                "kind": "leaf",
+                "text": "le total weighted score est au moins 350"
+              }
+            },
+            {
+              "value": "« Broad »",
+              "when": {
+                "kind": "leaf",
+                "text": "le total weighted score est au moins 220"
+              }
+            },
+            {
+              "value": "« Narrow »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si total weighted score est au moins 350, alors \"Generalist\", sinon si total weighted score est au moins 220, alors \"Broad\", sinon \"Narrow\""
+      },
+      "Assessments.Name": {
+        "table": "Assessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un assessment : name est identique à assessments ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "AssessmentsId",
+            "label": "assessments ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assessments ID"
+      },
+      "Assessments.IntelligenceName": {
+        "table": "Assessments",
+        "field": "IntelligenceName",
+        "kind": "lookup",
+        "rule": "Un assessment : intelligence name — repris du intelligence lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du intelligence lié"
+      },
+      "Assessments.CapabilityName": {
+        "table": "Assessments",
+        "field": "CapabilityName",
+        "kind": "lookup",
+        "rule": "Un assessment : capability name — repris du capability lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du capability lié"
+      },
+      "Assessments.CapabilityTier": {
+        "table": "Assessments",
+        "field": "CapabilityTier",
+        "kind": "lookup",
+        "rule": "Un assessment : capability tier — repris du capability lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Tier",
+            "label": "tier"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le tier du capability lié"
+      },
+      "Assessments.CapabilityWeight": {
+        "table": "Assessments",
+        "field": "CapabilityWeight",
+        "kind": "lookup",
+        "rule": "Un assessment : capability weight — repris du capability lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le weight du capability lié"
+      },
+      "Assessments.WeightedScore": {
+        "table": "Assessments",
+        "field": "WeightedScore",
+        "kind": "formula",
+        "rule": "Un assessment : weighted score est calculé comme le raw score multiplié par le capability weight.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "RawScore",
+            "label": "raw score"
+          },
+          {
+            "table": "Assessments",
+            "field": "CapabilityWeight",
+            "label": "capability weight"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw score fois capability weight"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Capabilities": [
+        "Un capability **doit** avoir un tier et un weight."
+      ],
+      "Intelligences": [
+        "Une intelligence **doit** avoir un substrate."
+      ],
+      "Assessments": [
+        "Un assessment **doit** référencer exactement un intelligence.",
+        "Un assessment **doit** référencer exactement un capability.",
+        "Un assessment **doit** avoir un raw score."
+      ]
+    },
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Capabilities": "capability",
+      "Intelligences": "intelligence",
+      "Assessments": "assessment"
+    }
+  },
+  "hi": {
+    "fields": {
+      "Capabilities.Name": {
+        "table": "Capabilities",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "capability का “name” उसके “capabilities ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Capabilities ID"
+      },
+      "Intelligences.Name": {
+        "table": "Intelligences",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "intelligence का “name” उसके “intelligences ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Intelligences ID"
+      },
+      "Intelligences.AssessmentCount": {
+        "table": "Intelligences",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "intelligence का “assessment count” intelligence से संबंधित “assessments” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “assessments” की संख्या, जिनका intelligence intelligences ID है"
+      },
+      "Intelligences.TotalWeightedScore": {
+        "table": "Intelligences",
+        "field": "TotalWeightedScore",
+        "kind": "rollup",
+        "rule": "intelligence का “total weighted score” intelligence से संबंधित “assessments” पर कुल “weighted score” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "WeightedScore",
+            "label": "weighted score"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “assessments” पर योग weighted score, जिनका intelligence intelligences ID है"
+      },
+      "Intelligences.TaxonomyClass": {
+        "table": "Intelligences",
+        "field": "TaxonomyClass",
+        "kind": "formula",
+        "rule": "Intelligence का “taxonomy class” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “Generalist”, यदि total weighted score कम से कम 350 है;\n2. “Broad”, यदि total weighted score कम से कम 220 है;\n3. अन्य सभी स्थितियों में, “Narrow”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "TotalWeightedScore",
+            "label": "total weighted score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Intelligence का “taxonomy class” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“Generalist”",
+              "when": {
+                "kind": "leaf",
+                "text": "total weighted score कम से कम 350 है"
+              }
+            },
+            {
+              "value": "“Broad”",
+              "when": {
+                "kind": "leaf",
+                "text": "total weighted score कम से कम 220 है"
+              }
+            },
+            {
+              "value": "“Narrow”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि total weighted score कम से कम 350 है, तो \"Generalist\", अन्यथा यदि total weighted score कम से कम 220 है, तो \"Broad\", अन्यथा \"Narrow\""
+      },
+      "Assessments.Name": {
+        "table": "Assessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "assessment का “name” उसके “assessments ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "AssessmentsId",
+            "label": "assessments ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assessments ID"
+      },
+      "Assessments.IntelligenceName": {
+        "table": "Assessments",
+        "field": "IntelligenceName",
+        "kind": "lookup",
+        "rule": "assessment का “intelligence name” — लिंक किए गए “intelligence” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “intelligence” का name"
+      },
+      "Assessments.CapabilityName": {
+        "table": "Assessments",
+        "field": "CapabilityName",
+        "kind": "lookup",
+        "rule": "assessment का “capability name” — लिंक किए गए “capability” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “capability” का name"
+      },
+      "Assessments.CapabilityTier": {
+        "table": "Assessments",
+        "field": "CapabilityTier",
+        "kind": "lookup",
+        "rule": "assessment का “capability tier” — लिंक किए गए “capability” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Tier",
+            "label": "tier"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “capability” का tier"
+      },
+      "Assessments.CapabilityWeight": {
+        "table": "Assessments",
+        "field": "CapabilityWeight",
+        "kind": "lookup",
+        "rule": "assessment का “capability weight” — लिंक किए गए “capability” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “capability” का weight"
+      },
+      "Assessments.WeightedScore": {
+        "table": "Assessments",
+        "field": "WeightedScore",
+        "kind": "formula",
+        "rule": "assessment का “weighted score” raw score गुणा capability weight के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "RawScore",
+            "label": "raw score"
+          },
+          {
+            "table": "Assessments",
+            "field": "CapabilityWeight",
+            "label": "capability weight"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw score गुणा capability weight"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Capabilities": [
+        "capability को tier और weight रखना **अनिवार्य** है।"
+      ],
+      "Intelligences": [
+        "intelligence को substrate रखना **अनिवार्य** है।"
+      ],
+      "Assessments": [
+        "assessment को ठीक एक “intelligence” का संदर्भ देना **अनिवार्य** है।",
+        "assessment को ठीक एक “capability” का संदर्भ देना **अनिवार्य** है।",
+        "assessment को raw score रखना **अनिवार्य** है।"
+      ]
+    },
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "Capabilities": "capability",
+      "Intelligences": "intelligence",
+      "Assessments": "assessment"
+    }
+  },
+  "id": {
+    "fields": {
+      "Capabilities.Name": {
+        "table": "Capabilities",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap capability, name sama dengan capabilities ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Capabilities ID"
+      },
+      "Intelligences.Name": {
+        "table": "Intelligences",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap intelligence, name sama dengan intelligences ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Intelligences ID"
+      },
+      "Intelligences.AssessmentCount": {
+        "table": "Intelligences",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap intelligence, assessment count adalah jumlah assessments yang terkait dengan intelligence tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah assessments dengan syarat intelligence adalah intelligences ID"
+      },
+      "Intelligences.TotalWeightedScore": {
+        "table": "Intelligences",
+        "field": "TotalWeightedScore",
+        "kind": "rollup",
+        "rule": "Untuk setiap intelligence, total weighted score adalah nilai total weighted score pada seluruh assessments yang terkait dengan intelligence tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "WeightedScore",
+            "label": "weighted score"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total weighted score pada semua assessments dengan syarat intelligence adalah intelligences ID"
+      },
+      "Intelligences.TaxonomyClass": {
+        "table": "Intelligences",
+        "field": "TaxonomyClass",
+        "kind": "formula",
+        "rule": "Untuk setiap intelligence, taxonomy class ditentukan menurut urutan prioritas berikut:\n1. “Generalist”, jika total weighted score tidak kurang dari 350;\n2. “Broad”, jika total weighted score tidak kurang dari 220;\n3. dalam semua kasus lainnya, “Narrow”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "TotalWeightedScore",
+            "label": "total weighted score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap intelligence, taxonomy class ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“Generalist”",
+              "when": {
+                "kind": "leaf",
+                "text": "total weighted score tidak kurang dari 350"
+              }
+            },
+            {
+              "value": "“Broad”",
+              "when": {
+                "kind": "leaf",
+                "text": "total weighted score tidak kurang dari 220"
+              }
+            },
+            {
+              "value": "“Narrow”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika total weighted score tidak kurang dari 350 maka \"Generalist\", selain itu jika total weighted score tidak kurang dari 220 maka \"Broad\", selain itu \"Narrow\""
+      },
+      "Assessments.Name": {
+        "table": "Assessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap assessment, name sama dengan assessments ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "AssessmentsId",
+            "label": "assessments ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assessments ID"
+      },
+      "Assessments.IntelligenceName": {
+        "table": "Assessments",
+        "field": "IntelligenceName",
+        "kind": "lookup",
+        "rule": "Untuk setiap assessment, intelligence name diambil dari intelligence yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari intelligence yang tertaut"
+      },
+      "Assessments.CapabilityName": {
+        "table": "Assessments",
+        "field": "CapabilityName",
+        "kind": "lookup",
+        "rule": "Untuk setiap assessment, capability name diambil dari capability yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari capability yang tertaut"
+      },
+      "Assessments.CapabilityTier": {
+        "table": "Assessments",
+        "field": "CapabilityTier",
+        "kind": "lookup",
+        "rule": "Untuk setiap assessment, capability tier diambil dari capability yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Tier",
+            "label": "tier"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tier dari capability yang tertaut"
+      },
+      "Assessments.CapabilityWeight": {
+        "table": "Assessments",
+        "field": "CapabilityWeight",
+        "kind": "lookup",
+        "rule": "Untuk setiap assessment, capability weight diambil dari capability yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Weight dari capability yang tertaut"
+      },
+      "Assessments.WeightedScore": {
+        "table": "Assessments",
+        "field": "WeightedScore",
+        "kind": "formula",
+        "rule": "Untuk setiap assessment, weighted score dihitung sebagai raw score dikali capability weight.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "RawScore",
+            "label": "raw score"
+          },
+          {
+            "table": "Assessments",
+            "field": "CapabilityWeight",
+            "label": "capability weight"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw score dikali capability weight"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Capabilities": [
+        "Setiap capability **harus** memiliki tier dan weight."
+      ],
+      "Intelligences": [
+        "Setiap intelligence **harus** memiliki substrate."
+      ],
+      "Assessments": [
+        "Setiap assessment **harus** merujuk pada tepat satu intelligence.",
+        "Setiap assessment **harus** merujuk pada tepat satu capability.",
+        "Setiap assessment **harus** memiliki raw score."
+      ]
+    },
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Capabilities": "capability",
+      "Intelligences": "intelligence",
+      "Assessments": "assessment"
+    }
+  },
+  "it": {
+    "fields": {
+      "Capabilities.Name": {
+        "table": "Capabilities",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un capability: name è uguale a capabilities ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Capabilities ID"
+      },
+      "Intelligences.Name": {
+        "table": "Intelligences",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un intelligence: name è uguale a intelligences ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Intelligences ID"
+      },
+      "Intelligences.AssessmentCount": {
+        "table": "Intelligences",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "Un intelligence: assessment count è il numero di assessments collegati a l'intelligence.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei assessments il cui intelligence è intelligences ID"
+      },
+      "Intelligences.TotalWeightedScore": {
+        "table": "Intelligences",
+        "field": "TotalWeightedScore",
+        "kind": "rollup",
+        "rule": "Un intelligence: total weighted score è il totale di weighted score tra i assessments collegati a l'intelligence.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "WeightedScore",
+            "label": "weighted score"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di weighted score su tutti i assessments il cui intelligence è intelligences ID"
+      },
+      "Intelligences.TaxonomyClass": {
+        "table": "Intelligences",
+        "field": "TaxonomyClass",
+        "kind": "formula",
+        "rule": "Il campo “taxonomy class” dell'intelligence è determinato secondo la seguente priorità:\n1. «Generalist», se il total weighted score è almeno 350;\n2. «Broad», se il total weighted score è almeno 220;\n3. in tutti gli altri casi, «Narrow».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "TotalWeightedScore",
+            "label": "total weighted score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “taxonomy class” dell'intelligence è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«Generalist»",
+              "when": {
+                "kind": "leaf",
+                "text": "il total weighted score è almeno 350"
+              }
+            },
+            {
+              "value": "«Broad»",
+              "when": {
+                "kind": "leaf",
+                "text": "il total weighted score è almeno 220"
+              }
+            },
+            {
+              "value": "«Narrow»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se total weighted score è almeno 350, allora \"Generalist\", altrimenti se total weighted score è almeno 220, allora \"Broad\", altrimenti \"Narrow\""
+      },
+      "Assessments.Name": {
+        "table": "Assessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un assessment: name è uguale a assessments ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "AssessmentsId",
+            "label": "assessments ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assessments ID"
+      },
+      "Assessments.IntelligenceName": {
+        "table": "Assessments",
+        "field": "IntelligenceName",
+        "kind": "lookup",
+        "rule": "Un assessment: intelligence name — ripreso dal intelligence collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del intelligence collegato"
+      },
+      "Assessments.CapabilityName": {
+        "table": "Assessments",
+        "field": "CapabilityName",
+        "kind": "lookup",
+        "rule": "Un assessment: capability name — ripreso dal capability collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del capability collegato"
+      },
+      "Assessments.CapabilityTier": {
+        "table": "Assessments",
+        "field": "CapabilityTier",
+        "kind": "lookup",
+        "rule": "Un assessment: capability tier — ripreso dal capability collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Tier",
+            "label": "tier"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il tier del capability collegato"
+      },
+      "Assessments.CapabilityWeight": {
+        "table": "Assessments",
+        "field": "CapabilityWeight",
+        "kind": "lookup",
+        "rule": "Un assessment: capability weight — ripreso dal capability collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il weight del capability collegato"
+      },
+      "Assessments.WeightedScore": {
+        "table": "Assessments",
+        "field": "WeightedScore",
+        "kind": "formula",
+        "rule": "Un assessment: weighted score è calcolato come il raw score per il capability weight.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "RawScore",
+            "label": "raw score"
+          },
+          {
+            "table": "Assessments",
+            "field": "CapabilityWeight",
+            "label": "capability weight"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw score per capability weight"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Capabilities": [
+        "Un capability **deve** avere un tier e un weight."
+      ],
+      "Intelligences": [
+        "Un intelligence **deve** avere un substrate."
+      ],
+      "Assessments": [
+        "Un assessment **deve** referenziare esattamente un intelligence.",
+        "Un assessment **deve** referenziare esattamente un capability.",
+        "Un assessment **deve** avere un raw score."
+      ]
+    },
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Capabilities": "capability",
+      "Intelligences": "intelligence",
+      "Assessments": "assessment"
+    }
+  },
+  "ja": {
+    "fields": {
+      "Capabilities.Name": {
+        "table": "Capabilities",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "capabilityの「name」は capabilities ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Capabilities ID"
+      },
+      "Intelligences.Name": {
+        "table": "Intelligences",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "intelligenceの「name」は intelligences ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Intelligences ID"
+      },
+      "Intelligences.AssessmentCount": {
+        "table": "Intelligences",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "intelligenceの「assessment count」は intelligenceに関連する「assessments」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Intelligence が intelligences ID である「assessments」の件数"
+      },
+      "Intelligences.TotalWeightedScore": {
+        "table": "Intelligences",
+        "field": "TotalWeightedScore",
+        "kind": "rollup",
+        "rule": "intelligenceの「total weighted score」は intelligenceに関連する「assessments」全体での「weighted score」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "WeightedScore",
+            "label": "weighted score"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Intelligence が intelligences ID であるすべての「assessments」にわたる weighted score の合計"
+      },
+      "Intelligences.TaxonomyClass": {
+        "table": "Intelligences",
+        "field": "TaxonomyClass",
+        "kind": "formula",
+        "rule": "Intelligenceの「taxonomy class」は、次の優先順位で決まります:\n1. total weighted score が 350 以上である場合は 「Generalist」;\n2. total weighted score が 220 以上である場合は 「Broad」;\n3. それ以外の場合は 「Narrow」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "TotalWeightedScore",
+            "label": "total weighted score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Intelligenceの「taxonomy class」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「Generalist」",
+              "when": {
+                "kind": "leaf",
+                "text": "total weighted score が 350 以上である"
+              }
+            },
+            {
+              "value": "「Broad」",
+              "when": {
+                "kind": "leaf",
+                "text": "total weighted score が 220 以上である"
+              }
+            },
+            {
+              "value": "「Narrow」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Total weighted score が 350 以上なら \"Generalist\"、そうでなければ total weighted score が 220 以上なら \"Broad\"、そうでなければ \"Narrow\""
+      },
+      "Assessments.Name": {
+        "table": "Assessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "assessmentの「name」は assessments ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "AssessmentsId",
+            "label": "assessments ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assessments ID"
+      },
+      "Assessments.IntelligenceName": {
+        "table": "Assessments",
+        "field": "IntelligenceName",
+        "kind": "lookup",
+        "rule": "assessmentの「intelligence name」— リンクされた「intelligence」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「intelligence」の name"
+      },
+      "Assessments.CapabilityName": {
+        "table": "Assessments",
+        "field": "CapabilityName",
+        "kind": "lookup",
+        "rule": "assessmentの「capability name」— リンクされた「capability」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「capability」の name"
+      },
+      "Assessments.CapabilityTier": {
+        "table": "Assessments",
+        "field": "CapabilityTier",
+        "kind": "lookup",
+        "rule": "assessmentの「capability tier」— リンクされた「capability」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Tier",
+            "label": "tier"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「capability」の tier"
+      },
+      "Assessments.CapabilityWeight": {
+        "table": "Assessments",
+        "field": "CapabilityWeight",
+        "kind": "lookup",
+        "rule": "assessmentの「capability weight」— リンクされた「capability」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「capability」の weight"
+      },
+      "Assessments.WeightedScore": {
+        "table": "Assessments",
+        "field": "WeightedScore",
+        "kind": "formula",
+        "rule": "assessmentの「weighted score」は raw score かける capability weight として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "RawScore",
+            "label": "raw score"
+          },
+          {
+            "table": "Assessments",
+            "field": "CapabilityWeight",
+            "label": "capability weight"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw score かける capability weight"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Capabilities": [
+        "capabilityは tierおよびweight を持た**なければなりません**。"
+      ],
+      "Intelligences": [
+        "intelligenceは substrate を持た**なければなりません**。"
+      ],
+      "Assessments": [
+        "assessmentは「intelligence」をちょうど 1 件参照し**なければなりません**。",
+        "assessmentは「capability」をちょうど 1 件参照し**なければなりません**。",
+        "assessmentは raw score を持た**なければなりません**。"
+      ]
+    },
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "Capabilities": "capability",
+      "Intelligences": "intelligence",
+      "Assessments": "assessment"
+    }
+  },
+  "ko": {
+    "fields": {
+      "Capabilities.Name": {
+        "table": "Capabilities",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘capability’ 레코드의 ‘name’ 값은 같은 레코드의 ‘capabilities ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Capabilities ID"
+      },
+      "Intelligences.Name": {
+        "table": "Intelligences",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘intelligence’ 레코드의 ‘name’ 값은 같은 레코드의 ‘intelligences ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Intelligences ID"
+      },
+      "Intelligences.AssessmentCount": {
+        "table": "Intelligences",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "‘intelligence’ 레코드의 ‘assessment count’ 값은 해당 ‘intelligence’ 레코드에 연결된 ‘assessments’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(intelligence 값이 intelligences ID임)에 맞는 assessments 레코드의 개수"
+      },
+      "Intelligences.TotalWeightedScore": {
+        "table": "Intelligences",
+        "field": "TotalWeightedScore",
+        "kind": "rollup",
+        "rule": "‘intelligence’ 레코드의 ‘total weighted score’ 값은 해당 ‘intelligence’ 레코드에 연결된 모든 ‘assessments’ 레코드의 총 ‘weighted score’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "WeightedScore",
+            "label": "weighted score"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(intelligence 값이 intelligences ID임)에 맞는 모든 assessments 레코드의 weighted score 합계"
+      },
+      "Intelligences.TaxonomyClass": {
+        "table": "Intelligences",
+        "field": "TaxonomyClass",
+        "kind": "formula",
+        "rule": "‘intelligence’ 레코드의 ‘taxonomy class’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘total weighted score’ 값이 350 이상인 경우: “Generalist”\n2. ‘total weighted score’ 값이 220 이상인 경우: “Broad”\n3. 그 밖의 경우: “Narrow”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "TotalWeightedScore",
+            "label": "total weighted score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘intelligence’ 레코드의 ‘taxonomy class’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“Generalist”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘total weighted score’ 값이 350 이상인 경우"
+              }
+            },
+            {
+              "value": "“Broad”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘total weighted score’ 값이 220 이상인 경우"
+              }
+            },
+            {
+              "value": "“Narrow”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(total weighted score 값이 350 이상임)이 성립하면 \"Generalist\", 그렇지 않으면 조건(total weighted score 값이 220 이상임)이 성립하면 \"Broad\", 그렇지 않으면 \"Narrow\""
+      },
+      "Assessments.Name": {
+        "table": "Assessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘assessment’ 레코드의 ‘name’ 값은 같은 레코드의 ‘assessments ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "AssessmentsId",
+            "label": "assessments ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assessments ID"
+      },
+      "Assessments.IntelligenceName": {
+        "table": "Assessments",
+        "field": "IntelligenceName",
+        "kind": "lookup",
+        "rule": "‘assessment’ 레코드의 ‘intelligence name’ 값은 연결된 ‘intelligence’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 intelligence 레코드의 name"
+      },
+      "Assessments.CapabilityName": {
+        "table": "Assessments",
+        "field": "CapabilityName",
+        "kind": "lookup",
+        "rule": "‘assessment’ 레코드의 ‘capability name’ 값은 연결된 ‘capability’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 capability 레코드의 name"
+      },
+      "Assessments.CapabilityTier": {
+        "table": "Assessments",
+        "field": "CapabilityTier",
+        "kind": "lookup",
+        "rule": "‘assessment’ 레코드의 ‘capability tier’ 값은 연결된 ‘capability’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Tier",
+            "label": "tier"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 capability 레코드의 tier"
+      },
+      "Assessments.CapabilityWeight": {
+        "table": "Assessments",
+        "field": "CapabilityWeight",
+        "kind": "lookup",
+        "rule": "‘assessment’ 레코드의 ‘capability weight’ 값은 연결된 ‘capability’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 capability 레코드의 weight"
+      },
+      "Assessments.WeightedScore": {
+        "table": "Assessments",
+        "field": "WeightedScore",
+        "kind": "formula",
+        "rule": "‘assessment’ 레코드의 ‘weighted score’ 값은 다음과 같이 계산됩니다: ‘raw score’ 곱하기 ‘capability weight’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "RawScore",
+            "label": "raw score"
+          },
+          {
+            "table": "Assessments",
+            "field": "CapabilityWeight",
+            "label": "capability weight"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw score 곱하기 capability weight"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Capabilities": [
+        "‘capability’ 레코드는 ‘tier’ 및 ‘weight’ 값을 포함**해야 합니다**."
+      ],
+      "Intelligences": [
+        "‘intelligence’ 레코드는 ‘substrate’ 값을 포함**해야 합니다**."
+      ],
+      "Assessments": [
+        "‘assessment’ 레코드는 ‘intelligence’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘assessment’ 레코드는 ‘capability’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘assessment’ 레코드는 ‘raw score’ 값을 포함**해야 합니다**."
+      ]
+    },
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Capabilities": "capability",
+      "Intelligences": "intelligence",
+      "Assessments": "assessment"
+    }
+  },
+  "nl": {
+    "fields": {
+      "Capabilities.Name": {
+        "table": "Capabilities",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een capability: name is gelijk aan capabilities ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Capabilities ID"
+      },
+      "Intelligences.Name": {
+        "table": "Intelligences",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een intelligence: name is gelijk aan intelligences ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Intelligences ID"
+      },
+      "Intelligences.AssessmentCount": {
+        "table": "Intelligences",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "Een intelligence: assessment count is het aantal assessments dat is gekoppeld aan de intelligence.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal assessments waarvan intelligence is intelligences ID"
+      },
+      "Intelligences.TotalWeightedScore": {
+        "table": "Intelligences",
+        "field": "TotalWeightedScore",
+        "kind": "rollup",
+        "rule": "Een intelligence: total weighted score is het totaal van weighted score over de assessments gekoppeld aan de intelligence.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "WeightedScore",
+            "label": "weighted score"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van weighted score over alle assessments waarvan intelligence is intelligences ID"
+      },
+      "Intelligences.TaxonomyClass": {
+        "table": "Intelligences",
+        "field": "TaxonomyClass",
+        "kind": "formula",
+        "rule": "Het veld ‘taxonomy class’ van de intelligence wordt bepaald volgens de volgende prioriteit:\n1. ‘Generalist’, als de total weighted score ten minste 350 is;\n2. ‘Broad’, als de total weighted score ten minste 220 is;\n3. in alle andere gevallen ‘Narrow’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "TotalWeightedScore",
+            "label": "total weighted score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘taxonomy class’ van de intelligence wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘Generalist’",
+              "when": {
+                "kind": "leaf",
+                "text": "de total weighted score ten minste 350 is"
+              }
+            },
+            {
+              "value": "‘Broad’",
+              "when": {
+                "kind": "leaf",
+                "text": "de total weighted score ten minste 220 is"
+              }
+            },
+            {
+              "value": "‘Narrow’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als total weighted score is ten minste 350, dan \"Generalist\", anders als total weighted score is ten minste 220, dan \"Broad\", anders \"Narrow\""
+      },
+      "Assessments.Name": {
+        "table": "Assessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een assessment: name is gelijk aan assessments ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "AssessmentsId",
+            "label": "assessments ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assessments ID"
+      },
+      "Assessments.IntelligenceName": {
+        "table": "Assessments",
+        "field": "IntelligenceName",
+        "kind": "lookup",
+        "rule": "Een assessment: intelligence name — overgenomen van de gekoppelde intelligence.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde intelligence"
+      },
+      "Assessments.CapabilityName": {
+        "table": "Assessments",
+        "field": "CapabilityName",
+        "kind": "lookup",
+        "rule": "Een assessment: capability name — overgenomen van de gekoppelde capability.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde capability"
+      },
+      "Assessments.CapabilityTier": {
+        "table": "Assessments",
+        "field": "CapabilityTier",
+        "kind": "lookup",
+        "rule": "Een assessment: capability tier — overgenomen van de gekoppelde capability.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Tier",
+            "label": "tier"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De tier van de gekoppelde capability"
+      },
+      "Assessments.CapabilityWeight": {
+        "table": "Assessments",
+        "field": "CapabilityWeight",
+        "kind": "lookup",
+        "rule": "Een assessment: capability weight — overgenomen van de gekoppelde capability.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De weight van de gekoppelde capability"
+      },
+      "Assessments.WeightedScore": {
+        "table": "Assessments",
+        "field": "WeightedScore",
+        "kind": "formula",
+        "rule": "Een assessment: weighted score wordt berekend als de raw score maal de capability weight.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "RawScore",
+            "label": "raw score"
+          },
+          {
+            "table": "Assessments",
+            "field": "CapabilityWeight",
+            "label": "capability weight"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw score maal capability weight"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Capabilities": [
+        "Een capability **moet** een tier en een weight hebben."
+      ],
+      "Intelligences": [
+        "Een intelligence **moet** een substrate hebben."
+      ],
+      "Assessments": [
+        "Een assessment **moet** naar precies één intelligence verwijzen.",
+        "Een assessment **moet** naar precies één capability verwijzen.",
+        "Een assessment **moet** een raw score hebben."
+      ]
+    },
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Capabilities": "capability",
+      "Intelligences": "intelligence",
+      "Assessments": "assessment"
+    }
+  },
+  "pt": {
+    "fields": {
+      "Capabilities.Name": {
+        "table": "Capabilities",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um capability: name é igual a capabilities ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Capabilities ID"
+      },
+      "Intelligences.Name": {
+        "table": "Intelligences",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um intelligence: name é igual a intelligences ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Intelligences ID"
+      },
+      "Intelligences.AssessmentCount": {
+        "table": "Intelligences",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "Um intelligence: assessment count é o número de assessments relacionados a o intelligence.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de assessments cujo intelligence é intelligences ID"
+      },
+      "Intelligences.TotalWeightedScore": {
+        "table": "Intelligences",
+        "field": "TotalWeightedScore",
+        "kind": "rollup",
+        "rule": "Um intelligence: total weighted score é o total de weighted score entre os assessments relacionados a o intelligence.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "WeightedScore",
+            "label": "weighted score"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de weighted score entre todos os assessments cujo intelligence é intelligences ID"
+      },
+      "Intelligences.TaxonomyClass": {
+        "table": "Intelligences",
+        "field": "TaxonomyClass",
+        "kind": "formula",
+        "rule": "O campo “taxonomy class” do intelligence é determinado pela seguinte prioridade:\n1. “Generalist”, se o total weighted score é pelo menos 350;\n2. “Broad”, se o total weighted score é pelo menos 220;\n3. em todos os outros casos, “Narrow”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "TotalWeightedScore",
+            "label": "total weighted score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “taxonomy class” do intelligence é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“Generalist”",
+              "when": {
+                "kind": "leaf",
+                "text": "o total weighted score é pelo menos 350"
+              }
+            },
+            {
+              "value": "“Broad”",
+              "when": {
+                "kind": "leaf",
+                "text": "o total weighted score é pelo menos 220"
+              }
+            },
+            {
+              "value": "“Narrow”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se total weighted score é pelo menos 350, então \"Generalist\", caso contrário se total weighted score é pelo menos 220, então \"Broad\", caso contrário \"Narrow\""
+      },
+      "Assessments.Name": {
+        "table": "Assessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um assessment: name é igual a assessments ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "AssessmentsId",
+            "label": "assessments ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assessments ID"
+      },
+      "Assessments.IntelligenceName": {
+        "table": "Assessments",
+        "field": "IntelligenceName",
+        "kind": "lookup",
+        "rule": "Um assessment: intelligence name — obtido do intelligence vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do intelligence vinculado"
+      },
+      "Assessments.CapabilityName": {
+        "table": "Assessments",
+        "field": "CapabilityName",
+        "kind": "lookup",
+        "rule": "Um assessment: capability name — obtido do capability vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do capability vinculado"
+      },
+      "Assessments.CapabilityTier": {
+        "table": "Assessments",
+        "field": "CapabilityTier",
+        "kind": "lookup",
+        "rule": "Um assessment: capability tier — obtido do capability vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Tier",
+            "label": "tier"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O tier do capability vinculado"
+      },
+      "Assessments.CapabilityWeight": {
+        "table": "Assessments",
+        "field": "CapabilityWeight",
+        "kind": "lookup",
+        "rule": "Um assessment: capability weight — obtido do capability vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O weight do capability vinculado"
+      },
+      "Assessments.WeightedScore": {
+        "table": "Assessments",
+        "field": "WeightedScore",
+        "kind": "formula",
+        "rule": "Um assessment: weighted score é calculado como o raw score vezes o capability weight.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "RawScore",
+            "label": "raw score"
+          },
+          {
+            "table": "Assessments",
+            "field": "CapabilityWeight",
+            "label": "capability weight"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw score vezes capability weight"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Capabilities": [
+        "Um capability **deve** ter um tier e um weight."
+      ],
+      "Intelligences": [
+        "Um intelligence **deve** ter um substrate."
+      ],
+      "Assessments": [
+        "Um assessment **deve** referenciar exatamente um intelligence.",
+        "Um assessment **deve** referenciar exatamente um capability.",
+        "Um assessment **deve** ter um raw score."
+      ]
+    },
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Capabilities": "capability",
+      "Intelligences": "intelligence",
+      "Assessments": "assessment"
+    }
+  },
+  "ru": {
+    "fields": {
+      "Capabilities.Name": {
+        "table": "Capabilities",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Capability: «name» совпадает с capabilities ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Capabilities ID"
+      },
+      "Intelligences.Name": {
+        "table": "Intelligences",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Intelligence: «name» совпадает с intelligences ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Intelligences ID"
+      },
+      "Intelligences.AssessmentCount": {
+        "table": "Intelligences",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "Intelligence: «assessment count» — это число записей «assessments», связанных с intelligence.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «assessments», у которых intelligence равно intelligences ID"
+      },
+      "Intelligences.TotalWeightedScore": {
+        "table": "Intelligences",
+        "field": "TotalWeightedScore",
+        "kind": "rollup",
+        "rule": "Intelligence: «total weighted score» — это сумма «weighted score» по записям «assessments», связанным с intelligence.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "WeightedScore",
+            "label": "weighted score"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма weighted score по всем «assessments», у которых intelligence равно intelligences ID"
+      },
+      "Intelligences.TaxonomyClass": {
+        "table": "Intelligences",
+        "field": "TaxonomyClass",
+        "kind": "formula",
+        "rule": "Поле «taxonomy class» (Intelligence) определяется по следующему приоритету:\n1. «Generalist», если total weighted score не меньше 350;\n2. «Broad», если total weighted score не меньше 220;\n3. во всех остальных случаях — «Narrow».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "TotalWeightedScore",
+            "label": "total weighted score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «taxonomy class» (Intelligence) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«Generalist»",
+              "when": {
+                "kind": "leaf",
+                "text": "total weighted score не меньше 350"
+              }
+            },
+            {
+              "value": "«Broad»",
+              "when": {
+                "kind": "leaf",
+                "text": "total weighted score не меньше 220"
+              }
+            },
+            {
+              "value": "«Narrow»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если total weighted score не меньше 350, то \"Generalist\", иначе если total weighted score не меньше 220, то \"Broad\", иначе \"Narrow\""
+      },
+      "Assessments.Name": {
+        "table": "Assessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Assessment: «name» совпадает с assessments ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "AssessmentsId",
+            "label": "assessments ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assessments ID"
+      },
+      "Assessments.IntelligenceName": {
+        "table": "Assessments",
+        "field": "IntelligenceName",
+        "kind": "lookup",
+        "rule": "Assessment: «intelligence name» — берётся из связанного «intelligence».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «intelligence»"
+      },
+      "Assessments.CapabilityName": {
+        "table": "Assessments",
+        "field": "CapabilityName",
+        "kind": "lookup",
+        "rule": "Assessment: «capability name» — берётся из связанного «capability».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «capability»"
+      },
+      "Assessments.CapabilityTier": {
+        "table": "Assessments",
+        "field": "CapabilityTier",
+        "kind": "lookup",
+        "rule": "Assessment: «capability tier» — берётся из связанного «capability».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Tier",
+            "label": "tier"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tier связанного «capability»"
+      },
+      "Assessments.CapabilityWeight": {
+        "table": "Assessments",
+        "field": "CapabilityWeight",
+        "kind": "lookup",
+        "rule": "Assessment: «capability weight» — берётся из связанного «capability».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Weight связанного «capability»"
+      },
+      "Assessments.WeightedScore": {
+        "table": "Assessments",
+        "field": "WeightedScore",
+        "kind": "formula",
+        "rule": "Assessment: «weighted score» вычисляется как raw score умножить на capability weight.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "RawScore",
+            "label": "raw score"
+          },
+          {
+            "table": "Assessments",
+            "field": "CapabilityWeight",
+            "label": "capability weight"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw score умножить на capability weight"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Capabilities": [
+        "Capability **обязан** иметь tier и weight."
+      ],
+      "Intelligences": [
+        "Intelligence **обязан** иметь substrate."
+      ],
+      "Assessments": [
+        "Assessment **обязан** ссылаться ровно на один «intelligence».",
+        "Assessment **обязан** ссылаться ровно на один «capability».",
+        "Assessment **обязан** иметь raw score."
+      ]
+    },
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Capabilities": "capability",
+      "Intelligences": "intelligence",
+      "Assessments": "assessment"
+    }
+  },
+  "tr": {
+    "fields": {
+      "Capabilities.Name": {
+        "table": "Capabilities",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“capability” kaydının “name” alanı, “capabilities ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Capabilities ID"
+      },
+      "Intelligences.Name": {
+        "table": "Intelligences",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“intelligence” kaydının “name” alanı, “intelligences ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Intelligences ID"
+      },
+      "Intelligences.AssessmentCount": {
+        "table": "Intelligences",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "“intelligence” kaydının “assessment count” alanı, “intelligence” kaydıyla ilişkili “assessments” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Intelligence değeri intelligences ID olan assessments kayıtlarının sayısı"
+      },
+      "Intelligences.TotalWeightedScore": {
+        "table": "Intelligences",
+        "field": "TotalWeightedScore",
+        "kind": "rollup",
+        "rule": "“intelligence” kaydının “total weighted score” alanı, “intelligence” kaydıyla ilişkili “assessments” kayıtları üzerinden hesaplanan toplam “weighted score” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "WeightedScore",
+            "label": "weighted score"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Intelligence değeri intelligences ID olan tüm assessments kayıtlarındaki weighted score değerlerinin toplamı"
+      },
+      "Intelligences.TaxonomyClass": {
+        "table": "Intelligences",
+        "field": "TaxonomyClass",
+        "kind": "formula",
+        "rule": "“intelligence” kaydının “taxonomy class” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “total weighted score” alanı en az 350 değerinde ise “Generalist”;\n2. “total weighted score” alanı en az 220 değerinde ise “Broad”;\n3. diğer tüm durumlarda “Narrow”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "TotalWeightedScore",
+            "label": "total weighted score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“intelligence” kaydının “taxonomy class” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“Generalist”",
+              "when": {
+                "kind": "leaf",
+                "text": "“total weighted score” alanı en az 350 değerinde"
+              }
+            },
+            {
+              "value": "“Broad”",
+              "when": {
+                "kind": "leaf",
+                "text": "“total weighted score” alanı en az 220 değerinde"
+              }
+            },
+            {
+              "value": "“Narrow”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Total weighted score, en az 350 değerinde ise \"Generalist\", aksi takdirde total weighted score, en az 220 değerinde ise \"Broad\", aksi takdirde \"Narrow\""
+      },
+      "Assessments.Name": {
+        "table": "Assessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“assessment” kaydının “name” alanı, “assessments ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "AssessmentsId",
+            "label": "assessments ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assessments ID"
+      },
+      "Assessments.IntelligenceName": {
+        "table": "Assessments",
+        "field": "IntelligenceName",
+        "kind": "lookup",
+        "rule": "“assessment” kaydının “intelligence name” alanı, “intelligence” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı intelligence kaydının name değeri"
+      },
+      "Assessments.CapabilityName": {
+        "table": "Assessments",
+        "field": "CapabilityName",
+        "kind": "lookup",
+        "rule": "“assessment” kaydının “capability name” alanı, “capability” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı capability kaydının name değeri"
+      },
+      "Assessments.CapabilityTier": {
+        "table": "Assessments",
+        "field": "CapabilityTier",
+        "kind": "lookup",
+        "rule": "“assessment” kaydının “capability tier” alanı, “capability” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Tier",
+            "label": "tier"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı capability kaydının tier değeri"
+      },
+      "Assessments.CapabilityWeight": {
+        "table": "Assessments",
+        "field": "CapabilityWeight",
+        "kind": "lookup",
+        "rule": "“assessment” kaydının “capability weight” alanı, “capability” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı capability kaydının weight değeri"
+      },
+      "Assessments.WeightedScore": {
+        "table": "Assessments",
+        "field": "WeightedScore",
+        "kind": "formula",
+        "rule": "“assessment” kaydının “weighted score” alanı, “raw score” alanı çarpı “capability weight” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "RawScore",
+            "label": "raw score"
+          },
+          {
+            "table": "Assessments",
+            "field": "CapabilityWeight",
+            "label": "capability weight"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw score çarpı capability weight"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Capabilities": [
+        "“capability” kaydı, “tier” alanı ve “weight” alanı dolu olmak **zorundadır**."
+      ],
+      "Intelligences": [
+        "“intelligence” kaydı, “substrate” alanı dolu olmak **zorundadır**."
+      ],
+      "Assessments": [
+        "“assessment” kaydı, tam olarak bir “intelligence” kaydına referans vermek **zorundadır**.",
+        "“assessment” kaydı, tam olarak bir “capability” kaydına referans vermek **zorundadır**.",
+        "“assessment” kaydı, “raw score” alanı dolu olmak **zorundadır**."
+      ]
+    },
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Capabilities": "capability",
+      "Intelligences": "intelligence",
+      "Assessments": "assessment"
+    }
+  },
+  "vi": {
+    "fields": {
+      "Capabilities.Name": {
+        "table": "Capabilities",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi capability có cùng giá trị với trường “capabilities ID” của chính capability đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Capabilities ID"
+      },
+      "Intelligences.Name": {
+        "table": "Intelligences",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi intelligence có cùng giá trị với trường “intelligences ID” của chính intelligence đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Intelligences ID"
+      },
+      "Intelligences.AssessmentCount": {
+        "table": "Intelligences",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "Trường “assessment count” của mỗi intelligence là số lượng assessments liên quan đến intelligence đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng assessments có intelligence là intelligences ID"
+      },
+      "Intelligences.TotalWeightedScore": {
+        "table": "Intelligences",
+        "field": "TotalWeightedScore",
+        "kind": "rollup",
+        "rule": "Trường “total weighted score” của mỗi intelligence là giá trị tổng cộng của trường “weighted score” trên các assessments liên quan đến intelligence đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "WeightedScore",
+            "label": "weighted score"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng weighted score trên tất cả assessments có intelligence là intelligences ID"
+      },
+      "Intelligences.TaxonomyClass": {
+        "table": "Intelligences",
+        "field": "TaxonomyClass",
+        "kind": "formula",
+        "rule": "Trường “taxonomy class” của mỗi intelligence được xác định theo thứ tự ưu tiên sau:\n1. “Generalist”, nếu total weighted score không nhỏ hơn 350;\n2. “Broad”, nếu total weighted score không nhỏ hơn 220;\n3. trong mọi trường hợp còn lại, “Narrow”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "TotalWeightedScore",
+            "label": "total weighted score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “taxonomy class” của mỗi intelligence được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“Generalist”",
+              "when": {
+                "kind": "leaf",
+                "text": "total weighted score không nhỏ hơn 350"
+              }
+            },
+            {
+              "value": "“Broad”",
+              "when": {
+                "kind": "leaf",
+                "text": "total weighted score không nhỏ hơn 220"
+              }
+            },
+            {
+              "value": "“Narrow”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu total weighted score không nhỏ hơn 350 thì \"Generalist\", nếu không thì nếu total weighted score không nhỏ hơn 220 thì \"Broad\", nếu không thì \"Narrow\""
+      },
+      "Assessments.Name": {
+        "table": "Assessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi assessment có cùng giá trị với trường “assessments ID” của chính assessment đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "AssessmentsId",
+            "label": "assessments ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assessments ID"
+      },
+      "Assessments.IntelligenceName": {
+        "table": "Assessments",
+        "field": "IntelligenceName",
+        "kind": "lookup",
+        "rule": "Trường “intelligence name” của mỗi assessment được lấy từ bản ghi liên kết qua trường “intelligence”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua intelligence"
+      },
+      "Assessments.CapabilityName": {
+        "table": "Assessments",
+        "field": "CapabilityName",
+        "kind": "lookup",
+        "rule": "Trường “capability name” của mỗi assessment được lấy từ bản ghi liên kết qua trường “capability”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua capability"
+      },
+      "Assessments.CapabilityTier": {
+        "table": "Assessments",
+        "field": "CapabilityTier",
+        "kind": "lookup",
+        "rule": "Trường “capability tier” của mỗi assessment được lấy từ bản ghi liên kết qua trường “capability”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Tier",
+            "label": "tier"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tier của bản ghi liên kết qua capability"
+      },
+      "Assessments.CapabilityWeight": {
+        "table": "Assessments",
+        "field": "CapabilityWeight",
+        "kind": "lookup",
+        "rule": "Trường “capability weight” của mỗi assessment được lấy từ bản ghi liên kết qua trường “capability”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Weight của bản ghi liên kết qua capability"
+      },
+      "Assessments.WeightedScore": {
+        "table": "Assessments",
+        "field": "WeightedScore",
+        "kind": "formula",
+        "rule": "Trường “weighted score” của mỗi assessment được tính bằng raw score nhân capability weight.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "RawScore",
+            "label": "raw score"
+          },
+          {
+            "table": "Assessments",
+            "field": "CapabilityWeight",
+            "label": "capability weight"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw score nhân capability weight"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Capabilities": [
+        "Mỗi capability **phải** có tier và weight."
+      ],
+      "Intelligences": [
+        "Mỗi intelligence **phải** có substrate."
+      ],
+      "Assessments": [
+        "Mỗi assessment **phải** tham chiếu đến đúng một intelligence.",
+        "Mỗi assessment **phải** tham chiếu đến đúng một capability.",
+        "Mỗi assessment **phải** có raw score."
+      ]
+    },
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Capabilities": "capability",
+      "Intelligences": "intelligence",
+      "Assessments": "assessment"
+    }
+  },
+  "zh": {
+    "fields": {
+      "Capabilities.Name": {
+        "table": "Capabilities",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "capability的“name”与 capabilities ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Capabilities ID"
+      },
+      "Intelligences.Name": {
+        "table": "Intelligences",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "intelligence的“name”与 intelligences ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Intelligences ID"
+      },
+      "Intelligences.AssessmentCount": {
+        "table": "Intelligences",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "intelligence的“assessment count”为 与intelligence相关的“assessments”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Intelligence为intelligences ID的“assessments”的数量"
+      },
+      "Intelligences.TotalWeightedScore": {
+        "table": "Intelligences",
+        "field": "TotalWeightedScore",
+        "kind": "rollup",
+        "rule": "intelligence的“total weighted score”为 与intelligence相关的所有“assessments”的“weighted score”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "WeightedScore",
+            "label": "weighted score"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有intelligence为intelligences ID的“assessments”的weighted score的总和"
+      },
+      "Intelligences.TaxonomyClass": {
+        "table": "Intelligences",
+        "field": "TaxonomyClass",
+        "kind": "formula",
+        "rule": "Intelligence的“taxonomy class”按以下优先级确定:\n1. 当total weighted score不小于350时,取 “Generalist”;\n2. 当total weighted score不小于220时,取 “Broad”;\n3. 其余情况取 “Narrow”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "TotalWeightedScore",
+            "label": "total weighted score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Intelligence的“taxonomy class”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“Generalist”",
+              "when": {
+                "kind": "leaf",
+                "text": "total weighted score不小于350"
+              }
+            },
+            {
+              "value": "“Broad”",
+              "when": {
+                "kind": "leaf",
+                "text": "total weighted score不小于220"
+              }
+            },
+            {
+              "value": "“Narrow”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若total weighted score不小于350,则\"Generalist\",否则若total weighted score不小于220,则\"Broad\",否则\"Narrow\""
+      },
+      "Assessments.Name": {
+        "table": "Assessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "assessment的“name”与 assessments ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "AssessmentsId",
+            "label": "assessments ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assessments ID"
+      },
+      "Assessments.IntelligenceName": {
+        "table": "Assessments",
+        "field": "IntelligenceName",
+        "kind": "lookup",
+        "rule": "assessment的“intelligence name”——取自所关联的“intelligence”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Intelligences",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Intelligence",
+            "label": "intelligence"
+          },
+          {
+            "table": "Intelligences",
+            "field": "IntelligencesId",
+            "label": "intelligences ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“intelligence”的name"
+      },
+      "Assessments.CapabilityName": {
+        "table": "Assessments",
+        "field": "CapabilityName",
+        "kind": "lookup",
+        "rule": "assessment的“capability name”——取自所关联的“capability”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“capability”的name"
+      },
+      "Assessments.CapabilityTier": {
+        "table": "Assessments",
+        "field": "CapabilityTier",
+        "kind": "lookup",
+        "rule": "assessment的“capability tier”——取自所关联的“capability”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Tier",
+            "label": "tier"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“capability”的tier"
+      },
+      "Assessments.CapabilityWeight": {
+        "table": "Assessments",
+        "field": "CapabilityWeight",
+        "kind": "lookup",
+        "rule": "assessment的“capability weight”——取自所关联的“capability”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Capabilities",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Assessments",
+            "field": "Capability",
+            "label": "capability"
+          },
+          {
+            "table": "Capabilities",
+            "field": "CapabilitiesId",
+            "label": "capabilities ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“capability”的weight"
+      },
+      "Assessments.WeightedScore": {
+        "table": "Assessments",
+        "field": "WeightedScore",
+        "kind": "formula",
+        "rule": "assessment的“weighted score”按 raw score乘capability weight 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assessments",
+            "field": "RawScore",
+            "label": "raw score"
+          },
+          {
+            "table": "Assessments",
+            "field": "CapabilityWeight",
+            "label": "capability weight"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw score乘capability weight"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Capabilities": [
+        "capability**必须**具有tier且weight。"
+      ],
+      "Intelligences": [
+        "intelligence**必须**具有substrate。"
+      ],
+      "Assessments": [
+        "assessment**必须**恰好引用一个“intelligence”。",
+        "assessment**必须**恰好引用一个“capability”。",
+        "assessment**必须**具有raw score。"
+      ]
+    },
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "Capabilities": "capability",

@@ -90,7 +90,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -138,6 +153,801 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "ar": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «customer» يُحسب على النحو الآتي: حقل «email address» بعد وضع شرطة مكان كل «@».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address بعد وضع «-» مكان «@»"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "حقل «full name» في سجل «customer» يُحسب على النحو الآتي: حقل «first name»، ثم مسافة، ثم حقل «last name».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name يليه \" \") يليه last name"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "de": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Customer: Name wird berechnet als der Email Address, wobei jedes „@“ durch ein Bindestrich ersetzt wird.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email Address, wobei „@“ durch „-“ ersetzt wird"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Ein Customer: Full Name wird berechnet als die First Name, gefolgt von ein Leerzeichen, gefolgt von die Last Name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(First Name verbunden mit \" \") verbunden mit Last Name"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "Customer"
+    }
+  },
+  "es": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un customer: name se calcula como el email address con cada «@» reemplazado por un guion.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address con «@» reemplazado por «-»"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Un customer: full name se calcula como el first name, seguido de un espacio, seguido de el last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name unido con \" \") unido con last name"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "fr": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un customer : name est calculé comme l'email address avec chaque « @ » remplacé par un trait d'union.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address avec « @ » remplacé par « - »"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Un customer : full name est calculé comme le first name, suivi de une espace, suivi de le last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name joint à \" \") joint à last name"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "hi": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "customer का “name” email address, जिसमें हर “@” को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address, जिसमें “@” को “-” से बदला गया हो"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "customer का “full name” first name, उसके बाद एक रिक्त स्थान, उसके बाद last name के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name \" \" से जुड़ा हुआ) last name से जुड़ा हुआ"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "id": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap customer, name dihitung sebagai email address dengan setiap “@” diganti dengan tanda hubung.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address dengan “@” diganti dengan “-”"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Untuk setiap customer, full name dihitung sebagai first name, diikuti spasi, diikuti last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name digabung dengan \" \") digabung dengan last name"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "it": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un customer: name è calcolato come l'email address con ogni «@» sostituito da un trattino.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address con «@» sostituito da «-»"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Un customer: full name è calcolato come il first name, seguito da uno spazio, seguito da il last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name unito a \" \") unito a last name"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "ja": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "customerの「name」は email address の 「@」 をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address の「@」を「-」に置き換えたもの"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "customerの「full name」は first name、続いて 空白 1 つ、続いて last name として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name と \" \" を連結) と last name を連結"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "ko": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘customer’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘email address’의 “@” 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address의 “@” 부분을 “-” 값으로 치환한 결과"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "‘customer’ 레코드의 ‘full name’ 값은 다음과 같이 계산됩니다: ‘first name’, 이어서 공백 한 칸, 이어서 ‘last name’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name 뒤에 \" \" 연결한 결과) 뒤에 last name 연결한 결과"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "nl": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een customer: name wordt berekend als de email address waarbij elke ‘@’ wordt vervangen door een koppelteken.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address waarbij ‘@’ wordt vervangen door ‘-’"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Een customer: full name wordt berekend als de first name, gevolgd door een spatie, gevolgd door de last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name samengevoegd met \" \") samengevoegd met last name"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "pt": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um customer: name é calculado como o email address com cada “@” substituído por um hífen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address com “@” substituído por “-”"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Um customer: full name é calculado como o first name, seguido de um espaço, seguido de o last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name unido a \" \") unido a last name"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "ru": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Customer: «name» вычисляется как email address, где каждое «@» заменено на дефис.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address, где «@» заменено на «-»"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Customer: «full name» вычисляется как first name, затем пробел, затем last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name соединено с \" \") соединено с last name"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "tr": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“customer” kaydının “name” alanı, “email address” alanı değerindeki her “@” yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address değerindeki her “@” yerine “-” konularak elde edilen metin"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "“customer” kaydının “full name” alanı, “first name” alanı, ardından bir boşluk, ardından “last name” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name ile \" \" birleşimi) ile last name birleşimi"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "vi": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi customer được tính bằng email address sau khi thay mọi “@” bằng dấu gạch nối.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address sau khi thay “@” bằng “-”"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "Trường “full name” của mỗi customer được tính bằng first name, tiếp theo là dấu cách, tiếp theo là last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name nối với \" \") nối với last name"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "zh": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "customer的“name”按 email address中的每个“@”替换为一个连字符后的结果 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "EmailAddress",
+            "label": "email address"
+          }
+        ],
+        "structure": null,
+        "plain": "Email address中“@”替换为“-”后的结果"
+      },
+      "Customers.FullName": {
+        "table": "Customers",
+        "field": "FullName",
+        "kind": "formula",
+        "rule": "customer的“full name”按 first name,接着是一个空格,接着是last name 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name与\" \"拼接)与last name拼接"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "Customers": "customer"

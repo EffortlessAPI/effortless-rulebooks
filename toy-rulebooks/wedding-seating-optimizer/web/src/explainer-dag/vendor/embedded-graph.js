@@ -1002,7 +1002,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -1971,6 +1986,15111 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Tables": "table",
+      "Guests": "guest",
+      "Relationships": "relationship"
+    }
+  },
+  "ar": {
+    "fields": {
+      "Tables.HeadCount": {
+        "table": "Tables",
+        "field": "HeadCount",
+        "kind": "rollup",
+        "rule": "حقل «head count» في سجل «table» هو عدد سجلات «guests» المرتبطة بسجل «table».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «guests» التي يتحقق فيها أنّ حقل «assigned table» يساوي table ID"
+      },
+      "Tables.OpenSeats": {
+        "table": "Tables",
+        "field": "OpenSeats",
+        "kind": "formula",
+        "rule": "حقل «open seats» في سجل «table» يُحسب على النحو الآتي: حقل «seats» ناقص حقل «head count».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          }
+        ],
+        "structure": null,
+        "plain": "Seats ناقص head count"
+      },
+      "Tables.OverCapacity": {
+        "table": "Tables",
+        "field": "OverCapacity",
+        "kind": "formula",
+        "rule": "يوسم سجل «table» بعلامة «over capacity» إذا تحقق أنّ حقل «head count» أكبر من حقل «seats».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          }
+        ],
+        "structure": null,
+        "plain": "Head count أكبر من seats"
+      },
+      "Tables.RawHappiness": {
+        "table": "Tables",
+        "field": "RawHappiness",
+        "kind": "rollup",
+        "rule": "حقل «raw happiness» في سجل «table» هو مجموع قيم حقل «effective score» عبر سجلات «relationships» المرتبطة بسجل «table».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «effective score» في جميع سجلات «relationships» التي يتحقق فيها أنّ حقل «seated table» يساوي table ID"
+      },
+      "Tables.ViolationCount": {
+        "table": "Tables",
+        "field": "ViolationCount",
+        "kind": "rollup",
+        "rule": "حقل «violation count» في سجل «table» هو مجموع قيم حقل «violation flag» عبر سجلات «relationships» المرتبطة بسجل «table».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "ViolationFlag",
+            "label": "violation flag"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «violation flag» في جميع سجلات «relationships» التي يتحقق فيها أنّ حقل «seated table» يساوي table ID"
+      },
+      "Tables.Happiness": {
+        "table": "Tables",
+        "field": "Happiness",
+        "kind": "formula",
+        "rule": "حقل «happiness» في سجل «table» يُحسب على النحو الآتي: حقل «raw happiness» ناقص 25 إذا تحقق أنّ علامة «over capacity» مفعّلة، وفي سائر الحالات 0 زائد حقل «side skew».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "RawHappiness",
+            "label": "raw happiness"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "SideSkew",
+            "label": "side skew"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw happiness ناقص (إذا تحقق أنّ over capacity فالناتج 25، وإلا فالناتج 0 زائد side skew)"
+      },
+      "Tables.Grade": {
+        "table": "Tables",
+        "field": "Grade",
+        "kind": "formula",
+        "rule": "حقل «grade» في سجل «table» يتحدد وفق ترتيب الأولوية الآتي:\n1. «Conflict»، إذا تحقق أنّ حقل «violation count» أكبر من 0؛\n2. «Over Capacity»، إذا تحقق أنّ علامة «over capacity» مفعّلة؛\n3. «Great»، إذا تحقق أنّ حقل «happiness» لا يقل عن 15؛\n4. «OK»، إذا تحقق أنّ حقل «happiness» لا يقل عن 5؛\n5. «Cold»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "ViolationCount",
+            "label": "violation count"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "Happiness",
+            "label": "happiness"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «grade» في سجل «table» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«Conflict»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «violation count» أكبر من 0"
+              }
+            },
+            {
+              "value": "«Over Capacity»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «over capacity» مفعّلة"
+              }
+            },
+            {
+              "value": "«Great»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «happiness» لا يقل عن 15"
+              }
+            },
+            {
+              "value": "«OK»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «happiness» لا يقل عن 5"
+              }
+            },
+            {
+              "value": "«Cold»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ violation count أكبر من 0 فالناتج \"Conflict\"، وإلا فالناتج إذا تحقق أنّ over capacity فالناتج \"Over Capacity\"، وإلا فالناتج إذا تحقق أنّ happiness لا يقل عن 15 فالناتج \"Great\"، وإلا فالناتج إذا تحقق أنّ happiness لا يقل عن 5 فالناتج \"OK\"، وإلا فالناتج \"Cold\""
+      },
+      "Tables.BrideSideCount": {
+        "table": "Tables",
+        "field": "BrideSideCount",
+        "kind": "rollup",
+        "rule": "حقل «bride side count» في سجل «table» هو مجموع قيم حقل «bride flag» عبر سجلات «guests» المرتبطة بسجل «table».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "BrideFlag",
+            "label": "bride flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «bride flag» في جميع سجلات «guests» التي يتحقق فيها أنّ حقل «assigned table» يساوي table ID"
+      },
+      "Tables.GroomSideCount": {
+        "table": "Tables",
+        "field": "GroomSideCount",
+        "kind": "rollup",
+        "rule": "حقل «groom side count» في سجل «table» هو مجموع قيم حقل «groom flag» عبر سجلات «guests» المرتبطة بسجل «table».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "GroomFlag",
+            "label": "groom flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «groom flag» في جميع سجلات «guests» التي يتحقق فيها أنّ حقل «assigned table» يساوي table ID"
+      },
+      "Tables.SideSkew": {
+        "table": "Tables",
+        "field": "SideSkew",
+        "kind": "formula",
+        "rule": "حقل «side skew» في سجل «table» يتحدد وفق ترتيب الأولوية الآتي:\n1. حقل «bride side count» ناقص حقل «groom side count»، إذا تحقق أنّ حقل «bride side count» أكبر من حقل «groom side count»؛\n2. حقل «groom side count» ناقص حقل «bride side count»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "BrideSideCount",
+            "label": "bride side count"
+          },
+          {
+            "table": "Tables",
+            "field": "GroomSideCount",
+            "label": "groom side count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «side skew» في سجل «table» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "حقل «bride side count» ناقص حقل «groom side count»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «bride side count» أكبر من حقل «groom side count»"
+              }
+            },
+            {
+              "value": "حقل «groom side count» ناقص حقل «bride side count»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ bride side count أكبر من groom side count فالناتج (bride side count ناقص groom side count)، وإلا فالناتج (groom side count ناقص bride side count)"
+      },
+      "Guests.TableLabel": {
+        "table": "Guests",
+        "field": "TableLabel",
+        "kind": "lookup",
+        "rule": "حقل «table label» في سجل «guest» مأخوذ من السجل المرتبط به عبر حقل «assigned table».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «label» من السجل المرتبط عبر «assigned table»"
+      },
+      "Guests.TableSeats": {
+        "table": "Guests",
+        "field": "TableSeats",
+        "kind": "lookup",
+        "rule": "حقل «table seats» في سجل «guest» مأخوذ من السجل المرتبط به عبر حقل «assigned table».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «seats» من السجل المرتبط عبر «assigned table»"
+      },
+      "Guests.TableHeadCount": {
+        "table": "Guests",
+        "field": "TableHeadCount",
+        "kind": "lookup",
+        "rule": "حقل «table head count» في سجل «guest» مأخوذ من السجل المرتبط به عبر حقل «assigned table».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «head count» من السجل المرتبط عبر «assigned table»"
+      },
+      "Guests.RelationshipsAsA": {
+        "table": "Guests",
+        "field": "RelationshipsAsA",
+        "kind": "rollup",
+        "rule": "حقل «relationships as a» في سجل «guest» هو عدد سجلات «relationships» المرتبطة بسجل «guest».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «relationships» التي يتحقق فيها أنّ حقل «guest a» يساوي guest ID"
+      },
+      "Guests.RelationshipsAsB": {
+        "table": "Guests",
+        "field": "RelationshipsAsB",
+        "kind": "rollup",
+        "rule": "حقل «relationships as b» في سجل «guest» هو عدد سجلات «relationships» المرتبطة بسجل «guest».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «relationships» التي يتحقق فيها أنّ حقل «guest b» يساوي guest ID"
+      },
+      "Guests.SatisfactionA": {
+        "table": "Guests",
+        "field": "SatisfactionA",
+        "kind": "rollup",
+        "rule": "حقل «satisfaction a» في سجل «guest» هو مجموع قيم حقل «effective score» عبر سجلات «relationships» المرتبطة بسجل «guest».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «effective score» في جميع سجلات «relationships» التي يتحقق فيها أنّ حقل «guest a» يساوي guest ID"
+      },
+      "Guests.SatisfactionB": {
+        "table": "Guests",
+        "field": "SatisfactionB",
+        "kind": "rollup",
+        "rule": "حقل «satisfaction b» في سجل «guest» هو مجموع قيم حقل «effective score» عبر سجلات «relationships» المرتبطة بسجل «guest».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «effective score» في جميع سجلات «relationships» التي يتحقق فيها أنّ حقل «guest b» يساوي guest ID"
+      },
+      "Guests.Satisfaction": {
+        "table": "Guests",
+        "field": "Satisfaction",
+        "kind": "formula",
+        "rule": "حقل «satisfaction» في سجل «guest» يُحسب على النحو الآتي: حقل «satisfaction a» زائد حقل «satisfaction b».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "SatisfactionA",
+            "label": "satisfaction a"
+          },
+          {
+            "table": "Guests",
+            "field": "SatisfactionB",
+            "label": "satisfaction b"
+          }
+        ],
+        "structure": null,
+        "plain": "Satisfaction a زائد satisfaction b"
+      },
+      "Guests.Mood": {
+        "table": "Guests",
+        "field": "Mood",
+        "kind": "formula",
+        "rule": "حقل «mood» في سجل «guest» يتحدد وفق ترتيب الأولوية الآتي:\n1. «Happy»، إذا تحقق أنّ حقل «satisfaction» لا يقل عن 10؛\n2. «Neutral»، إذا تحقق أنّ حقل «satisfaction» لا يقل عن 0؛\n3. «Unhappy»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Satisfaction",
+            "label": "satisfaction"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «mood» في سجل «guest» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«Happy»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «satisfaction» لا يقل عن 10"
+              }
+            },
+            {
+              "value": "«Neutral»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «satisfaction» لا يقل عن 0"
+              }
+            },
+            {
+              "value": "«Unhappy»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ satisfaction لا يقل عن 10 فالناتج \"Happy\"، وإلا فالناتج إذا تحقق أنّ satisfaction لا يقل عن 0 فالناتج \"Neutral\"، وإلا فالناتج \"Unhappy\""
+      },
+      "Guests.BrideFlag": {
+        "table": "Guests",
+        "field": "BrideFlag",
+        "kind": "formula",
+        "rule": "حقل «bride flag» في سجل «guest» يتحدد وفق ترتيب الأولوية الآتي:\n1. 1، إذا تحقق أنّ حقل «side» يساوي «bride»؛\n2. 0، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «bride flag» في سجل «guest» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «side» يساوي «bride»"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ side هو \"bride\" فالناتج 1، وإلا فالناتج 0"
+      },
+      "Guests.GroomFlag": {
+        "table": "Guests",
+        "field": "GroomFlag",
+        "kind": "formula",
+        "rule": "حقل «groom flag» في سجل «guest» يتحدد وفق ترتيب الأولوية الآتي:\n1. 1، إذا تحقق أنّ حقل «side» يساوي «groom»؛\n2. 0، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «groom flag» في سجل «guest» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «side» يساوي «groom»"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ side هو \"groom\" فالناتج 1، وإلا فالناتج 0"
+      },
+      "Relationships.GuestAName": {
+        "table": "Relationships",
+        "field": "GuestAName",
+        "kind": "lookup",
+        "rule": "حقل «guest a name» في سجل «relationship» يأخذ قيمة حقل «full name» من السجل المرتبط به عبر حقل «guest a».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «full name» من السجل المرتبط عبر «guest a»"
+      },
+      "Relationships.GuestBName": {
+        "table": "Relationships",
+        "field": "GuestBName",
+        "kind": "lookup",
+        "rule": "حقل «guest b name» في سجل «relationship» يأخذ قيمة حقل «full name» من السجل المرتبط به عبر حقل «guest b».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «full name» من السجل المرتبط عبر «guest b»"
+      },
+      "Relationships.GuestATable": {
+        "table": "Relationships",
+        "field": "GuestATable",
+        "kind": "lookup",
+        "rule": "حقل «guest a table» في سجل «relationship» يأخذ قيمة حقل «assigned table» من السجل المرتبط به عبر حقل «guest a».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «assigned table» من السجل المرتبط عبر «guest a»"
+      },
+      "Relationships.GuestBTable": {
+        "table": "Relationships",
+        "field": "GuestBTable",
+        "kind": "lookup",
+        "rule": "حقل «guest b table» في سجل «relationship» يأخذ قيمة حقل «assigned table» من السجل المرتبط به عبر حقل «guest b».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «assigned table» من السجل المرتبط عبر «guest b»"
+      },
+      "Relationships.SameTable": {
+        "table": "Relationships",
+        "field": "SameTable",
+        "kind": "formula",
+        "rule": "يوسم سجل «relationship» بعلامة «same table» إذا تحقق أنّ جميع الشروط الآتية متحققة: حقل «guest a table» له قيمة وحقل «guest a table» يساوي حقل «guest b table».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestBTable",
+            "label": "guest b table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يوسم سجل «relationship» بعلامة «same table» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "حقل «guest a table» له قيمة"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "حقل «guest a table» يساوي حقل «guest b table»"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Guest a table لا يساوي \"\" وguest a table يساوي guest b table"
+      },
+      "Relationships.SeatedTable": {
+        "table": "Relationships",
+        "field": "SeatedTable",
+        "kind": "formula",
+        "rule": "حقل «seated table» في سجل «relationship» يتحدد وفق ترتيب الأولوية الآتي:\n1. حقل «guest a table»، إذا تحقق أنّ علامة «same table» مفعّلة؛\n2. نص فارغ، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «seated table» في سجل «relationship» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "حقل «guest a table»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «same table» مفعّلة"
+              }
+            },
+            {
+              "value": "نص فارغ",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ same table فالناتج guest a table، وإلا فالناتج \"\""
+      },
+      "Relationships.EffectiveScore": {
+        "table": "Relationships",
+        "field": "EffectiveScore",
+        "kind": "formula",
+        "rule": "حقل «effective score» في سجل «relationship» يتحدد وفق ترتيب الأولوية الآتي:\n1. سالب 50 إذا تحقق أنّ حقل «kind» يساوي «must-not»، وفي سائر الحالات حقل «weight»، إذا تحقق أنّ علامة «same table» مفعّلة؛\n2. 0، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «effective score» في سجل «relationship» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "سالب 50 إذا تحقق أنّ حقل «kind» يساوي «must-not»، وفي سائر الحالات حقل «weight»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «same table» مفعّلة"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ same table فالناتج إذا تحقق أنّ kind هو \"must-not\" فالناتج سالب 50، وإلا فالناتج weight، وإلا فالناتج 0"
+      },
+      "Relationships.IsMustNotViolation": {
+        "table": "Relationships",
+        "field": "IsMustNotViolation",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «relationship» على أنه «must not violation» إذا تحقق أنّ جميع الشروط الآتية متحققة: حقل «kind» يساوي «must-not» وعلامة «same table» مفعّلة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُصنّف سجل «relationship» على أنه «must not violation» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "حقل «kind» يساوي «must-not»"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "علامة «same table» مفعّلة"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Kind هو \"must-not\" وsame table"
+      },
+      "Relationships.IsSatisfied": {
+        "table": "Relationships",
+        "field": "IsSatisfied",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «relationship» على أنه «satisfied» إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: جميع الشروط الآتية متحققة: حقل «weight» أكبر من 0 وعلامة «same table» مفعّلة؛ أو جميع الشروط الآتية متحققة: حقل «weight» أقل من 0 وعلامة «same table» غير مفعّلة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُصنّف سجل «relationship» على أنه «satisfied» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "حقل «weight» أكبر من 0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "علامة «same table» مفعّلة"
+                    }
+                  ]
+                },
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "حقل «weight» أقل من 0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "علامة «same table» غير مفعّلة"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Weight أكبر من 0 وsame table أو weight أقل من 0 والشرط (same table) غير متحقق"
+      },
+      "Relationships.ViolationTable": {
+        "table": "Relationships",
+        "field": "ViolationTable",
+        "kind": "formula",
+        "rule": "حقل «violation table» في سجل «relationship» يتحدد وفق ترتيب الأولوية الآتي:\n1. حقل «guest a table»، إذا تحقق أنّ علامة «must not violation» مفعّلة؛\n2. نص فارغ، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «violation table» في سجل «relationship» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "حقل «guest a table»",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «must not violation» مفعّلة"
+              }
+            },
+            {
+              "value": "نص فارغ",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ is must not violation فالناتج guest a table، وإلا فالناتج \"\""
+      },
+      "Relationships.ViolationFlag": {
+        "table": "Relationships",
+        "field": "ViolationFlag",
+        "kind": "formula",
+        "rule": "حقل «violation flag» في سجل «relationship» يتحدد وفق ترتيب الأولوية الآتي:\n1. 1، إذا تحقق أنّ علامة «must not violation» مفعّلة؛\n2. 0، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «violation flag» في سجل «relationship» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "علامة «must not violation» مفعّلة"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ is must not violation فالناتج 1، وإلا فالناتج 0"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Tables": "table",
+      "Guests": "guest",
+      "Relationships": "relationship"
+    }
+  },
+  "de": {
+    "fields": {
+      "Tables.HeadCount": {
+        "table": "Tables",
+        "field": "HeadCount",
+        "kind": "rollup",
+        "rule": "Eine Table: Head Count ist die Anzahl der mit der Table verbundenen Guests.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Guests, deren Assigned Table ist Table ID"
+      },
+      "Tables.OpenSeats": {
+        "table": "Tables",
+        "field": "OpenSeats",
+        "kind": "formula",
+        "rule": "Eine Table: Open Seats wird berechnet als der Seats minus der Head Count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          }
+        ],
+        "structure": null,
+        "plain": "Seats minus Head Count"
+      },
+      "Tables.OverCapacity": {
+        "table": "Tables",
+        "field": "OverCapacity",
+        "kind": "formula",
+        "rule": "Eine Table ist markiert als Over Capacity, wenn der Head Count größer ist als der Seats.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          }
+        ],
+        "structure": null,
+        "plain": "Head Count größer als Seats ist"
+      },
+      "Tables.RawHappiness": {
+        "table": "Tables",
+        "field": "RawHappiness",
+        "kind": "rollup",
+        "rule": "Eine Table: Raw Happiness ist die Gesamtsumme von Effective Score über die mit der Table verbundenen Relationships.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Effective Score über alle Relationships, deren Seated Table ist Table ID"
+      },
+      "Tables.ViolationCount": {
+        "table": "Tables",
+        "field": "ViolationCount",
+        "kind": "rollup",
+        "rule": "Eine Table: Violation Count ist die Gesamtsumme von Violation Flag über die mit der Table verbundenen Relationships.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "ViolationFlag",
+            "label": "violation flag"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Violation Flag über alle Relationships, deren Seated Table ist Table ID"
+      },
+      "Tables.Happiness": {
+        "table": "Tables",
+        "field": "Happiness",
+        "kind": "formula",
+        "rule": "Eine Table: Happiness wird berechnet als der Raw Happiness minus 25, wenn das Kennzeichen „Over Capacity“ gesetzt ist, andernfalls 0 plus der Side Skew.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "RawHappiness",
+            "label": "raw happiness"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "SideSkew",
+            "label": "side skew"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw Happiness minus (wenn Over Capacity, dann 25, andernfalls 0 plus Side Skew)"
+      },
+      "Tables.Grade": {
+        "table": "Tables",
+        "field": "Grade",
+        "kind": "formula",
+        "rule": "Das Feld „Grade“ der Table wird nach folgender Priorität bestimmt:\n1. „Conflict“, wenn der Violation Count größer ist als 0;\n2. „Over Capacity“, wenn das Kennzeichen „Over Capacity“ gesetzt ist;\n3. „Great“, wenn der Happiness mindestens 15 ist;\n4. „OK“, wenn der Happiness mindestens 5 ist;\n5. andernfalls „Cold“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "ViolationCount",
+            "label": "violation count"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "Happiness",
+            "label": "happiness"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Grade“ der Table wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„Conflict“",
+              "when": {
+                "kind": "leaf",
+                "text": "der Violation Count größer ist als 0"
+              }
+            },
+            {
+              "value": "„Over Capacity“",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Over Capacity“ gesetzt ist"
+              }
+            },
+            {
+              "value": "„Great“",
+              "when": {
+                "kind": "leaf",
+                "text": "der Happiness mindestens 15 ist"
+              }
+            },
+            {
+              "value": "„OK“",
+              "when": {
+                "kind": "leaf",
+                "text": "der Happiness mindestens 5 ist"
+              }
+            },
+            {
+              "value": "„Cold“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Violation Count größer als 0 ist, dann \"Conflict\", andernfalls wenn Over Capacity, dann \"Over Capacity\", andernfalls wenn Happiness mindestens 15 ist, dann \"Great\", andernfalls wenn Happiness mindestens 5 ist, dann \"OK\", andernfalls \"Cold\""
+      },
+      "Tables.BrideSideCount": {
+        "table": "Tables",
+        "field": "BrideSideCount",
+        "kind": "rollup",
+        "rule": "Eine Table: Bride Side Count ist die Gesamtsumme von Bride Flag über die mit der Table verbundenen Guests.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "BrideFlag",
+            "label": "bride flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Bride Flag über alle Guests, deren Assigned Table ist Table ID"
+      },
+      "Tables.GroomSideCount": {
+        "table": "Tables",
+        "field": "GroomSideCount",
+        "kind": "rollup",
+        "rule": "Eine Table: Groom Side Count ist die Gesamtsumme von Groom Flag über die mit der Table verbundenen Guests.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "GroomFlag",
+            "label": "groom flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Groom Flag über alle Guests, deren Assigned Table ist Table ID"
+      },
+      "Tables.SideSkew": {
+        "table": "Tables",
+        "field": "SideSkew",
+        "kind": "formula",
+        "rule": "Das Feld „Side Skew“ der Table wird nach folgender Priorität bestimmt:\n1. der Bride Side Count minus der Groom Side Count, wenn der Bride Side Count größer ist als der Groom Side Count;\n2. andernfalls der Groom Side Count minus der Bride Side Count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "BrideSideCount",
+            "label": "bride side count"
+          },
+          {
+            "table": "Tables",
+            "field": "GroomSideCount",
+            "label": "groom side count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Side Skew“ der Table wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "der Bride Side Count minus der Groom Side Count",
+              "when": {
+                "kind": "leaf",
+                "text": "der Bride Side Count größer ist als der Groom Side Count"
+              }
+            },
+            {
+              "value": "der Groom Side Count minus der Bride Side Count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Bride Side Count größer als Groom Side Count ist, dann (Bride Side Count minus Groom Side Count), andernfalls (Groom Side Count minus Bride Side Count)"
+      },
+      "Guests.TableLabel": {
+        "table": "Guests",
+        "field": "TableLabel",
+        "kind": "lookup",
+        "rule": "Ein Guest: Table Label — aus dem zugehörigen Assigned Table übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Label des verknüpften Assigned Table"
+      },
+      "Guests.TableSeats": {
+        "table": "Guests",
+        "field": "TableSeats",
+        "kind": "lookup",
+        "rule": "Ein Guest: Table Seats — aus dem zugehörigen Assigned Table übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Seats des verknüpften Assigned Table"
+      },
+      "Guests.TableHeadCount": {
+        "table": "Guests",
+        "field": "TableHeadCount",
+        "kind": "lookup",
+        "rule": "Ein Guest: Table Head Count — aus dem zugehörigen Assigned Table übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Head Count des verknüpften Assigned Table"
+      },
+      "Guests.RelationshipsAsA": {
+        "table": "Guests",
+        "field": "RelationshipsAsA",
+        "kind": "rollup",
+        "rule": "Ein Guest: Relationships As a ist die Anzahl der mit dem Guest verbundenen Relationships.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Relationships, deren Guest a ist Guest ID"
+      },
+      "Guests.RelationshipsAsB": {
+        "table": "Guests",
+        "field": "RelationshipsAsB",
+        "kind": "rollup",
+        "rule": "Ein Guest: Relationships As B ist die Anzahl der mit dem Guest verbundenen Relationships.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Relationships, deren Guest B ist Guest ID"
+      },
+      "Guests.SatisfactionA": {
+        "table": "Guests",
+        "field": "SatisfactionA",
+        "kind": "rollup",
+        "rule": "Ein Guest: Satisfaction a ist die Gesamtsumme von Effective Score über die mit dem Guest verbundenen Relationships.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Effective Score über alle Relationships, deren Guest a ist Guest ID"
+      },
+      "Guests.SatisfactionB": {
+        "table": "Guests",
+        "field": "SatisfactionB",
+        "kind": "rollup",
+        "rule": "Ein Guest: Satisfaction B ist die Gesamtsumme von Effective Score über die mit dem Guest verbundenen Relationships.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Effective Score über alle Relationships, deren Guest B ist Guest ID"
+      },
+      "Guests.Satisfaction": {
+        "table": "Guests",
+        "field": "Satisfaction",
+        "kind": "formula",
+        "rule": "Ein Guest: Satisfaction wird berechnet als der Satisfaction a plus der Satisfaction B.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "SatisfactionA",
+            "label": "satisfaction a"
+          },
+          {
+            "table": "Guests",
+            "field": "SatisfactionB",
+            "label": "satisfaction b"
+          }
+        ],
+        "structure": null,
+        "plain": "Satisfaction a plus Satisfaction B"
+      },
+      "Guests.Mood": {
+        "table": "Guests",
+        "field": "Mood",
+        "kind": "formula",
+        "rule": "Das Feld „Mood“ des Guest wird nach folgender Priorität bestimmt:\n1. „Happy“, wenn die Satisfaction mindestens 10 ist;\n2. „Neutral“, wenn die Satisfaction mindestens 0 ist;\n3. andernfalls „Unhappy“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Satisfaction",
+            "label": "satisfaction"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Mood“ des Guest wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„Happy“",
+              "when": {
+                "kind": "leaf",
+                "text": "die Satisfaction mindestens 10 ist"
+              }
+            },
+            {
+              "value": "„Neutral“",
+              "when": {
+                "kind": "leaf",
+                "text": "die Satisfaction mindestens 0 ist"
+              }
+            },
+            {
+              "value": "„Unhappy“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Satisfaction mindestens 10 ist, dann \"Happy\", andernfalls wenn Satisfaction mindestens 0 ist, dann \"Neutral\", andernfalls \"Unhappy\""
+      },
+      "Guests.BrideFlag": {
+        "table": "Guests",
+        "field": "BrideFlag",
+        "kind": "formula",
+        "rule": "Das Feld „Bride Flag“ des Guest wird nach folgender Priorität bestimmt:\n1. 1, wenn die Side „bride“ ist;\n2. andernfalls 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Bride Flag“ des Guest wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "die Side „bride“ ist"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Side ist \"bride\", dann 1, andernfalls 0"
+      },
+      "Guests.GroomFlag": {
+        "table": "Guests",
+        "field": "GroomFlag",
+        "kind": "formula",
+        "rule": "Das Feld „Groom Flag“ des Guest wird nach folgender Priorität bestimmt:\n1. 1, wenn die Side „groom“ ist;\n2. andernfalls 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Groom Flag“ des Guest wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "die Side „groom“ ist"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Side ist \"groom\", dann 1, andernfalls 0"
+      },
+      "Relationships.GuestAName": {
+        "table": "Relationships",
+        "field": "GuestAName",
+        "kind": "lookup",
+        "rule": "Ein Relationship: Guest a Name ist der Full Name des zugehörigen Guest a des Relationship.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Full Name des verknüpften Guest a"
+      },
+      "Relationships.GuestBName": {
+        "table": "Relationships",
+        "field": "GuestBName",
+        "kind": "lookup",
+        "rule": "Ein Relationship: Guest B Name ist der Full Name des zugehörigen Guest B des Relationship.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Full Name des verknüpften Guest B"
+      },
+      "Relationships.GuestATable": {
+        "table": "Relationships",
+        "field": "GuestATable",
+        "kind": "lookup",
+        "rule": "Ein Relationship: Guest a Table ist der Assigned Table des zugehörigen Guest a des Relationship.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Assigned Table des verknüpften Guest a"
+      },
+      "Relationships.GuestBTable": {
+        "table": "Relationships",
+        "field": "GuestBTable",
+        "kind": "lookup",
+        "rule": "Ein Relationship: Guest B Table ist der Assigned Table des zugehörigen Guest B des Relationship.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Assigned Table des verknüpften Guest B"
+      },
+      "Relationships.SameTable": {
+        "table": "Relationships",
+        "field": "SameTable",
+        "kind": "formula",
+        "rule": "Ein Relationship ist markiert als Same Table, wenn alles Folgende gilt: die Guest a Table einen Wert hat und die Guest a Table die Guest B Table ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestBTable",
+            "label": "guest b table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Ein Relationship ist markiert als Same Table, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "die Guest a Table einen Wert hat"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "die Guest a Table die Guest B Table ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Guest a Table nicht \"\" ist und Guest a Table gleich Guest B Table ist"
+      },
+      "Relationships.SeatedTable": {
+        "table": "Relationships",
+        "field": "SeatedTable",
+        "kind": "formula",
+        "rule": "Das Feld „Seated Table“ des Relationship wird nach folgender Priorität bestimmt:\n1. die Guest a Table, wenn das Kennzeichen „Same Table“ gesetzt ist;\n2. andernfalls eine leere Zeichenkette.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Seated Table“ des Relationship wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "die Guest a Table",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Same Table“ gesetzt ist"
+              }
+            },
+            {
+              "value": "eine leere Zeichenkette",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Same Table, dann Guest a Table, andernfalls \"\""
+      },
+      "Relationships.EffectiveScore": {
+        "table": "Relationships",
+        "field": "EffectiveScore",
+        "kind": "formula",
+        "rule": "Das Feld „Effective Score“ des Relationship wird nach folgender Priorität bestimmt:\n1. das Negative von 50, wenn der Kind „must-not“ ist, andernfalls der Weight, wenn das Kennzeichen „Same Table“ gesetzt ist;\n2. andernfalls 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Effective Score“ des Relationship wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "das Negative von 50, wenn der Kind „must-not“ ist, andernfalls der Weight",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Same Table“ gesetzt ist"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Same Table, dann wenn Kind ist \"must-not\", dann negativ 50, andernfalls Weight, andernfalls 0"
+      },
+      "Relationships.IsMustNotViolation": {
+        "table": "Relationships",
+        "field": "IsMustNotViolation",
+        "kind": "formula",
+        "rule": "Ein Relationship gilt als eine Must Not Violation, wenn alles Folgende gilt: der Kind „must-not“ ist und das Kennzeichen „Same Table“ gesetzt ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Ein Relationship gilt als eine Must Not Violation, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "der Kind „must-not“ ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Same Table“ gesetzt ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Kind ist \"must-not\" und Same Table"
+      },
+      "Relationships.IsSatisfied": {
+        "table": "Relationships",
+        "field": "IsSatisfied",
+        "kind": "formula",
+        "rule": "Ein Relationship gilt als satisfied, wenn mindestens eines des Folgenden gilt: alles Folgende gilt: der Weight größer ist als 0 und das Kennzeichen „Same Table“ gesetzt ist oder alles Folgende gilt: der Weight kleiner ist als 0 und das Kennzeichen „Same Table“ nicht gesetzt ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Ein Relationship gilt als satisfied, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "der Weight größer ist als 0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "das Kennzeichen „Same Table“ gesetzt ist"
+                    }
+                  ]
+                },
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "der Weight kleiner ist als 0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "das Kennzeichen „Same Table“ nicht gesetzt ist"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Weight größer als 0 ist und Same Table oder Weight kleiner als 0 ist und nicht Same Table"
+      },
+      "Relationships.ViolationTable": {
+        "table": "Relationships",
+        "field": "ViolationTable",
+        "kind": "formula",
+        "rule": "Das Feld „Violation Table“ des Relationship wird nach folgender Priorität bestimmt:\n1. die Guest a Table, wenn das Kennzeichen „Is Must Not Violation“ gesetzt ist;\n2. andernfalls eine leere Zeichenkette.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Violation Table“ des Relationship wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "die Guest a Table",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Is Must Not Violation“ gesetzt ist"
+              }
+            },
+            {
+              "value": "eine leere Zeichenkette",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Is Must Not Violation, dann Guest a Table, andernfalls \"\""
+      },
+      "Relationships.ViolationFlag": {
+        "table": "Relationships",
+        "field": "ViolationFlag",
+        "kind": "formula",
+        "rule": "Das Feld „Violation Flag“ des Relationship wird nach folgender Priorität bestimmt:\n1. 1, wenn das Kennzeichen „Is Must Not Violation“ gesetzt ist;\n2. andernfalls 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Violation Flag“ des Relationship wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "das Kennzeichen „Is Must Not Violation“ gesetzt ist"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Is Must Not Violation, dann 1, andernfalls 0"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "User",
+      "Tables": "Table",
+      "Guests": "Guest",
+      "Relationships": "Relationship"
+    }
+  },
+  "es": {
+    "fields": {
+      "Tables.HeadCount": {
+        "table": "Tables",
+        "field": "HeadCount",
+        "kind": "rollup",
+        "rule": "Un table: head count es el número de guests relacionados con el table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de guests cuyo assigned table es table ID"
+      },
+      "Tables.OpenSeats": {
+        "table": "Tables",
+        "field": "OpenSeats",
+        "kind": "formula",
+        "rule": "Un table: open seats se calcula como el seats menos el head count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          }
+        ],
+        "structure": null,
+        "plain": "Seats menos head count"
+      },
+      "Tables.OverCapacity": {
+        "table": "Tables",
+        "field": "OverCapacity",
+        "kind": "formula",
+        "rule": "Un table está marcado como over capacity si el head count es mayor que el seats.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          }
+        ],
+        "structure": null,
+        "plain": "Head count es mayor que seats"
+      },
+      "Tables.RawHappiness": {
+        "table": "Tables",
+        "field": "RawHappiness",
+        "kind": "rollup",
+        "rule": "Un table: raw happiness es el total de effective score entre los relationships relacionados con el table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de effective score entre todos los relationships cuyo seated table es table ID"
+      },
+      "Tables.ViolationCount": {
+        "table": "Tables",
+        "field": "ViolationCount",
+        "kind": "rollup",
+        "rule": "Un table: violation count es el total de violation flag entre los relationships relacionados con el table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "ViolationFlag",
+            "label": "violation flag"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de violation flag entre todos los relationships cuyo seated table es table ID"
+      },
+      "Tables.Happiness": {
+        "table": "Tables",
+        "field": "Happiness",
+        "kind": "formula",
+        "rule": "Un table: happiness se calcula como el raw happiness menos 25 si el indicador «over capacity» está activado, en todos los demás casos 0 más el side skew.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "RawHappiness",
+            "label": "raw happiness"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "SideSkew",
+            "label": "side skew"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw happiness menos (si over capacity, entonces 25, de lo contrario 0 más side skew)"
+      },
+      "Tables.Grade": {
+        "table": "Tables",
+        "field": "Grade",
+        "kind": "formula",
+        "rule": "El campo «grade» del table se determina según la siguiente prioridad:\n1. «Conflict», si el violation count es mayor que 0;\n2. «Over Capacity», si el indicador «over capacity» está activado;\n3. «Great», si el happiness es al menos 15;\n4. «OK», si el happiness es al menos 5;\n5. en todos los demás casos, «Cold».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "ViolationCount",
+            "label": "violation count"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "Happiness",
+            "label": "happiness"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «grade» del table se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«Conflict»",
+              "when": {
+                "kind": "leaf",
+                "text": "el violation count es mayor que 0"
+              }
+            },
+            {
+              "value": "«Over Capacity»",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «over capacity» está activado"
+              }
+            },
+            {
+              "value": "«Great»",
+              "when": {
+                "kind": "leaf",
+                "text": "el happiness es al menos 15"
+              }
+            },
+            {
+              "value": "«OK»",
+              "when": {
+                "kind": "leaf",
+                "text": "el happiness es al menos 5"
+              }
+            },
+            {
+              "value": "«Cold»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si violation count es mayor que 0, entonces \"Conflict\", de lo contrario si over capacity, entonces \"Over Capacity\", de lo contrario si happiness es al menos 15, entonces \"Great\", de lo contrario si happiness es al menos 5, entonces \"OK\", de lo contrario \"Cold\""
+      },
+      "Tables.BrideSideCount": {
+        "table": "Tables",
+        "field": "BrideSideCount",
+        "kind": "rollup",
+        "rule": "Un table: bride side count es el total de bride flag entre los guests relacionados con el table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "BrideFlag",
+            "label": "bride flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de bride flag entre todos los guests cuyo assigned table es table ID"
+      },
+      "Tables.GroomSideCount": {
+        "table": "Tables",
+        "field": "GroomSideCount",
+        "kind": "rollup",
+        "rule": "Un table: groom side count es el total de groom flag entre los guests relacionados con el table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "GroomFlag",
+            "label": "groom flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de groom flag entre todos los guests cuyo assigned table es table ID"
+      },
+      "Tables.SideSkew": {
+        "table": "Tables",
+        "field": "SideSkew",
+        "kind": "formula",
+        "rule": "El campo «side skew» del table se determina según la siguiente prioridad:\n1. el bride side count menos el groom side count, si el bride side count es mayor que el groom side count;\n2. en todos los demás casos, el groom side count menos el bride side count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "BrideSideCount",
+            "label": "bride side count"
+          },
+          {
+            "table": "Tables",
+            "field": "GroomSideCount",
+            "label": "groom side count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «side skew» del table se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "el bride side count menos el groom side count",
+              "when": {
+                "kind": "leaf",
+                "text": "el bride side count es mayor que el groom side count"
+              }
+            },
+            {
+              "value": "el groom side count menos el bride side count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si bride side count es mayor que groom side count, entonces (bride side count menos groom side count), de lo contrario (groom side count menos bride side count)"
+      },
+      "Guests.TableLabel": {
+        "table": "Guests",
+        "field": "TableLabel",
+        "kind": "lookup",
+        "rule": "Un guest: table label — tomado del assigned table vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El label del assigned table vinculado"
+      },
+      "Guests.TableSeats": {
+        "table": "Guests",
+        "field": "TableSeats",
+        "kind": "lookup",
+        "rule": "Un guest: table seats — tomado del assigned table vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El seats del assigned table vinculado"
+      },
+      "Guests.TableHeadCount": {
+        "table": "Guests",
+        "field": "TableHeadCount",
+        "kind": "lookup",
+        "rule": "Un guest: table head count — tomado del assigned table vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El head count del assigned table vinculado"
+      },
+      "Guests.RelationshipsAsA": {
+        "table": "Guests",
+        "field": "RelationshipsAsA",
+        "kind": "rollup",
+        "rule": "Un guest: relationships as a es el número de relationships relacionados con el guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de relationships cuyo guest a es guest ID"
+      },
+      "Guests.RelationshipsAsB": {
+        "table": "Guests",
+        "field": "RelationshipsAsB",
+        "kind": "rollup",
+        "rule": "Un guest: relationships as b es el número de relationships relacionados con el guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de relationships cuyo guest b es guest ID"
+      },
+      "Guests.SatisfactionA": {
+        "table": "Guests",
+        "field": "SatisfactionA",
+        "kind": "rollup",
+        "rule": "Un guest: satisfaction a es el total de effective score entre los relationships relacionados con el guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de effective score entre todos los relationships cuyo guest a es guest ID"
+      },
+      "Guests.SatisfactionB": {
+        "table": "Guests",
+        "field": "SatisfactionB",
+        "kind": "rollup",
+        "rule": "Un guest: satisfaction b es el total de effective score entre los relationships relacionados con el guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de effective score entre todos los relationships cuyo guest b es guest ID"
+      },
+      "Guests.Satisfaction": {
+        "table": "Guests",
+        "field": "Satisfaction",
+        "kind": "formula",
+        "rule": "Un guest: satisfaction se calcula como la satisfaction a más el satisfaction b.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "SatisfactionA",
+            "label": "satisfaction a"
+          },
+          {
+            "table": "Guests",
+            "field": "SatisfactionB",
+            "label": "satisfaction b"
+          }
+        ],
+        "structure": null,
+        "plain": "Satisfaction a más satisfaction b"
+      },
+      "Guests.Mood": {
+        "table": "Guests",
+        "field": "Mood",
+        "kind": "formula",
+        "rule": "El campo «mood» del guest se determina según la siguiente prioridad:\n1. «Happy», si el satisfaction es al menos 10;\n2. «Neutral», si el satisfaction es al menos 0;\n3. en todos los demás casos, «Unhappy».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Satisfaction",
+            "label": "satisfaction"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «mood» del guest se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«Happy»",
+              "when": {
+                "kind": "leaf",
+                "text": "el satisfaction es al menos 10"
+              }
+            },
+            {
+              "value": "«Neutral»",
+              "when": {
+                "kind": "leaf",
+                "text": "el satisfaction es al menos 0"
+              }
+            },
+            {
+              "value": "«Unhappy»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si satisfaction es al menos 10, entonces \"Happy\", de lo contrario si satisfaction es al menos 0, entonces \"Neutral\", de lo contrario \"Unhappy\""
+      },
+      "Guests.BrideFlag": {
+        "table": "Guests",
+        "field": "BrideFlag",
+        "kind": "formula",
+        "rule": "El campo «bride flag» del guest se determina según la siguiente prioridad:\n1. 1, si el side es «bride»;\n2. en todos los demás casos, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «bride flag» del guest se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "el side es «bride»"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si side es \"bride\", entonces 1, de lo contrario 0"
+      },
+      "Guests.GroomFlag": {
+        "table": "Guests",
+        "field": "GroomFlag",
+        "kind": "formula",
+        "rule": "El campo «groom flag» del guest se determina según la siguiente prioridad:\n1. 1, si el side es «groom»;\n2. en todos los demás casos, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «groom flag» del guest se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "el side es «groom»"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si side es \"groom\", entonces 1, de lo contrario 0"
+      },
+      "Relationships.GuestAName": {
+        "table": "Relationships",
+        "field": "GuestAName",
+        "kind": "lookup",
+        "rule": "Un relationship: guest a name es el full name del guest a vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El full name del guest a vinculado"
+      },
+      "Relationships.GuestBName": {
+        "table": "Relationships",
+        "field": "GuestBName",
+        "kind": "lookup",
+        "rule": "Un relationship: guest b name es el full name del guest b vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El full name del guest b vinculado"
+      },
+      "Relationships.GuestATable": {
+        "table": "Relationships",
+        "field": "GuestATable",
+        "kind": "lookup",
+        "rule": "Un relationship: guest a table es el assigned table del guest a vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El assigned table del guest a vinculado"
+      },
+      "Relationships.GuestBTable": {
+        "table": "Relationships",
+        "field": "GuestBTable",
+        "kind": "lookup",
+        "rule": "Un relationship: guest b table es el assigned table del guest b vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El assigned table del guest b vinculado"
+      },
+      "Relationships.SameTable": {
+        "table": "Relationships",
+        "field": "SameTable",
+        "kind": "formula",
+        "rule": "Un relationship está marcado como same table si se cumple todo lo siguiente: el guest a table tiene valor y el guest a table es el guest b table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestBTable",
+            "label": "guest b table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un relationship está marcado como same table si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el guest a table tiene valor"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el guest a table es el guest b table"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Guest a table no es \"\" y guest a table es igual a guest b table"
+      },
+      "Relationships.SeatedTable": {
+        "table": "Relationships",
+        "field": "SeatedTable",
+        "kind": "formula",
+        "rule": "El campo «seated table» del relationship se determina según la siguiente prioridad:\n1. el guest a table, si el indicador «same table» está activado;\n2. en todos los demás casos, una cadena vacía.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «seated table» del relationship se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "el guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «same table» está activado"
+              }
+            },
+            {
+              "value": "una cadena vacía",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si same table, entonces guest a table, de lo contrario \"\""
+      },
+      "Relationships.EffectiveScore": {
+        "table": "Relationships",
+        "field": "EffectiveScore",
+        "kind": "formula",
+        "rule": "El campo «effective score» del relationship se determina según la siguiente prioridad:\n1. el negativo de 50 si el kind es «must-not», en todos los demás casos el weight, si el indicador «same table» está activado;\n2. en todos los demás casos, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «effective score» del relationship se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "el negativo de 50 si el kind es «must-not», en todos los demás casos el weight",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «same table» está activado"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si same table, entonces si kind es \"must-not\", entonces negativo 50, de lo contrario weight, de lo contrario 0"
+      },
+      "Relationships.IsMustNotViolation": {
+        "table": "Relationships",
+        "field": "IsMustNotViolation",
+        "kind": "formula",
+        "rule": "Un relationship se considera un must not violation si se cumple todo lo siguiente: el kind es «must-not» y el indicador «same table» está activado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un relationship se considera un must not violation si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el kind es «must-not»"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «same table» está activado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Kind es \"must-not\" y same table"
+      },
+      "Relationships.IsSatisfied": {
+        "table": "Relationships",
+        "field": "IsSatisfied",
+        "kind": "formula",
+        "rule": "Un relationship se considera satisfied si se cumple al menos una de las siguientes: se cumple todo lo siguiente: el weight es mayor que 0 y el indicador «same table» está activado o se cumple todo lo siguiente: el weight es menor que 0 y el indicador «same table» no está activado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un relationship se considera satisfied si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "el weight es mayor que 0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "el indicador «same table» está activado"
+                    }
+                  ]
+                },
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "el weight es menor que 0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "el indicador «same table» no está activado"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Weight es mayor que 0 y same table o weight es menor que 0 y no same table"
+      },
+      "Relationships.ViolationTable": {
+        "table": "Relationships",
+        "field": "ViolationTable",
+        "kind": "formula",
+        "rule": "El campo «violation table» del relationship se determina según la siguiente prioridad:\n1. el guest a table, si el indicador «must not violation» está activado;\n2. en todos los demás casos, una cadena vacía.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «violation table» del relationship se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "el guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «must not violation» está activado"
+              }
+            },
+            {
+              "value": "una cadena vacía",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is must not violation, entonces guest a table, de lo contrario \"\""
+      },
+      "Relationships.ViolationFlag": {
+        "table": "Relationships",
+        "field": "ViolationFlag",
+        "kind": "formula",
+        "rule": "El campo «violation flag» del relationship se determina según la siguiente prioridad:\n1. 1, si el indicador «must not violation» está activado;\n2. en todos los demás casos, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «violation flag» del relationship se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "el indicador «must not violation» está activado"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is must not violation, entonces 1, de lo contrario 0"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Tables": "table",
+      "Guests": "guest",
+      "Relationships": "relationship"
+    }
+  },
+  "fr": {
+    "fields": {
+      "Tables.HeadCount": {
+        "table": "Tables",
+        "field": "HeadCount",
+        "kind": "rollup",
+        "rule": "Un table : head count est le nombre de guests liés à le table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des guests dont assigned table est table ID"
+      },
+      "Tables.OpenSeats": {
+        "table": "Tables",
+        "field": "OpenSeats",
+        "kind": "formula",
+        "rule": "Un table : open seats est calculé comme le seats moins l'head count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          }
+        ],
+        "structure": null,
+        "plain": "Seats moins head count"
+      },
+      "Tables.OverCapacity": {
+        "table": "Tables",
+        "field": "OverCapacity",
+        "kind": "formula",
+        "rule": "Un table est marqué comme over capacity si l'head count est supérieur à le seats.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          }
+        ],
+        "structure": null,
+        "plain": "Head count est supérieur à seats"
+      },
+      "Tables.RawHappiness": {
+        "table": "Tables",
+        "field": "RawHappiness",
+        "kind": "rollup",
+        "rule": "Un table : raw happiness est le total de effective score sur les relationships liés à le table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de effective score sur tous les relationships dont seated table est table ID"
+      },
+      "Tables.ViolationCount": {
+        "table": "Tables",
+        "field": "ViolationCount",
+        "kind": "rollup",
+        "rule": "Un table : violation count est le total de violation flag sur les relationships liés à le table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "ViolationFlag",
+            "label": "violation flag"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de violation flag sur tous les relationships dont seated table est table ID"
+      },
+      "Tables.Happiness": {
+        "table": "Tables",
+        "field": "Happiness",
+        "kind": "formula",
+        "rule": "Un table : happiness est calculé comme le raw happiness moins 25 si l'indicateur « over capacity » est activé, dans tous les autres cas 0 plus le side skew.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "RawHappiness",
+            "label": "raw happiness"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "SideSkew",
+            "label": "side skew"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw happiness moins (si over capacity, alors 25, sinon 0 plus side skew)"
+      },
+      "Tables.Grade": {
+        "table": "Tables",
+        "field": "Grade",
+        "kind": "formula",
+        "rule": "Le champ « grade » du table est déterminé selon la priorité suivante :\n1. « Conflict », si le violation count est supérieur à 0 ;\n2. « Over Capacity », si l'indicateur « over capacity » est activé ;\n3. « Great », si l'happiness est au moins 15 ;\n4. « OK », si l'happiness est au moins 5 ;\n5. dans tous les autres cas, « Cold ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "ViolationCount",
+            "label": "violation count"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "Happiness",
+            "label": "happiness"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « grade » du table est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« Conflict »",
+              "when": {
+                "kind": "leaf",
+                "text": "le violation count est supérieur à 0"
+              }
+            },
+            {
+              "value": "« Over Capacity »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « over capacity » est activé"
+              }
+            },
+            {
+              "value": "« Great »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'happiness est au moins 15"
+              }
+            },
+            {
+              "value": "« OK »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'happiness est au moins 5"
+              }
+            },
+            {
+              "value": "« Cold »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si violation count est supérieur à 0, alors \"Conflict\", sinon si over capacity, alors \"Over Capacity\", sinon si happiness est au moins 15, alors \"Great\", sinon si happiness est au moins 5, alors \"OK\", sinon \"Cold\""
+      },
+      "Tables.BrideSideCount": {
+        "table": "Tables",
+        "field": "BrideSideCount",
+        "kind": "rollup",
+        "rule": "Un table : bride side count est le total de bride flag sur les guests liés à le table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "BrideFlag",
+            "label": "bride flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de bride flag sur tous les guests dont assigned table est table ID"
+      },
+      "Tables.GroomSideCount": {
+        "table": "Tables",
+        "field": "GroomSideCount",
+        "kind": "rollup",
+        "rule": "Un table : groom side count est le total de groom flag sur les guests liés à le table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "GroomFlag",
+            "label": "groom flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de groom flag sur tous les guests dont assigned table est table ID"
+      },
+      "Tables.SideSkew": {
+        "table": "Tables",
+        "field": "SideSkew",
+        "kind": "formula",
+        "rule": "Le champ « side skew » du table est déterminé selon la priorité suivante :\n1. le bride side count moins le groom side count, si le bride side count est supérieur à le groom side count ;\n2. dans tous les autres cas, le groom side count moins le bride side count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "BrideSideCount",
+            "label": "bride side count"
+          },
+          {
+            "table": "Tables",
+            "field": "GroomSideCount",
+            "label": "groom side count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « side skew » du table est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "le bride side count moins le groom side count",
+              "when": {
+                "kind": "leaf",
+                "text": "le bride side count est supérieur à le groom side count"
+              }
+            },
+            {
+              "value": "le groom side count moins le bride side count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si bride side count est supérieur à groom side count, alors (bride side count moins groom side count), sinon (groom side count moins bride side count)"
+      },
+      "Guests.TableLabel": {
+        "table": "Guests",
+        "field": "TableLabel",
+        "kind": "lookup",
+        "rule": "Un guest : table label — repris du assigned table lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le label du assigned table lié"
+      },
+      "Guests.TableSeats": {
+        "table": "Guests",
+        "field": "TableSeats",
+        "kind": "lookup",
+        "rule": "Un guest : table seats — repris du assigned table lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le seats du assigned table lié"
+      },
+      "Guests.TableHeadCount": {
+        "table": "Guests",
+        "field": "TableHeadCount",
+        "kind": "lookup",
+        "rule": "Un guest : table head count — repris du assigned table lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le head count du assigned table lié"
+      },
+      "Guests.RelationshipsAsA": {
+        "table": "Guests",
+        "field": "RelationshipsAsA",
+        "kind": "rollup",
+        "rule": "Un guest : relationships as a est le nombre de relationships liés à le guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des relationships dont guest a est guest ID"
+      },
+      "Guests.RelationshipsAsB": {
+        "table": "Guests",
+        "field": "RelationshipsAsB",
+        "kind": "rollup",
+        "rule": "Un guest : relationships as b est le nombre de relationships liés à le guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des relationships dont guest b est guest ID"
+      },
+      "Guests.SatisfactionA": {
+        "table": "Guests",
+        "field": "SatisfactionA",
+        "kind": "rollup",
+        "rule": "Un guest : satisfaction a est le total de effective score sur les relationships liés à le guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de effective score sur tous les relationships dont guest a est guest ID"
+      },
+      "Guests.SatisfactionB": {
+        "table": "Guests",
+        "field": "SatisfactionB",
+        "kind": "rollup",
+        "rule": "Un guest : satisfaction b est le total de effective score sur les relationships liés à le guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de effective score sur tous les relationships dont guest b est guest ID"
+      },
+      "Guests.Satisfaction": {
+        "table": "Guests",
+        "field": "Satisfaction",
+        "kind": "formula",
+        "rule": "Un guest : satisfaction est calculé comme le satisfaction a plus le satisfaction b.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "SatisfactionA",
+            "label": "satisfaction a"
+          },
+          {
+            "table": "Guests",
+            "field": "SatisfactionB",
+            "label": "satisfaction b"
+          }
+        ],
+        "structure": null,
+        "plain": "Satisfaction a plus satisfaction b"
+      },
+      "Guests.Mood": {
+        "table": "Guests",
+        "field": "Mood",
+        "kind": "formula",
+        "rule": "Le champ « mood » du guest est déterminé selon la priorité suivante :\n1. « Happy », si la satisfaction est au moins 10 ;\n2. « Neutral », si la satisfaction est au moins 0 ;\n3. dans tous les autres cas, « Unhappy ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Satisfaction",
+            "label": "satisfaction"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « mood » du guest est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« Happy »",
+              "when": {
+                "kind": "leaf",
+                "text": "la satisfaction est au moins 10"
+              }
+            },
+            {
+              "value": "« Neutral »",
+              "when": {
+                "kind": "leaf",
+                "text": "la satisfaction est au moins 0"
+              }
+            },
+            {
+              "value": "« Unhappy »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si satisfaction est au moins 10, alors \"Happy\", sinon si satisfaction est au moins 0, alors \"Neutral\", sinon \"Unhappy\""
+      },
+      "Guests.BrideFlag": {
+        "table": "Guests",
+        "field": "BrideFlag",
+        "kind": "formula",
+        "rule": "Le champ « bride flag » du guest est déterminé selon la priorité suivante :\n1. 1, si le side est « bride » ;\n2. dans tous les autres cas, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « bride flag » du guest est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "le side est « bride »"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si side est \"bride\", alors 1, sinon 0"
+      },
+      "Guests.GroomFlag": {
+        "table": "Guests",
+        "field": "GroomFlag",
+        "kind": "formula",
+        "rule": "Le champ « groom flag » du guest est déterminé selon la priorité suivante :\n1. 1, si le side est « groom » ;\n2. dans tous les autres cas, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « groom flag » du guest est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "le side est « groom »"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si side est \"groom\", alors 1, sinon 0"
+      },
+      "Relationships.GuestAName": {
+        "table": "Relationships",
+        "field": "GuestAName",
+        "kind": "lookup",
+        "rule": "Un relationship : guest a name est le full name du guest a lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le full name du guest a lié"
+      },
+      "Relationships.GuestBName": {
+        "table": "Relationships",
+        "field": "GuestBName",
+        "kind": "lookup",
+        "rule": "Un relationship : guest b name est le full name du guest b lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le full name du guest b lié"
+      },
+      "Relationships.GuestATable": {
+        "table": "Relationships",
+        "field": "GuestATable",
+        "kind": "lookup",
+        "rule": "Un relationship : guest a table est le assigned table du guest a lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le assigned table du guest a lié"
+      },
+      "Relationships.GuestBTable": {
+        "table": "Relationships",
+        "field": "GuestBTable",
+        "kind": "lookup",
+        "rule": "Un relationship : guest b table est le assigned table du guest b lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le assigned table du guest b lié"
+      },
+      "Relationships.SameTable": {
+        "table": "Relationships",
+        "field": "SameTable",
+        "kind": "formula",
+        "rule": "Un relationship est marqué comme same table si tout ce qui suit est vrai : le guest a table a une valeur et le guest a table est le guest b table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestBTable",
+            "label": "guest b table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un relationship est marqué comme same table si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "le guest a table a une valeur"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "le guest a table est le guest b table"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Guest a table n'est pas \"\" et guest a table est égal à guest b table"
+      },
+      "Relationships.SeatedTable": {
+        "table": "Relationships",
+        "field": "SeatedTable",
+        "kind": "formula",
+        "rule": "Le champ « seated table » du relationship est déterminé selon la priorité suivante :\n1. le guest a table, si l'indicateur « same table » est activé ;\n2. dans tous les autres cas, une chaîne vide.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « seated table » du relationship est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "le guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « same table » est activé"
+              }
+            },
+            {
+              "value": "une chaîne vide",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si same table, alors guest a table, sinon \"\""
+      },
+      "Relationships.EffectiveScore": {
+        "table": "Relationships",
+        "field": "EffectiveScore",
+        "kind": "formula",
+        "rule": "Le champ « effective score » du relationship est déterminé selon la priorité suivante :\n1. l'opposé de 50 si le kind est « must-not », dans tous les autres cas le weight, si l'indicateur « same table » est activé ;\n2. dans tous les autres cas, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « effective score » du relationship est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "l'opposé de 50 si le kind est « must-not », dans tous les autres cas le weight",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « same table » est activé"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si same table, alors si kind est \"must-not\", alors moins 50, sinon weight, sinon 0"
+      },
+      "Relationships.IsMustNotViolation": {
+        "table": "Relationships",
+        "field": "IsMustNotViolation",
+        "kind": "formula",
+        "rule": "Un relationship est considéré comme une must not violation si tout ce qui suit est vrai : le kind est « must-not » et l'indicateur « same table » est activé.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un relationship est considéré comme une must not violation si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "le kind est « must-not »"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « same table » est activé"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Kind est \"must-not\" et same table"
+      },
+      "Relationships.IsSatisfied": {
+        "table": "Relationships",
+        "field": "IsSatisfied",
+        "kind": "formula",
+        "rule": "Un relationship est considéré comme satisfied si au moins une des conditions suivantes est vraie : tout ce qui suit est vrai : le weight est supérieur à 0 et l'indicateur « same table » est activé ou tout ce qui suit est vrai : le weight est inférieur à 0 et l'indicateur « same table » n'est pas activé.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un relationship est considéré comme satisfied si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "le weight est supérieur à 0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "l'indicateur « same table » est activé"
+                    }
+                  ]
+                },
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "le weight est inférieur à 0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "l'indicateur « same table » n'est pas activé"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Weight est supérieur à 0 et same table ou weight est inférieur à 0 et non same table"
+      },
+      "Relationships.ViolationTable": {
+        "table": "Relationships",
+        "field": "ViolationTable",
+        "kind": "formula",
+        "rule": "Le champ « violation table » du relationship est déterminé selon la priorité suivante :\n1. le guest a table, si l'indicateur « must not violation » est activé ;\n2. dans tous les autres cas, une chaîne vide.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « violation table » du relationship est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "le guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « must not violation » est activé"
+              }
+            },
+            {
+              "value": "une chaîne vide",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is must not violation, alors guest a table, sinon \"\""
+      },
+      "Relationships.ViolationFlag": {
+        "table": "Relationships",
+        "field": "ViolationFlag",
+        "kind": "formula",
+        "rule": "Le champ « violation flag » du relationship est déterminé selon la priorité suivante :\n1. 1, si l'indicateur « must not violation » est activé ;\n2. dans tous les autres cas, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « violation flag » du relationship est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicateur « must not violation » est activé"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si is must not violation, alors 1, sinon 0"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Tables": "table",
+      "Guests": "guest",
+      "Relationships": "relationship"
+    }
+  },
+  "hi": {
+    "fields": {
+      "Tables.HeadCount": {
+        "table": "Tables",
+        "field": "HeadCount",
+        "kind": "rollup",
+        "rule": "table का “head count” table से संबंधित “guests” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “guests” की संख्या, जिनका assigned table table ID है"
+      },
+      "Tables.OpenSeats": {
+        "table": "Tables",
+        "field": "OpenSeats",
+        "kind": "formula",
+        "rule": "table का “open seats” seats घटा head count के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          }
+        ],
+        "structure": null,
+        "plain": "Seats घटा head count"
+      },
+      "Tables.OverCapacity": {
+        "table": "Tables",
+        "field": "OverCapacity",
+        "kind": "formula",
+        "rule": "यदि head count seats से अधिक है, तो table “over capacity” के रूप में दर्ज किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          }
+        ],
+        "structure": null,
+        "plain": "Head count seats से अधिक है"
+      },
+      "Tables.RawHappiness": {
+        "table": "Tables",
+        "field": "RawHappiness",
+        "kind": "rollup",
+        "rule": "table का “raw happiness” table से संबंधित “relationships” पर कुल “effective score” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “relationships” पर योग effective score, जिनका seated table table ID है"
+      },
+      "Tables.ViolationCount": {
+        "table": "Tables",
+        "field": "ViolationCount",
+        "kind": "rollup",
+        "rule": "table का “violation count” table से संबंधित “relationships” पर कुल “violation flag” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "ViolationFlag",
+            "label": "violation flag"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “relationships” पर योग violation flag, जिनका seated table table ID है"
+      },
+      "Tables.Happiness": {
+        "table": "Tables",
+        "field": "Happiness",
+        "kind": "formula",
+        "rule": "table का “happiness” raw happiness घटा 25, यदि “over capacity” ध्वज लगा हुआ है; अन्य सभी स्थितियों में 0 जोड़ side skew के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "RawHappiness",
+            "label": "raw happiness"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "SideSkew",
+            "label": "side skew"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw happiness घटा (यदि over capacity, तो 25, अन्यथा 0 जोड़ side skew)"
+      },
+      "Tables.Grade": {
+        "table": "Tables",
+        "field": "Grade",
+        "kind": "formula",
+        "rule": "Table का “grade” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “Conflict”, यदि violation count 0 से अधिक है;\n2. “Over Capacity”, यदि “over capacity” ध्वज लगा हुआ है;\n3. “Great”, यदि happiness कम से कम 15 है;\n4. “OK”, यदि happiness कम से कम 5 है;\n5. अन्य सभी स्थितियों में, “Cold”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "ViolationCount",
+            "label": "violation count"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "Happiness",
+            "label": "happiness"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Table का “grade” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“Conflict”",
+              "when": {
+                "kind": "leaf",
+                "text": "violation count 0 से अधिक है"
+              }
+            },
+            {
+              "value": "“Over Capacity”",
+              "when": {
+                "kind": "leaf",
+                "text": "“over capacity” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "“Great”",
+              "when": {
+                "kind": "leaf",
+                "text": "happiness कम से कम 15 है"
+              }
+            },
+            {
+              "value": "“OK”",
+              "when": {
+                "kind": "leaf",
+                "text": "happiness कम से कम 5 है"
+              }
+            },
+            {
+              "value": "“Cold”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि violation count 0 से अधिक है, तो \"Conflict\", अन्यथा यदि over capacity, तो \"Over Capacity\", अन्यथा यदि happiness कम से कम 15 है, तो \"Great\", अन्यथा यदि happiness कम से कम 5 है, तो \"OK\", अन्यथा \"Cold\""
+      },
+      "Tables.BrideSideCount": {
+        "table": "Tables",
+        "field": "BrideSideCount",
+        "kind": "rollup",
+        "rule": "table का “bride side count” table से संबंधित “guests” पर कुल “bride flag” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "BrideFlag",
+            "label": "bride flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “guests” पर योग bride flag, जिनका assigned table table ID है"
+      },
+      "Tables.GroomSideCount": {
+        "table": "Tables",
+        "field": "GroomSideCount",
+        "kind": "rollup",
+        "rule": "table का “groom side count” table से संबंधित “guests” पर कुल “groom flag” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "GroomFlag",
+            "label": "groom flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “guests” पर योग groom flag, जिनका assigned table table ID है"
+      },
+      "Tables.SideSkew": {
+        "table": "Tables",
+        "field": "SideSkew",
+        "kind": "formula",
+        "rule": "Table का “side skew” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. bride side count घटा groom side count, यदि bride side count groom side count से अधिक है;\n2. अन्य सभी स्थितियों में, groom side count घटा bride side count।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "BrideSideCount",
+            "label": "bride side count"
+          },
+          {
+            "table": "Tables",
+            "field": "GroomSideCount",
+            "label": "groom side count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Table का “side skew” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "bride side count घटा groom side count",
+              "when": {
+                "kind": "leaf",
+                "text": "bride side count groom side count से अधिक है"
+              }
+            },
+            {
+              "value": "groom side count घटा bride side count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि bride side count groom side count से अधिक है, तो (bride side count घटा groom side count), अन्यथा (groom side count घटा bride side count)"
+      },
+      "Guests.TableLabel": {
+        "table": "Guests",
+        "field": "TableLabel",
+        "kind": "lookup",
+        "rule": "guest का “table label” — लिंक किए गए “assigned table” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “assigned table” का label"
+      },
+      "Guests.TableSeats": {
+        "table": "Guests",
+        "field": "TableSeats",
+        "kind": "lookup",
+        "rule": "guest का “table seats” — लिंक किए गए “assigned table” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “assigned table” का seats"
+      },
+      "Guests.TableHeadCount": {
+        "table": "Guests",
+        "field": "TableHeadCount",
+        "kind": "lookup",
+        "rule": "guest का “table head count” — लिंक किए गए “assigned table” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “assigned table” का head count"
+      },
+      "Guests.RelationshipsAsA": {
+        "table": "Guests",
+        "field": "RelationshipsAsA",
+        "kind": "rollup",
+        "rule": "guest का “relationships as a” guest से संबंधित “relationships” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “relationships” की संख्या, जिनका guest a guest ID है"
+      },
+      "Guests.RelationshipsAsB": {
+        "table": "Guests",
+        "field": "RelationshipsAsB",
+        "kind": "rollup",
+        "rule": "guest का “relationships as b” guest से संबंधित “relationships” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “relationships” की संख्या, जिनका guest b guest ID है"
+      },
+      "Guests.SatisfactionA": {
+        "table": "Guests",
+        "field": "SatisfactionA",
+        "kind": "rollup",
+        "rule": "guest का “satisfaction a” guest से संबंधित “relationships” पर कुल “effective score” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “relationships” पर योग effective score, जिनका guest a guest ID है"
+      },
+      "Guests.SatisfactionB": {
+        "table": "Guests",
+        "field": "SatisfactionB",
+        "kind": "rollup",
+        "rule": "guest का “satisfaction b” guest से संबंधित “relationships” पर कुल “effective score” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “relationships” पर योग effective score, जिनका guest b guest ID है"
+      },
+      "Guests.Satisfaction": {
+        "table": "Guests",
+        "field": "Satisfaction",
+        "kind": "formula",
+        "rule": "guest का “satisfaction” satisfaction a जोड़ satisfaction b के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "SatisfactionA",
+            "label": "satisfaction a"
+          },
+          {
+            "table": "Guests",
+            "field": "SatisfactionB",
+            "label": "satisfaction b"
+          }
+        ],
+        "structure": null,
+        "plain": "Satisfaction a जोड़ satisfaction b"
+      },
+      "Guests.Mood": {
+        "table": "Guests",
+        "field": "Mood",
+        "kind": "formula",
+        "rule": "Guest का “mood” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “Happy”, यदि satisfaction कम से कम 10 है;\n2. “Neutral”, यदि satisfaction कम से कम 0 है;\n3. अन्य सभी स्थितियों में, “Unhappy”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Satisfaction",
+            "label": "satisfaction"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Guest का “mood” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“Happy”",
+              "when": {
+                "kind": "leaf",
+                "text": "satisfaction कम से कम 10 है"
+              }
+            },
+            {
+              "value": "“Neutral”",
+              "when": {
+                "kind": "leaf",
+                "text": "satisfaction कम से कम 0 है"
+              }
+            },
+            {
+              "value": "“Unhappy”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि satisfaction कम से कम 10 है, तो \"Happy\", अन्यथा यदि satisfaction कम से कम 0 है, तो \"Neutral\", अन्यथा \"Unhappy\""
+      },
+      "Guests.BrideFlag": {
+        "table": "Guests",
+        "field": "BrideFlag",
+        "kind": "formula",
+        "rule": "Guest का “bride flag” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. 1, यदि side “bride” है;\n2. अन्य सभी स्थितियों में, 0।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Guest का “bride flag” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "side “bride” है"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि side \"bride\" है, तो 1, अन्यथा 0"
+      },
+      "Guests.GroomFlag": {
+        "table": "Guests",
+        "field": "GroomFlag",
+        "kind": "formula",
+        "rule": "Guest का “groom flag” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. 1, यदि side “groom” है;\n2. अन्य सभी स्थितियों में, 0।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Guest का “groom flag” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "side “groom” है"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि side \"groom\" है, तो 1, अन्यथा 0"
+      },
+      "Relationships.GuestAName": {
+        "table": "Relationships",
+        "field": "GuestAName",
+        "kind": "lookup",
+        "rule": "relationship का “guest a name” लिंक किए गए “guest a” का “full name” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “guest a” का full name"
+      },
+      "Relationships.GuestBName": {
+        "table": "Relationships",
+        "field": "GuestBName",
+        "kind": "lookup",
+        "rule": "relationship का “guest b name” लिंक किए गए “guest b” का “full name” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “guest b” का full name"
+      },
+      "Relationships.GuestATable": {
+        "table": "Relationships",
+        "field": "GuestATable",
+        "kind": "lookup",
+        "rule": "relationship का “guest a table” लिंक किए गए “guest a” का “assigned table” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “guest a” का assigned table"
+      },
+      "Relationships.GuestBTable": {
+        "table": "Relationships",
+        "field": "GuestBTable",
+        "kind": "lookup",
+        "rule": "relationship का “guest b table” लिंक किए गए “guest b” का “assigned table” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “guest b” का assigned table"
+      },
+      "Relationships.SameTable": {
+        "table": "Relationships",
+        "field": "SameTable",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: guest a table में कोई मान है और guest a table guest b table है, तो relationship “same table” के रूप में दर्ज किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestBTable",
+            "label": "guest b table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "relationship “same table” के रूप में दर्ज किया जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "guest a table में कोई मान है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "guest a table guest b table है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Guest a table \"\" नहीं है और guest a table guest b table के बराबर है"
+      },
+      "Relationships.SeatedTable": {
+        "table": "Relationships",
+        "field": "SeatedTable",
+        "kind": "formula",
+        "rule": "Relationship का “seated table” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. guest a table, यदि “same table” ध्वज लगा हुआ है;\n2. अन्य सभी स्थितियों में, एक खाली स्ट्रिंग।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Relationship का “seated table” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "“same table” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "एक खाली स्ट्रिंग",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि same table, तो guest a table, अन्यथा \"\""
+      },
+      "Relationships.EffectiveScore": {
+        "table": "Relationships",
+        "field": "EffectiveScore",
+        "kind": "formula",
+        "rule": "Relationship का “effective score” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. 50 का ऋणात्मक मान, यदि kind “must-not” है; अन्य सभी स्थितियों में weight, यदि “same table” ध्वज लगा हुआ है;\n2. अन्य सभी स्थितियों में, 0।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Relationship का “effective score” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "50 का ऋणात्मक मान, यदि kind “must-not” है; अन्य सभी स्थितियों में weight",
+              "when": {
+                "kind": "leaf",
+                "text": "“same table” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि same table, तो यदि kind \"must-not\" है, तो ऋण 50, अन्यथा weight, अन्यथा 0"
+      },
+      "Relationships.IsMustNotViolation": {
+        "table": "Relationships",
+        "field": "IsMustNotViolation",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: kind “must-not” है और “same table” ध्वज लगा हुआ है, तो relationship “must not violation” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "relationship “must not violation” माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "kind “must-not” है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“same table” ध्वज लगा हुआ है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Kind \"must-not\" है और same table"
+      },
+      "Relationships.IsSatisfied": {
+        "table": "Relationships",
+        "field": "IsSatisfied",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित में से कम से कम एक सही है: निम्नलिखित सभी सही हैं: weight 0 से अधिक है और “same table” ध्वज लगा हुआ है या निम्नलिखित सभी सही हैं: weight 0 से कम है और “same table” ध्वज लगा हुआ नहीं है, तो relationship “satisfied” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "relationship “satisfied” माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "weight 0 से अधिक है"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "“same table” ध्वज लगा हुआ है"
+                    }
+                  ]
+                },
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "weight 0 से कम है"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "“same table” ध्वज लगा हुआ नहीं है"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Weight 0 से अधिक है और same table या weight 0 से कम है और same table नहीं"
+      },
+      "Relationships.ViolationTable": {
+        "table": "Relationships",
+        "field": "ViolationTable",
+        "kind": "formula",
+        "rule": "Relationship का “violation table” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. guest a table, यदि “must not violation” ध्वज लगा हुआ है;\n2. अन्य सभी स्थितियों में, एक खाली स्ट्रिंग।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Relationship का “violation table” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "“must not violation” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "एक खाली स्ट्रिंग",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि is must not violation, तो guest a table, अन्यथा \"\""
+      },
+      "Relationships.ViolationFlag": {
+        "table": "Relationships",
+        "field": "ViolationFlag",
+        "kind": "formula",
+        "rule": "Relationship का “violation flag” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. 1, यदि “must not violation” ध्वज लगा हुआ है;\n2. अन्य सभी स्थितियों में, 0।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Relationship का “violation flag” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "“must not violation” ध्वज लगा हुआ है"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि is must not violation, तो 1, अन्यथा 0"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "Users": "user",
+      "Tables": "table",
+      "Guests": "guest",
+      "Relationships": "relationship"
+    }
+  },
+  "id": {
+    "fields": {
+      "Tables.HeadCount": {
+        "table": "Tables",
+        "field": "HeadCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap table, head count adalah jumlah guests yang terkait dengan table tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah guests dengan syarat assigned table adalah table ID"
+      },
+      "Tables.OpenSeats": {
+        "table": "Tables",
+        "field": "OpenSeats",
+        "kind": "formula",
+        "rule": "Untuk setiap table, open seats dihitung sebagai seats dikurangi head count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          }
+        ],
+        "structure": null,
+        "plain": "Seats dikurangi head count"
+      },
+      "Tables.OverCapacity": {
+        "table": "Tables",
+        "field": "OverCapacity",
+        "kind": "formula",
+        "rule": "Setiap table ditandai sebagai “over capacity” jika head count lebih dari seats.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          }
+        ],
+        "structure": null,
+        "plain": "Head count lebih dari seats"
+      },
+      "Tables.RawHappiness": {
+        "table": "Tables",
+        "field": "RawHappiness",
+        "kind": "rollup",
+        "rule": "Untuk setiap table, raw happiness adalah nilai total effective score pada seluruh relationships yang terkait dengan table tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total effective score pada semua relationships dengan syarat seated table adalah table ID"
+      },
+      "Tables.ViolationCount": {
+        "table": "Tables",
+        "field": "ViolationCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap table, violation count adalah nilai total violation flag pada seluruh relationships yang terkait dengan table tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "ViolationFlag",
+            "label": "violation flag"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total violation flag pada semua relationships dengan syarat seated table adalah table ID"
+      },
+      "Tables.Happiness": {
+        "table": "Tables",
+        "field": "Happiness",
+        "kind": "formula",
+        "rule": "Untuk setiap table, happiness dihitung sebagai raw happiness dikurangi 25 jika penanda “over capacity” aktif, dan dalam semua kasus lainnya 0 ditambah side skew.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "RawHappiness",
+            "label": "raw happiness"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "SideSkew",
+            "label": "side skew"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw happiness dikurangi (jika over capacity maka 25, selain itu 0 ditambah side skew)"
+      },
+      "Tables.Grade": {
+        "table": "Tables",
+        "field": "Grade",
+        "kind": "formula",
+        "rule": "Untuk setiap table, grade ditentukan menurut urutan prioritas berikut:\n1. “Conflict”, jika violation count lebih dari 0;\n2. “Over Capacity”, jika penanda “over capacity” aktif;\n3. “Great”, jika happiness tidak kurang dari 15;\n4. “OK”, jika happiness tidak kurang dari 5;\n5. dalam semua kasus lainnya, “Cold”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "ViolationCount",
+            "label": "violation count"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "Happiness",
+            "label": "happiness"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap table, grade ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“Conflict”",
+              "when": {
+                "kind": "leaf",
+                "text": "violation count lebih dari 0"
+              }
+            },
+            {
+              "value": "“Over Capacity”",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “over capacity” aktif"
+              }
+            },
+            {
+              "value": "“Great”",
+              "when": {
+                "kind": "leaf",
+                "text": "happiness tidak kurang dari 15"
+              }
+            },
+            {
+              "value": "“OK”",
+              "when": {
+                "kind": "leaf",
+                "text": "happiness tidak kurang dari 5"
+              }
+            },
+            {
+              "value": "“Cold”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika violation count lebih dari 0 maka \"Conflict\", selain itu jika over capacity maka \"Over Capacity\", selain itu jika happiness tidak kurang dari 15 maka \"Great\", selain itu jika happiness tidak kurang dari 5 maka \"OK\", selain itu \"Cold\""
+      },
+      "Tables.BrideSideCount": {
+        "table": "Tables",
+        "field": "BrideSideCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap table, bride side count adalah nilai total bride flag pada seluruh guests yang terkait dengan table tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "BrideFlag",
+            "label": "bride flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total bride flag pada semua guests dengan syarat assigned table adalah table ID"
+      },
+      "Tables.GroomSideCount": {
+        "table": "Tables",
+        "field": "GroomSideCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap table, groom side count adalah nilai total groom flag pada seluruh guests yang terkait dengan table tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "GroomFlag",
+            "label": "groom flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total groom flag pada semua guests dengan syarat assigned table adalah table ID"
+      },
+      "Tables.SideSkew": {
+        "table": "Tables",
+        "field": "SideSkew",
+        "kind": "formula",
+        "rule": "Untuk setiap table, side skew ditentukan menurut urutan prioritas berikut:\n1. bride side count dikurangi groom side count, jika bride side count lebih dari groom side count;\n2. dalam semua kasus lainnya, groom side count dikurangi bride side count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "BrideSideCount",
+            "label": "bride side count"
+          },
+          {
+            "table": "Tables",
+            "field": "GroomSideCount",
+            "label": "groom side count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap table, side skew ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "bride side count dikurangi groom side count",
+              "when": {
+                "kind": "leaf",
+                "text": "bride side count lebih dari groom side count"
+              }
+            },
+            {
+              "value": "groom side count dikurangi bride side count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika bride side count lebih dari groom side count maka (bride side count dikurangi groom side count), selain itu (groom side count dikurangi bride side count)"
+      },
+      "Guests.TableLabel": {
+        "table": "Guests",
+        "field": "TableLabel",
+        "kind": "lookup",
+        "rule": "Untuk setiap guest, table label diambil dari assigned table yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Label dari assigned table yang tertaut"
+      },
+      "Guests.TableSeats": {
+        "table": "Guests",
+        "field": "TableSeats",
+        "kind": "lookup",
+        "rule": "Untuk setiap guest, table seats diambil dari assigned table yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seats dari assigned table yang tertaut"
+      },
+      "Guests.TableHeadCount": {
+        "table": "Guests",
+        "field": "TableHeadCount",
+        "kind": "lookup",
+        "rule": "Untuk setiap guest, table head count diambil dari assigned table yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Head count dari assigned table yang tertaut"
+      },
+      "Guests.RelationshipsAsA": {
+        "table": "Guests",
+        "field": "RelationshipsAsA",
+        "kind": "rollup",
+        "rule": "Untuk setiap guest, relationships as a adalah jumlah relationships yang terkait dengan guest tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah relationships dengan syarat guest a adalah guest ID"
+      },
+      "Guests.RelationshipsAsB": {
+        "table": "Guests",
+        "field": "RelationshipsAsB",
+        "kind": "rollup",
+        "rule": "Untuk setiap guest, relationships as b adalah jumlah relationships yang terkait dengan guest tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah relationships dengan syarat guest b adalah guest ID"
+      },
+      "Guests.SatisfactionA": {
+        "table": "Guests",
+        "field": "SatisfactionA",
+        "kind": "rollup",
+        "rule": "Untuk setiap guest, satisfaction a adalah nilai total effective score pada seluruh relationships yang terkait dengan guest tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total effective score pada semua relationships dengan syarat guest a adalah guest ID"
+      },
+      "Guests.SatisfactionB": {
+        "table": "Guests",
+        "field": "SatisfactionB",
+        "kind": "rollup",
+        "rule": "Untuk setiap guest, satisfaction b adalah nilai total effective score pada seluruh relationships yang terkait dengan guest tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total effective score pada semua relationships dengan syarat guest b adalah guest ID"
+      },
+      "Guests.Satisfaction": {
+        "table": "Guests",
+        "field": "Satisfaction",
+        "kind": "formula",
+        "rule": "Untuk setiap guest, satisfaction dihitung sebagai satisfaction a ditambah satisfaction b.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "SatisfactionA",
+            "label": "satisfaction a"
+          },
+          {
+            "table": "Guests",
+            "field": "SatisfactionB",
+            "label": "satisfaction b"
+          }
+        ],
+        "structure": null,
+        "plain": "Satisfaction a ditambah satisfaction b"
+      },
+      "Guests.Mood": {
+        "table": "Guests",
+        "field": "Mood",
+        "kind": "formula",
+        "rule": "Untuk setiap guest, mood ditentukan menurut urutan prioritas berikut:\n1. “Happy”, jika satisfaction tidak kurang dari 10;\n2. “Neutral”, jika satisfaction tidak kurang dari 0;\n3. dalam semua kasus lainnya, “Unhappy”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Satisfaction",
+            "label": "satisfaction"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap guest, mood ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“Happy”",
+              "when": {
+                "kind": "leaf",
+                "text": "satisfaction tidak kurang dari 10"
+              }
+            },
+            {
+              "value": "“Neutral”",
+              "when": {
+                "kind": "leaf",
+                "text": "satisfaction tidak kurang dari 0"
+              }
+            },
+            {
+              "value": "“Unhappy”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika satisfaction tidak kurang dari 10 maka \"Happy\", selain itu jika satisfaction tidak kurang dari 0 maka \"Neutral\", selain itu \"Unhappy\""
+      },
+      "Guests.BrideFlag": {
+        "table": "Guests",
+        "field": "BrideFlag",
+        "kind": "formula",
+        "rule": "Untuk setiap guest, bride flag ditentukan menurut urutan prioritas berikut:\n1. 1, jika side adalah “bride”;\n2. dalam semua kasus lainnya, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap guest, bride flag ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "side adalah “bride”"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika side adalah \"bride\" maka 1, selain itu 0"
+      },
+      "Guests.GroomFlag": {
+        "table": "Guests",
+        "field": "GroomFlag",
+        "kind": "formula",
+        "rule": "Untuk setiap guest, groom flag ditentukan menurut urutan prioritas berikut:\n1. 1, jika side adalah “groom”;\n2. dalam semua kasus lainnya, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap guest, groom flag ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "side adalah “groom”"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika side adalah \"groom\" maka 1, selain itu 0"
+      },
+      "Relationships.GuestAName": {
+        "table": "Relationships",
+        "field": "GuestAName",
+        "kind": "lookup",
+        "rule": "Untuk setiap relationship, guest a name adalah full name dari guest a yang tertaut pada relationship tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name dari guest a yang tertaut"
+      },
+      "Relationships.GuestBName": {
+        "table": "Relationships",
+        "field": "GuestBName",
+        "kind": "lookup",
+        "rule": "Untuk setiap relationship, guest b name adalah full name dari guest b yang tertaut pada relationship tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name dari guest b yang tertaut"
+      },
+      "Relationships.GuestATable": {
+        "table": "Relationships",
+        "field": "GuestATable",
+        "kind": "lookup",
+        "rule": "Untuk setiap relationship, guest a table adalah assigned table dari guest a yang tertaut pada relationship tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assigned table dari guest a yang tertaut"
+      },
+      "Relationships.GuestBTable": {
+        "table": "Relationships",
+        "field": "GuestBTable",
+        "kind": "lookup",
+        "rule": "Untuk setiap relationship, guest b table adalah assigned table dari guest b yang tertaut pada relationship tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assigned table dari guest b yang tertaut"
+      },
+      "Relationships.SameTable": {
+        "table": "Relationships",
+        "field": "SameTable",
+        "kind": "formula",
+        "rule": "Setiap relationship ditandai sebagai “same table” jika semua kondisi berikut terpenuhi: guest a table memiliki nilai dan guest a table adalah guest b table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestBTable",
+            "label": "guest b table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap relationship ditandai sebagai “same table” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "guest a table memiliki nilai"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "guest a table adalah guest b table"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Guest a table tidak sama dengan \"\" dan guest a table sama dengan guest b table"
+      },
+      "Relationships.SeatedTable": {
+        "table": "Relationships",
+        "field": "SeatedTable",
+        "kind": "formula",
+        "rule": "Untuk setiap relationship, seated table ditentukan menurut urutan prioritas berikut:\n1. guest a table, jika penanda “same table” aktif;\n2. dalam semua kasus lainnya, teks kosong.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap relationship, seated table ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “same table” aktif"
+              }
+            },
+            {
+              "value": "teks kosong",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika same table maka guest a table, selain itu \"\""
+      },
+      "Relationships.EffectiveScore": {
+        "table": "Relationships",
+        "field": "EffectiveScore",
+        "kind": "formula",
+        "rule": "Untuk setiap relationship, effective score ditentukan menurut urutan prioritas berikut:\n1. nilai negatif dari 50 jika kind adalah “must-not”, dan dalam semua kasus lainnya weight, jika penanda “same table” aktif;\n2. dalam semua kasus lainnya, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap relationship, effective score ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "nilai negatif dari 50 jika kind adalah “must-not”, dan dalam semua kasus lainnya weight",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “same table” aktif"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika same table maka jika kind adalah \"must-not\" maka negatif 50, selain itu weight, selain itu 0"
+      },
+      "Relationships.IsMustNotViolation": {
+        "table": "Relationships",
+        "field": "IsMustNotViolation",
+        "kind": "formula",
+        "rule": "Setiap relationship dianggap “must not violation” jika semua kondisi berikut terpenuhi: kind adalah “must-not” dan penanda “same table” aktif.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap relationship dianggap “must not violation” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "kind adalah “must-not”"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "penanda “same table” aktif"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Kind adalah \"must-not\" dan same table"
+      },
+      "Relationships.IsSatisfied": {
+        "table": "Relationships",
+        "field": "IsSatisfied",
+        "kind": "formula",
+        "rule": "Setiap relationship dianggap “satisfied” jika paling sedikit satu dari kondisi berikut terpenuhi: semua kondisi berikut terpenuhi: weight lebih dari 0 dan penanda “same table” aktif atau semua kondisi berikut terpenuhi: weight kurang dari 0 dan penanda “same table” tidak aktif.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap relationship dianggap “satisfied” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "weight lebih dari 0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "penanda “same table” aktif"
+                    }
+                  ]
+                },
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "weight kurang dari 0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "penanda “same table” tidak aktif"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Weight lebih dari 0 dan same table atau weight kurang dari 0 dan tidak benar bahwa same table"
+      },
+      "Relationships.ViolationTable": {
+        "table": "Relationships",
+        "field": "ViolationTable",
+        "kind": "formula",
+        "rule": "Untuk setiap relationship, violation table ditentukan menurut urutan prioritas berikut:\n1. guest a table, jika penanda “must not violation” aktif;\n2. dalam semua kasus lainnya, teks kosong.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap relationship, violation table ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “must not violation” aktif"
+              }
+            },
+            {
+              "value": "teks kosong",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika is must not violation maka guest a table, selain itu \"\""
+      },
+      "Relationships.ViolationFlag": {
+        "table": "Relationships",
+        "field": "ViolationFlag",
+        "kind": "formula",
+        "rule": "Untuk setiap relationship, violation flag ditentukan menurut urutan prioritas berikut:\n1. 1, jika penanda “must not violation” aktif;\n2. dalam semua kasus lainnya, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap relationship, violation flag ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "penanda “must not violation” aktif"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika is must not violation maka 1, selain itu 0"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Tables": "table",
+      "Guests": "guest",
+      "Relationships": "relationship"
+    }
+  },
+  "it": {
+    "fields": {
+      "Tables.HeadCount": {
+        "table": "Tables",
+        "field": "HeadCount",
+        "kind": "rollup",
+        "rule": "Un table: head count è il numero di guests collegati a il table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei guests il cui assigned table è table ID"
+      },
+      "Tables.OpenSeats": {
+        "table": "Tables",
+        "field": "OpenSeats",
+        "kind": "formula",
+        "rule": "Un table: open seats è calcolato come il seats meno il head count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          }
+        ],
+        "structure": null,
+        "plain": "Seats meno head count"
+      },
+      "Tables.OverCapacity": {
+        "table": "Tables",
+        "field": "OverCapacity",
+        "kind": "formula",
+        "rule": "Un table è contrassegnato come over capacity se il head count è maggiore di il seats.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          }
+        ],
+        "structure": null,
+        "plain": "Head count è maggiore di seats"
+      },
+      "Tables.RawHappiness": {
+        "table": "Tables",
+        "field": "RawHappiness",
+        "kind": "rollup",
+        "rule": "Un table: raw happiness è il totale di effective score tra i relationships collegati a il table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di effective score su tutti i relationships il cui seated table è table ID"
+      },
+      "Tables.ViolationCount": {
+        "table": "Tables",
+        "field": "ViolationCount",
+        "kind": "rollup",
+        "rule": "Un table: violation count è il totale di violation flag tra i relationships collegati a il table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "ViolationFlag",
+            "label": "violation flag"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di violation flag su tutti i relationships il cui seated table è table ID"
+      },
+      "Tables.Happiness": {
+        "table": "Tables",
+        "field": "Happiness",
+        "kind": "formula",
+        "rule": "Un table: happiness è calcolato come il raw happiness meno 25 se l'indicatore “over capacity” è attivo, in tutti gli altri casi 0 più il side skew.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "RawHappiness",
+            "label": "raw happiness"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "SideSkew",
+            "label": "side skew"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw happiness meno (se over capacity, allora 25, altrimenti 0 più side skew)"
+      },
+      "Tables.Grade": {
+        "table": "Tables",
+        "field": "Grade",
+        "kind": "formula",
+        "rule": "Il campo “grade” del table è determinato secondo la seguente priorità:\n1. «Conflict», se il violation count è maggiore di 0;\n2. «Over Capacity», se l'indicatore “over capacity” è attivo;\n3. «Great», se il happiness è almeno 15;\n4. «OK», se il happiness è almeno 5;\n5. in tutti gli altri casi, «Cold».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "ViolationCount",
+            "label": "violation count"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "Happiness",
+            "label": "happiness"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “grade” del table è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«Conflict»",
+              "when": {
+                "kind": "leaf",
+                "text": "il violation count è maggiore di 0"
+              }
+            },
+            {
+              "value": "«Over Capacity»",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “over capacity” è attivo"
+              }
+            },
+            {
+              "value": "«Great»",
+              "when": {
+                "kind": "leaf",
+                "text": "il happiness è almeno 15"
+              }
+            },
+            {
+              "value": "«OK»",
+              "when": {
+                "kind": "leaf",
+                "text": "il happiness è almeno 5"
+              }
+            },
+            {
+              "value": "«Cold»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se violation count è maggiore di 0, allora \"Conflict\", altrimenti se over capacity, allora \"Over Capacity\", altrimenti se happiness è almeno 15, allora \"Great\", altrimenti se happiness è almeno 5, allora \"OK\", altrimenti \"Cold\""
+      },
+      "Tables.BrideSideCount": {
+        "table": "Tables",
+        "field": "BrideSideCount",
+        "kind": "rollup",
+        "rule": "Un table: bride side count è il totale di bride flag tra i guests collegati a il table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "BrideFlag",
+            "label": "bride flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di bride flag su tutti i guests il cui assigned table è table ID"
+      },
+      "Tables.GroomSideCount": {
+        "table": "Tables",
+        "field": "GroomSideCount",
+        "kind": "rollup",
+        "rule": "Un table: groom side count è il totale di groom flag tra i guests collegati a il table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "GroomFlag",
+            "label": "groom flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di groom flag su tutti i guests il cui assigned table è table ID"
+      },
+      "Tables.SideSkew": {
+        "table": "Tables",
+        "field": "SideSkew",
+        "kind": "formula",
+        "rule": "Il campo “side skew” del table è determinato secondo la seguente priorità:\n1. il bride side count meno il groom side count, se il bride side count è maggiore di il groom side count;\n2. in tutti gli altri casi, il groom side count meno il bride side count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "BrideSideCount",
+            "label": "bride side count"
+          },
+          {
+            "table": "Tables",
+            "field": "GroomSideCount",
+            "label": "groom side count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “side skew” del table è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "il bride side count meno il groom side count",
+              "when": {
+                "kind": "leaf",
+                "text": "il bride side count è maggiore di il groom side count"
+              }
+            },
+            {
+              "value": "il groom side count meno il bride side count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se bride side count è maggiore di groom side count, allora (bride side count meno groom side count), altrimenti (groom side count meno bride side count)"
+      },
+      "Guests.TableLabel": {
+        "table": "Guests",
+        "field": "TableLabel",
+        "kind": "lookup",
+        "rule": "Un guest: table label — ripreso dal assigned table collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il label del assigned table collegato"
+      },
+      "Guests.TableSeats": {
+        "table": "Guests",
+        "field": "TableSeats",
+        "kind": "lookup",
+        "rule": "Un guest: table seats — ripreso dal assigned table collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il seats del assigned table collegato"
+      },
+      "Guests.TableHeadCount": {
+        "table": "Guests",
+        "field": "TableHeadCount",
+        "kind": "lookup",
+        "rule": "Un guest: table head count — ripreso dal assigned table collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il head count del assigned table collegato"
+      },
+      "Guests.RelationshipsAsA": {
+        "table": "Guests",
+        "field": "RelationshipsAsA",
+        "kind": "rollup",
+        "rule": "Un guest: relationships as a è il numero di relationships collegati a il guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei relationships il cui guest a è guest ID"
+      },
+      "Guests.RelationshipsAsB": {
+        "table": "Guests",
+        "field": "RelationshipsAsB",
+        "kind": "rollup",
+        "rule": "Un guest: relationships as b è il numero di relationships collegati a il guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei relationships il cui guest b è guest ID"
+      },
+      "Guests.SatisfactionA": {
+        "table": "Guests",
+        "field": "SatisfactionA",
+        "kind": "rollup",
+        "rule": "Un guest: satisfaction a è il totale di effective score tra i relationships collegati a il guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di effective score su tutti i relationships il cui guest a è guest ID"
+      },
+      "Guests.SatisfactionB": {
+        "table": "Guests",
+        "field": "SatisfactionB",
+        "kind": "rollup",
+        "rule": "Un guest: satisfaction b è il totale di effective score tra i relationships collegati a il guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di effective score su tutti i relationships il cui guest b è guest ID"
+      },
+      "Guests.Satisfaction": {
+        "table": "Guests",
+        "field": "Satisfaction",
+        "kind": "formula",
+        "rule": "Un guest: satisfaction è calcolato come la satisfaction a più il satisfaction b.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "SatisfactionA",
+            "label": "satisfaction a"
+          },
+          {
+            "table": "Guests",
+            "field": "SatisfactionB",
+            "label": "satisfaction b"
+          }
+        ],
+        "structure": null,
+        "plain": "Satisfaction a più satisfaction b"
+      },
+      "Guests.Mood": {
+        "table": "Guests",
+        "field": "Mood",
+        "kind": "formula",
+        "rule": "Il campo “mood” del guest è determinato secondo la seguente priorità:\n1. «Happy», se il satisfaction è almeno 10;\n2. «Neutral», se il satisfaction è almeno 0;\n3. in tutti gli altri casi, «Unhappy».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Satisfaction",
+            "label": "satisfaction"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “mood” del guest è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«Happy»",
+              "when": {
+                "kind": "leaf",
+                "text": "il satisfaction è almeno 10"
+              }
+            },
+            {
+              "value": "«Neutral»",
+              "when": {
+                "kind": "leaf",
+                "text": "il satisfaction è almeno 0"
+              }
+            },
+            {
+              "value": "«Unhappy»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se satisfaction è almeno 10, allora \"Happy\", altrimenti se satisfaction è almeno 0, allora \"Neutral\", altrimenti \"Unhappy\""
+      },
+      "Guests.BrideFlag": {
+        "table": "Guests",
+        "field": "BrideFlag",
+        "kind": "formula",
+        "rule": "Il campo “bride flag” del guest è determinato secondo la seguente priorità:\n1. 1, se il side è «bride»;\n2. in tutti gli altri casi, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “bride flag” del guest è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "il side è «bride»"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se side è \"bride\", allora 1, altrimenti 0"
+      },
+      "Guests.GroomFlag": {
+        "table": "Guests",
+        "field": "GroomFlag",
+        "kind": "formula",
+        "rule": "Il campo “groom flag” del guest è determinato secondo la seguente priorità:\n1. 1, se il side è «groom»;\n2. in tutti gli altri casi, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “groom flag” del guest è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "il side è «groom»"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se side è \"groom\", allora 1, altrimenti 0"
+      },
+      "Relationships.GuestAName": {
+        "table": "Relationships",
+        "field": "GuestAName",
+        "kind": "lookup",
+        "rule": "Un relationship: guest a name è il full name del guest a collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il full name del guest a collegato"
+      },
+      "Relationships.GuestBName": {
+        "table": "Relationships",
+        "field": "GuestBName",
+        "kind": "lookup",
+        "rule": "Un relationship: guest b name è il full name del guest b collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il full name del guest b collegato"
+      },
+      "Relationships.GuestATable": {
+        "table": "Relationships",
+        "field": "GuestATable",
+        "kind": "lookup",
+        "rule": "Un relationship: guest a table è il assigned table del guest a collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il assigned table del guest a collegato"
+      },
+      "Relationships.GuestBTable": {
+        "table": "Relationships",
+        "field": "GuestBTable",
+        "kind": "lookup",
+        "rule": "Un relationship: guest b table è il assigned table del guest b collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il assigned table del guest b collegato"
+      },
+      "Relationships.SameTable": {
+        "table": "Relationships",
+        "field": "SameTable",
+        "kind": "formula",
+        "rule": "Un relationship è contrassegnato come same table se vale tutto quanto segue: il guest a table ha un valore e il guest a table è il guest b table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestBTable",
+            "label": "guest b table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un relationship è contrassegnato come same table se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "il guest a table ha un valore"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "il guest a table è il guest b table"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Guest a table non è \"\" e guest a table è uguale a guest b table"
+      },
+      "Relationships.SeatedTable": {
+        "table": "Relationships",
+        "field": "SeatedTable",
+        "kind": "formula",
+        "rule": "Il campo “seated table” del relationship è determinato secondo la seguente priorità:\n1. il guest a table, se l'indicatore “same table” è attivo;\n2. in tutti gli altri casi, una stringa vuota.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “seated table” del relationship è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "il guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “same table” è attivo"
+              }
+            },
+            {
+              "value": "una stringa vuota",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se same table, allora guest a table, altrimenti \"\""
+      },
+      "Relationships.EffectiveScore": {
+        "table": "Relationships",
+        "field": "EffectiveScore",
+        "kind": "formula",
+        "rule": "Il campo “effective score” del relationship è determinato secondo la seguente priorità:\n1. l'opposto di 50 se il kind è «must-not», in tutti gli altri casi il weight, se l'indicatore “same table” è attivo;\n2. in tutti gli altri casi, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “effective score” del relationship è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "l'opposto di 50 se il kind è «must-not», in tutti gli altri casi il weight",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “same table” è attivo"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se same table, allora se kind è \"must-not\", allora negativo 50, altrimenti weight, altrimenti 0"
+      },
+      "Relationships.IsMustNotViolation": {
+        "table": "Relationships",
+        "field": "IsMustNotViolation",
+        "kind": "formula",
+        "rule": "Un relationship è considerato un must not violation se vale tutto quanto segue: il kind è «must-not» e l'indicatore “same table” è attivo.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un relationship è considerato un must not violation se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "il kind è «must-not»"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “same table” è attivo"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Kind è \"must-not\" e same table"
+      },
+      "Relationships.IsSatisfied": {
+        "table": "Relationships",
+        "field": "IsSatisfied",
+        "kind": "formula",
+        "rule": "Un relationship è considerato satisfied se vale almeno una delle seguenti: vale tutto quanto segue: il weight è maggiore di 0 e l'indicatore “same table” è attivo o vale tutto quanto segue: il weight è minore di 0 e l'indicatore “same table” non è attivo.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un relationship è considerato satisfied se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "il weight è maggiore di 0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "l'indicatore “same table” è attivo"
+                    }
+                  ]
+                },
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "il weight è minore di 0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "l'indicatore “same table” non è attivo"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Weight è maggiore di 0 e same table o weight è minore di 0 e non same table"
+      },
+      "Relationships.ViolationTable": {
+        "table": "Relationships",
+        "field": "ViolationTable",
+        "kind": "formula",
+        "rule": "Il campo “violation table” del relationship è determinato secondo la seguente priorità:\n1. il guest a table, se l'indicatore “must not violation” è attivo;\n2. in tutti gli altri casi, una stringa vuota.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “violation table” del relationship è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "il guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “must not violation” è attivo"
+              }
+            },
+            {
+              "value": "una stringa vuota",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is must not violation, allora guest a table, altrimenti \"\""
+      },
+      "Relationships.ViolationFlag": {
+        "table": "Relationships",
+        "field": "ViolationFlag",
+        "kind": "formula",
+        "rule": "Il campo “violation flag” del relationship è determinato secondo la seguente priorità:\n1. 1, se l'indicatore “must not violation” è attivo;\n2. in tutti gli altri casi, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “violation flag” del relationship è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "l'indicatore “must not violation” è attivo"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is must not violation, allora 1, altrimenti 0"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Tables": "table",
+      "Guests": "guest",
+      "Relationships": "relationship"
+    }
+  },
+  "ja": {
+    "fields": {
+      "Tables.HeadCount": {
+        "table": "Tables",
+        "field": "HeadCount",
+        "kind": "rollup",
+        "rule": "tableの「head count」は tableに関連する「guests」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assigned table が table ID である「guests」の件数"
+      },
+      "Tables.OpenSeats": {
+        "table": "Tables",
+        "field": "OpenSeats",
+        "kind": "formula",
+        "rule": "tableの「open seats」は seats ひく head count として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          }
+        ],
+        "structure": null,
+        "plain": "Seats ひく head count"
+      },
+      "Tables.OverCapacity": {
+        "table": "Tables",
+        "field": "OverCapacity",
+        "kind": "formula",
+        "rule": "head count が seats より大きい場合、tableは「Over Capacity」と記録されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          }
+        ],
+        "structure": null,
+        "plain": "Head count が seats より大きい"
+      },
+      "Tables.RawHappiness": {
+        "table": "Tables",
+        "field": "RawHappiness",
+        "kind": "rollup",
+        "rule": "tableの「raw happiness」は tableに関連する「relationships」全体での「effective score」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seated table が table ID であるすべての「relationships」にわたる effective score の合計"
+      },
+      "Tables.ViolationCount": {
+        "table": "Tables",
+        "field": "ViolationCount",
+        "kind": "rollup",
+        "rule": "tableの「violation count」は tableに関連する「relationships」全体での「violation flag」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "ViolationFlag",
+            "label": "violation flag"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seated table が table ID であるすべての「relationships」にわたる violation flag の合計"
+      },
+      "Tables.Happiness": {
+        "table": "Tables",
+        "field": "Happiness",
+        "kind": "formula",
+        "rule": "tableの「happiness」は raw happiness ひく フラグ「over capacity」が設定されている場合は 25、それ以外の場合は 0 たす side skew として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "RawHappiness",
+            "label": "raw happiness"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "SideSkew",
+            "label": "side skew"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw happiness ひく (over capacityなら 25、そうでなければ 0 たす side skew)"
+      },
+      "Tables.Grade": {
+        "table": "Tables",
+        "field": "Grade",
+        "kind": "formula",
+        "rule": "Tableの「grade」は、次の優先順位で決まります:\n1. violation count が 0 より大きい場合は 「Conflict」;\n2. フラグ「over capacity」が設定されている場合は 「Over Capacity」;\n3. happiness が 15 以上である場合は 「Great」;\n4. happiness が 5 以上である場合は 「OK」;\n5. それ以外の場合は 「Cold」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "ViolationCount",
+            "label": "violation count"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "Happiness",
+            "label": "happiness"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Tableの「grade」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「Conflict」",
+              "when": {
+                "kind": "leaf",
+                "text": "violation count が 0 より大きい"
+              }
+            },
+            {
+              "value": "「Over Capacity」",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「over capacity」が設定されている"
+              }
+            },
+            {
+              "value": "「Great」",
+              "when": {
+                "kind": "leaf",
+                "text": "happiness が 15 以上である"
+              }
+            },
+            {
+              "value": "「OK」",
+              "when": {
+                "kind": "leaf",
+                "text": "happiness が 5 以上である"
+              }
+            },
+            {
+              "value": "「Cold」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Violation count が 0 より大きいなら \"Conflict\"、そうでなければ over capacityなら \"Over Capacity\"、そうでなければ happiness が 15 以上なら \"Great\"、そうでなければ happiness が 5 以上なら \"OK\"、そうでなければ \"Cold\""
+      },
+      "Tables.BrideSideCount": {
+        "table": "Tables",
+        "field": "BrideSideCount",
+        "kind": "rollup",
+        "rule": "tableの「bride side count」は tableに関連する「guests」全体での「bride flag」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "BrideFlag",
+            "label": "bride flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assigned table が table ID であるすべての「guests」にわたる bride flag の合計"
+      },
+      "Tables.GroomSideCount": {
+        "table": "Tables",
+        "field": "GroomSideCount",
+        "kind": "rollup",
+        "rule": "tableの「groom side count」は tableに関連する「guests」全体での「groom flag」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "GroomFlag",
+            "label": "groom flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assigned table が table ID であるすべての「guests」にわたる groom flag の合計"
+      },
+      "Tables.SideSkew": {
+        "table": "Tables",
+        "field": "SideSkew",
+        "kind": "formula",
+        "rule": "Tableの「side skew」は、次の優先順位で決まります:\n1. bride side count が groom side count より大きい場合は bride side count ひく groom side count;\n2. それ以外の場合は groom side count ひく bride side count。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "BrideSideCount",
+            "label": "bride side count"
+          },
+          {
+            "table": "Tables",
+            "field": "GroomSideCount",
+            "label": "groom side count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Tableの「side skew」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "bride side count ひく groom side count",
+              "when": {
+                "kind": "leaf",
+                "text": "bride side count が groom side count より大きい"
+              }
+            },
+            {
+              "value": "groom side count ひく bride side count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Bride side count が groom side count より大きいなら (bride side count ひく groom side count)、そうでなければ (groom side count ひく bride side count)"
+      },
+      "Guests.TableLabel": {
+        "table": "Guests",
+        "field": "TableLabel",
+        "kind": "lookup",
+        "rule": "guestの「table label」— リンクされた「assigned table」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「assigned table」の label"
+      },
+      "Guests.TableSeats": {
+        "table": "Guests",
+        "field": "TableSeats",
+        "kind": "lookup",
+        "rule": "guestの「table seats」— リンクされた「assigned table」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「assigned table」の seats"
+      },
+      "Guests.TableHeadCount": {
+        "table": "Guests",
+        "field": "TableHeadCount",
+        "kind": "lookup",
+        "rule": "guestの「table head count」— リンクされた「assigned table」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「assigned table」の head count"
+      },
+      "Guests.RelationshipsAsA": {
+        "table": "Guests",
+        "field": "RelationshipsAsA",
+        "kind": "rollup",
+        "rule": "guestの「relationships as a」は guestに関連する「relationships」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Guest a が guest ID である「relationships」の件数"
+      },
+      "Guests.RelationshipsAsB": {
+        "table": "Guests",
+        "field": "RelationshipsAsB",
+        "kind": "rollup",
+        "rule": "guestの「relationships as b」は guestに関連する「relationships」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Guest b が guest ID である「relationships」の件数"
+      },
+      "Guests.SatisfactionA": {
+        "table": "Guests",
+        "field": "SatisfactionA",
+        "kind": "rollup",
+        "rule": "guestの「satisfaction a」は guestに関連する「relationships」全体での「effective score」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Guest a が guest ID であるすべての「relationships」にわたる effective score の合計"
+      },
+      "Guests.SatisfactionB": {
+        "table": "Guests",
+        "field": "SatisfactionB",
+        "kind": "rollup",
+        "rule": "guestの「satisfaction b」は guestに関連する「relationships」全体での「effective score」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Guest b が guest ID であるすべての「relationships」にわたる effective score の合計"
+      },
+      "Guests.Satisfaction": {
+        "table": "Guests",
+        "field": "Satisfaction",
+        "kind": "formula",
+        "rule": "guestの「satisfaction」は satisfaction a たす satisfaction b として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "SatisfactionA",
+            "label": "satisfaction a"
+          },
+          {
+            "table": "Guests",
+            "field": "SatisfactionB",
+            "label": "satisfaction b"
+          }
+        ],
+        "structure": null,
+        "plain": "Satisfaction a たす satisfaction b"
+      },
+      "Guests.Mood": {
+        "table": "Guests",
+        "field": "Mood",
+        "kind": "formula",
+        "rule": "Guestの「mood」は、次の優先順位で決まります:\n1. satisfaction が 10 以上である場合は 「Happy」;\n2. satisfaction が 0 以上である場合は 「Neutral」;\n3. それ以外の場合は 「Unhappy」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Satisfaction",
+            "label": "satisfaction"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Guestの「mood」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「Happy」",
+              "when": {
+                "kind": "leaf",
+                "text": "satisfaction が 10 以上である"
+              }
+            },
+            {
+              "value": "「Neutral」",
+              "when": {
+                "kind": "leaf",
+                "text": "satisfaction が 0 以上である"
+              }
+            },
+            {
+              "value": "「Unhappy」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Satisfaction が 10 以上なら \"Happy\"、そうでなければ satisfaction が 0 以上なら \"Neutral\"、そうでなければ \"Unhappy\""
+      },
+      "Guests.BrideFlag": {
+        "table": "Guests",
+        "field": "BrideFlag",
+        "kind": "formula",
+        "rule": "Guestの「bride flag」は、次の優先順位で決まります:\n1. side が 「bride」 である場合は 1;\n2. それ以外の場合は 0。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Guestの「bride flag」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "side が 「bride」 である"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Side は \"bride\"なら 1、そうでなければ 0"
+      },
+      "Guests.GroomFlag": {
+        "table": "Guests",
+        "field": "GroomFlag",
+        "kind": "formula",
+        "rule": "Guestの「groom flag」は、次の優先順位で決まります:\n1. side が 「groom」 である場合は 1;\n2. それ以外の場合は 0。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Guestの「groom flag」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "side が 「groom」 である"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Side は \"groom\"なら 1、そうでなければ 0"
+      },
+      "Relationships.GuestAName": {
+        "table": "Relationships",
+        "field": "GuestAName",
+        "kind": "lookup",
+        "rule": "relationshipの「guest a name」は、リンクされた「guest a」の「full name」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「guest a」の full name"
+      },
+      "Relationships.GuestBName": {
+        "table": "Relationships",
+        "field": "GuestBName",
+        "kind": "lookup",
+        "rule": "relationshipの「guest b name」は、リンクされた「guest b」の「full name」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「guest b」の full name"
+      },
+      "Relationships.GuestATable": {
+        "table": "Relationships",
+        "field": "GuestATable",
+        "kind": "lookup",
+        "rule": "relationshipの「guest a table」は、リンクされた「guest a」の「assigned table」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「guest a」の assigned table"
+      },
+      "Relationships.GuestBTable": {
+        "table": "Relationships",
+        "field": "GuestBTable",
+        "kind": "lookup",
+        "rule": "relationshipの「guest b table」は、リンクされた「guest b」の「assigned table」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「guest b」の assigned table"
+      },
+      "Relationships.SameTable": {
+        "table": "Relationships",
+        "field": "SameTable",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: guest a table に値があるおよびguest a table が guest b table である場合、relationshipは「Same Table」と記録されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestBTable",
+            "label": "guest b table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、relationshipは「Same Table」と記録されます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "guest a table に値がある"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "guest a table が guest b table である"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Guest a table が \"\" でないおよびguest a table が guest b table と等しい"
+      },
+      "Relationships.SeatedTable": {
+        "table": "Relationships",
+        "field": "SeatedTable",
+        "kind": "formula",
+        "rule": "Relationshipの「seated table」は、次の優先順位で決まります:\n1. フラグ「same table」が設定されている場合は guest a table;\n2. それ以外の場合は 空文字列。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Relationshipの「seated table」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「same table」が設定されている"
+              }
+            },
+            {
+              "value": "空文字列",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Same tableなら guest a table、そうでなければ \"\""
+      },
+      "Relationships.EffectiveScore": {
+        "table": "Relationships",
+        "field": "EffectiveScore",
+        "kind": "formula",
+        "rule": "Relationshipの「effective score」は、次の優先順位で決まります:\n1. フラグ「same table」が設定されている場合は kind が 「must-not」 である場合は 50 の符号を反転した値、それ以外の場合は weight;\n2. それ以外の場合は 0。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Relationshipの「effective score」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "kind が 「must-not」 である場合は 50 の符号を反転した値、それ以外の場合は weight",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「same table」が設定されている"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Same tableなら kind は \"must-not\"なら マイナス 50、そうでなければ weight、そうでなければ 0"
+      },
+      "Relationships.IsMustNotViolation": {
+        "table": "Relationships",
+        "field": "IsMustNotViolation",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: kind が 「must-not」 であるおよびフラグ「same table」が設定されている場合、relationshipは「Must Not Violation」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、relationshipは「Must Not Violation」と見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "kind が 「must-not」 である"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「same table」が設定されている"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Kind は \"must-not\"およびsame table"
+      },
+      "Relationships.IsSatisfied": {
+        "table": "Relationships",
+        "field": "IsSatisfied",
+        "kind": "formula",
+        "rule": "次のいずれかが成り立つ: 次のすべてが成り立つ: weight が 0 より大きいおよびフラグ「same table」が設定されているまたは次のすべてが成り立つ: weight が 0 より小さいおよびフラグ「same table」が設定されていない場合、relationshipは「Satisfied」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、relationshipは「Satisfied」と見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "weight が 0 より大きい"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "フラグ「same table」が設定されている"
+                    }
+                  ]
+                },
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "weight が 0 より小さい"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "フラグ「same table」が設定されていない"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Weight が 0 より大きいおよびsame tableまたはweight が 0 より小さいおよびsame table でない"
+      },
+      "Relationships.ViolationTable": {
+        "table": "Relationships",
+        "field": "ViolationTable",
+        "kind": "formula",
+        "rule": "Relationshipの「violation table」は、次の優先順位で決まります:\n1. フラグ「must not violation」が設定されている場合は guest a table;\n2. それ以外の場合は 空文字列。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Relationshipの「violation table」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「must not violation」が設定されている"
+              }
+            },
+            {
+              "value": "空文字列",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is must not violationなら guest a table、そうでなければ \"\""
+      },
+      "Relationships.ViolationFlag": {
+        "table": "Relationships",
+        "field": "ViolationFlag",
+        "kind": "formula",
+        "rule": "Relationshipの「violation flag」は、次の優先順位で決まります:\n1. フラグ「must not violation」が設定されている場合は 1;\n2. それ以外の場合は 0。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Relationshipの「violation flag」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "フラグ「must not violation」が設定されている"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is must not violationなら 1、そうでなければ 0"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "Users": "user",
+      "Tables": "table",
+      "Guests": "guest",
+      "Relationships": "relationship"
+    }
+  },
+  "ko": {
+    "fields": {
+      "Tables.HeadCount": {
+        "table": "Tables",
+        "field": "HeadCount",
+        "kind": "rollup",
+        "rule": "‘table’ 레코드의 ‘head count’ 값은 해당 ‘table’ 레코드에 연결된 ‘guests’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(assigned table 값이 table ID임)에 맞는 guests 레코드의 개수"
+      },
+      "Tables.OpenSeats": {
+        "table": "Tables",
+        "field": "OpenSeats",
+        "kind": "formula",
+        "rule": "‘table’ 레코드의 ‘open seats’ 값은 다음과 같이 계산됩니다: ‘seats’ 빼기 ‘head count’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          }
+        ],
+        "structure": null,
+        "plain": "Seats 빼기 head count"
+      },
+      "Tables.OverCapacity": {
+        "table": "Tables",
+        "field": "OverCapacity",
+        "kind": "formula",
+        "rule": "‘head count’ 값이 ‘seats’보다 큰 경우, ‘table’ 레코드는 ‘over capacity’에 해당하는 것으로 표시됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          }
+        ],
+        "structure": null,
+        "plain": "Head count 값이 seats보다 큼"
+      },
+      "Tables.RawHappiness": {
+        "table": "Tables",
+        "field": "RawHappiness",
+        "kind": "rollup",
+        "rule": "‘table’ 레코드의 ‘raw happiness’ 값은 해당 ‘table’ 레코드에 연결된 모든 ‘relationships’ 레코드의 총 ‘effective score’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(seated table 값이 table ID임)에 맞는 모든 relationships 레코드의 effective score 합계"
+      },
+      "Tables.ViolationCount": {
+        "table": "Tables",
+        "field": "ViolationCount",
+        "kind": "rollup",
+        "rule": "‘table’ 레코드의 ‘violation count’ 값은 해당 ‘table’ 레코드에 연결된 모든 ‘relationships’ 레코드의 총 ‘violation flag’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "ViolationFlag",
+            "label": "violation flag"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(seated table 값이 table ID임)에 맞는 모든 relationships 레코드의 violation flag 합계"
+      },
+      "Tables.Happiness": {
+        "table": "Tables",
+        "field": "Happiness",
+        "kind": "formula",
+        "rule": "‘table’ 레코드의 ‘happiness’ 값은 다음과 같이 계산됩니다: ‘raw happiness’ 빼기 ‘over capacity’ 플래그가 설정된 경우에는 25, 그 밖의 경우에는 0 더하기 ‘side skew’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "RawHappiness",
+            "label": "raw happiness"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "SideSkew",
+            "label": "side skew"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw happiness 빼기 (조건(over capacity)이 성립하면 25, 그렇지 않으면 0 더하기 side skew)"
+      },
+      "Tables.Grade": {
+        "table": "Tables",
+        "field": "Grade",
+        "kind": "formula",
+        "rule": "‘table’ 레코드의 ‘grade’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘violation count’ 값이 0보다 큰 경우: “Conflict”\n2. ‘over capacity’ 플래그가 설정된 경우: “Over Capacity”\n3. ‘happiness’ 값이 15 이상인 경우: “Great”\n4. ‘happiness’ 값이 5 이상인 경우: “OK”\n5. 그 밖의 경우: “Cold”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "ViolationCount",
+            "label": "violation count"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "Happiness",
+            "label": "happiness"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘table’ 레코드의 ‘grade’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“Conflict”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘violation count’ 값이 0보다 큰 경우"
+              }
+            },
+            {
+              "value": "“Over Capacity”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘over capacity’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "“Great”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘happiness’ 값이 15 이상인 경우"
+              }
+            },
+            {
+              "value": "“OK”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘happiness’ 값이 5 이상인 경우"
+              }
+            },
+            {
+              "value": "“Cold”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(violation count 값이 0보다 큼)이 성립하면 \"Conflict\", 그렇지 않으면 조건(over capacity)이 성립하면 \"Over Capacity\", 그렇지 않으면 조건(happiness 값이 15 이상임)이 성립하면 \"Great\", 그렇지 않으면 조건(happiness 값이 5 이상임)이 성립하면 \"OK\", 그렇지 않으면 \"Cold\""
+      },
+      "Tables.BrideSideCount": {
+        "table": "Tables",
+        "field": "BrideSideCount",
+        "kind": "rollup",
+        "rule": "‘table’ 레코드의 ‘bride side count’ 값은 해당 ‘table’ 레코드에 연결된 모든 ‘guests’ 레코드의 총 ‘bride flag’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "BrideFlag",
+            "label": "bride flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(assigned table 값이 table ID임)에 맞는 모든 guests 레코드의 bride flag 합계"
+      },
+      "Tables.GroomSideCount": {
+        "table": "Tables",
+        "field": "GroomSideCount",
+        "kind": "rollup",
+        "rule": "‘table’ 레코드의 ‘groom side count’ 값은 해당 ‘table’ 레코드에 연결된 모든 ‘guests’ 레코드의 총 ‘groom flag’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "GroomFlag",
+            "label": "groom flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(assigned table 값이 table ID임)에 맞는 모든 guests 레코드의 groom flag 합계"
+      },
+      "Tables.SideSkew": {
+        "table": "Tables",
+        "field": "SideSkew",
+        "kind": "formula",
+        "rule": "‘table’ 레코드의 ‘side skew’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘bride side count’ 값이 ‘groom side count’보다 큰 경우: ‘bride side count’ 빼기 ‘groom side count’\n2. 그 밖의 경우: ‘groom side count’ 빼기 ‘bride side count’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "BrideSideCount",
+            "label": "bride side count"
+          },
+          {
+            "table": "Tables",
+            "field": "GroomSideCount",
+            "label": "groom side count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘table’ 레코드의 ‘side skew’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "‘bride side count’ 빼기 ‘groom side count’",
+              "when": {
+                "kind": "leaf",
+                "text": "‘bride side count’ 값이 ‘groom side count’보다 큰 경우"
+              }
+            },
+            {
+              "value": "‘groom side count’ 빼기 ‘bride side count’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(bride side count 값이 groom side count보다 큼)이 성립하면 (bride side count 빼기 groom side count), 그렇지 않으면 (groom side count 빼기 bride side count)"
+      },
+      "Guests.TableLabel": {
+        "table": "Guests",
+        "field": "TableLabel",
+        "kind": "lookup",
+        "rule": "‘guest’ 레코드의 ‘table label’ 값은 연결된 ‘assigned table’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 assigned table 레코드의 label"
+      },
+      "Guests.TableSeats": {
+        "table": "Guests",
+        "field": "TableSeats",
+        "kind": "lookup",
+        "rule": "‘guest’ 레코드의 ‘table seats’ 값은 연결된 ‘assigned table’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 assigned table 레코드의 seats"
+      },
+      "Guests.TableHeadCount": {
+        "table": "Guests",
+        "field": "TableHeadCount",
+        "kind": "lookup",
+        "rule": "‘guest’ 레코드의 ‘table head count’ 값은 연결된 ‘assigned table’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 assigned table 레코드의 head count"
+      },
+      "Guests.RelationshipsAsA": {
+        "table": "Guests",
+        "field": "RelationshipsAsA",
+        "kind": "rollup",
+        "rule": "‘guest’ 레코드의 ‘relationships as a’ 값은 해당 ‘guest’ 레코드에 연결된 ‘relationships’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(guest a 값이 guest ID임)에 맞는 relationships 레코드의 개수"
+      },
+      "Guests.RelationshipsAsB": {
+        "table": "Guests",
+        "field": "RelationshipsAsB",
+        "kind": "rollup",
+        "rule": "‘guest’ 레코드의 ‘relationships as b’ 값은 해당 ‘guest’ 레코드에 연결된 ‘relationships’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(guest b 값이 guest ID임)에 맞는 relationships 레코드의 개수"
+      },
+      "Guests.SatisfactionA": {
+        "table": "Guests",
+        "field": "SatisfactionA",
+        "kind": "rollup",
+        "rule": "‘guest’ 레코드의 ‘satisfaction a’ 값은 해당 ‘guest’ 레코드에 연결된 모든 ‘relationships’ 레코드의 총 ‘effective score’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(guest a 값이 guest ID임)에 맞는 모든 relationships 레코드의 effective score 합계"
+      },
+      "Guests.SatisfactionB": {
+        "table": "Guests",
+        "field": "SatisfactionB",
+        "kind": "rollup",
+        "rule": "‘guest’ 레코드의 ‘satisfaction b’ 값은 해당 ‘guest’ 레코드에 연결된 모든 ‘relationships’ 레코드의 총 ‘effective score’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(guest b 값이 guest ID임)에 맞는 모든 relationships 레코드의 effective score 합계"
+      },
+      "Guests.Satisfaction": {
+        "table": "Guests",
+        "field": "Satisfaction",
+        "kind": "formula",
+        "rule": "‘guest’ 레코드의 ‘satisfaction’ 값은 다음과 같이 계산됩니다: ‘satisfaction a’ 더하기 ‘satisfaction b’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "SatisfactionA",
+            "label": "satisfaction a"
+          },
+          {
+            "table": "Guests",
+            "field": "SatisfactionB",
+            "label": "satisfaction b"
+          }
+        ],
+        "structure": null,
+        "plain": "Satisfaction a 더하기 satisfaction b"
+      },
+      "Guests.Mood": {
+        "table": "Guests",
+        "field": "Mood",
+        "kind": "formula",
+        "rule": "‘guest’ 레코드의 ‘mood’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘satisfaction’ 값이 10 이상인 경우: “Happy”\n2. ‘satisfaction’ 값이 0 이상인 경우: “Neutral”\n3. 그 밖의 경우: “Unhappy”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Satisfaction",
+            "label": "satisfaction"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘guest’ 레코드의 ‘mood’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“Happy”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘satisfaction’ 값이 10 이상인 경우"
+              }
+            },
+            {
+              "value": "“Neutral”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘satisfaction’ 값이 0 이상인 경우"
+              }
+            },
+            {
+              "value": "“Unhappy”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(satisfaction 값이 10 이상임)이 성립하면 \"Happy\", 그렇지 않으면 조건(satisfaction 값이 0 이상임)이 성립하면 \"Neutral\", 그렇지 않으면 \"Unhappy\""
+      },
+      "Guests.BrideFlag": {
+        "table": "Guests",
+        "field": "BrideFlag",
+        "kind": "formula",
+        "rule": "‘guest’ 레코드의 ‘bride flag’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘side’ 값이 “bride”인 경우: 1\n2. 그 밖의 경우: 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘guest’ 레코드의 ‘bride flag’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "‘side’ 값이 “bride”인 경우"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(side 값이 \"bride\"임)이 성립하면 1, 그렇지 않으면 0"
+      },
+      "Guests.GroomFlag": {
+        "table": "Guests",
+        "field": "GroomFlag",
+        "kind": "formula",
+        "rule": "‘guest’ 레코드의 ‘groom flag’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘side’ 값이 “groom”인 경우: 1\n2. 그 밖의 경우: 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘guest’ 레코드의 ‘groom flag’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "‘side’ 값이 “groom”인 경우"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(side 값이 \"groom\"임)이 성립하면 1, 그렇지 않으면 0"
+      },
+      "Relationships.GuestAName": {
+        "table": "Relationships",
+        "field": "GuestAName",
+        "kind": "lookup",
+        "rule": "‘relationship’ 레코드의 ‘guest a name’ 값은 연결된 ‘guest a’ 레코드의 ‘full name’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 guest a 레코드의 full name"
+      },
+      "Relationships.GuestBName": {
+        "table": "Relationships",
+        "field": "GuestBName",
+        "kind": "lookup",
+        "rule": "‘relationship’ 레코드의 ‘guest b name’ 값은 연결된 ‘guest b’ 레코드의 ‘full name’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 guest b 레코드의 full name"
+      },
+      "Relationships.GuestATable": {
+        "table": "Relationships",
+        "field": "GuestATable",
+        "kind": "lookup",
+        "rule": "‘relationship’ 레코드의 ‘guest a table’ 값은 연결된 ‘guest a’ 레코드의 ‘assigned table’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 guest a 레코드의 assigned table"
+      },
+      "Relationships.GuestBTable": {
+        "table": "Relationships",
+        "field": "GuestBTable",
+        "kind": "lookup",
+        "rule": "‘relationship’ 레코드의 ‘guest b table’ 값은 연결된 ‘guest b’ 레코드의 ‘assigned table’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 guest b 레코드의 assigned table"
+      },
+      "Relationships.SameTable": {
+        "table": "Relationships",
+        "field": "SameTable",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘guest a table’ 값이 있는 경우 및 ‘guest a table’ 값이 ‘guest b table’인 경우), ‘relationship’ 레코드는 ‘same table’에 해당하는 것으로 표시됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestBTable",
+            "label": "guest b table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘relationship’ 레코드는 ‘same table’에 해당하는 것으로 표시됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘guest a table’ 값이 있는 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘guest a table’ 값이 ‘guest b table’인 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Guest a table 값이 \"\" 값과 다름 및 guest a table 값이 guest b table 값과 같음"
+      },
+      "Relationships.SeatedTable": {
+        "table": "Relationships",
+        "field": "SeatedTable",
+        "kind": "formula",
+        "rule": "‘relationship’ 레코드의 ‘seated table’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘same table’ 플래그가 설정된 경우: ‘guest a table’\n2. 그 밖의 경우: 빈 문자열.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘relationship’ 레코드의 ‘seated table’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "‘guest a table’",
+              "when": {
+                "kind": "leaf",
+                "text": "‘same table’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "빈 문자열",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(same table)이 성립하면 guest a table, 그렇지 않으면 \"\""
+      },
+      "Relationships.EffectiveScore": {
+        "table": "Relationships",
+        "field": "EffectiveScore",
+        "kind": "formula",
+        "rule": "‘relationship’ 레코드의 ‘effective score’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘same table’ 플래그가 설정된 경우: ‘kind’ 값이 “must-not”인 경우에는 50의 부호를 바꾼 결과, 그 밖의 경우에는 ‘weight’\n2. 그 밖의 경우: 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘relationship’ 레코드의 ‘effective score’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "‘kind’ 값이 “must-not”인 경우에는 50의 부호를 바꾼 결과, 그 밖의 경우에는 ‘weight’",
+              "when": {
+                "kind": "leaf",
+                "text": "‘same table’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(same table)이 성립하면 조건(kind 값이 \"must-not\"임)이 성립하면 마이너스 50, 그렇지 않으면 weight, 그렇지 않으면 0"
+      },
+      "Relationships.IsMustNotViolation": {
+        "table": "Relationships",
+        "field": "IsMustNotViolation",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘kind’ 값이 “must-not”인 경우 및 ‘same table’ 플래그가 설정된 경우), ‘relationship’ 레코드는 ‘must not violation’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘relationship’ 레코드는 ‘must not violation’에 해당하는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘kind’ 값이 “must-not”인 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘same table’ 플래그가 설정된 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Kind 값이 \"must-not\"임 및 same table"
+      },
+      "Relationships.IsSatisfied": {
+        "table": "Relationships",
+        "field": "IsSatisfied",
+        "kind": "formula",
+        "rule": "다음 중 하나 이상에 해당하는 경우(다음 모두에 해당하는 경우(‘weight’ 값이 0보다 큰 경우 및 ‘same table’ 플래그가 설정된 경우) 또는 다음 모두에 해당하는 경우(‘weight’ 값이 0보다 작은 경우 및 ‘same table’ 플래그가 설정되지 않은 경우)), ‘relationship’ 레코드는 ‘satisfied’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘relationship’ 레코드는 ‘satisfied’에 해당하는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "‘weight’ 값이 0보다 큰 경우"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "‘same table’ 플래그가 설정된 경우"
+                    }
+                  ]
+                },
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "‘weight’ 값이 0보다 작은 경우"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "‘same table’ 플래그가 설정되지 않은 경우"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Weight 값이 0보다 큼 및 same table 또는 weight 값이 0보다 작음 및 조건(same table)이 성립하지 않음"
+      },
+      "Relationships.ViolationTable": {
+        "table": "Relationships",
+        "field": "ViolationTable",
+        "kind": "formula",
+        "rule": "‘relationship’ 레코드의 ‘violation table’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘must not violation’ 플래그가 설정된 경우: ‘guest a table’\n2. 그 밖의 경우: 빈 문자열.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘relationship’ 레코드의 ‘violation table’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "‘guest a table’",
+              "when": {
+                "kind": "leaf",
+                "text": "‘must not violation’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "빈 문자열",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(is must not violation)이 성립하면 guest a table, 그렇지 않으면 \"\""
+      },
+      "Relationships.ViolationFlag": {
+        "table": "Relationships",
+        "field": "ViolationFlag",
+        "kind": "formula",
+        "rule": "‘relationship’ 레코드의 ‘violation flag’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘must not violation’ 플래그가 설정된 경우: 1\n2. 그 밖의 경우: 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘relationship’ 레코드의 ‘violation flag’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "‘must not violation’ 플래그가 설정된 경우"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(is must not violation)이 성립하면 1, 그렇지 않으면 0"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Tables": "table",
+      "Guests": "guest",
+      "Relationships": "relationship"
+    }
+  },
+  "nl": {
+    "fields": {
+      "Tables.HeadCount": {
+        "table": "Tables",
+        "field": "HeadCount",
+        "kind": "rollup",
+        "rule": "Een table: head count is het aantal guests dat is gekoppeld aan de table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal guests waarvan assigned table is table ID"
+      },
+      "Tables.OpenSeats": {
+        "table": "Tables",
+        "field": "OpenSeats",
+        "kind": "formula",
+        "rule": "Een table: open seats wordt berekend als de seats min de head count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          }
+        ],
+        "structure": null,
+        "plain": "Seats min head count"
+      },
+      "Tables.OverCapacity": {
+        "table": "Tables",
+        "field": "OverCapacity",
+        "kind": "formula",
+        "rule": "Een table is gemarkeerd als over capacity als de head count groter is dan de seats.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          }
+        ],
+        "structure": null,
+        "plain": "Head count is groter dan seats"
+      },
+      "Tables.RawHappiness": {
+        "table": "Tables",
+        "field": "RawHappiness",
+        "kind": "rollup",
+        "rule": "Een table: raw happiness is het totaal van effective score over de relationships gekoppeld aan de table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van effective score over alle relationships waarvan seated table is table ID"
+      },
+      "Tables.ViolationCount": {
+        "table": "Tables",
+        "field": "ViolationCount",
+        "kind": "rollup",
+        "rule": "Een table: violation count is het totaal van violation flag over de relationships gekoppeld aan de table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "ViolationFlag",
+            "label": "violation flag"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van violation flag over alle relationships waarvan seated table is table ID"
+      },
+      "Tables.Happiness": {
+        "table": "Tables",
+        "field": "Happiness",
+        "kind": "formula",
+        "rule": "Een table: happiness wordt berekend als de raw happiness min 25 als de vlag ‘over capacity’ is gezet, in alle andere gevallen 0 plus de side skew.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "RawHappiness",
+            "label": "raw happiness"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "SideSkew",
+            "label": "side skew"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw happiness min (als over capacity, dan 25, anders 0 plus side skew)"
+      },
+      "Tables.Grade": {
+        "table": "Tables",
+        "field": "Grade",
+        "kind": "formula",
+        "rule": "Het veld ‘grade’ van de table wordt bepaald volgens de volgende prioriteit:\n1. ‘Conflict’, als de violation count groter is dan 0;\n2. ‘Over Capacity’, als de vlag ‘over capacity’ is gezet;\n3. ‘Great’, als de happiness ten minste 15 is;\n4. ‘OK’, als de happiness ten minste 5 is;\n5. in alle andere gevallen ‘Cold’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "ViolationCount",
+            "label": "violation count"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "Happiness",
+            "label": "happiness"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘grade’ van de table wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘Conflict’",
+              "when": {
+                "kind": "leaf",
+                "text": "de violation count groter is dan 0"
+              }
+            },
+            {
+              "value": "‘Over Capacity’",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘over capacity’ is gezet"
+              }
+            },
+            {
+              "value": "‘Great’",
+              "when": {
+                "kind": "leaf",
+                "text": "de happiness ten minste 15 is"
+              }
+            },
+            {
+              "value": "‘OK’",
+              "when": {
+                "kind": "leaf",
+                "text": "de happiness ten minste 5 is"
+              }
+            },
+            {
+              "value": "‘Cold’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als violation count is groter dan 0, dan \"Conflict\", anders als over capacity, dan \"Over Capacity\", anders als happiness is ten minste 15, dan \"Great\", anders als happiness is ten minste 5, dan \"OK\", anders \"Cold\""
+      },
+      "Tables.BrideSideCount": {
+        "table": "Tables",
+        "field": "BrideSideCount",
+        "kind": "rollup",
+        "rule": "Een table: bride side count is het totaal van bride flag over de guests gekoppeld aan de table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "BrideFlag",
+            "label": "bride flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van bride flag over alle guests waarvan assigned table is table ID"
+      },
+      "Tables.GroomSideCount": {
+        "table": "Tables",
+        "field": "GroomSideCount",
+        "kind": "rollup",
+        "rule": "Een table: groom side count is het totaal van groom flag over de guests gekoppeld aan de table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "GroomFlag",
+            "label": "groom flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van groom flag over alle guests waarvan assigned table is table ID"
+      },
+      "Tables.SideSkew": {
+        "table": "Tables",
+        "field": "SideSkew",
+        "kind": "formula",
+        "rule": "Het veld ‘side skew’ van de table wordt bepaald volgens de volgende prioriteit:\n1. de bride side count min de groom side count, als de bride side count groter is dan de groom side count;\n2. in alle andere gevallen de groom side count min de bride side count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "BrideSideCount",
+            "label": "bride side count"
+          },
+          {
+            "table": "Tables",
+            "field": "GroomSideCount",
+            "label": "groom side count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘side skew’ van de table wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "de bride side count min de groom side count",
+              "when": {
+                "kind": "leaf",
+                "text": "de bride side count groter is dan de groom side count"
+              }
+            },
+            {
+              "value": "de groom side count min de bride side count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als bride side count is groter dan groom side count, dan (bride side count min groom side count), anders (groom side count min bride side count)"
+      },
+      "Guests.TableLabel": {
+        "table": "Guests",
+        "field": "TableLabel",
+        "kind": "lookup",
+        "rule": "Een guest: table label — overgenomen van de gekoppelde assigned table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De label van de gekoppelde assigned table"
+      },
+      "Guests.TableSeats": {
+        "table": "Guests",
+        "field": "TableSeats",
+        "kind": "lookup",
+        "rule": "Een guest: table seats — overgenomen van de gekoppelde assigned table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De seats van de gekoppelde assigned table"
+      },
+      "Guests.TableHeadCount": {
+        "table": "Guests",
+        "field": "TableHeadCount",
+        "kind": "lookup",
+        "rule": "Een guest: table head count — overgenomen van de gekoppelde assigned table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De head count van de gekoppelde assigned table"
+      },
+      "Guests.RelationshipsAsA": {
+        "table": "Guests",
+        "field": "RelationshipsAsA",
+        "kind": "rollup",
+        "rule": "Een guest: relationships as a is het aantal relationships dat is gekoppeld aan de guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal relationships waarvan guest a is guest ID"
+      },
+      "Guests.RelationshipsAsB": {
+        "table": "Guests",
+        "field": "RelationshipsAsB",
+        "kind": "rollup",
+        "rule": "Een guest: relationships as b is het aantal relationships dat is gekoppeld aan de guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal relationships waarvan guest b is guest ID"
+      },
+      "Guests.SatisfactionA": {
+        "table": "Guests",
+        "field": "SatisfactionA",
+        "kind": "rollup",
+        "rule": "Een guest: satisfaction a is het totaal van effective score over de relationships gekoppeld aan de guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van effective score over alle relationships waarvan guest a is guest ID"
+      },
+      "Guests.SatisfactionB": {
+        "table": "Guests",
+        "field": "SatisfactionB",
+        "kind": "rollup",
+        "rule": "Een guest: satisfaction b is het totaal van effective score over de relationships gekoppeld aan de guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van effective score over alle relationships waarvan guest b is guest ID"
+      },
+      "Guests.Satisfaction": {
+        "table": "Guests",
+        "field": "Satisfaction",
+        "kind": "formula",
+        "rule": "Een guest: satisfaction wordt berekend als de satisfaction a plus de satisfaction b.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "SatisfactionA",
+            "label": "satisfaction a"
+          },
+          {
+            "table": "Guests",
+            "field": "SatisfactionB",
+            "label": "satisfaction b"
+          }
+        ],
+        "structure": null,
+        "plain": "Satisfaction a plus satisfaction b"
+      },
+      "Guests.Mood": {
+        "table": "Guests",
+        "field": "Mood",
+        "kind": "formula",
+        "rule": "Het veld ‘mood’ van de guest wordt bepaald volgens de volgende prioriteit:\n1. ‘Happy’, als de satisfaction ten minste 10 is;\n2. ‘Neutral’, als de satisfaction ten minste 0 is;\n3. in alle andere gevallen ‘Unhappy’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Satisfaction",
+            "label": "satisfaction"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘mood’ van de guest wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘Happy’",
+              "when": {
+                "kind": "leaf",
+                "text": "de satisfaction ten minste 10 is"
+              }
+            },
+            {
+              "value": "‘Neutral’",
+              "when": {
+                "kind": "leaf",
+                "text": "de satisfaction ten minste 0 is"
+              }
+            },
+            {
+              "value": "‘Unhappy’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als satisfaction is ten minste 10, dan \"Happy\", anders als satisfaction is ten minste 0, dan \"Neutral\", anders \"Unhappy\""
+      },
+      "Guests.BrideFlag": {
+        "table": "Guests",
+        "field": "BrideFlag",
+        "kind": "formula",
+        "rule": "Het veld ‘bride flag’ van de guest wordt bepaald volgens de volgende prioriteit:\n1. 1, als de side ‘bride’ is;\n2. in alle andere gevallen 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘bride flag’ van de guest wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "de side ‘bride’ is"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als side is \"bride\", dan 1, anders 0"
+      },
+      "Guests.GroomFlag": {
+        "table": "Guests",
+        "field": "GroomFlag",
+        "kind": "formula",
+        "rule": "Het veld ‘groom flag’ van de guest wordt bepaald volgens de volgende prioriteit:\n1. 1, als de side ‘groom’ is;\n2. in alle andere gevallen 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘groom flag’ van de guest wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "de side ‘groom’ is"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als side is \"groom\", dan 1, anders 0"
+      },
+      "Relationships.GuestAName": {
+        "table": "Relationships",
+        "field": "GuestAName",
+        "kind": "lookup",
+        "rule": "Een relationship: guest a name is de full name van de gekoppelde guest a.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De full name van de gekoppelde guest a"
+      },
+      "Relationships.GuestBName": {
+        "table": "Relationships",
+        "field": "GuestBName",
+        "kind": "lookup",
+        "rule": "Een relationship: guest b name is de full name van de gekoppelde guest b.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De full name van de gekoppelde guest b"
+      },
+      "Relationships.GuestATable": {
+        "table": "Relationships",
+        "field": "GuestATable",
+        "kind": "lookup",
+        "rule": "Een relationship: guest a table is de assigned table van de gekoppelde guest a.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De assigned table van de gekoppelde guest a"
+      },
+      "Relationships.GuestBTable": {
+        "table": "Relationships",
+        "field": "GuestBTable",
+        "kind": "lookup",
+        "rule": "Een relationship: guest b table is de assigned table van de gekoppelde guest b.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De assigned table van de gekoppelde guest b"
+      },
+      "Relationships.SameTable": {
+        "table": "Relationships",
+        "field": "SameTable",
+        "kind": "formula",
+        "rule": "Een relationship is gemarkeerd als same table als al het volgende geldt: de guest a table een waarde heeft en de guest a table de guest b table is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestBTable",
+            "label": "guest b table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een relationship is gemarkeerd als same table als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de guest a table een waarde heeft"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de guest a table de guest b table is"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Guest a table is niet \"\" en guest a table is gelijk aan guest b table"
+      },
+      "Relationships.SeatedTable": {
+        "table": "Relationships",
+        "field": "SeatedTable",
+        "kind": "formula",
+        "rule": "Het veld ‘seated table’ van de relationship wordt bepaald volgens de volgende prioriteit:\n1. de guest a table, als de vlag ‘same table’ is gezet;\n2. in alle andere gevallen een lege tekenreeks.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘seated table’ van de relationship wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "de guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘same table’ is gezet"
+              }
+            },
+            {
+              "value": "een lege tekenreeks",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als same table, dan guest a table, anders \"\""
+      },
+      "Relationships.EffectiveScore": {
+        "table": "Relationships",
+        "field": "EffectiveScore",
+        "kind": "formula",
+        "rule": "Het veld ‘effective score’ van de relationship wordt bepaald volgens de volgende prioriteit:\n1. het negatieve van 50 als de kind ‘must-not’ is, in alle andere gevallen de weight, als de vlag ‘same table’ is gezet;\n2. in alle andere gevallen 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘effective score’ van de relationship wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "het negatieve van 50 als de kind ‘must-not’ is, in alle andere gevallen de weight",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘same table’ is gezet"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als same table, dan als kind is \"must-not\", dan negatief 50, anders weight, anders 0"
+      },
+      "Relationships.IsMustNotViolation": {
+        "table": "Relationships",
+        "field": "IsMustNotViolation",
+        "kind": "formula",
+        "rule": "Een relationship geldt als een must not violation als al het volgende geldt: de kind ‘must-not’ is en de vlag ‘same table’ is gezet.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een relationship geldt als een must not violation als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de kind ‘must-not’ is"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘same table’ is gezet"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Kind is \"must-not\" en same table"
+      },
+      "Relationships.IsSatisfied": {
+        "table": "Relationships",
+        "field": "IsSatisfied",
+        "kind": "formula",
+        "rule": "Een relationship geldt als satisfied als ten minste één van het volgende geldt: al het volgende geldt: de weight groter is dan 0 en de vlag ‘same table’ is gezet of al het volgende geldt: de weight kleiner is dan 0 en de vlag ‘same table’ niet is gezet.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een relationship geldt als satisfied als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "de weight groter is dan 0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "de vlag ‘same table’ is gezet"
+                    }
+                  ]
+                },
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "de weight kleiner is dan 0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "de vlag ‘same table’ niet is gezet"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Weight is groter dan 0 en same table of weight is kleiner dan 0 en niet same table"
+      },
+      "Relationships.ViolationTable": {
+        "table": "Relationships",
+        "field": "ViolationTable",
+        "kind": "formula",
+        "rule": "Het veld ‘violation table’ van de relationship wordt bepaald volgens de volgende prioriteit:\n1. de guest a table, als de vlag ‘must not violation’ is gezet;\n2. in alle andere gevallen een lege tekenreeks.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘violation table’ van de relationship wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "de guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘must not violation’ is gezet"
+              }
+            },
+            {
+              "value": "een lege tekenreeks",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als is must not violation, dan guest a table, anders \"\""
+      },
+      "Relationships.ViolationFlag": {
+        "table": "Relationships",
+        "field": "ViolationFlag",
+        "kind": "formula",
+        "rule": "Het veld ‘violation flag’ van de relationship wordt bepaald volgens de volgende prioriteit:\n1. 1, als de vlag ‘must not violation’ is gezet;\n2. in alle andere gevallen 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘violation flag’ van de relationship wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "de vlag ‘must not violation’ is gezet"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als is must not violation, dan 1, anders 0"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Tables": "table",
+      "Guests": "guest",
+      "Relationships": "relationship"
+    }
+  },
+  "pt": {
+    "fields": {
+      "Tables.HeadCount": {
+        "table": "Tables",
+        "field": "HeadCount",
+        "kind": "rollup",
+        "rule": "Um table: head count é o número de guests relacionados a o table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de guests cujo assigned table é table ID"
+      },
+      "Tables.OpenSeats": {
+        "table": "Tables",
+        "field": "OpenSeats",
+        "kind": "formula",
+        "rule": "Um table: open seats é calculado como o seats menos o head count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          }
+        ],
+        "structure": null,
+        "plain": "Seats menos head count"
+      },
+      "Tables.OverCapacity": {
+        "table": "Tables",
+        "field": "OverCapacity",
+        "kind": "formula",
+        "rule": "Um table está marcado como over capacity se o head count é maior que o seats.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          }
+        ],
+        "structure": null,
+        "plain": "Head count é maior que seats"
+      },
+      "Tables.RawHappiness": {
+        "table": "Tables",
+        "field": "RawHappiness",
+        "kind": "rollup",
+        "rule": "Um table: raw happiness é o total de effective score entre os relationships relacionados a o table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de effective score entre todos os relationships cujo seated table é table ID"
+      },
+      "Tables.ViolationCount": {
+        "table": "Tables",
+        "field": "ViolationCount",
+        "kind": "rollup",
+        "rule": "Um table: violation count é o total de violation flag entre os relationships relacionados a o table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "ViolationFlag",
+            "label": "violation flag"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de violation flag entre todos os relationships cujo seated table é table ID"
+      },
+      "Tables.Happiness": {
+        "table": "Tables",
+        "field": "Happiness",
+        "kind": "formula",
+        "rule": "Um table: happiness é calculado como o raw happiness menos 25 se o indicador “over capacity” está ativado, em todos os outros casos 0 mais o side skew.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "RawHappiness",
+            "label": "raw happiness"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "SideSkew",
+            "label": "side skew"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw happiness menos (se over capacity, então 25, caso contrário 0 mais side skew)"
+      },
+      "Tables.Grade": {
+        "table": "Tables",
+        "field": "Grade",
+        "kind": "formula",
+        "rule": "O campo “grade” do table é determinado pela seguinte prioridade:\n1. “Conflict”, se o violation count é maior que 0;\n2. “Over Capacity”, se o indicador “over capacity” está ativado;\n3. “Great”, se o happiness é pelo menos 15;\n4. “OK”, se o happiness é pelo menos 5;\n5. em todos os outros casos, “Cold”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "ViolationCount",
+            "label": "violation count"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "Happiness",
+            "label": "happiness"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “grade” do table é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“Conflict”",
+              "when": {
+                "kind": "leaf",
+                "text": "o violation count é maior que 0"
+              }
+            },
+            {
+              "value": "“Over Capacity”",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “over capacity” está ativado"
+              }
+            },
+            {
+              "value": "“Great”",
+              "when": {
+                "kind": "leaf",
+                "text": "o happiness é pelo menos 15"
+              }
+            },
+            {
+              "value": "“OK”",
+              "when": {
+                "kind": "leaf",
+                "text": "o happiness é pelo menos 5"
+              }
+            },
+            {
+              "value": "“Cold”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se violation count é maior que 0, então \"Conflict\", caso contrário se over capacity, então \"Over Capacity\", caso contrário se happiness é pelo menos 15, então \"Great\", caso contrário se happiness é pelo menos 5, então \"OK\", caso contrário \"Cold\""
+      },
+      "Tables.BrideSideCount": {
+        "table": "Tables",
+        "field": "BrideSideCount",
+        "kind": "rollup",
+        "rule": "Um table: bride side count é o total de bride flag entre os guests relacionados a o table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "BrideFlag",
+            "label": "bride flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de bride flag entre todos os guests cujo assigned table é table ID"
+      },
+      "Tables.GroomSideCount": {
+        "table": "Tables",
+        "field": "GroomSideCount",
+        "kind": "rollup",
+        "rule": "Um table: groom side count é o total de groom flag entre os guests relacionados a o table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "GroomFlag",
+            "label": "groom flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de groom flag entre todos os guests cujo assigned table é table ID"
+      },
+      "Tables.SideSkew": {
+        "table": "Tables",
+        "field": "SideSkew",
+        "kind": "formula",
+        "rule": "O campo “side skew” do table é determinado pela seguinte prioridade:\n1. o bride side count menos o groom side count, se o bride side count é maior que o groom side count;\n2. em todos os outros casos, o groom side count menos o bride side count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "BrideSideCount",
+            "label": "bride side count"
+          },
+          {
+            "table": "Tables",
+            "field": "GroomSideCount",
+            "label": "groom side count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “side skew” do table é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "o bride side count menos o groom side count",
+              "when": {
+                "kind": "leaf",
+                "text": "o bride side count é maior que o groom side count"
+              }
+            },
+            {
+              "value": "o groom side count menos o bride side count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se bride side count é maior que groom side count, então (bride side count menos groom side count), caso contrário (groom side count menos bride side count)"
+      },
+      "Guests.TableLabel": {
+        "table": "Guests",
+        "field": "TableLabel",
+        "kind": "lookup",
+        "rule": "Um guest: table label — obtido do assigned table vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O label do assigned table vinculado"
+      },
+      "Guests.TableSeats": {
+        "table": "Guests",
+        "field": "TableSeats",
+        "kind": "lookup",
+        "rule": "Um guest: table seats — obtido do assigned table vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O seats do assigned table vinculado"
+      },
+      "Guests.TableHeadCount": {
+        "table": "Guests",
+        "field": "TableHeadCount",
+        "kind": "lookup",
+        "rule": "Um guest: table head count — obtido do assigned table vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O head count do assigned table vinculado"
+      },
+      "Guests.RelationshipsAsA": {
+        "table": "Guests",
+        "field": "RelationshipsAsA",
+        "kind": "rollup",
+        "rule": "Um guest: relationships as a é o número de relationships relacionados a o guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de relationships cujo guest a é guest ID"
+      },
+      "Guests.RelationshipsAsB": {
+        "table": "Guests",
+        "field": "RelationshipsAsB",
+        "kind": "rollup",
+        "rule": "Um guest: relationships as b é o número de relationships relacionados a o guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de relationships cujo guest b é guest ID"
+      },
+      "Guests.SatisfactionA": {
+        "table": "Guests",
+        "field": "SatisfactionA",
+        "kind": "rollup",
+        "rule": "Um guest: satisfaction a é o total de effective score entre os relationships relacionados a o guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de effective score entre todos os relationships cujo guest a é guest ID"
+      },
+      "Guests.SatisfactionB": {
+        "table": "Guests",
+        "field": "SatisfactionB",
+        "kind": "rollup",
+        "rule": "Um guest: satisfaction b é o total de effective score entre os relationships relacionados a o guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de effective score entre todos os relationships cujo guest b é guest ID"
+      },
+      "Guests.Satisfaction": {
+        "table": "Guests",
+        "field": "Satisfaction",
+        "kind": "formula",
+        "rule": "Um guest: satisfaction é calculado como a satisfaction a mais o satisfaction b.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "SatisfactionA",
+            "label": "satisfaction a"
+          },
+          {
+            "table": "Guests",
+            "field": "SatisfactionB",
+            "label": "satisfaction b"
+          }
+        ],
+        "structure": null,
+        "plain": "Satisfaction a mais satisfaction b"
+      },
+      "Guests.Mood": {
+        "table": "Guests",
+        "field": "Mood",
+        "kind": "formula",
+        "rule": "O campo “mood” do guest é determinado pela seguinte prioridade:\n1. “Happy”, se o satisfaction é pelo menos 10;\n2. “Neutral”, se o satisfaction é pelo menos 0;\n3. em todos os outros casos, “Unhappy”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Satisfaction",
+            "label": "satisfaction"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “mood” do guest é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“Happy”",
+              "when": {
+                "kind": "leaf",
+                "text": "o satisfaction é pelo menos 10"
+              }
+            },
+            {
+              "value": "“Neutral”",
+              "when": {
+                "kind": "leaf",
+                "text": "o satisfaction é pelo menos 0"
+              }
+            },
+            {
+              "value": "“Unhappy”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se satisfaction é pelo menos 10, então \"Happy\", caso contrário se satisfaction é pelo menos 0, então \"Neutral\", caso contrário \"Unhappy\""
+      },
+      "Guests.BrideFlag": {
+        "table": "Guests",
+        "field": "BrideFlag",
+        "kind": "formula",
+        "rule": "O campo “bride flag” do guest é determinado pela seguinte prioridade:\n1. 1, se o side é “bride”;\n2. em todos os outros casos, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “bride flag” do guest é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "o side é “bride”"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se side é \"bride\", então 1, caso contrário 0"
+      },
+      "Guests.GroomFlag": {
+        "table": "Guests",
+        "field": "GroomFlag",
+        "kind": "formula",
+        "rule": "O campo “groom flag” do guest é determinado pela seguinte prioridade:\n1. 1, se o side é “groom”;\n2. em todos os outros casos, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “groom flag” do guest é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "o side é “groom”"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se side é \"groom\", então 1, caso contrário 0"
+      },
+      "Relationships.GuestAName": {
+        "table": "Relationships",
+        "field": "GuestAName",
+        "kind": "lookup",
+        "rule": "Um relationship: guest a name é o full name do guest a vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O full name do guest a vinculado"
+      },
+      "Relationships.GuestBName": {
+        "table": "Relationships",
+        "field": "GuestBName",
+        "kind": "lookup",
+        "rule": "Um relationship: guest b name é o full name do guest b vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O full name do guest b vinculado"
+      },
+      "Relationships.GuestATable": {
+        "table": "Relationships",
+        "field": "GuestATable",
+        "kind": "lookup",
+        "rule": "Um relationship: guest a table é o assigned table do guest a vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O assigned table do guest a vinculado"
+      },
+      "Relationships.GuestBTable": {
+        "table": "Relationships",
+        "field": "GuestBTable",
+        "kind": "lookup",
+        "rule": "Um relationship: guest b table é o assigned table do guest b vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O assigned table do guest b vinculado"
+      },
+      "Relationships.SameTable": {
+        "table": "Relationships",
+        "field": "SameTable",
+        "kind": "formula",
+        "rule": "Um relationship está marcado como same table se tudo o que segue é verdadeiro: o guest a table tem valor e o guest a table é o guest b table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestBTable",
+            "label": "guest b table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um relationship está marcado como same table se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o guest a table tem valor"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o guest a table é o guest b table"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Guest a table não é \"\" e guest a table é igual a guest b table"
+      },
+      "Relationships.SeatedTable": {
+        "table": "Relationships",
+        "field": "SeatedTable",
+        "kind": "formula",
+        "rule": "O campo “seated table” do relationship é determinado pela seguinte prioridade:\n1. o guest a table, se o indicador “same table” está ativado;\n2. em todos os outros casos, uma cadeia vazia.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “seated table” do relationship é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "o guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “same table” está ativado"
+              }
+            },
+            {
+              "value": "uma cadeia vazia",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se same table, então guest a table, caso contrário \"\""
+      },
+      "Relationships.EffectiveScore": {
+        "table": "Relationships",
+        "field": "EffectiveScore",
+        "kind": "formula",
+        "rule": "O campo “effective score” do relationship é determinado pela seguinte prioridade:\n1. o negativo de 50 se o kind é “must-not”, em todos os outros casos o weight, se o indicador “same table” está ativado;\n2. em todos os outros casos, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “effective score” do relationship é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "o negativo de 50 se o kind é “must-not”, em todos os outros casos o weight",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “same table” está ativado"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se same table, então se kind é \"must-not\", então negativo 50, caso contrário weight, caso contrário 0"
+      },
+      "Relationships.IsMustNotViolation": {
+        "table": "Relationships",
+        "field": "IsMustNotViolation",
+        "kind": "formula",
+        "rule": "Um relationship é considerado um must not violation se tudo o que segue é verdadeiro: o kind é “must-not” e o indicador “same table” está ativado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um relationship é considerado um must not violation se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o kind é “must-not”"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “same table” está ativado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Kind é \"must-not\" e same table"
+      },
+      "Relationships.IsSatisfied": {
+        "table": "Relationships",
+        "field": "IsSatisfied",
+        "kind": "formula",
+        "rule": "Um relationship é considerado satisfied se pelo menos uma das seguintes é verdadeira: tudo o que segue é verdadeiro: o weight é maior que 0 e o indicador “same table” está ativado ou tudo o que segue é verdadeiro: o weight é menor que 0 e o indicador “same table” não está ativado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um relationship é considerado satisfied se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "o weight é maior que 0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "o indicador “same table” está ativado"
+                    }
+                  ]
+                },
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "o weight é menor que 0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "o indicador “same table” não está ativado"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Weight é maior que 0 e same table ou weight é menor que 0 e não same table"
+      },
+      "Relationships.ViolationTable": {
+        "table": "Relationships",
+        "field": "ViolationTable",
+        "kind": "formula",
+        "rule": "O campo “violation table” do relationship é determinado pela seguinte prioridade:\n1. o guest a table, se o indicador “must not violation” está ativado;\n2. em todos os outros casos, uma cadeia vazia.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “violation table” do relationship é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "o guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “must not violation” está ativado"
+              }
+            },
+            {
+              "value": "uma cadeia vazia",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is must not violation, então guest a table, caso contrário \"\""
+      },
+      "Relationships.ViolationFlag": {
+        "table": "Relationships",
+        "field": "ViolationFlag",
+        "kind": "formula",
+        "rule": "O campo “violation flag” do relationship é determinado pela seguinte prioridade:\n1. 1, se o indicador “must not violation” está ativado;\n2. em todos os outros casos, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “violation flag” do relationship é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "o indicador “must not violation” está ativado"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se is must not violation, então 1, caso contrário 0"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Tables": "table",
+      "Guests": "guest",
+      "Relationships": "relationship"
+    }
+  },
+  "ru": {
+    "fields": {
+      "Tables.HeadCount": {
+        "table": "Tables",
+        "field": "HeadCount",
+        "kind": "rollup",
+        "rule": "Table: «head count» — это число записей «guests», связанных с table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «guests», у которых assigned table равно table ID"
+      },
+      "Tables.OpenSeats": {
+        "table": "Tables",
+        "field": "OpenSeats",
+        "kind": "formula",
+        "rule": "Table: «open seats» вычисляется как seats минус head count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          }
+        ],
+        "structure": null,
+        "plain": "Seats минус head count"
+      },
+      "Tables.OverCapacity": {
+        "table": "Tables",
+        "field": "OverCapacity",
+        "kind": "formula",
+        "rule": "Table помечается как «over capacity», если head count больше seats.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          }
+        ],
+        "structure": null,
+        "plain": "Head count больше seats"
+      },
+      "Tables.RawHappiness": {
+        "table": "Tables",
+        "field": "RawHappiness",
+        "kind": "rollup",
+        "rule": "Table: «raw happiness» — это сумма «effective score» по записям «relationships», связанным с table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма effective score по всем «relationships», у которых seated table равно table ID"
+      },
+      "Tables.ViolationCount": {
+        "table": "Tables",
+        "field": "ViolationCount",
+        "kind": "rollup",
+        "rule": "Table: «violation count» — это сумма «violation flag» по записям «relationships», связанным с table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "ViolationFlag",
+            "label": "violation flag"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма violation flag по всем «relationships», у которых seated table равно table ID"
+      },
+      "Tables.Happiness": {
+        "table": "Tables",
+        "field": "Happiness",
+        "kind": "formula",
+        "rule": "Table: «happiness» вычисляется как raw happiness минус 25, если признак «over capacity» установлен, во всех остальных случаях — 0 плюс side skew.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "RawHappiness",
+            "label": "raw happiness"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "SideSkew",
+            "label": "side skew"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw happiness минус (если over capacity, то 25, иначе 0 плюс side skew)"
+      },
+      "Tables.Grade": {
+        "table": "Tables",
+        "field": "Grade",
+        "kind": "formula",
+        "rule": "Поле «grade» (Table) определяется по следующему приоритету:\n1. «Conflict», если violation count больше 0;\n2. «Over Capacity», если признак «over capacity» установлен;\n3. «Great», если happiness не меньше 15;\n4. «OK», если happiness не меньше 5;\n5. во всех остальных случаях — «Cold».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "ViolationCount",
+            "label": "violation count"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "Happiness",
+            "label": "happiness"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «grade» (Table) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«Conflict»",
+              "when": {
+                "kind": "leaf",
+                "text": "violation count больше 0"
+              }
+            },
+            {
+              "value": "«Over Capacity»",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «over capacity» установлен"
+              }
+            },
+            {
+              "value": "«Great»",
+              "when": {
+                "kind": "leaf",
+                "text": "happiness не меньше 15"
+              }
+            },
+            {
+              "value": "«OK»",
+              "when": {
+                "kind": "leaf",
+                "text": "happiness не меньше 5"
+              }
+            },
+            {
+              "value": "«Cold»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если violation count больше 0, то \"Conflict\", иначе если over capacity, то \"Over Capacity\", иначе если happiness не меньше 15, то \"Great\", иначе если happiness не меньше 5, то \"OK\", иначе \"Cold\""
+      },
+      "Tables.BrideSideCount": {
+        "table": "Tables",
+        "field": "BrideSideCount",
+        "kind": "rollup",
+        "rule": "Table: «bride side count» — это сумма «bride flag» по записям «guests», связанным с table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "BrideFlag",
+            "label": "bride flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма bride flag по всем «guests», у которых assigned table равно table ID"
+      },
+      "Tables.GroomSideCount": {
+        "table": "Tables",
+        "field": "GroomSideCount",
+        "kind": "rollup",
+        "rule": "Table: «groom side count» — это сумма «groom flag» по записям «guests», связанным с table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "GroomFlag",
+            "label": "groom flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма groom flag по всем «guests», у которых assigned table равно table ID"
+      },
+      "Tables.SideSkew": {
+        "table": "Tables",
+        "field": "SideSkew",
+        "kind": "formula",
+        "rule": "Поле «side skew» (Table) определяется по следующему приоритету:\n1. bride side count минус groom side count, если bride side count больше groom side count;\n2. во всех остальных случаях — groom side count минус bride side count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "BrideSideCount",
+            "label": "bride side count"
+          },
+          {
+            "table": "Tables",
+            "field": "GroomSideCount",
+            "label": "groom side count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «side skew» (Table) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "bride side count минус groom side count",
+              "when": {
+                "kind": "leaf",
+                "text": "bride side count больше groom side count"
+              }
+            },
+            {
+              "value": "groom side count минус bride side count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если bride side count больше groom side count, то (bride side count минус groom side count), иначе (groom side count минус bride side count)"
+      },
+      "Guests.TableLabel": {
+        "table": "Guests",
+        "field": "TableLabel",
+        "kind": "lookup",
+        "rule": "Guest: «table label» — берётся из связанного «assigned table».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Label связанного «assigned table»"
+      },
+      "Guests.TableSeats": {
+        "table": "Guests",
+        "field": "TableSeats",
+        "kind": "lookup",
+        "rule": "Guest: «table seats» — берётся из связанного «assigned table».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seats связанного «assigned table»"
+      },
+      "Guests.TableHeadCount": {
+        "table": "Guests",
+        "field": "TableHeadCount",
+        "kind": "lookup",
+        "rule": "Guest: «table head count» — берётся из связанного «assigned table».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Head count связанного «assigned table»"
+      },
+      "Guests.RelationshipsAsA": {
+        "table": "Guests",
+        "field": "RelationshipsAsA",
+        "kind": "rollup",
+        "rule": "Guest: «relationships as a» — это число записей «relationships», связанных с guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «relationships», у которых guest a равно guest ID"
+      },
+      "Guests.RelationshipsAsB": {
+        "table": "Guests",
+        "field": "RelationshipsAsB",
+        "kind": "rollup",
+        "rule": "Guest: «relationships as b» — это число записей «relationships», связанных с guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «relationships», у которых guest b равно guest ID"
+      },
+      "Guests.SatisfactionA": {
+        "table": "Guests",
+        "field": "SatisfactionA",
+        "kind": "rollup",
+        "rule": "Guest: «satisfaction a» — это сумма «effective score» по записям «relationships», связанным с guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма effective score по всем «relationships», у которых guest a равно guest ID"
+      },
+      "Guests.SatisfactionB": {
+        "table": "Guests",
+        "field": "SatisfactionB",
+        "kind": "rollup",
+        "rule": "Guest: «satisfaction b» — это сумма «effective score» по записям «relationships», связанным с guest.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма effective score по всем «relationships», у которых guest b равно guest ID"
+      },
+      "Guests.Satisfaction": {
+        "table": "Guests",
+        "field": "Satisfaction",
+        "kind": "formula",
+        "rule": "Guest: «satisfaction» вычисляется как satisfaction a плюс satisfaction b.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "SatisfactionA",
+            "label": "satisfaction a"
+          },
+          {
+            "table": "Guests",
+            "field": "SatisfactionB",
+            "label": "satisfaction b"
+          }
+        ],
+        "structure": null,
+        "plain": "Satisfaction a плюс satisfaction b"
+      },
+      "Guests.Mood": {
+        "table": "Guests",
+        "field": "Mood",
+        "kind": "formula",
+        "rule": "Поле «mood» (Guest) определяется по следующему приоритету:\n1. «Happy», если satisfaction не меньше 10;\n2. «Neutral», если satisfaction не меньше 0;\n3. во всех остальных случаях — «Unhappy».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Satisfaction",
+            "label": "satisfaction"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «mood» (Guest) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«Happy»",
+              "when": {
+                "kind": "leaf",
+                "text": "satisfaction не меньше 10"
+              }
+            },
+            {
+              "value": "«Neutral»",
+              "when": {
+                "kind": "leaf",
+                "text": "satisfaction не меньше 0"
+              }
+            },
+            {
+              "value": "«Unhappy»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если satisfaction не меньше 10, то \"Happy\", иначе если satisfaction не меньше 0, то \"Neutral\", иначе \"Unhappy\""
+      },
+      "Guests.BrideFlag": {
+        "table": "Guests",
+        "field": "BrideFlag",
+        "kind": "formula",
+        "rule": "Поле «bride flag» (Guest) определяется по следующему приоритету:\n1. 1, если side равно «bride»;\n2. во всех остальных случаях — 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «bride flag» (Guest) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "side равно «bride»"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если side равно \"bride\", то 1, иначе 0"
+      },
+      "Guests.GroomFlag": {
+        "table": "Guests",
+        "field": "GroomFlag",
+        "kind": "formula",
+        "rule": "Поле «groom flag» (Guest) определяется по следующему приоритету:\n1. 1, если side равно «groom»;\n2. во всех остальных случаях — 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «groom flag» (Guest) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "side равно «groom»"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если side равно \"groom\", то 1, иначе 0"
+      },
+      "Relationships.GuestAName": {
+        "table": "Relationships",
+        "field": "GuestAName",
+        "kind": "lookup",
+        "rule": "Relationship: «guest a name» — это «full name» связанного «guest a».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name связанного «guest a»"
+      },
+      "Relationships.GuestBName": {
+        "table": "Relationships",
+        "field": "GuestBName",
+        "kind": "lookup",
+        "rule": "Relationship: «guest b name» — это «full name» связанного «guest b».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name связанного «guest b»"
+      },
+      "Relationships.GuestATable": {
+        "table": "Relationships",
+        "field": "GuestATable",
+        "kind": "lookup",
+        "rule": "Relationship: «guest a table» — это «assigned table» связанного «guest a».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assigned table связанного «guest a»"
+      },
+      "Relationships.GuestBTable": {
+        "table": "Relationships",
+        "field": "GuestBTable",
+        "kind": "lookup",
+        "rule": "Relationship: «guest b table» — это «assigned table» связанного «guest b».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assigned table связанного «guest b»"
+      },
+      "Relationships.SameTable": {
+        "table": "Relationships",
+        "field": "SameTable",
+        "kind": "formula",
+        "rule": "Relationship помечается как «same table», если выполняется всё следующее: guest a table имеет значение и guest a table равно guest b table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestBTable",
+            "label": "guest b table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Relationship помечается как «same table», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "guest a table имеет значение"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "guest a table равно guest b table"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Guest a table не равно \"\" и guest a table равно guest b table"
+      },
+      "Relationships.SeatedTable": {
+        "table": "Relationships",
+        "field": "SeatedTable",
+        "kind": "formula",
+        "rule": "Поле «seated table» (Relationship) определяется по следующему приоритету:\n1. guest a table, если признак «same table» установлен;\n2. во всех остальных случаях — пустая строка.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «seated table» (Relationship) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «same table» установлен"
+              }
+            },
+            {
+              "value": "пустая строка",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если same table, то guest a table, иначе \"\""
+      },
+      "Relationships.EffectiveScore": {
+        "table": "Relationships",
+        "field": "EffectiveScore",
+        "kind": "formula",
+        "rule": "Поле «effective score» (Relationship) определяется по следующему приоритету:\n1. значение 50 с обратным знаком, если kind равно «must-not», во всех остальных случаях — weight, если признак «same table» установлен;\n2. во всех остальных случаях — 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «effective score» (Relationship) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "значение 50 с обратным знаком, если kind равно «must-not», во всех остальных случаях — weight",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «same table» установлен"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если same table, то если kind равно \"must-not\", то минус 50, иначе weight, иначе 0"
+      },
+      "Relationships.IsMustNotViolation": {
+        "table": "Relationships",
+        "field": "IsMustNotViolation",
+        "kind": "formula",
+        "rule": "Relationship считается «must not violation», если выполняется всё следующее: kind равно «must-not» и признак «same table» установлен.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Relationship считается «must not violation», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "kind равно «must-not»"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "признак «same table» установлен"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Kind равно \"must-not\" и same table"
+      },
+      "Relationships.IsSatisfied": {
+        "table": "Relationships",
+        "field": "IsSatisfied",
+        "kind": "formula",
+        "rule": "Relationship считается «satisfied», если выполняется хотя бы одно из следующего: выполняется всё следующее: weight больше 0 и признак «same table» установлен или выполняется всё следующее: weight меньше 0 и признак «same table» не установлен.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Relationship считается «satisfied», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "weight больше 0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "признак «same table» установлен"
+                    }
+                  ]
+                },
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "weight меньше 0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "признак «same table» не установлен"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Weight больше 0 и same table или weight меньше 0 и не same table"
+      },
+      "Relationships.ViolationTable": {
+        "table": "Relationships",
+        "field": "ViolationTable",
+        "kind": "formula",
+        "rule": "Поле «violation table» (Relationship) определяется по следующему приоритету:\n1. guest a table, если признак «must not violation» установлен;\n2. во всех остальных случаях — пустая строка.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «violation table» (Relationship) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «must not violation» установлен"
+              }
+            },
+            {
+              "value": "пустая строка",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если is must not violation, то guest a table, иначе \"\""
+      },
+      "Relationships.ViolationFlag": {
+        "table": "Relationships",
+        "field": "ViolationFlag",
+        "kind": "formula",
+        "rule": "Поле «violation flag» (Relationship) определяется по следующему приоритету:\n1. 1, если признак «must not violation» установлен;\n2. во всех остальных случаях — 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «violation flag» (Relationship) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "признак «must not violation» установлен"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если is must not violation, то 1, иначе 0"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Tables": "table",
+      "Guests": "guest",
+      "Relationships": "relationship"
+    }
+  },
+  "tr": {
+    "fields": {
+      "Tables.HeadCount": {
+        "table": "Tables",
+        "field": "HeadCount",
+        "kind": "rollup",
+        "rule": "“table” kaydının “head count” alanı, “table” kaydıyla ilişkili “guests” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assigned table değeri table ID olan guests kayıtlarının sayısı"
+      },
+      "Tables.OpenSeats": {
+        "table": "Tables",
+        "field": "OpenSeats",
+        "kind": "formula",
+        "rule": "“table” kaydının “open seats” alanı, “seats” alanı eksi “head count” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          }
+        ],
+        "structure": null,
+        "plain": "Seats eksi head count"
+      },
+      "Tables.OverCapacity": {
+        "table": "Tables",
+        "field": "OverCapacity",
+        "kind": "formula",
+        "rule": "“table” kaydı, “head count” alanı “seats” alanı değerinden büyük ise “over capacity” olarak işaretlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          }
+        ],
+        "structure": null,
+        "plain": "Head count, seats değerinden büyük"
+      },
+      "Tables.RawHappiness": {
+        "table": "Tables",
+        "field": "RawHappiness",
+        "kind": "rollup",
+        "rule": "“table” kaydının “raw happiness” alanı, “table” kaydıyla ilişkili “relationships” kayıtları üzerinden hesaplanan toplam “effective score” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seated table değeri table ID olan tüm relationships kayıtlarındaki effective score değerlerinin toplamı"
+      },
+      "Tables.ViolationCount": {
+        "table": "Tables",
+        "field": "ViolationCount",
+        "kind": "rollup",
+        "rule": "“table” kaydının “violation count” alanı, “table” kaydıyla ilişkili “relationships” kayıtları üzerinden hesaplanan toplam “violation flag” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "ViolationFlag",
+            "label": "violation flag"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seated table değeri table ID olan tüm relationships kayıtlarındaki violation flag değerlerinin toplamı"
+      },
+      "Tables.Happiness": {
+        "table": "Tables",
+        "field": "Happiness",
+        "kind": "formula",
+        "rule": "“table” kaydının “happiness” alanı, “raw happiness” alanı eksi “over capacity” bayrağı etkin ise 25, diğer tüm durumlarda 0 artı “side skew” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "RawHappiness",
+            "label": "raw happiness"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "SideSkew",
+            "label": "side skew"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw happiness eksi (over capacity ise 25, aksi takdirde 0 artı side skew)"
+      },
+      "Tables.Grade": {
+        "table": "Tables",
+        "field": "Grade",
+        "kind": "formula",
+        "rule": "“table” kaydının “grade” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “violation count” alanı 0 değerinden büyük ise “Conflict”;\n2. “over capacity” bayrağı etkin ise “Over Capacity”;\n3. “happiness” alanı en az 15 değerinde ise “Great”;\n4. “happiness” alanı en az 5 değerinde ise “OK”;\n5. diğer tüm durumlarda “Cold”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "ViolationCount",
+            "label": "violation count"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "Happiness",
+            "label": "happiness"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“table” kaydının “grade” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“Conflict”",
+              "when": {
+                "kind": "leaf",
+                "text": "“violation count” alanı 0 değerinden büyük"
+              }
+            },
+            {
+              "value": "“Over Capacity”",
+              "when": {
+                "kind": "leaf",
+                "text": "“over capacity” bayrağı etkin"
+              }
+            },
+            {
+              "value": "“Great”",
+              "when": {
+                "kind": "leaf",
+                "text": "“happiness” alanı en az 15 değerinde"
+              }
+            },
+            {
+              "value": "“OK”",
+              "when": {
+                "kind": "leaf",
+                "text": "“happiness” alanı en az 5 değerinde"
+              }
+            },
+            {
+              "value": "“Cold”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Violation count, 0 değerinden büyük ise \"Conflict\", aksi takdirde over capacity ise \"Over Capacity\", aksi takdirde happiness, en az 15 değerinde ise \"Great\", aksi takdirde happiness, en az 5 değerinde ise \"OK\", aksi takdirde \"Cold\""
+      },
+      "Tables.BrideSideCount": {
+        "table": "Tables",
+        "field": "BrideSideCount",
+        "kind": "rollup",
+        "rule": "“table” kaydının “bride side count” alanı, “table” kaydıyla ilişkili “guests” kayıtları üzerinden hesaplanan toplam “bride flag” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "BrideFlag",
+            "label": "bride flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assigned table değeri table ID olan tüm guests kayıtlarındaki bride flag değerlerinin toplamı"
+      },
+      "Tables.GroomSideCount": {
+        "table": "Tables",
+        "field": "GroomSideCount",
+        "kind": "rollup",
+        "rule": "“table” kaydının “groom side count” alanı, “table” kaydıyla ilişkili “guests” kayıtları üzerinden hesaplanan toplam “groom flag” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "GroomFlag",
+            "label": "groom flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assigned table değeri table ID olan tüm guests kayıtlarındaki groom flag değerlerinin toplamı"
+      },
+      "Tables.SideSkew": {
+        "table": "Tables",
+        "field": "SideSkew",
+        "kind": "formula",
+        "rule": "“table” kaydının “side skew” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “bride side count” alanı “groom side count” alanı değerinden büyük ise “bride side count” alanı eksi “groom side count” alanı;\n2. diğer tüm durumlarda “groom side count” alanı eksi “bride side count” alanı.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "BrideSideCount",
+            "label": "bride side count"
+          },
+          {
+            "table": "Tables",
+            "field": "GroomSideCount",
+            "label": "groom side count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“table” kaydının “side skew” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“bride side count” alanı eksi “groom side count” alanı",
+              "when": {
+                "kind": "leaf",
+                "text": "“bride side count” alanı “groom side count” alanı değerinden büyük"
+              }
+            },
+            {
+              "value": "“groom side count” alanı eksi “bride side count” alanı",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Bride side count, groom side count değerinden büyük ise (bride side count eksi groom side count), aksi takdirde (groom side count eksi bride side count)"
+      },
+      "Guests.TableLabel": {
+        "table": "Guests",
+        "field": "TableLabel",
+        "kind": "lookup",
+        "rule": "“guest” kaydının “table label” alanı, “assigned table” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı assigned table kaydının label değeri"
+      },
+      "Guests.TableSeats": {
+        "table": "Guests",
+        "field": "TableSeats",
+        "kind": "lookup",
+        "rule": "“guest” kaydının “table seats” alanı, “assigned table” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı assigned table kaydının seats değeri"
+      },
+      "Guests.TableHeadCount": {
+        "table": "Guests",
+        "field": "TableHeadCount",
+        "kind": "lookup",
+        "rule": "“guest” kaydının “table head count” alanı, “assigned table” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı assigned table kaydının head count değeri"
+      },
+      "Guests.RelationshipsAsA": {
+        "table": "Guests",
+        "field": "RelationshipsAsA",
+        "kind": "rollup",
+        "rule": "“guest” kaydının “relationships as a” alanı, “guest” kaydıyla ilişkili “relationships” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Guest a değeri guest ID olan relationships kayıtlarının sayısı"
+      },
+      "Guests.RelationshipsAsB": {
+        "table": "Guests",
+        "field": "RelationshipsAsB",
+        "kind": "rollup",
+        "rule": "“guest” kaydının “relationships as b” alanı, “guest” kaydıyla ilişkili “relationships” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Guest b değeri guest ID olan relationships kayıtlarının sayısı"
+      },
+      "Guests.SatisfactionA": {
+        "table": "Guests",
+        "field": "SatisfactionA",
+        "kind": "rollup",
+        "rule": "“guest” kaydının “satisfaction a” alanı, “guest” kaydıyla ilişkili “relationships” kayıtları üzerinden hesaplanan toplam “effective score” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Guest a değeri guest ID olan tüm relationships kayıtlarındaki effective score değerlerinin toplamı"
+      },
+      "Guests.SatisfactionB": {
+        "table": "Guests",
+        "field": "SatisfactionB",
+        "kind": "rollup",
+        "rule": "“guest” kaydının “satisfaction b” alanı, “guest” kaydıyla ilişkili “relationships” kayıtları üzerinden hesaplanan toplam “effective score” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Guest b değeri guest ID olan tüm relationships kayıtlarındaki effective score değerlerinin toplamı"
+      },
+      "Guests.Satisfaction": {
+        "table": "Guests",
+        "field": "Satisfaction",
+        "kind": "formula",
+        "rule": "“guest” kaydının “satisfaction” alanı, “satisfaction a” alanı artı “satisfaction b” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "SatisfactionA",
+            "label": "satisfaction a"
+          },
+          {
+            "table": "Guests",
+            "field": "SatisfactionB",
+            "label": "satisfaction b"
+          }
+        ],
+        "structure": null,
+        "plain": "Satisfaction a artı satisfaction b"
+      },
+      "Guests.Mood": {
+        "table": "Guests",
+        "field": "Mood",
+        "kind": "formula",
+        "rule": "“guest” kaydının “mood” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “satisfaction” alanı en az 10 değerinde ise “Happy”;\n2. “satisfaction” alanı en az 0 değerinde ise “Neutral”;\n3. diğer tüm durumlarda “Unhappy”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Satisfaction",
+            "label": "satisfaction"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“guest” kaydının “mood” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“Happy”",
+              "when": {
+                "kind": "leaf",
+                "text": "“satisfaction” alanı en az 10 değerinde"
+              }
+            },
+            {
+              "value": "“Neutral”",
+              "when": {
+                "kind": "leaf",
+                "text": "“satisfaction” alanı en az 0 değerinde"
+              }
+            },
+            {
+              "value": "“Unhappy”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Satisfaction, en az 10 değerinde ise \"Happy\", aksi takdirde satisfaction, en az 0 değerinde ise \"Neutral\", aksi takdirde \"Unhappy\""
+      },
+      "Guests.BrideFlag": {
+        "table": "Guests",
+        "field": "BrideFlag",
+        "kind": "formula",
+        "rule": "“guest” kaydının “bride flag” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “side” alanı “bride” değerine eşit ise 1;\n2. diğer tüm durumlarda 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“guest” kaydının “bride flag” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "“side” alanı “bride” değerine eşit"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Side, \"bride\" değerine eşit ise 1, aksi takdirde 0"
+      },
+      "Guests.GroomFlag": {
+        "table": "Guests",
+        "field": "GroomFlag",
+        "kind": "formula",
+        "rule": "“guest” kaydının “groom flag” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “side” alanı “groom” değerine eşit ise 1;\n2. diğer tüm durumlarda 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“guest” kaydının “groom flag” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "“side” alanı “groom” değerine eşit"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Side, \"groom\" değerine eşit ise 1, aksi takdirde 0"
+      },
+      "Relationships.GuestAName": {
+        "table": "Relationships",
+        "field": "GuestAName",
+        "kind": "lookup",
+        "rule": "“relationship” kaydının “guest a name” alanı, “guest a” alanı üzerinden bağlı kaydın “full name” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı guest a kaydının full name değeri"
+      },
+      "Relationships.GuestBName": {
+        "table": "Relationships",
+        "field": "GuestBName",
+        "kind": "lookup",
+        "rule": "“relationship” kaydının “guest b name” alanı, “guest b” alanı üzerinden bağlı kaydın “full name” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı guest b kaydının full name değeri"
+      },
+      "Relationships.GuestATable": {
+        "table": "Relationships",
+        "field": "GuestATable",
+        "kind": "lookup",
+        "rule": "“relationship” kaydının “guest a table” alanı, “guest a” alanı üzerinden bağlı kaydın “assigned table” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı guest a kaydının assigned table değeri"
+      },
+      "Relationships.GuestBTable": {
+        "table": "Relationships",
+        "field": "GuestBTable",
+        "kind": "lookup",
+        "rule": "“relationship” kaydının “guest b table” alanı, “guest b” alanı üzerinden bağlı kaydın “assigned table” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı guest b kaydının assigned table değeri"
+      },
+      "Relationships.SameTable": {
+        "table": "Relationships",
+        "field": "SameTable",
+        "kind": "formula",
+        "rule": "“relationship” kaydı, “guest a table” alanı boş değil ve “guest a table” alanı “guest b table” alanı değerine eşit ise “same table” olarak işaretlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestBTable",
+            "label": "guest b table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“relationship” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “same table” olarak işaretlenir:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“guest a table” alanı boş değil"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“guest a table” alanı “guest b table” alanı değerine eşit"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Guest a table, \"\" değerine eşit değil ve guest a table, guest b table değerine eşit"
+      },
+      "Relationships.SeatedTable": {
+        "table": "Relationships",
+        "field": "SeatedTable",
+        "kind": "formula",
+        "rule": "“relationship” kaydının “seated table” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “same table” bayrağı etkin ise “guest a table” alanı;\n2. diğer tüm durumlarda boş metin.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“relationship” kaydının “seated table” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“guest a table” alanı",
+              "when": {
+                "kind": "leaf",
+                "text": "“same table” bayrağı etkin"
+              }
+            },
+            {
+              "value": "boş metin",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Same table ise guest a table, aksi takdirde \"\""
+      },
+      "Relationships.EffectiveScore": {
+        "table": "Relationships",
+        "field": "EffectiveScore",
+        "kind": "formula",
+        "rule": "“relationship” kaydının “effective score” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “same table” bayrağı etkin ise “kind” alanı “must-not” değerine eşit ise 50 değerinin negatifi, diğer tüm durumlarda “weight” alanı;\n2. diğer tüm durumlarda 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“relationship” kaydının “effective score” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“kind” alanı “must-not” değerine eşit ise 50 değerinin negatifi, diğer tüm durumlarda “weight” alanı",
+              "when": {
+                "kind": "leaf",
+                "text": "“same table” bayrağı etkin"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Same table ise kind, \"must-not\" değerine eşit ise eksi 50, aksi takdirde weight, aksi takdirde 0"
+      },
+      "Relationships.IsMustNotViolation": {
+        "table": "Relationships",
+        "field": "IsMustNotViolation",
+        "kind": "formula",
+        "rule": "“relationship” kaydı, “kind” alanı “must-not” değerine eşit ve “same table” bayrağı etkin ise “must not violation” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“relationship” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “must not violation” sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“kind” alanı “must-not” değerine eşit"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“same table” bayrağı etkin"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Kind, \"must-not\" değerine eşit ve same table"
+      },
+      "Relationships.IsSatisfied": {
+        "table": "Relationships",
+        "field": "IsSatisfied",
+        "kind": "formula",
+        "rule": "“relationship” kaydı, (“weight” alanı 0 değerinden büyük ve “same table” bayrağı etkin) veya (“weight” alanı 0 değerinden küçük ve “same table” bayrağı etkin değil) ise “satisfied” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“relationship” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “satisfied” sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "“weight” alanı 0 değerinden büyük"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "“same table” bayrağı etkin"
+                    }
+                  ]
+                },
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "“weight” alanı 0 değerinden küçük"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "“same table” bayrağı etkin değil"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "(weight, 0 değerinden büyük ve same table) veya (weight, 0 değerinden küçük ve (same table) koşulu sağlanmıyor)"
+      },
+      "Relationships.ViolationTable": {
+        "table": "Relationships",
+        "field": "ViolationTable",
+        "kind": "formula",
+        "rule": "“relationship” kaydının “violation table” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “must not violation” bayrağı etkin ise “guest a table” alanı;\n2. diğer tüm durumlarda boş metin.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“relationship” kaydının “violation table” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“guest a table” alanı",
+              "when": {
+                "kind": "leaf",
+                "text": "“must not violation” bayrağı etkin"
+              }
+            },
+            {
+              "value": "boş metin",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is must not violation ise guest a table, aksi takdirde \"\""
+      },
+      "Relationships.ViolationFlag": {
+        "table": "Relationships",
+        "field": "ViolationFlag",
+        "kind": "formula",
+        "rule": "“relationship” kaydının “violation flag” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “must not violation” bayrağı etkin ise 1;\n2. diğer tüm durumlarda 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“relationship” kaydının “violation flag” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "“must not violation” bayrağı etkin"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Is must not violation ise 1, aksi takdirde 0"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Tables": "table",
+      "Guests": "guest",
+      "Relationships": "relationship"
+    }
+  },
+  "vi": {
+    "fields": {
+      "Tables.HeadCount": {
+        "table": "Tables",
+        "field": "HeadCount",
+        "kind": "rollup",
+        "rule": "Trường “head count” của mỗi table là số lượng guests liên quan đến table đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng guests có assigned table là table ID"
+      },
+      "Tables.OpenSeats": {
+        "table": "Tables",
+        "field": "OpenSeats",
+        "kind": "formula",
+        "rule": "Trường “open seats” của mỗi table được tính bằng seats trừ head count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          }
+        ],
+        "structure": null,
+        "plain": "Seats trừ head count"
+      },
+      "Tables.OverCapacity": {
+        "table": "Tables",
+        "field": "OverCapacity",
+        "kind": "formula",
+        "rule": "Mỗi table được đánh dấu là “over capacity” nếu head count lớn hơn seats.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          }
+        ],
+        "structure": null,
+        "plain": "Head count lớn hơn seats"
+      },
+      "Tables.RawHappiness": {
+        "table": "Tables",
+        "field": "RawHappiness",
+        "kind": "rollup",
+        "rule": "Trường “raw happiness” của mỗi table là giá trị tổng cộng của trường “effective score” trên các relationships liên quan đến table đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng effective score trên tất cả relationships có seated table là table ID"
+      },
+      "Tables.ViolationCount": {
+        "table": "Tables",
+        "field": "ViolationCount",
+        "kind": "rollup",
+        "rule": "Trường “violation count” của mỗi table là giá trị tổng cộng của trường “violation flag” trên các relationships liên quan đến table đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "ViolationFlag",
+            "label": "violation flag"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng violation flag trên tất cả relationships có seated table là table ID"
+      },
+      "Tables.Happiness": {
+        "table": "Tables",
+        "field": "Happiness",
+        "kind": "formula",
+        "rule": "Trường “happiness” của mỗi table được tính bằng raw happiness trừ 25 nếu cờ “over capacity” được bật, trong mọi trường hợp còn lại là 0 cộng side skew.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "RawHappiness",
+            "label": "raw happiness"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "SideSkew",
+            "label": "side skew"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw happiness trừ (nếu over capacity thì 25, nếu không thì 0 cộng side skew)"
+      },
+      "Tables.Grade": {
+        "table": "Tables",
+        "field": "Grade",
+        "kind": "formula",
+        "rule": "Trường “grade” của mỗi table được xác định theo thứ tự ưu tiên sau:\n1. “Conflict”, nếu violation count lớn hơn 0;\n2. “Over Capacity”, nếu cờ “over capacity” được bật;\n3. “Great”, nếu happiness không nhỏ hơn 15;\n4. “OK”, nếu happiness không nhỏ hơn 5;\n5. trong mọi trường hợp còn lại, “Cold”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "ViolationCount",
+            "label": "violation count"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "Happiness",
+            "label": "happiness"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “grade” của mỗi table được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“Conflict”",
+              "when": {
+                "kind": "leaf",
+                "text": "violation count lớn hơn 0"
+              }
+            },
+            {
+              "value": "“Over Capacity”",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “over capacity” được bật"
+              }
+            },
+            {
+              "value": "“Great”",
+              "when": {
+                "kind": "leaf",
+                "text": "happiness không nhỏ hơn 15"
+              }
+            },
+            {
+              "value": "“OK”",
+              "when": {
+                "kind": "leaf",
+                "text": "happiness không nhỏ hơn 5"
+              }
+            },
+            {
+              "value": "“Cold”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu violation count lớn hơn 0 thì \"Conflict\", nếu không thì nếu over capacity thì \"Over Capacity\", nếu không thì nếu happiness không nhỏ hơn 15 thì \"Great\", nếu không thì nếu happiness không nhỏ hơn 5 thì \"OK\", nếu không thì \"Cold\""
+      },
+      "Tables.BrideSideCount": {
+        "table": "Tables",
+        "field": "BrideSideCount",
+        "kind": "rollup",
+        "rule": "Trường “bride side count” của mỗi table là giá trị tổng cộng của trường “bride flag” trên các guests liên quan đến table đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "BrideFlag",
+            "label": "bride flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng bride flag trên tất cả guests có assigned table là table ID"
+      },
+      "Tables.GroomSideCount": {
+        "table": "Tables",
+        "field": "GroomSideCount",
+        "kind": "rollup",
+        "rule": "Trường “groom side count” của mỗi table là giá trị tổng cộng của trường “groom flag” trên các guests liên quan đến table đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "GroomFlag",
+            "label": "groom flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng groom flag trên tất cả guests có assigned table là table ID"
+      },
+      "Tables.SideSkew": {
+        "table": "Tables",
+        "field": "SideSkew",
+        "kind": "formula",
+        "rule": "Trường “side skew” của mỗi table được xác định theo thứ tự ưu tiên sau:\n1. bride side count trừ groom side count, nếu bride side count lớn hơn groom side count;\n2. trong mọi trường hợp còn lại, groom side count trừ bride side count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "BrideSideCount",
+            "label": "bride side count"
+          },
+          {
+            "table": "Tables",
+            "field": "GroomSideCount",
+            "label": "groom side count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “side skew” của mỗi table được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "bride side count trừ groom side count",
+              "when": {
+                "kind": "leaf",
+                "text": "bride side count lớn hơn groom side count"
+              }
+            },
+            {
+              "value": "groom side count trừ bride side count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu bride side count lớn hơn groom side count thì (bride side count trừ groom side count), nếu không thì (groom side count trừ bride side count)"
+      },
+      "Guests.TableLabel": {
+        "table": "Guests",
+        "field": "TableLabel",
+        "kind": "lookup",
+        "rule": "Trường “table label” của mỗi guest được lấy từ bản ghi liên kết qua trường “assigned table”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Label của bản ghi liên kết qua assigned table"
+      },
+      "Guests.TableSeats": {
+        "table": "Guests",
+        "field": "TableSeats",
+        "kind": "lookup",
+        "rule": "Trường “table seats” của mỗi guest được lấy từ bản ghi liên kết qua trường “assigned table”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Seats của bản ghi liên kết qua assigned table"
+      },
+      "Guests.TableHeadCount": {
+        "table": "Guests",
+        "field": "TableHeadCount",
+        "kind": "lookup",
+        "rule": "Trường “table head count” của mỗi guest được lấy từ bản ghi liên kết qua trường “assigned table”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Head count của bản ghi liên kết qua assigned table"
+      },
+      "Guests.RelationshipsAsA": {
+        "table": "Guests",
+        "field": "RelationshipsAsA",
+        "kind": "rollup",
+        "rule": "Trường “relationships as a” của mỗi guest là số lượng relationships liên quan đến guest đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng relationships có guest a là guest ID"
+      },
+      "Guests.RelationshipsAsB": {
+        "table": "Guests",
+        "field": "RelationshipsAsB",
+        "kind": "rollup",
+        "rule": "Trường “relationships as b” của mỗi guest là số lượng relationships liên quan đến guest đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng relationships có guest b là guest ID"
+      },
+      "Guests.SatisfactionA": {
+        "table": "Guests",
+        "field": "SatisfactionA",
+        "kind": "rollup",
+        "rule": "Trường “satisfaction a” của mỗi guest là giá trị tổng cộng của trường “effective score” trên các relationships liên quan đến guest đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng effective score trên tất cả relationships có guest a là guest ID"
+      },
+      "Guests.SatisfactionB": {
+        "table": "Guests",
+        "field": "SatisfactionB",
+        "kind": "rollup",
+        "rule": "Trường “satisfaction b” của mỗi guest là giá trị tổng cộng của trường “effective score” trên các relationships liên quan đến guest đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng effective score trên tất cả relationships có guest b là guest ID"
+      },
+      "Guests.Satisfaction": {
+        "table": "Guests",
+        "field": "Satisfaction",
+        "kind": "formula",
+        "rule": "Trường “satisfaction” của mỗi guest được tính bằng satisfaction a cộng satisfaction b.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "SatisfactionA",
+            "label": "satisfaction a"
+          },
+          {
+            "table": "Guests",
+            "field": "SatisfactionB",
+            "label": "satisfaction b"
+          }
+        ],
+        "structure": null,
+        "plain": "Satisfaction a cộng satisfaction b"
+      },
+      "Guests.Mood": {
+        "table": "Guests",
+        "field": "Mood",
+        "kind": "formula",
+        "rule": "Trường “mood” của mỗi guest được xác định theo thứ tự ưu tiên sau:\n1. “Happy”, nếu satisfaction không nhỏ hơn 10;\n2. “Neutral”, nếu satisfaction không nhỏ hơn 0;\n3. trong mọi trường hợp còn lại, “Unhappy”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Satisfaction",
+            "label": "satisfaction"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “mood” của mỗi guest được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“Happy”",
+              "when": {
+                "kind": "leaf",
+                "text": "satisfaction không nhỏ hơn 10"
+              }
+            },
+            {
+              "value": "“Neutral”",
+              "when": {
+                "kind": "leaf",
+                "text": "satisfaction không nhỏ hơn 0"
+              }
+            },
+            {
+              "value": "“Unhappy”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu satisfaction không nhỏ hơn 10 thì \"Happy\", nếu không thì nếu satisfaction không nhỏ hơn 0 thì \"Neutral\", nếu không thì \"Unhappy\""
+      },
+      "Guests.BrideFlag": {
+        "table": "Guests",
+        "field": "BrideFlag",
+        "kind": "formula",
+        "rule": "Trường “bride flag” của mỗi guest được xác định theo thứ tự ưu tiên sau:\n1. 1, nếu side là “bride”;\n2. trong mọi trường hợp còn lại, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “bride flag” của mỗi guest được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "side là “bride”"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu side là \"bride\" thì 1, nếu không thì 0"
+      },
+      "Guests.GroomFlag": {
+        "table": "Guests",
+        "field": "GroomFlag",
+        "kind": "formula",
+        "rule": "Trường “groom flag” của mỗi guest được xác định theo thứ tự ưu tiên sau:\n1. 1, nếu side là “groom”;\n2. trong mọi trường hợp còn lại, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “groom flag” của mỗi guest được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "side là “groom”"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu side là \"groom\" thì 1, nếu không thì 0"
+      },
+      "Relationships.GuestAName": {
+        "table": "Relationships",
+        "field": "GuestAName",
+        "kind": "lookup",
+        "rule": "Trường “guest a name” của mỗi relationship là trường “full name” của bản ghi liên kết qua trường “guest a”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name của bản ghi liên kết qua guest a"
+      },
+      "Relationships.GuestBName": {
+        "table": "Relationships",
+        "field": "GuestBName",
+        "kind": "lookup",
+        "rule": "Trường “guest b name” của mỗi relationship là trường “full name” của bản ghi liên kết qua trường “guest b”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Full name của bản ghi liên kết qua guest b"
+      },
+      "Relationships.GuestATable": {
+        "table": "Relationships",
+        "field": "GuestATable",
+        "kind": "lookup",
+        "rule": "Trường “guest a table” của mỗi relationship là trường “assigned table” của bản ghi liên kết qua trường “guest a”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assigned table của bản ghi liên kết qua guest a"
+      },
+      "Relationships.GuestBTable": {
+        "table": "Relationships",
+        "field": "GuestBTable",
+        "kind": "lookup",
+        "rule": "Trường “guest b table” của mỗi relationship là trường “assigned table” của bản ghi liên kết qua trường “guest b”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assigned table của bản ghi liên kết qua guest b"
+      },
+      "Relationships.SameTable": {
+        "table": "Relationships",
+        "field": "SameTable",
+        "kind": "formula",
+        "rule": "Mỗi relationship được đánh dấu là “same table” nếu tất cả các điều kiện sau đều đúng: guest a table có giá trị và guest a table là guest b table.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestBTable",
+            "label": "guest b table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi relationship được đánh dấu là “same table” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "guest a table có giá trị"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "guest a table là guest b table"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Guest a table khác \"\" và guest a table bằng guest b table"
+      },
+      "Relationships.SeatedTable": {
+        "table": "Relationships",
+        "field": "SeatedTable",
+        "kind": "formula",
+        "rule": "Trường “seated table” của mỗi relationship được xác định theo thứ tự ưu tiên sau:\n1. guest a table, nếu cờ “same table” được bật;\n2. trong mọi trường hợp còn lại, chuỗi rỗng.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “seated table” của mỗi relationship được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “same table” được bật"
+              }
+            },
+            {
+              "value": "chuỗi rỗng",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu same table thì guest a table, nếu không thì \"\""
+      },
+      "Relationships.EffectiveScore": {
+        "table": "Relationships",
+        "field": "EffectiveScore",
+        "kind": "formula",
+        "rule": "Trường “effective score” của mỗi relationship được xác định theo thứ tự ưu tiên sau:\n1. số đối của 50 nếu kind là “must-not”, trong mọi trường hợp còn lại là weight, nếu cờ “same table” được bật;\n2. trong mọi trường hợp còn lại, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “effective score” của mỗi relationship được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "số đối của 50 nếu kind là “must-not”, trong mọi trường hợp còn lại là weight",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “same table” được bật"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu same table thì nếu kind là \"must-not\" thì âm 50, nếu không thì weight, nếu không thì 0"
+      },
+      "Relationships.IsMustNotViolation": {
+        "table": "Relationships",
+        "field": "IsMustNotViolation",
+        "kind": "formula",
+        "rule": "Mỗi relationship được coi là “must not violation” nếu tất cả các điều kiện sau đều đúng: kind là “must-not” và cờ “same table” được bật.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi relationship được coi là “must not violation” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "kind là “must-not”"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "cờ “same table” được bật"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Kind là \"must-not\" và same table"
+      },
+      "Relationships.IsSatisfied": {
+        "table": "Relationships",
+        "field": "IsSatisfied",
+        "kind": "formula",
+        "rule": "Mỗi relationship được coi là “satisfied” nếu ít nhất một trong các điều kiện sau đúng: tất cả các điều kiện sau đều đúng: weight lớn hơn 0 và cờ “same table” được bật hoặc tất cả các điều kiện sau đều đúng: weight nhỏ hơn 0 và cờ “same table” không được bật.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi relationship được coi là “satisfied” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "weight lớn hơn 0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "cờ “same table” được bật"
+                    }
+                  ]
+                },
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "weight nhỏ hơn 0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "cờ “same table” không được bật"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Weight lớn hơn 0 và same table hoặc weight nhỏ hơn 0 và không phải same table"
+      },
+      "Relationships.ViolationTable": {
+        "table": "Relationships",
+        "field": "ViolationTable",
+        "kind": "formula",
+        "rule": "Trường “violation table” của mỗi relationship được xác định theo thứ tự ưu tiên sau:\n1. guest a table, nếu cờ “must not violation” được bật;\n2. trong mọi trường hợp còn lại, chuỗi rỗng.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “violation table” của mỗi relationship được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “must not violation” được bật"
+              }
+            },
+            {
+              "value": "chuỗi rỗng",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu is must not violation thì guest a table, nếu không thì \"\""
+      },
+      "Relationships.ViolationFlag": {
+        "table": "Relationships",
+        "field": "ViolationFlag",
+        "kind": "formula",
+        "rule": "Trường “violation flag” của mỗi relationship được xác định theo thứ tự ưu tiên sau:\n1. 1, nếu cờ “must not violation” được bật;\n2. trong mọi trường hợp còn lại, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “violation flag” của mỗi relationship được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "cờ “must not violation” được bật"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu is must not violation thì 1, nếu không thì 0"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Users": "user",
+      "Tables": "table",
+      "Guests": "guest",
+      "Relationships": "relationship"
+    }
+  },
+  "zh": {
+    "fields": {
+      "Tables.HeadCount": {
+        "table": "Tables",
+        "field": "HeadCount",
+        "kind": "rollup",
+        "rule": "table的“head count”为 与table相关的“guests”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assigned table为table ID的“guests”的数量"
+      },
+      "Tables.OpenSeats": {
+        "table": "Tables",
+        "field": "OpenSeats",
+        "kind": "formula",
+        "rule": "table的“open seats”按 seats减head count 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          }
+        ],
+        "structure": null,
+        "plain": "Seats减head count"
+      },
+      "Tables.OverCapacity": {
+        "table": "Tables",
+        "field": "OverCapacity",
+        "kind": "formula",
+        "rule": "当head count大于seats时,table被标记为“Over Capacity”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          }
+        ],
+        "structure": null,
+        "plain": "Head count大于seats"
+      },
+      "Tables.RawHappiness": {
+        "table": "Tables",
+        "field": "RawHappiness",
+        "kind": "rollup",
+        "rule": "table的“raw happiness”为 与table相关的所有“relationships”的“effective score”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有seated table为table ID的“relationships”的effective score的总和"
+      },
+      "Tables.ViolationCount": {
+        "table": "Tables",
+        "field": "ViolationCount",
+        "kind": "rollup",
+        "rule": "table的“violation count”为 与table相关的所有“relationships”的“violation flag”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "ViolationFlag",
+            "label": "violation flag"
+          },
+          {
+            "table": "Relationships",
+            "field": "SeatedTable",
+            "label": "seated table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有seated table为table ID的“relationships”的violation flag的总和"
+      },
+      "Tables.Happiness": {
+        "table": "Tables",
+        "field": "Happiness",
+        "kind": "formula",
+        "rule": "table的“happiness”按 raw happiness减当标志“over capacity”已设置时为 25,其余情况为 0加side skew 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "RawHappiness",
+            "label": "raw happiness"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "SideSkew",
+            "label": "side skew"
+          }
+        ],
+        "structure": null,
+        "plain": "Raw happiness减(若over capacity,则25,否则0加side skew)"
+      },
+      "Tables.Grade": {
+        "table": "Tables",
+        "field": "Grade",
+        "kind": "formula",
+        "rule": "Table的“grade”按以下优先级确定:\n1. 当violation count大于0时,取 “Conflict”;\n2. 当标志“over capacity”已设置时,取 “Over Capacity”;\n3. 当happiness不小于15时,取 “Great”;\n4. 当happiness不小于5时,取 “OK”;\n5. 其余情况取 “Cold”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "ViolationCount",
+            "label": "violation count"
+          },
+          {
+            "table": "Tables",
+            "field": "OverCapacity",
+            "label": "over capacity"
+          },
+          {
+            "table": "Tables",
+            "field": "Happiness",
+            "label": "happiness"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Table的“grade”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“Conflict”",
+              "when": {
+                "kind": "leaf",
+                "text": "violation count大于0"
+              }
+            },
+            {
+              "value": "“Over Capacity”",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“over capacity”已设置"
+              }
+            },
+            {
+              "value": "“Great”",
+              "when": {
+                "kind": "leaf",
+                "text": "happiness不小于15"
+              }
+            },
+            {
+              "value": "“OK”",
+              "when": {
+                "kind": "leaf",
+                "text": "happiness不小于5"
+              }
+            },
+            {
+              "value": "“Cold”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若violation count大于0,则\"Conflict\",否则若over capacity,则\"Over Capacity\",否则若happiness不小于15,则\"Great\",否则若happiness不小于5,则\"OK\",否则\"Cold\""
+      },
+      "Tables.BrideSideCount": {
+        "table": "Tables",
+        "field": "BrideSideCount",
+        "kind": "rollup",
+        "rule": "table的“bride side count”为 与table相关的所有“guests”的“bride flag”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "BrideFlag",
+            "label": "bride flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有assigned table为table ID的“guests”的bride flag的总和"
+      },
+      "Tables.GroomSideCount": {
+        "table": "Tables",
+        "field": "GroomSideCount",
+        "kind": "rollup",
+        "rule": "table的“groom side count”为 与table相关的所有“guests”的“groom flag”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "GroomFlag",
+            "label": "groom flag"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有assigned table为table ID的“guests”的groom flag的总和"
+      },
+      "Tables.SideSkew": {
+        "table": "Tables",
+        "field": "SideSkew",
+        "kind": "formula",
+        "rule": "Table的“side skew”按以下优先级确定:\n1. 当bride side count大于groom side count时,取 bride side count减groom side count;\n2. 其余情况取 groom side count减bride side count。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "BrideSideCount",
+            "label": "bride side count"
+          },
+          {
+            "table": "Tables",
+            "field": "GroomSideCount",
+            "label": "groom side count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Table的“side skew”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "bride side count减groom side count",
+              "when": {
+                "kind": "leaf",
+                "text": "bride side count大于groom side count"
+              }
+            },
+            {
+              "value": "groom side count减bride side count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若bride side count大于groom side count,则(bride side count减groom side count),否则(groom side count减bride side count)"
+      },
+      "Guests.TableLabel": {
+        "table": "Guests",
+        "field": "TableLabel",
+        "kind": "lookup",
+        "rule": "guest的“table label”——取自所关联的“assigned table”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Label",
+            "label": "label"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“assigned table”的label"
+      },
+      "Guests.TableSeats": {
+        "table": "Guests",
+        "field": "TableSeats",
+        "kind": "lookup",
+        "rule": "guest的“table seats”——取自所关联的“assigned table”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "Seats",
+            "label": "seats"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“assigned table”的seats"
+      },
+      "Guests.TableHeadCount": {
+        "table": "Guests",
+        "field": "TableHeadCount",
+        "kind": "lookup",
+        "rule": "guest的“table head count”——取自所关联的“assigned table”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tables",
+            "field": "HeadCount",
+            "label": "head count"
+          },
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Tables",
+            "field": "TableId",
+            "label": "table ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“assigned table”的head count"
+      },
+      "Guests.RelationshipsAsA": {
+        "table": "Guests",
+        "field": "RelationshipsAsA",
+        "kind": "rollup",
+        "rule": "guest的“relationships as a”为 与guest相关的“relationships”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Guest a为guest ID的“relationships”的数量"
+      },
+      "Guests.RelationshipsAsB": {
+        "table": "Guests",
+        "field": "RelationshipsAsB",
+        "kind": "rollup",
+        "rule": "guest的“relationships as b”为 与guest相关的“relationships”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Guest b为guest ID的“relationships”的数量"
+      },
+      "Guests.SatisfactionA": {
+        "table": "Guests",
+        "field": "SatisfactionA",
+        "kind": "rollup",
+        "rule": "guest的“satisfaction a”为 与guest相关的所有“relationships”的“effective score”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有guest a为guest ID的“relationships”的effective score的总和"
+      },
+      "Guests.SatisfactionB": {
+        "table": "Guests",
+        "field": "SatisfactionB",
+        "kind": "rollup",
+        "rule": "guest的“satisfaction b”为 与guest相关的所有“relationships”的“effective score”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "EffectiveScore",
+            "label": "effective score"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有guest b为guest ID的“relationships”的effective score的总和"
+      },
+      "Guests.Satisfaction": {
+        "table": "Guests",
+        "field": "Satisfaction",
+        "kind": "formula",
+        "rule": "guest的“satisfaction”按 satisfaction a加satisfaction b 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "SatisfactionA",
+            "label": "satisfaction a"
+          },
+          {
+            "table": "Guests",
+            "field": "SatisfactionB",
+            "label": "satisfaction b"
+          }
+        ],
+        "structure": null,
+        "plain": "Satisfaction a加satisfaction b"
+      },
+      "Guests.Mood": {
+        "table": "Guests",
+        "field": "Mood",
+        "kind": "formula",
+        "rule": "Guest的“mood”按以下优先级确定:\n1. 当satisfaction不小于10时,取 “Happy”;\n2. 当satisfaction不小于0时,取 “Neutral”;\n3. 其余情况取 “Unhappy”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Satisfaction",
+            "label": "satisfaction"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Guest的“mood”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“Happy”",
+              "when": {
+                "kind": "leaf",
+                "text": "satisfaction不小于10"
+              }
+            },
+            {
+              "value": "“Neutral”",
+              "when": {
+                "kind": "leaf",
+                "text": "satisfaction不小于0"
+              }
+            },
+            {
+              "value": "“Unhappy”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若satisfaction不小于10,则\"Happy\",否则若satisfaction不小于0,则\"Neutral\",否则\"Unhappy\""
+      },
+      "Guests.BrideFlag": {
+        "table": "Guests",
+        "field": "BrideFlag",
+        "kind": "formula",
+        "rule": "Guest的“bride flag”按以下优先级确定:\n1. 当side为“bride”时,取 1;\n2. 其余情况取 0。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Guest的“bride flag”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "side为“bride”"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若side为\"bride\",则1,否则0"
+      },
+      "Guests.GroomFlag": {
+        "table": "Guests",
+        "field": "GroomFlag",
+        "kind": "formula",
+        "rule": "Guest的“groom flag”按以下优先级确定:\n1. 当side为“groom”时,取 1;\n2. 其余情况取 0。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "Side",
+            "label": "side"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Guest的“groom flag”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "side为“groom”"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若side为\"groom\",则1,否则0"
+      },
+      "Relationships.GuestAName": {
+        "table": "Relationships",
+        "field": "GuestAName",
+        "kind": "lookup",
+        "rule": "relationship的“guest a name”是所关联的“guest a”的“full name”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“guest a”的full name"
+      },
+      "Relationships.GuestBName": {
+        "table": "Relationships",
+        "field": "GuestBName",
+        "kind": "lookup",
+        "rule": "relationship的“guest b name”是所关联的“guest b”的“full name”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "FullName",
+            "label": "full name"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“guest b”的full name"
+      },
+      "Relationships.GuestATable": {
+        "table": "Relationships",
+        "field": "GuestATable",
+        "kind": "lookup",
+        "rule": "relationship的“guest a table”是所关联的“guest a”的“assigned table”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestA",
+            "label": "guest a"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“guest a”的assigned table"
+      },
+      "Relationships.GuestBTable": {
+        "table": "Relationships",
+        "field": "GuestBTable",
+        "kind": "lookup",
+        "rule": "relationship的“guest b table”是所关联的“guest b”的“assigned table”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Guests",
+            "field": "AssignedTable",
+            "label": "assigned table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestB",
+            "label": "guest b"
+          },
+          {
+            "table": "Guests",
+            "field": "GuestId",
+            "label": "guest ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“guest b”的assigned table"
+      },
+      "Relationships.SameTable": {
+        "table": "Relationships",
+        "field": "SameTable",
+        "kind": "formula",
+        "rule": "当以下全部成立:guest a table有值且guest a table为guest b table时,relationship被标记为“Same Table”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestBTable",
+            "label": "guest b table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,relationship被标记为“Same Table”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "guest a table有值"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "guest a table为guest b table"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Guest a table不为\"\"且guest a table等于guest b table"
+      },
+      "Relationships.SeatedTable": {
+        "table": "Relationships",
+        "field": "SeatedTable",
+        "kind": "formula",
+        "rule": "Relationship的“seated table”按以下优先级确定:\n1. 当标志“same table”已设置时,取 guest a table;\n2. 其余情况取 空字符串。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Relationship的“seated table”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“same table”已设置"
+              }
+            },
+            {
+              "value": "空字符串",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若same table,则guest a table,否则\"\""
+      },
+      "Relationships.EffectiveScore": {
+        "table": "Relationships",
+        "field": "EffectiveScore",
+        "kind": "formula",
+        "rule": "Relationship的“effective score”按以下优先级确定:\n1. 当标志“same table”已设置时,取 当kind为“must-not”时为 50的相反数,其余情况为 weight;\n2. 其余情况取 0。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          },
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Relationship的“effective score”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "当kind为“must-not”时为 50的相反数,其余情况为 weight",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“same table”已设置"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若same table,则若kind为\"must-not\",则负50,否则weight,否则0"
+      },
+      "Relationships.IsMustNotViolation": {
+        "table": "Relationships",
+        "field": "IsMustNotViolation",
+        "kind": "formula",
+        "rule": "当以下全部成立:kind为“must-not”且标志“same table”已设置时,relationship被视为“Must Not Violation”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Kind",
+            "label": "kind"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,relationship被视为“Must Not Violation”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "kind为“must-not”"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "标志“same table”已设置"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Kind为\"must-not\"且same table"
+      },
+      "Relationships.IsSatisfied": {
+        "table": "Relationships",
+        "field": "IsSatisfied",
+        "kind": "formula",
+        "rule": "当以下至少一项成立:以下全部成立:weight大于0且标志“same table”已设置或以下全部成立:weight小于0且标志“same table”未设置时,relationship被视为“Satisfied”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "Weight",
+            "label": "weight"
+          },
+          {
+            "table": "Relationships",
+            "field": "SameTable",
+            "label": "same table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,relationship被视为“Satisfied”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "weight大于0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "标志“same table”已设置"
+                    }
+                  ]
+                },
+                {
+                  "kind": "all",
+                  "children": [
+                    {
+                      "kind": "leaf",
+                      "text": "weight小于0"
+                    },
+                    {
+                      "kind": "leaf",
+                      "text": "标志“same table”未设置"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Weight大于0且same table或weight小于0且并非same table"
+      },
+      "Relationships.ViolationTable": {
+        "table": "Relationships",
+        "field": "ViolationTable",
+        "kind": "formula",
+        "rule": "Relationship的“violation table”按以下优先级确定:\n1. 当标志“must not violation”已设置时,取 guest a table;\n2. 其余情况取 空字符串。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          },
+          {
+            "table": "Relationships",
+            "field": "GuestATable",
+            "label": "guest a table"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Relationship的“violation table”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "guest a table",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“must not violation”已设置"
+              }
+            },
+            {
+              "value": "空字符串",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若is must not violation,则guest a table,否则\"\""
+      },
+      "Relationships.ViolationFlag": {
+        "table": "Relationships",
+        "field": "ViolationFlag",
+        "kind": "formula",
+        "rule": "Relationship的“violation flag”按以下优先级确定:\n1. 当标志“must not violation”已设置时,取 1;\n2. 其余情况取 0。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Relationships",
+            "field": "IsMustNotViolation",
+            "label": "is must not violation"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Relationship的“violation flag”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "标志“must not violation”已设置"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若is must not violation,则1,否则0"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "Users": "user",

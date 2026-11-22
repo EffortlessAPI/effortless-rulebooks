@@ -39,6 +39,13 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STEP_NAME = "rulebooktoexplainerdag"
 NEW_TOOL = "rulebook-to-explainer-dag"
 OLD_TOOL = "rulebook-to-react-explainer-dag"
+# Every language is baked into the explainer so its gear can switch between them (+50% of the file at most).
+# Not for a rulebook so big that baking sixteen renderings of it on every build is not worth it.
+ALL_LANGUAGES = "languages=all"
+# Measured 2026-11-22 (English -> all sixteen): PKO 21 MB -> too big to bake on every build; simpsons-paradox 3.8 -> 10.4 MB and
+# causal-autoimmune-architecture -> 5.7 MB, both served to a browser on load; traffic-ticket-contest 1.9 -> 4.9 MB. generate() refuses a bigger-than-3 MB graph.
+ENGLISH_ONLY = {"procedural-knowledge-ontology", "simpsons-paradox", "causal-autoimmune-architecture", "traffic-ticket-contest"}
+MAX_GRAPH_MB = 3
 
 
 def is_old(step):
@@ -74,8 +81,26 @@ def migrate(project_dir, write):
     steps = doc.get("ProjectTranspilers")
     if not steps:
         return ("skip", "no ProjectTranspilers")
+    slug = os.path.basename(project_dir)
+    wants_languages = slug not in ENGLISH_ONLY
+
+    def with_languages(cmd):
+        if not wants_languages or ALL_LANGUAGES in cmd:
+            return cmd
+        return f"{cmd} -p {ALL_LANGUAGES}"
+
     if any(is_new(s) and not s.get("IsDisabled") for s in steps) and not any(is_old(s) for s in steps):
-        return ("ok", "already on rulebook-to-explainer-dag")
+        step = next(s for s in steps if is_new(s) and not s.get("IsDisabled"))
+        if with_languages(step["CommandLine"]) == step["CommandLine"]:
+            return ("ok", "already on rulebook-to-explainer-dag")
+        step["CommandLine"] = with_languages(step["CommandLine"])
+        step.pop("LastVersionUsed", None); step.pop("LastUrl", None)
+        step["Name"] = step.get("Name") or STEP_NAME
+        changed = ("languages", step["RelativePath"])
+        if write:
+            out = json.dumps(doc, indent=2, ensure_ascii=False) + ("\n" if raw.endswith("\n") else "")
+            open(path, "w", encoding="utf-8").write(out)
+        return changed
 
     changed = None
     for s in steps:
@@ -84,7 +109,7 @@ def migrate(project_dir, write):
             if "react=true" not in rest:
                 rest = (rest + " -p react=true").strip()
             s["Name"] = STEP_NAME
-            s["CommandLine"] = f"{NEW_TOOL} {rest}"
+            s["CommandLine"] = with_languages(f"{NEW_TOOL} {rest}")
             s.pop("LastVersionUsed", None)
             s.pop("LastUrl", None)
             s.pop("_HeadPointerNote", None)
@@ -98,7 +123,7 @@ def migrate(project_dir, write):
             "IsSSoTTranspiler": False,
             "Name": STEP_NAME,
             "RelativePath": "/explainer",
-            "CommandLine": f"{NEW_TOOL} -i ../effortless-rulebook/{hub}",
+            "CommandLine": with_languages(f"{NEW_TOOL} -i ../effortless-rulebook/{hub}"),
             "IsDisabled": False,
         }
         # After the rulebook's docs step when there is one, else last.
@@ -117,6 +142,10 @@ STALE = ["lib", "components", "pages", "embedded-rulebook.ts", "embedded-rulespe
 
 def generate(project_dir, step_dir, kind):
     """Run the step as a build would, in its own folder. Raises if the CLI fails."""
+    doc = json.load(open(os.path.join(project_dir, "effortless.json"), encoding="utf-8"))
+    step = next(s for s in doc["ProjectTranspilers"] if s.get("Name") == STEP_NAME or is_new(s))
+    if kind == "ok":   # nothing changed: the step is where it already was
+        step_dir = step["RelativePath"]
     target = os.path.join(project_dir, step_dir.lstrip("/"))
     if kind == "react":
         for name in STALE:
@@ -126,12 +155,21 @@ def generate(project_dir, step_dir, kind):
             elif os.path.exists(p):
                 os.remove(p)
     os.makedirs(target, exist_ok=True)
-    doc = json.load(open(os.path.join(project_dir, "effortless.json"), encoding="utf-8"))
-    step = next(s for s in doc["ProjectTranspilers"] if s.get("Name") == STEP_NAME)
-    cmd = ["effortless"] + step["CommandLine"].split(" ")
+    parts = step["CommandLine"].split(" ")
+    if "-i" in parts:   # the input is relative to the step's own folder: say so loudly when it is not there
+        given = parts[parts.index("-i") + 1]
+        for one in given.split(","):
+            if not os.path.exists(os.path.normpath(os.path.join(target, one))):
+                raise RuntimeError(f"{project_dir}: the step's input {one} is not there from {target} (the path is relative to the step's folder)")
+    cmd = ["effortless"] + parts
     r = subprocess.run(cmd, cwd=target, capture_output=True, text=True)
     if r.returncode != 0:
         raise RuntimeError(f"{' '.join(cmd)} failed in {target} ({r.returncode}):\n{r.stdout[-800:]}\n{r.stderr[-800:]}")
+    for graph in ("rulebook-explainer-dag/embedded-graph.js", "explainer-dag/vendor/embedded-graph.js"):
+        g = os.path.join(target, graph)
+        if os.path.exists(g) and ALL_LANGUAGES in step["CommandLine"] and os.path.getsize(g) > MAX_GRAPH_MB * 1024 * 1024:
+            raise RuntimeError(f"{project_dir}: {graph} is {os.path.getsize(g) / 1048576:.1f} MB with every language baked (limit {MAX_GRAPH_MB} MB); "
+                               f"add the project to ENGLISH_ONLY in this script and rerun")
     # A generated folder with a file too big for git (GitHub refuses 100 MB; 5 MB is where a
     # diff stops being readable) is not committed: the build writes it, as for any generated output.
     big = max((os.path.getsize(os.path.join(r_, f)) for r_, _, fs in os.walk(target) for f in fs), default=0)
@@ -142,7 +180,8 @@ def generate(project_dir, step_dir, kind):
         if line not in have.split("\n"):
             open(ignore, "a", encoding="utf-8").write(("" if have.endswith("\n") or not have else "\n") + line + "\n")
         print(f"    largest file {big / 1048576:.0f} MB: {line} is generated, not committed (added to .gitignore)", flush=True)
-    marker = "explainer-dag/shim.tsx" if kind == "react" else "rulebook-explainer-dag/pages/index.html"
+    react = "react=true" in step["CommandLine"]
+    marker = "explainer-dag/shim.tsx" if react else "rulebook-explainer-dag/pages/index.html"
     if not os.path.exists(os.path.join(target, marker)):
         raise RuntimeError(f"the step ran but {marker} is not in {target}:\n{r.stdout[-800:]}")
 
@@ -151,6 +190,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--write", action="store_true")
     ap.add_argument("--generate", action="store_true", help="also run each changed step once (needs --write)")
+    ap.add_argument("--force", action="store_true", help="with --generate: run the step of a project that needs no change too")
     ap.add_argument("--only", help="comma-separated project slugs")
     a = ap.parse_args()
     only = set(a.only.split(",")) if a.only else None
@@ -163,7 +203,7 @@ def main():
         if r is None:
             continue
         print(f"{slug:48s} {r[0]:7s} {r[1]}", flush=True)
-        if a.generate and r[0] in ("react", "static"):
+        if a.generate and (r[0] in ("react", "static", "languages") or (a.force and r[0] == "ok")):
             if not a.write:
                 sys.exit("--generate needs --write")
             generate(d, r[1], r[0])

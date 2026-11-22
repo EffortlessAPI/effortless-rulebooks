@@ -35,7 +35,7 @@
       back: "← back", backTitle: "Go back one step",
       home: "🏠 Home", homeTitle: "Leave the explainer — back to the app",
       tablesCrumb: "Tables",
-      narrRulespeak: "RuleSpeak®", narrEnglish: "English", narrFormula: "Formula",
+      narrRulespeak: "Docs", narrEnglish: "Simple", narrFormula: "Formula",
       narrRulespeakHint: "The declarative business rule (only if / must / priority)",
       narrEnglishHint: "The formula read as a plain English sentence",
       narrFormulaHint: "The raw spreadsheet-style formula, with clickable fields",
@@ -45,8 +45,8 @@
       gearPopTitle: "Show in popup & on page",
       gearReset: "Reset to all on",
       elemDesc: "Description", elemDescHint: "The field's plain-language description.",
-      elemRulespeak: "RuleSpeak®", elemRulespeakHint: "The declarative business rule.",
-      elemEnglish: "English", elemEnglishHint: "The formula read as a plain sentence.",
+      elemRulespeak: "Docs", elemRulespeakHint: "The declarative business rule.",
+      elemEnglish: "Simple", elemEnglishHint: "The formula read as a plain sentence.",
       elemFormula: "Formula", elemFormulaHint: "The raw spreadsheet-style formula.",
       elemInputs: "Inputs", elemInputsHint: "The fields this one-line function calls.",
       elemConsumers: "Consumers", elemConsumersHint: "Fields whose function calls this one.",
@@ -54,6 +54,7 @@
       provOnTitle: "Hide ƒ provenance glyphs. Double-click on cells still opens the DAG.",
       provOffTitle: "Show ƒ provenance glyphs on cells with explorable provenance.",
       downloadXlsx: "Download workbook", downloadXlsxTitle: "Download the rulebook as an Excel workbook (.xlsx)",
+      gearShowAs: "Show as", gearLanguage: "Language",
       navSearch: "Filter tables and fields…",
       navDerivedOnly: "Derived only",
       navNoMatch: "Nothing matches.",
@@ -83,16 +84,16 @@
       openTable: (t) => `Open ${t} →`,
       ruleCardTitle: "This cell is the value of one declarative rule",
       oneLineFnCardTitle: "This cell is the value of one one-line function",
-      inRuleSpeak: "In RuleSpeak®", inEnglish: "In English", asFormula: "As a formula",
+      inRuleSpeak: "In Docs", inEnglish: "In simple terms", asFormula: "As a formula",
       mechanicalFlag: "⚠︎ mechanical", mechanicalTitle: "Faithful but clunky wording — a flag for an optional reword pass",
       noRuleRendered: (t) => `No declarative rule was rendered for this ${t} field.`,
       obligations: "Obligations",
-      ruleSpeakHintFormula: "This is the same logic the formula encodes, written as a business rule — rendered from the rulebook by the shared RuleSpeak® engine.",
-      ruleSpeakHintNoFormula: "Rendered from the rulebook by the shared RuleSpeak® engine.",
+      ruleSpeakHintFormula: "This is the same logic the formula encodes, written as a business rule — rendered from the rulebook by the shared Docs engine.",
+      ruleSpeakHintNoFormula: "Rendered from the rulebook by the shared Docs engine.",
       englishHint: "Each underlined field is itself a one-line function. Click any to drill in.",
-      noFormulaSentence: (t) => `This ${t} has no spreadsheet formula to read as a sentence — it is a roll-up defined structurally over a relationship. Switch to <strong>RuleSpeak®</strong> to see how it’s defined.`,
+      noFormulaSentence: (t) => `This ${t} has no spreadsheet formula to read as a sentence — it is a roll-up defined structurally over a relationship. Switch to <strong>Docs</strong> to see how it’s defined.`,
       formulaHint: "Each chip is itself a one-line function. Click any chip to drill in.",
-      noFormulaAtAll: (t) => `This ${t} has no spreadsheet formula — it is a roll-up defined structurally over a relationship. Switch to <strong>RuleSpeak®</strong> to see how it’s defined.`,
+      noFormulaAtAll: (t) => `This ${t} has no spreadsheet formula — it is a roll-up defined structurally over a relationship. Switch to <strong>Docs</strong> to see how it’s defined.`,
       inputsTitle: "Inputs", inputsLead: "Fields this one-line function calls.",
       groundTruthInline: (dt) => `Ground truth · datatype ${dt}`,
       consumersTitle: "Consumers",
@@ -105,7 +106,7 @@
       hoverGroundTruth: (dt) => `Ground truth — written directly to the database${dt ? ` (datatype <code>${dt}</code>)` : ""}.`,
       hoverRelPointer: "Relationship pointer — the link the rest of the DAG hangs off.",
       hoverNoRule: "No declarative rule rendered.",
-      hoverNoFormula: "No formula — a structural roll-up. See RuleSpeak®.",
+      hoverNoFormula: "No formula — a structural roll-up. See Docs.",
       hoverInputs: "Inputs",
       hoverHint: "Double-click the cell to open the full DAG page.",
       hoverOpenPage: "Open the full page",
@@ -147,7 +148,7 @@
       back: "← 戻る", backTitle: "1つ前に戻る",
       home: "🏠 ホーム", homeTitle: "エクスプレイナーを離れてアプリに戻る",
       tablesCrumb: "テーブル",
-      narrRulespeak: "RuleSpeak®", narrEnglish: "平易な読み下し", narrFormula: "数式",
+      narrRulespeak: "ドキュメント", narrEnglish: "平易な読み下し", narrFormula: "数式",
       narrRulespeakHint: "宣言的なビジネスルール（only if / must / priority）",
       narrEnglishHint: "数式を平易な文として読んだもの",
       narrFormulaHint: "生の表計算形式の数式（クリックできるフィールド付き）",
@@ -157,7 +158,7 @@
       gearPopTitle: "ポップアップとページに表示する項目",
       gearReset: "すべてオンに戻す",
       elemDesc: "説明", elemDescHint: "フィールドの平易な説明文。",
-      elemRulespeak: "RuleSpeak®", elemRulespeakHint: "宣言的なビジネスルール。",
+      elemRulespeak: "ドキュメント", elemRulespeakHint: "宣言的なビジネスルール。",
       elemEnglish: "平易な読み下し", elemEnglishHint: "数式を平易な文として読んだもの。",
       elemFormula: "数式", elemFormulaHint: "生の表計算形式の数式。",
       elemInputs: "入力", elemInputsHint: "この一行関数が呼び出しているフィールド。",
@@ -166,6 +167,7 @@
       provOnTitle: "ƒ 由来バッジを非表示にします。セルのダブルクリックではDAGが開きます。",
       provOffTitle: "由来を確認できるセルに ƒ バッジを表示します。",
       downloadXlsx: "ワークブックをダウンロード", downloadXlsxTitle: "ルールブックをExcelワークブック（.xlsx）としてダウンロードします",
+      gearShowAs: "表示形式", gearLanguage: "言語",
       navSearch: "テーブルとフィールドを絞り込む…",
       navDerivedOnly: "導出のみ",
       navNoMatch: "一致するものがありません。",
@@ -195,16 +197,16 @@
       openTable: (t) => `${t} を開く →`,
       ruleCardTitle: "このセルは1つの宣言的ルールの値です",
       oneLineFnCardTitle: "このセルは1つの一行関数の値です",
-      inRuleSpeak: "RuleSpeak® では", inEnglish: "平易な言葉では", asFormula: "数式として",
+      inRuleSpeak: "ドキュメント では", inEnglish: "平易な言葉では", asFormula: "数式として",
       mechanicalFlag: "⚠︎ 機械的", mechanicalTitle: "意味は正確ですが表現がぎこちない箇所です — 表現の見直し候補",
       noRuleRendered: (t) => `この ${t} フィールドには宣言的ルールが生成されませんでした。`,
       obligations: "義務（Obligations）",
-      ruleSpeakHintFormula: "これは数式が表しているのと同じロジックを、ビジネスルールとして書き直したものです — 共有の RuleSpeak® エンジンがルールブックから生成しています。",
-      ruleSpeakHintNoFormula: "共有の RuleSpeak® エンジンがルールブックから生成しています。",
+      ruleSpeakHintFormula: "これは数式が表しているのと同じロジックを、ビジネスルールとして書き直したものです — 共有の ドキュメント エンジンがルールブックから生成しています。",
+      ruleSpeakHintNoFormula: "共有の ドキュメント エンジンがルールブックから生成しています。",
       englishHint: "下線付きの各フィールドもそれ自体が一行関数です。クリックすると詳細を確認できます。",
-      noFormulaSentence: (t) => `この ${t} には文として読める数式がありません — リレーションに基づいて構造的に定義されたロールアップです。定義内容を確認するには <strong>RuleSpeak®</strong> に切り替えてください。`,
+      noFormulaSentence: (t) => `この ${t} には文として読める数式がありません — リレーションに基づいて構造的に定義されたロールアップです。定義内容を確認するには <strong>ドキュメント</strong> に切り替えてください。`,
       formulaHint: "各チップもそれ自体が一行関数です。クリックすると詳細を確認できます。",
-      noFormulaAtAll: (t) => `この ${t} には数式がありません — リレーションに基づいて構造的に定義されたロールアップです。定義内容を確認するには <strong>RuleSpeak®</strong> に切り替えてください。`,
+      noFormulaAtAll: (t) => `この ${t} には数式がありません — リレーションに基づいて構造的に定義されたロールアップです。定義内容を確認するには <strong>ドキュメント</strong> に切り替えてください。`,
       inputsTitle: "入力", inputsLead: "この一行関数が呼び出しているフィールド。",
       groundTruthInline: (dt) => `根拠データ · データ型 ${dt}`,
       consumersTitle: "参照元",
@@ -217,7 +219,7 @@
       hoverGroundTruth: (dt) => `根拠データ — データベースに直接書き込まれます${dt ? `（データ型 <code>${dt}</code>）` : ""}。`,
       hoverRelPointer: "リレーションのポインタ — DAGの残りがぶら下がるリンクです。",
       hoverNoRule: "宣言的ルールは生成されませんでした。",
-      hoverNoFormula: "数式がありません — 構造的なロールアップです。RuleSpeak® を参照してください。",
+      hoverNoFormula: "数式がありません — 構造的なロールアップです。ドキュメント を参照してください。",
       hoverInputs: "入力",
       hoverHint: "セルをダブルクリックすると、DAGページ全体が開きます。",
       hoverOpenPage: "ページ全体を開く",
@@ -257,7 +259,7 @@
       back: "← zurück", backTitle: "Einen Schritt zurück",
       home: "🏠 Start", homeTitle: "Den Explainer verlassen — zurück zur App",
       tablesCrumb: "Tabellen",
-      narrRulespeak: "RuleSpeak®", narrEnglish: "Klartext", narrFormula: "Formel",
+      narrRulespeak: "Dokumentation", narrEnglish: "Klartext", narrFormula: "Formel",
       narrRulespeakHint: "Die deklarative Geschäftsregel (nur wenn / muss / Priorität)",
       narrEnglishHint: "Die Formel als einfacher Satz gelesen",
       narrFormulaHint: "Die rohe Formel im Tabellenkalkulationsstil, mit anklickbaren Feldern",
@@ -267,7 +269,7 @@
       gearPopTitle: "Im Popup und auf der Seite anzeigen",
       gearReset: "Alles wieder einschalten",
       elemDesc: "Beschreibung", elemDescHint: "Die Beschreibung des Feldes in Alltagssprache.",
-      elemRulespeak: "RuleSpeak®", elemRulespeakHint: "Die deklarative Geschäftsregel.",
+      elemRulespeak: "Dokumentation", elemRulespeakHint: "Die deklarative Geschäftsregel.",
       elemEnglish: "Klartext", elemEnglishHint: "Die Formel als einfacher Satz gelesen.",
       elemFormula: "Formel", elemFormulaHint: "Die rohe Formel im Tabellenkalkulationsstil.",
       elemInputs: "Eingaben", elemInputsHint: "Die Felder, die diese einzeilige Funktion aufruft.",
@@ -276,6 +278,7 @@
       provOnTitle: "ƒ-Herkunftssymbole ausblenden. Ein Doppelklick auf Zellen öffnet den DAG weiterhin.",
       provOffTitle: "ƒ-Herkunftssymbole an Zellen mit nachvollziehbarer Herkunft anzeigen.",
       downloadXlsx: "Arbeitsmappe laden", downloadXlsxTitle: "Das Regelbuch als Excel-Arbeitsmappe (.xlsx) herunterladen",
+      gearShowAs: "Darstellung", gearLanguage: "Sprache",
       navSearch: "Tabellen und Felder filtern…",
       navDerivedOnly: "Nur abgeleitete",
       navNoMatch: "Keine Treffer.",
@@ -305,16 +308,16 @@
       openTable: (t) => `${t} öffnen →`,
       ruleCardTitle: "Diese Zelle ist der Wert einer deklarativen Regel",
       oneLineFnCardTitle: "Diese Zelle ist der Wert einer einzeiligen Funktion",
-      inRuleSpeak: "In RuleSpeak®", inEnglish: "Im Klartext", asFormula: "Als Formel",
+      inRuleSpeak: "In Dokumentation", inEnglish: "Im Klartext", asFormula: "Als Formel",
       mechanicalFlag: "⚠︎ mechanisch", mechanicalTitle: "Inhaltlich korrekt, aber holprig formuliert — ein Hinweis für eine optionale Überarbeitung",
       noRuleRendered: (t) => `Für dieses ${t}-Feld wurde keine deklarative Regel erzeugt.`,
       obligations: "Verpflichtungen",
-      ruleSpeakHintFormula: "Dies ist dieselbe Logik, die die Formel ausdrückt, als Geschäftsregel formuliert — von der gemeinsamen RuleSpeak®-Engine aus dem Regelbuch erzeugt.",
-      ruleSpeakHintNoFormula: "Von der gemeinsamen RuleSpeak®-Engine aus dem Regelbuch erzeugt.",
+      ruleSpeakHintFormula: "Dies ist dieselbe Logik, die die Formel ausdrückt, als Geschäftsregel formuliert — von der gemeinsamen Dokumentation-Engine aus dem Regelbuch erzeugt.",
+      ruleSpeakHintNoFormula: "Von der gemeinsamen Dokumentation-Engine aus dem Regelbuch erzeugt.",
       englishHint: "Jedes unterstrichene Feld ist selbst eine einzeilige Funktion. Klicken Sie darauf, um tiefer einzusteigen.",
-      noFormulaSentence: (t) => `Dieses ${t} hat keine Tabellenformel, die sich als Satz lesen ließe — es ist eine Aggregation, strukturell über eine Beziehung definiert. Wechseln Sie zu <strong>RuleSpeak®</strong>, um die Definition zu sehen.`,
+      noFormulaSentence: (t) => `Dieses ${t} hat keine Tabellenformel, die sich als Satz lesen ließe — es ist eine Aggregation, strukturell über eine Beziehung definiert. Wechseln Sie zu <strong>Dokumentation</strong>, um die Definition zu sehen.`,
       formulaHint: "Jeder Chip ist selbst eine einzeilige Funktion. Klicken Sie auf einen Chip, um tiefer einzusteigen.",
-      noFormulaAtAll: (t) => `Dieses ${t} hat keine Tabellenformel — es ist eine Aggregation, strukturell über eine Beziehung definiert. Wechseln Sie zu <strong>RuleSpeak®</strong>, um die Definition zu sehen.`,
+      noFormulaAtAll: (t) => `Dieses ${t} hat keine Tabellenformel — es ist eine Aggregation, strukturell über eine Beziehung definiert. Wechseln Sie zu <strong>Dokumentation</strong>, um die Definition zu sehen.`,
       inputsTitle: "Eingaben", inputsLead: "Felder, die diese einzeilige Funktion aufruft.",
       groundTruthInline: (dt) => `Grunddaten · Datentyp ${dt}`,
       consumersTitle: "Verwender",
@@ -327,7 +330,7 @@
       hoverGroundTruth: (dt) => `Grunddaten — direkt in die Datenbank geschrieben${dt ? ` (Datentyp <code>${dt}</code>)` : ""}.`,
       hoverRelPointer: "Beziehungszeiger — die Verknüpfung, an der der Rest des DAG hängt.",
       hoverNoRule: "Keine deklarative Regel erzeugt.",
-      hoverNoFormula: "Keine Formel — eine strukturelle Aggregation. Siehe RuleSpeak®.",
+      hoverNoFormula: "Keine Formel — eine strukturelle Aggregation. Siehe Dokumentation.",
       hoverInputs: "Eingaben",
       hoverHint: "Doppelklick auf die Zelle öffnet die vollständige DAG-Seite.",
       hoverOpenPage: "Vollständige Seite öffnen",
@@ -371,7 +374,7 @@
       back: "← atrás", backTitle: "Volver un paso",
       home: "🏠 Inicio", homeTitle: "Salir del explicador — volver a la aplicación",
       tablesCrumb: "Tablas",
-      narrRulespeak: "RuleSpeak®", narrEnglish: "Lenguaje claro", narrFormula: "Fórmula",
+      narrRulespeak: "Documentación", narrEnglish: "Lenguaje claro", narrFormula: "Fórmula",
       narrRulespeakHint: "La regla de negocio declarativa (solo si / debe / prioridad)",
       narrEnglishHint: "La fórmula leída como una oración sencilla",
       narrFormulaHint: "La fórmula en bruto, estilo hoja de cálculo, con campos clicables",
@@ -381,7 +384,7 @@
       gearPopTitle: "Mostrar en la ventana emergente y en la página",
       gearReset: "Volver a activar todo",
       elemDesc: "Descripción", elemDescHint: "La descripción del campo en lenguaje sencillo.",
-      elemRulespeak: "RuleSpeak®", elemRulespeakHint: "La regla de negocio declarativa.",
+      elemRulespeak: "Documentación", elemRulespeakHint: "La regla de negocio declarativa.",
       elemEnglish: "Lenguaje claro", elemEnglishHint: "La fórmula leída como una oración sencilla.",
       elemFormula: "Fórmula", elemFormulaHint: "La fórmula en bruto, estilo hoja de cálculo.",
       elemInputs: "Entradas", elemInputsHint: "Los campos a los que llama esta función de una línea.",
@@ -390,6 +393,7 @@
       provOnTitle: "Ocultar los glifos ƒ de procedencia. El doble clic en las celdas sigue abriendo el DAG.",
       provOffTitle: "Mostrar los glifos ƒ de procedencia en las celdas con procedencia explorable.",
       downloadXlsx: "Descargar libro", downloadXlsxTitle: "Descargar el libro de reglas como libro de Excel (.xlsx)",
+      gearShowAs: "Mostrar como", gearLanguage: "Idioma",
       navSearch: "Filtrar tablas y campos…",
       navDerivedOnly: "Solo derivados",
       navNoMatch: "Nada coincide.",
@@ -419,16 +423,16 @@
       openTable: (t) => `Abrir ${t} →`,
       ruleCardTitle: "Esta celda es el valor de una regla declarativa",
       oneLineFnCardTitle: "Esta celda es el valor de una función de una línea",
-      inRuleSpeak: "En RuleSpeak®", inEnglish: "En lenguaje claro", asFormula: "Como fórmula",
+      inRuleSpeak: "En Documentación", inEnglish: "En lenguaje claro", asFormula: "Como fórmula",
       mechanicalFlag: "⚠︎ mecánico", mechanicalTitle: "Fiel pero con una redacción torpe — una señal para una revisión opcional",
       noRuleRendered: (t) => `No se generó ninguna regla declarativa para este campo ${t}.`,
       obligations: "Obligaciones",
-      ruleSpeakHintFormula: "Es la misma lógica que codifica la fórmula, escrita como regla de negocio — generada a partir del libro de reglas por el motor compartido de RuleSpeak®.",
-      ruleSpeakHintNoFormula: "Generada a partir del libro de reglas por el motor compartido de RuleSpeak®.",
+      ruleSpeakHintFormula: "Es la misma lógica que codifica la fórmula, escrita como regla de negocio — generada a partir del libro de reglas por el motor compartido de Documentación.",
+      ruleSpeakHintNoFormula: "Generada a partir del libro de reglas por el motor compartido de Documentación.",
       englishHint: "Cada campo subrayado es a su vez una función de una línea. Haz clic en cualquiera para profundizar.",
-      noFormulaSentence: (t) => `Este ${t} no tiene una fórmula de hoja de cálculo que leer como oración: es un acumulado definido estructuralmente sobre una relación. Cambia a <strong>RuleSpeak®</strong> para ver cómo se define.`,
+      noFormulaSentence: (t) => `Este ${t} no tiene una fórmula de hoja de cálculo que leer como oración: es un acumulado definido estructuralmente sobre una relación. Cambia a <strong>Documentación</strong> para ver cómo se define.`,
       formulaHint: "Cada chip es a su vez una función de una línea. Haz clic en cualquier chip para profundizar.",
-      noFormulaAtAll: (t) => `Este ${t} no tiene fórmula de hoja de cálculo: es un acumulado definido estructuralmente sobre una relación. Cambia a <strong>RuleSpeak®</strong> para ver cómo se define.`,
+      noFormulaAtAll: (t) => `Este ${t} no tiene fórmula de hoja de cálculo: es un acumulado definido estructuralmente sobre una relación. Cambia a <strong>Documentación</strong> para ver cómo se define.`,
       inputsTitle: "Entradas", inputsLead: "Campos a los que llama esta función de una línea.",
       groundTruthInline: (dt) => `Datos base · tipo de dato ${dt}`,
       consumersTitle: "Consumidores",
@@ -441,7 +445,7 @@
       hoverGroundTruth: (dt) => `Datos base — escritos directamente en la base de datos${dt ? ` (tipo de dato <code>${dt}</code>)` : ""}.`,
       hoverRelPointer: "Puntero de relación — el vínculo del que cuelga el resto del DAG.",
       hoverNoRule: "No se generó ninguna regla declarativa.",
-      hoverNoFormula: "Sin fórmula — un acumulado estructural. Consulta RuleSpeak®.",
+      hoverNoFormula: "Sin fórmula — un acumulado estructural. Consulta Documentación.",
       hoverInputs: "Entradas",
       hoverHint: "Haz doble clic en la celda para abrir la página DAG completa.",
       hoverOpenPage: "Abrir la página completa",
@@ -485,7 +489,7 @@
       back: "← retour", backTitle: "Revenir d’une étape",
       home: "🏠 Accueil", homeTitle: "Quitter l’explorateur — retour à l’application",
       tablesCrumb: "Tables",
-      narrRulespeak: "RuleSpeak®", narrEnglish: "Langage clair", narrFormula: "Formule",
+      narrRulespeak: "Documentation", narrEnglish: "Langage clair", narrFormula: "Formule",
       narrRulespeakHint: "La règle métier déclarative (seulement si / doit / priorité)",
       narrEnglishHint: "La formule lue comme une phrase simple",
       narrFormulaHint: "La formule brute, façon tableur, avec des champs cliquables",
@@ -495,7 +499,7 @@
       gearPopTitle: "Afficher dans la fenêtre et sur la page",
       gearReset: "Tout réactiver",
       elemDesc: "Description", elemDescHint: "La description du champ en langage courant.",
-      elemRulespeak: "RuleSpeak®", elemRulespeakHint: "La règle métier déclarative.",
+      elemRulespeak: "Documentation", elemRulespeakHint: "La règle métier déclarative.",
       elemEnglish: "Langage clair", elemEnglishHint: "La formule lue comme une phrase simple.",
       elemFormula: "Formule", elemFormulaHint: "La formule brute, façon tableur.",
       elemInputs: "Entrées", elemInputsHint: "Les champs appelés par cette fonction d’une ligne.",
@@ -504,6 +508,7 @@
       provOnTitle: "Masquer les glyphes ƒ de provenance. Un double-clic sur les cellules ouvre toujours le DAG.",
       provOffTitle: "Afficher les glyphes ƒ de provenance sur les cellules dont la provenance est explorable.",
       downloadXlsx: "Télécharger le classeur", downloadXlsxTitle: "Télécharger le livre de règles au format classeur Excel (.xlsx)",
+      gearShowAs: "Afficher en", gearLanguage: "Langue",
       navSearch: "Filtrer les tables et les champs…",
       navDerivedOnly: "Dérivés seulement",
       navNoMatch: "Aucun résultat.",
@@ -533,16 +538,16 @@
       openTable: (t) => `Ouvrir ${t} →`,
       ruleCardTitle: "Cette cellule est la valeur d’une règle déclarative",
       oneLineFnCardTitle: "Cette cellule est la valeur d’une fonction d’une ligne",
-      inRuleSpeak: "En RuleSpeak®", inEnglish: "En langage clair", asFormula: "Sous forme de formule",
+      inRuleSpeak: "En Documentation", inEnglish: "En langage clair", asFormula: "Sous forme de formule",
       mechanicalFlag: "⚠︎ mécanique", mechanicalTitle: "Fidèle mais formulé maladroitement — un signal pour une reformulation facultative",
       noRuleRendered: (t) => `Aucune règle déclarative n’a été générée pour ce champ ${t}.`,
       obligations: "Obligations",
-      ruleSpeakHintFormula: "C’est la même logique que celle de la formule, écrite comme une règle métier — générée à partir du livre de règles par le moteur RuleSpeak® partagé.",
-      ruleSpeakHintNoFormula: "Générée à partir du livre de règles par le moteur RuleSpeak® partagé.",
+      ruleSpeakHintFormula: "C’est la même logique que celle de la formule, écrite comme une règle métier — générée à partir du livre de règles par le moteur Documentation partagé.",
+      ruleSpeakHintNoFormula: "Générée à partir du livre de règles par le moteur Documentation partagé.",
       englishHint: "Chaque champ souligné est lui-même une fonction d’une ligne. Cliquez dessus pour approfondir.",
-      noFormulaSentence: (t) => `Ce ${t} n’a pas de formule de tableur à lire comme une phrase — c’est un cumul défini structurellement sur une relation. Passez à <strong>RuleSpeak®</strong> pour voir sa définition.`,
+      noFormulaSentence: (t) => `Ce ${t} n’a pas de formule de tableur à lire comme une phrase — c’est un cumul défini structurellement sur une relation. Passez à <strong>Documentation</strong> pour voir sa définition.`,
       formulaHint: "Chaque puce est elle-même une fonction d’une ligne. Cliquez sur une puce pour approfondir.",
-      noFormulaAtAll: (t) => `Ce ${t} n’a pas de formule de tableur — c’est un cumul défini structurellement sur une relation. Passez à <strong>RuleSpeak®</strong> pour voir sa définition.`,
+      noFormulaAtAll: (t) => `Ce ${t} n’a pas de formule de tableur — c’est un cumul défini structurellement sur une relation. Passez à <strong>Documentation</strong> pour voir sa définition.`,
       inputsTitle: "Entrées", inputsLead: "Champs appelés par cette fonction d’une ligne.",
       groundTruthInline: (dt) => `Données de base · type ${dt}`,
       consumersTitle: "Consommateurs",
@@ -555,7 +560,7 @@
       hoverGroundTruth: (dt) => `Données de base — écrites directement dans la base de données${dt ? ` (type <code>${dt}</code>)` : ""}.`,
       hoverRelPointer: "Pointeur de relation — le lien auquel se rattache le reste du DAG.",
       hoverNoRule: "Aucune règle déclarative générée.",
-      hoverNoFormula: "Pas de formule — un cumul structurel. Voir RuleSpeak®.",
+      hoverNoFormula: "Pas de formule — un cumul structurel. Voir Documentation.",
       hoverInputs: "Entrées",
       hoverHint: "Double-cliquez sur la cellule pour ouvrir la page DAG complète.",
       hoverOpenPage: "Ouvrir la page complète",
@@ -599,7 +604,7 @@
       back: "← voltar", backTitle: "Voltar um passo",
       home: "🏠 Início", homeTitle: "Sair do explicador — voltar ao aplicativo",
       tablesCrumb: "Tabelas",
-      narrRulespeak: "RuleSpeak®", narrEnglish: "Linguagem clara", narrFormula: "Fórmula",
+      narrRulespeak: "Documentação", narrEnglish: "Linguagem clara", narrFormula: "Fórmula",
       narrRulespeakHint: "A regra de negócio declarativa (somente se / deve / prioridade)",
       narrEnglishHint: "A fórmula lida como uma frase simples",
       narrFormulaHint: "A fórmula bruta, estilo planilha, com campos clicáveis",
@@ -609,7 +614,7 @@
       gearPopTitle: "Mostrar no popup e na página",
       gearReset: "Reativar tudo",
       elemDesc: "Descrição", elemDescHint: "A descrição do campo em linguagem simples.",
-      elemRulespeak: "RuleSpeak®", elemRulespeakHint: "A regra de negócio declarativa.",
+      elemRulespeak: "Documentação", elemRulespeakHint: "A regra de negócio declarativa.",
       elemEnglish: "Linguagem clara", elemEnglishHint: "A fórmula lida como uma frase simples.",
       elemFormula: "Fórmula", elemFormulaHint: "A fórmula bruta, estilo planilha.",
       elemInputs: "Entradas", elemInputsHint: "Os campos que esta função de uma linha chama.",
@@ -618,6 +623,7 @@
       provOnTitle: "Ocultar os glifos ƒ de proveniência. O clique duplo nas células continua abrindo o DAG.",
       provOffTitle: "Mostrar os glifos ƒ de proveniência nas células com proveniência explorável.",
       downloadXlsx: "Baixar planilha", downloadXlsxTitle: "Baixar o livro de regras como planilha do Excel (.xlsx)",
+      gearShowAs: "Mostrar como", gearLanguage: "Idioma",
       navSearch: "Filtrar tabelas e campos…",
       navDerivedOnly: "Somente derivados",
       navNoMatch: "Nada corresponde.",
@@ -647,16 +653,16 @@
       openTable: (t) => `Abrir ${t} →`,
       ruleCardTitle: "Esta célula é o valor de uma regra declarativa",
       oneLineFnCardTitle: "Esta célula é o valor de uma função de uma linha",
-      inRuleSpeak: "Em RuleSpeak®", inEnglish: "Em linguagem clara", asFormula: "Como fórmula",
+      inRuleSpeak: "Em Documentação", inEnglish: "Em linguagem clara", asFormula: "Como fórmula",
       mechanicalFlag: "⚠︎ mecânico", mechanicalTitle: "Fiel, mas com redação truncada — um sinal para uma revisão opcional",
       noRuleRendered: (t) => `Nenhuma regra declarativa foi gerada para este campo ${t}.`,
       obligations: "Obrigações",
-      ruleSpeakHintFormula: "É a mesma lógica que a fórmula codifica, escrita como regra de negócio — gerada a partir do livro de regras pelo mecanismo compartilhado do RuleSpeak®.",
-      ruleSpeakHintNoFormula: "Gerada a partir do livro de regras pelo mecanismo compartilhado do RuleSpeak®.",
+      ruleSpeakHintFormula: "É a mesma lógica que a fórmula codifica, escrita como regra de negócio — gerada a partir do livro de regras pelo mecanismo compartilhado do Documentação.",
+      ruleSpeakHintNoFormula: "Gerada a partir do livro de regras pelo mecanismo compartilhado do Documentação.",
       englishHint: "Cada campo sublinhado é, ele próprio, uma função de uma linha. Clique em qualquer um para detalhar.",
-      noFormulaSentence: (t) => `Este ${t} não tem fórmula de planilha para ler como frase — é um agregado definido estruturalmente sobre uma relação. Mude para <strong>RuleSpeak®</strong> para ver como é definido.`,
+      noFormulaSentence: (t) => `Este ${t} não tem fórmula de planilha para ler como frase — é um agregado definido estruturalmente sobre uma relação. Mude para <strong>Documentação</strong> para ver como é definido.`,
       formulaHint: "Cada chip é, ele próprio, uma função de uma linha. Clique em qualquer chip para detalhar.",
-      noFormulaAtAll: (t) => `Este ${t} não tem fórmula de planilha — é um agregado definido estruturalmente sobre uma relação. Mude para <strong>RuleSpeak®</strong> para ver como é definido.`,
+      noFormulaAtAll: (t) => `Este ${t} não tem fórmula de planilha — é um agregado definido estruturalmente sobre uma relação. Mude para <strong>Documentação</strong> para ver como é definido.`,
       inputsTitle: "Entradas", inputsLead: "Campos que esta função de uma linha chama.",
       groundTruthInline: (dt) => `Dados de base · tipo de dado ${dt}`,
       consumersTitle: "Consumidores",
@@ -669,7 +675,7 @@
       hoverGroundTruth: (dt) => `Dados de base — gravados diretamente no banco de dados${dt ? ` (tipo de dado <code>${dt}</code>)` : ""}.`,
       hoverRelPointer: "Ponteiro de relação — o vínculo do qual o resto do DAG depende.",
       hoverNoRule: "Nenhuma regra declarativa gerada.",
-      hoverNoFormula: "Sem fórmula — um agregado estrutural. Veja RuleSpeak®.",
+      hoverNoFormula: "Sem fórmula — um agregado estrutural. Veja Documentação.",
       hoverInputs: "Entradas",
       hoverHint: "Clique duas vezes na célula para abrir a página DAG completa.",
       hoverOpenPage: "Abrir a página completa",
@@ -713,7 +719,7 @@
       back: "← indietro", backTitle: "Torna indietro di un passo",
       home: "🏠 Home", homeTitle: "Esci dall’explainer — torna all’app",
       tablesCrumb: "Tabelle",
-      narrRulespeak: "RuleSpeak®", narrEnglish: "Linguaggio chiaro", narrFormula: "Formula",
+      narrRulespeak: "Documentazione", narrEnglish: "Linguaggio chiaro", narrFormula: "Formula",
       narrRulespeakHint: "La regola di business dichiarativa (solo se / deve / priorità)",
       narrEnglishHint: "La formula letta come una semplice frase",
       narrFormulaHint: "La formula grezza, in stile foglio di calcolo, con campi cliccabili",
@@ -723,7 +729,7 @@
       gearPopTitle: "Mostra nel popup e nella pagina",
       gearReset: "Riattiva tutto",
       elemDesc: "Descrizione", elemDescHint: "La descrizione del campo in linguaggio semplice.",
-      elemRulespeak: "RuleSpeak®", elemRulespeakHint: "La regola di business dichiarativa.",
+      elemRulespeak: "Documentazione", elemRulespeakHint: "La regola di business dichiarativa.",
       elemEnglish: "Linguaggio chiaro", elemEnglishHint: "La formula letta come una semplice frase.",
       elemFormula: "Formula", elemFormulaHint: "La formula grezza, in stile foglio di calcolo.",
       elemInputs: "Input", elemInputsHint: "I campi richiamati da questa funzione di una riga.",
@@ -732,6 +738,7 @@
       provOnTitle: "Nascondi i glifi ƒ di provenienza. Il doppio clic sulle celle apre comunque il DAG.",
       provOffTitle: "Mostra i glifi ƒ di provenienza sulle celle con provenienza esplorabile.",
       downloadXlsx: "Scarica la cartella", downloadXlsxTitle: "Scarica il libro delle regole come cartella di lavoro Excel (.xlsx)",
+      gearShowAs: "Mostra come", gearLanguage: "Lingua",
       navSearch: "Filtra tabelle e campi…",
       navDerivedOnly: "Solo derivati",
       navNoMatch: "Nessun risultato.",
@@ -761,16 +768,16 @@
       openTable: (t) => `Apri ${t} →`,
       ruleCardTitle: "Questa cella è il valore di una regola dichiarativa",
       oneLineFnCardTitle: "Questa cella è il valore di una funzione di una riga",
-      inRuleSpeak: "In RuleSpeak®", inEnglish: "In linguaggio chiaro", asFormula: "Come formula",
+      inRuleSpeak: "In Documentazione", inEnglish: "In linguaggio chiaro", asFormula: "Come formula",
       mechanicalFlag: "⚠︎ meccanico", mechanicalTitle: "Fedele ma formulato in modo goffo — un segnale per una revisione facoltativa",
       noRuleRendered: (t) => `Non è stata generata alcuna regola dichiarativa per questo campo ${t}.`,
       obligations: "Obblighi",
-      ruleSpeakHintFormula: "È la stessa logica codificata dalla formula, scritta come regola di business — generata dal libro delle regole dal motore RuleSpeak® condiviso.",
-      ruleSpeakHintNoFormula: "Generata dal libro delle regole dal motore RuleSpeak® condiviso.",
+      ruleSpeakHintFormula: "È la stessa logica codificata dalla formula, scritta come regola di business — generata dal libro delle regole dal motore Documentazione condiviso.",
+      ruleSpeakHintNoFormula: "Generata dal libro delle regole dal motore Documentazione condiviso.",
       englishHint: "Ogni campo sottolineato è a sua volta una funzione di una riga. Fai clic su uno qualsiasi per approfondire.",
-      noFormulaSentence: (t) => `Questo ${t} non ha una formula da foglio di calcolo da leggere come frase — è un aggregato definito strutturalmente su una relazione. Passa a <strong>RuleSpeak®</strong> per vedere come è definito.`,
+      noFormulaSentence: (t) => `Questo ${t} non ha una formula da foglio di calcolo da leggere come frase — è un aggregato definito strutturalmente su una relazione. Passa a <strong>Documentazione</strong> per vedere come è definito.`,
       formulaHint: "Ogni chip è a sua volta una funzione di una riga. Fai clic su un chip per approfondire.",
-      noFormulaAtAll: (t) => `Questo ${t} non ha una formula da foglio di calcolo — è un aggregato definito strutturalmente su una relazione. Passa a <strong>RuleSpeak®</strong> per vedere come è definito.`,
+      noFormulaAtAll: (t) => `Questo ${t} non ha una formula da foglio di calcolo — è un aggregato definito strutturalmente su una relazione. Passa a <strong>Documentazione</strong> per vedere come è definito.`,
       inputsTitle: "Input", inputsLead: "Campi richiamati da questa funzione di una riga.",
       groundTruthInline: (dt) => `Dati di base · tipo di dato ${dt}`,
       consumersTitle: "Utilizzatori",
@@ -783,7 +790,7 @@
       hoverGroundTruth: (dt) => `Dati di base — scritti direttamente nel database${dt ? ` (tipo di dato <code>${dt}</code>)` : ""}.`,
       hoverRelPointer: "Puntatore di relazione — il collegamento a cui è appeso il resto del DAG.",
       hoverNoRule: "Nessuna regola dichiarativa generata.",
-      hoverNoFormula: "Nessuna formula — un aggregato strutturale. Vedi RuleSpeak®.",
+      hoverNoFormula: "Nessuna formula — un aggregato strutturale. Vedi Documentazione.",
       hoverInputs: "Input",
       hoverHint: "Fai doppio clic sulla cella per aprire la pagina DAG completa.",
       hoverOpenPage: "Apri la pagina completa",
@@ -827,7 +834,7 @@
       back: "← terug", backTitle: "Eén stap terug",
       home: "🏠 Start", homeTitle: "De explainer verlaten — terug naar de app",
       tablesCrumb: "Tabellen",
-      narrRulespeak: "RuleSpeak®", narrEnglish: "Klare taal", narrFormula: "Formule",
+      narrRulespeak: "Documentatie", narrEnglish: "Klare taal", narrFormula: "Formule",
       narrRulespeakHint: "De declaratieve bedrijfsregel (alleen als / moet / prioriteit)",
       narrEnglishHint: "De formule gelezen als een eenvoudige zin",
       narrFormulaHint: "De ruwe spreadsheetformule, met aanklikbare velden",
@@ -837,7 +844,7 @@
       gearPopTitle: "Tonen in popup en op pagina",
       gearReset: "Alles weer aanzetten",
       elemDesc: "Beschrijving", elemDescHint: "De beschrijving van het veld in gewone taal.",
-      elemRulespeak: "RuleSpeak®", elemRulespeakHint: "De declaratieve bedrijfsregel.",
+      elemRulespeak: "Documentatie", elemRulespeakHint: "De declaratieve bedrijfsregel.",
       elemEnglish: "Klare taal", elemEnglishHint: "De formule gelezen als een eenvoudige zin.",
       elemFormula: "Formule", elemFormulaHint: "De ruwe spreadsheetformule.",
       elemInputs: "Invoer", elemInputsHint: "De velden die deze eenregelige functie aanroept.",
@@ -846,6 +853,7 @@
       provOnTitle: "ƒ-herkomstsymbolen verbergen. Dubbelklikken op cellen opent de DAG nog steeds.",
       provOffTitle: "ƒ-herkomstsymbolen tonen op cellen met verkenbare herkomst.",
       downloadXlsx: "Werkmap downloaden", downloadXlsxTitle: "Het regelboek downloaden als Excel-werkmap (.xlsx)",
+      gearShowAs: "Weergeven als", gearLanguage: "Taal",
       navSearch: "Tabellen en velden filteren…",
       navDerivedOnly: "Alleen afgeleide",
       navNoMatch: "Niets gevonden.",
@@ -875,16 +883,16 @@
       openTable: (t) => `${t} openen →`,
       ruleCardTitle: "Deze cel is de waarde van één declaratieve regel",
       oneLineFnCardTitle: "Deze cel is de waarde van één eenregelige functie",
-      inRuleSpeak: "In RuleSpeak®", inEnglish: "In klare taal", asFormula: "Als formule",
+      inRuleSpeak: "In Documentatie", inEnglish: "In klare taal", asFormula: "Als formule",
       mechanicalFlag: "⚠︎ mechanisch", mechanicalTitle: "Correct maar stroef geformuleerd — een signaal voor een optionele herformulering",
       noRuleRendered: (t) => `Voor dit ${t}-veld is geen declaratieve regel gegenereerd.`,
       obligations: "Verplichtingen",
-      ruleSpeakHintFormula: "Dit is dezelfde logica als in de formule, geschreven als bedrijfsregel — door de gedeelde RuleSpeak®-engine uit het regelboek gegenereerd.",
-      ruleSpeakHintNoFormula: "Door de gedeelde RuleSpeak®-engine uit het regelboek gegenereerd.",
+      ruleSpeakHintFormula: "Dit is dezelfde logica als in de formule, geschreven als bedrijfsregel — door de gedeelde Documentatie-engine uit het regelboek gegenereerd.",
+      ruleSpeakHintNoFormula: "Door de gedeelde Documentatie-engine uit het regelboek gegenereerd.",
       englishHint: "Elk onderstreept veld is zelf een eenregelige functie. Klik erop om verder in te zoomen.",
-      noFormulaSentence: (t) => `Deze ${t} heeft geen spreadsheetformule om als zin te lezen — het is een aggregatie die structureel over een relatie is gedefinieerd. Schakel over naar <strong>RuleSpeak®</strong> om te zien hoe die is gedefinieerd.`,
+      noFormulaSentence: (t) => `Deze ${t} heeft geen spreadsheetformule om als zin te lezen — het is een aggregatie die structureel over een relatie is gedefinieerd. Schakel over naar <strong>Documentatie</strong> om te zien hoe die is gedefinieerd.`,
       formulaHint: "Elke chip is zelf een eenregelige functie. Klik op een chip om verder in te zoomen.",
-      noFormulaAtAll: (t) => `Deze ${t} heeft geen spreadsheetformule — het is een aggregatie die structureel over een relatie is gedefinieerd. Schakel over naar <strong>RuleSpeak®</strong> om te zien hoe die is gedefinieerd.`,
+      noFormulaAtAll: (t) => `Deze ${t} heeft geen spreadsheetformule — het is een aggregatie die structureel over een relatie is gedefinieerd. Schakel over naar <strong>Documentatie</strong> om te zien hoe die is gedefinieerd.`,
       inputsTitle: "Invoer", inputsLead: "Velden die deze eenregelige functie aanroept.",
       groundTruthInline: (dt) => `Basisgegevens · gegevenstype ${dt}`,
       consumersTitle: "Afnemers",
@@ -897,7 +905,7 @@
       hoverGroundTruth: (dt) => `Basisgegevens — rechtstreeks naar de database geschreven${dt ? ` (gegevenstype <code>${dt}</code>)` : ""}.`,
       hoverRelPointer: "Relatieverwijzing — de koppeling waaraan de rest van de DAG hangt.",
       hoverNoRule: "Geen declaratieve regel gegenereerd.",
-      hoverNoFormula: "Geen formule — een structurele aggregatie. Zie RuleSpeak®.",
+      hoverNoFormula: "Geen formule — een structurele aggregatie. Zie Documentatie.",
       hoverInputs: "Invoer",
       hoverHint: "Dubbelklik op de cel om de volledige DAG-pagina te openen.",
       hoverOpenPage: "Volledige pagina openen",
@@ -941,7 +949,7 @@
       back: "← назад", backTitle: "Вернуться на шаг назад",
       home: "🏠 Главная", homeTitle: "Выйти из обозревателя — вернуться в приложение",
       tablesCrumb: "Таблицы",
-      narrRulespeak: "RuleSpeak®", narrEnglish: "Простыми словами", narrFormula: "Формула",
+      narrRulespeak: "Документация", narrEnglish: "Простыми словами", narrFormula: "Формула",
       narrRulespeakHint: "Декларативное бизнес-правило (только если / должен / приоритет)",
       narrEnglishHint: "Формула, прочитанная как простое предложение",
       narrFormulaHint: "Исходная формула в стиле электронной таблицы, с кликабельными полями",
@@ -951,7 +959,7 @@
       gearPopTitle: "Показывать во всплывающем окне и на странице",
       gearReset: "Снова включить всё",
       elemDesc: "Описание", elemDescHint: "Описание поля простым языком.",
-      elemRulespeak: "RuleSpeak®", elemRulespeakHint: "Декларативное бизнес-правило.",
+      elemRulespeak: "Документация", elemRulespeakHint: "Декларативное бизнес-правило.",
       elemEnglish: "Простыми словами", elemEnglishHint: "Формула, прочитанная как простое предложение.",
       elemFormula: "Формула", elemFormulaHint: "Исходная формула в стиле электронной таблицы.",
       elemInputs: "Входы", elemInputsHint: "Поля, которые вызывает эта однострочная функция.",
@@ -960,6 +968,7 @@
       provOnTitle: "Скрыть значки происхождения ƒ. Двойной щелчок по ячейкам по-прежнему открывает DAG.",
       provOffTitle: "Показывать значки происхождения ƒ на ячейках, происхождение которых можно изучить.",
       downloadXlsx: "Скачать книгу", downloadXlsxTitle: "Скачать свод правил как книгу Excel (.xlsx)",
+      gearShowAs: "Показывать как", gearLanguage: "Язык",
       navSearch: "Фильтр таблиц и полей…",
       navDerivedOnly: "Только производные",
       navNoMatch: "Ничего не найдено.",
@@ -989,16 +998,16 @@
       openTable: (t) => `Открыть ${t} →`,
       ruleCardTitle: "Эта ячейка — значение одного декларативного правила",
       oneLineFnCardTitle: "Эта ячейка — значение одной однострочной функции",
-      inRuleSpeak: "В RuleSpeak®", inEnglish: "Простыми словами", asFormula: "В виде формулы",
+      inRuleSpeak: "В Документация", inEnglish: "Простыми словами", asFormula: "В виде формулы",
       mechanicalFlag: "⚠︎ механически", mechanicalTitle: "Точно, но неуклюже сформулировано — отметка для необязательной правки",
       noRuleRendered: (t) => `Для этого поля типа ${t} декларативное правило не создано.`,
       obligations: "Обязательства",
-      ruleSpeakHintFormula: "Это та же логика, что заложена в формуле, записанная как бизнес-правило — создано из свода правил общим движком RuleSpeak®.",
-      ruleSpeakHintNoFormula: "Создано из свода правил общим движком RuleSpeak®.",
+      ruleSpeakHintFormula: "Это та же логика, что заложена в формуле, записанная как бизнес-правило — создано из свода правил общим движком Документация.",
+      ruleSpeakHintNoFormula: "Создано из свода правил общим движком Документация.",
       englishHint: "Каждое подчёркнутое поле само является однострочной функцией. Щёлкните любое, чтобы перейти к нему.",
-      noFormulaSentence: (t) => `У этого поля типа ${t} нет формулы, которую можно прочитать как предложение, — это свёртка, определённая структурно через связь. Переключитесь на <strong>RuleSpeak®</strong>, чтобы увидеть её определение.`,
+      noFormulaSentence: (t) => `У этого поля типа ${t} нет формулы, которую можно прочитать как предложение, — это свёртка, определённая структурно через связь. Переключитесь на <strong>Документация</strong>, чтобы увидеть её определение.`,
       formulaHint: "Каждый чип сам является однострочной функцией. Щёлкните любой чип, чтобы перейти к нему.",
-      noFormulaAtAll: (t) => `У этого поля типа ${t} нет формулы — это свёртка, определённая структурно через связь. Переключитесь на <strong>RuleSpeak®</strong>, чтобы увидеть её определение.`,
+      noFormulaAtAll: (t) => `У этого поля типа ${t} нет формулы — это свёртка, определённая структурно через связь. Переключитесь на <strong>Документация</strong>, чтобы увидеть её определение.`,
       inputsTitle: "Входы", inputsLead: "Поля, которые вызывает эта однострочная функция.",
       groundTruthInline: (dt) => `Исходные данные · тип данных ${dt}`,
       consumersTitle: "Потребители",
@@ -1011,7 +1020,7 @@
       hoverGroundTruth: (dt) => `Исходные данные — записываются прямо в базу данных${dt ? ` (тип данных <code>${dt}</code>)` : ""}.`,
       hoverRelPointer: "Указатель связи — связь, на которой держится остальной DAG.",
       hoverNoRule: "Декларативное правило не создано.",
-      hoverNoFormula: "Нет формулы — структурная свёртка. См. RuleSpeak®.",
+      hoverNoFormula: "Нет формулы — структурная свёртка. См. Документация.",
       hoverInputs: "Входы",
       hoverHint: "Дважды щёлкните ячейку, чтобы открыть полную страницу DAG.",
       hoverOpenPage: "Открыть полную страницу",
@@ -1053,7 +1062,7 @@
       back: "← 返回", backTitle: "后退一步",
       home: "🏠 首页", homeTitle: "离开解释器 — 返回应用",
       tablesCrumb: "表",
-      narrRulespeak: "RuleSpeak®", narrEnglish: "通俗读法", narrFormula: "公式",
+      narrRulespeak: "文档", narrEnglish: "通俗读法", narrFormula: "公式",
       narrRulespeakHint: "声明式业务规则（仅当 / 必须 / 优先级）",
       narrEnglishHint: "将公式读作一句简单的句子",
       narrFormulaHint: "原始的电子表格式公式，字段可点击",
@@ -1063,7 +1072,7 @@
       gearPopTitle: "在弹窗和页面中显示",
       gearReset: "全部重新开启",
       elemDesc: "描述", elemDescHint: "字段的通俗描述。",
-      elemRulespeak: "RuleSpeak®", elemRulespeakHint: "声明式业务规则。",
+      elemRulespeak: "文档", elemRulespeakHint: "声明式业务规则。",
       elemEnglish: "通俗读法", elemEnglishHint: "将公式读作一句简单的句子。",
       elemFormula: "公式", elemFormulaHint: "原始的电子表格式公式。",
       elemInputs: "输入", elemInputsHint: "此单行函数调用的字段。",
@@ -1072,6 +1081,7 @@
       provOnTitle: "隐藏 ƒ 溯源标记。双击单元格仍会打开 DAG。",
       provOffTitle: "在可追溯来源的单元格上显示 ƒ 溯源标记。",
       downloadXlsx: "下载工作簿", downloadXlsxTitle: "将规则手册下载为 Excel 工作簿（.xlsx）",
+      gearShowAs: "显示方式", gearLanguage: "语言",
       navSearch: "筛选表和字段…",
       navDerivedOnly: "仅派生",
       navNoMatch: "没有匹配项。",
@@ -1101,16 +1111,16 @@
       openTable: (t) => `打开 ${t} →`,
       ruleCardTitle: "此单元格是一条声明式规则的值",
       oneLineFnCardTitle: "此单元格是一个单行函数的值",
-      inRuleSpeak: "RuleSpeak® 表述", inEnglish: "通俗表述", asFormula: "公式表述",
+      inRuleSpeak: "文档 表述", inEnglish: "通俗表述", asFormula: "公式表述",
       mechanicalFlag: "⚠︎ 机械化", mechanicalTitle: "含义准确但措辞生硬 — 可选择性改写的标记",
       noRuleRendered: (t) => `未为此 ${t} 字段生成声明式规则。`,
       obligations: "义务",
-      ruleSpeakHintFormula: "这是公式所表达的同一逻辑，以业务规则的形式写出 — 由共享的 RuleSpeak® 引擎根据规则手册生成。",
-      ruleSpeakHintNoFormula: "由共享的 RuleSpeak® 引擎根据规则手册生成。",
+      ruleSpeakHintFormula: "这是公式所表达的同一逻辑，以业务规则的形式写出 — 由共享的 文档 引擎根据规则手册生成。",
+      ruleSpeakHintNoFormula: "由共享的 文档 引擎根据规则手册生成。",
       englishHint: "每个带下划线的字段本身都是一个单行函数。点击任意字段可深入查看。",
-      noFormulaSentence: (t) => `此 ${t} 没有可读作句子的电子表格公式 — 它是通过关系结构化定义的汇总。切换到 <strong>RuleSpeak®</strong> 查看其定义。`,
+      noFormulaSentence: (t) => `此 ${t} 没有可读作句子的电子表格公式 — 它是通过关系结构化定义的汇总。切换到 <strong>文档</strong> 查看其定义。`,
       formulaHint: "每个标签本身都是一个单行函数。点击任意标签可深入查看。",
-      noFormulaAtAll: (t) => `此 ${t} 没有电子表格公式 — 它是通过关系结构化定义的汇总。切换到 <strong>RuleSpeak®</strong> 查看其定义。`,
+      noFormulaAtAll: (t) => `此 ${t} 没有电子表格公式 — 它是通过关系结构化定义的汇总。切换到 <strong>文档</strong> 查看其定义。`,
       inputsTitle: "输入", inputsLead: "此单行函数调用的字段。",
       groundTruthInline: (dt) => `基础数据 · 数据类型 ${dt}`,
       consumersTitle: "使用方",
@@ -1123,7 +1133,7 @@
       hoverGroundTruth: (dt) => `基础数据 — 直接写入数据库${dt ? `（数据类型 <code>${dt}</code>）` : ""}。`,
       hoverRelPointer: "关系指针 — DAG 其余部分所依附的链接。",
       hoverNoRule: "未生成声明式规则。",
-      hoverNoFormula: "无公式 — 结构化汇总。请参阅 RuleSpeak®。",
+      hoverNoFormula: "无公式 — 结构化汇总。请参阅 文档。",
       hoverInputs: "输入",
       hoverHint: "双击单元格打开完整的 DAG 页面。",
       hoverOpenPage: "打开完整页面",
@@ -1163,7 +1173,7 @@
       back: "← वापस", backTitle: "एक कदम पीछे जाएँ",
       home: "🏠 होम", homeTitle: "एक्सप्लेनर छोड़ें — ऐप पर वापस जाएँ",
       tablesCrumb: "तालिकाएँ",
-      narrRulespeak: "RuleSpeak®", narrEnglish: "सरल पठन", narrFormula: "सूत्र",
+      narrRulespeak: "दस्तावेज़ीकरण", narrEnglish: "सरल पठन", narrFormula: "सूत्र",
       narrRulespeakHint: "घोषणात्मक व्यावसायिक नियम (केवल यदि / अनिवार्य / प्राथमिकता)",
       narrEnglishHint: "सूत्र को एक सरल वाक्य के रूप में पढ़ा गया",
       narrFormulaHint: "स्प्रेडशीट-शैली का मूल सूत्र, क्लिक करने योग्य फ़ील्ड के साथ",
@@ -1173,7 +1183,7 @@
       gearPopTitle: "पॉपअप और पेज पर दिखाएँ",
       gearReset: "सब फिर से चालू करें",
       elemDesc: "विवरण", elemDescHint: "फ़ील्ड का सरल भाषा में विवरण।",
-      elemRulespeak: "RuleSpeak®", elemRulespeakHint: "घोषणात्मक व्यावसायिक नियम।",
+      elemRulespeak: "दस्तावेज़ीकरण", elemRulespeakHint: "घोषणात्मक व्यावसायिक नियम।",
       elemEnglish: "सरल पठन", elemEnglishHint: "सूत्र को एक सरल वाक्य के रूप में पढ़ा गया।",
       elemFormula: "सूत्र", elemFormulaHint: "स्प्रेडशीट-शैली का मूल सूत्र।",
       elemInputs: "इनपुट", elemInputsHint: "वे फ़ील्ड जिन्हें यह एक-पंक्ति फ़ंक्शन कॉल करता है।",
@@ -1182,6 +1192,7 @@
       provOnTitle: "ƒ उत्पत्ति चिह्न छिपाएँ। सेल पर डबल-क्लिक करने से DAG फिर भी खुलता है।",
       provOffTitle: "जिन सेल की उत्पत्ति देखी जा सकती है, उन पर ƒ उत्पत्ति चिह्न दिखाएँ।",
       downloadXlsx: "वर्कबुक डाउनलोड करें", downloadXlsxTitle: "नियम-पुस्तिका को Excel वर्कबुक (.xlsx) के रूप में डाउनलोड करें",
+      gearShowAs: "ऐसे दिखाएँ", gearLanguage: "भाषा",
       navSearch: "तालिकाएँ और फ़ील्ड फ़िल्टर करें…",
       navDerivedOnly: "केवल व्युत्पन्न",
       navNoMatch: "कुछ भी मेल नहीं खाता।",
@@ -1211,16 +1222,16 @@
       openTable: (t) => `${t} खोलें →`,
       ruleCardTitle: "यह सेल एक घोषणात्मक नियम का मान है",
       oneLineFnCardTitle: "यह सेल एक एक-पंक्ति फ़ंक्शन का मान है",
-      inRuleSpeak: "RuleSpeak® में", inEnglish: "सरल शब्दों में", asFormula: "सूत्र के रूप में",
+      inRuleSpeak: "दस्तावेज़ीकरण में", inEnglish: "सरल शब्दों में", asFormula: "सूत्र के रूप में",
       mechanicalFlag: "⚠︎ यांत्रिक", mechanicalTitle: "अर्थ सही है पर शब्द-रचना अटपटी है — वैकल्पिक पुनर्लेखन के लिए संकेत",
       noRuleRendered: (t) => `इस ${t} फ़ील्ड के लिए कोई घोषणात्मक नियम नहीं बनाया गया।`,
       obligations: "दायित्व",
-      ruleSpeakHintFormula: "यह वही तर्क है जो सूत्र में है, व्यावसायिक नियम के रूप में लिखा गया — साझा RuleSpeak® इंजन द्वारा नियम-पुस्तिका से बनाया गया।",
-      ruleSpeakHintNoFormula: "साझा RuleSpeak® इंजन द्वारा नियम-पुस्तिका से बनाया गया।",
+      ruleSpeakHintFormula: "यह वही तर्क है जो सूत्र में है, व्यावसायिक नियम के रूप में लिखा गया — साझा दस्तावेज़ीकरण इंजन द्वारा नियम-पुस्तिका से बनाया गया।",
+      ruleSpeakHintNoFormula: "साझा दस्तावेज़ीकरण इंजन द्वारा नियम-पुस्तिका से बनाया गया।",
       englishHint: "रेखांकित हर फ़ील्ड स्वयं एक एक-पंक्ति फ़ंक्शन है। विस्तार से देखने के लिए किसी पर भी क्लिक करें।",
-      noFormulaSentence: (t) => `इस ${t} का कोई स्प्रेडशीट सूत्र नहीं है जिसे वाक्य की तरह पढ़ा जा सके — यह किसी संबंध पर संरचनात्मक रूप से परिभाषित एक समेकन है। इसकी परिभाषा देखने के लिए <strong>RuleSpeak®</strong> पर जाएँ।`,
+      noFormulaSentence: (t) => `इस ${t} का कोई स्प्रेडशीट सूत्र नहीं है जिसे वाक्य की तरह पढ़ा जा सके — यह किसी संबंध पर संरचनात्मक रूप से परिभाषित एक समेकन है। इसकी परिभाषा देखने के लिए <strong>दस्तावेज़ीकरण</strong> पर जाएँ।`,
       formulaHint: "हर चिप स्वयं एक एक-पंक्ति फ़ंक्शन है। विस्तार से देखने के लिए किसी भी चिप पर क्लिक करें।",
-      noFormulaAtAll: (t) => `इस ${t} का कोई स्प्रेडशीट सूत्र नहीं है — यह किसी संबंध पर संरचनात्मक रूप से परिभाषित एक समेकन है। इसकी परिभाषा देखने के लिए <strong>RuleSpeak®</strong> पर जाएँ।`,
+      noFormulaAtAll: (t) => `इस ${t} का कोई स्प्रेडशीट सूत्र नहीं है — यह किसी संबंध पर संरचनात्मक रूप से परिभाषित एक समेकन है। इसकी परिभाषा देखने के लिए <strong>दस्तावेज़ीकरण</strong> पर जाएँ।`,
       inputsTitle: "इनपुट", inputsLead: "वे फ़ील्ड जिन्हें यह एक-पंक्ति फ़ंक्शन कॉल करता है।",
       groundTruthInline: (dt) => `मूल डेटा · डेटा प्रकार ${dt}`,
       consumersTitle: "उपभोक्ता",
@@ -1233,7 +1244,7 @@
       hoverGroundTruth: (dt) => `मूल डेटा — सीधे डेटाबेस में लिखा गया${dt ? ` (डेटा प्रकार <code>${dt}</code>)` : ""}।`,
       hoverRelPointer: "संबंध सूचक — वह कड़ी जिस पर शेष DAG टिका है।",
       hoverNoRule: "कोई घोषणात्मक नियम नहीं बनाया गया।",
-      hoverNoFormula: "कोई सूत्र नहीं — एक संरचनात्मक समेकन। RuleSpeak® देखें।",
+      hoverNoFormula: "कोई सूत्र नहीं — एक संरचनात्मक समेकन। दस्तावेज़ीकरण देखें।",
       hoverInputs: "इनपुट",
       hoverHint: "पूरा DAG पेज खोलने के लिए सेल पर डबल-क्लिक करें।",
       hoverOpenPage: "पूरा पेज खोलें",
@@ -1277,7 +1288,7 @@
       back: "→ رجوع", backTitle: "الرجوع خطوة واحدة",
       home: "🏠 الرئيسية", homeTitle: "مغادرة المُفسِّر والعودة إلى التطبيق",
       tablesCrumb: "الجداول",
-      narrRulespeak: "RuleSpeak®", narrEnglish: "القراءة المبسّطة", narrFormula: "الصيغة",
+      narrRulespeak: "التوثيق", narrEnglish: "القراءة المبسّطة", narrFormula: "الصيغة",
       narrRulespeakHint: "قاعدة العمل التصريحية (فقط إذا / يجب أن / الأولوية)",
       narrEnglishHint: "الصيغة مقروءةً في جملة بسيطة",
       narrFormulaHint: "الصيغة الخام بأسلوب الجداول الإلكترونية، مع حقول قابلة للنقر",
@@ -1287,7 +1298,7 @@
       gearPopTitle: "ما يُعرض في النافذة المنبثقة وفي الصفحة",
       gearReset: "إعادة تفعيل الكل",
       elemDesc: "الوصف", elemDescHint: "وصف الحقل بلغة مبسّطة.",
-      elemRulespeak: "RuleSpeak®", elemRulespeakHint: "قاعدة العمل التصريحية.",
+      elemRulespeak: "التوثيق", elemRulespeakHint: "قاعدة العمل التصريحية.",
       elemEnglish: "القراءة المبسّطة", elemEnglishHint: "الصيغة مقروءةً في جملة بسيطة.",
       elemFormula: "الصيغة", elemFormulaHint: "الصيغة الخام بأسلوب الجداول الإلكترونية.",
       elemInputs: "المدخلات", elemInputsHint: "الحقول التي تستدعيها هذه الدالة ذات السطر الواحد.",
@@ -1296,6 +1307,7 @@
       provOnTitle: "إخفاء رموز ƒ الخاصة بالمصدر. النقر المزدوج على الخلايا يفتح DAG كما هو.",
       provOffTitle: "إظهار رموز ƒ على الخلايا التي يمكن استكشاف مصدرها.",
       downloadXlsx: "تنزيل المصنّف", downloadXlsxTitle: "تنزيل دفتر القواعد في صورة مصنّف Excel (.xlsx)",
+      gearShowAs: "العرض", gearLanguage: "اللغة",
       navSearch: "تصفية الجداول والحقول…",
       navDerivedOnly: "المشتقة فقط",
       navNoMatch: "لا توجد نتائج.",
@@ -1325,16 +1337,16 @@
       openTable: (t) => `فتح الجدول «${t}» ←`,
       ruleCardTitle: "هذه الخلية هي قيمة قاعدة تصريحية واحدة",
       oneLineFnCardTitle: "هذه الخلية هي قيمة دالة واحدة ذات سطر واحد",
-      inRuleSpeak: "بترميز RuleSpeak®", inEnglish: "بلغة مبسّطة", asFormula: "في صورة صيغة",
+      inRuleSpeak: "بترميز التوثيق", inEnglish: "بلغة مبسّطة", asFormula: "في صورة صيغة",
       mechanicalFlag: "⚠︎ آلي", mechanicalTitle: "صياغة أمينة لكنها متكلّفة — إشارة إلى إعادة صياغة اختيارية",
       noRuleRendered: (t) => `لم تُنشأ قاعدة تصريحية لهذا الحقل (نوعه: ${t}).`,
       obligations: "الالتزامات",
-      ruleSpeakHintFormula: "هذا هو المنطق نفسه الذي تُرمّزه الصيغة، مكتوبًا في صورة قاعدة عمل — استخرجه محرّك RuleSpeak® المشترك من دفتر القواعد.",
-      ruleSpeakHintNoFormula: "استخرجه محرّك RuleSpeak® المشترك من دفتر القواعد.",
+      ruleSpeakHintFormula: "هذا هو المنطق نفسه الذي تُرمّزه الصيغة، مكتوبًا في صورة قاعدة عمل — استخرجه محرّك التوثيق المشترك من دفتر القواعد.",
+      ruleSpeakHintNoFormula: "استخرجه محرّك التوثيق المشترك من دفتر القواعد.",
       englishHint: "كل حقل مسطّر هو بدوره دالة ذات سطر واحد. انقر أيًّا منها للتعمّق.",
-      noFormulaSentence: (t) => `ليست لهذا الحقل (نوعه: ${t}) صيغة جدولية تُقرأ جملةً — فهو تجميع معرّف بنيويًا على علاقة. انتقل إلى <strong>RuleSpeak®</strong> لترى كيف يُعرَّف.`,
+      noFormulaSentence: (t) => `ليست لهذا الحقل (نوعه: ${t}) صيغة جدولية تُقرأ جملةً — فهو تجميع معرّف بنيويًا على علاقة. انتقل إلى <strong>التوثيق</strong> لترى كيف يُعرَّف.`,
       formulaHint: "كل شارة هي بدورها دالة ذات سطر واحد. انقر أي شارة للتعمّق.",
-      noFormulaAtAll: (t) => `ليست لهذا الحقل (نوعه: ${t}) صيغة جدولية — فهو تجميع معرّف بنيويًا على علاقة. انتقل إلى <strong>RuleSpeak®</strong> لترى كيف يُعرَّف.`,
+      noFormulaAtAll: (t) => `ليست لهذا الحقل (نوعه: ${t}) صيغة جدولية — فهو تجميع معرّف بنيويًا على علاقة. انتقل إلى <strong>التوثيق</strong> لترى كيف يُعرَّف.`,
       inputsTitle: "المدخلات", inputsLead: "الحقول التي تستدعيها هذه الدالة ذات السطر الواحد.",
       groundTruthInline: (dt) => `بيانات أصلية · نوع البيانات ${dt}`,
       consumersTitle: "المستهلِكات",
@@ -1347,7 +1359,7 @@
       hoverGroundTruth: (dt) => `بيانات أصلية — مكتوبة مباشرةً في قاعدة البيانات${dt ? ` (نوع البيانات <code>${dt}</code>)` : ""}.`,
       hoverRelPointer: "مؤشّر علاقة — الرابط الذي يتعلّق به سائر DAG.",
       hoverNoRule: "لم تُنشأ قاعدة تصريحية.",
-      hoverNoFormula: "لا صيغة — تجميع بنيوي. انظر RuleSpeak®.",
+      hoverNoFormula: "لا صيغة — تجميع بنيوي. انظر التوثيق.",
       hoverInputs: "المدخلات",
       hoverHint: "انقر الخلية نقرًا مزدوجًا لفتح صفحة DAG كاملة.",
       hoverOpenPage: "فتح الصفحة كاملة",
@@ -1389,7 +1401,7 @@
       back: "← kembali", backTitle: "Kembali satu langkah",
       home: "🏠 Beranda", homeTitle: "Tinggalkan penjelas — kembali ke aplikasi",
       tablesCrumb: "Tabel",
-      narrRulespeak: "RuleSpeak®", narrEnglish: "Pembacaan sederhana", narrFormula: "Rumus",
+      narrRulespeak: "Dokumentasi", narrEnglish: "Pembacaan sederhana", narrFormula: "Rumus",
       narrRulespeakHint: "Aturan bisnis deklaratif (hanya jika / harus / prioritas)",
       narrEnglishHint: "Rumus yang dibacakan sebagai kalimat sederhana",
       narrFormulaHint: "Rumus mentah bergaya lembar kerja, dengan kolom yang dapat diklik",
@@ -1399,7 +1411,7 @@
       gearPopTitle: "Tampilkan di kartu melayang dan di halaman",
       gearReset: "Aktifkan kembali semuanya",
       elemDesc: "Deskripsi", elemDescHint: "Deskripsi kolom dalam bahasa sehari-hari.",
-      elemRulespeak: "RuleSpeak®", elemRulespeakHint: "Aturan bisnis deklaratif.",
+      elemRulespeak: "Dokumentasi", elemRulespeakHint: "Aturan bisnis deklaratif.",
       elemEnglish: "Pembacaan sederhana", elemEnglishHint: "Rumus yang dibacakan sebagai kalimat sederhana.",
       elemFormula: "Rumus", elemFormulaHint: "Rumus mentah bergaya lembar kerja.",
       elemInputs: "Masukan", elemInputsHint: "Kolom yang dipanggil oleh fungsi satu baris ini.",
@@ -1408,6 +1420,7 @@
       provOnTitle: "Sembunyikan tanda asal-usul ƒ. Klik ganda pada sel tetap membuka DAG.",
       provOffTitle: "Tampilkan tanda asal-usul ƒ pada sel yang asal-usulnya dapat ditelusuri.",
       downloadXlsx: "Unduh buku kerja", downloadXlsxTitle: "Unduh buku aturan sebagai buku kerja Excel (.xlsx)",
+      gearShowAs: "Tampilkan sebagai", gearLanguage: "Bahasa",
       navSearch: "Saring tabel dan kolom…",
       navDerivedOnly: "Hanya turunan",
       navNoMatch: "Tidak ada yang cocok.",
@@ -1437,16 +1450,16 @@
       openTable: (t) => `Buka ${t} →`,
       ruleCardTitle: "Sel ini adalah nilai dari satu aturan deklaratif",
       oneLineFnCardTitle: "Sel ini adalah nilai dari satu fungsi satu baris",
-      inRuleSpeak: "Dalam RuleSpeak®", inEnglish: "Dalam kata-kata sederhana", asFormula: "Sebagai rumus",
+      inRuleSpeak: "Dalam Dokumentasi", inEnglish: "Dalam kata-kata sederhana", asFormula: "Sebagai rumus",
       mechanicalFlag: "⚠︎ mekanis", mechanicalTitle: "Rumusan yang setia tetapi kaku — isyarat untuk penyuntingan ulang yang opsional",
       noRuleRendered: (t) => `Tidak ada aturan deklaratif yang disusun untuk kolom berjenis ${t} ini.`,
       obligations: "Kewajiban",
-      ruleSpeakHintFormula: "Ini logika yang sama dengan yang dikandung rumus, ditulis sebagai aturan bisnis — disusun dari buku aturan oleh mesin RuleSpeak® bersama.",
-      ruleSpeakHintNoFormula: "Disusun dari buku aturan oleh mesin RuleSpeak® bersama.",
+      ruleSpeakHintFormula: "Ini logika yang sama dengan yang dikandung rumus, ditulis sebagai aturan bisnis — disusun dari buku aturan oleh mesin Dokumentasi bersama.",
+      ruleSpeakHintNoFormula: "Disusun dari buku aturan oleh mesin Dokumentasi bersama.",
       englishHint: "Setiap kolom yang bergaris bawah juga merupakan fungsi satu baris. Klik salah satunya untuk menelusuri lebih dalam.",
-      noFormulaSentence: (t) => `Kolom berjenis ${t} ini tidak memiliki rumus lembar kerja untuk dibacakan sebagai kalimat — kolom ini adalah agregasi yang didefinisikan secara struktural di atas sebuah relasi. Beralihlah ke <strong>RuleSpeak®</strong> untuk melihat definisinya.`,
+      noFormulaSentence: (t) => `Kolom berjenis ${t} ini tidak memiliki rumus lembar kerja untuk dibacakan sebagai kalimat — kolom ini adalah agregasi yang didefinisikan secara struktural di atas sebuah relasi. Beralihlah ke <strong>Dokumentasi</strong> untuk melihat definisinya.`,
       formulaHint: "Setiap label juga merupakan fungsi satu baris. Klik salah satunya untuk menelusuri lebih dalam.",
-      noFormulaAtAll: (t) => `Kolom berjenis ${t} ini tidak memiliki rumus lembar kerja — kolom ini adalah agregasi yang didefinisikan secara struktural di atas sebuah relasi. Beralihlah ke <strong>RuleSpeak®</strong> untuk melihat definisinya.`,
+      noFormulaAtAll: (t) => `Kolom berjenis ${t} ini tidak memiliki rumus lembar kerja — kolom ini adalah agregasi yang didefinisikan secara struktural di atas sebuah relasi. Beralihlah ke <strong>Dokumentasi</strong> untuk melihat definisinya.`,
       inputsTitle: "Masukan", inputsLead: "Kolom yang dipanggil oleh fungsi satu baris ini.",
       groundTruthInline: (dt) => `Fakta dasar · tipe data ${dt}`,
       consumersTitle: "Pemakai",
@@ -1459,7 +1472,7 @@
       hoverGroundTruth: (dt) => `Fakta dasar — ditulis langsung ke basis data${dt ? ` (tipe data <code>${dt}</code>)` : ""}.`,
       hoverRelPointer: "Penunjuk relasi — tautan tempat seluruh bagian lain DAG bergantung.",
       hoverNoRule: "Tidak ada aturan deklaratif yang disusun.",
-      hoverNoFormula: "Tanpa rumus — agregasi struktural. Lihat RuleSpeak®.",
+      hoverNoFormula: "Tanpa rumus — agregasi struktural. Lihat Dokumentasi.",
       hoverInputs: "Masukan",
       hoverHint: "Klik ganda pada sel untuk membuka halaman DAG lengkap.",
       hoverOpenPage: "Buka halaman lengkap",
@@ -1503,7 +1516,7 @@
       back: "← 뒤로", backTitle: "한 단계 뒤로 이동",
       home: "🏠 홈", homeTitle: "익스플레이너를 나가 앱으로 돌아가기",
       tablesCrumb: "테이블",
-      narrRulespeak: "RuleSpeak®", narrEnglish: "풀어 읽기", narrFormula: "수식",
+      narrRulespeak: "문서", narrEnglish: "풀어 읽기", narrFormula: "수식",
       narrRulespeakHint: "선언적 비즈니스 규칙(경우에만 / 해야 합니다 / 우선순위)",
       narrEnglishHint: "수식을 평이한 문장으로 읽은 것",
       narrFormulaHint: "클릭할 수 있는 필드가 포함된, 스프레드시트 형식의 원본 수식",
@@ -1513,7 +1526,7 @@
       gearPopTitle: "팝업과 페이지에 표시할 항목",
       gearReset: "모두 켜기로 되돌리기",
       elemDesc: "설명", elemDescHint: "필드에 대한 평이한 설명입니다.",
-      elemRulespeak: "RuleSpeak®", elemRulespeakHint: "선언적 비즈니스 규칙입니다.",
+      elemRulespeak: "문서", elemRulespeakHint: "선언적 비즈니스 규칙입니다.",
       elemEnglish: "풀어 읽기", elemEnglishHint: "수식을 평이한 문장으로 소리 내어 읽은 것입니다.",
       elemFormula: "수식", elemFormulaHint: "스프레드시트 형식의 원본 수식입니다.",
       elemInputs: "입력", elemInputsHint: "이 한 줄 함수가 호출하는 필드입니다.",
@@ -1522,6 +1535,7 @@
       provOnTitle: "ƒ 출처 표시를 숨깁니다. 셀을 더블클릭하면 여전히 DAG가 열립니다.",
       provOffTitle: "출처를 살펴볼 수 있는 셀에 ƒ 출처 표시를 나타냅니다.",
       downloadXlsx: "통합 문서 내려받기", downloadXlsxTitle: "룰북을 Excel 통합 문서(.xlsx)로 내려받기",
+      gearShowAs: "표시 방식", gearLanguage: "언어",
       navSearch: "테이블과 필드 필터…",
       navDerivedOnly: "파생만",
       navNoMatch: "일치하는 항목이 없습니다.",
@@ -1551,16 +1565,16 @@
       openTable: (t) => `${t} 테이블 열기 →`,
       ruleCardTitle: "이 셀은 하나의 선언적 규칙의 값입니다",
       oneLineFnCardTitle: "이 셀은 하나의 한 줄 함수의 값입니다",
-      inRuleSpeak: "RuleSpeak® 표현", inEnglish: "쉬운 말로", asFormula: "수식으로",
+      inRuleSpeak: "문서 표현", inEnglish: "쉬운 말로", asFormula: "수식으로",
       mechanicalFlag: "⚠︎ 기계적 표현", mechanicalTitle: "정확하지만 어색한 표현 — 원하면 문장을 다듬어도 좋다는 표시",
       noRuleRendered: (t) => `이 필드(${t})에는 선언적 규칙이 생성되지 않았습니다.`,
       obligations: "의무 규칙",
-      ruleSpeakHintFormula: "수식이 담고 있는 것과 같은 논리를 비즈니스 규칙으로 풀어 쓴 것입니다. 공용 RuleSpeak® 엔진이 룰북에서 생성했습니다.",
-      ruleSpeakHintNoFormula: "공용 RuleSpeak® 엔진이 룰북에서 생성했습니다.",
+      ruleSpeakHintFormula: "수식이 담고 있는 것과 같은 논리를 비즈니스 규칙으로 풀어 쓴 것입니다. 공용 문서 엔진이 룰북에서 생성했습니다.",
+      ruleSpeakHintNoFormula: "공용 문서 엔진이 룰북에서 생성했습니다.",
       englishHint: "밑줄 그어진 각 필드도 그 자체로 한 줄 함수입니다. 클릭하면 자세히 볼 수 있습니다.",
-      noFormulaSentence: (t) => `이 필드(${t})에는 문장으로 읽을 스프레드시트 수식이 없습니다. 관계를 바탕으로 구조적으로 정의된 집계입니다. 정의를 보려면 <strong>RuleSpeak®</strong>로 전환하십시오.`,
+      noFormulaSentence: (t) => `이 필드(${t})에는 문장으로 읽을 스프레드시트 수식이 없습니다. 관계를 바탕으로 구조적으로 정의된 집계입니다. 정의를 보려면 <strong>문서</strong>로 전환하십시오.`,
       formulaHint: "각 칩도 그 자체로 한 줄 함수입니다. 칩을 클릭하면 자세히 볼 수 있습니다.",
-      noFormulaAtAll: (t) => `이 필드(${t})에는 스프레드시트 수식이 없습니다. 관계를 바탕으로 구조적으로 정의된 집계입니다. 정의를 보려면 <strong>RuleSpeak®</strong>로 전환하십시오.`,
+      noFormulaAtAll: (t) => `이 필드(${t})에는 스프레드시트 수식이 없습니다. 관계를 바탕으로 구조적으로 정의된 집계입니다. 정의를 보려면 <strong>문서</strong>로 전환하십시오.`,
       inputsTitle: "입력", inputsLead: "이 한 줄 함수가 호출하는 필드입니다.",
       groundTruthInline: (dt) => `원천 데이터 · 데이터 유형 ${dt}`,
       consumersTitle: "사용처",
@@ -1573,7 +1587,7 @@
       hoverGroundTruth: (dt) => `원천 데이터 — 데이터베이스에 직접 기록됩니다${dt ? `(데이터 유형 <code>${dt}</code>)` : ""}.`,
       hoverRelPointer: "관계 포인터 — DAG의 나머지 부분이 이 링크에 연결됩니다.",
       hoverNoRule: "생성된 선언적 규칙이 없습니다.",
-      hoverNoFormula: "수식 없음 — 구조적 집계입니다. RuleSpeak®를 참조하십시오.",
+      hoverNoFormula: "수식 없음 — 구조적 집계입니다. 문서를 참조하십시오.",
       hoverInputs: "입력",
       hoverHint: "셀을 더블클릭하면 전체 DAG 페이지가 열립니다.",
       hoverOpenPage: "전체 페이지 열기",
@@ -1615,7 +1629,7 @@
       back: "← geri", backTitle: "Bir adım geri dön",
       home: "🏠 Ana sayfa", homeTitle: "Açıklayıcıdan çık — uygulamaya geri dön",
       tablesCrumb: "Tablolar",
-      narrRulespeak: "RuleSpeak®", narrEnglish: "Yalın okuma", narrFormula: "Formül",
+      narrRulespeak: "Dokümantasyon", narrEnglish: "Yalın okuma", narrFormula: "Formül",
       narrRulespeakHint: "Bildirimsel iş kuralı (yalnızca … ise / zorundadır / öncelik)",
       narrEnglishHint: "Formülün yalın bir cümle olarak okunuşu",
       narrFormulaHint: "Tıklanabilir alanlarla birlikte ham, elektronik tablo tarzı formül",
@@ -1625,7 +1639,7 @@
       gearPopTitle: "Açılır pencerede ve sayfada göster",
       gearReset: "Tümünü açık hale getir",
       elemDesc: "Açıklama", elemDescHint: "Alanın yalın dildeki açıklaması.",
-      elemRulespeak: "RuleSpeak®", elemRulespeakHint: "Bildirimsel iş kuralı.",
+      elemRulespeak: "Dokümantasyon", elemRulespeakHint: "Bildirimsel iş kuralı.",
       elemEnglish: "Yalın okuma", elemEnglishHint: "Formülün yalın bir cümle olarak okunuşu.",
       elemFormula: "Formül", elemFormulaHint: "Ham, elektronik tablo tarzı formül.",
       elemInputs: "Girdiler", elemInputsHint: "Bu tek satırlık işlevin çağırdığı alanlar.",
@@ -1634,6 +1648,7 @@
       provOnTitle: "ƒ köken simgelerini gizle. Hücrelere çift tıklamak yine de DAG sayfasını açar.",
       provOffTitle: "İncelenebilir kökeni olan hücrelerde ƒ köken simgelerini göster.",
       downloadXlsx: "Çalışma kitabını indir", downloadXlsxTitle: "Kural kitabını Excel çalışma kitabı (.xlsx) olarak indir",
+      gearShowAs: "Şöyle göster", gearLanguage: "Dil",
       navSearch: "Tabloları ve alanları süz…",
       navDerivedOnly: "Yalnızca türetilmiş",
       navNoMatch: "Eşleşen yok.",
@@ -1663,16 +1678,16 @@
       openTable: (t) => `${t} tablosunu aç →`,
       ruleCardTitle: "Bu hücre, bir bildirimsel kuralın değeridir",
       oneLineFnCardTitle: "Bu hücre, tek satırlık bir işlevin değeridir",
-      inRuleSpeak: "RuleSpeak® ile", inEnglish: "Yalın sözlerle", asFormula: "Formül olarak",
+      inRuleSpeak: "Dokümantasyon ile", inEnglish: "Yalın sözlerle", asFormula: "Formül olarak",
       mechanicalFlag: "⚠︎ mekanik", mechanicalTitle: "Aslına sadık ama hantal ifade — isteğe bağlı bir yeniden yazım turu için işaret",
       noRuleRendered: (t) => `“${t}” tablosundaki bu alan için bildirimsel kural üretilmedi.`,
       obligations: "Yükümlülükler",
-      ruleSpeakHintFormula: "Formülün kodladığı mantığın aynısı, iş kuralı olarak yazılmış hâliyle — kural kitabından ortak RuleSpeak® motoru tarafından üretilir.",
-      ruleSpeakHintNoFormula: "Kural kitabından ortak RuleSpeak® motoru tarafından üretilir.",
+      ruleSpeakHintFormula: "Formülün kodladığı mantığın aynısı, iş kuralı olarak yazılmış hâliyle — kural kitabından ortak Dokümantasyon motoru tarafından üretilir.",
+      ruleSpeakHintNoFormula: "Kural kitabından ortak Dokümantasyon motoru tarafından üretilir.",
       englishHint: "Altı çizili her alan kendi başına tek satırlık bir işlevdir. İncelemek için herhangi birine tıklayın.",
-      noFormulaSentence: (t) => `“${t}” tablosundaki bu alanın cümle olarak okunabilecek bir elektronik tablo formülü yoktur — bir ilişki üzerinden yapısal olarak tanımlanmış bir özettir. Nasıl tanımlandığını görmek için <strong>RuleSpeak®</strong> görünümüne geçin.`,
+      noFormulaSentence: (t) => `“${t}” tablosundaki bu alanın cümle olarak okunabilecek bir elektronik tablo formülü yoktur — bir ilişki üzerinden yapısal olarak tanımlanmış bir özettir. Nasıl tanımlandığını görmek için <strong>Dokümantasyon</strong> görünümüne geçin.`,
       formulaHint: "Her etiket kendi başına tek satırlık bir işlevdir. İncelemek için herhangi bir etikete tıklayın.",
-      noFormulaAtAll: (t) => `“${t}” tablosundaki bu alanın elektronik tablo formülü yoktur — bir ilişki üzerinden yapısal olarak tanımlanmış bir özettir. Nasıl tanımlandığını görmek için <strong>RuleSpeak®</strong> görünümüne geçin.`,
+      noFormulaAtAll: (t) => `“${t}” tablosundaki bu alanın elektronik tablo formülü yoktur — bir ilişki üzerinden yapısal olarak tanımlanmış bir özettir. Nasıl tanımlandığını görmek için <strong>Dokümantasyon</strong> görünümüne geçin.`,
       inputsTitle: "Girdiler", inputsLead: "Bu tek satırlık işlevin çağırdığı alanlar.",
       groundTruthInline: (dt) => `Temel veri · veri türü ${dt}`,
       consumersTitle: "Tüketiciler",
@@ -1685,7 +1700,7 @@
       hoverGroundTruth: (dt) => `Temel veri — doğrudan veritabanına yazılır${dt ? ` (veri türü <code>${dt}</code>)` : ""}.`,
       hoverRelPointer: "İlişki referansı — DAG yapısının geri kalanının bağlandığı bağlantı.",
       hoverNoRule: "Bildirimsel kural üretilmedi.",
-      hoverNoFormula: "Formül yok — yapısal bir özet. Bkz. RuleSpeak®.",
+      hoverNoFormula: "Formül yok — yapısal bir özet. Bkz. Dokümantasyon.",
       hoverInputs: "Girdiler",
       hoverHint: "Tam DAG sayfasını açmak için hücreye çift tıklayın.",
       hoverOpenPage: "Tam sayfayı aç",
@@ -1727,7 +1742,7 @@
       back: "← quay lại", backTitle: "Quay lại một bước",
       home: "🏠 Trang chủ", homeTitle: "Rời trang giải thích — quay lại ứng dụng",
       tablesCrumb: "Bảng",
-      narrRulespeak: "RuleSpeak®", narrEnglish: "Cách đọc thông thường", narrFormula: "Công thức",
+      narrRulespeak: "Tài liệu", narrEnglish: "Cách đọc thông thường", narrFormula: "Công thức",
       narrRulespeakHint: "Quy tắc nghiệp vụ dạng khai báo (chỉ khi / phải / thứ tự ưu tiên)",
       narrEnglishHint: "Công thức được đọc thành một câu thông thường",
       narrFormulaHint: "Công thức gốc kiểu bảng tính, kèm các trường bấm được",
@@ -1737,7 +1752,7 @@
       gearPopTitle: "Hiển thị trong thẻ xem nhanh và trên trang",
       gearReset: "Bật lại tất cả",
       elemDesc: "Mô tả", elemDescHint: "Mô tả của trường bằng lời thông thường.",
-      elemRulespeak: "RuleSpeak®", elemRulespeakHint: "Quy tắc nghiệp vụ dạng khai báo.",
+      elemRulespeak: "Tài liệu", elemRulespeakHint: "Quy tắc nghiệp vụ dạng khai báo.",
       elemEnglish: "Cách đọc thông thường", elemEnglishHint: "Công thức được đọc thành một câu thông thường.",
       elemFormula: "Công thức", elemFormulaHint: "Công thức gốc kiểu bảng tính.",
       elemInputs: "Đầu vào", elemInputsHint: "Các trường mà hàm một dòng này gọi đến.",
@@ -1746,6 +1761,7 @@
       provOnTitle: "Ẩn các ký hiệu nguồn gốc ƒ. Bấm đúp vào ô vẫn mở được DAG.",
       provOffTitle: "Hiện ký hiệu nguồn gốc ƒ trên những ô có nguồn gốc xem được.",
       downloadXlsx: "Tải sổ làm việc", downloadXlsxTitle: "Tải bộ quy tắc về dưới dạng sổ làm việc Excel (.xlsx)",
+      gearShowAs: "Hiển thị dạng", gearLanguage: "Ngôn ngữ",
       navSearch: "Lọc bảng và trường…",
       navDerivedOnly: "Chỉ trường suy ra",
       navNoMatch: "Không có kết quả.",
@@ -1775,17 +1791,17 @@
       openTable: (t) => `Mở bảng ${t} →`,
       ruleCardTitle: "Ô này là giá trị của một quy tắc khai báo",
       oneLineFnCardTitle: "Ô này là giá trị của một hàm một dòng",
-      inRuleSpeak: "Theo RuleSpeak®", inEnglish: "Bằng lời thông thường", asFormula: "Dưới dạng công thức",
+      inRuleSpeak: "Theo Tài liệu", inEnglish: "Bằng lời thông thường", asFormula: "Dưới dạng công thức",
       mechanicalFlag: "⚠︎ máy móc", mechanicalTitle: "Cách diễn đạt trung thành nhưng còn vụng — gợi ý cho một lượt biên tập lại (không bắt buộc)",
       // `t` is the field kind as the rulebook spells it ("lookup"), so it follows the head noun "loại".
       noRuleRendered: (t) => `Không có quy tắc khai báo nào được sinh ra cho trường thuộc loại ${t} này.`,
       obligations: "Nghĩa vụ",
-      ruleSpeakHintFormula: "Đây chính là logic mà công thức thể hiện, được viết thành một quy tắc nghiệp vụ — do bộ máy RuleSpeak® dùng chung sinh ra từ bộ quy tắc.",
-      ruleSpeakHintNoFormula: "Do bộ máy RuleSpeak® dùng chung sinh ra từ bộ quy tắc.",
+      ruleSpeakHintFormula: "Đây chính là logic mà công thức thể hiện, được viết thành một quy tắc nghiệp vụ — do bộ máy Tài liệu dùng chung sinh ra từ bộ quy tắc.",
+      ruleSpeakHintNoFormula: "Do bộ máy Tài liệu dùng chung sinh ra từ bộ quy tắc.",
       englishHint: "Mỗi trường được gạch chân cũng là một hàm một dòng. Bấm vào trường bất kỳ để xem chi tiết.",
-      noFormulaSentence: (t) => `Trường thuộc loại ${t} này không có công thức bảng tính nào để đọc thành câu — đây là một phép tổng hợp được định nghĩa theo cấu trúc trên một quan hệ. Chuyển sang <strong>RuleSpeak®</strong> để xem định nghĩa của nó.`,
+      noFormulaSentence: (t) => `Trường thuộc loại ${t} này không có công thức bảng tính nào để đọc thành câu — đây là một phép tổng hợp được định nghĩa theo cấu trúc trên một quan hệ. Chuyển sang <strong>Tài liệu</strong> để xem định nghĩa của nó.`,
       formulaHint: "Mỗi thẻ cũng là một hàm một dòng. Bấm vào thẻ bất kỳ để xem chi tiết.",
-      noFormulaAtAll: (t) => `Trường thuộc loại ${t} này không có công thức bảng tính — đây là một phép tổng hợp được định nghĩa theo cấu trúc trên một quan hệ. Chuyển sang <strong>RuleSpeak®</strong> để xem định nghĩa của nó.`,
+      noFormulaAtAll: (t) => `Trường thuộc loại ${t} này không có công thức bảng tính — đây là một phép tổng hợp được định nghĩa theo cấu trúc trên một quan hệ. Chuyển sang <strong>Tài liệu</strong> để xem định nghĩa của nó.`,
       inputsTitle: "Đầu vào", inputsLead: "Các trường mà hàm một dòng này gọi đến.",
       groundTruthInline: (dt) => `Dữ liệu gốc · kiểu dữ liệu ${dt}`,
       consumersTitle: "Nơi sử dụng",
@@ -1798,7 +1814,7 @@
       hoverGroundTruth: (dt) => `Dữ liệu gốc — được ghi trực tiếp vào cơ sở dữ liệu${dt ? ` (kiểu dữ liệu <code>${dt}</code>)` : ""}.`,
       hoverRelPointer: "Con trỏ quan hệ — mối liên kết mà phần còn lại của DAG bám vào.",
       hoverNoRule: "Không có quy tắc khai báo nào được sinh ra.",
-      hoverNoFormula: "Không có công thức — đây là một phép tổng hợp theo cấu trúc. Xem RuleSpeak®.",
+      hoverNoFormula: "Không có công thức — đây là một phép tổng hợp theo cấu trúc. Xem Tài liệu.",
       hoverInputs: "Đầu vào",
       hoverHint: "Bấm đúp vào ô để mở trang DAG đầy đủ.",
       hoverOpenPage: "Mở trang đầy đủ",
@@ -1848,6 +1864,50 @@
   // the word in "The case's case status is ..."), so a sentence about a row never has
   // to say "this row" (owner, 2026-11-22). Taken in the language `key`'s words are
   // written in, which is English wherever this language has no words for it yet.
+  // ── Language ────────────────────────────────────────────────────────────
+  //  The languages a page can be in are the ones the build baked (-p languages=...): the
+  //  page's own texts exist in all of them, but the rules are only in the baked ones, and a
+  //  page must not say German around English rules. The choice is remembered, and an
+  //  address's ?lang= wins for the page it opens.
+  const LANG_KEY = "effortless-explainer-lang";
+  const NATIVE = {
+    en: "English", ja: "日本語", de: "Deutsch", es: "Español", fr: "Français", pt: "Português", it: "Italiano", nl: "Nederlands",
+    ru: "Русский", zh: "中文", hi: "हिन्दी", ar: "العربية", id: "Bahasa Indonesia", ko: "한국어", tr: "Türkçe", vi: "Tiếng Việt",
+  };
+  function availableLanguages() {
+    const baked = Object.keys((global.__EFFORTLESS_EXPLAINER__ || {}).rulespeakByLang || {});
+    const have = Object.keys(CHROME).filter((c) => baked.includes(c));
+    return have.length ? have : ["en"];
+  }
+  function preferredLanguage() {
+    const ok = (c) => c && CHROME[c] && availableLanguages().includes(c);
+    let asked = null;
+    try { asked = (/[?&]lang=([A-Za-z-]+)/.exec(window.location.search || "") || [])[1] || null; } catch { /* no address */ }
+    if (ok(asked)) return asked;
+    let kept = null;
+    try { kept = localStorage.getItem(LANG_KEY); } catch { /* no storage */ }
+    return ok(kept) ? kept : "en";
+  }
+  function setLanguage(code) {
+    if (!CHROME[code] || !availableLanguages().includes(code)) {
+      throw new Error(`EffortlessExplainer.setLanguage: "${code}" is not baked into this page. It has: ${availableLanguages().join(", ")}. Build with -p languages=all (or a list) to offer more.`);
+    }
+    lang = code;
+    try { localStorage.setItem(LANG_KEY, code); } catch { /* no storage: this page only */ }
+    routing = null; ensureRouting();      // its links to the explainer's own page carry the language
+    // The page is ours to dress only when it is the explainer's own (it has the outlet); a
+    // host's page keeps its own <html lang>.
+    if (document.getElementById && document.getElementById("effortless-explainer-outlet")) {
+      document.documentElement.lang = code;
+      document.documentElement.dir = RTL.has(code) ? "rtl" : "ltr";
+      try {
+        const u = new URL(window.location.href); u.searchParams.set("lang", code);
+        window.history.replaceState(null, "", u.toString());
+      } catch { /* no address to carry it */ }
+    }
+    window.dispatchEvent(new Event(PREFS_EVENT));   // the page, the corner control: say it again
+  }
+
   function rowNoun(table, key) {
     if (!table) return null;
     const said = CHROME[lang] && key in CHROME[lang] ? lang : "en";
@@ -1914,9 +1974,8 @@
     const named = config && config.basePath && config.basePath !== "/rulebook-explainer-dag" ? config.basePath : null;
     return String(named || SELF_BASE || (config && config.basePath) || "/rulebook-explainer-dag").replace(/\/$/, "");
   }
-  function ensureRouting() {
-    if (routing) return routing;
-    routing = global.EffortlessExplainerRouting.createRouting({
+  function buildRouting() {
+    return global.EffortlessExplainerRouting.createRouting({
       mode: (config && config.mode) || "hash",
       lang,
       ownBase: ownBase(),
@@ -1929,6 +1988,10 @@
       htmxFieldUrl: config && config.htmxFieldUrl,
       routing: config && config.routing,
     });
+  }
+  function ensureRouting() {
+    if (routing) return routing;
+    routing = buildRouting();
     return routing;
   }
 
@@ -2539,12 +2602,15 @@
   // The global 3-way RuleSpeak®·English·Formula segmented control. Built fresh
   // per render (not a module-level constant) so it always reflects the
   // current `lang`.
-  function narrationOptions() {
-    return [
+  // The slider offers the two readings a person switches between; Formula, and everything
+  // else, is in the gear (narrationOptions(true) is all three).
+  function narrationOptions(all) {
+    const opts = [
       { value: "rulespeak", label: tt("narrRulespeak"), hint: tt("narrRulespeakHint") },
       { value: "english",   label: tt("narrEnglish"),   hint: tt("narrEnglishHint") },
       { value: "formula",   label: tt("narrFormula"),   hint: tt("narrFormulaHint") },
     ];
+    return all ? opts : opts.filter((o) => o.value !== "formula");
   }
   function renderNarrationSlider() {
     const seg = document.createElement("div");
@@ -2586,8 +2652,49 @@
       pop = document.createElement("div");
       pop.className = "dag-gear-pop";
       const title = document.createElement("div");
-      title.className = "dag-gear-pop-title"; title.textContent = tt("gearPopTitle");
+      title.className = "dag-gear-pop-title"; title.textContent = tt("gearAriaLabel");
       pop.appendChild(title);
+
+      // Show as: Docs / Simple / Formula (the slider has the first two).
+      const showTitle = document.createElement("div");
+      showTitle.className = "dag-gear-section"; showTitle.textContent = tt("gearShowAs");
+      pop.appendChild(showTitle);
+      const mode = prefs.narrationMode();
+      for (const o of narrationOptions(true)) {
+        const label = document.createElement("label");
+        label.className = "dag-gear-opt";
+        const r = document.createElement("input");
+        r.type = "radio"; r.name = "dag-narration"; r.checked = mode === o.value;
+        r.onchange = () => prefs.setNarrationMode(o.value);
+        const lab = document.createElement("span");
+        lab.className = "dag-gear-opt-label"; lab.textContent = o.label;
+        const hint = document.createElement("span");
+        hint.className = "dag-gear-opt-hint"; hint.textContent = o.hint;
+        label.appendChild(r); label.appendChild(lab); label.appendChild(hint);
+        pop.appendChild(label);
+      }
+
+      // Language: the ones this page was built with, each in its own name.
+      const langs = availableLanguages();
+      if (langs.length > 1) {
+        const langTitle = document.createElement("div");
+        langTitle.className = "dag-gear-section"; langTitle.textContent = tt("gearLanguage");
+        pop.appendChild(langTitle);
+        const sel = document.createElement("select");
+        sel.className = "dag-gear-lang"; sel.setAttribute("aria-label", tt("gearLanguage"));
+        for (const code of langs) {
+          const o = document.createElement("option");
+          o.value = code; o.textContent = NATIVE[code] || code;
+          if (code === lang) o.selected = true;
+          sel.appendChild(o);
+        }
+        sel.onchange = () => setLanguage(sel.value);
+        pop.appendChild(sel);
+      }
+
+      const elemTitle = document.createElement("div");
+      elemTitle.className = "dag-gear-section"; elemTitle.textContent = tt("gearPopTitle");
+      pop.appendChild(elemTitle);
       const elems = prefs.docElements();
       for (const d of DOC_ELEMENTS) {
         const label = document.createElement("label");
@@ -3629,20 +3736,8 @@
     if (config.provenance != null && config.provenance !== "on" && config.provenance !== "off") {
       throw new Error(`EffortlessExplainer.init: provenance ${JSON.stringify(config.provenance)} is not a starting value. Use one of: on, off.`);
     }
-    lang = CHROME[config.lang] ? config.lang : "en";
-    routing = global.EffortlessExplainerRouting.createRouting({
-      mode: config.mode || "hash",
-      lang,
-      ownBase: ownBase(),
-      ownPage: config.ownPage,
-      hashPrefix: config.hashPrefix,
-      fieldPath: config.fieldPath,
-      tablePath: config.tablePath,
-      indexPath: config.indexPath,
-      homePath: config.homePath,
-      htmxFieldUrl: config.htmxFieldUrl,
-      routing: config.routing,
-    });
+    lang = CHROME[config.lang] ? config.lang : preferredLanguage();
+    routing = buildRouting();
 
     // The witness: the folder holding rulebook-to-typescript's output (and, for an
     // app's live rows instead of the rulebook's, `rows`). Nothing is fetched until
@@ -3705,6 +3800,7 @@
     setGlyphsOn,
     mountToggle,
     cornerHtml,
+    renderGear, renderNarrationSlider, availableLanguages, preferredLanguage, setLanguage, language: () => lang,
     shellWanted, groupTables, navHtml, navGroupsHtml, navFilter, fieldTabsHtml, fieldKind, graphSvg, indexViewsHtml, indexBodyHtml,
     rerenderCurrent,
     hoverCardHtml,

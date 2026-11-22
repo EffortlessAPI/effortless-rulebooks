@@ -2916,7 +2916,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -3491,6 +3506,8991 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "LanguageCandidates": "language candidate",
+      "IsEverythingALanguage": "is everything a language",
+      "HockettFeatures": "hockett feature",
+      "HockettAssessments": "hockett assessment",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "ar": {
+    "fields": {
+      "LanguageCandidates.HasGrammar": {
+        "table": "LanguageCandidates",
+        "field": "HasGrammar",
+        "kind": "formula",
+        "rule": "يُعدّ سجل «language candidate» حائزًا على «grammar» إذا تحقق أنّ حقل «has syntax» يساوي صحيح.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          }
+        ],
+        "structure": null,
+        "plain": "Has syntax يساوي true()"
+      },
+      "LanguageCandidates.Question": {
+        "table": "LanguageCandidates",
+        "field": "Question",
+        "kind": "formula",
+        "rule": "حقل «question» في سجل «language candidate» يُحسب على النحو الآتي: «Is »، ثم حقل «name»، ثم « a language?».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Is \" يليه name) يليه \" a language?\""
+      },
+      "LanguageCandidates.PredictedAnswer": {
+        "table": "LanguageCandidates",
+        "field": "PredictedAnswer",
+        "kind": "formula",
+        "rule": "يوسم سجل «language candidate» بعلامة «predicted answer» إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «syntax» مفعّلة، وعلامة «parsed» مفعّلة، وعلامة «description of» مفعّلة، وعلامة «linear decoding pressure» مفعّلة، وعلامة «resolves to an AST» مفعّلة، وعلامة «stable ontology reference» مفعّلة، وعلامة «can be held» غير مفعّلة، وعلامة «identity» غير مفعّلة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يوسم سجل «language candidate» بعلامة «predicted answer» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "علامة «syntax» مفعّلة"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "علامة «parsed» مفعّلة"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "علامة «description of» مفعّلة"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "علامة «linear decoding pressure» مفعّلة"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "علامة «resolves to an AST» مفعّلة"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "علامة «stable ontology reference» مفعّلة"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "علامة «can be held» غير مفعّلة"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "علامة «identity» غير مفعّلة"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Has syntax، وis parsed، وis description of، وhas linear decoding pressure، وresolves to an AST، وis stable ontology reference، والشرط (can be held) غير متحقق، والشرط (has identity) غير متحقق"
+      },
+      "LanguageCandidates.PredictionPredicates": {
+        "table": "LanguageCandidates",
+        "field": "PredictionPredicates",
+        "kind": "formula",
+        "rule": "حقل «prediction predicates» في سجل «language candidate» يُحسب على النحو الآتي: «Has Syntax» إذا تحقق أنّ علامة «syntax» مفعّلة، وفي سائر الحالات «No Syntax»، ثم « & »، ثم «Requires Parsing» إذا تحقق أنّ علامة «parsed» مفعّلة، وفي سائر الحالات «No Parsing Neede»، ثم « & »، ثم «Describes the thing» إذا تحقق أنّ علامة «description of» مفعّلة، وفي سائر الحالات «Is the Thing»، ثم « & »، ثم «Has Linear Decoding Pressure» إذا تحقق أنّ علامة «linear decoding pressure» مفعّلة، وفي سائر الحالات «No Decoding Pressure»، ثم « & »، ثم «Resolves to AST» إذا تحقق أنّ علامة «resolves to an AST» مفعّلة، وفي سائر الحالات «No AST»، ثم فاصلة تليها مسافة، ثم «Is Stable Ontology» إذا تحقق أنّ علامة «stable ontology reference» مفعّلة، وفي سائر الحالات «Not 'Ontology'»، ثم « AND »، ثم «Can Be Held» إذا تحقق أنّ علامة «can be held» مفعّلة، وفي سائر الحالات «Can't Be Held»، ثم فاصلة تليها مسافة، ثم «Has Identity» إذا تحقق أنّ علامة «identity» مفعّلة، وفي سائر الحالات «Has no Identity».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((((((((((إذا تحقق أنّ has syntax فالناتج \"Has Syntax\"، وإلا فالناتج \"No Syntax\" يليه \" & \") يليه إذا تحقق أنّ is parsed فالناتج \"Requires Parsing\"، وإلا فالناتج \"No Parsing Neede\") يليه \" & \") يليه إذا تحقق أنّ is description of فالناتج \"Describes the thing\"، وإلا فالناتج \"Is the Thing\") يليه \" & \") يليه إذا تحقق أنّ has linear decoding pressure فالناتج \"Has Linear Decoding Pressure\"، وإلا فالناتج \"No Decoding Pressure\") يليه \" & \") يليه إذا تحقق أنّ resolves to an AST فالناتج \"Resolves to AST\"، وإلا فالناتج \"No AST\") يليه \", \") يليه إذا تحقق أنّ is stable ontology reference فالناتج \"Is Stable Ontology\"، وإلا فالناتج \"Not 'Ontology'\") يليه \" AND \") يليه إذا تحقق أنّ can be held فالناتج \"Can Be Held\"، وإلا فالناتج \"Can't Be Held\") يليه \", \") يليه إذا تحقق أنّ has identity فالناتج \"Has Identity\"، وإلا فالناتج \"Has no Identity\""
+      },
+      "LanguageCandidates.PredictionFail": {
+        "table": "LanguageCandidates",
+        "field": "PredictionFail",
+        "kind": "formula",
+        "rule": "حقل «prediction fail» في سجل «language candidate» يُحسب على النحو الآتي: حقل «name»، ثم مسافة، ثم «Is» إذا تحقق أنّ علامة «predicted answer» مفعّلة، وفي سائر الحالات «Isn't»، ثم « a Family Feud Language, but »، ثم «Is» إذا تحقق أنّ علامة «language» مفعّلة، وفي سائر الحالات «Is Not»، ثم « marked as a 'Language Candidate.'»، ثم « - Open World vs. Closed World Conflict.».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsLanguage",
+            "label": "is language"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenClosedWorldConflicted",
+            "label": "is open closed world conflicted"
+          }
+        ],
+        "structure": null,
+        "plain": "إذا تحقق أنّ الشرط (predicted answer يساوي is language) غير متحقق فالناتج (((((name يليه \" \") يليه إذا تحقق أنّ predicted answer فالناتج \"Is\"، وإلا فالناتج \"Isn't\") يليه \" a Family Feud Language, but \") يليه إذا تحقق أنّ is language فالناتج \"Is\"، وإلا فالناتج \"Is Not\") يليه \" marked as a 'Language Candidate.'\")، وإلا فالناتج \"\" يليه إذا تحقق أنّ is open closed world conflicted فالناتج \" - Open World vs. Closed World Conflict.\"، وإلا فالناتج \"\""
+      },
+      "LanguageCandidates.IsDescriptionOf": {
+        "table": "LanguageCandidates",
+        "field": "IsDescriptionOf",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «language candidate» على أنه «description of» إذا تحقق أنّ حقل «distance from concept» أكبر من 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance from concept أكبر من 1"
+      },
+      "LanguageCandidates.IsOpenClosedWorldConflicted": {
+        "table": "LanguageCandidates",
+        "field": "IsOpenClosedWorldConflicted",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «language candidate» على أنه «open closed world conflicted» إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «open world» مفعّلة وعلامة «closed world» مفعّلة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenWorld",
+            "label": "is open world"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsClosedWorld",
+            "label": "is closed world"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُصنّف سجل «language candidate» على أنه «open closed world conflicted» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "علامة «open world» مفعّلة"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "علامة «closed world» مفعّلة"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is open world وis closed world"
+      },
+      "LanguageCandidates.RelationshipToConcept": {
+        "table": "LanguageCandidates",
+        "field": "RelationshipToConcept",
+        "kind": "formula",
+        "rule": "حقل «relationship to concept» في سجل «language candidate» يتحدد وفق ترتيب الأولوية الآتي:\n1. «IsMirrorOf»، إذا تحقق أنّ حقل «distance from concept» يساوي 1؛\n2. «IsDescriptionOf»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «relationship to concept» في سجل «language candidate» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«IsMirrorOf»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «distance from concept» يساوي 1"
+              }
+            },
+            {
+              "value": "«IsDescriptionOf»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ distance from concept يساوي 1 فالناتج \"IsMirrorOf\"، وإلا فالناتج \"IsDescriptionOf\""
+      },
+      "LanguageCandidates.HockettAssessedCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettAssessedCount",
+        "kind": "rollup",
+        "rule": "حقل «hockett assessed count» في سجل «language candidate» هو عدد سجلات «hockett assessments» المرتبطة بسجل «language candidate».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «hockett assessments» التي يتحقق فيها أنّ حقل «language candidate» يساوي هذا السجل"
+      },
+      "LanguageCandidates.HockettYesCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettYesCount",
+        "kind": "rollup",
+        "rule": "حقل «hockett yes count» في سجل «language candidate» هو مجموع قيم حقل «is yes flag» عبر سجلات «hockett assessments» المرتبطة بسجل «language candidate».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «is yes flag» في جميع سجلات «hockett assessments» التي يتحقق فيها أنّ حقل «language candidate» يساوي هذا السجل"
+      },
+      "LanguageCandidates.IsHockettAssessed": {
+        "table": "LanguageCandidates",
+        "field": "IsHockettAssessed",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «language candidate» على أنه «hockett assessed» إذا تحقق أنّ حقل «hockett assessed count» أكبر من 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          }
+        ],
+        "structure": null,
+        "plain": "Hockett assessed count أكبر من 0"
+      },
+      "LanguageCandidates.HockettScore": {
+        "table": "LanguageCandidates",
+        "field": "HockettScore",
+        "kind": "formula",
+        "rule": "حقل «hockett score» في سجل «language candidate» يتحدد وفق ترتيب الأولوية الآتي:\n1. «not assessed»، إذا تحقق أنّ حقل «hockett assessed count» يساوي 0؛\n2. حقل «hockett yes count»، ثم « of »، ثم حقل «hockett assessed count»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «hockett score» في سجل «language candidate» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«not assessed»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «hockett assessed count» يساوي 0"
+              }
+            },
+            {
+              "value": "حقل «hockett yes count»، ثم « of »، ثم حقل «hockett assessed count»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ hockett assessed count يساوي 0 فالناتج \"not assessed\"، وإلا فالناتج ((hockett yes count يليه \" of \") يليه hockett assessed count)"
+      },
+      "LanguageCandidates.HockettVsGate": {
+        "table": "LanguageCandidates",
+        "field": "HockettVsGate",
+        "kind": "formula",
+        "rule": "حقل «hockett vs gate» في سجل «language candidate» يتحدد وفق ترتيب الأولوية الآتي:\n1. نص فارغ، إذا تحقق أنّ حقل «hockett assessed count» يساوي 0؛\n2. «The eight-clause gate says language; Hockett's features hold for only »، ثم حقل «hockett yes count»، ثم « of »، ثم حقل «hockett assessed count»، ثم نقطة، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «predicted answer» مفعّلة وحقل «hockett yes count» أقل من حقل «hockett assessed count»؛\n3. «Hockett's features all hold, and the eight-clause gate says not a language.»، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «predicted answer» غير مفعّلة وحقل «hockett yes count» يساوي حقل «hockett assessed count»؛\n4. نص فارغ، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «hockett vs gate» في سجل «language candidate» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "نص فارغ",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «hockett assessed count» يساوي 0"
+              }
+            },
+            {
+              "value": "«The eight-clause gate says language; Hockett's features hold for only »، ثم حقل «hockett yes count»، ثم « of »، ثم حقل «hockett assessed count»، ثم نقطة",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "علامة «predicted answer» مفعّلة"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "حقل «hockett yes count» أقل من حقل «hockett assessed count»"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "«Hockett's features all hold, and the eight-clause gate says not a language.»",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "علامة «predicted answer» غير مفعّلة"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "حقل «hockett yes count» يساوي حقل «hockett assessed count»"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "نص فارغ",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ hockett assessed count يساوي 0 فالناتج \"\"، وإلا فالناتج إذا تحقق أنّ predicted answer وhockett yes count أقل من hockett assessed count فالناتج ((((\"The eight-clause gate says language; Hockett's features hold for only \" يليه hockett yes count) يليه \" of \") يليه hockett assessed count) يليه \".\")، وإلا فالناتج إذا تحقق أنّ الشرط (predicted answer) غير متحقق وhockett yes count يساوي hockett assessed count فالناتج \"Hockett's features all hold, and the eight-clause gate says not a language.\"، وإلا فالناتج \"\""
+      },
+      "HockettFeatures.AssessmentCount": {
+        "table": "HockettFeatures",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "حقل «assessment count» في سجل «hockett feature» هو عدد سجلات «hockett assessments» المرتبطة بسجل «hockett feature».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «hockett assessments» التي يتحقق فيها أنّ حقل «hockett feature» يساوي هذا السجل"
+      },
+      "HockettFeatures.YesCount": {
+        "table": "HockettFeatures",
+        "field": "YesCount",
+        "kind": "rollup",
+        "rule": "حقل «yes count» في سجل «hockett feature» هو مجموع قيم حقل «is yes flag» عبر سجلات «hockett assessments» المرتبطة بسجل «hockett feature».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «is yes flag» في جميع سجلات «hockett assessments» التي يتحقق فيها أنّ حقل «hockett feature» يساوي هذا السجل"
+      },
+      "HockettAssessments.Name": {
+        "table": "HockettAssessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «hockett assessment» يُحسب على النحو الآتي: حقل «language candidate»، ثم « / »، ثم حقل «hockett feature».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          }
+        ],
+        "structure": null,
+        "plain": "(language candidate يليه \" / \") يليه hockett feature"
+      },
+      "HockettAssessments.IsYesFlag": {
+        "table": "HockettAssessments",
+        "field": "IsYesFlag",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «hockett assessment» على أنه «yes flag» إذا تحقق أنّ حقل «verdict» يساوي «Yes».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «is yes flag» في سجل «hockett assessment» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «verdict» يساوي «Yes»"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ verdict هو \"Yes\" فالناتج 1، وإلا فالناتج 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HockettAssessments": [
+        "**يجب أن** يشير كل سجل «hockett assessment» إلى سجل «language candidate» واحد فقط.",
+        "**يجب أن** يشير كل سجل «hockett assessment» إلى سجل «hockett feature» واحد فقط."
+      ]
+    },
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "LanguageCandidates": "language candidate",
+      "IsEverythingALanguage": "is everything a language",
+      "HockettFeatures": "hockett feature",
+      "HockettAssessments": "hockett assessment",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "de": {
+    "fields": {
+      "LanguageCandidates.HasGrammar": {
+        "table": "LanguageCandidates",
+        "field": "HasGrammar",
+        "kind": "formula",
+        "rule": "Eine Language Candidate gilt als über einen Grammar verfügend, wenn der Has Syntax wahr ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          }
+        ],
+        "structure": null,
+        "plain": "Has Syntax gleich true() ist"
+      },
+      "LanguageCandidates.Question": {
+        "table": "LanguageCandidates",
+        "field": "Question",
+        "kind": "formula",
+        "rule": "Eine Language Candidate: Question wird berechnet als „Is “, gefolgt von die Name, gefolgt von „ a language?“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Is \" verbunden mit Name) verbunden mit \" a language?\""
+      },
+      "LanguageCandidates.PredictedAnswer": {
+        "table": "LanguageCandidates",
+        "field": "PredictedAnswer",
+        "kind": "formula",
+        "rule": "Eine Language Candidate ist markiert als Predicted Answer, wenn alles Folgende gilt: das Kennzeichen „Has Syntax“ gesetzt ist; das Kennzeichen „Is Parsed“ gesetzt ist; das Kennzeichen „Is Description of“ gesetzt ist; das Kennzeichen „Has Linear Decoding Pressure“ gesetzt ist; das Kennzeichen „Resolves to an AST“ gesetzt ist; das Kennzeichen „Is Stable Ontology Reference“ gesetzt ist; das Kennzeichen „Can Be Held“ nicht gesetzt ist; und das Kennzeichen „Has Identity“ nicht gesetzt ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Eine Language Candidate ist markiert als Predicted Answer, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Has Syntax“ gesetzt ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Is Parsed“ gesetzt ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Is Description of“ gesetzt ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Has Linear Decoding Pressure“ gesetzt ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Resolves to an AST“ gesetzt ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Is Stable Ontology Reference“ gesetzt ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Can Be Held“ nicht gesetzt ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Has Identity“ nicht gesetzt ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Has Syntax, Is Parsed, Is Description of, Has Linear Decoding Pressure, Resolves to an AST, Is Stable Ontology Reference, nicht Can Be Held, und nicht Has Identity"
+      },
+      "LanguageCandidates.PredictionPredicates": {
+        "table": "LanguageCandidates",
+        "field": "PredictionPredicates",
+        "kind": "formula",
+        "rule": "Eine Language Candidate: Prediction Predicates wird berechnet als „Has Syntax“, wenn das Kennzeichen „Has Syntax“ gesetzt ist, andernfalls „No Syntax“, gefolgt von „ & “, gefolgt von „Requires Parsing“, wenn das Kennzeichen „Is Parsed“ gesetzt ist, andernfalls „No Parsing Neede“, gefolgt von „ & “, gefolgt von „Describes the thing“, wenn das Kennzeichen „Is Description of“ gesetzt ist, andernfalls „Is the Thing“, gefolgt von „ & “, gefolgt von „Has Linear Decoding Pressure“, wenn das Kennzeichen „Has Linear Decoding Pressure“ gesetzt ist, andernfalls „No Decoding Pressure“, gefolgt von „ & “, gefolgt von „Resolves to AST“, wenn das Kennzeichen „Resolves to an AST“ gesetzt ist, andernfalls „No AST“, gefolgt von ein Komma gefolgt von einem Leerzeichen, gefolgt von „Is Stable Ontology“, wenn das Kennzeichen „Is Stable Ontology Reference“ gesetzt ist, andernfalls „Not 'Ontology'“, gefolgt von „ AND “, gefolgt von „Can Be Held“, wenn das Kennzeichen „Can Be Held“ gesetzt ist, andernfalls „Can't Be Held“, gefolgt von ein Komma gefolgt von einem Leerzeichen, gefolgt von „Has Identity“, wenn das Kennzeichen „Has Identity“ gesetzt ist, andernfalls „Has no Identity“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((((((((((wenn Has Syntax, dann \"Has Syntax\", andernfalls \"No Syntax\" verbunden mit \" & \") verbunden mit wenn Is Parsed, dann \"Requires Parsing\", andernfalls \"No Parsing Neede\") verbunden mit \" & \") verbunden mit wenn Is Description of, dann \"Describes the thing\", andernfalls \"Is the Thing\") verbunden mit \" & \") verbunden mit wenn Has Linear Decoding Pressure, dann \"Has Linear Decoding Pressure\", andernfalls \"No Decoding Pressure\") verbunden mit \" & \") verbunden mit wenn Resolves to an AST, dann \"Resolves to AST\", andernfalls \"No AST\") verbunden mit \", \") verbunden mit wenn Is Stable Ontology Reference, dann \"Is Stable Ontology\", andernfalls \"Not 'Ontology'\") verbunden mit \" AND \") verbunden mit wenn Can Be Held, dann \"Can Be Held\", andernfalls \"Can't Be Held\") verbunden mit \", \") verbunden mit wenn Has Identity, dann \"Has Identity\", andernfalls \"Has no Identity\""
+      },
+      "LanguageCandidates.PredictionFail": {
+        "table": "LanguageCandidates",
+        "field": "PredictionFail",
+        "kind": "formula",
+        "rule": "Eine Language Candidate: Prediction Fail wird berechnet als die Name, gefolgt von ein Leerzeichen, gefolgt von „Is“, wenn das Kennzeichen „Predicted Answer“ gesetzt ist, andernfalls „Isn't“, gefolgt von „ a Family Feud Language, but “, gefolgt von „Is“, wenn das Kennzeichen „Is Language“ gesetzt ist, andernfalls „Is Not“, gefolgt von „ marked as a 'Language Candidate.'“, gefolgt von „ - Open World vs. Closed World Conflict.“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsLanguage",
+            "label": "is language"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenClosedWorldConflicted",
+            "label": "is open closed world conflicted"
+          }
+        ],
+        "structure": null,
+        "plain": "Wenn nicht Predicted Answer gleich Is Language ist, dann (((((Name verbunden mit \" \") verbunden mit wenn Predicted Answer, dann \"Is\", andernfalls \"Isn't\") verbunden mit \" a Family Feud Language, but \") verbunden mit wenn Is Language, dann \"Is\", andernfalls \"Is Not\") verbunden mit \" marked as a 'Language Candidate.'\"), andernfalls \"\" verbunden mit wenn Is Open Closed World Conflicted, dann \" - Open World vs. Closed World Conflict.\", andernfalls \"\""
+      },
+      "LanguageCandidates.IsDescriptionOf": {
+        "table": "LanguageCandidates",
+        "field": "IsDescriptionOf",
+        "kind": "formula",
+        "rule": "Eine Language Candidate gilt als ein Description of, wenn der Distance From Concept größer ist als 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance From Concept größer als 1 ist"
+      },
+      "LanguageCandidates.IsOpenClosedWorldConflicted": {
+        "table": "LanguageCandidates",
+        "field": "IsOpenClosedWorldConflicted",
+        "kind": "formula",
+        "rule": "Eine Language Candidate gilt als open closed world conflicted, wenn alles Folgende gilt: das Kennzeichen „Is Open World“ gesetzt ist und das Kennzeichen „Is Closed World“ gesetzt ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenWorld",
+            "label": "is open world"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsClosedWorld",
+            "label": "is closed world"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Eine Language Candidate gilt als open closed world conflicted, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Is Open World“ gesetzt ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Is Closed World“ gesetzt ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is Open World und Is Closed World"
+      },
+      "LanguageCandidates.RelationshipToConcept": {
+        "table": "LanguageCandidates",
+        "field": "RelationshipToConcept",
+        "kind": "formula",
+        "rule": "Das Feld „Relationship to Concept“ der Language Candidate wird nach folgender Priorität bestimmt:\n1. „IsMirrorOf“, wenn der Distance From Concept 1 ist;\n2. andernfalls „IsDescriptionOf“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Relationship to Concept“ der Language Candidate wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„IsMirrorOf“",
+              "when": {
+                "kind": "leaf",
+                "text": "der Distance From Concept 1 ist"
+              }
+            },
+            {
+              "value": "„IsDescriptionOf“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Distance From Concept gleich 1 ist, dann \"IsMirrorOf\", andernfalls \"IsDescriptionOf\""
+      },
+      "LanguageCandidates.HockettAssessedCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettAssessedCount",
+        "kind": "rollup",
+        "rule": "Eine Language Candidate: Hockett Assessed Count ist die Anzahl der mit der Language Candidate verbundenen Hockett Assessments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Hockett Assessments, deren Language Candidate ist dieser hier"
+      },
+      "LanguageCandidates.HockettYesCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettYesCount",
+        "kind": "rollup",
+        "rule": "Eine Language Candidate: Hockett Yes Count ist die Gesamtsumme von Is Yes Flag über die mit der Language Candidate verbundenen Hockett Assessments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Is Yes Flag über alle Hockett Assessments, deren Language Candidate ist dieser hier"
+      },
+      "LanguageCandidates.IsHockettAssessed": {
+        "table": "LanguageCandidates",
+        "field": "IsHockettAssessed",
+        "kind": "formula",
+        "rule": "Eine Language Candidate gilt als hockett assessed, wenn der Hockett Assessed Count größer ist als 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          }
+        ],
+        "structure": null,
+        "plain": "Hockett Assessed Count größer als 0 ist"
+      },
+      "LanguageCandidates.HockettScore": {
+        "table": "LanguageCandidates",
+        "field": "HockettScore",
+        "kind": "formula",
+        "rule": "Das Feld „Hockett Score“ der Language Candidate wird nach folgender Priorität bestimmt:\n1. „not assessed“, wenn der Hockett Assessed Count 0 ist;\n2. andernfalls der Hockett Yes Count, gefolgt von „ of “, gefolgt von der Hockett Assessed Count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Hockett Score“ der Language Candidate wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„not assessed“",
+              "when": {
+                "kind": "leaf",
+                "text": "der Hockett Assessed Count 0 ist"
+              }
+            },
+            {
+              "value": "der Hockett Yes Count, gefolgt von „ of “, gefolgt von der Hockett Assessed Count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Hockett Assessed Count gleich 0 ist, dann \"not assessed\", andernfalls ((Hockett Yes Count verbunden mit \" of \") verbunden mit Hockett Assessed Count)"
+      },
+      "LanguageCandidates.HockettVsGate": {
+        "table": "LanguageCandidates",
+        "field": "HockettVsGate",
+        "kind": "formula",
+        "rule": "Das Feld „Hockett Vs Gate“ der Language Candidate wird nach folgender Priorität bestimmt:\n1. eine leere Zeichenkette, wenn der Hockett Assessed Count 0 ist;\n2. „The eight-clause gate says language; Hockett's features hold for only “, gefolgt von der Hockett Yes Count, gefolgt von „ of “, gefolgt von der Hockett Assessed Count, gefolgt von ein Punkt, wenn alles Folgende gilt: das Kennzeichen „Predicted Answer“ gesetzt ist und der Hockett Yes Count kleiner ist als der Hockett Assessed Count;\n3. „Hockett's features all hold, and the eight-clause gate says not a language.“, wenn alles Folgende gilt: das Kennzeichen „Predicted Answer“ nicht gesetzt ist und der Hockett Yes Count der Hockett Assessed Count ist;\n4. andernfalls eine leere Zeichenkette.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Hockett Vs Gate“ der Language Candidate wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "eine leere Zeichenkette",
+              "when": {
+                "kind": "leaf",
+                "text": "der Hockett Assessed Count 0 ist"
+              }
+            },
+            {
+              "value": "„The eight-clause gate says language; Hockett's features hold for only “, gefolgt von der Hockett Yes Count, gefolgt von „ of “, gefolgt von der Hockett Assessed Count, gefolgt von ein Punkt",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "das Kennzeichen „Predicted Answer“ gesetzt ist"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "der Hockett Yes Count kleiner ist als der Hockett Assessed Count"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "„Hockett's features all hold, and the eight-clause gate says not a language.“",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "das Kennzeichen „Predicted Answer“ nicht gesetzt ist"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "der Hockett Yes Count der Hockett Assessed Count ist"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "eine leere Zeichenkette",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Hockett Assessed Count gleich 0 ist, dann \"\", andernfalls wenn Predicted Answer und Hockett Yes Count kleiner als Hockett Assessed Count ist, dann ((((\"The eight-clause gate says language; Hockett's features hold for only \" verbunden mit Hockett Yes Count) verbunden mit \" of \") verbunden mit Hockett Assessed Count) verbunden mit \".\"), andernfalls wenn nicht Predicted Answer und Hockett Yes Count gleich Hockett Assessed Count ist, dann \"Hockett's features all hold, and the eight-clause gate says not a language.\", andernfalls \"\""
+      },
+      "HockettFeatures.AssessmentCount": {
+        "table": "HockettFeatures",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "Eine Hockett Feature: Assessment Count ist die Anzahl der mit der Hockett Feature verbundenen Hockett Assessments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Hockett Assessments, deren Hockett Feature ist dieser hier"
+      },
+      "HockettFeatures.YesCount": {
+        "table": "HockettFeatures",
+        "field": "YesCount",
+        "kind": "rollup",
+        "rule": "Eine Hockett Feature: Yes Count ist die Gesamtsumme von Is Yes Flag über die mit der Hockett Feature verbundenen Hockett Assessments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Is Yes Flag über alle Hockett Assessments, deren Hockett Feature ist dieser hier"
+      },
+      "HockettAssessments.Name": {
+        "table": "HockettAssessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Hockett Assessment: Name wird berechnet als die Language Candidate, gefolgt von „ / “, gefolgt von die Hockett Feature.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          }
+        ],
+        "structure": null,
+        "plain": "(Language Candidate verbunden mit \" / \") verbunden mit Hockett Feature"
+      },
+      "HockettAssessments.IsYesFlag": {
+        "table": "HockettAssessments",
+        "field": "IsYesFlag",
+        "kind": "formula",
+        "rule": "Ein Hockett Assessment gilt als ein Yes Flag, wenn der Verdict „Yes“ ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Is Yes Flag“ des Hockett Assessment wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "der Verdict „Yes“ ist"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Verdict ist \"Yes\", dann 1, andernfalls 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HockettAssessments": [
+        "Ein Hockett Assessment **muss** auf genau einen Language Candidate verweisen.",
+        "Ein Hockett Assessment **muss** auf genau einen Hockett Feature verweisen."
+      ]
+    },
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "LanguageCandidates": "Language Candidate",
+      "IsEverythingALanguage": "Is Everything a Language",
+      "HockettFeatures": "Hockett Feature",
+      "HockettAssessments": "Hockett Assessment",
+      "ERBCustomizations": "ERB Customization"
+    }
+  },
+  "es": {
+    "fields": {
+      "LanguageCandidates.HasGrammar": {
+        "table": "LanguageCandidates",
+        "field": "HasGrammar",
+        "kind": "formula",
+        "rule": "Un language candidate se considera que tiene un grammar si el has syntax es verdadero.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          }
+        ],
+        "structure": null,
+        "plain": "Has syntax es igual a true()"
+      },
+      "LanguageCandidates.Question": {
+        "table": "LanguageCandidates",
+        "field": "Question",
+        "kind": "formula",
+        "rule": "Un language candidate: question se calcula como «Is », seguido de el name, seguido de « a language?».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Is \" unido con name) unido con \" a language?\""
+      },
+      "LanguageCandidates.PredictedAnswer": {
+        "table": "LanguageCandidates",
+        "field": "PredictedAnswer",
+        "kind": "formula",
+        "rule": "Un language candidate está marcado como predicted answer si se cumple todo lo siguiente: el indicador «syntax» está activado; el indicador «parsed» está activado; el indicador «description of» está activado; el indicador «linear decoding pressure» está activado; el indicador «resolves to an AST» está activado; el indicador «stable ontology reference» está activado; el indicador «can be held» no está activado; y el indicador «identity» no está activado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un language candidate está marcado como predicted answer si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «syntax» está activado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «parsed» está activado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «description of» está activado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «linear decoding pressure» está activado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «resolves to an AST» está activado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «stable ontology reference» está activado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «can be held» no está activado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «identity» no está activado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Has syntax, is parsed, is description of, has linear decoding pressure, resolves to an AST, is stable ontology reference, no can be held, y no has identity"
+      },
+      "LanguageCandidates.PredictionPredicates": {
+        "table": "LanguageCandidates",
+        "field": "PredictionPredicates",
+        "kind": "formula",
+        "rule": "Un language candidate: prediction predicates se calcula como «Has Syntax» si el indicador «syntax» está activado, en todos los demás casos «No Syntax», seguido de « & », seguido de «Requires Parsing» si el indicador «parsed» está activado, en todos los demás casos «No Parsing Neede», seguido de « & », seguido de «Describes the thing» si el indicador «description of» está activado, en todos los demás casos «Is the Thing», seguido de « & », seguido de «Has Linear Decoding Pressure» si el indicador «linear decoding pressure» está activado, en todos los demás casos «No Decoding Pressure», seguido de « & », seguido de «Resolves to AST» si el indicador «resolves to an AST» está activado, en todos los demás casos «No AST», seguido de una coma seguida de un espacio, seguido de «Is Stable Ontology» si el indicador «stable ontology reference» está activado, en todos los demás casos «Not 'Ontology'», seguido de « AND », seguido de «Can Be Held» si el indicador «can be held» está activado, en todos los demás casos «Can't Be Held», seguido de una coma seguida de un espacio, seguido de «Has Identity» si el indicador «identity» está activado, en todos los demás casos «Has no Identity».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((((((((((si has syntax, entonces \"Has Syntax\", de lo contrario \"No Syntax\" unido con \" & \") unido con si is parsed, entonces \"Requires Parsing\", de lo contrario \"No Parsing Neede\") unido con \" & \") unido con si is description of, entonces \"Describes the thing\", de lo contrario \"Is the Thing\") unido con \" & \") unido con si has linear decoding pressure, entonces \"Has Linear Decoding Pressure\", de lo contrario \"No Decoding Pressure\") unido con \" & \") unido con si resolves to an AST, entonces \"Resolves to AST\", de lo contrario \"No AST\") unido con \", \") unido con si is stable ontology reference, entonces \"Is Stable Ontology\", de lo contrario \"Not 'Ontology'\") unido con \" AND \") unido con si can be held, entonces \"Can Be Held\", de lo contrario \"Can't Be Held\") unido con \", \") unido con si has identity, entonces \"Has Identity\", de lo contrario \"Has no Identity\""
+      },
+      "LanguageCandidates.PredictionFail": {
+        "table": "LanguageCandidates",
+        "field": "PredictionFail",
+        "kind": "formula",
+        "rule": "Un language candidate: prediction fail se calcula como el name, seguido de un espacio, seguido de «Is» si el indicador «predicted answer» está activado, en todos los demás casos «Isn't», seguido de « a Family Feud Language, but », seguido de «Is» si el indicador «language» está activado, en todos los demás casos «Is Not», seguido de « marked as a 'Language Candidate.'», seguido de « - Open World vs. Closed World Conflict.».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsLanguage",
+            "label": "is language"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenClosedWorldConflicted",
+            "label": "is open closed world conflicted"
+          }
+        ],
+        "structure": null,
+        "plain": "Si no predicted answer es igual a is language, entonces (((((name unido con \" \") unido con si predicted answer, entonces \"Is\", de lo contrario \"Isn't\") unido con \" a Family Feud Language, but \") unido con si is language, entonces \"Is\", de lo contrario \"Is Not\") unido con \" marked as a 'Language Candidate.'\"), de lo contrario \"\" unido con si is open closed world conflicted, entonces \" - Open World vs. Closed World Conflict.\", de lo contrario \"\""
+      },
+      "LanguageCandidates.IsDescriptionOf": {
+        "table": "LanguageCandidates",
+        "field": "IsDescriptionOf",
+        "kind": "formula",
+        "rule": "Un language candidate se considera un description of si el distance from concept es mayor que 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance from concept es mayor que 1"
+      },
+      "LanguageCandidates.IsOpenClosedWorldConflicted": {
+        "table": "LanguageCandidates",
+        "field": "IsOpenClosedWorldConflicted",
+        "kind": "formula",
+        "rule": "Un language candidate se considera open closed world conflicted si se cumple todo lo siguiente: el indicador «open world» está activado y el indicador «closed world» está activado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenWorld",
+            "label": "is open world"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsClosedWorld",
+            "label": "is closed world"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un language candidate se considera open closed world conflicted si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «open world» está activado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «closed world» está activado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is open world y is closed world"
+      },
+      "LanguageCandidates.RelationshipToConcept": {
+        "table": "LanguageCandidates",
+        "field": "RelationshipToConcept",
+        "kind": "formula",
+        "rule": "El campo «relationship to concept» del language candidate se determina según la siguiente prioridad:\n1. «IsMirrorOf», si el distance from concept es 1;\n2. en todos los demás casos, «IsDescriptionOf».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «relationship to concept» del language candidate se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«IsMirrorOf»",
+              "when": {
+                "kind": "leaf",
+                "text": "el distance from concept es 1"
+              }
+            },
+            {
+              "value": "«IsDescriptionOf»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si distance from concept es igual a 1, entonces \"IsMirrorOf\", de lo contrario \"IsDescriptionOf\""
+      },
+      "LanguageCandidates.HockettAssessedCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettAssessedCount",
+        "kind": "rollup",
+        "rule": "Un language candidate: hockett assessed count es el número de hockett assessments relacionados con el language candidate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de hockett assessments cuyo language candidate es este"
+      },
+      "LanguageCandidates.HockettYesCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettYesCount",
+        "kind": "rollup",
+        "rule": "Un language candidate: hockett yes count es el total de is yes flag entre los hockett assessments relacionados con el language candidate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de is yes flag entre todos los hockett assessments cuyo language candidate es este"
+      },
+      "LanguageCandidates.IsHockettAssessed": {
+        "table": "LanguageCandidates",
+        "field": "IsHockettAssessed",
+        "kind": "formula",
+        "rule": "Un language candidate se considera hockett assessed si el hockett assessed count es mayor que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          }
+        ],
+        "structure": null,
+        "plain": "Hockett assessed count es mayor que 0"
+      },
+      "LanguageCandidates.HockettScore": {
+        "table": "LanguageCandidates",
+        "field": "HockettScore",
+        "kind": "formula",
+        "rule": "El campo «hockett score» del language candidate se determina según la siguiente prioridad:\n1. «not assessed», si el hockett assessed count es 0;\n2. en todos los demás casos, el hockett yes count, seguido de « of », seguido de el hockett assessed count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «hockett score» del language candidate se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«not assessed»",
+              "when": {
+                "kind": "leaf",
+                "text": "el hockett assessed count es 0"
+              }
+            },
+            {
+              "value": "el hockett yes count, seguido de « of », seguido de el hockett assessed count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si hockett assessed count es igual a 0, entonces \"not assessed\", de lo contrario ((hockett yes count unido con \" of \") unido con hockett assessed count)"
+      },
+      "LanguageCandidates.HockettVsGate": {
+        "table": "LanguageCandidates",
+        "field": "HockettVsGate",
+        "kind": "formula",
+        "rule": "El campo «hockett vs gate» del language candidate se determina según la siguiente prioridad:\n1. una cadena vacía, si el hockett assessed count es 0;\n2. «The eight-clause gate says language; Hockett's features hold for only », seguido de el hockett yes count, seguido de « of », seguido de el hockett assessed count, seguido de un punto, si se cumple todo lo siguiente: el indicador «predicted answer» está activado y el hockett yes count es menor que el hockett assessed count;\n3. «Hockett's features all hold, and the eight-clause gate says not a language.», si se cumple todo lo siguiente: el indicador «predicted answer» no está activado y el hockett yes count es el hockett assessed count;\n4. en todos los demás casos, una cadena vacía.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «hockett vs gate» del language candidate se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "una cadena vacía",
+              "when": {
+                "kind": "leaf",
+                "text": "el hockett assessed count es 0"
+              }
+            },
+            {
+              "value": "«The eight-clause gate says language; Hockett's features hold for only », seguido de el hockett yes count, seguido de « of », seguido de el hockett assessed count, seguido de un punto",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "el indicador «predicted answer» está activado"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "el hockett yes count es menor que el hockett assessed count"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "«Hockett's features all hold, and the eight-clause gate says not a language.»",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "el indicador «predicted answer» no está activado"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "el hockett yes count es el hockett assessed count"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "una cadena vacía",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si hockett assessed count es igual a 0, entonces \"\", de lo contrario si predicted answer y hockett yes count es menor que hockett assessed count, entonces ((((\"The eight-clause gate says language; Hockett's features hold for only \" unido con hockett yes count) unido con \" of \") unido con hockett assessed count) unido con \".\"), de lo contrario si no predicted answer y hockett yes count es igual a hockett assessed count, entonces \"Hockett's features all hold, and the eight-clause gate says not a language.\", de lo contrario \"\""
+      },
+      "HockettFeatures.AssessmentCount": {
+        "table": "HockettFeatures",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "Un hockett feature: assessment count es el número de hockett assessments relacionados con el hockett feature.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de hockett assessments cuyo hockett feature es este"
+      },
+      "HockettFeatures.YesCount": {
+        "table": "HockettFeatures",
+        "field": "YesCount",
+        "kind": "rollup",
+        "rule": "Un hockett feature: yes count es el total de is yes flag entre los hockett assessments relacionados con el hockett feature.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de is yes flag entre todos los hockett assessments cuyo hockett feature es este"
+      },
+      "HockettAssessments.Name": {
+        "table": "HockettAssessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un hockett assessment: name se calcula como el language candidate, seguido de « / », seguido de el hockett feature.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          }
+        ],
+        "structure": null,
+        "plain": "(language candidate unido con \" / \") unido con hockett feature"
+      },
+      "HockettAssessments.IsYesFlag": {
+        "table": "HockettAssessments",
+        "field": "IsYesFlag",
+        "kind": "formula",
+        "rule": "Un hockett assessment se considera un yes flag si el verdict es «Yes».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «is yes flag» del hockett assessment se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "el verdict es «Yes»"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si verdict es \"Yes\", entonces 1, de lo contrario 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HockettAssessments": [
+        "Un hockett assessment **debe** referenciar exactamente un language candidate.",
+        "Un hockett assessment **debe** referenciar exactamente un hockett feature."
+      ]
+    },
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "LanguageCandidates": "language candidate",
+      "IsEverythingALanguage": "is everything a language",
+      "HockettFeatures": "hockett feature",
+      "HockettAssessments": "hockett assessment",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "fr": {
+    "fields": {
+      "LanguageCandidates.HasGrammar": {
+        "table": "LanguageCandidates",
+        "field": "HasGrammar",
+        "kind": "formula",
+        "rule": "Un language candidate est considéré comme disposant de un grammar si l'has syntax est vrai.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          }
+        ],
+        "structure": null,
+        "plain": "Has syntax est égal à true()"
+      },
+      "LanguageCandidates.Question": {
+        "table": "LanguageCandidates",
+        "field": "Question",
+        "kind": "formula",
+        "rule": "Un language candidate : question est calculé comme « Is », suivi de le name, suivi de « a language? ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Is \" joint à name) joint à \" a language?\""
+      },
+      "LanguageCandidates.PredictedAnswer": {
+        "table": "LanguageCandidates",
+        "field": "PredictedAnswer",
+        "kind": "formula",
+        "rule": "Un language candidate est marqué comme predicted answer si tout ce qui suit est vrai : l'indicateur « syntax » est activé; l'indicateur « parsed » est activé; l'indicateur « description of » est activé; l'indicateur « linear decoding pressure » est activé; l'indicateur « resolves to an AST » est activé; l'indicateur « stable ontology reference » est activé; l'indicateur « can be held » n'est pas activé; et l'indicateur « identity » n'est pas activé.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un language candidate est marqué comme predicted answer si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « syntax » est activé"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « parsed » est activé"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « description of » est activé"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « linear decoding pressure » est activé"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « resolves to an AST » est activé"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « stable ontology reference » est activé"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « can be held » n'est pas activé"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « identity » n'est pas activé"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Has syntax, is parsed, is description of, has linear decoding pressure, resolves to an AST, is stable ontology reference, non can be held, et non has identity"
+      },
+      "LanguageCandidates.PredictionPredicates": {
+        "table": "LanguageCandidates",
+        "field": "PredictionPredicates",
+        "kind": "formula",
+        "rule": "Un language candidate : prediction predicates est calculé comme « Has Syntax » si l'indicateur « syntax » est activé, dans tous les autres cas « No Syntax », suivi de « & », suivi de « Requires Parsing » si l'indicateur « parsed » est activé, dans tous les autres cas « No Parsing Neede », suivi de « & », suivi de « Describes the thing » si l'indicateur « description of » est activé, dans tous les autres cas « Is the Thing », suivi de « & », suivi de « Has Linear Decoding Pressure » si l'indicateur « linear decoding pressure » est activé, dans tous les autres cas « No Decoding Pressure », suivi de « & », suivi de « Resolves to AST » si l'indicateur « resolves to an AST » est activé, dans tous les autres cas « No AST », suivi de une virgule suivie d'une espace, suivi de « Is Stable Ontology » si l'indicateur « stable ontology reference » est activé, dans tous les autres cas « Not 'Ontology' », suivi de « AND », suivi de « Can Be Held » si l'indicateur « can be held » est activé, dans tous les autres cas « Can't Be Held », suivi de une virgule suivie d'une espace, suivi de « Has Identity » si l'indicateur « identity » est activé, dans tous les autres cas « Has no Identity ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((((((((((si has syntax, alors \"Has Syntax\", sinon \"No Syntax\" joint à \" & \") joint à si is parsed, alors \"Requires Parsing\", sinon \"No Parsing Neede\") joint à \" & \") joint à si is description of, alors \"Describes the thing\", sinon \"Is the Thing\") joint à \" & \") joint à si has linear decoding pressure, alors \"Has Linear Decoding Pressure\", sinon \"No Decoding Pressure\") joint à \" & \") joint à si resolves to an AST, alors \"Resolves to AST\", sinon \"No AST\") joint à \", \") joint à si is stable ontology reference, alors \"Is Stable Ontology\", sinon \"Not 'Ontology'\") joint à \" AND \") joint à si can be held, alors \"Can Be Held\", sinon \"Can't Be Held\") joint à \", \") joint à si has identity, alors \"Has Identity\", sinon \"Has no Identity\""
+      },
+      "LanguageCandidates.PredictionFail": {
+        "table": "LanguageCandidates",
+        "field": "PredictionFail",
+        "kind": "formula",
+        "rule": "Un language candidate : prediction fail est calculé comme le name, suivi de une espace, suivi de « Is » si l'indicateur « predicted answer » est activé, dans tous les autres cas « Isn't », suivi de « a Family Feud Language, but », suivi de « Is » si l'indicateur « language » est activé, dans tous les autres cas « Is Not », suivi de « marked as a 'Language Candidate.' », suivi de « - Open World vs. Closed World Conflict. ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsLanguage",
+            "label": "is language"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenClosedWorldConflicted",
+            "label": "is open closed world conflicted"
+          }
+        ],
+        "structure": null,
+        "plain": "Si non predicted answer est égal à is language, alors (((((name joint à \" \") joint à si predicted answer, alors \"Is\", sinon \"Isn't\") joint à \" a Family Feud Language, but \") joint à si is language, alors \"Is\", sinon \"Is Not\") joint à \" marked as a 'Language Candidate.'\"), sinon \"\" joint à si is open closed world conflicted, alors \" - Open World vs. Closed World Conflict.\", sinon \"\""
+      },
+      "LanguageCandidates.IsDescriptionOf": {
+        "table": "LanguageCandidates",
+        "field": "IsDescriptionOf",
+        "kind": "formula",
+        "rule": "Un language candidate est considéré comme un description of si le distance from concept est supérieur à 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance from concept est supérieur à 1"
+      },
+      "LanguageCandidates.IsOpenClosedWorldConflicted": {
+        "table": "LanguageCandidates",
+        "field": "IsOpenClosedWorldConflicted",
+        "kind": "formula",
+        "rule": "Un language candidate est considéré comme open closed world conflicted si tout ce qui suit est vrai : l'indicateur « open world » est activé et l'indicateur « closed world » est activé.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenWorld",
+            "label": "is open world"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsClosedWorld",
+            "label": "is closed world"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un language candidate est considéré comme open closed world conflicted si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « open world » est activé"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « closed world » est activé"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is open world et is closed world"
+      },
+      "LanguageCandidates.RelationshipToConcept": {
+        "table": "LanguageCandidates",
+        "field": "RelationshipToConcept",
+        "kind": "formula",
+        "rule": "Le champ « relationship to concept » du language candidate est déterminé selon la priorité suivante :\n1. « IsMirrorOf », si le distance from concept est 1 ;\n2. dans tous les autres cas, « IsDescriptionOf ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « relationship to concept » du language candidate est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« IsMirrorOf »",
+              "when": {
+                "kind": "leaf",
+                "text": "le distance from concept est 1"
+              }
+            },
+            {
+              "value": "« IsDescriptionOf »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si distance from concept est égal à 1, alors \"IsMirrorOf\", sinon \"IsDescriptionOf\""
+      },
+      "LanguageCandidates.HockettAssessedCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettAssessedCount",
+        "kind": "rollup",
+        "rule": "Un language candidate : hockett assessed count est le nombre de hockett assessments liés à le language candidate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des hockett assessments dont language candidate est celui-ci"
+      },
+      "LanguageCandidates.HockettYesCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettYesCount",
+        "kind": "rollup",
+        "rule": "Un language candidate : hockett yes count est le total de is yes flag sur les hockett assessments liés à le language candidate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de is yes flag sur tous les hockett assessments dont language candidate est celui-ci"
+      },
+      "LanguageCandidates.IsHockettAssessed": {
+        "table": "LanguageCandidates",
+        "field": "IsHockettAssessed",
+        "kind": "formula",
+        "rule": "Un language candidate est considéré comme hockett assessed si l'hockett assessed count est supérieur à 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          }
+        ],
+        "structure": null,
+        "plain": "Hockett assessed count est supérieur à 0"
+      },
+      "LanguageCandidates.HockettScore": {
+        "table": "LanguageCandidates",
+        "field": "HockettScore",
+        "kind": "formula",
+        "rule": "Le champ « hockett score » du language candidate est déterminé selon la priorité suivante :\n1. « not assessed », si l'hockett assessed count est 0 ;\n2. dans tous les autres cas, l'hockett yes count, suivi de « of », suivi de l'hockett assessed count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « hockett score » du language candidate est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« not assessed »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'hockett assessed count est 0"
+              }
+            },
+            {
+              "value": "l'hockett yes count, suivi de « of », suivi de l'hockett assessed count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si hockett assessed count est égal à 0, alors \"not assessed\", sinon ((hockett yes count joint à \" of \") joint à hockett assessed count)"
+      },
+      "LanguageCandidates.HockettVsGate": {
+        "table": "LanguageCandidates",
+        "field": "HockettVsGate",
+        "kind": "formula",
+        "rule": "Le champ « hockett vs gate » du language candidate est déterminé selon la priorité suivante :\n1. une chaîne vide, si l'hockett assessed count est 0 ;\n2. « The eight-clause gate says language; Hockett's features hold for only », suivi de l'hockett yes count, suivi de « of », suivi de l'hockett assessed count, suivi de un point, si tout ce qui suit est vrai : l'indicateur « predicted answer » est activé et l'hockett yes count est inférieur à l'hockett assessed count ;\n3. « Hockett's features all hold, and the eight-clause gate says not a language. », si tout ce qui suit est vrai : l'indicateur « predicted answer » n'est pas activé et l'hockett yes count est l'hockett assessed count ;\n4. dans tous les autres cas, une chaîne vide.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « hockett vs gate » du language candidate est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "une chaîne vide",
+              "when": {
+                "kind": "leaf",
+                "text": "l'hockett assessed count est 0"
+              }
+            },
+            {
+              "value": "« The eight-clause gate says language; Hockett's features hold for only », suivi de l'hockett yes count, suivi de « of », suivi de l'hockett assessed count, suivi de un point",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "l'indicateur « predicted answer » est activé"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "l'hockett yes count est inférieur à l'hockett assessed count"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "« Hockett's features all hold, and the eight-clause gate says not a language. »",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "l'indicateur « predicted answer » n'est pas activé"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "l'hockett yes count est l'hockett assessed count"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "une chaîne vide",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si hockett assessed count est égal à 0, alors \"\", sinon si predicted answer et hockett yes count est inférieur à hockett assessed count, alors ((((\"The eight-clause gate says language; Hockett's features hold for only \" joint à hockett yes count) joint à \" of \") joint à hockett assessed count) joint à \".\"), sinon si non predicted answer et hockett yes count est égal à hockett assessed count, alors \"Hockett's features all hold, and the eight-clause gate says not a language.\", sinon \"\""
+      },
+      "HockettFeatures.AssessmentCount": {
+        "table": "HockettFeatures",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "Une hockett feature : assessment count est le nombre de hockett assessments liés à l'hockett feature.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des hockett assessments dont hockett feature est celui-ci"
+      },
+      "HockettFeatures.YesCount": {
+        "table": "HockettFeatures",
+        "field": "YesCount",
+        "kind": "rollup",
+        "rule": "Une hockett feature : yes count est le total de is yes flag sur les hockett assessments liés à l'hockett feature.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de is yes flag sur tous les hockett assessments dont hockett feature est celui-ci"
+      },
+      "HockettAssessments.Name": {
+        "table": "HockettAssessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un hockett assessment : name est calculé comme le language candidate, suivi de « / », suivi de l'hockett feature.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          }
+        ],
+        "structure": null,
+        "plain": "(language candidate joint à \" / \") joint à hockett feature"
+      },
+      "HockettAssessments.IsYesFlag": {
+        "table": "HockettAssessments",
+        "field": "IsYesFlag",
+        "kind": "formula",
+        "rule": "Un hockett assessment est considéré comme un yes flag si le verdict est « Yes ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « is yes flag » de l'hockett assessment est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "le verdict est « Yes »"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si verdict est \"Yes\", alors 1, sinon 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HockettAssessments": [
+        "Un hockett assessment **doit** référencer exactement un language candidate.",
+        "Un hockett assessment **doit** référencer exactement un hockett feature."
+      ]
+    },
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "LanguageCandidates": "language candidate",
+      "IsEverythingALanguage": "is everything a language",
+      "HockettFeatures": "hockett feature",
+      "HockettAssessments": "hockett assessment",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "hi": {
+    "fields": {
+      "LanguageCandidates.HasGrammar": {
+        "table": "LanguageCandidates",
+        "field": "HasGrammar",
+        "kind": "formula",
+        "rule": "यदि has syntax सत्य है, तो language candidate “grammar” रखने वाला माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          }
+        ],
+        "structure": null,
+        "plain": "Has syntax true() के बराबर है"
+      },
+      "LanguageCandidates.Question": {
+        "table": "LanguageCandidates",
+        "field": "Question",
+        "kind": "formula",
+        "rule": "language candidate का “question” “Is ”, उसके बाद name, उसके बाद “ a language?” के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Is \" name से जुड़ा हुआ) \" a language?\" से जुड़ा हुआ"
+      },
+      "LanguageCandidates.PredictedAnswer": {
+        "table": "LanguageCandidates",
+        "field": "PredictedAnswer",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: “syntax” ध्वज लगा हुआ है, “parsed” ध्वज लगा हुआ है, “description of” ध्वज लगा हुआ है, “linear decoding pressure” ध्वज लगा हुआ है, “resolves to an AST” ध्वज लगा हुआ है, “stable ontology reference” ध्वज लगा हुआ है, “can be held” ध्वज लगा हुआ नहीं है और “identity” ध्वज लगा हुआ नहीं है, तो language candidate “predicted answer” के रूप में दर्ज किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "language candidate “predicted answer” के रूप में दर्ज किया जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“syntax” ध्वज लगा हुआ है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“parsed” ध्वज लगा हुआ है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“description of” ध्वज लगा हुआ है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“linear decoding pressure” ध्वज लगा हुआ है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“resolves to an AST” ध्वज लगा हुआ है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“stable ontology reference” ध्वज लगा हुआ है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“can be held” ध्वज लगा हुआ नहीं है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“identity” ध्वज लगा हुआ नहीं है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Has syntax, is parsed, is description of, has linear decoding pressure, resolves to an AST, is stable ontology reference, can be held नहीं और has identity नहीं"
+      },
+      "LanguageCandidates.PredictionPredicates": {
+        "table": "LanguageCandidates",
+        "field": "PredictionPredicates",
+        "kind": "formula",
+        "rule": "language candidate का “prediction predicates” “Has Syntax”, यदि “syntax” ध्वज लगा हुआ है; अन्य सभी स्थितियों में “No Syntax”, उसके बाद “ & ”, उसके बाद “Requires Parsing”, यदि “parsed” ध्वज लगा हुआ है; अन्य सभी स्थितियों में “No Parsing Neede”, उसके बाद “ & ”, उसके बाद “Describes the thing”, यदि “description of” ध्वज लगा हुआ है; अन्य सभी स्थितियों में “Is the Thing”, उसके बाद “ & ”, उसके बाद “Has Linear Decoding Pressure”, यदि “linear decoding pressure” ध्वज लगा हुआ है; अन्य सभी स्थितियों में “No Decoding Pressure”, उसके बाद “ & ”, उसके बाद “Resolves to AST”, यदि “resolves to an AST” ध्वज लगा हुआ है; अन्य सभी स्थितियों में “No AST”, उसके बाद एक अल्पविराम और उसके बाद रिक्त स्थान, उसके बाद “Is Stable Ontology”, यदि “stable ontology reference” ध्वज लगा हुआ है; अन्य सभी स्थितियों में “Not 'Ontology'”, उसके बाद “ AND ”, उसके बाद “Can Be Held”, यदि “can be held” ध्वज लगा हुआ है; अन्य सभी स्थितियों में “Can't Be Held”, उसके बाद एक अल्पविराम और उसके बाद रिक्त स्थान, उसके बाद “Has Identity”, यदि “identity” ध्वज लगा हुआ है; अन्य सभी स्थितियों में “Has no Identity” के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((((((((((यदि has syntax, तो \"Has Syntax\", अन्यथा \"No Syntax\" \" & \" से जुड़ा हुआ) यदि is parsed, तो \"Requires Parsing\", अन्यथा \"No Parsing Neede\" से जुड़ा हुआ) \" & \" से जुड़ा हुआ) यदि is description of, तो \"Describes the thing\", अन्यथा \"Is the Thing\" से जुड़ा हुआ) \" & \" से जुड़ा हुआ) यदि has linear decoding pressure, तो \"Has Linear Decoding Pressure\", अन्यथा \"No Decoding Pressure\" से जुड़ा हुआ) \" & \" से जुड़ा हुआ) यदि resolves to an AST, तो \"Resolves to AST\", अन्यथा \"No AST\" से जुड़ा हुआ) \", \" से जुड़ा हुआ) यदि is stable ontology reference, तो \"Is Stable Ontology\", अन्यथा \"Not 'Ontology'\" से जुड़ा हुआ) \" AND \" से जुड़ा हुआ) यदि can be held, तो \"Can Be Held\", अन्यथा \"Can't Be Held\" से जुड़ा हुआ) \", \" से जुड़ा हुआ) यदि has identity, तो \"Has Identity\", अन्यथा \"Has no Identity\" से जुड़ा हुआ"
+      },
+      "LanguageCandidates.PredictionFail": {
+        "table": "LanguageCandidates",
+        "field": "PredictionFail",
+        "kind": "formula",
+        "rule": "language candidate का “prediction fail” name, उसके बाद एक रिक्त स्थान, उसके बाद “Is”, यदि “predicted answer” ध्वज लगा हुआ है; अन्य सभी स्थितियों में “Isn't”, उसके बाद “ a Family Feud Language, but ”, उसके बाद “Is”, यदि “language” ध्वज लगा हुआ है; अन्य सभी स्थितियों में “Is Not”, उसके बाद “ marked as a 'Language Candidate.'”, उसके बाद “ - Open World vs. Closed World Conflict.” के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsLanguage",
+            "label": "is language"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenClosedWorldConflicted",
+            "label": "is open closed world conflicted"
+          }
+        ],
+        "structure": null,
+        "plain": "यदि predicted answer is language के बराबर है नहीं, तो (((((name \" \" से जुड़ा हुआ) यदि predicted answer, तो \"Is\", अन्यथा \"Isn't\" से जुड़ा हुआ) \" a Family Feud Language, but \" से जुड़ा हुआ) यदि is language, तो \"Is\", अन्यथा \"Is Not\" से जुड़ा हुआ) \" marked as a 'Language Candidate.'\" से जुड़ा हुआ), अन्यथा \"\" यदि is open closed world conflicted, तो \" - Open World vs. Closed World Conflict.\", अन्यथा \"\" से जुड़ा हुआ"
+      },
+      "LanguageCandidates.IsDescriptionOf": {
+        "table": "LanguageCandidates",
+        "field": "IsDescriptionOf",
+        "kind": "formula",
+        "rule": "यदि distance from concept 1 से अधिक है, तो language candidate “description of” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance from concept 1 से अधिक है"
+      },
+      "LanguageCandidates.IsOpenClosedWorldConflicted": {
+        "table": "LanguageCandidates",
+        "field": "IsOpenClosedWorldConflicted",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: “open world” ध्वज लगा हुआ है और “closed world” ध्वज लगा हुआ है, तो language candidate “open closed world conflicted” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenWorld",
+            "label": "is open world"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsClosedWorld",
+            "label": "is closed world"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "language candidate “open closed world conflicted” माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“open world” ध्वज लगा हुआ है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“closed world” ध्वज लगा हुआ है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is open world और is closed world"
+      },
+      "LanguageCandidates.RelationshipToConcept": {
+        "table": "LanguageCandidates",
+        "field": "RelationshipToConcept",
+        "kind": "formula",
+        "rule": "Language candidate का “relationship to concept” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “IsMirrorOf”, यदि distance from concept 1 है;\n2. अन्य सभी स्थितियों में, “IsDescriptionOf”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Language candidate का “relationship to concept” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“IsMirrorOf”",
+              "when": {
+                "kind": "leaf",
+                "text": "distance from concept 1 है"
+              }
+            },
+            {
+              "value": "“IsDescriptionOf”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि distance from concept 1 के बराबर है, तो \"IsMirrorOf\", अन्यथा \"IsDescriptionOf\""
+      },
+      "LanguageCandidates.HockettAssessedCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettAssessedCount",
+        "kind": "rollup",
+        "rule": "language candidate का “hockett assessed count” language candidate से संबंधित “hockett assessments” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “hockett assessments” की संख्या, जिनका language candidate यह रिकॉर्ड है"
+      },
+      "LanguageCandidates.HockettYesCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettYesCount",
+        "kind": "rollup",
+        "rule": "language candidate का “hockett yes count” language candidate से संबंधित “hockett assessments” पर कुल “is yes flag” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “hockett assessments” पर योग is yes flag, जिनका language candidate यह रिकॉर्ड है"
+      },
+      "LanguageCandidates.IsHockettAssessed": {
+        "table": "LanguageCandidates",
+        "field": "IsHockettAssessed",
+        "kind": "formula",
+        "rule": "यदि hockett assessed count 0 से अधिक है, तो language candidate “hockett assessed” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          }
+        ],
+        "structure": null,
+        "plain": "Hockett assessed count 0 से अधिक है"
+      },
+      "LanguageCandidates.HockettScore": {
+        "table": "LanguageCandidates",
+        "field": "HockettScore",
+        "kind": "formula",
+        "rule": "Language candidate का “hockett score” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “not assessed”, यदि hockett assessed count 0 है;\n2. अन्य सभी स्थितियों में, hockett yes count, उसके बाद “ of ”, उसके बाद hockett assessed count।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Language candidate का “hockett score” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“not assessed”",
+              "when": {
+                "kind": "leaf",
+                "text": "hockett assessed count 0 है"
+              }
+            },
+            {
+              "value": "hockett yes count, उसके बाद “ of ”, उसके बाद hockett assessed count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि hockett assessed count 0 के बराबर है, तो \"not assessed\", अन्यथा ((hockett yes count \" of \" से जुड़ा हुआ) hockett assessed count से जुड़ा हुआ)"
+      },
+      "LanguageCandidates.HockettVsGate": {
+        "table": "LanguageCandidates",
+        "field": "HockettVsGate",
+        "kind": "formula",
+        "rule": "Language candidate का “hockett vs gate” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. एक खाली स्ट्रिंग, यदि hockett assessed count 0 है;\n2. “The eight-clause gate says language; Hockett's features hold for only ”, उसके बाद hockett yes count, उसके बाद “ of ”, उसके बाद hockett assessed count, उसके बाद एक बिंदु, यदि निम्नलिखित सभी सही हैं: “predicted answer” ध्वज लगा हुआ है और hockett yes count hockett assessed count से कम है;\n3. “Hockett's features all hold, and the eight-clause gate says not a language.”, यदि निम्नलिखित सभी सही हैं: “predicted answer” ध्वज लगा हुआ नहीं है और hockett yes count hockett assessed count है;\n4. अन्य सभी स्थितियों में, एक खाली स्ट्रिंग।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Language candidate का “hockett vs gate” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "एक खाली स्ट्रिंग",
+              "when": {
+                "kind": "leaf",
+                "text": "hockett assessed count 0 है"
+              }
+            },
+            {
+              "value": "“The eight-clause gate says language; Hockett's features hold for only ”, उसके बाद hockett yes count, उसके बाद “ of ”, उसके बाद hockett assessed count, उसके बाद एक बिंदु",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "“predicted answer” ध्वज लगा हुआ है"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "hockett yes count hockett assessed count से कम है"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Hockett's features all hold, and the eight-clause gate says not a language.”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "“predicted answer” ध्वज लगा हुआ नहीं है"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "hockett yes count hockett assessed count है"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "एक खाली स्ट्रिंग",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि hockett assessed count 0 के बराबर है, तो \"\", अन्यथा यदि predicted answer और hockett yes count hockett assessed count से कम है, तो ((((\"The eight-clause gate says language; Hockett's features hold for only \" hockett yes count से जुड़ा हुआ) \" of \" से जुड़ा हुआ) hockett assessed count से जुड़ा हुआ) \".\" से जुड़ा हुआ), अन्यथा यदि predicted answer नहीं और hockett yes count hockett assessed count के बराबर है, तो \"Hockett's features all hold, and the eight-clause gate says not a language.\", अन्यथा \"\""
+      },
+      "HockettFeatures.AssessmentCount": {
+        "table": "HockettFeatures",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "hockett feature का “assessment count” hockett feature से संबंधित “hockett assessments” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “hockett assessments” की संख्या, जिनका hockett feature यह रिकॉर्ड है"
+      },
+      "HockettFeatures.YesCount": {
+        "table": "HockettFeatures",
+        "field": "YesCount",
+        "kind": "rollup",
+        "rule": "hockett feature का “yes count” hockett feature से संबंधित “hockett assessments” पर कुल “is yes flag” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “hockett assessments” पर योग is yes flag, जिनका hockett feature यह रिकॉर्ड है"
+      },
+      "HockettAssessments.Name": {
+        "table": "HockettAssessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "hockett assessment का “name” language candidate, उसके बाद “ / ”, उसके बाद hockett feature के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          }
+        ],
+        "structure": null,
+        "plain": "(language candidate \" / \" से जुड़ा हुआ) hockett feature से जुड़ा हुआ"
+      },
+      "HockettAssessments.IsYesFlag": {
+        "table": "HockettAssessments",
+        "field": "IsYesFlag",
+        "kind": "formula",
+        "rule": "यदि verdict “Yes” है, तो hockett assessment “yes flag” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Hockett assessment का “is yes flag” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "verdict “Yes” है"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि verdict \"Yes\" है, तो 1, अन्यथा 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HockettAssessments": [
+        "hockett assessment को ठीक एक “language candidate” का संदर्भ देना **अनिवार्य** है।",
+        "hockett assessment को ठीक एक “hockett feature” का संदर्भ देना **अनिवार्य** है।"
+      ]
+    },
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "LanguageCandidates": "language candidate",
+      "IsEverythingALanguage": "is everything a language",
+      "HockettFeatures": "hockett feature",
+      "HockettAssessments": "hockett assessment",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "id": {
+    "fields": {
+      "LanguageCandidates.HasGrammar": {
+        "table": "LanguageCandidates",
+        "field": "HasGrammar",
+        "kind": "formula",
+        "rule": "Setiap language candidate dianggap memiliki “grammar” jika has syntax adalah benar.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          }
+        ],
+        "structure": null,
+        "plain": "Has syntax sama dengan true()"
+      },
+      "LanguageCandidates.Question": {
+        "table": "LanguageCandidates",
+        "field": "Question",
+        "kind": "formula",
+        "rule": "Untuk setiap language candidate, question dihitung sebagai “Is ”, diikuti name, diikuti “ a language?”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Is \" digabung dengan name) digabung dengan \" a language?\""
+      },
+      "LanguageCandidates.PredictedAnswer": {
+        "table": "LanguageCandidates",
+        "field": "PredictedAnswer",
+        "kind": "formula",
+        "rule": "Setiap language candidate ditandai sebagai “predicted answer” jika semua kondisi berikut terpenuhi: penanda “syntax” aktif, penanda “parsed” aktif, penanda “description of” aktif, penanda “linear decoding pressure” aktif, penanda “resolves to an AST” aktif, penanda “stable ontology reference” aktif, penanda “can be held” tidak aktif, dan penanda “identity” tidak aktif.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap language candidate ditandai sebagai “predicted answer” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "penanda “syntax” aktif"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "penanda “parsed” aktif"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "penanda “description of” aktif"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "penanda “linear decoding pressure” aktif"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "penanda “resolves to an AST” aktif"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "penanda “stable ontology reference” aktif"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "penanda “can be held” tidak aktif"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "penanda “identity” tidak aktif"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Has syntax, is parsed, is description of, has linear decoding pressure, resolves to an AST, is stable ontology reference, tidak benar bahwa can be held, dan tidak benar bahwa has identity"
+      },
+      "LanguageCandidates.PredictionPredicates": {
+        "table": "LanguageCandidates",
+        "field": "PredictionPredicates",
+        "kind": "formula",
+        "rule": "Untuk setiap language candidate, prediction predicates dihitung sebagai “Has Syntax” jika penanda “syntax” aktif, dan dalam semua kasus lainnya “No Syntax”, diikuti “ & ”, diikuti “Requires Parsing” jika penanda “parsed” aktif, dan dalam semua kasus lainnya “No Parsing Neede”, diikuti “ & ”, diikuti “Describes the thing” jika penanda “description of” aktif, dan dalam semua kasus lainnya “Is the Thing”, diikuti “ & ”, diikuti “Has Linear Decoding Pressure” jika penanda “linear decoding pressure” aktif, dan dalam semua kasus lainnya “No Decoding Pressure”, diikuti “ & ”, diikuti “Resolves to AST” jika penanda “resolves to an AST” aktif, dan dalam semua kasus lainnya “No AST”, diikuti tanda koma yang diikuti spasi, diikuti “Is Stable Ontology” jika penanda “stable ontology reference” aktif, dan dalam semua kasus lainnya “Not 'Ontology'”, diikuti “ AND ”, diikuti “Can Be Held” jika penanda “can be held” aktif, dan dalam semua kasus lainnya “Can't Be Held”, diikuti tanda koma yang diikuti spasi, diikuti “Has Identity” jika penanda “identity” aktif, dan dalam semua kasus lainnya “Has no Identity”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((((((((((jika has syntax maka \"Has Syntax\", selain itu \"No Syntax\" digabung dengan \" & \") digabung dengan jika is parsed maka \"Requires Parsing\", selain itu \"No Parsing Neede\") digabung dengan \" & \") digabung dengan jika is description of maka \"Describes the thing\", selain itu \"Is the Thing\") digabung dengan \" & \") digabung dengan jika has linear decoding pressure maka \"Has Linear Decoding Pressure\", selain itu \"No Decoding Pressure\") digabung dengan \" & \") digabung dengan jika resolves to an AST maka \"Resolves to AST\", selain itu \"No AST\") digabung dengan \", \") digabung dengan jika is stable ontology reference maka \"Is Stable Ontology\", selain itu \"Not 'Ontology'\") digabung dengan \" AND \") digabung dengan jika can be held maka \"Can Be Held\", selain itu \"Can't Be Held\") digabung dengan \", \") digabung dengan jika has identity maka \"Has Identity\", selain itu \"Has no Identity\""
+      },
+      "LanguageCandidates.PredictionFail": {
+        "table": "LanguageCandidates",
+        "field": "PredictionFail",
+        "kind": "formula",
+        "rule": "Untuk setiap language candidate, prediction fail dihitung sebagai name, diikuti spasi, diikuti “Is” jika penanda “predicted answer” aktif, dan dalam semua kasus lainnya “Isn't”, diikuti “ a Family Feud Language, but ”, diikuti “Is” jika penanda “language” aktif, dan dalam semua kasus lainnya “Is Not”, diikuti “ marked as a 'Language Candidate.'”, diikuti “ - Open World vs. Closed World Conflict.”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsLanguage",
+            "label": "is language"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenClosedWorldConflicted",
+            "label": "is open closed world conflicted"
+          }
+        ],
+        "structure": null,
+        "plain": "Jika tidak benar bahwa predicted answer sama dengan is language maka (((((name digabung dengan \" \") digabung dengan jika predicted answer maka \"Is\", selain itu \"Isn't\") digabung dengan \" a Family Feud Language, but \") digabung dengan jika is language maka \"Is\", selain itu \"Is Not\") digabung dengan \" marked as a 'Language Candidate.'\"), selain itu \"\" digabung dengan jika is open closed world conflicted maka \" - Open World vs. Closed World Conflict.\", selain itu \"\""
+      },
+      "LanguageCandidates.IsDescriptionOf": {
+        "table": "LanguageCandidates",
+        "field": "IsDescriptionOf",
+        "kind": "formula",
+        "rule": "Setiap language candidate dianggap “description of” jika distance from concept lebih dari 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance from concept lebih dari 1"
+      },
+      "LanguageCandidates.IsOpenClosedWorldConflicted": {
+        "table": "LanguageCandidates",
+        "field": "IsOpenClosedWorldConflicted",
+        "kind": "formula",
+        "rule": "Setiap language candidate dianggap “open closed world conflicted” jika semua kondisi berikut terpenuhi: penanda “open world” aktif dan penanda “closed world” aktif.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenWorld",
+            "label": "is open world"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsClosedWorld",
+            "label": "is closed world"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap language candidate dianggap “open closed world conflicted” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "penanda “open world” aktif"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "penanda “closed world” aktif"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is open world dan is closed world"
+      },
+      "LanguageCandidates.RelationshipToConcept": {
+        "table": "LanguageCandidates",
+        "field": "RelationshipToConcept",
+        "kind": "formula",
+        "rule": "Untuk setiap language candidate, relationship to concept ditentukan menurut urutan prioritas berikut:\n1. “IsMirrorOf”, jika distance from concept adalah 1;\n2. dalam semua kasus lainnya, “IsDescriptionOf”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap language candidate, relationship to concept ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“IsMirrorOf”",
+              "when": {
+                "kind": "leaf",
+                "text": "distance from concept adalah 1"
+              }
+            },
+            {
+              "value": "“IsDescriptionOf”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika distance from concept sama dengan 1 maka \"IsMirrorOf\", selain itu \"IsDescriptionOf\""
+      },
+      "LanguageCandidates.HockettAssessedCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettAssessedCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap language candidate, hockett assessed count adalah jumlah hockett assessments yang terkait dengan language candidate tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah hockett assessments dengan syarat language candidate adalah entri ini"
+      },
+      "LanguageCandidates.HockettYesCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettYesCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap language candidate, hockett yes count adalah nilai total is yes flag pada seluruh hockett assessments yang terkait dengan language candidate tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Total is yes flag pada semua hockett assessments dengan syarat language candidate adalah entri ini"
+      },
+      "LanguageCandidates.IsHockettAssessed": {
+        "table": "LanguageCandidates",
+        "field": "IsHockettAssessed",
+        "kind": "formula",
+        "rule": "Setiap language candidate dianggap “hockett assessed” jika hockett assessed count lebih dari 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          }
+        ],
+        "structure": null,
+        "plain": "Hockett assessed count lebih dari 0"
+      },
+      "LanguageCandidates.HockettScore": {
+        "table": "LanguageCandidates",
+        "field": "HockettScore",
+        "kind": "formula",
+        "rule": "Untuk setiap language candidate, hockett score ditentukan menurut urutan prioritas berikut:\n1. “not assessed”, jika hockett assessed count adalah 0;\n2. dalam semua kasus lainnya, hockett yes count, diikuti “ of ”, diikuti hockett assessed count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap language candidate, hockett score ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“not assessed”",
+              "when": {
+                "kind": "leaf",
+                "text": "hockett assessed count adalah 0"
+              }
+            },
+            {
+              "value": "hockett yes count, diikuti “ of ”, diikuti hockett assessed count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika hockett assessed count sama dengan 0 maka \"not assessed\", selain itu ((hockett yes count digabung dengan \" of \") digabung dengan hockett assessed count)"
+      },
+      "LanguageCandidates.HockettVsGate": {
+        "table": "LanguageCandidates",
+        "field": "HockettVsGate",
+        "kind": "formula",
+        "rule": "Untuk setiap language candidate, hockett vs gate ditentukan menurut urutan prioritas berikut:\n1. teks kosong, jika hockett assessed count adalah 0;\n2. “The eight-clause gate says language; Hockett's features hold for only ”, diikuti hockett yes count, diikuti “ of ”, diikuti hockett assessed count, diikuti tanda titik, jika semua kondisi berikut terpenuhi: penanda “predicted answer” aktif dan hockett yes count kurang dari hockett assessed count;\n3. “Hockett's features all hold, and the eight-clause gate says not a language.”, jika semua kondisi berikut terpenuhi: penanda “predicted answer” tidak aktif dan hockett yes count adalah hockett assessed count;\n4. dalam semua kasus lainnya, teks kosong.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap language candidate, hockett vs gate ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "teks kosong",
+              "when": {
+                "kind": "leaf",
+                "text": "hockett assessed count adalah 0"
+              }
+            },
+            {
+              "value": "“The eight-clause gate says language; Hockett's features hold for only ”, diikuti hockett yes count, diikuti “ of ”, diikuti hockett assessed count, diikuti tanda titik",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "penanda “predicted answer” aktif"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "hockett yes count kurang dari hockett assessed count"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Hockett's features all hold, and the eight-clause gate says not a language.”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "penanda “predicted answer” tidak aktif"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "hockett yes count adalah hockett assessed count"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "teks kosong",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika hockett assessed count sama dengan 0 maka \"\", selain itu jika predicted answer dan hockett yes count kurang dari hockett assessed count maka ((((\"The eight-clause gate says language; Hockett's features hold for only \" digabung dengan hockett yes count) digabung dengan \" of \") digabung dengan hockett assessed count) digabung dengan \".\"), selain itu jika tidak benar bahwa predicted answer dan hockett yes count sama dengan hockett assessed count maka \"Hockett's features all hold, and the eight-clause gate says not a language.\", selain itu \"\""
+      },
+      "HockettFeatures.AssessmentCount": {
+        "table": "HockettFeatures",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap hockett feature, assessment count adalah jumlah hockett assessments yang terkait dengan hockett feature tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah hockett assessments dengan syarat hockett feature adalah entri ini"
+      },
+      "HockettFeatures.YesCount": {
+        "table": "HockettFeatures",
+        "field": "YesCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap hockett feature, yes count adalah nilai total is yes flag pada seluruh hockett assessments yang terkait dengan hockett feature tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Total is yes flag pada semua hockett assessments dengan syarat hockett feature adalah entri ini"
+      },
+      "HockettAssessments.Name": {
+        "table": "HockettAssessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap hockett assessment, name dihitung sebagai language candidate, diikuti “ / ”, diikuti hockett feature.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          }
+        ],
+        "structure": null,
+        "plain": "(language candidate digabung dengan \" / \") digabung dengan hockett feature"
+      },
+      "HockettAssessments.IsYesFlag": {
+        "table": "HockettAssessments",
+        "field": "IsYesFlag",
+        "kind": "formula",
+        "rule": "Setiap hockett assessment dianggap “yes flag” jika verdict adalah “Yes”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap hockett assessment, is yes flag ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "verdict adalah “Yes”"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika verdict adalah \"Yes\" maka 1, selain itu 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HockettAssessments": [
+        "Setiap hockett assessment **harus** merujuk pada tepat satu language candidate.",
+        "Setiap hockett assessment **harus** merujuk pada tepat satu hockett feature."
+      ]
+    },
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "LanguageCandidates": "language candidate",
+      "IsEverythingALanguage": "is everything a language",
+      "HockettFeatures": "hockett feature",
+      "HockettAssessments": "hockett assessment",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "it": {
+    "fields": {
+      "LanguageCandidates.HasGrammar": {
+        "table": "LanguageCandidates",
+        "field": "HasGrammar",
+        "kind": "formula",
+        "rule": "Un language candidate è considerato come dotato di un grammar se il has syntax è vero.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          }
+        ],
+        "structure": null,
+        "plain": "Has syntax è uguale a true()"
+      },
+      "LanguageCandidates.Question": {
+        "table": "LanguageCandidates",
+        "field": "Question",
+        "kind": "formula",
+        "rule": "Un language candidate: question è calcolato come «Is », seguito da il name, seguito da « a language?».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Is \" unito a name) unito a \" a language?\""
+      },
+      "LanguageCandidates.PredictedAnswer": {
+        "table": "LanguageCandidates",
+        "field": "PredictedAnswer",
+        "kind": "formula",
+        "rule": "Un language candidate è contrassegnato come predicted answer se vale tutto quanto segue: l'indicatore “syntax” è attivo; l'indicatore “parsed” è attivo; l'indicatore “description of” è attivo; l'indicatore “linear decoding pressure” è attivo; l'indicatore “resolves to an AST” è attivo; l'indicatore “stable ontology reference” è attivo; l'indicatore “can be held” non è attivo; e l'indicatore “identity” non è attivo.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un language candidate è contrassegnato come predicted answer se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “syntax” è attivo"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “parsed” è attivo"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “description of” è attivo"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “linear decoding pressure” è attivo"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “resolves to an AST” è attivo"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “stable ontology reference” è attivo"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “can be held” non è attivo"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “identity” non è attivo"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Has syntax, is parsed, is description of, has linear decoding pressure, resolves to an AST, is stable ontology reference, non can be held, e non has identity"
+      },
+      "LanguageCandidates.PredictionPredicates": {
+        "table": "LanguageCandidates",
+        "field": "PredictionPredicates",
+        "kind": "formula",
+        "rule": "Un language candidate: prediction predicates è calcolato come «Has Syntax» se l'indicatore “syntax” è attivo, in tutti gli altri casi «No Syntax», seguito da « & », seguito da «Requires Parsing» se l'indicatore “parsed” è attivo, in tutti gli altri casi «No Parsing Neede», seguito da « & », seguito da «Describes the thing» se l'indicatore “description of” è attivo, in tutti gli altri casi «Is the Thing», seguito da « & », seguito da «Has Linear Decoding Pressure» se l'indicatore “linear decoding pressure” è attivo, in tutti gli altri casi «No Decoding Pressure», seguito da « & », seguito da «Resolves to AST» se l'indicatore “resolves to an AST” è attivo, in tutti gli altri casi «No AST», seguito da una virgola seguita da uno spazio, seguito da «Is Stable Ontology» se l'indicatore “stable ontology reference” è attivo, in tutti gli altri casi «Not 'Ontology'», seguito da « AND », seguito da «Can Be Held» se l'indicatore “can be held” è attivo, in tutti gli altri casi «Can't Be Held», seguito da una virgola seguita da uno spazio, seguito da «Has Identity» se l'indicatore “identity” è attivo, in tutti gli altri casi «Has no Identity».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((((((((((se has syntax, allora \"Has Syntax\", altrimenti \"No Syntax\" unito a \" & \") unito a se is parsed, allora \"Requires Parsing\", altrimenti \"No Parsing Neede\") unito a \" & \") unito a se is description of, allora \"Describes the thing\", altrimenti \"Is the Thing\") unito a \" & \") unito a se has linear decoding pressure, allora \"Has Linear Decoding Pressure\", altrimenti \"No Decoding Pressure\") unito a \" & \") unito a se resolves to an AST, allora \"Resolves to AST\", altrimenti \"No AST\") unito a \", \") unito a se is stable ontology reference, allora \"Is Stable Ontology\", altrimenti \"Not 'Ontology'\") unito a \" AND \") unito a se can be held, allora \"Can Be Held\", altrimenti \"Can't Be Held\") unito a \", \") unito a se has identity, allora \"Has Identity\", altrimenti \"Has no Identity\""
+      },
+      "LanguageCandidates.PredictionFail": {
+        "table": "LanguageCandidates",
+        "field": "PredictionFail",
+        "kind": "formula",
+        "rule": "Un language candidate: prediction fail è calcolato come il name, seguito da uno spazio, seguito da «Is» se l'indicatore “predicted answer” è attivo, in tutti gli altri casi «Isn't», seguito da « a Family Feud Language, but », seguito da «Is» se l'indicatore “language” è attivo, in tutti gli altri casi «Is Not», seguito da « marked as a 'Language Candidate.'», seguito da « - Open World vs. Closed World Conflict.».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsLanguage",
+            "label": "is language"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenClosedWorldConflicted",
+            "label": "is open closed world conflicted"
+          }
+        ],
+        "structure": null,
+        "plain": "Se non predicted answer è uguale a is language, allora (((((name unito a \" \") unito a se predicted answer, allora \"Is\", altrimenti \"Isn't\") unito a \" a Family Feud Language, but \") unito a se is language, allora \"Is\", altrimenti \"Is Not\") unito a \" marked as a 'Language Candidate.'\"), altrimenti \"\" unito a se is open closed world conflicted, allora \" - Open World vs. Closed World Conflict.\", altrimenti \"\""
+      },
+      "LanguageCandidates.IsDescriptionOf": {
+        "table": "LanguageCandidates",
+        "field": "IsDescriptionOf",
+        "kind": "formula",
+        "rule": "Un language candidate è considerato un description of se il distance from concept è maggiore di 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance from concept è maggiore di 1"
+      },
+      "LanguageCandidates.IsOpenClosedWorldConflicted": {
+        "table": "LanguageCandidates",
+        "field": "IsOpenClosedWorldConflicted",
+        "kind": "formula",
+        "rule": "Un language candidate è considerato open closed world conflicted se vale tutto quanto segue: l'indicatore “open world” è attivo e l'indicatore “closed world” è attivo.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenWorld",
+            "label": "is open world"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsClosedWorld",
+            "label": "is closed world"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un language candidate è considerato open closed world conflicted se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “open world” è attivo"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “closed world” è attivo"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is open world e is closed world"
+      },
+      "LanguageCandidates.RelationshipToConcept": {
+        "table": "LanguageCandidates",
+        "field": "RelationshipToConcept",
+        "kind": "formula",
+        "rule": "Il campo “relationship to concept” del language candidate è determinato secondo la seguente priorità:\n1. «IsMirrorOf», se il distance from concept è 1;\n2. in tutti gli altri casi, «IsDescriptionOf».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “relationship to concept” del language candidate è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«IsMirrorOf»",
+              "when": {
+                "kind": "leaf",
+                "text": "il distance from concept è 1"
+              }
+            },
+            {
+              "value": "«IsDescriptionOf»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se distance from concept è uguale a 1, allora \"IsMirrorOf\", altrimenti \"IsDescriptionOf\""
+      },
+      "LanguageCandidates.HockettAssessedCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettAssessedCount",
+        "kind": "rollup",
+        "rule": "Un language candidate: hockett assessed count è il numero di hockett assessments collegati a il language candidate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei hockett assessments il cui language candidate è questo"
+      },
+      "LanguageCandidates.HockettYesCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettYesCount",
+        "kind": "rollup",
+        "rule": "Un language candidate: hockett yes count è il totale di is yes flag tra i hockett assessments collegati a il language candidate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di is yes flag su tutti i hockett assessments il cui language candidate è questo"
+      },
+      "LanguageCandidates.IsHockettAssessed": {
+        "table": "LanguageCandidates",
+        "field": "IsHockettAssessed",
+        "kind": "formula",
+        "rule": "Un language candidate è considerato hockett assessed se il hockett assessed count è maggiore di 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          }
+        ],
+        "structure": null,
+        "plain": "Hockett assessed count è maggiore di 0"
+      },
+      "LanguageCandidates.HockettScore": {
+        "table": "LanguageCandidates",
+        "field": "HockettScore",
+        "kind": "formula",
+        "rule": "Il campo “hockett score” del language candidate è determinato secondo la seguente priorità:\n1. «not assessed», se il hockett assessed count è 0;\n2. in tutti gli altri casi, il hockett yes count, seguito da « of », seguito da il hockett assessed count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “hockett score” del language candidate è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«not assessed»",
+              "when": {
+                "kind": "leaf",
+                "text": "il hockett assessed count è 0"
+              }
+            },
+            {
+              "value": "il hockett yes count, seguito da « of », seguito da il hockett assessed count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se hockett assessed count è uguale a 0, allora \"not assessed\", altrimenti ((hockett yes count unito a \" of \") unito a hockett assessed count)"
+      },
+      "LanguageCandidates.HockettVsGate": {
+        "table": "LanguageCandidates",
+        "field": "HockettVsGate",
+        "kind": "formula",
+        "rule": "Il campo “hockett vs gate” del language candidate è determinato secondo la seguente priorità:\n1. una stringa vuota, se il hockett assessed count è 0;\n2. «The eight-clause gate says language; Hockett's features hold for only », seguito da il hockett yes count, seguito da « of », seguito da il hockett assessed count, seguito da un punto, se vale tutto quanto segue: l'indicatore “predicted answer” è attivo e il hockett yes count è minore di il hockett assessed count;\n3. «Hockett's features all hold, and the eight-clause gate says not a language.», se vale tutto quanto segue: l'indicatore “predicted answer” non è attivo e il hockett yes count è il hockett assessed count;\n4. in tutti gli altri casi, una stringa vuota.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “hockett vs gate” del language candidate è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "una stringa vuota",
+              "when": {
+                "kind": "leaf",
+                "text": "il hockett assessed count è 0"
+              }
+            },
+            {
+              "value": "«The eight-clause gate says language; Hockett's features hold for only », seguito da il hockett yes count, seguito da « of », seguito da il hockett assessed count, seguito da un punto",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "l'indicatore “predicted answer” è attivo"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "il hockett yes count è minore di il hockett assessed count"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "«Hockett's features all hold, and the eight-clause gate says not a language.»",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "l'indicatore “predicted answer” non è attivo"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "il hockett yes count è il hockett assessed count"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "una stringa vuota",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se hockett assessed count è uguale a 0, allora \"\", altrimenti se predicted answer e hockett yes count è minore di hockett assessed count, allora ((((\"The eight-clause gate says language; Hockett's features hold for only \" unito a hockett yes count) unito a \" of \") unito a hockett assessed count) unito a \".\"), altrimenti se non predicted answer e hockett yes count è uguale a hockett assessed count, allora \"Hockett's features all hold, and the eight-clause gate says not a language.\", altrimenti \"\""
+      },
+      "HockettFeatures.AssessmentCount": {
+        "table": "HockettFeatures",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "Un hockett feature: assessment count è il numero di hockett assessments collegati a il hockett feature.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei hockett assessments il cui hockett feature è questo"
+      },
+      "HockettFeatures.YesCount": {
+        "table": "HockettFeatures",
+        "field": "YesCount",
+        "kind": "rollup",
+        "rule": "Un hockett feature: yes count è il totale di is yes flag tra i hockett assessments collegati a il hockett feature.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di is yes flag su tutti i hockett assessments il cui hockett feature è questo"
+      },
+      "HockettAssessments.Name": {
+        "table": "HockettAssessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un hockett assessment: name è calcolato come il language candidate, seguito da « / », seguito da il hockett feature.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          }
+        ],
+        "structure": null,
+        "plain": "(language candidate unito a \" / \") unito a hockett feature"
+      },
+      "HockettAssessments.IsYesFlag": {
+        "table": "HockettAssessments",
+        "field": "IsYesFlag",
+        "kind": "formula",
+        "rule": "Un hockett assessment è considerato un yes flag se il verdict è «Yes».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “is yes flag” del hockett assessment è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "il verdict è «Yes»"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se verdict è \"Yes\", allora 1, altrimenti 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HockettAssessments": [
+        "Un hockett assessment **deve** referenziare esattamente un language candidate.",
+        "Un hockett assessment **deve** referenziare esattamente un hockett feature."
+      ]
+    },
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "LanguageCandidates": "language candidate",
+      "IsEverythingALanguage": "is everything a language",
+      "HockettFeatures": "hockett feature",
+      "HockettAssessments": "hockett assessment",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "ja": {
+    "fields": {
+      "LanguageCandidates.HasGrammar": {
+        "table": "LanguageCandidates",
+        "field": "HasGrammar",
+        "kind": "formula",
+        "rule": "has syntax が 真 である場合、language candidateは「Grammar」を持つと見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          }
+        ],
+        "structure": null,
+        "plain": "Has syntax が true() と等しい"
+      },
+      "LanguageCandidates.Question": {
+        "table": "LanguageCandidates",
+        "field": "Question",
+        "kind": "formula",
+        "rule": "language candidateの「question」は 「Is 」、続いて name、続いて 「 a language?」 として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Is \" と name を連結) と \" a language?\" を連結"
+      },
+      "LanguageCandidates.PredictedAnswer": {
+        "table": "LanguageCandidates",
+        "field": "PredictedAnswer",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: フラグ「syntax」が設定されている、フラグ「parsed」が設定されている、フラグ「description of」が設定されている、フラグ「linear decoding pressure」が設定されている、フラグ「resolves to an AST」が設定されている、フラグ「stable ontology reference」が設定されている、フラグ「can be held」が設定されていない、およびフラグ「identity」が設定されていない場合、language candidateは「Predicted Answer」と記録されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、language candidateは「Predicted Answer」と記録されます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「syntax」が設定されている"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「parsed」が設定されている"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「description of」が設定されている"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「linear decoding pressure」が設定されている"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「resolves to an AST」が設定されている"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「stable ontology reference」が設定されている"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「can be held」が設定されていない"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「identity」が設定されていない"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Has syntax、is parsed、is description of、has linear decoding pressure、resolves to an AST、is stable ontology reference、can be held でない、およびhas identity でない"
+      },
+      "LanguageCandidates.PredictionPredicates": {
+        "table": "LanguageCandidates",
+        "field": "PredictionPredicates",
+        "kind": "formula",
+        "rule": "language candidateの「prediction predicates」は フラグ「syntax」が設定されている場合は 「Has Syntax」、それ以外の場合は 「No Syntax」、続いて 「 & 」、続いて フラグ「parsed」が設定されている場合は 「Requires Parsing」、それ以外の場合は 「No Parsing Neede」、続いて 「 & 」、続いて フラグ「description of」が設定されている場合は 「Describes the thing」、それ以外の場合は 「Is the Thing」、続いて 「 & 」、続いて フラグ「linear decoding pressure」が設定されている場合は 「Has Linear Decoding Pressure」、それ以外の場合は 「No Decoding Pressure」、続いて 「 & 」、続いて フラグ「resolves to an AST」が設定されている場合は 「Resolves to AST」、それ以外の場合は 「No AST」、続いて コンマと空白、続いて フラグ「stable ontology reference」が設定されている場合は 「Is Stable Ontology」、それ以外の場合は 「Not 'Ontology'」、続いて 「 AND 」、続いて フラグ「can be held」が設定されている場合は 「Can Be Held」、それ以外の場合は 「Can't Be Held」、続いて コンマと空白、続いて フラグ「identity」が設定されている場合は 「Has Identity」、それ以外の場合は 「Has no Identity」 として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((((((((((has syntaxなら \"Has Syntax\"、そうでなければ \"No Syntax\" と \" & \" を連結) と is parsedなら \"Requires Parsing\"、そうでなければ \"No Parsing Neede\" を連結) と \" & \" を連結) と is description ofなら \"Describes the thing\"、そうでなければ \"Is the Thing\" を連結) と \" & \" を連結) と has linear decoding pressureなら \"Has Linear Decoding Pressure\"、そうでなければ \"No Decoding Pressure\" を連結) と \" & \" を連結) と resolves to an ASTなら \"Resolves to AST\"、そうでなければ \"No AST\" を連結) と \", \" を連結) と is stable ontology referenceなら \"Is Stable Ontology\"、そうでなければ \"Not 'Ontology'\" を連結) と \" AND \" を連結) と can be heldなら \"Can Be Held\"、そうでなければ \"Can't Be Held\" を連結) と \", \" を連結) と has identityなら \"Has Identity\"、そうでなければ \"Has no Identity\" を連結"
+      },
+      "LanguageCandidates.PredictionFail": {
+        "table": "LanguageCandidates",
+        "field": "PredictionFail",
+        "kind": "formula",
+        "rule": "language candidateの「prediction fail」は name、続いて 空白 1 つ、続いて フラグ「predicted answer」が設定されている場合は 「Is」、それ以外の場合は 「Isn't」、続いて 「 a Family Feud Language, but 」、続いて フラグ「language」が設定されている場合は 「Is」、それ以外の場合は 「Is Not」、続いて 「 marked as a 'Language Candidate.'」、続いて 「 - Open World vs. Closed World Conflict.」 として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsLanguage",
+            "label": "is language"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenClosedWorldConflicted",
+            "label": "is open closed world conflicted"
+          }
+        ],
+        "structure": null,
+        "plain": "Predicted answer が is language と等しい でないなら (((((name と \" \" を連結) と predicted answerなら \"Is\"、そうでなければ \"Isn't\" を連結) と \" a Family Feud Language, but \" を連結) と is languageなら \"Is\"、そうでなければ \"Is Not\" を連結) と \" marked as a 'Language Candidate.'\" を連結)、そうでなければ \"\" と is open closed world conflictedなら \" - Open World vs. Closed World Conflict.\"、そうでなければ \"\" を連結"
+      },
+      "LanguageCandidates.IsDescriptionOf": {
+        "table": "LanguageCandidates",
+        "field": "IsDescriptionOf",
+        "kind": "formula",
+        "rule": "distance from concept が 1 より大きい場合、language candidateは「Description of」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance from concept が 1 より大きい"
+      },
+      "LanguageCandidates.IsOpenClosedWorldConflicted": {
+        "table": "LanguageCandidates",
+        "field": "IsOpenClosedWorldConflicted",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: フラグ「open world」が設定されているおよびフラグ「closed world」が設定されている場合、language candidateは「Open Closed World Conflicted」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenWorld",
+            "label": "is open world"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsClosedWorld",
+            "label": "is closed world"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、language candidateは「Open Closed World Conflicted」と見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「open world」が設定されている"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「closed world」が設定されている"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is open worldおよびis closed world"
+      },
+      "LanguageCandidates.RelationshipToConcept": {
+        "table": "LanguageCandidates",
+        "field": "RelationshipToConcept",
+        "kind": "formula",
+        "rule": "Language candidateの「relationship to concept」は、次の優先順位で決まります:\n1. distance from concept が 1 である場合は 「IsMirrorOf」;\n2. それ以外の場合は 「IsDescriptionOf」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Language candidateの「relationship to concept」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「IsMirrorOf」",
+              "when": {
+                "kind": "leaf",
+                "text": "distance from concept が 1 である"
+              }
+            },
+            {
+              "value": "「IsDescriptionOf」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Distance from concept が 1 と等しいなら \"IsMirrorOf\"、そうでなければ \"IsDescriptionOf\""
+      },
+      "LanguageCandidates.HockettAssessedCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettAssessedCount",
+        "kind": "rollup",
+        "rule": "language candidateの「hockett assessed count」は language candidateに関連する「hockett assessments」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Language candidate が このレコード である「hockett assessments」の件数"
+      },
+      "LanguageCandidates.HockettYesCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettYesCount",
+        "kind": "rollup",
+        "rule": "language candidateの「hockett yes count」は language candidateに関連する「hockett assessments」全体での「is yes flag」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Language candidate が このレコード であるすべての「hockett assessments」にわたる is yes flag の合計"
+      },
+      "LanguageCandidates.IsHockettAssessed": {
+        "table": "LanguageCandidates",
+        "field": "IsHockettAssessed",
+        "kind": "formula",
+        "rule": "hockett assessed count が 0 より大きい場合、language candidateは「Hockett Assessed」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          }
+        ],
+        "structure": null,
+        "plain": "Hockett assessed count が 0 より大きい"
+      },
+      "LanguageCandidates.HockettScore": {
+        "table": "LanguageCandidates",
+        "field": "HockettScore",
+        "kind": "formula",
+        "rule": "Language candidateの「hockett score」は、次の優先順位で決まります:\n1. hockett assessed count が 0 である場合は 「not assessed」;\n2. それ以外の場合は hockett yes count、続いて 「 of 」、続いて hockett assessed count。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Language candidateの「hockett score」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「not assessed」",
+              "when": {
+                "kind": "leaf",
+                "text": "hockett assessed count が 0 である"
+              }
+            },
+            {
+              "value": "hockett yes count、続いて 「 of 」、続いて hockett assessed count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Hockett assessed count が 0 と等しいなら \"not assessed\"、そうでなければ ((hockett yes count と \" of \" を連結) と hockett assessed count を連結)"
+      },
+      "LanguageCandidates.HockettVsGate": {
+        "table": "LanguageCandidates",
+        "field": "HockettVsGate",
+        "kind": "formula",
+        "rule": "Language candidateの「hockett vs gate」は、次の優先順位で決まります:\n1. hockett assessed count が 0 である場合は 空文字列;\n2. 次のすべてが成り立つ: フラグ「predicted answer」が設定されているおよびhockett yes count が hockett assessed count より小さい場合は 「The eight-clause gate says language; Hockett's features hold for only 」、続いて hockett yes count、続いて 「 of 」、続いて hockett assessed count、続いて ピリオド;\n3. 次のすべてが成り立つ: フラグ「predicted answer」が設定されていないおよびhockett yes count が hockett assessed count である場合は 「Hockett's features all hold, and the eight-clause gate says not a language.」;\n4. それ以外の場合は 空文字列。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Language candidateの「hockett vs gate」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "空文字列",
+              "when": {
+                "kind": "leaf",
+                "text": "hockett assessed count が 0 である"
+              }
+            },
+            {
+              "value": "「The eight-clause gate says language; Hockett's features hold for only 」、続いて hockett yes count、続いて 「 of 」、続いて hockett assessed count、続いて ピリオド",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "フラグ「predicted answer」が設定されている"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "hockett yes count が hockett assessed count より小さい"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "「Hockett's features all hold, and the eight-clause gate says not a language.」",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "フラグ「predicted answer」が設定されていない"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "hockett yes count が hockett assessed count である"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "空文字列",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Hockett assessed count が 0 と等しいなら \"\"、そうでなければ predicted answerおよびhockett yes count が hockett assessed count より小さいなら ((((\"The eight-clause gate says language; Hockett's features hold for only \" と hockett yes count を連結) と \" of \" を連結) と hockett assessed count を連結) と \".\" を連結)、そうでなければ predicted answer でないおよびhockett yes count が hockett assessed count と等しいなら \"Hockett's features all hold, and the eight-clause gate says not a language.\"、そうでなければ \"\""
+      },
+      "HockettFeatures.AssessmentCount": {
+        "table": "HockettFeatures",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "hockett featureの「assessment count」は hockett featureに関連する「hockett assessments」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Hockett feature が このレコード である「hockett assessments」の件数"
+      },
+      "HockettFeatures.YesCount": {
+        "table": "HockettFeatures",
+        "field": "YesCount",
+        "kind": "rollup",
+        "rule": "hockett featureの「yes count」は hockett featureに関連する「hockett assessments」全体での「is yes flag」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Hockett feature が このレコード であるすべての「hockett assessments」にわたる is yes flag の合計"
+      },
+      "HockettAssessments.Name": {
+        "table": "HockettAssessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "hockett assessmentの「name」は language candidate、続いて 「 / 」、続いて hockett feature として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          }
+        ],
+        "structure": null,
+        "plain": "(language candidate と \" / \" を連結) と hockett feature を連結"
+      },
+      "HockettAssessments.IsYesFlag": {
+        "table": "HockettAssessments",
+        "field": "IsYesFlag",
+        "kind": "formula",
+        "rule": "verdict が 「Yes」 である場合、hockett assessmentは「Yes Flag」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Hockett assessmentの「is yes flag」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "verdict が 「Yes」 である"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Verdict は \"Yes\"なら 1、そうでなければ 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HockettAssessments": [
+        "hockett assessmentは「language candidate」をちょうど 1 件参照し**なければなりません**。",
+        "hockett assessmentは「hockett feature」をちょうど 1 件参照し**なければなりません**。"
+      ]
+    },
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "LanguageCandidates": "language candidate",
+      "IsEverythingALanguage": "is everything a language",
+      "HockettFeatures": "hockett feature",
+      "HockettAssessments": "hockett assessment",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "ko": {
+    "fields": {
+      "LanguageCandidates.HasGrammar": {
+        "table": "LanguageCandidates",
+        "field": "HasGrammar",
+        "kind": "formula",
+        "rule": "‘has syntax’ 값이 참인 경우, ‘language candidate’ 레코드는 ‘grammar’ 항목이 있는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          }
+        ],
+        "structure": null,
+        "plain": "Has syntax 값이 true() 값과 같음"
+      },
+      "LanguageCandidates.Question": {
+        "table": "LanguageCandidates",
+        "field": "Question",
+        "kind": "formula",
+        "rule": "‘language candidate’ 레코드의 ‘question’ 값은 다음과 같이 계산됩니다: “Is ”, 이어서 ‘name’, 이어서 “ a language?”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Is \" 뒤에 name 연결한 결과) 뒤에 \" a language?\" 연결한 결과"
+      },
+      "LanguageCandidates.PredictedAnswer": {
+        "table": "LanguageCandidates",
+        "field": "PredictedAnswer",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘syntax’ 플래그가 설정된 경우, ‘parsed’ 플래그가 설정된 경우, ‘description of’ 플래그가 설정된 경우, ‘linear decoding pressure’ 플래그가 설정된 경우, ‘resolves to an AST’ 플래그가 설정된 경우, ‘stable ontology reference’ 플래그가 설정된 경우, ‘can be held’ 플래그가 설정되지 않은 경우 및 ‘identity’ 플래그가 설정되지 않은 경우), ‘language candidate’ 레코드는 ‘predicted answer’에 해당하는 것으로 표시됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘language candidate’ 레코드는 ‘predicted answer’에 해당하는 것으로 표시됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘syntax’ 플래그가 설정된 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘parsed’ 플래그가 설정된 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘description of’ 플래그가 설정된 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘linear decoding pressure’ 플래그가 설정된 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘resolves to an AST’ 플래그가 설정된 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘stable ontology reference’ 플래그가 설정된 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘can be held’ 플래그가 설정되지 않은 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘identity’ 플래그가 설정되지 않은 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Has syntax, is parsed, is description of, has linear decoding pressure, resolves to an AST, is stable ontology reference, 조건(can be held)이 성립하지 않음 및 조건(has identity)이 성립하지 않음"
+      },
+      "LanguageCandidates.PredictionPredicates": {
+        "table": "LanguageCandidates",
+        "field": "PredictionPredicates",
+        "kind": "formula",
+        "rule": "‘language candidate’ 레코드의 ‘prediction predicates’ 값은 다음과 같이 계산됩니다: ‘syntax’ 플래그가 설정된 경우에는 “Has Syntax”, 그 밖의 경우에는 “No Syntax”, 이어서 “ & ”, 이어서 ‘parsed’ 플래그가 설정된 경우에는 “Requires Parsing”, 그 밖의 경우에는 “No Parsing Neede”, 이어서 “ & ”, 이어서 ‘description of’ 플래그가 설정된 경우에는 “Describes the thing”, 그 밖의 경우에는 “Is the Thing”, 이어서 “ & ”, 이어서 ‘linear decoding pressure’ 플래그가 설정된 경우에는 “Has Linear Decoding Pressure”, 그 밖의 경우에는 “No Decoding Pressure”, 이어서 “ & ”, 이어서 ‘resolves to an AST’ 플래그가 설정된 경우에는 “Resolves to AST”, 그 밖의 경우에는 “No AST”, 이어서 쉼표와 공백, 이어서 ‘stable ontology reference’ 플래그가 설정된 경우에는 “Is Stable Ontology”, 그 밖의 경우에는 “Not 'Ontology'”, 이어서 “ AND ”, 이어서 ‘can be held’ 플래그가 설정된 경우에는 “Can Be Held”, 그 밖의 경우에는 “Can't Be Held”, 이어서 쉼표와 공백, 이어서 ‘identity’ 플래그가 설정된 경우에는 “Has Identity”, 그 밖의 경우에는 “Has no Identity”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((((((((((조건(has syntax)이 성립하면 \"Has Syntax\", 그렇지 않으면 \"No Syntax\" 뒤에 \" & \" 연결한 결과) 뒤에 조건(is parsed)이 성립하면 \"Requires Parsing\", 그렇지 않으면 \"No Parsing Neede\" 연결한 결과) 뒤에 \" & \" 연결한 결과) 뒤에 조건(is description of)이 성립하면 \"Describes the thing\", 그렇지 않으면 \"Is the Thing\" 연결한 결과) 뒤에 \" & \" 연결한 결과) 뒤에 조건(has linear decoding pressure)이 성립하면 \"Has Linear Decoding Pressure\", 그렇지 않으면 \"No Decoding Pressure\" 연결한 결과) 뒤에 \" & \" 연결한 결과) 뒤에 조건(resolves to an AST)이 성립하면 \"Resolves to AST\", 그렇지 않으면 \"No AST\" 연결한 결과) 뒤에 \", \" 연결한 결과) 뒤에 조건(is stable ontology reference)이 성립하면 \"Is Stable Ontology\", 그렇지 않으면 \"Not 'Ontology'\" 연결한 결과) 뒤에 \" AND \" 연결한 결과) 뒤에 조건(can be held)이 성립하면 \"Can Be Held\", 그렇지 않으면 \"Can't Be Held\" 연결한 결과) 뒤에 \", \" 연결한 결과) 뒤에 조건(has identity)이 성립하면 \"Has Identity\", 그렇지 않으면 \"Has no Identity\" 연결한 결과"
+      },
+      "LanguageCandidates.PredictionFail": {
+        "table": "LanguageCandidates",
+        "field": "PredictionFail",
+        "kind": "formula",
+        "rule": "‘language candidate’ 레코드의 ‘prediction fail’ 값은 다음과 같이 계산됩니다: ‘name’, 이어서 공백 한 칸, 이어서 ‘predicted answer’ 플래그가 설정된 경우에는 “Is”, 그 밖의 경우에는 “Isn't”, 이어서 “ a Family Feud Language, but ”, 이어서 ‘language’ 플래그가 설정된 경우에는 “Is”, 그 밖의 경우에는 “Is Not”, 이어서 “ marked as a 'Language Candidate.'”, 이어서 “ - Open World vs. Closed World Conflict.”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsLanguage",
+            "label": "is language"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenClosedWorldConflicted",
+            "label": "is open closed world conflicted"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(조건(predicted answer 값이 is language 값과 같음)이 성립하지 않음)이 성립하면 (((((name 뒤에 \" \" 연결한 결과) 뒤에 조건(predicted answer)이 성립하면 \"Is\", 그렇지 않으면 \"Isn't\" 연결한 결과) 뒤에 \" a Family Feud Language, but \" 연결한 결과) 뒤에 조건(is language)이 성립하면 \"Is\", 그렇지 않으면 \"Is Not\" 연결한 결과) 뒤에 \" marked as a 'Language Candidate.'\" 연결한 결과), 그렇지 않으면 \"\" 뒤에 조건(is open closed world conflicted)이 성립하면 \" - Open World vs. Closed World Conflict.\", 그렇지 않으면 \"\" 연결한 결과"
+      },
+      "LanguageCandidates.IsDescriptionOf": {
+        "table": "LanguageCandidates",
+        "field": "IsDescriptionOf",
+        "kind": "formula",
+        "rule": "‘distance from concept’ 값이 1보다 큰 경우, ‘language candidate’ 레코드는 ‘description of’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance from concept 값이 1보다 큼"
+      },
+      "LanguageCandidates.IsOpenClosedWorldConflicted": {
+        "table": "LanguageCandidates",
+        "field": "IsOpenClosedWorldConflicted",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘open world’ 플래그가 설정된 경우 및 ‘closed world’ 플래그가 설정된 경우), ‘language candidate’ 레코드는 ‘open closed world conflicted’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenWorld",
+            "label": "is open world"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsClosedWorld",
+            "label": "is closed world"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘language candidate’ 레코드는 ‘open closed world conflicted’에 해당하는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘open world’ 플래그가 설정된 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘closed world’ 플래그가 설정된 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is open world 및 is closed world"
+      },
+      "LanguageCandidates.RelationshipToConcept": {
+        "table": "LanguageCandidates",
+        "field": "RelationshipToConcept",
+        "kind": "formula",
+        "rule": "‘language candidate’ 레코드의 ‘relationship to concept’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘distance from concept’ 값이 1인 경우: “IsMirrorOf”\n2. 그 밖의 경우: “IsDescriptionOf”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘language candidate’ 레코드의 ‘relationship to concept’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“IsMirrorOf”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘distance from concept’ 값이 1인 경우"
+              }
+            },
+            {
+              "value": "“IsDescriptionOf”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(distance from concept 값이 1 값과 같음)이 성립하면 \"IsMirrorOf\", 그렇지 않으면 \"IsDescriptionOf\""
+      },
+      "LanguageCandidates.HockettAssessedCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettAssessedCount",
+        "kind": "rollup",
+        "rule": "‘language candidate’ 레코드의 ‘hockett assessed count’ 값은 해당 ‘language candidate’ 레코드에 연결된 ‘hockett assessments’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(language candidate 값이 이 레코드임)에 맞는 hockett assessments 레코드의 개수"
+      },
+      "LanguageCandidates.HockettYesCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettYesCount",
+        "kind": "rollup",
+        "rule": "‘language candidate’ 레코드의 ‘hockett yes count’ 값은 해당 ‘language candidate’ 레코드에 연결된 모든 ‘hockett assessments’ 레코드의 총 ‘is yes flag’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(language candidate 값이 이 레코드임)에 맞는 모든 hockett assessments 레코드의 is yes flag 합계"
+      },
+      "LanguageCandidates.IsHockettAssessed": {
+        "table": "LanguageCandidates",
+        "field": "IsHockettAssessed",
+        "kind": "formula",
+        "rule": "‘hockett assessed count’ 값이 0보다 큰 경우, ‘language candidate’ 레코드는 ‘hockett assessed’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          }
+        ],
+        "structure": null,
+        "plain": "Hockett assessed count 값이 0보다 큼"
+      },
+      "LanguageCandidates.HockettScore": {
+        "table": "LanguageCandidates",
+        "field": "HockettScore",
+        "kind": "formula",
+        "rule": "‘language candidate’ 레코드의 ‘hockett score’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘hockett assessed count’ 값이 0인 경우: “not assessed”\n2. 그 밖의 경우: ‘hockett yes count’, 이어서 “ of ”, 이어서 ‘hockett assessed count’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘language candidate’ 레코드의 ‘hockett score’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“not assessed”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘hockett assessed count’ 값이 0인 경우"
+              }
+            },
+            {
+              "value": "‘hockett yes count’, 이어서 “ of ”, 이어서 ‘hockett assessed count’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(hockett assessed count 값이 0 값과 같음)이 성립하면 \"not assessed\", 그렇지 않으면 ((hockett yes count 뒤에 \" of \" 연결한 결과) 뒤에 hockett assessed count 연결한 결과)"
+      },
+      "LanguageCandidates.HockettVsGate": {
+        "table": "LanguageCandidates",
+        "field": "HockettVsGate",
+        "kind": "formula",
+        "rule": "‘language candidate’ 레코드의 ‘hockett vs gate’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘hockett assessed count’ 값이 0인 경우: 빈 문자열\n2. 다음 모두에 해당하는 경우(‘predicted answer’ 플래그가 설정된 경우 및 ‘hockett yes count’ 값이 ‘hockett assessed count’보다 작은 경우): “The eight-clause gate says language; Hockett's features hold for only ”, 이어서 ‘hockett yes count’, 이어서 “ of ”, 이어서 ‘hockett assessed count’, 이어서 마침표\n3. 다음 모두에 해당하는 경우(‘predicted answer’ 플래그가 설정되지 않은 경우 및 ‘hockett yes count’ 값이 ‘hockett assessed count’인 경우): “Hockett's features all hold, and the eight-clause gate says not a language.”\n4. 그 밖의 경우: 빈 문자열.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘language candidate’ 레코드의 ‘hockett vs gate’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "빈 문자열",
+              "when": {
+                "kind": "leaf",
+                "text": "‘hockett assessed count’ 값이 0인 경우"
+              }
+            },
+            {
+              "value": "“The eight-clause gate says language; Hockett's features hold for only ”, 이어서 ‘hockett yes count’, 이어서 “ of ”, 이어서 ‘hockett assessed count’, 이어서 마침표",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "‘predicted answer’ 플래그가 설정된 경우"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "‘hockett yes count’ 값이 ‘hockett assessed count’보다 작은 경우"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Hockett's features all hold, and the eight-clause gate says not a language.”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "‘predicted answer’ 플래그가 설정되지 않은 경우"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "‘hockett yes count’ 값이 ‘hockett assessed count’인 경우"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "빈 문자열",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(hockett assessed count 값이 0 값과 같음)이 성립하면 \"\", 그렇지 않으면 조건(predicted answer 및 hockett yes count 값이 hockett assessed count보다 작음)이 성립하면 ((((\"The eight-clause gate says language; Hockett's features hold for only \" 뒤에 hockett yes count 연결한 결과) 뒤에 \" of \" 연결한 결과) 뒤에 hockett assessed count 연결한 결과) 뒤에 \".\" 연결한 결과), 그렇지 않으면 조건(조건(predicted answer)이 성립하지 않음 및 hockett yes count 값이 hockett assessed count 값과 같음)이 성립하면 \"Hockett's features all hold, and the eight-clause gate says not a language.\", 그렇지 않으면 \"\""
+      },
+      "HockettFeatures.AssessmentCount": {
+        "table": "HockettFeatures",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "‘hockett feature’ 레코드의 ‘assessment count’ 값은 해당 ‘hockett feature’ 레코드에 연결된 ‘hockett assessments’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(hockett feature 값이 이 레코드임)에 맞는 hockett assessments 레코드의 개수"
+      },
+      "HockettFeatures.YesCount": {
+        "table": "HockettFeatures",
+        "field": "YesCount",
+        "kind": "rollup",
+        "rule": "‘hockett feature’ 레코드의 ‘yes count’ 값은 해당 ‘hockett feature’ 레코드에 연결된 모든 ‘hockett assessments’ 레코드의 총 ‘is yes flag’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(hockett feature 값이 이 레코드임)에 맞는 모든 hockett assessments 레코드의 is yes flag 합계"
+      },
+      "HockettAssessments.Name": {
+        "table": "HockettAssessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘hockett assessment’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘language candidate’, 이어서 “ / ”, 이어서 ‘hockett feature’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          }
+        ],
+        "structure": null,
+        "plain": "(language candidate 뒤에 \" / \" 연결한 결과) 뒤에 hockett feature 연결한 결과"
+      },
+      "HockettAssessments.IsYesFlag": {
+        "table": "HockettAssessments",
+        "field": "IsYesFlag",
+        "kind": "formula",
+        "rule": "‘verdict’ 값이 “Yes”인 경우, ‘hockett assessment’ 레코드는 ‘yes flag’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘hockett assessment’ 레코드의 ‘is yes flag’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "‘verdict’ 값이 “Yes”인 경우"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(verdict 값이 \"Yes\"임)이 성립하면 1, 그렇지 않으면 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HockettAssessments": [
+        "‘hockett assessment’ 레코드는 ‘language candidate’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘hockett assessment’ 레코드는 ‘hockett feature’ 레코드를 정확히 하나 참조**해야 합니다**."
+      ]
+    },
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "LanguageCandidates": "language candidate",
+      "IsEverythingALanguage": "is everything a language",
+      "HockettFeatures": "hockett feature",
+      "HockettAssessments": "hockett assessment",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "nl": {
+    "fields": {
+      "LanguageCandidates.HasGrammar": {
+        "table": "LanguageCandidates",
+        "field": "HasGrammar",
+        "kind": "formula",
+        "rule": "Een language candidate geldt als beschikkend over een grammar als de has syntax waar is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          }
+        ],
+        "structure": null,
+        "plain": "Has syntax is gelijk aan true()"
+      },
+      "LanguageCandidates.Question": {
+        "table": "LanguageCandidates",
+        "field": "Question",
+        "kind": "formula",
+        "rule": "Een language candidate: question wordt berekend als ‘Is ’, gevolgd door de name, gevolgd door ‘ a language?’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Is \" samengevoegd met name) samengevoegd met \" a language?\""
+      },
+      "LanguageCandidates.PredictedAnswer": {
+        "table": "LanguageCandidates",
+        "field": "PredictedAnswer",
+        "kind": "formula",
+        "rule": "Een language candidate is gemarkeerd als predicted answer als al het volgende geldt: de vlag ‘syntax’ is gezet; de vlag ‘parsed’ is gezet; de vlag ‘description of’ is gezet; de vlag ‘linear decoding pressure’ is gezet; de vlag ‘resolves to an AST’ is gezet; de vlag ‘stable ontology reference’ is gezet; de vlag ‘can be held’ niet is gezet; en de vlag ‘identity’ niet is gezet.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een language candidate is gemarkeerd als predicted answer als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘syntax’ is gezet"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘parsed’ is gezet"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘description of’ is gezet"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘linear decoding pressure’ is gezet"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘resolves to an AST’ is gezet"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘stable ontology reference’ is gezet"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘can be held’ niet is gezet"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘identity’ niet is gezet"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Has syntax, is parsed, is description of, has linear decoding pressure, resolves to an AST, is stable ontology reference, niet can be held, en niet has identity"
+      },
+      "LanguageCandidates.PredictionPredicates": {
+        "table": "LanguageCandidates",
+        "field": "PredictionPredicates",
+        "kind": "formula",
+        "rule": "Een language candidate: prediction predicates wordt berekend als ‘Has Syntax’ als de vlag ‘syntax’ is gezet, in alle andere gevallen ‘No Syntax’, gevolgd door ‘ & ’, gevolgd door ‘Requires Parsing’ als de vlag ‘parsed’ is gezet, in alle andere gevallen ‘No Parsing Neede’, gevolgd door ‘ & ’, gevolgd door ‘Describes the thing’ als de vlag ‘description of’ is gezet, in alle andere gevallen ‘Is the Thing’, gevolgd door ‘ & ’, gevolgd door ‘Has Linear Decoding Pressure’ als de vlag ‘linear decoding pressure’ is gezet, in alle andere gevallen ‘No Decoding Pressure’, gevolgd door ‘ & ’, gevolgd door ‘Resolves to AST’ als de vlag ‘resolves to an AST’ is gezet, in alle andere gevallen ‘No AST’, gevolgd door een komma gevolgd door een spatie, gevolgd door ‘Is Stable Ontology’ als de vlag ‘stable ontology reference’ is gezet, in alle andere gevallen ‘Not 'Ontology'’, gevolgd door ‘ AND ’, gevolgd door ‘Can Be Held’ als de vlag ‘can be held’ is gezet, in alle andere gevallen ‘Can't Be Held’, gevolgd door een komma gevolgd door een spatie, gevolgd door ‘Has Identity’ als de vlag ‘identity’ is gezet, in alle andere gevallen ‘Has no Identity’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((((((((((als has syntax, dan \"Has Syntax\", anders \"No Syntax\" samengevoegd met \" & \") samengevoegd met als is parsed, dan \"Requires Parsing\", anders \"No Parsing Neede\") samengevoegd met \" & \") samengevoegd met als is description of, dan \"Describes the thing\", anders \"Is the Thing\") samengevoegd met \" & \") samengevoegd met als has linear decoding pressure, dan \"Has Linear Decoding Pressure\", anders \"No Decoding Pressure\") samengevoegd met \" & \") samengevoegd met als resolves to an AST, dan \"Resolves to AST\", anders \"No AST\") samengevoegd met \", \") samengevoegd met als is stable ontology reference, dan \"Is Stable Ontology\", anders \"Not 'Ontology'\") samengevoegd met \" AND \") samengevoegd met als can be held, dan \"Can Be Held\", anders \"Can't Be Held\") samengevoegd met \", \") samengevoegd met als has identity, dan \"Has Identity\", anders \"Has no Identity\""
+      },
+      "LanguageCandidates.PredictionFail": {
+        "table": "LanguageCandidates",
+        "field": "PredictionFail",
+        "kind": "formula",
+        "rule": "Een language candidate: prediction fail wordt berekend als de name, gevolgd door een spatie, gevolgd door ‘Is’ als de vlag ‘predicted answer’ is gezet, in alle andere gevallen ‘Isn't’, gevolgd door ‘ a Family Feud Language, but ’, gevolgd door ‘Is’ als de vlag ‘language’ is gezet, in alle andere gevallen ‘Is Not’, gevolgd door ‘ marked as a 'Language Candidate.'’, gevolgd door ‘ - Open World vs. Closed World Conflict.’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsLanguage",
+            "label": "is language"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenClosedWorldConflicted",
+            "label": "is open closed world conflicted"
+          }
+        ],
+        "structure": null,
+        "plain": "Als niet predicted answer is gelijk aan is language, dan (((((name samengevoegd met \" \") samengevoegd met als predicted answer, dan \"Is\", anders \"Isn't\") samengevoegd met \" a Family Feud Language, but \") samengevoegd met als is language, dan \"Is\", anders \"Is Not\") samengevoegd met \" marked as a 'Language Candidate.'\"), anders \"\" samengevoegd met als is open closed world conflicted, dan \" - Open World vs. Closed World Conflict.\", anders \"\""
+      },
+      "LanguageCandidates.IsDescriptionOf": {
+        "table": "LanguageCandidates",
+        "field": "IsDescriptionOf",
+        "kind": "formula",
+        "rule": "Een language candidate geldt als een description of als de distance from concept groter is dan 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance from concept is groter dan 1"
+      },
+      "LanguageCandidates.IsOpenClosedWorldConflicted": {
+        "table": "LanguageCandidates",
+        "field": "IsOpenClosedWorldConflicted",
+        "kind": "formula",
+        "rule": "Een language candidate geldt als open closed world conflicted als al het volgende geldt: de vlag ‘open world’ is gezet en de vlag ‘closed world’ is gezet.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenWorld",
+            "label": "is open world"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsClosedWorld",
+            "label": "is closed world"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een language candidate geldt als open closed world conflicted als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘open world’ is gezet"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘closed world’ is gezet"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is open world en is closed world"
+      },
+      "LanguageCandidates.RelationshipToConcept": {
+        "table": "LanguageCandidates",
+        "field": "RelationshipToConcept",
+        "kind": "formula",
+        "rule": "Het veld ‘relationship to concept’ van de language candidate wordt bepaald volgens de volgende prioriteit:\n1. ‘IsMirrorOf’, als de distance from concept 1 is;\n2. in alle andere gevallen ‘IsDescriptionOf’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘relationship to concept’ van de language candidate wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘IsMirrorOf’",
+              "when": {
+                "kind": "leaf",
+                "text": "de distance from concept 1 is"
+              }
+            },
+            {
+              "value": "‘IsDescriptionOf’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als distance from concept is gelijk aan 1, dan \"IsMirrorOf\", anders \"IsDescriptionOf\""
+      },
+      "LanguageCandidates.HockettAssessedCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettAssessedCount",
+        "kind": "rollup",
+        "rule": "Een language candidate: hockett assessed count is het aantal hockett assessments dat is gekoppeld aan de language candidate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal hockett assessments waarvan language candidate is deze"
+      },
+      "LanguageCandidates.HockettYesCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettYesCount",
+        "kind": "rollup",
+        "rule": "Een language candidate: hockett yes count is het totaal van is yes flag over de hockett assessments gekoppeld aan de language candidate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van is yes flag over alle hockett assessments waarvan language candidate is deze"
+      },
+      "LanguageCandidates.IsHockettAssessed": {
+        "table": "LanguageCandidates",
+        "field": "IsHockettAssessed",
+        "kind": "formula",
+        "rule": "Een language candidate geldt als hockett assessed als de hockett assessed count groter is dan 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          }
+        ],
+        "structure": null,
+        "plain": "Hockett assessed count is groter dan 0"
+      },
+      "LanguageCandidates.HockettScore": {
+        "table": "LanguageCandidates",
+        "field": "HockettScore",
+        "kind": "formula",
+        "rule": "Het veld ‘hockett score’ van de language candidate wordt bepaald volgens de volgende prioriteit:\n1. ‘not assessed’, als de hockett assessed count 0 is;\n2. in alle andere gevallen de hockett yes count, gevolgd door ‘ of ’, gevolgd door de hockett assessed count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘hockett score’ van de language candidate wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘not assessed’",
+              "when": {
+                "kind": "leaf",
+                "text": "de hockett assessed count 0 is"
+              }
+            },
+            {
+              "value": "de hockett yes count, gevolgd door ‘ of ’, gevolgd door de hockett assessed count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als hockett assessed count is gelijk aan 0, dan \"not assessed\", anders ((hockett yes count samengevoegd met \" of \") samengevoegd met hockett assessed count)"
+      },
+      "LanguageCandidates.HockettVsGate": {
+        "table": "LanguageCandidates",
+        "field": "HockettVsGate",
+        "kind": "formula",
+        "rule": "Het veld ‘hockett vs gate’ van de language candidate wordt bepaald volgens de volgende prioriteit:\n1. een lege tekenreeks, als de hockett assessed count 0 is;\n2. ‘The eight-clause gate says language; Hockett's features hold for only ’, gevolgd door de hockett yes count, gevolgd door ‘ of ’, gevolgd door de hockett assessed count, gevolgd door een punt, als al het volgende geldt: de vlag ‘predicted answer’ is gezet en de hockett yes count kleiner is dan de hockett assessed count;\n3. ‘Hockett's features all hold, and the eight-clause gate says not a language.’, als al het volgende geldt: de vlag ‘predicted answer’ niet is gezet en de hockett yes count de hockett assessed count is;\n4. in alle andere gevallen een lege tekenreeks.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘hockett vs gate’ van de language candidate wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "een lege tekenreeks",
+              "when": {
+                "kind": "leaf",
+                "text": "de hockett assessed count 0 is"
+              }
+            },
+            {
+              "value": "‘The eight-clause gate says language; Hockett's features hold for only ’, gevolgd door de hockett yes count, gevolgd door ‘ of ’, gevolgd door de hockett assessed count, gevolgd door een punt",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "de vlag ‘predicted answer’ is gezet"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "de hockett yes count kleiner is dan de hockett assessed count"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "‘Hockett's features all hold, and the eight-clause gate says not a language.’",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "de vlag ‘predicted answer’ niet is gezet"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "de hockett yes count de hockett assessed count is"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "een lege tekenreeks",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als hockett assessed count is gelijk aan 0, dan \"\", anders als predicted answer en hockett yes count is kleiner dan hockett assessed count, dan ((((\"The eight-clause gate says language; Hockett's features hold for only \" samengevoegd met hockett yes count) samengevoegd met \" of \") samengevoegd met hockett assessed count) samengevoegd met \".\"), anders als niet predicted answer en hockett yes count is gelijk aan hockett assessed count, dan \"Hockett's features all hold, and the eight-clause gate says not a language.\", anders \"\""
+      },
+      "HockettFeatures.AssessmentCount": {
+        "table": "HockettFeatures",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "Een hockett feature: assessment count is het aantal hockett assessments dat is gekoppeld aan de hockett feature.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal hockett assessments waarvan hockett feature is deze"
+      },
+      "HockettFeatures.YesCount": {
+        "table": "HockettFeatures",
+        "field": "YesCount",
+        "kind": "rollup",
+        "rule": "Een hockett feature: yes count is het totaal van is yes flag over de hockett assessments gekoppeld aan de hockett feature.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van is yes flag over alle hockett assessments waarvan hockett feature is deze"
+      },
+      "HockettAssessments.Name": {
+        "table": "HockettAssessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een hockett assessment: name wordt berekend als de language candidate, gevolgd door ‘ / ’, gevolgd door de hockett feature.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          }
+        ],
+        "structure": null,
+        "plain": "(language candidate samengevoegd met \" / \") samengevoegd met hockett feature"
+      },
+      "HockettAssessments.IsYesFlag": {
+        "table": "HockettAssessments",
+        "field": "IsYesFlag",
+        "kind": "formula",
+        "rule": "Een hockett assessment geldt als een yes flag als de verdict ‘Yes’ is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘is yes flag’ van het hockett assessment wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "de verdict ‘Yes’ is"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als verdict is \"Yes\", dan 1, anders 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HockettAssessments": [
+        "Een hockett assessment **moet** naar precies één language candidate verwijzen.",
+        "Een hockett assessment **moet** naar precies één hockett feature verwijzen."
+      ]
+    },
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "LanguageCandidates": "language candidate",
+      "IsEverythingALanguage": "is everything a language",
+      "HockettFeatures": "hockett feature",
+      "HockettAssessments": "hockett assessment",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "pt": {
+    "fields": {
+      "LanguageCandidates.HasGrammar": {
+        "table": "LanguageCandidates",
+        "field": "HasGrammar",
+        "kind": "formula",
+        "rule": "Um language candidate é considerado como tendo um grammar se o has syntax é verdadeiro.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          }
+        ],
+        "structure": null,
+        "plain": "Has syntax é igual a true()"
+      },
+      "LanguageCandidates.Question": {
+        "table": "LanguageCandidates",
+        "field": "Question",
+        "kind": "formula",
+        "rule": "Um language candidate: question é calculado como “Is ”, seguido de o name, seguido de “ a language?”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Is \" unido a name) unido a \" a language?\""
+      },
+      "LanguageCandidates.PredictedAnswer": {
+        "table": "LanguageCandidates",
+        "field": "PredictedAnswer",
+        "kind": "formula",
+        "rule": "Um language candidate está marcado como predicted answer se tudo o que segue é verdadeiro: o indicador “syntax” está ativado; o indicador “parsed” está ativado; o indicador “description of” está ativado; o indicador “linear decoding pressure” está ativado; o indicador “resolves to an AST” está ativado; o indicador “stable ontology reference” está ativado; o indicador “can be held” não está ativado; e o indicador “identity” não está ativado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um language candidate está marcado como predicted answer se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “syntax” está ativado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “parsed” está ativado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “description of” está ativado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “linear decoding pressure” está ativado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “resolves to an AST” está ativado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “stable ontology reference” está ativado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “can be held” não está ativado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “identity” não está ativado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Has syntax, is parsed, is description of, has linear decoding pressure, resolves to an AST, is stable ontology reference, não can be held, e não has identity"
+      },
+      "LanguageCandidates.PredictionPredicates": {
+        "table": "LanguageCandidates",
+        "field": "PredictionPredicates",
+        "kind": "formula",
+        "rule": "Um language candidate: prediction predicates é calculado como “Has Syntax” se o indicador “syntax” está ativado, em todos os outros casos “No Syntax”, seguido de “ & ”, seguido de “Requires Parsing” se o indicador “parsed” está ativado, em todos os outros casos “No Parsing Neede”, seguido de “ & ”, seguido de “Describes the thing” se o indicador “description of” está ativado, em todos os outros casos “Is the Thing”, seguido de “ & ”, seguido de “Has Linear Decoding Pressure” se o indicador “linear decoding pressure” está ativado, em todos os outros casos “No Decoding Pressure”, seguido de “ & ”, seguido de “Resolves to AST” se o indicador “resolves to an AST” está ativado, em todos os outros casos “No AST”, seguido de uma vírgula seguida de um espaço, seguido de “Is Stable Ontology” se o indicador “stable ontology reference” está ativado, em todos os outros casos “Not 'Ontology'”, seguido de “ AND ”, seguido de “Can Be Held” se o indicador “can be held” está ativado, em todos os outros casos “Can't Be Held”, seguido de uma vírgula seguida de um espaço, seguido de “Has Identity” se o indicador “identity” está ativado, em todos os outros casos “Has no Identity”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((((((((((se has syntax, então \"Has Syntax\", caso contrário \"No Syntax\" unido a \" & \") unido a se is parsed, então \"Requires Parsing\", caso contrário \"No Parsing Neede\") unido a \" & \") unido a se is description of, então \"Describes the thing\", caso contrário \"Is the Thing\") unido a \" & \") unido a se has linear decoding pressure, então \"Has Linear Decoding Pressure\", caso contrário \"No Decoding Pressure\") unido a \" & \") unido a se resolves to an AST, então \"Resolves to AST\", caso contrário \"No AST\") unido a \", \") unido a se is stable ontology reference, então \"Is Stable Ontology\", caso contrário \"Not 'Ontology'\") unido a \" AND \") unido a se can be held, então \"Can Be Held\", caso contrário \"Can't Be Held\") unido a \", \") unido a se has identity, então \"Has Identity\", caso contrário \"Has no Identity\""
+      },
+      "LanguageCandidates.PredictionFail": {
+        "table": "LanguageCandidates",
+        "field": "PredictionFail",
+        "kind": "formula",
+        "rule": "Um language candidate: prediction fail é calculado como o name, seguido de um espaço, seguido de “Is” se o indicador “predicted answer” está ativado, em todos os outros casos “Isn't”, seguido de “ a Family Feud Language, but ”, seguido de “Is” se o indicador “language” está ativado, em todos os outros casos “Is Not”, seguido de “ marked as a 'Language Candidate.'”, seguido de “ - Open World vs. Closed World Conflict.”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsLanguage",
+            "label": "is language"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenClosedWorldConflicted",
+            "label": "is open closed world conflicted"
+          }
+        ],
+        "structure": null,
+        "plain": "Se não predicted answer é igual a is language, então (((((name unido a \" \") unido a se predicted answer, então \"Is\", caso contrário \"Isn't\") unido a \" a Family Feud Language, but \") unido a se is language, então \"Is\", caso contrário \"Is Not\") unido a \" marked as a 'Language Candidate.'\"), caso contrário \"\" unido a se is open closed world conflicted, então \" - Open World vs. Closed World Conflict.\", caso contrário \"\""
+      },
+      "LanguageCandidates.IsDescriptionOf": {
+        "table": "LanguageCandidates",
+        "field": "IsDescriptionOf",
+        "kind": "formula",
+        "rule": "Um language candidate é considerado um description of se o distance from concept é maior que 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance from concept é maior que 1"
+      },
+      "LanguageCandidates.IsOpenClosedWorldConflicted": {
+        "table": "LanguageCandidates",
+        "field": "IsOpenClosedWorldConflicted",
+        "kind": "formula",
+        "rule": "Um language candidate é considerado open closed world conflicted se tudo o que segue é verdadeiro: o indicador “open world” está ativado e o indicador “closed world” está ativado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenWorld",
+            "label": "is open world"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsClosedWorld",
+            "label": "is closed world"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um language candidate é considerado open closed world conflicted se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “open world” está ativado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “closed world” está ativado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is open world e is closed world"
+      },
+      "LanguageCandidates.RelationshipToConcept": {
+        "table": "LanguageCandidates",
+        "field": "RelationshipToConcept",
+        "kind": "formula",
+        "rule": "O campo “relationship to concept” do language candidate é determinado pela seguinte prioridade:\n1. “IsMirrorOf”, se o distance from concept é 1;\n2. em todos os outros casos, “IsDescriptionOf”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “relationship to concept” do language candidate é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“IsMirrorOf”",
+              "when": {
+                "kind": "leaf",
+                "text": "o distance from concept é 1"
+              }
+            },
+            {
+              "value": "“IsDescriptionOf”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se distance from concept é igual a 1, então \"IsMirrorOf\", caso contrário \"IsDescriptionOf\""
+      },
+      "LanguageCandidates.HockettAssessedCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettAssessedCount",
+        "kind": "rollup",
+        "rule": "Um language candidate: hockett assessed count é o número de hockett assessments relacionados a o language candidate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de hockett assessments cujo language candidate é este"
+      },
+      "LanguageCandidates.HockettYesCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettYesCount",
+        "kind": "rollup",
+        "rule": "Um language candidate: hockett yes count é o total de is yes flag entre os hockett assessments relacionados a o language candidate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de is yes flag entre todos os hockett assessments cujo language candidate é este"
+      },
+      "LanguageCandidates.IsHockettAssessed": {
+        "table": "LanguageCandidates",
+        "field": "IsHockettAssessed",
+        "kind": "formula",
+        "rule": "Um language candidate é considerado hockett assessed se o hockett assessed count é maior que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          }
+        ],
+        "structure": null,
+        "plain": "Hockett assessed count é maior que 0"
+      },
+      "LanguageCandidates.HockettScore": {
+        "table": "LanguageCandidates",
+        "field": "HockettScore",
+        "kind": "formula",
+        "rule": "O campo “hockett score” do language candidate é determinado pela seguinte prioridade:\n1. “not assessed”, se o hockett assessed count é 0;\n2. em todos os outros casos, o hockett yes count, seguido de “ of ”, seguido de o hockett assessed count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “hockett score” do language candidate é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“not assessed”",
+              "when": {
+                "kind": "leaf",
+                "text": "o hockett assessed count é 0"
+              }
+            },
+            {
+              "value": "o hockett yes count, seguido de “ of ”, seguido de o hockett assessed count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se hockett assessed count é igual a 0, então \"not assessed\", caso contrário ((hockett yes count unido a \" of \") unido a hockett assessed count)"
+      },
+      "LanguageCandidates.HockettVsGate": {
+        "table": "LanguageCandidates",
+        "field": "HockettVsGate",
+        "kind": "formula",
+        "rule": "O campo “hockett vs gate” do language candidate é determinado pela seguinte prioridade:\n1. uma cadeia vazia, se o hockett assessed count é 0;\n2. “The eight-clause gate says language; Hockett's features hold for only ”, seguido de o hockett yes count, seguido de “ of ”, seguido de o hockett assessed count, seguido de um ponto, se tudo o que segue é verdadeiro: o indicador “predicted answer” está ativado e o hockett yes count é menor que o hockett assessed count;\n3. “Hockett's features all hold, and the eight-clause gate says not a language.”, se tudo o que segue é verdadeiro: o indicador “predicted answer” não está ativado e o hockett yes count é o hockett assessed count;\n4. em todos os outros casos, uma cadeia vazia.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “hockett vs gate” do language candidate é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "uma cadeia vazia",
+              "when": {
+                "kind": "leaf",
+                "text": "o hockett assessed count é 0"
+              }
+            },
+            {
+              "value": "“The eight-clause gate says language; Hockett's features hold for only ”, seguido de o hockett yes count, seguido de “ of ”, seguido de o hockett assessed count, seguido de um ponto",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "o indicador “predicted answer” está ativado"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "o hockett yes count é menor que o hockett assessed count"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Hockett's features all hold, and the eight-clause gate says not a language.”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "o indicador “predicted answer” não está ativado"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "o hockett yes count é o hockett assessed count"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "uma cadeia vazia",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se hockett assessed count é igual a 0, então \"\", caso contrário se predicted answer e hockett yes count é menor que hockett assessed count, então ((((\"The eight-clause gate says language; Hockett's features hold for only \" unido a hockett yes count) unido a \" of \") unido a hockett assessed count) unido a \".\"), caso contrário se não predicted answer e hockett yes count é igual a hockett assessed count, então \"Hockett's features all hold, and the eight-clause gate says not a language.\", caso contrário \"\""
+      },
+      "HockettFeatures.AssessmentCount": {
+        "table": "HockettFeatures",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "Um hockett feature: assessment count é o número de hockett assessments relacionados a o hockett feature.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de hockett assessments cujo hockett feature é este"
+      },
+      "HockettFeatures.YesCount": {
+        "table": "HockettFeatures",
+        "field": "YesCount",
+        "kind": "rollup",
+        "rule": "Um hockett feature: yes count é o total de is yes flag entre os hockett assessments relacionados a o hockett feature.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de is yes flag entre todos os hockett assessments cujo hockett feature é este"
+      },
+      "HockettAssessments.Name": {
+        "table": "HockettAssessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um hockett assessment: name é calculado como o language candidate, seguido de “ / ”, seguido de o hockett feature.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          }
+        ],
+        "structure": null,
+        "plain": "(language candidate unido a \" / \") unido a hockett feature"
+      },
+      "HockettAssessments.IsYesFlag": {
+        "table": "HockettAssessments",
+        "field": "IsYesFlag",
+        "kind": "formula",
+        "rule": "Um hockett assessment é considerado um yes flag se o verdict é “Yes”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “is yes flag” do hockett assessment é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "o verdict é “Yes”"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se verdict é \"Yes\", então 1, caso contrário 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HockettAssessments": [
+        "Um hockett assessment **deve** referenciar exatamente um language candidate.",
+        "Um hockett assessment **deve** referenciar exatamente um hockett feature."
+      ]
+    },
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "LanguageCandidates": "language candidate",
+      "IsEverythingALanguage": "is everything a language",
+      "HockettFeatures": "hockett feature",
+      "HockettAssessments": "hockett assessment",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "ru": {
+    "fields": {
+      "LanguageCandidates.HasGrammar": {
+        "table": "LanguageCandidates",
+        "field": "HasGrammar",
+        "kind": "formula",
+        "rule": "Language candidate считается имеющим «grammar», если has syntax равно истина.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          }
+        ],
+        "structure": null,
+        "plain": "Has syntax равно true()"
+      },
+      "LanguageCandidates.Question": {
+        "table": "LanguageCandidates",
+        "field": "Question",
+        "kind": "formula",
+        "rule": "Language candidate: «question» вычисляется как «Is », затем name, затем « a language?».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Is \" соединено с name) соединено с \" a language?\""
+      },
+      "LanguageCandidates.PredictedAnswer": {
+        "table": "LanguageCandidates",
+        "field": "PredictedAnswer",
+        "kind": "formula",
+        "rule": "Language candidate помечается как «predicted answer», если выполняется всё следующее: признак «syntax» установлен; признак «parsed» установлен; признак «description of» установлен; признак «linear decoding pressure» установлен; признак «resolves to an AST» установлен; признак «stable ontology reference» установлен; признак «can be held» не установлен; и признак «identity» не установлен.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Language candidate помечается как «predicted answer», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "признак «syntax» установлен"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "признак «parsed» установлен"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "признак «description of» установлен"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "признак «linear decoding pressure» установлен"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "признак «resolves to an AST» установлен"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "признак «stable ontology reference» установлен"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "признак «can be held» не установлен"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "признак «identity» не установлен"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Has syntax, is parsed, is description of, has linear decoding pressure, resolves to an AST, is stable ontology reference, не can be held, и не has identity"
+      },
+      "LanguageCandidates.PredictionPredicates": {
+        "table": "LanguageCandidates",
+        "field": "PredictionPredicates",
+        "kind": "formula",
+        "rule": "Language candidate: «prediction predicates» вычисляется как «Has Syntax», если признак «syntax» установлен, во всех остальных случаях — «No Syntax», затем « & », затем «Requires Parsing», если признак «parsed» установлен, во всех остальных случаях — «No Parsing Neede», затем « & », затем «Describes the thing», если признак «description of» установлен, во всех остальных случаях — «Is the Thing», затем « & », затем «Has Linear Decoding Pressure», если признак «linear decoding pressure» установлен, во всех остальных случаях — «No Decoding Pressure», затем « & », затем «Resolves to AST», если признак «resolves to an AST» установлен, во всех остальных случаях — «No AST», затем запятая с пробелом, затем «Is Stable Ontology», если признак «stable ontology reference» установлен, во всех остальных случаях — «Not 'Ontology'», затем « AND », затем «Can Be Held», если признак «can be held» установлен, во всех остальных случаях — «Can't Be Held», затем запятая с пробелом, затем «Has Identity», если признак «identity» установлен, во всех остальных случаях — «Has no Identity».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((((((((((если has syntax, то \"Has Syntax\", иначе \"No Syntax\" соединено с \" & \") соединено с если is parsed, то \"Requires Parsing\", иначе \"No Parsing Neede\") соединено с \" & \") соединено с если is description of, то \"Describes the thing\", иначе \"Is the Thing\") соединено с \" & \") соединено с если has linear decoding pressure, то \"Has Linear Decoding Pressure\", иначе \"No Decoding Pressure\") соединено с \" & \") соединено с если resolves to an AST, то \"Resolves to AST\", иначе \"No AST\") соединено с \", \") соединено с если is stable ontology reference, то \"Is Stable Ontology\", иначе \"Not 'Ontology'\") соединено с \" AND \") соединено с если can be held, то \"Can Be Held\", иначе \"Can't Be Held\") соединено с \", \") соединено с если has identity, то \"Has Identity\", иначе \"Has no Identity\""
+      },
+      "LanguageCandidates.PredictionFail": {
+        "table": "LanguageCandidates",
+        "field": "PredictionFail",
+        "kind": "formula",
+        "rule": "Language candidate: «prediction fail» вычисляется как name, затем пробел, затем «Is», если признак «predicted answer» установлен, во всех остальных случаях — «Isn't», затем « a Family Feud Language, but », затем «Is», если признак «language» установлен, во всех остальных случаях — «Is Not», затем « marked as a 'Language Candidate.'», затем « - Open World vs. Closed World Conflict.».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsLanguage",
+            "label": "is language"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenClosedWorldConflicted",
+            "label": "is open closed world conflicted"
+          }
+        ],
+        "structure": null,
+        "plain": "Если не predicted answer равно is language, то (((((name соединено с \" \") соединено с если predicted answer, то \"Is\", иначе \"Isn't\") соединено с \" a Family Feud Language, but \") соединено с если is language, то \"Is\", иначе \"Is Not\") соединено с \" marked as a 'Language Candidate.'\"), иначе \"\" соединено с если is open closed world conflicted, то \" - Open World vs. Closed World Conflict.\", иначе \"\""
+      },
+      "LanguageCandidates.IsDescriptionOf": {
+        "table": "LanguageCandidates",
+        "field": "IsDescriptionOf",
+        "kind": "formula",
+        "rule": "Language candidate считается «description of», если distance from concept больше 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance from concept больше 1"
+      },
+      "LanguageCandidates.IsOpenClosedWorldConflicted": {
+        "table": "LanguageCandidates",
+        "field": "IsOpenClosedWorldConflicted",
+        "kind": "formula",
+        "rule": "Language candidate считается «open closed world conflicted», если выполняется всё следующее: признак «open world» установлен и признак «closed world» установлен.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenWorld",
+            "label": "is open world"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsClosedWorld",
+            "label": "is closed world"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Language candidate считается «open closed world conflicted», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "признак «open world» установлен"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "признак «closed world» установлен"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is open world и is closed world"
+      },
+      "LanguageCandidates.RelationshipToConcept": {
+        "table": "LanguageCandidates",
+        "field": "RelationshipToConcept",
+        "kind": "formula",
+        "rule": "Поле «relationship to concept» (Language candidate) определяется по следующему приоритету:\n1. «IsMirrorOf», если distance from concept равно 1;\n2. во всех остальных случаях — «IsDescriptionOf».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «relationship to concept» (Language candidate) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«IsMirrorOf»",
+              "when": {
+                "kind": "leaf",
+                "text": "distance from concept равно 1"
+              }
+            },
+            {
+              "value": "«IsDescriptionOf»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если distance from concept равно 1, то \"IsMirrorOf\", иначе \"IsDescriptionOf\""
+      },
+      "LanguageCandidates.HockettAssessedCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettAssessedCount",
+        "kind": "rollup",
+        "rule": "Language candidate: «hockett assessed count» — это число записей «hockett assessments», связанных с language candidate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «hockett assessments», у которых language candidate равно эта запись"
+      },
+      "LanguageCandidates.HockettYesCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettYesCount",
+        "kind": "rollup",
+        "rule": "Language candidate: «hockett yes count» — это сумма «is yes flag» по записям «hockett assessments», связанным с language candidate.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма is yes flag по всем «hockett assessments», у которых language candidate равно эта запись"
+      },
+      "LanguageCandidates.IsHockettAssessed": {
+        "table": "LanguageCandidates",
+        "field": "IsHockettAssessed",
+        "kind": "formula",
+        "rule": "Language candidate считается «hockett assessed», если hockett assessed count больше 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          }
+        ],
+        "structure": null,
+        "plain": "Hockett assessed count больше 0"
+      },
+      "LanguageCandidates.HockettScore": {
+        "table": "LanguageCandidates",
+        "field": "HockettScore",
+        "kind": "formula",
+        "rule": "Поле «hockett score» (Language candidate) определяется по следующему приоритету:\n1. «not assessed», если hockett assessed count равно 0;\n2. во всех остальных случаях — hockett yes count, затем « of », затем hockett assessed count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «hockett score» (Language candidate) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«not assessed»",
+              "when": {
+                "kind": "leaf",
+                "text": "hockett assessed count равно 0"
+              }
+            },
+            {
+              "value": "hockett yes count, затем « of », затем hockett assessed count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если hockett assessed count равно 0, то \"not assessed\", иначе ((hockett yes count соединено с \" of \") соединено с hockett assessed count)"
+      },
+      "LanguageCandidates.HockettVsGate": {
+        "table": "LanguageCandidates",
+        "field": "HockettVsGate",
+        "kind": "formula",
+        "rule": "Поле «hockett vs gate» (Language candidate) определяется по следующему приоритету:\n1. пустая строка, если hockett assessed count равно 0;\n2. «The eight-clause gate says language; Hockett's features hold for only », затем hockett yes count, затем « of », затем hockett assessed count, затем точка, если выполняется всё следующее: признак «predicted answer» установлен и hockett yes count меньше hockett assessed count;\n3. «Hockett's features all hold, and the eight-clause gate says not a language.», если выполняется всё следующее: признак «predicted answer» не установлен и hockett yes count равно hockett assessed count;\n4. во всех остальных случаях — пустая строка.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «hockett vs gate» (Language candidate) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "пустая строка",
+              "when": {
+                "kind": "leaf",
+                "text": "hockett assessed count равно 0"
+              }
+            },
+            {
+              "value": "«The eight-clause gate says language; Hockett's features hold for only », затем hockett yes count, затем « of », затем hockett assessed count, затем точка",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "признак «predicted answer» установлен"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "hockett yes count меньше hockett assessed count"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "«Hockett's features all hold, and the eight-clause gate says not a language.»",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "признак «predicted answer» не установлен"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "hockett yes count равно hockett assessed count"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "пустая строка",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если hockett assessed count равно 0, то \"\", иначе если predicted answer и hockett yes count меньше hockett assessed count, то ((((\"The eight-clause gate says language; Hockett's features hold for only \" соединено с hockett yes count) соединено с \" of \") соединено с hockett assessed count) соединено с \".\"), иначе если не predicted answer и hockett yes count равно hockett assessed count, то \"Hockett's features all hold, and the eight-clause gate says not a language.\", иначе \"\""
+      },
+      "HockettFeatures.AssessmentCount": {
+        "table": "HockettFeatures",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "Hockett feature: «assessment count» — это число записей «hockett assessments», связанных с hockett feature.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «hockett assessments», у которых hockett feature равно эта запись"
+      },
+      "HockettFeatures.YesCount": {
+        "table": "HockettFeatures",
+        "field": "YesCount",
+        "kind": "rollup",
+        "rule": "Hockett feature: «yes count» — это сумма «is yes flag» по записям «hockett assessments», связанным с hockett feature.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма is yes flag по всем «hockett assessments», у которых hockett feature равно эта запись"
+      },
+      "HockettAssessments.Name": {
+        "table": "HockettAssessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Hockett assessment: «name» вычисляется как language candidate, затем « / », затем hockett feature.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          }
+        ],
+        "structure": null,
+        "plain": "(language candidate соединено с \" / \") соединено с hockett feature"
+      },
+      "HockettAssessments.IsYesFlag": {
+        "table": "HockettAssessments",
+        "field": "IsYesFlag",
+        "kind": "formula",
+        "rule": "Hockett assessment считается «yes flag», если verdict равно «Yes».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «is yes flag» (Hockett assessment) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "verdict равно «Yes»"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если verdict равно \"Yes\", то 1, иначе 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HockettAssessments": [
+        "Hockett assessment **обязан** ссылаться ровно на один «language candidate».",
+        "Hockett assessment **обязан** ссылаться ровно на один «hockett feature»."
+      ]
+    },
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "LanguageCandidates": "language candidate",
+      "IsEverythingALanguage": "is everything a language",
+      "HockettFeatures": "hockett feature",
+      "HockettAssessments": "hockett assessment",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "tr": {
+    "fields": {
+      "LanguageCandidates.HasGrammar": {
+        "table": "LanguageCandidates",
+        "field": "HasGrammar",
+        "kind": "formula",
+        "rule": "“language candidate” kaydı, “has syntax” alanı doğru değerine eşit ise “grammar” sahibi sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          }
+        ],
+        "structure": null,
+        "plain": "Has syntax, true() değerine eşit"
+      },
+      "LanguageCandidates.Question": {
+        "table": "LanguageCandidates",
+        "field": "Question",
+        "kind": "formula",
+        "rule": "“language candidate” kaydının “question” alanı, “Is ”, ardından “name” alanı, ardından “ a language?” olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Is \" ile name birleşimi) ile \" a language?\" birleşimi"
+      },
+      "LanguageCandidates.PredictedAnswer": {
+        "table": "LanguageCandidates",
+        "field": "PredictedAnswer",
+        "kind": "formula",
+        "rule": "“language candidate” kaydı, “syntax” bayrağı etkin, “parsed” bayrağı etkin, “description of” bayrağı etkin, “linear decoding pressure” bayrağı etkin, “resolves to an AST” bayrağı etkin, “stable ontology reference” bayrağı etkin, “can be held” bayrağı etkin değil ve “identity” bayrağı etkin değil ise “predicted answer” olarak işaretlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“language candidate” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “predicted answer” olarak işaretlenir:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“syntax” bayrağı etkin"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“parsed” bayrağı etkin"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“description of” bayrağı etkin"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“linear decoding pressure” bayrağı etkin"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“resolves to an AST” bayrağı etkin"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“stable ontology reference” bayrağı etkin"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“can be held” bayrağı etkin değil"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“identity” bayrağı etkin değil"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Has syntax, is parsed, is description of, has linear decoding pressure, resolves to an AST, is stable ontology reference, (can be held) koşulu sağlanmıyor ve (has identity) koşulu sağlanmıyor"
+      },
+      "LanguageCandidates.PredictionPredicates": {
+        "table": "LanguageCandidates",
+        "field": "PredictionPredicates",
+        "kind": "formula",
+        "rule": "“language candidate” kaydının “prediction predicates” alanı, “syntax” bayrağı etkin ise “Has Syntax”, diğer tüm durumlarda “No Syntax”, ardından “ & ”, ardından “parsed” bayrağı etkin ise “Requires Parsing”, diğer tüm durumlarda “No Parsing Neede”, ardından “ & ”, ardından “description of” bayrağı etkin ise “Describes the thing”, diğer tüm durumlarda “Is the Thing”, ardından “ & ”, ardından “linear decoding pressure” bayrağı etkin ise “Has Linear Decoding Pressure”, diğer tüm durumlarda “No Decoding Pressure”, ardından “ & ”, ardından “resolves to an AST” bayrağı etkin ise “Resolves to AST”, diğer tüm durumlarda “No AST”, ardından bir virgül ile bir boşluk, ardından “stable ontology reference” bayrağı etkin ise “Is Stable Ontology”, diğer tüm durumlarda “Not 'Ontology'”, ardından “ AND ”, ardından “can be held” bayrağı etkin ise “Can Be Held”, diğer tüm durumlarda “Can't Be Held”, ardından bir virgül ile bir boşluk, ardından “identity” bayrağı etkin ise “Has Identity”, diğer tüm durumlarda “Has no Identity” olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((((((((((has syntax ise \"Has Syntax\", aksi takdirde \"No Syntax\" ile \" & \" birleşimi) ile is parsed ise \"Requires Parsing\", aksi takdirde \"No Parsing Neede\" birleşimi) ile \" & \" birleşimi) ile is description of ise \"Describes the thing\", aksi takdirde \"Is the Thing\" birleşimi) ile \" & \" birleşimi) ile has linear decoding pressure ise \"Has Linear Decoding Pressure\", aksi takdirde \"No Decoding Pressure\" birleşimi) ile \" & \" birleşimi) ile resolves to an AST ise \"Resolves to AST\", aksi takdirde \"No AST\" birleşimi) ile \", \" birleşimi) ile is stable ontology reference ise \"Is Stable Ontology\", aksi takdirde \"Not 'Ontology'\" birleşimi) ile \" AND \" birleşimi) ile can be held ise \"Can Be Held\", aksi takdirde \"Can't Be Held\" birleşimi) ile \", \" birleşimi) ile has identity ise \"Has Identity\", aksi takdirde \"Has no Identity\" birleşimi"
+      },
+      "LanguageCandidates.PredictionFail": {
+        "table": "LanguageCandidates",
+        "field": "PredictionFail",
+        "kind": "formula",
+        "rule": "“language candidate” kaydının “prediction fail” alanı, “name” alanı, ardından bir boşluk, ardından “predicted answer” bayrağı etkin ise “Is”, diğer tüm durumlarda “Isn't”, ardından “ a Family Feud Language, but ”, ardından “language” bayrağı etkin ise “Is”, diğer tüm durumlarda “Is Not”, ardından “ marked as a 'Language Candidate.'”, ardından “ - Open World vs. Closed World Conflict.” olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsLanguage",
+            "label": "is language"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenClosedWorldConflicted",
+            "label": "is open closed world conflicted"
+          }
+        ],
+        "structure": null,
+        "plain": "(predicted answer, is language değerine eşit) koşulu sağlanmıyor ise (((((name ile \" \" birleşimi) ile predicted answer ise \"Is\", aksi takdirde \"Isn't\" birleşimi) ile \" a Family Feud Language, but \" birleşimi) ile is language ise \"Is\", aksi takdirde \"Is Not\" birleşimi) ile \" marked as a 'Language Candidate.'\" birleşimi), aksi takdirde \"\" ile is open closed world conflicted ise \" - Open World vs. Closed World Conflict.\", aksi takdirde \"\" birleşimi"
+      },
+      "LanguageCandidates.IsDescriptionOf": {
+        "table": "LanguageCandidates",
+        "field": "IsDescriptionOf",
+        "kind": "formula",
+        "rule": "“language candidate” kaydı, “distance from concept” alanı 1 değerinden büyük ise “description of” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance from concept, 1 değerinden büyük"
+      },
+      "LanguageCandidates.IsOpenClosedWorldConflicted": {
+        "table": "LanguageCandidates",
+        "field": "IsOpenClosedWorldConflicted",
+        "kind": "formula",
+        "rule": "“language candidate” kaydı, “open world” bayrağı etkin ve “closed world” bayrağı etkin ise “open closed world conflicted” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenWorld",
+            "label": "is open world"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsClosedWorld",
+            "label": "is closed world"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“language candidate” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “open closed world conflicted” sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“open world” bayrağı etkin"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“closed world” bayrağı etkin"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is open world ve is closed world"
+      },
+      "LanguageCandidates.RelationshipToConcept": {
+        "table": "LanguageCandidates",
+        "field": "RelationshipToConcept",
+        "kind": "formula",
+        "rule": "“language candidate” kaydının “relationship to concept” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “distance from concept” alanı 1 değerine eşit ise “IsMirrorOf”;\n2. diğer tüm durumlarda “IsDescriptionOf”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“language candidate” kaydının “relationship to concept” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“IsMirrorOf”",
+              "when": {
+                "kind": "leaf",
+                "text": "“distance from concept” alanı 1 değerine eşit"
+              }
+            },
+            {
+              "value": "“IsDescriptionOf”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Distance from concept, 1 değerine eşit ise \"IsMirrorOf\", aksi takdirde \"IsDescriptionOf\""
+      },
+      "LanguageCandidates.HockettAssessedCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettAssessedCount",
+        "kind": "rollup",
+        "rule": "“language candidate” kaydının “hockett assessed count” alanı, “language candidate” kaydıyla ilişkili “hockett assessments” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Language candidate değeri bu kayıt olan hockett assessments kayıtlarının sayısı"
+      },
+      "LanguageCandidates.HockettYesCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettYesCount",
+        "kind": "rollup",
+        "rule": "“language candidate” kaydının “hockett yes count” alanı, “language candidate” kaydıyla ilişkili “hockett assessments” kayıtları üzerinden hesaplanan toplam “is yes flag” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Language candidate değeri bu kayıt olan tüm hockett assessments kayıtlarındaki is yes flag değerlerinin toplamı"
+      },
+      "LanguageCandidates.IsHockettAssessed": {
+        "table": "LanguageCandidates",
+        "field": "IsHockettAssessed",
+        "kind": "formula",
+        "rule": "“language candidate” kaydı, “hockett assessed count” alanı 0 değerinden büyük ise “hockett assessed” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          }
+        ],
+        "structure": null,
+        "plain": "Hockett assessed count, 0 değerinden büyük"
+      },
+      "LanguageCandidates.HockettScore": {
+        "table": "LanguageCandidates",
+        "field": "HockettScore",
+        "kind": "formula",
+        "rule": "“language candidate” kaydının “hockett score” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “hockett assessed count” alanı 0 değerine eşit ise “not assessed”;\n2. diğer tüm durumlarda “hockett yes count” alanı, ardından “ of ”, ardından “hockett assessed count” alanı.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“language candidate” kaydının “hockett score” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“not assessed”",
+              "when": {
+                "kind": "leaf",
+                "text": "“hockett assessed count” alanı 0 değerine eşit"
+              }
+            },
+            {
+              "value": "“hockett yes count” alanı, ardından “ of ”, ardından “hockett assessed count” alanı",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Hockett assessed count, 0 değerine eşit ise \"not assessed\", aksi takdirde ((hockett yes count ile \" of \" birleşimi) ile hockett assessed count birleşimi)"
+      },
+      "LanguageCandidates.HockettVsGate": {
+        "table": "LanguageCandidates",
+        "field": "HockettVsGate",
+        "kind": "formula",
+        "rule": "“language candidate” kaydının “hockett vs gate” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “hockett assessed count” alanı 0 değerine eşit ise boş metin;\n2. “predicted answer” bayrağı etkin ve “hockett yes count” alanı “hockett assessed count” alanı değerinden küçük ise “The eight-clause gate says language; Hockett's features hold for only ”, ardından “hockett yes count” alanı, ardından “ of ”, ardından “hockett assessed count” alanı, ardından bir nokta;\n3. “predicted answer” bayrağı etkin değil ve “hockett yes count” alanı “hockett assessed count” alanı değerine eşit ise “Hockett's features all hold, and the eight-clause gate says not a language.”;\n4. diğer tüm durumlarda boş metin.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“language candidate” kaydının “hockett vs gate” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "boş metin",
+              "when": {
+                "kind": "leaf",
+                "text": "“hockett assessed count” alanı 0 değerine eşit"
+              }
+            },
+            {
+              "value": "“The eight-clause gate says language; Hockett's features hold for only ”, ardından “hockett yes count” alanı, ardından “ of ”, ardından “hockett assessed count” alanı, ardından bir nokta",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "“predicted answer” bayrağı etkin"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "“hockett yes count” alanı “hockett assessed count” alanı değerinden küçük"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Hockett's features all hold, and the eight-clause gate says not a language.”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "“predicted answer” bayrağı etkin değil"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "“hockett yes count” alanı “hockett assessed count” alanı değerine eşit"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "boş metin",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Hockett assessed count, 0 değerine eşit ise \"\", aksi takdirde predicted answer ve hockett yes count, hockett assessed count değerinden küçük ise ((((\"The eight-clause gate says language; Hockett's features hold for only \" ile hockett yes count birleşimi) ile \" of \" birleşimi) ile hockett assessed count birleşimi) ile \".\" birleşimi), aksi takdirde (predicted answer) koşulu sağlanmıyor ve hockett yes count, hockett assessed count değerine eşit ise \"Hockett's features all hold, and the eight-clause gate says not a language.\", aksi takdirde \"\""
+      },
+      "HockettFeatures.AssessmentCount": {
+        "table": "HockettFeatures",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "“hockett feature” kaydının “assessment count” alanı, “hockett feature” kaydıyla ilişkili “hockett assessments” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Hockett feature değeri bu kayıt olan hockett assessments kayıtlarının sayısı"
+      },
+      "HockettFeatures.YesCount": {
+        "table": "HockettFeatures",
+        "field": "YesCount",
+        "kind": "rollup",
+        "rule": "“hockett feature” kaydının “yes count” alanı, “hockett feature” kaydıyla ilişkili “hockett assessments” kayıtları üzerinden hesaplanan toplam “is yes flag” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Hockett feature değeri bu kayıt olan tüm hockett assessments kayıtlarındaki is yes flag değerlerinin toplamı"
+      },
+      "HockettAssessments.Name": {
+        "table": "HockettAssessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“hockett assessment” kaydının “name” alanı, “language candidate” alanı, ardından “ / ”, ardından “hockett feature” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          }
+        ],
+        "structure": null,
+        "plain": "(language candidate ile \" / \" birleşimi) ile hockett feature birleşimi"
+      },
+      "HockettAssessments.IsYesFlag": {
+        "table": "HockettAssessments",
+        "field": "IsYesFlag",
+        "kind": "formula",
+        "rule": "“hockett assessment” kaydı, “verdict” alanı “Yes” değerine eşit ise “yes flag” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“hockett assessment” kaydının “is yes flag” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "“verdict” alanı “Yes” değerine eşit"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Verdict, \"Yes\" değerine eşit ise 1, aksi takdirde 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HockettAssessments": [
+        "“hockett assessment” kaydı, tam olarak bir “language candidate” kaydına referans vermek **zorundadır**.",
+        "“hockett assessment” kaydı, tam olarak bir “hockett feature” kaydına referans vermek **zorundadır**."
+      ]
+    },
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "LanguageCandidates": "language candidate",
+      "IsEverythingALanguage": "is everything a language",
+      "HockettFeatures": "hockett feature",
+      "HockettAssessments": "hockett assessment",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "vi": {
+    "fields": {
+      "LanguageCandidates.HasGrammar": {
+        "table": "LanguageCandidates",
+        "field": "HasGrammar",
+        "kind": "formula",
+        "rule": "Mỗi language candidate được coi là có “grammar” nếu has syntax là đúng.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          }
+        ],
+        "structure": null,
+        "plain": "Has syntax bằng true()"
+      },
+      "LanguageCandidates.Question": {
+        "table": "LanguageCandidates",
+        "field": "Question",
+        "kind": "formula",
+        "rule": "Trường “question” của mỗi language candidate được tính bằng “Is ”, tiếp theo là name, tiếp theo là “ a language?”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Is \" nối với name) nối với \" a language?\""
+      },
+      "LanguageCandidates.PredictedAnswer": {
+        "table": "LanguageCandidates",
+        "field": "PredictedAnswer",
+        "kind": "formula",
+        "rule": "Mỗi language candidate được đánh dấu là “predicted answer” nếu tất cả các điều kiện sau đều đúng: cờ “syntax” được bật, cờ “parsed” được bật, cờ “description of” được bật, cờ “linear decoding pressure” được bật, cờ “resolves to an AST” được bật, cờ “stable ontology reference” được bật, cờ “can be held” không được bật và cờ “identity” không được bật.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi language candidate được đánh dấu là “predicted answer” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "cờ “syntax” được bật"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "cờ “parsed” được bật"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "cờ “description of” được bật"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "cờ “linear decoding pressure” được bật"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "cờ “resolves to an AST” được bật"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "cờ “stable ontology reference” được bật"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "cờ “can be held” không được bật"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "cờ “identity” không được bật"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Has syntax, is parsed, is description of, has linear decoding pressure, resolves to an AST, is stable ontology reference, không phải can be held và không phải has identity"
+      },
+      "LanguageCandidates.PredictionPredicates": {
+        "table": "LanguageCandidates",
+        "field": "PredictionPredicates",
+        "kind": "formula",
+        "rule": "Trường “prediction predicates” của mỗi language candidate được tính bằng “Has Syntax” nếu cờ “syntax” được bật, trong mọi trường hợp còn lại là “No Syntax”, tiếp theo là “ & ”, tiếp theo là “Requires Parsing” nếu cờ “parsed” được bật, trong mọi trường hợp còn lại là “No Parsing Neede”, tiếp theo là “ & ”, tiếp theo là “Describes the thing” nếu cờ “description of” được bật, trong mọi trường hợp còn lại là “Is the Thing”, tiếp theo là “ & ”, tiếp theo là “Has Linear Decoding Pressure” nếu cờ “linear decoding pressure” được bật, trong mọi trường hợp còn lại là “No Decoding Pressure”, tiếp theo là “ & ”, tiếp theo là “Resolves to AST” nếu cờ “resolves to an AST” được bật, trong mọi trường hợp còn lại là “No AST”, tiếp theo là dấu phẩy kèm dấu cách, tiếp theo là “Is Stable Ontology” nếu cờ “stable ontology reference” được bật, trong mọi trường hợp còn lại là “Not 'Ontology'”, tiếp theo là “ AND ”, tiếp theo là “Can Be Held” nếu cờ “can be held” được bật, trong mọi trường hợp còn lại là “Can't Be Held”, tiếp theo là dấu phẩy kèm dấu cách, tiếp theo là “Has Identity” nếu cờ “identity” được bật, trong mọi trường hợp còn lại là “Has no Identity”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((((((((((nếu has syntax thì \"Has Syntax\", nếu không thì \"No Syntax\" nối với \" & \") nối với nếu is parsed thì \"Requires Parsing\", nếu không thì \"No Parsing Neede\") nối với \" & \") nối với nếu is description of thì \"Describes the thing\", nếu không thì \"Is the Thing\") nối với \" & \") nối với nếu has linear decoding pressure thì \"Has Linear Decoding Pressure\", nếu không thì \"No Decoding Pressure\") nối với \" & \") nối với nếu resolves to an AST thì \"Resolves to AST\", nếu không thì \"No AST\") nối với \", \") nối với nếu is stable ontology reference thì \"Is Stable Ontology\", nếu không thì \"Not 'Ontology'\") nối với \" AND \") nối với nếu can be held thì \"Can Be Held\", nếu không thì \"Can't Be Held\") nối với \", \") nối với nếu has identity thì \"Has Identity\", nếu không thì \"Has no Identity\""
+      },
+      "LanguageCandidates.PredictionFail": {
+        "table": "LanguageCandidates",
+        "field": "PredictionFail",
+        "kind": "formula",
+        "rule": "Trường “prediction fail” của mỗi language candidate được tính bằng name, tiếp theo là dấu cách, tiếp theo là “Is” nếu cờ “predicted answer” được bật, trong mọi trường hợp còn lại là “Isn't”, tiếp theo là “ a Family Feud Language, but ”, tiếp theo là “Is” nếu cờ “language” được bật, trong mọi trường hợp còn lại là “Is Not”, tiếp theo là “ marked as a 'Language Candidate.'”, tiếp theo là “ - Open World vs. Closed World Conflict.”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsLanguage",
+            "label": "is language"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenClosedWorldConflicted",
+            "label": "is open closed world conflicted"
+          }
+        ],
+        "structure": null,
+        "plain": "Nếu không phải predicted answer bằng is language thì (((((name nối với \" \") nối với nếu predicted answer thì \"Is\", nếu không thì \"Isn't\") nối với \" a Family Feud Language, but \") nối với nếu is language thì \"Is\", nếu không thì \"Is Not\") nối với \" marked as a 'Language Candidate.'\"), nếu không thì \"\" nối với nếu is open closed world conflicted thì \" - Open World vs. Closed World Conflict.\", nếu không thì \"\""
+      },
+      "LanguageCandidates.IsDescriptionOf": {
+        "table": "LanguageCandidates",
+        "field": "IsDescriptionOf",
+        "kind": "formula",
+        "rule": "Mỗi language candidate được coi là “description of” nếu distance from concept lớn hơn 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance from concept lớn hơn 1"
+      },
+      "LanguageCandidates.IsOpenClosedWorldConflicted": {
+        "table": "LanguageCandidates",
+        "field": "IsOpenClosedWorldConflicted",
+        "kind": "formula",
+        "rule": "Mỗi language candidate được coi là “open closed world conflicted” nếu tất cả các điều kiện sau đều đúng: cờ “open world” được bật và cờ “closed world” được bật.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenWorld",
+            "label": "is open world"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsClosedWorld",
+            "label": "is closed world"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi language candidate được coi là “open closed world conflicted” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "cờ “open world” được bật"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "cờ “closed world” được bật"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is open world và is closed world"
+      },
+      "LanguageCandidates.RelationshipToConcept": {
+        "table": "LanguageCandidates",
+        "field": "RelationshipToConcept",
+        "kind": "formula",
+        "rule": "Trường “relationship to concept” của mỗi language candidate được xác định theo thứ tự ưu tiên sau:\n1. “IsMirrorOf”, nếu distance from concept là 1;\n2. trong mọi trường hợp còn lại, “IsDescriptionOf”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “relationship to concept” của mỗi language candidate được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“IsMirrorOf”",
+              "when": {
+                "kind": "leaf",
+                "text": "distance from concept là 1"
+              }
+            },
+            {
+              "value": "“IsDescriptionOf”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu distance from concept bằng 1 thì \"IsMirrorOf\", nếu không thì \"IsDescriptionOf\""
+      },
+      "LanguageCandidates.HockettAssessedCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettAssessedCount",
+        "kind": "rollup",
+        "rule": "Trường “hockett assessed count” của mỗi language candidate là số lượng hockett assessments liên quan đến language candidate đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng hockett assessments có language candidate là bản ghi này"
+      },
+      "LanguageCandidates.HockettYesCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettYesCount",
+        "kind": "rollup",
+        "rule": "Trường “hockett yes count” của mỗi language candidate là giá trị tổng cộng của trường “is yes flag” trên các hockett assessments liên quan đến language candidate đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng is yes flag trên tất cả hockett assessments có language candidate là bản ghi này"
+      },
+      "LanguageCandidates.IsHockettAssessed": {
+        "table": "LanguageCandidates",
+        "field": "IsHockettAssessed",
+        "kind": "formula",
+        "rule": "Mỗi language candidate được coi là “hockett assessed” nếu hockett assessed count lớn hơn 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          }
+        ],
+        "structure": null,
+        "plain": "Hockett assessed count lớn hơn 0"
+      },
+      "LanguageCandidates.HockettScore": {
+        "table": "LanguageCandidates",
+        "field": "HockettScore",
+        "kind": "formula",
+        "rule": "Trường “hockett score” của mỗi language candidate được xác định theo thứ tự ưu tiên sau:\n1. “not assessed”, nếu hockett assessed count là 0;\n2. trong mọi trường hợp còn lại, hockett yes count, tiếp theo là “ of ”, tiếp theo là hockett assessed count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “hockett score” của mỗi language candidate được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“not assessed”",
+              "when": {
+                "kind": "leaf",
+                "text": "hockett assessed count là 0"
+              }
+            },
+            {
+              "value": "hockett yes count, tiếp theo là “ of ”, tiếp theo là hockett assessed count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu hockett assessed count bằng 0 thì \"not assessed\", nếu không thì ((hockett yes count nối với \" of \") nối với hockett assessed count)"
+      },
+      "LanguageCandidates.HockettVsGate": {
+        "table": "LanguageCandidates",
+        "field": "HockettVsGate",
+        "kind": "formula",
+        "rule": "Trường “hockett vs gate” của mỗi language candidate được xác định theo thứ tự ưu tiên sau:\n1. chuỗi rỗng, nếu hockett assessed count là 0;\n2. “The eight-clause gate says language; Hockett's features hold for only ”, tiếp theo là hockett yes count, tiếp theo là “ of ”, tiếp theo là hockett assessed count, tiếp theo là dấu chấm, nếu tất cả các điều kiện sau đều đúng: cờ “predicted answer” được bật và hockett yes count nhỏ hơn hockett assessed count;\n3. “Hockett's features all hold, and the eight-clause gate says not a language.”, nếu tất cả các điều kiện sau đều đúng: cờ “predicted answer” không được bật và hockett yes count là hockett assessed count;\n4. trong mọi trường hợp còn lại, chuỗi rỗng.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “hockett vs gate” của mỗi language candidate được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "chuỗi rỗng",
+              "when": {
+                "kind": "leaf",
+                "text": "hockett assessed count là 0"
+              }
+            },
+            {
+              "value": "“The eight-clause gate says language; Hockett's features hold for only ”, tiếp theo là hockett yes count, tiếp theo là “ of ”, tiếp theo là hockett assessed count, tiếp theo là dấu chấm",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "cờ “predicted answer” được bật"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "hockett yes count nhỏ hơn hockett assessed count"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Hockett's features all hold, and the eight-clause gate says not a language.”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "cờ “predicted answer” không được bật"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "hockett yes count là hockett assessed count"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "chuỗi rỗng",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu hockett assessed count bằng 0 thì \"\", nếu không thì nếu predicted answer và hockett yes count nhỏ hơn hockett assessed count thì ((((\"The eight-clause gate says language; Hockett's features hold for only \" nối với hockett yes count) nối với \" of \") nối với hockett assessed count) nối với \".\"), nếu không thì nếu không phải predicted answer và hockett yes count bằng hockett assessed count thì \"Hockett's features all hold, and the eight-clause gate says not a language.\", nếu không thì \"\""
+      },
+      "HockettFeatures.AssessmentCount": {
+        "table": "HockettFeatures",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "Trường “assessment count” của mỗi hockett feature là số lượng hockett assessments liên quan đến hockett feature đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng hockett assessments có hockett feature là bản ghi này"
+      },
+      "HockettFeatures.YesCount": {
+        "table": "HockettFeatures",
+        "field": "YesCount",
+        "kind": "rollup",
+        "rule": "Trường “yes count” của mỗi hockett feature là giá trị tổng cộng của trường “is yes flag” trên các hockett assessments liên quan đến hockett feature đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng is yes flag trên tất cả hockett assessments có hockett feature là bản ghi này"
+      },
+      "HockettAssessments.Name": {
+        "table": "HockettAssessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi hockett assessment được tính bằng language candidate, tiếp theo là “ / ”, tiếp theo là hockett feature.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          }
+        ],
+        "structure": null,
+        "plain": "(language candidate nối với \" / \") nối với hockett feature"
+      },
+      "HockettAssessments.IsYesFlag": {
+        "table": "HockettAssessments",
+        "field": "IsYesFlag",
+        "kind": "formula",
+        "rule": "Mỗi hockett assessment được coi là “yes flag” nếu verdict là “Yes”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “is yes flag” của mỗi hockett assessment được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "verdict là “Yes”"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu verdict là \"Yes\" thì 1, nếu không thì 0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HockettAssessments": [
+        "Mỗi hockett assessment **phải** tham chiếu đến đúng một language candidate.",
+        "Mỗi hockett assessment **phải** tham chiếu đến đúng một hockett feature."
+      ]
+    },
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "LanguageCandidates": "language candidate",
+      "IsEverythingALanguage": "is everything a language",
+      "HockettFeatures": "hockett feature",
+      "HockettAssessments": "hockett assessment",
+      "ERBCustomizations": "ERB customization"
+    }
+  },
+  "zh": {
+    "fields": {
+      "LanguageCandidates.HasGrammar": {
+        "table": "LanguageCandidates",
+        "field": "HasGrammar",
+        "kind": "formula",
+        "rule": "当has syntax为真时,language candidate被视为具有“Grammar”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          }
+        ],
+        "structure": null,
+        "plain": "Has syntax等于true()"
+      },
+      "LanguageCandidates.Question": {
+        "table": "LanguageCandidates",
+        "field": "Question",
+        "kind": "formula",
+        "rule": "language candidate的“question”按 “Is ”,接着是name,接着是“ a language?” 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Is \"与name拼接)与\" a language?\"拼接"
+      },
+      "LanguageCandidates.PredictedAnswer": {
+        "table": "LanguageCandidates",
+        "field": "PredictedAnswer",
+        "kind": "formula",
+        "rule": "当以下全部成立:标志“syntax”已设置、标志“parsed”已设置、标志“description of”已设置、标志“linear decoding pressure”已设置、标志“resolves to an AST”已设置、标志“stable ontology reference”已设置、标志“can be held”未设置,且标志“identity”未设置时,language candidate被标记为“Predicted Answer”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,language candidate被标记为“Predicted Answer”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "标志“syntax”已设置"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "标志“parsed”已设置"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "标志“description of”已设置"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "标志“linear decoding pressure”已设置"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "标志“resolves to an AST”已设置"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "标志“stable ontology reference”已设置"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "标志“can be held”未设置"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "标志“identity”未设置"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Has syntax、is parsed、is description of、has linear decoding pressure、resolves to an AST、is stable ontology reference、并非can be held,且并非has identity"
+      },
+      "LanguageCandidates.PredictionPredicates": {
+        "table": "LanguageCandidates",
+        "field": "PredictionPredicates",
+        "kind": "formula",
+        "rule": "language candidate的“prediction predicates”按 当标志“syntax”已设置时为 “Has Syntax”,其余情况为 “No Syntax”,接着是“ & ”,接着是当标志“parsed”已设置时为 “Requires Parsing”,其余情况为 “No Parsing Neede”,接着是“ & ”,接着是当标志“description of”已设置时为 “Describes the thing”,其余情况为 “Is the Thing”,接着是“ & ”,接着是当标志“linear decoding pressure”已设置时为 “Has Linear Decoding Pressure”,其余情况为 “No Decoding Pressure”,接着是“ & ”,接着是当标志“resolves to an AST”已设置时为 “Resolves to AST”,其余情况为 “No AST”,接着是一个逗号加一个空格,接着是当标志“stable ontology reference”已设置时为 “Is Stable Ontology”,其余情况为 “Not 'Ontology'”,接着是“ AND ”,接着是当标志“can be held”已设置时为 “Can Be Held”,其余情况为 “Can't Be Held”,接着是一个逗号加一个空格,接着是当标志“identity”已设置时为 “Has Identity”,其余情况为 “Has no Identity” 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HasSyntax",
+            "label": "has syntax"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsParsed",
+            "label": "is parsed"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsDescriptionOf",
+            "label": "is description of"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasLinearDecodingPressure",
+            "label": "has linear decoding pressure"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "ResolvesToAnAST",
+            "label": "resolves to an AST"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsStableOntologyReference",
+            "label": "is stable ontology reference"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "CanBeHeld",
+            "label": "can be held"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HasIdentity",
+            "label": "has identity"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((((((((((若has syntax,则\"Has Syntax\",否则\"No Syntax\"与\" & \"拼接)与若is parsed,则\"Requires Parsing\",否则\"No Parsing Neede\"拼接)与\" & \"拼接)与若is description of,则\"Describes the thing\",否则\"Is the Thing\"拼接)与\" & \"拼接)与若has linear decoding pressure,则\"Has Linear Decoding Pressure\",否则\"No Decoding Pressure\"拼接)与\" & \"拼接)与若resolves to an AST,则\"Resolves to AST\",否则\"No AST\"拼接)与\", \"拼接)与若is stable ontology reference,则\"Is Stable Ontology\",否则\"Not 'Ontology'\"拼接)与\" AND \"拼接)与若can be held,则\"Can Be Held\",否则\"Can't Be Held\"拼接)与\", \"拼接)与若has identity,则\"Has Identity\",否则\"Has no Identity\"拼接"
+      },
+      "LanguageCandidates.PredictionFail": {
+        "table": "LanguageCandidates",
+        "field": "PredictionFail",
+        "kind": "formula",
+        "rule": "language candidate的“prediction fail”按 name,接着是一个空格,接着是当标志“predicted answer”已设置时为 “Is”,其余情况为 “Isn't”,接着是“ a Family Feud Language, but ”,接着是当标志“language”已设置时为 “Is”,其余情况为 “Is Not”,接着是“ marked as a 'Language Candidate.'”,接着是“ - Open World vs. Closed World Conflict.” 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsLanguage",
+            "label": "is language"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenClosedWorldConflicted",
+            "label": "is open closed world conflicted"
+          }
+        ],
+        "structure": null,
+        "plain": "若并非predicted answer等于is language,则(((((name与\" \"拼接)与若predicted answer,则\"Is\",否则\"Isn't\"拼接)与\" a Family Feud Language, but \"拼接)与若is language,则\"Is\",否则\"Is Not\"拼接)与\" marked as a 'Language Candidate.'\"拼接),否则\"\"与若is open closed world conflicted,则\" - Open World vs. Closed World Conflict.\",否则\"\"拼接"
+      },
+      "LanguageCandidates.IsDescriptionOf": {
+        "table": "LanguageCandidates",
+        "field": "IsDescriptionOf",
+        "kind": "formula",
+        "rule": "当distance from concept大于1时,language candidate被视为“Description of”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": null,
+        "plain": "Distance from concept大于1"
+      },
+      "LanguageCandidates.IsOpenClosedWorldConflicted": {
+        "table": "LanguageCandidates",
+        "field": "IsOpenClosedWorldConflicted",
+        "kind": "formula",
+        "rule": "当以下全部成立:标志“open world”已设置且标志“closed world”已设置时,language candidate被视为“Open Closed World Conflicted”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "IsOpenWorld",
+            "label": "is open world"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "IsClosedWorld",
+            "label": "is closed world"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,language candidate被视为“Open Closed World Conflicted”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "标志“open world”已设置"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "标志“closed world”已设置"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is open world且is closed world"
+      },
+      "LanguageCandidates.RelationshipToConcept": {
+        "table": "LanguageCandidates",
+        "field": "RelationshipToConcept",
+        "kind": "formula",
+        "rule": "Language candidate的“relationship to concept”按以下优先级确定:\n1. 当distance from concept为1时,取 “IsMirrorOf”;\n2. 其余情况取 “IsDescriptionOf”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "DistanceFromConcept",
+            "label": "distance from concept"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Language candidate的“relationship to concept”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“IsMirrorOf”",
+              "when": {
+                "kind": "leaf",
+                "text": "distance from concept为1"
+              }
+            },
+            {
+              "value": "“IsDescriptionOf”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若distance from concept等于1,则\"IsMirrorOf\",否则\"IsDescriptionOf\""
+      },
+      "LanguageCandidates.HockettAssessedCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettAssessedCount",
+        "kind": "rollup",
+        "rule": "language candidate的“hockett assessed count”为 与language candidate相关的“hockett assessments”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Language candidate为本记录的“hockett assessments”的数量"
+      },
+      "LanguageCandidates.HockettYesCount": {
+        "table": "LanguageCandidates",
+        "field": "HockettYesCount",
+        "kind": "rollup",
+        "rule": "language candidate的“hockett yes count”为 与language candidate相关的所有“hockett assessments”的“is yes flag”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所有language candidate为本记录的“hockett assessments”的is yes flag的总和"
+      },
+      "LanguageCandidates.IsHockettAssessed": {
+        "table": "LanguageCandidates",
+        "field": "IsHockettAssessed",
+        "kind": "formula",
+        "rule": "当hockett assessed count大于0时,language candidate被视为“Hockett Assessed”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          }
+        ],
+        "structure": null,
+        "plain": "Hockett assessed count大于0"
+      },
+      "LanguageCandidates.HockettScore": {
+        "table": "LanguageCandidates",
+        "field": "HockettScore",
+        "kind": "formula",
+        "rule": "Language candidate的“hockett score”按以下优先级确定:\n1. 当hockett assessed count为0时,取 “not assessed”;\n2. 其余情况取 hockett yes count,接着是“ of ”,接着是hockett assessed count。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Language candidate的“hockett score”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“not assessed”",
+              "when": {
+                "kind": "leaf",
+                "text": "hockett assessed count为0"
+              }
+            },
+            {
+              "value": "hockett yes count,接着是“ of ”,接着是hockett assessed count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若hockett assessed count等于0,则\"not assessed\",否则((hockett yes count与\" of \"拼接)与hockett assessed count拼接)"
+      },
+      "LanguageCandidates.HockettVsGate": {
+        "table": "LanguageCandidates",
+        "field": "HockettVsGate",
+        "kind": "formula",
+        "rule": "Language candidate的“hockett vs gate”按以下优先级确定:\n1. 当hockett assessed count为0时,取 空字符串;\n2. 当以下全部成立:标志“predicted answer”已设置且hockett yes count小于hockett assessed count时,取 “The eight-clause gate says language; Hockett's features hold for only ”,接着是hockett yes count,接着是“ of ”,接着是hockett assessed count,接着是一个句点;\n3. 当以下全部成立:标志“predicted answer”未设置且hockett yes count为hockett assessed count时,取 “Hockett's features all hold, and the eight-clause gate says not a language.”;\n4. 其余情况取 空字符串。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettAssessedCount",
+            "label": "hockett assessed count"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "PredictedAnswer",
+            "label": "predicted answer"
+          },
+          {
+            "table": "LanguageCandidates",
+            "field": "HockettYesCount",
+            "label": "hockett yes count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Language candidate的“hockett vs gate”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "空字符串",
+              "when": {
+                "kind": "leaf",
+                "text": "hockett assessed count为0"
+              }
+            },
+            {
+              "value": "“The eight-clause gate says language; Hockett's features hold for only ”,接着是hockett yes count,接着是“ of ”,接着是hockett assessed count,接着是一个句点",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "标志“predicted answer”已设置"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "hockett yes count小于hockett assessed count"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Hockett's features all hold, and the eight-clause gate says not a language.”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "标志“predicted answer”未设置"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "hockett yes count为hockett assessed count"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "空字符串",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若hockett assessed count等于0,则\"\",否则若predicted answer且hockett yes count小于hockett assessed count,则((((\"The eight-clause gate says language; Hockett's features hold for only \"与hockett yes count拼接)与\" of \"拼接)与hockett assessed count拼接)与\".\"拼接),否则若并非predicted answer且hockett yes count等于hockett assessed count,则\"Hockett's features all hold, and the eight-clause gate says not a language.\",否则\"\""
+      },
+      "HockettFeatures.AssessmentCount": {
+        "table": "HockettFeatures",
+        "field": "AssessmentCount",
+        "kind": "rollup",
+        "rule": "hockett feature的“assessment count”为 与hockett feature相关的“hockett assessments”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "Hockett feature为本记录的“hockett assessments”的数量"
+      },
+      "HockettFeatures.YesCount": {
+        "table": "HockettFeatures",
+        "field": "YesCount",
+        "kind": "rollup",
+        "rule": "hockett feature的“yes count”为 与hockett feature相关的所有“hockett assessments”的“is yes flag”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "IsYesFlag",
+            "label": "is yes flag"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          },
+          {
+            "table": "HockettFeatures",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "所有hockett feature为本记录的“hockett assessments”的is yes flag的总和"
+      },
+      "HockettAssessments.Name": {
+        "table": "HockettAssessments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "hockett assessment的“name”按 language candidate,接着是“ / ”,接着是hockett feature 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "LanguageCandidate",
+            "label": "language candidate"
+          },
+          {
+            "table": "HockettAssessments",
+            "field": "HockettFeature",
+            "label": "hockett feature"
+          }
+        ],
+        "structure": null,
+        "plain": "(language candidate与\" / \"拼接)与hockett feature拼接"
+      },
+      "HockettAssessments.IsYesFlag": {
+        "table": "HockettAssessments",
+        "field": "IsYesFlag",
+        "kind": "formula",
+        "rule": "当verdict为“Yes”时,hockett assessment被视为“Yes Flag”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HockettAssessments",
+            "field": "Verdict",
+            "label": "verdict"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Hockett assessment的“is yes flag”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "verdict为“Yes”"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若verdict为\"Yes\",则1,否则0"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HockettAssessments": [
+        "hockett assessment**必须**恰好引用一个“language candidate”。",
+        "hockett assessment**必须**恰好引用一个“hockett feature”。"
+      ]
+    },
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "LanguageCandidates": "language candidate",

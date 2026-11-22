@@ -1196,7 +1196,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -2035,6 +2050,13206 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "DevUsers": "dev user",
+      "Players": "player",
+      "Rosters": "roster",
+      "RosterAssignments": "roster assignment",
+      "Matchups": "matchup",
+      "Standings": "standing"
+    }
+  },
+  "ar": {
+    "fields": {
+      "DevUsers.Name": {
+        "table": "DevUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «dev user» يطابق حقل «email» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DevUsers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Players.Name": {
+        "table": "Players",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «player» يطابق حقل «player ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Player ID"
+      },
+      "Players.TotalTouchdowns": {
+        "table": "Players",
+        "field": "TotalTouchdowns",
+        "kind": "formula",
+        "rule": "حقل «total touchdowns» في سجل «player» يُحسب على النحو الآتي: حقل «passing touchdowns» زائد حقل «rushing touchdowns» زائد حقل «received touchdowns».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          }
+        ],
+        "structure": null,
+        "plain": "(passing touchdowns زائد rushing touchdowns) زائد received touchdowns"
+      },
+      "Players.ProjectedScore": {
+        "table": "Players",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "حقل «projected score» في سجل «player» يُحسب على النحو الآتي: حقل «passing yards» مقسومًا على 25 زائد حقل «total touchdowns» مضروبًا في 6 ناقص حقل «interceptions» مضروبًا في 2 مقرّبًا إلى 2 من المنازل العشرية.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((passing yards تقسيم 25) زائد (total touchdowns ضرب 6)) ناقص (interceptions ضرب 2)) مقرّبًا إلى 2 من المنازل العشرية"
+      },
+      "Rosters.Name": {
+        "table": "Rosters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «roster» يطابق حقل «roster ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster ID"
+      },
+      "Rosters.TotalPassingYards": {
+        "table": "Rosters",
+        "field": "TotalPassingYards",
+        "kind": "rollup",
+        "rule": "حقل «total passing yards» في سجل «roster» هو مجموع قيم حقل «passing yards» عبر سجلات «roster assignments» المرتبطة بسجل «roster».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «passing yards» في جميع سجلات «roster assignments» التي يتحقق فيها أنّ حقل «roster» يساوي roster ID"
+      },
+      "Rosters.TotalRushingYards": {
+        "table": "Rosters",
+        "field": "TotalRushingYards",
+        "kind": "rollup",
+        "rule": "حقل «total rushing yards» في سجل «roster» هو مجموع قيم حقل «rushing yards» عبر سجلات «roster assignments» المرتبطة بسجل «roster».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «rushing yards» في جميع سجلات «roster assignments» التي يتحقق فيها أنّ حقل «roster» يساوي roster ID"
+      },
+      "Rosters.TotalReceivingYards": {
+        "table": "Rosters",
+        "field": "TotalReceivingYards",
+        "kind": "rollup",
+        "rule": "حقل «total receiving yards» في سجل «roster» هو مجموع قيم حقل «received yards» عبر سجلات «roster assignments» المرتبطة بسجل «roster».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «received yards» في جميع سجلات «roster assignments» التي يتحقق فيها أنّ حقل «roster» يساوي roster ID"
+      },
+      "Rosters.TotalTouchdowns": {
+        "table": "Rosters",
+        "field": "TotalTouchdowns",
+        "kind": "rollup",
+        "rule": "حقل «total touchdowns» في سجل «roster» هو حقل «total touchdowns» عبر سجلات «roster assignments» المرتبطة بسجل «roster».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «total touchdowns» في جميع سجلات «roster assignments» التي يتحقق فيها أنّ حقل «roster» يساوي roster ID"
+      },
+      "Rosters.TotalInterceptions": {
+        "table": "Rosters",
+        "field": "TotalInterceptions",
+        "kind": "rollup",
+        "rule": "حقل «total interceptions» في سجل «roster» هو مجموع قيم حقل «interceptions» عبر سجلات «roster assignments» المرتبطة بسجل «roster».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «interceptions» في جميع سجلات «roster assignments» التي يتحقق فيها أنّ حقل «roster» يساوي roster ID"
+      },
+      "Rosters.ProjectedScore": {
+        "table": "Rosters",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "حقل «projected score» في سجل «roster» يُحسب على النحو الآتي: حقل «total passing yards» مقسومًا على 25 زائد حقل «total rushing yards» مقسومًا على 10 زائد حقل «total receiving yards» مقسومًا على 10 زائد حقل «total touchdowns» مضروبًا في 6 ناقص حقل «total interceptions» مضروبًا في 2 مقرّبًا إلى 2 من المنازل العشرية.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "TotalPassingYards",
+            "label": "total passing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalRushingYards",
+            "label": "total rushing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalReceivingYards",
+            "label": "total receiving yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalInterceptions",
+            "label": "total interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((total passing yards تقسيم 25) زائد (total rushing yards تقسيم 10)) زائد (total receiving yards تقسيم 10)) زائد (total touchdowns ضرب 6)) ناقص (total interceptions ضرب 2)) مقرّبًا إلى 2 من المنازل العشرية"
+      },
+      "RosterAssignments.Name": {
+        "table": "RosterAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «roster assignment» يطابق حقل «assignment ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "RosterAssignments.PlayerName": {
+        "table": "RosterAssignments",
+        "field": "PlayerName",
+        "kind": "lookup",
+        "rule": "حقل «player name» في سجل «roster assignment» مأخوذ من السجل المرتبط به عبر حقل «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «player»"
+      },
+      "RosterAssignments.Position": {
+        "table": "RosterAssignments",
+        "field": "Position",
+        "kind": "lookup",
+        "rule": "حقل «position» في سجل «roster assignment» مأخوذ من السجل المرتبط به عبر حقل «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Position",
+            "label": "position"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «position» من السجل المرتبط عبر «player»"
+      },
+      "RosterAssignments.PassingYards": {
+        "table": "RosterAssignments",
+        "field": "PassingYards",
+        "kind": "lookup",
+        "rule": "حقل «passing yards» في سجل «roster assignment» مأخوذ من السجل المرتبط به عبر حقل «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «passing yards» من السجل المرتبط عبر «player»"
+      },
+      "RosterAssignments.PassingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "PassingTouchdowns",
+        "kind": "lookup",
+        "rule": "حقل «passing touchdowns» في سجل «roster assignment» مأخوذ من السجل المرتبط به عبر حقل «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «passing touchdowns» من السجل المرتبط عبر «player»"
+      },
+      "RosterAssignments.Interceptions": {
+        "table": "RosterAssignments",
+        "field": "Interceptions",
+        "kind": "lookup",
+        "rule": "حقل «interceptions» في سجل «roster assignment» مأخوذ من السجل المرتبط به عبر حقل «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «interceptions» من السجل المرتبط عبر «player»"
+      },
+      "RosterAssignments.RushingYards": {
+        "table": "RosterAssignments",
+        "field": "RushingYards",
+        "kind": "lookup",
+        "rule": "حقل «rushing yards» في سجل «roster assignment» مأخوذ من السجل المرتبط به عبر حقل «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «rushing yards» من السجل المرتبط عبر «player»"
+      },
+      "RosterAssignments.RushingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "RushingTouchdowns",
+        "kind": "lookup",
+        "rule": "حقل «rushing touchdowns» في سجل «roster assignment» مأخوذ من السجل المرتبط به عبر حقل «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «rushing touchdowns» من السجل المرتبط عبر «player»"
+      },
+      "RosterAssignments.Receptions": {
+        "table": "RosterAssignments",
+        "field": "Receptions",
+        "kind": "lookup",
+        "rule": "حقل «receptions» في سجل «roster assignment» مأخوذ من السجل المرتبط به عبر حقل «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Receptions",
+            "label": "receptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «receptions» من السجل المرتبط عبر «player»"
+      },
+      "RosterAssignments.ReceivedYards": {
+        "table": "RosterAssignments",
+        "field": "ReceivedYards",
+        "kind": "lookup",
+        "rule": "حقل «received yards» في سجل «roster assignment» مأخوذ من السجل المرتبط به عبر حقل «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «received yards» من السجل المرتبط عبر «player»"
+      },
+      "RosterAssignments.ReceivedTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "ReceivedTouchdowns",
+        "kind": "lookup",
+        "rule": "حقل «received touchdowns» في سجل «roster assignment» مأخوذ من السجل المرتبط به عبر حقل «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «received touchdowns» من السجل المرتبط عبر «player»"
+      },
+      "RosterAssignments.TotalTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "TotalTouchdowns",
+        "kind": "lookup",
+        "rule": "حقل «total touchdowns» في سجل «roster assignment» مأخوذ من السجل المرتبط به عبر حقل «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «total touchdowns» من السجل المرتبط عبر «player»"
+      },
+      "RosterAssignments.ProjectedScore": {
+        "table": "RosterAssignments",
+        "field": "ProjectedScore",
+        "kind": "lookup",
+        "rule": "حقل «projected score» في سجل «roster assignment» مأخوذ من السجل المرتبط به عبر حقل «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «projected score» من السجل المرتبط عبر «player»"
+      },
+      "Matchups.Name": {
+        "table": "Matchups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «matchup» يطابق حقل «matchup ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "MatchupId",
+            "label": "matchup ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Matchup ID"
+      },
+      "Matchups.Team1Score": {
+        "table": "Matchups",
+        "field": "Team1Score",
+        "kind": "lookup",
+        "rule": "حقل «team1 score» في سجل «matchup» يأخذ قيمة حقل «projected score» من السجل المرتبط به عبر حقل «team1».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «projected score» من السجل المرتبط عبر «team1»"
+      },
+      "Matchups.Team2Score": {
+        "table": "Matchups",
+        "field": "Team2Score",
+        "kind": "lookup",
+        "rule": "حقل «team2 score» في سجل «matchup» يأخذ قيمة حقل «projected score» من السجل المرتبط به عبر حقل «team2».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «projected score» من السجل المرتبط عبر «team2»"
+      },
+      "Matchups.Margin": {
+        "table": "Matchups",
+        "field": "Margin",
+        "kind": "formula",
+        "rule": "حقل «margin» في سجل «matchup» يُحسب على النحو الآتي: حقل «team1 score» ناقص حقل «team2 score».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Team1Score",
+            "label": "team1 score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2Score",
+            "label": "team2 score"
+          }
+        ],
+        "structure": null,
+        "plain": "Team1 score ناقص team2 score"
+      },
+      "Matchups.Winner": {
+        "table": "Matchups",
+        "field": "Winner",
+        "kind": "formula",
+        "rule": "حقل «winner» في سجل «matchup» يتحدد وفق ترتيب الأولوية الآتي:\n1. حقل «team1»، إذا تحقق أنّ حقل «margin» أكبر من 0؛\n2. حقل «team2»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «winner» في سجل «matchup» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "حقل «team1»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «margin» أكبر من 0"
+              }
+            },
+            {
+              "value": "حقل «team2»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ margin أكبر من 0 فالناتج team1، وإلا فالناتج team2"
+      },
+      "Matchups.Loser": {
+        "table": "Matchups",
+        "field": "Loser",
+        "kind": "formula",
+        "rule": "حقل «loser» في سجل «matchup» يتحدد وفق ترتيب الأولوية الآتي:\n1. حقل «team2»، إذا تحقق أنّ حقل «margin» أكبر من 0؛\n2. حقل «team1»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «loser» في سجل «matchup» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "حقل «team2»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «margin» أكبر من 0"
+              }
+            },
+            {
+              "value": "حقل «team1»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ margin أكبر من 0 فالناتج team2، وإلا فالناتج team1"
+      },
+      "Matchups.IsTieGame": {
+        "table": "Matchups",
+        "field": "IsTieGame",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «matchup» على أنه «tie game» إذا تحقق أنّ حقل «margin» يساوي 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          }
+        ],
+        "structure": null,
+        "plain": "Margin يساوي 0"
+      },
+      "Standings.Name": {
+        "table": "Standings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «standing» مأخوذ من السجل المرتبط به عبر حقل «standing ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «standing ID»"
+      },
+      "Standings.Owner": {
+        "table": "Standings",
+        "field": "Owner",
+        "kind": "lookup",
+        "rule": "حقل «owner» في سجل «standing» مأخوذ من السجل المرتبط به عبر حقل «standing ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Owner",
+            "label": "owner"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «owner» من السجل المرتبط عبر «standing ID»"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "DevUsers": [
+        "في كل سجل «dev user»، **يجب أن** تُحدّد قيمة حقل «email» وحقل «role»."
+      ],
+      "Players": [
+        "في كل سجل «player»، **يجب أن** تُحدّد قيمة حقل «position»، وحقل «passing yards»، وحقل «passing touchdowns»، وحقل «interceptions»، وحقل «rushing yards»، وحقل «rushing touchdowns»، وحقل «receptions»، وحقل «received yards»، وحقل «received touchdowns»."
+      ],
+      "Rosters": [
+        "في كل سجل «roster»، **يجب أن** تُحدّد قيمة حقل «owner»."
+      ],
+      "RosterAssignments": [
+        "**يجب أن** يشير كل سجل «roster assignment» إلى سجل «roster» واحد فقط.",
+        "**يجب أن** يشير كل سجل «roster assignment» إلى سجل «player» واحد فقط."
+      ],
+      "Matchups": [
+        "**يجب أن** يشير كل سجل «matchup» إلى سجل «roster» واحد فقط عبر حقل «team1».",
+        "**يجب أن** يشير كل سجل «matchup» إلى سجل «roster» واحد فقط عبر حقل «team2».",
+        "في كل سجل «matchup»، **يجب أن** تُحدّد قيمة حقل «week»."
+      ],
+      "Standings": [
+        "في كل سجل «standing»، **يجب أن** تُحدّد قيمة حقل «wins»، وحقل «losses»، وحقل «ties»، وحقل «win pct»، وحقل «points for»، وحقل «points against»، وأن يُسجّل ما إذا كان موسومًا بعلامة «playoff bound»."
+      ]
+    },
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "DevUsers": "dev user",
+      "Players": "player",
+      "Rosters": "roster",
+      "RosterAssignments": "roster assignment",
+      "Matchups": "matchup",
+      "Standings": "standing"
+    }
+  },
+  "de": {
+    "fields": {
+      "DevUsers.Name": {
+        "table": "DevUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Dev User: Name entspricht Email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DevUsers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Players.Name": {
+        "table": "Players",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Player: Name entspricht Player ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Player ID"
+      },
+      "Players.TotalTouchdowns": {
+        "table": "Players",
+        "field": "TotalTouchdowns",
+        "kind": "formula",
+        "rule": "Ein Player: Total Touchdowns wird berechnet als der Passing Touchdowns plus der Rushing Touchdowns plus der Received Touchdowns.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          }
+        ],
+        "structure": null,
+        "plain": "(Passing Touchdowns plus Rushing Touchdowns) plus Received Touchdowns"
+      },
+      "Players.ProjectedScore": {
+        "table": "Players",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "Ein Player: Projected Score wird berechnet als der Passing Yards geteilt durch 25 plus der Total Touchdowns mal 6 minus der Interceptions mal 2 auf 2 Dezimalstellen gerundet.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((Passing Yards geteilt durch 25) plus (Total Touchdowns mal 6)) minus (Interceptions mal 2)) auf 2 Dezimalstellen gerundet"
+      },
+      "Rosters.Name": {
+        "table": "Rosters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Roster: Name entspricht Roster ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster ID"
+      },
+      "Rosters.TotalPassingYards": {
+        "table": "Rosters",
+        "field": "TotalPassingYards",
+        "kind": "rollup",
+        "rule": "Ein Roster: Total Passing Yards ist die Gesamtsumme von Passing Yards über die mit dem Roster verbundenen Roster Assignments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Passing Yards über alle Roster Assignments, deren Roster ist Roster ID"
+      },
+      "Rosters.TotalRushingYards": {
+        "table": "Rosters",
+        "field": "TotalRushingYards",
+        "kind": "rollup",
+        "rule": "Ein Roster: Total Rushing Yards ist die Gesamtsumme von Rushing Yards über die mit dem Roster verbundenen Roster Assignments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Rushing Yards über alle Roster Assignments, deren Roster ist Roster ID"
+      },
+      "Rosters.TotalReceivingYards": {
+        "table": "Rosters",
+        "field": "TotalReceivingYards",
+        "kind": "rollup",
+        "rule": "Ein Roster: Total Receiving Yards ist die Gesamtsumme von Received Yards über die mit dem Roster verbundenen Roster Assignments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Received Yards über alle Roster Assignments, deren Roster ist Roster ID"
+      },
+      "Rosters.TotalTouchdowns": {
+        "table": "Rosters",
+        "field": "TotalTouchdowns",
+        "kind": "rollup",
+        "rule": "Ein Roster: Total Touchdowns ist von Total Touchdowns über die mit dem Roster verbundenen Roster Assignments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Total Touchdowns über alle Roster Assignments, deren Roster ist Roster ID"
+      },
+      "Rosters.TotalInterceptions": {
+        "table": "Rosters",
+        "field": "TotalInterceptions",
+        "kind": "rollup",
+        "rule": "Ein Roster: Total Interceptions ist die Gesamtsumme von Interceptions über die mit dem Roster verbundenen Roster Assignments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Interceptions über alle Roster Assignments, deren Roster ist Roster ID"
+      },
+      "Rosters.ProjectedScore": {
+        "table": "Rosters",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "Ein Roster: Projected Score wird berechnet als der Total Passing Yards geteilt durch 25 plus der Total Rushing Yards geteilt durch 10 plus der Total Receiving Yards geteilt durch 10 plus der Total Touchdowns mal 6 minus der Total Interceptions mal 2 auf 2 Dezimalstellen gerundet.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "TotalPassingYards",
+            "label": "total passing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalRushingYards",
+            "label": "total rushing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalReceivingYards",
+            "label": "total receiving yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalInterceptions",
+            "label": "total interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((Total Passing Yards geteilt durch 25) plus (Total Rushing Yards geteilt durch 10)) plus (Total Receiving Yards geteilt durch 10)) plus (Total Touchdowns mal 6)) minus (Total Interceptions mal 2)) auf 2 Dezimalstellen gerundet"
+      },
+      "RosterAssignments.Name": {
+        "table": "RosterAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Roster Assignment: Name entspricht Assignment ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "RosterAssignments.PlayerName": {
+        "table": "RosterAssignments",
+        "field": "PlayerName",
+        "kind": "lookup",
+        "rule": "Ein Roster Assignment: Player Name — aus dem zugehörigen Player übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Player"
+      },
+      "RosterAssignments.Position": {
+        "table": "RosterAssignments",
+        "field": "Position",
+        "kind": "lookup",
+        "rule": "Ein Roster Assignment: Position — aus dem zugehörigen Player übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Position",
+            "label": "position"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Position des verknüpften Player"
+      },
+      "RosterAssignments.PassingYards": {
+        "table": "RosterAssignments",
+        "field": "PassingYards",
+        "kind": "lookup",
+        "rule": "Ein Roster Assignment: Passing Yards — aus dem zugehörigen Player übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Passing Yards des verknüpften Player"
+      },
+      "RosterAssignments.PassingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "PassingTouchdowns",
+        "kind": "lookup",
+        "rule": "Ein Roster Assignment: Passing Touchdowns — aus dem zugehörigen Player übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Passing Touchdowns des verknüpften Player"
+      },
+      "RosterAssignments.Interceptions": {
+        "table": "RosterAssignments",
+        "field": "Interceptions",
+        "kind": "lookup",
+        "rule": "Ein Roster Assignment: Interceptions — aus dem zugehörigen Player übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Interceptions des verknüpften Player"
+      },
+      "RosterAssignments.RushingYards": {
+        "table": "RosterAssignments",
+        "field": "RushingYards",
+        "kind": "lookup",
+        "rule": "Ein Roster Assignment: Rushing Yards — aus dem zugehörigen Player übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Rushing Yards des verknüpften Player"
+      },
+      "RosterAssignments.RushingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "RushingTouchdowns",
+        "kind": "lookup",
+        "rule": "Ein Roster Assignment: Rushing Touchdowns — aus dem zugehörigen Player übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Rushing Touchdowns des verknüpften Player"
+      },
+      "RosterAssignments.Receptions": {
+        "table": "RosterAssignments",
+        "field": "Receptions",
+        "kind": "lookup",
+        "rule": "Ein Roster Assignment: Receptions — aus dem zugehörigen Player übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Receptions",
+            "label": "receptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Receptions des verknüpften Player"
+      },
+      "RosterAssignments.ReceivedYards": {
+        "table": "RosterAssignments",
+        "field": "ReceivedYards",
+        "kind": "lookup",
+        "rule": "Ein Roster Assignment: Received Yards — aus dem zugehörigen Player übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Received Yards des verknüpften Player"
+      },
+      "RosterAssignments.ReceivedTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "ReceivedTouchdowns",
+        "kind": "lookup",
+        "rule": "Ein Roster Assignment: Received Touchdowns — aus dem zugehörigen Player übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Received Touchdowns des verknüpften Player"
+      },
+      "RosterAssignments.TotalTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "TotalTouchdowns",
+        "kind": "lookup",
+        "rule": "Ein Roster Assignment: Total Touchdowns — aus dem zugehörigen Player übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Total Touchdowns des verknüpften Player"
+      },
+      "RosterAssignments.ProjectedScore": {
+        "table": "RosterAssignments",
+        "field": "ProjectedScore",
+        "kind": "lookup",
+        "rule": "Ein Roster Assignment: Projected Score — aus dem zugehörigen Player übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Projected Score des verknüpften Player"
+      },
+      "Matchups.Name": {
+        "table": "Matchups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Matchup: Name entspricht Matchup ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "MatchupId",
+            "label": "matchup ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Matchup ID"
+      },
+      "Matchups.Team1Score": {
+        "table": "Matchups",
+        "field": "Team1Score",
+        "kind": "lookup",
+        "rule": "Ein Matchup: Team1 Score ist der Projected Score des zugehörigen Team1 des Matchup.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Projected Score des verknüpften Team1"
+      },
+      "Matchups.Team2Score": {
+        "table": "Matchups",
+        "field": "Team2Score",
+        "kind": "lookup",
+        "rule": "Ein Matchup: Team2 Score ist der Projected Score des zugehörigen Team2 des Matchup.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Projected Score des verknüpften Team2"
+      },
+      "Matchups.Margin": {
+        "table": "Matchups",
+        "field": "Margin",
+        "kind": "formula",
+        "rule": "Ein Matchup: Margin wird berechnet als die Team1 Score minus die Team2 Score.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Team1Score",
+            "label": "team1 score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2Score",
+            "label": "team2 score"
+          }
+        ],
+        "structure": null,
+        "plain": "Team1 Score minus Team2 Score"
+      },
+      "Matchups.Winner": {
+        "table": "Matchups",
+        "field": "Winner",
+        "kind": "formula",
+        "rule": "Das Feld „Winner“ des Matchup wird nach folgender Priorität bestimmt:\n1. der Team1, wenn der Margin größer ist als 0;\n2. andernfalls der Team2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Winner“ des Matchup wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "der Team1",
+              "when": {
+                "kind": "leaf",
+                "text": "der Margin größer ist als 0"
+              }
+            },
+            {
+              "value": "der Team2",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Margin größer als 0 ist, dann Team1, andernfalls Team2"
+      },
+      "Matchups.Loser": {
+        "table": "Matchups",
+        "field": "Loser",
+        "kind": "formula",
+        "rule": "Das Feld „Loser“ des Matchup wird nach folgender Priorität bestimmt:\n1. der Team2, wenn der Margin größer ist als 0;\n2. andernfalls der Team1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Loser“ des Matchup wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "der Team2",
+              "when": {
+                "kind": "leaf",
+                "text": "der Margin größer ist als 0"
+              }
+            },
+            {
+              "value": "der Team1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Margin größer als 0 ist, dann Team2, andernfalls Team1"
+      },
+      "Matchups.IsTieGame": {
+        "table": "Matchups",
+        "field": "IsTieGame",
+        "kind": "formula",
+        "rule": "Ein Matchup gilt als eine Tie Game, wenn der Margin 0 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          }
+        ],
+        "structure": null,
+        "plain": "Margin gleich 0 ist"
+      },
+      "Standings.Name": {
+        "table": "Standings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Standing: Name — aus dem zugehörigen Standing ID übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Standing ID"
+      },
+      "Standings.Owner": {
+        "table": "Standings",
+        "field": "Owner",
+        "kind": "lookup",
+        "rule": "Ein Standing: Owner — aus dem zugehörigen Standing ID übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Owner",
+            "label": "owner"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Owner des verknüpften Standing ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "DevUsers": [
+        "Ein Dev User **muss** ein Email und eine Role haben."
+      ],
+      "Players": [
+        "Ein Player **muss** eine Position; ein Passing Yards; ein Passing Touchdowns; ein Interceptions; ein Rushing Yards; ein Rushing Touchdowns; ein Receptions; ein Received Yards; und ein Received Touchdowns haben."
+      ],
+      "Rosters": [
+        "Ein Roster **muss** ein Owner haben."
+      ],
+      "RosterAssignments": [
+        "Ein Roster Assignment **muss** auf genau einen Roster verweisen.",
+        "Ein Roster Assignment **muss** auf genau einen Player verweisen."
+      ],
+      "Matchups": [
+        "Ein Matchup **muss** auf genau einen Roster als seinen Team1 verweisen.",
+        "Ein Matchup **muss** auf genau einen Roster als seinen Team2 verweisen.",
+        "Ein Matchup **muss** ein Week haben."
+      ],
+      "Standings": [
+        "Ein Standing **muss** ein Wins; ein Losses; ein Ties; ein Win Pct; ein Points for; und ein Points Against haben und erfassen, ob es ist Playoff Bound."
+      ]
+    },
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "DevUsers": "Dev User",
+      "Players": "Player",
+      "Rosters": "Roster",
+      "RosterAssignments": "Roster Assignment",
+      "Matchups": "Matchup",
+      "Standings": "Standing"
+    }
+  },
+  "es": {
+    "fields": {
+      "DevUsers.Name": {
+        "table": "DevUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un dev user: name es igual a email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DevUsers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Players.Name": {
+        "table": "Players",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un player: name es igual a player ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Player ID"
+      },
+      "Players.TotalTouchdowns": {
+        "table": "Players",
+        "field": "TotalTouchdowns",
+        "kind": "formula",
+        "rule": "Un player: total touchdowns se calcula como el passing touchdowns más el rushing touchdowns más el received touchdowns.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          }
+        ],
+        "structure": null,
+        "plain": "(passing touchdowns más rushing touchdowns) más received touchdowns"
+      },
+      "Players.ProjectedScore": {
+        "table": "Players",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "Un player: projected score se calcula como el passing yards dividido por 25 más el total touchdowns por 6 menos el interceptions por 2 redondeado a 2 decimal(es).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((passing yards dividido por 25) más (total touchdowns por 6)) menos (interceptions por 2)) redondeado a 2 decimales"
+      },
+      "Rosters.Name": {
+        "table": "Rosters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un roster: name es igual a roster ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster ID"
+      },
+      "Rosters.TotalPassingYards": {
+        "table": "Rosters",
+        "field": "TotalPassingYards",
+        "kind": "rollup",
+        "rule": "Un roster: total passing yards es el total de passing yards entre los roster assignments relacionados con el roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de passing yards entre todos los roster assignments cuyo roster es roster ID"
+      },
+      "Rosters.TotalRushingYards": {
+        "table": "Rosters",
+        "field": "TotalRushingYards",
+        "kind": "rollup",
+        "rule": "Un roster: total rushing yards es el total de rushing yards entre los roster assignments relacionados con el roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de rushing yards entre todos los roster assignments cuyo roster es roster ID"
+      },
+      "Rosters.TotalReceivingYards": {
+        "table": "Rosters",
+        "field": "TotalReceivingYards",
+        "kind": "rollup",
+        "rule": "Un roster: total receiving yards es el total de received yards entre los roster assignments relacionados con el roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de received yards entre todos los roster assignments cuyo roster es roster ID"
+      },
+      "Rosters.TotalTouchdowns": {
+        "table": "Rosters",
+        "field": "TotalTouchdowns",
+        "kind": "rollup",
+        "rule": "Un roster: total touchdowns es de total touchdowns entre los roster assignments relacionados con el roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de total touchdowns entre todos los roster assignments cuyo roster es roster ID"
+      },
+      "Rosters.TotalInterceptions": {
+        "table": "Rosters",
+        "field": "TotalInterceptions",
+        "kind": "rollup",
+        "rule": "Un roster: total interceptions es el total de interceptions entre los roster assignments relacionados con el roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de interceptions entre todos los roster assignments cuyo roster es roster ID"
+      },
+      "Rosters.ProjectedScore": {
+        "table": "Rosters",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "Un roster: projected score se calcula como el total passing yards dividido por 25 más el total rushing yards dividido por 10 más el total receiving yards dividido por 10 más el total touchdowns por 6 menos el total interceptions por 2 redondeado a 2 decimal(es).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "TotalPassingYards",
+            "label": "total passing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalRushingYards",
+            "label": "total rushing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalReceivingYards",
+            "label": "total receiving yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalInterceptions",
+            "label": "total interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((total passing yards dividido por 25) más (total rushing yards dividido por 10)) más (total receiving yards dividido por 10)) más (total touchdowns por 6)) menos (total interceptions por 2)) redondeado a 2 decimales"
+      },
+      "RosterAssignments.Name": {
+        "table": "RosterAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un roster assignment: name es igual a assignment ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "RosterAssignments.PlayerName": {
+        "table": "RosterAssignments",
+        "field": "PlayerName",
+        "kind": "lookup",
+        "rule": "Un roster assignment: player name — tomado del player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del player vinculado"
+      },
+      "RosterAssignments.Position": {
+        "table": "RosterAssignments",
+        "field": "Position",
+        "kind": "lookup",
+        "rule": "Un roster assignment: position — tomado del player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Position",
+            "label": "position"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El position del player vinculado"
+      },
+      "RosterAssignments.PassingYards": {
+        "table": "RosterAssignments",
+        "field": "PassingYards",
+        "kind": "lookup",
+        "rule": "Un roster assignment: passing yards — tomado del player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El passing yards del player vinculado"
+      },
+      "RosterAssignments.PassingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "PassingTouchdowns",
+        "kind": "lookup",
+        "rule": "Un roster assignment: passing touchdowns — tomado del player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El passing touchdowns del player vinculado"
+      },
+      "RosterAssignments.Interceptions": {
+        "table": "RosterAssignments",
+        "field": "Interceptions",
+        "kind": "lookup",
+        "rule": "Un roster assignment: interceptions — tomado del player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El interceptions del player vinculado"
+      },
+      "RosterAssignments.RushingYards": {
+        "table": "RosterAssignments",
+        "field": "RushingYards",
+        "kind": "lookup",
+        "rule": "Un roster assignment: rushing yards — tomado del player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El rushing yards del player vinculado"
+      },
+      "RosterAssignments.RushingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "RushingTouchdowns",
+        "kind": "lookup",
+        "rule": "Un roster assignment: rushing touchdowns — tomado del player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El rushing touchdowns del player vinculado"
+      },
+      "RosterAssignments.Receptions": {
+        "table": "RosterAssignments",
+        "field": "Receptions",
+        "kind": "lookup",
+        "rule": "Un roster assignment: receptions — tomado del player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Receptions",
+            "label": "receptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El receptions del player vinculado"
+      },
+      "RosterAssignments.ReceivedYards": {
+        "table": "RosterAssignments",
+        "field": "ReceivedYards",
+        "kind": "lookup",
+        "rule": "Un roster assignment: received yards — tomado del player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El received yards del player vinculado"
+      },
+      "RosterAssignments.ReceivedTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "ReceivedTouchdowns",
+        "kind": "lookup",
+        "rule": "Un roster assignment: received touchdowns — tomado del player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El received touchdowns del player vinculado"
+      },
+      "RosterAssignments.TotalTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "TotalTouchdowns",
+        "kind": "lookup",
+        "rule": "Un roster assignment: total touchdowns — tomado del player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El total touchdowns del player vinculado"
+      },
+      "RosterAssignments.ProjectedScore": {
+        "table": "RosterAssignments",
+        "field": "ProjectedScore",
+        "kind": "lookup",
+        "rule": "Un roster assignment: projected score — tomado del player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El projected score del player vinculado"
+      },
+      "Matchups.Name": {
+        "table": "Matchups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un matchup: name es igual a matchup ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "MatchupId",
+            "label": "matchup ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Matchup ID"
+      },
+      "Matchups.Team1Score": {
+        "table": "Matchups",
+        "field": "Team1Score",
+        "kind": "lookup",
+        "rule": "Un matchup: team1 score es el projected score del team1 vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El projected score del team1 vinculado"
+      },
+      "Matchups.Team2Score": {
+        "table": "Matchups",
+        "field": "Team2Score",
+        "kind": "lookup",
+        "rule": "Un matchup: team2 score es el projected score del team2 vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El projected score del team2 vinculado"
+      },
+      "Matchups.Margin": {
+        "table": "Matchups",
+        "field": "Margin",
+        "kind": "formula",
+        "rule": "Un matchup: margin se calcula como el team1 score menos el team2 score.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Team1Score",
+            "label": "team1 score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2Score",
+            "label": "team2 score"
+          }
+        ],
+        "structure": null,
+        "plain": "Team1 score menos team2 score"
+      },
+      "Matchups.Winner": {
+        "table": "Matchups",
+        "field": "Winner",
+        "kind": "formula",
+        "rule": "El campo «winner» del matchup se determina según la siguiente prioridad:\n1. el team1, si el margin es mayor que 0;\n2. en todos los demás casos, el team2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «winner» del matchup se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "el team1",
+              "when": {
+                "kind": "leaf",
+                "text": "el margin es mayor que 0"
+              }
+            },
+            {
+              "value": "el team2",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si margin es mayor que 0, entonces team1, de lo contrario team2"
+      },
+      "Matchups.Loser": {
+        "table": "Matchups",
+        "field": "Loser",
+        "kind": "formula",
+        "rule": "El campo «loser» del matchup se determina según la siguiente prioridad:\n1. el team2, si el margin es mayor que 0;\n2. en todos los demás casos, el team1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «loser» del matchup se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "el team2",
+              "when": {
+                "kind": "leaf",
+                "text": "el margin es mayor que 0"
+              }
+            },
+            {
+              "value": "el team1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si margin es mayor que 0, entonces team2, de lo contrario team1"
+      },
+      "Matchups.IsTieGame": {
+        "table": "Matchups",
+        "field": "IsTieGame",
+        "kind": "formula",
+        "rule": "Un matchup se considera un tie game si el margin es 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          }
+        ],
+        "structure": null,
+        "plain": "Margin es igual a 0"
+      },
+      "Standings.Name": {
+        "table": "Standings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un standing: name — tomado del standing ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del standing ID vinculado"
+      },
+      "Standings.Owner": {
+        "table": "Standings",
+        "field": "Owner",
+        "kind": "lookup",
+        "rule": "Un standing: owner — tomado del standing ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Owner",
+            "label": "owner"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El owner del standing ID vinculado"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "DevUsers": [
+        "Un dev user **debe** tener un email y un role."
+      ],
+      "Players": [
+        "Un player **debe** tener un position; un passing yards; un passing touchdowns; un interceptions; un rushing yards; un rushing touchdowns; un receptions; un received yards; y un received touchdowns."
+      ],
+      "Rosters": [
+        "Un roster **debe** tener un owner."
+      ],
+      "RosterAssignments": [
+        "Un roster assignment **debe** referenciar exactamente un roster.",
+        "Un roster assignment **debe** referenciar exactamente un player."
+      ],
+      "Matchups": [
+        "Un matchup **debe** referenciar exactamente un roster como su team1.",
+        "Un matchup **debe** referenciar exactamente un roster como su team2.",
+        "Un matchup **debe** tener un week."
+      ],
+      "Standings": [
+        "Un standing **debe** tener un wins; un losses; un ties; un win pct; un points for; y un points against, y registrar si es playoff bound."
+      ]
+    },
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "DevUsers": "dev user",
+      "Players": "player",
+      "Rosters": "roster",
+      "RosterAssignments": "roster assignment",
+      "Matchups": "matchup",
+      "Standings": "standing"
+    }
+  },
+  "fr": {
+    "fields": {
+      "DevUsers.Name": {
+        "table": "DevUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un dev user : name est identique à email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DevUsers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Players.Name": {
+        "table": "Players",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un player : name est identique à player ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Player ID"
+      },
+      "Players.TotalTouchdowns": {
+        "table": "Players",
+        "field": "TotalTouchdowns",
+        "kind": "formula",
+        "rule": "Un player : total touchdowns est calculé comme le passing touchdowns plus le rushing touchdowns plus le received touchdowns.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          }
+        ],
+        "structure": null,
+        "plain": "(passing touchdowns plus rushing touchdowns) plus received touchdowns"
+      },
+      "Players.ProjectedScore": {
+        "table": "Players",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "Un player : projected score est calculé comme le passing yards divisé par 25 plus le total touchdowns multiplié par 6 moins l'interceptions multiplié par 2 arrondi à 2 décimale(s).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((passing yards divisé par 25) plus (total touchdowns fois 6)) moins (interceptions fois 2)) arrondi à 2 décimales"
+      },
+      "Rosters.Name": {
+        "table": "Rosters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un roster : name est identique à roster ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster ID"
+      },
+      "Rosters.TotalPassingYards": {
+        "table": "Rosters",
+        "field": "TotalPassingYards",
+        "kind": "rollup",
+        "rule": "Un roster : total passing yards est le total de passing yards sur les roster assignments liés à le roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de passing yards sur tous les roster assignments dont roster est roster ID"
+      },
+      "Rosters.TotalRushingYards": {
+        "table": "Rosters",
+        "field": "TotalRushingYards",
+        "kind": "rollup",
+        "rule": "Un roster : total rushing yards est le total de rushing yards sur les roster assignments liés à le roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de rushing yards sur tous les roster assignments dont roster est roster ID"
+      },
+      "Rosters.TotalReceivingYards": {
+        "table": "Rosters",
+        "field": "TotalReceivingYards",
+        "kind": "rollup",
+        "rule": "Un roster : total receiving yards est le total de received yards sur les roster assignments liés à le roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de received yards sur tous les roster assignments dont roster est roster ID"
+      },
+      "Rosters.TotalTouchdowns": {
+        "table": "Rosters",
+        "field": "TotalTouchdowns",
+        "kind": "rollup",
+        "rule": "Un roster : total touchdowns est de total touchdowns sur les roster assignments liés à le roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de total touchdowns sur tous les roster assignments dont roster est roster ID"
+      },
+      "Rosters.TotalInterceptions": {
+        "table": "Rosters",
+        "field": "TotalInterceptions",
+        "kind": "rollup",
+        "rule": "Un roster : total interceptions est le total de interceptions sur les roster assignments liés à le roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de interceptions sur tous les roster assignments dont roster est roster ID"
+      },
+      "Rosters.ProjectedScore": {
+        "table": "Rosters",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "Un roster : projected score est calculé comme le total passing yards divisé par 25 plus le total rushing yards divisé par 10 plus le total receiving yards divisé par 10 plus le total touchdowns multiplié par 6 moins le total interceptions multiplié par 2 arrondi à 2 décimale(s).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "TotalPassingYards",
+            "label": "total passing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalRushingYards",
+            "label": "total rushing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalReceivingYards",
+            "label": "total receiving yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalInterceptions",
+            "label": "total interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((total passing yards divisé par 25) plus (total rushing yards divisé par 10)) plus (total receiving yards divisé par 10)) plus (total touchdowns fois 6)) moins (total interceptions fois 2)) arrondi à 2 décimales"
+      },
+      "RosterAssignments.Name": {
+        "table": "RosterAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un roster assignment : name est identique à assignment ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "RosterAssignments.PlayerName": {
+        "table": "RosterAssignments",
+        "field": "PlayerName",
+        "kind": "lookup",
+        "rule": "Un roster assignment : player name — repris du player lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du player lié"
+      },
+      "RosterAssignments.Position": {
+        "table": "RosterAssignments",
+        "field": "Position",
+        "kind": "lookup",
+        "rule": "Un roster assignment : position — repris du player lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Position",
+            "label": "position"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le position du player lié"
+      },
+      "RosterAssignments.PassingYards": {
+        "table": "RosterAssignments",
+        "field": "PassingYards",
+        "kind": "lookup",
+        "rule": "Un roster assignment : passing yards — repris du player lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le passing yards du player lié"
+      },
+      "RosterAssignments.PassingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "PassingTouchdowns",
+        "kind": "lookup",
+        "rule": "Un roster assignment : passing touchdowns — repris du player lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le passing touchdowns du player lié"
+      },
+      "RosterAssignments.Interceptions": {
+        "table": "RosterAssignments",
+        "field": "Interceptions",
+        "kind": "lookup",
+        "rule": "Un roster assignment : interceptions — repris du player lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le interceptions du player lié"
+      },
+      "RosterAssignments.RushingYards": {
+        "table": "RosterAssignments",
+        "field": "RushingYards",
+        "kind": "lookup",
+        "rule": "Un roster assignment : rushing yards — repris du player lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le rushing yards du player lié"
+      },
+      "RosterAssignments.RushingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "RushingTouchdowns",
+        "kind": "lookup",
+        "rule": "Un roster assignment : rushing touchdowns — repris du player lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le rushing touchdowns du player lié"
+      },
+      "RosterAssignments.Receptions": {
+        "table": "RosterAssignments",
+        "field": "Receptions",
+        "kind": "lookup",
+        "rule": "Un roster assignment : receptions — repris du player lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Receptions",
+            "label": "receptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le receptions du player lié"
+      },
+      "RosterAssignments.ReceivedYards": {
+        "table": "RosterAssignments",
+        "field": "ReceivedYards",
+        "kind": "lookup",
+        "rule": "Un roster assignment : received yards — repris du player lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le received yards du player lié"
+      },
+      "RosterAssignments.ReceivedTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "ReceivedTouchdowns",
+        "kind": "lookup",
+        "rule": "Un roster assignment : received touchdowns — repris du player lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le received touchdowns du player lié"
+      },
+      "RosterAssignments.TotalTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "TotalTouchdowns",
+        "kind": "lookup",
+        "rule": "Un roster assignment : total touchdowns — repris du player lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le total touchdowns du player lié"
+      },
+      "RosterAssignments.ProjectedScore": {
+        "table": "RosterAssignments",
+        "field": "ProjectedScore",
+        "kind": "lookup",
+        "rule": "Un roster assignment : projected score — repris du player lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le projected score du player lié"
+      },
+      "Matchups.Name": {
+        "table": "Matchups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un matchup : name est identique à matchup ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "MatchupId",
+            "label": "matchup ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Matchup ID"
+      },
+      "Matchups.Team1Score": {
+        "table": "Matchups",
+        "field": "Team1Score",
+        "kind": "lookup",
+        "rule": "Un matchup : team1 score est le projected score du team1 lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le projected score du team1 lié"
+      },
+      "Matchups.Team2Score": {
+        "table": "Matchups",
+        "field": "Team2Score",
+        "kind": "lookup",
+        "rule": "Un matchup : team2 score est le projected score du team2 lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le projected score du team2 lié"
+      },
+      "Matchups.Margin": {
+        "table": "Matchups",
+        "field": "Margin",
+        "kind": "formula",
+        "rule": "Un matchup : margin est calculé comme le team1 score moins le team2 score.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Team1Score",
+            "label": "team1 score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2Score",
+            "label": "team2 score"
+          }
+        ],
+        "structure": null,
+        "plain": "Team1 score moins team2 score"
+      },
+      "Matchups.Winner": {
+        "table": "Matchups",
+        "field": "Winner",
+        "kind": "formula",
+        "rule": "Le champ « winner » du matchup est déterminé selon la priorité suivante :\n1. le team1, si le margin est supérieur à 0 ;\n2. dans tous les autres cas, le team2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « winner » du matchup est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "le team1",
+              "when": {
+                "kind": "leaf",
+                "text": "le margin est supérieur à 0"
+              }
+            },
+            {
+              "value": "le team2",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si margin est supérieur à 0, alors team1, sinon team2"
+      },
+      "Matchups.Loser": {
+        "table": "Matchups",
+        "field": "Loser",
+        "kind": "formula",
+        "rule": "Le champ « loser » du matchup est déterminé selon la priorité suivante :\n1. le team2, si le margin est supérieur à 0 ;\n2. dans tous les autres cas, le team1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « loser » du matchup est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "le team2",
+              "when": {
+                "kind": "leaf",
+                "text": "le margin est supérieur à 0"
+              }
+            },
+            {
+              "value": "le team1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si margin est supérieur à 0, alors team2, sinon team1"
+      },
+      "Matchups.IsTieGame": {
+        "table": "Matchups",
+        "field": "IsTieGame",
+        "kind": "formula",
+        "rule": "Un matchup est considéré comme un tie game si le margin est 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          }
+        ],
+        "structure": null,
+        "plain": "Margin est égal à 0"
+      },
+      "Standings.Name": {
+        "table": "Standings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un standing : name — repris du standing ID lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du standing ID lié"
+      },
+      "Standings.Owner": {
+        "table": "Standings",
+        "field": "Owner",
+        "kind": "lookup",
+        "rule": "Un standing : owner — repris du standing ID lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Owner",
+            "label": "owner"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le owner du standing ID lié"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "DevUsers": [
+        "Un dev user **doit** avoir un email et un role."
+      ],
+      "Players": [
+        "Un player **doit** avoir une position; un passing yards; un passing touchdowns; un interceptions; un rushing yards; un rushing touchdowns; un receptions; un received yards; et un received touchdowns."
+      ],
+      "Rosters": [
+        "Un roster **doit** avoir un owner."
+      ],
+      "RosterAssignments": [
+        "Un roster assignment **doit** référencer exactement un roster.",
+        "Un roster assignment **doit** référencer exactement un player."
+      ],
+      "Matchups": [
+        "Un matchup **doit** référencer exactement un roster comme son team1.",
+        "Un matchup **doit** référencer exactement un roster comme son team2.",
+        "Un matchup **doit** avoir un week."
+      ],
+      "Standings": [
+        "Un standing **doit** avoir un wins; un losses; un ties; un win pct; un points for; et un points against, et consigner si il est playoff bound."
+      ]
+    },
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "DevUsers": "dev user",
+      "Players": "player",
+      "Rosters": "roster",
+      "RosterAssignments": "roster assignment",
+      "Matchups": "matchup",
+      "Standings": "standing"
+    }
+  },
+  "hi": {
+    "fields": {
+      "DevUsers.Name": {
+        "table": "DevUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "dev user का “name” उसके “email” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DevUsers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Players.Name": {
+        "table": "Players",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "player का “name” उसके “player ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Player ID"
+      },
+      "Players.TotalTouchdowns": {
+        "table": "Players",
+        "field": "TotalTouchdowns",
+        "kind": "formula",
+        "rule": "player का “total touchdowns” passing touchdowns जोड़ rushing touchdowns जोड़ received touchdowns के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          }
+        ],
+        "structure": null,
+        "plain": "(passing touchdowns जोड़ rushing touchdowns) जोड़ received touchdowns"
+      },
+      "Players.ProjectedScore": {
+        "table": "Players",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "player का “projected score” passing yards भाग 25 जोड़ total touchdowns गुणा 6 घटा interceptions गुणा 2, 2 दशमलव स्थानों तक पूर्णांकित के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((passing yards भाग 25) जोड़ (total touchdowns गुणा 6)) घटा (interceptions गुणा 2)), 2 दशमलव स्थानों तक पूर्णांकित"
+      },
+      "Rosters.Name": {
+        "table": "Rosters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "roster का “name” उसके “roster ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster ID"
+      },
+      "Rosters.TotalPassingYards": {
+        "table": "Rosters",
+        "field": "TotalPassingYards",
+        "kind": "rollup",
+        "rule": "roster का “total passing yards” roster से संबंधित “roster assignments” पर कुल “passing yards” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “roster assignments” पर योग passing yards, जिनका roster roster ID है"
+      },
+      "Rosters.TotalRushingYards": {
+        "table": "Rosters",
+        "field": "TotalRushingYards",
+        "kind": "rollup",
+        "rule": "roster का “total rushing yards” roster से संबंधित “roster assignments” पर कुल “rushing yards” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “roster assignments” पर योग rushing yards, जिनका roster roster ID है"
+      },
+      "Rosters.TotalReceivingYards": {
+        "table": "Rosters",
+        "field": "TotalReceivingYards",
+        "kind": "rollup",
+        "rule": "roster का “total receiving yards” roster से संबंधित “roster assignments” पर कुल “received yards” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “roster assignments” पर योग received yards, जिनका roster roster ID है"
+      },
+      "Rosters.TotalTouchdowns": {
+        "table": "Rosters",
+        "field": "TotalTouchdowns",
+        "kind": "rollup",
+        "rule": "roster का “total touchdowns” roster से संबंधित “roster assignments” पर “total touchdowns” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “roster assignments” पर योग total touchdowns, जिनका roster roster ID है"
+      },
+      "Rosters.TotalInterceptions": {
+        "table": "Rosters",
+        "field": "TotalInterceptions",
+        "kind": "rollup",
+        "rule": "roster का “total interceptions” roster से संबंधित “roster assignments” पर कुल “interceptions” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “roster assignments” पर योग interceptions, जिनका roster roster ID है"
+      },
+      "Rosters.ProjectedScore": {
+        "table": "Rosters",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "roster का “projected score” total passing yards भाग 25 जोड़ total rushing yards भाग 10 जोड़ total receiving yards भाग 10 जोड़ total touchdowns गुणा 6 घटा total interceptions गुणा 2, 2 दशमलव स्थानों तक पूर्णांकित के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "TotalPassingYards",
+            "label": "total passing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalRushingYards",
+            "label": "total rushing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalReceivingYards",
+            "label": "total receiving yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalInterceptions",
+            "label": "total interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((total passing yards भाग 25) जोड़ (total rushing yards भाग 10)) जोड़ (total receiving yards भाग 10)) जोड़ (total touchdowns गुणा 6)) घटा (total interceptions गुणा 2)), 2 दशमलव स्थानों तक पूर्णांकित"
+      },
+      "RosterAssignments.Name": {
+        "table": "RosterAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "roster assignment का “name” उसके “assignment ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "RosterAssignments.PlayerName": {
+        "table": "RosterAssignments",
+        "field": "PlayerName",
+        "kind": "lookup",
+        "rule": "roster assignment का “player name” — लिंक किए गए “player” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “player” का name"
+      },
+      "RosterAssignments.Position": {
+        "table": "RosterAssignments",
+        "field": "Position",
+        "kind": "lookup",
+        "rule": "roster assignment का “position” — लिंक किए गए “player” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Position",
+            "label": "position"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “player” का position"
+      },
+      "RosterAssignments.PassingYards": {
+        "table": "RosterAssignments",
+        "field": "PassingYards",
+        "kind": "lookup",
+        "rule": "roster assignment का “passing yards” — लिंक किए गए “player” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “player” का passing yards"
+      },
+      "RosterAssignments.PassingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "PassingTouchdowns",
+        "kind": "lookup",
+        "rule": "roster assignment का “passing touchdowns” — लिंक किए गए “player” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “player” का passing touchdowns"
+      },
+      "RosterAssignments.Interceptions": {
+        "table": "RosterAssignments",
+        "field": "Interceptions",
+        "kind": "lookup",
+        "rule": "roster assignment का “interceptions” — लिंक किए गए “player” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “player” का interceptions"
+      },
+      "RosterAssignments.RushingYards": {
+        "table": "RosterAssignments",
+        "field": "RushingYards",
+        "kind": "lookup",
+        "rule": "roster assignment का “rushing yards” — लिंक किए गए “player” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “player” का rushing yards"
+      },
+      "RosterAssignments.RushingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "RushingTouchdowns",
+        "kind": "lookup",
+        "rule": "roster assignment का “rushing touchdowns” — लिंक किए गए “player” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “player” का rushing touchdowns"
+      },
+      "RosterAssignments.Receptions": {
+        "table": "RosterAssignments",
+        "field": "Receptions",
+        "kind": "lookup",
+        "rule": "roster assignment का “receptions” — लिंक किए गए “player” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Receptions",
+            "label": "receptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “player” का receptions"
+      },
+      "RosterAssignments.ReceivedYards": {
+        "table": "RosterAssignments",
+        "field": "ReceivedYards",
+        "kind": "lookup",
+        "rule": "roster assignment का “received yards” — लिंक किए गए “player” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “player” का received yards"
+      },
+      "RosterAssignments.ReceivedTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "ReceivedTouchdowns",
+        "kind": "lookup",
+        "rule": "roster assignment का “received touchdowns” — लिंक किए गए “player” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “player” का received touchdowns"
+      },
+      "RosterAssignments.TotalTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "TotalTouchdowns",
+        "kind": "lookup",
+        "rule": "roster assignment का “total touchdowns” — लिंक किए गए “player” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “player” का total touchdowns"
+      },
+      "RosterAssignments.ProjectedScore": {
+        "table": "RosterAssignments",
+        "field": "ProjectedScore",
+        "kind": "lookup",
+        "rule": "roster assignment का “projected score” — लिंक किए गए “player” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “player” का projected score"
+      },
+      "Matchups.Name": {
+        "table": "Matchups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "matchup का “name” उसके “matchup ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "MatchupId",
+            "label": "matchup ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Matchup ID"
+      },
+      "Matchups.Team1Score": {
+        "table": "Matchups",
+        "field": "Team1Score",
+        "kind": "lookup",
+        "rule": "matchup का “team1 score” लिंक किए गए “team1” का “projected score” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “team1” का projected score"
+      },
+      "Matchups.Team2Score": {
+        "table": "Matchups",
+        "field": "Team2Score",
+        "kind": "lookup",
+        "rule": "matchup का “team2 score” लिंक किए गए “team2” का “projected score” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “team2” का projected score"
+      },
+      "Matchups.Margin": {
+        "table": "Matchups",
+        "field": "Margin",
+        "kind": "formula",
+        "rule": "matchup का “margin” team1 score घटा team2 score के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Team1Score",
+            "label": "team1 score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2Score",
+            "label": "team2 score"
+          }
+        ],
+        "structure": null,
+        "plain": "Team1 score घटा team2 score"
+      },
+      "Matchups.Winner": {
+        "table": "Matchups",
+        "field": "Winner",
+        "kind": "formula",
+        "rule": "Matchup का “winner” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. team1, यदि margin 0 से अधिक है;\n2. अन्य सभी स्थितियों में, team2।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Matchup का “winner” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "team1",
+              "when": {
+                "kind": "leaf",
+                "text": "margin 0 से अधिक है"
+              }
+            },
+            {
+              "value": "team2",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि margin 0 से अधिक है, तो team1, अन्यथा team2"
+      },
+      "Matchups.Loser": {
+        "table": "Matchups",
+        "field": "Loser",
+        "kind": "formula",
+        "rule": "Matchup का “loser” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. team2, यदि margin 0 से अधिक है;\n2. अन्य सभी स्थितियों में, team1।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Matchup का “loser” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "team2",
+              "when": {
+                "kind": "leaf",
+                "text": "margin 0 से अधिक है"
+              }
+            },
+            {
+              "value": "team1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि margin 0 से अधिक है, तो team2, अन्यथा team1"
+      },
+      "Matchups.IsTieGame": {
+        "table": "Matchups",
+        "field": "IsTieGame",
+        "kind": "formula",
+        "rule": "यदि margin 0 है, तो matchup “tie game” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          }
+        ],
+        "structure": null,
+        "plain": "Margin 0 के बराबर है"
+      },
+      "Standings.Name": {
+        "table": "Standings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "standing का “name” — लिंक किए गए “standing ID” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “standing ID” का name"
+      },
+      "Standings.Owner": {
+        "table": "Standings",
+        "field": "Owner",
+        "kind": "lookup",
+        "rule": "standing का “owner” — लिंक किए गए “standing ID” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Owner",
+            "label": "owner"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “standing ID” का owner"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "DevUsers": [
+        "dev user को email और role रखना **अनिवार्य** है।"
+      ],
+      "Players": [
+        "player को position, passing yards, passing touchdowns, interceptions, rushing yards, rushing touchdowns, receptions, received yards और received touchdowns रखना **अनिवार्य** है।"
+      ],
+      "Rosters": [
+        "roster को owner रखना **अनिवार्य** है।"
+      ],
+      "RosterAssignments": [
+        "roster assignment को ठीक एक “roster” का संदर्भ देना **अनिवार्य** है।",
+        "roster assignment को ठीक एक “player” का संदर्भ देना **अनिवार्य** है।"
+      ],
+      "Matchups": [
+        "matchup को अपने “team1” के रूप में ठीक एक “roster” का संदर्भ देना **अनिवार्य** है।",
+        "matchup को अपने “team2” के रूप में ठीक एक “roster” का संदर्भ देना **अनिवार्य** है।",
+        "matchup को week रखना **अनिवार्य** है।"
+      ],
+      "Standings": [
+        "standing को wins, losses, ties, win pct, points for और points against रखना, तथा यह कि वह “playoff bound” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ]
+    },
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "DevUsers": "dev user",
+      "Players": "player",
+      "Rosters": "roster",
+      "RosterAssignments": "roster assignment",
+      "Matchups": "matchup",
+      "Standings": "standing"
+    }
+  },
+  "id": {
+    "fields": {
+      "DevUsers.Name": {
+        "table": "DevUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap dev user, name sama dengan email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DevUsers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Players.Name": {
+        "table": "Players",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap player, name sama dengan player ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Player ID"
+      },
+      "Players.TotalTouchdowns": {
+        "table": "Players",
+        "field": "TotalTouchdowns",
+        "kind": "formula",
+        "rule": "Untuk setiap player, total touchdowns dihitung sebagai passing touchdowns ditambah rushing touchdowns ditambah received touchdowns.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          }
+        ],
+        "structure": null,
+        "plain": "(passing touchdowns ditambah rushing touchdowns) ditambah received touchdowns"
+      },
+      "Players.ProjectedScore": {
+        "table": "Players",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "Untuk setiap player, projected score dihitung sebagai passing yards dibagi 25 ditambah total touchdowns dikali 6 dikurangi interceptions dikali 2 dibulatkan hingga 2 angka di belakang koma.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((passing yards dibagi 25) ditambah (total touchdowns dikali 6)) dikurangi (interceptions dikali 2)) dibulatkan hingga 2 angka di belakang koma"
+      },
+      "Rosters.Name": {
+        "table": "Rosters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap roster, name sama dengan roster ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster ID"
+      },
+      "Rosters.TotalPassingYards": {
+        "table": "Rosters",
+        "field": "TotalPassingYards",
+        "kind": "rollup",
+        "rule": "Untuk setiap roster, total passing yards adalah nilai total passing yards pada seluruh roster assignments yang terkait dengan roster tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total passing yards pada semua roster assignments dengan syarat roster adalah roster ID"
+      },
+      "Rosters.TotalRushingYards": {
+        "table": "Rosters",
+        "field": "TotalRushingYards",
+        "kind": "rollup",
+        "rule": "Untuk setiap roster, total rushing yards adalah nilai total rushing yards pada seluruh roster assignments yang terkait dengan roster tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total rushing yards pada semua roster assignments dengan syarat roster adalah roster ID"
+      },
+      "Rosters.TotalReceivingYards": {
+        "table": "Rosters",
+        "field": "TotalReceivingYards",
+        "kind": "rollup",
+        "rule": "Untuk setiap roster, total receiving yards adalah nilai total received yards pada seluruh roster assignments yang terkait dengan roster tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total received yards pada semua roster assignments dengan syarat roster adalah roster ID"
+      },
+      "Rosters.TotalTouchdowns": {
+        "table": "Rosters",
+        "field": "TotalTouchdowns",
+        "kind": "rollup",
+        "rule": "Untuk setiap roster, total touchdowns adalah nilai total touchdowns pada seluruh roster assignments yang terkait dengan roster tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total total touchdowns pada semua roster assignments dengan syarat roster adalah roster ID"
+      },
+      "Rosters.TotalInterceptions": {
+        "table": "Rosters",
+        "field": "TotalInterceptions",
+        "kind": "rollup",
+        "rule": "Untuk setiap roster, total interceptions adalah nilai total interceptions pada seluruh roster assignments yang terkait dengan roster tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total interceptions pada semua roster assignments dengan syarat roster adalah roster ID"
+      },
+      "Rosters.ProjectedScore": {
+        "table": "Rosters",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "Untuk setiap roster, projected score dihitung sebagai total passing yards dibagi 25 ditambah total rushing yards dibagi 10 ditambah total receiving yards dibagi 10 ditambah total touchdowns dikali 6 dikurangi total interceptions dikali 2 dibulatkan hingga 2 angka di belakang koma.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "TotalPassingYards",
+            "label": "total passing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalRushingYards",
+            "label": "total rushing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalReceivingYards",
+            "label": "total receiving yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalInterceptions",
+            "label": "total interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((total passing yards dibagi 25) ditambah (total rushing yards dibagi 10)) ditambah (total receiving yards dibagi 10)) ditambah (total touchdowns dikali 6)) dikurangi (total interceptions dikali 2)) dibulatkan hingga 2 angka di belakang koma"
+      },
+      "RosterAssignments.Name": {
+        "table": "RosterAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap roster assignment, name sama dengan assignment ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "RosterAssignments.PlayerName": {
+        "table": "RosterAssignments",
+        "field": "PlayerName",
+        "kind": "lookup",
+        "rule": "Untuk setiap roster assignment, player name diambil dari player yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari player yang tertaut"
+      },
+      "RosterAssignments.Position": {
+        "table": "RosterAssignments",
+        "field": "Position",
+        "kind": "lookup",
+        "rule": "Untuk setiap roster assignment, position diambil dari player yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Position",
+            "label": "position"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Position dari player yang tertaut"
+      },
+      "RosterAssignments.PassingYards": {
+        "table": "RosterAssignments",
+        "field": "PassingYards",
+        "kind": "lookup",
+        "rule": "Untuk setiap roster assignment, passing yards diambil dari player yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Passing yards dari player yang tertaut"
+      },
+      "RosterAssignments.PassingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "PassingTouchdowns",
+        "kind": "lookup",
+        "rule": "Untuk setiap roster assignment, passing touchdowns diambil dari player yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Passing touchdowns dari player yang tertaut"
+      },
+      "RosterAssignments.Interceptions": {
+        "table": "RosterAssignments",
+        "field": "Interceptions",
+        "kind": "lookup",
+        "rule": "Untuk setiap roster assignment, interceptions diambil dari player yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Interceptions dari player yang tertaut"
+      },
+      "RosterAssignments.RushingYards": {
+        "table": "RosterAssignments",
+        "field": "RushingYards",
+        "kind": "lookup",
+        "rule": "Untuk setiap roster assignment, rushing yards diambil dari player yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rushing yards dari player yang tertaut"
+      },
+      "RosterAssignments.RushingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "RushingTouchdowns",
+        "kind": "lookup",
+        "rule": "Untuk setiap roster assignment, rushing touchdowns diambil dari player yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rushing touchdowns dari player yang tertaut"
+      },
+      "RosterAssignments.Receptions": {
+        "table": "RosterAssignments",
+        "field": "Receptions",
+        "kind": "lookup",
+        "rule": "Untuk setiap roster assignment, receptions diambil dari player yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Receptions",
+            "label": "receptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Receptions dari player yang tertaut"
+      },
+      "RosterAssignments.ReceivedYards": {
+        "table": "RosterAssignments",
+        "field": "ReceivedYards",
+        "kind": "lookup",
+        "rule": "Untuk setiap roster assignment, received yards diambil dari player yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Received yards dari player yang tertaut"
+      },
+      "RosterAssignments.ReceivedTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "ReceivedTouchdowns",
+        "kind": "lookup",
+        "rule": "Untuk setiap roster assignment, received touchdowns diambil dari player yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Received touchdowns dari player yang tertaut"
+      },
+      "RosterAssignments.TotalTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "TotalTouchdowns",
+        "kind": "lookup",
+        "rule": "Untuk setiap roster assignment, total touchdowns diambil dari player yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total touchdowns dari player yang tertaut"
+      },
+      "RosterAssignments.ProjectedScore": {
+        "table": "RosterAssignments",
+        "field": "ProjectedScore",
+        "kind": "lookup",
+        "rule": "Untuk setiap roster assignment, projected score diambil dari player yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Projected score dari player yang tertaut"
+      },
+      "Matchups.Name": {
+        "table": "Matchups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap matchup, name sama dengan matchup ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "MatchupId",
+            "label": "matchup ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Matchup ID"
+      },
+      "Matchups.Team1Score": {
+        "table": "Matchups",
+        "field": "Team1Score",
+        "kind": "lookup",
+        "rule": "Untuk setiap matchup, team1 score adalah projected score dari team1 yang tertaut pada matchup tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Projected score dari team1 yang tertaut"
+      },
+      "Matchups.Team2Score": {
+        "table": "Matchups",
+        "field": "Team2Score",
+        "kind": "lookup",
+        "rule": "Untuk setiap matchup, team2 score adalah projected score dari team2 yang tertaut pada matchup tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Projected score dari team2 yang tertaut"
+      },
+      "Matchups.Margin": {
+        "table": "Matchups",
+        "field": "Margin",
+        "kind": "formula",
+        "rule": "Untuk setiap matchup, margin dihitung sebagai team1 score dikurangi team2 score.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Team1Score",
+            "label": "team1 score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2Score",
+            "label": "team2 score"
+          }
+        ],
+        "structure": null,
+        "plain": "Team1 score dikurangi team2 score"
+      },
+      "Matchups.Winner": {
+        "table": "Matchups",
+        "field": "Winner",
+        "kind": "formula",
+        "rule": "Untuk setiap matchup, winner ditentukan menurut urutan prioritas berikut:\n1. team1, jika margin lebih dari 0;\n2. dalam semua kasus lainnya, team2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap matchup, winner ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "team1",
+              "when": {
+                "kind": "leaf",
+                "text": "margin lebih dari 0"
+              }
+            },
+            {
+              "value": "team2",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika margin lebih dari 0 maka team1, selain itu team2"
+      },
+      "Matchups.Loser": {
+        "table": "Matchups",
+        "field": "Loser",
+        "kind": "formula",
+        "rule": "Untuk setiap matchup, loser ditentukan menurut urutan prioritas berikut:\n1. team2, jika margin lebih dari 0;\n2. dalam semua kasus lainnya, team1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap matchup, loser ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "team2",
+              "when": {
+                "kind": "leaf",
+                "text": "margin lebih dari 0"
+              }
+            },
+            {
+              "value": "team1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika margin lebih dari 0 maka team2, selain itu team1"
+      },
+      "Matchups.IsTieGame": {
+        "table": "Matchups",
+        "field": "IsTieGame",
+        "kind": "formula",
+        "rule": "Setiap matchup dianggap “tie game” jika margin adalah 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          }
+        ],
+        "structure": null,
+        "plain": "Margin sama dengan 0"
+      },
+      "Standings.Name": {
+        "table": "Standings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap standing, name diambil dari standing ID yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari standing ID yang tertaut"
+      },
+      "Standings.Owner": {
+        "table": "Standings",
+        "field": "Owner",
+        "kind": "lookup",
+        "rule": "Untuk setiap standing, owner diambil dari standing ID yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Owner",
+            "label": "owner"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Owner dari standing ID yang tertaut"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "DevUsers": [
+        "Setiap dev user **harus** memiliki email dan role."
+      ],
+      "Players": [
+        "Setiap player **harus** memiliki position, passing yards, passing touchdowns, interceptions, rushing yards, rushing touchdowns, receptions, received yards, dan received touchdowns."
+      ],
+      "Rosters": [
+        "Setiap roster **harus** memiliki owner."
+      ],
+      "RosterAssignments": [
+        "Setiap roster assignment **harus** merujuk pada tepat satu roster.",
+        "Setiap roster assignment **harus** merujuk pada tepat satu player."
+      ],
+      "Matchups": [
+        "Setiap matchup **harus** merujuk pada tepat satu roster sebagai team1.",
+        "Setiap matchup **harus** merujuk pada tepat satu roster sebagai team2.",
+        "Setiap matchup **harus** memiliki week."
+      ],
+      "Standings": [
+        "Setiap standing **harus** memiliki wins, losses, ties, win pct, points for, dan points against, serta menyatakan apakah tergolong “playoff bound”."
+      ]
+    },
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "DevUsers": "dev user",
+      "Players": "player",
+      "Rosters": "roster",
+      "RosterAssignments": "roster assignment",
+      "Matchups": "matchup",
+      "Standings": "standing"
+    }
+  },
+  "it": {
+    "fields": {
+      "DevUsers.Name": {
+        "table": "DevUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un dev user: name è uguale a email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DevUsers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Players.Name": {
+        "table": "Players",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un player: name è uguale a player ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Player ID"
+      },
+      "Players.TotalTouchdowns": {
+        "table": "Players",
+        "field": "TotalTouchdowns",
+        "kind": "formula",
+        "rule": "Un player: total touchdowns è calcolato come il passing touchdowns più il rushing touchdowns più il received touchdowns.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          }
+        ],
+        "structure": null,
+        "plain": "(passing touchdowns più rushing touchdowns) più received touchdowns"
+      },
+      "Players.ProjectedScore": {
+        "table": "Players",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "Un player: projected score è calcolato come il passing yards diviso 25 più il total touchdowns per 6 meno l'interceptions per 2 arrotondato a 2 decimale/i.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((passing yards diviso 25) più (total touchdowns per 6)) meno (interceptions per 2)) arrotondato a 2 decimali"
+      },
+      "Rosters.Name": {
+        "table": "Rosters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un roster: name è uguale a roster ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster ID"
+      },
+      "Rosters.TotalPassingYards": {
+        "table": "Rosters",
+        "field": "TotalPassingYards",
+        "kind": "rollup",
+        "rule": "Un roster: total passing yards è il totale di passing yards tra i roster assignments collegati a il roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di passing yards su tutti i roster assignments il cui roster è roster ID"
+      },
+      "Rosters.TotalRushingYards": {
+        "table": "Rosters",
+        "field": "TotalRushingYards",
+        "kind": "rollup",
+        "rule": "Un roster: total rushing yards è il totale di rushing yards tra i roster assignments collegati a il roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di rushing yards su tutti i roster assignments il cui roster è roster ID"
+      },
+      "Rosters.TotalReceivingYards": {
+        "table": "Rosters",
+        "field": "TotalReceivingYards",
+        "kind": "rollup",
+        "rule": "Un roster: total receiving yards è il totale di received yards tra i roster assignments collegati a il roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di received yards su tutti i roster assignments il cui roster è roster ID"
+      },
+      "Rosters.TotalTouchdowns": {
+        "table": "Rosters",
+        "field": "TotalTouchdowns",
+        "kind": "rollup",
+        "rule": "Un roster: total touchdowns è di total touchdowns tra i roster assignments collegati a il roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di total touchdowns su tutti i roster assignments il cui roster è roster ID"
+      },
+      "Rosters.TotalInterceptions": {
+        "table": "Rosters",
+        "field": "TotalInterceptions",
+        "kind": "rollup",
+        "rule": "Un roster: total interceptions è il totale di interceptions tra i roster assignments collegati a il roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di interceptions su tutti i roster assignments il cui roster è roster ID"
+      },
+      "Rosters.ProjectedScore": {
+        "table": "Rosters",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "Un roster: projected score è calcolato come il total passing yards diviso 25 più il total rushing yards diviso 10 più il total receiving yards diviso 10 più il total touchdowns per 6 meno il total interceptions per 2 arrotondato a 2 decimale/i.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "TotalPassingYards",
+            "label": "total passing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalRushingYards",
+            "label": "total rushing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalReceivingYards",
+            "label": "total receiving yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalInterceptions",
+            "label": "total interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((total passing yards diviso 25) più (total rushing yards diviso 10)) più (total receiving yards diviso 10)) più (total touchdowns per 6)) meno (total interceptions per 2)) arrotondato a 2 decimali"
+      },
+      "RosterAssignments.Name": {
+        "table": "RosterAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un roster assignment: name è uguale a assignment ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "RosterAssignments.PlayerName": {
+        "table": "RosterAssignments",
+        "field": "PlayerName",
+        "kind": "lookup",
+        "rule": "Un roster assignment: player name — ripreso dal player collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del player collegato"
+      },
+      "RosterAssignments.Position": {
+        "table": "RosterAssignments",
+        "field": "Position",
+        "kind": "lookup",
+        "rule": "Un roster assignment: position — ripreso dal player collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Position",
+            "label": "position"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il position del player collegato"
+      },
+      "RosterAssignments.PassingYards": {
+        "table": "RosterAssignments",
+        "field": "PassingYards",
+        "kind": "lookup",
+        "rule": "Un roster assignment: passing yards — ripreso dal player collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il passing yards del player collegato"
+      },
+      "RosterAssignments.PassingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "PassingTouchdowns",
+        "kind": "lookup",
+        "rule": "Un roster assignment: passing touchdowns — ripreso dal player collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il passing touchdowns del player collegato"
+      },
+      "RosterAssignments.Interceptions": {
+        "table": "RosterAssignments",
+        "field": "Interceptions",
+        "kind": "lookup",
+        "rule": "Un roster assignment: interceptions — ripreso dal player collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il interceptions del player collegato"
+      },
+      "RosterAssignments.RushingYards": {
+        "table": "RosterAssignments",
+        "field": "RushingYards",
+        "kind": "lookup",
+        "rule": "Un roster assignment: rushing yards — ripreso dal player collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il rushing yards del player collegato"
+      },
+      "RosterAssignments.RushingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "RushingTouchdowns",
+        "kind": "lookup",
+        "rule": "Un roster assignment: rushing touchdowns — ripreso dal player collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il rushing touchdowns del player collegato"
+      },
+      "RosterAssignments.Receptions": {
+        "table": "RosterAssignments",
+        "field": "Receptions",
+        "kind": "lookup",
+        "rule": "Un roster assignment: receptions — ripreso dal player collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Receptions",
+            "label": "receptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il receptions del player collegato"
+      },
+      "RosterAssignments.ReceivedYards": {
+        "table": "RosterAssignments",
+        "field": "ReceivedYards",
+        "kind": "lookup",
+        "rule": "Un roster assignment: received yards — ripreso dal player collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il received yards del player collegato"
+      },
+      "RosterAssignments.ReceivedTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "ReceivedTouchdowns",
+        "kind": "lookup",
+        "rule": "Un roster assignment: received touchdowns — ripreso dal player collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il received touchdowns del player collegato"
+      },
+      "RosterAssignments.TotalTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "TotalTouchdowns",
+        "kind": "lookup",
+        "rule": "Un roster assignment: total touchdowns — ripreso dal player collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il total touchdowns del player collegato"
+      },
+      "RosterAssignments.ProjectedScore": {
+        "table": "RosterAssignments",
+        "field": "ProjectedScore",
+        "kind": "lookup",
+        "rule": "Un roster assignment: projected score — ripreso dal player collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il projected score del player collegato"
+      },
+      "Matchups.Name": {
+        "table": "Matchups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un matchup: name è uguale a matchup ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "MatchupId",
+            "label": "matchup ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Matchup ID"
+      },
+      "Matchups.Team1Score": {
+        "table": "Matchups",
+        "field": "Team1Score",
+        "kind": "lookup",
+        "rule": "Un matchup: team1 score è il projected score del team1 collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il projected score del team1 collegato"
+      },
+      "Matchups.Team2Score": {
+        "table": "Matchups",
+        "field": "Team2Score",
+        "kind": "lookup",
+        "rule": "Un matchup: team2 score è il projected score del team2 collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il projected score del team2 collegato"
+      },
+      "Matchups.Margin": {
+        "table": "Matchups",
+        "field": "Margin",
+        "kind": "formula",
+        "rule": "Un matchup: margin è calcolato come il team1 score meno il team2 score.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Team1Score",
+            "label": "team1 score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2Score",
+            "label": "team2 score"
+          }
+        ],
+        "structure": null,
+        "plain": "Team1 score meno team2 score"
+      },
+      "Matchups.Winner": {
+        "table": "Matchups",
+        "field": "Winner",
+        "kind": "formula",
+        "rule": "Il campo “winner” del matchup è determinato secondo la seguente priorità:\n1. il team1, se il margin è maggiore di 0;\n2. in tutti gli altri casi, il team2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “winner” del matchup è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "il team1",
+              "when": {
+                "kind": "leaf",
+                "text": "il margin è maggiore di 0"
+              }
+            },
+            {
+              "value": "il team2",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se margin è maggiore di 0, allora team1, altrimenti team2"
+      },
+      "Matchups.Loser": {
+        "table": "Matchups",
+        "field": "Loser",
+        "kind": "formula",
+        "rule": "Il campo “loser” del matchup è determinato secondo la seguente priorità:\n1. il team2, se il margin è maggiore di 0;\n2. in tutti gli altri casi, il team1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “loser” del matchup è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "il team2",
+              "when": {
+                "kind": "leaf",
+                "text": "il margin è maggiore di 0"
+              }
+            },
+            {
+              "value": "il team1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se margin è maggiore di 0, allora team2, altrimenti team1"
+      },
+      "Matchups.IsTieGame": {
+        "table": "Matchups",
+        "field": "IsTieGame",
+        "kind": "formula",
+        "rule": "Un matchup è considerato un tie game se il margin è 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          }
+        ],
+        "structure": null,
+        "plain": "Margin è uguale a 0"
+      },
+      "Standings.Name": {
+        "table": "Standings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un standing: name — ripreso dal standing ID collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del standing ID collegato"
+      },
+      "Standings.Owner": {
+        "table": "Standings",
+        "field": "Owner",
+        "kind": "lookup",
+        "rule": "Un standing: owner — ripreso dal standing ID collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Owner",
+            "label": "owner"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il owner del standing ID collegato"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "DevUsers": [
+        "Un dev user **deve** avere un email e un role."
+      ],
+      "Players": [
+        "Un player **deve** avere un position; un passing yards; un passing touchdowns; un interceptions; un rushing yards; un rushing touchdowns; un receptions; un received yards; e un received touchdowns."
+      ],
+      "Rosters": [
+        "Un roster **deve** avere un owner."
+      ],
+      "RosterAssignments": [
+        "Un roster assignment **deve** referenziare esattamente un roster.",
+        "Un roster assignment **deve** referenziare esattamente un player."
+      ],
+      "Matchups": [
+        "Un matchup **deve** referenziare esattamente un roster come suo team1.",
+        "Un matchup **deve** referenziare esattamente un roster come suo team2.",
+        "Un matchup **deve** avere un week."
+      ],
+      "Standings": [
+        "Un standing **deve** avere un wins; un losses; un ties; un win pct; un points for; e un points against, e registrare se è playoff bound."
+      ]
+    },
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "DevUsers": "dev user",
+      "Players": "player",
+      "Rosters": "roster",
+      "RosterAssignments": "roster assignment",
+      "Matchups": "matchup",
+      "Standings": "standing"
+    }
+  },
+  "ja": {
+    "fields": {
+      "DevUsers.Name": {
+        "table": "DevUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "dev userの「name」は email と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DevUsers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Players.Name": {
+        "table": "Players",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "playerの「name」は player ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Player ID"
+      },
+      "Players.TotalTouchdowns": {
+        "table": "Players",
+        "field": "TotalTouchdowns",
+        "kind": "formula",
+        "rule": "playerの「total touchdowns」は passing touchdowns たす rushing touchdowns たす received touchdowns として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          }
+        ],
+        "structure": null,
+        "plain": "(passing touchdowns たす rushing touchdowns) たす received touchdowns"
+      },
+      "Players.ProjectedScore": {
+        "table": "Players",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "playerの「projected score」は passing yards わる 25 たす total touchdowns かける 6 ひく interceptions かける 2 を小数第 2 位に丸めたもの として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((passing yards わる 25) たす (total touchdowns かける 6)) ひく (interceptions かける 2)) を小数第 2 位に丸めたもの"
+      },
+      "Rosters.Name": {
+        "table": "Rosters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "rosterの「name」は roster ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster ID"
+      },
+      "Rosters.TotalPassingYards": {
+        "table": "Rosters",
+        "field": "TotalPassingYards",
+        "kind": "rollup",
+        "rule": "rosterの「total passing yards」は rosterに関連する「roster assignments」全体での「passing yards」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster が roster ID であるすべての「roster assignments」にわたる passing yards の合計"
+      },
+      "Rosters.TotalRushingYards": {
+        "table": "Rosters",
+        "field": "TotalRushingYards",
+        "kind": "rollup",
+        "rule": "rosterの「total rushing yards」は rosterに関連する「roster assignments」全体での「rushing yards」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster が roster ID であるすべての「roster assignments」にわたる rushing yards の合計"
+      },
+      "Rosters.TotalReceivingYards": {
+        "table": "Rosters",
+        "field": "TotalReceivingYards",
+        "kind": "rollup",
+        "rule": "rosterの「total receiving yards」は rosterに関連する「roster assignments」全体での「received yards」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster が roster ID であるすべての「roster assignments」にわたる received yards の合計"
+      },
+      "Rosters.TotalTouchdowns": {
+        "table": "Rosters",
+        "field": "TotalTouchdowns",
+        "kind": "rollup",
+        "rule": "rosterの「total touchdowns」は rosterに関連する「roster assignments」全体での「total touchdowns」の です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster が roster ID であるすべての「roster assignments」にわたる total touchdowns の合計"
+      },
+      "Rosters.TotalInterceptions": {
+        "table": "Rosters",
+        "field": "TotalInterceptions",
+        "kind": "rollup",
+        "rule": "rosterの「total interceptions」は rosterに関連する「roster assignments」全体での「interceptions」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster が roster ID であるすべての「roster assignments」にわたる interceptions の合計"
+      },
+      "Rosters.ProjectedScore": {
+        "table": "Rosters",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "rosterの「projected score」は total passing yards わる 25 たす total rushing yards わる 10 たす total receiving yards わる 10 たす total touchdowns かける 6 ひく total interceptions かける 2 を小数第 2 位に丸めたもの として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "TotalPassingYards",
+            "label": "total passing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalRushingYards",
+            "label": "total rushing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalReceivingYards",
+            "label": "total receiving yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalInterceptions",
+            "label": "total interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((total passing yards わる 25) たす (total rushing yards わる 10)) たす (total receiving yards わる 10)) たす (total touchdowns かける 6)) ひく (total interceptions かける 2)) を小数第 2 位に丸めたもの"
+      },
+      "RosterAssignments.Name": {
+        "table": "RosterAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "roster assignmentの「name」は assignment ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "RosterAssignments.PlayerName": {
+        "table": "RosterAssignments",
+        "field": "PlayerName",
+        "kind": "lookup",
+        "rule": "roster assignmentの「player name」— リンクされた「player」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「player」の name"
+      },
+      "RosterAssignments.Position": {
+        "table": "RosterAssignments",
+        "field": "Position",
+        "kind": "lookup",
+        "rule": "roster assignmentの「position」— リンクされた「player」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Position",
+            "label": "position"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「player」の position"
+      },
+      "RosterAssignments.PassingYards": {
+        "table": "RosterAssignments",
+        "field": "PassingYards",
+        "kind": "lookup",
+        "rule": "roster assignmentの「passing yards」— リンクされた「player」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「player」の passing yards"
+      },
+      "RosterAssignments.PassingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "PassingTouchdowns",
+        "kind": "lookup",
+        "rule": "roster assignmentの「passing touchdowns」— リンクされた「player」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「player」の passing touchdowns"
+      },
+      "RosterAssignments.Interceptions": {
+        "table": "RosterAssignments",
+        "field": "Interceptions",
+        "kind": "lookup",
+        "rule": "roster assignmentの「interceptions」— リンクされた「player」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「player」の interceptions"
+      },
+      "RosterAssignments.RushingYards": {
+        "table": "RosterAssignments",
+        "field": "RushingYards",
+        "kind": "lookup",
+        "rule": "roster assignmentの「rushing yards」— リンクされた「player」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「player」の rushing yards"
+      },
+      "RosterAssignments.RushingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "RushingTouchdowns",
+        "kind": "lookup",
+        "rule": "roster assignmentの「rushing touchdowns」— リンクされた「player」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「player」の rushing touchdowns"
+      },
+      "RosterAssignments.Receptions": {
+        "table": "RosterAssignments",
+        "field": "Receptions",
+        "kind": "lookup",
+        "rule": "roster assignmentの「receptions」— リンクされた「player」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Receptions",
+            "label": "receptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「player」の receptions"
+      },
+      "RosterAssignments.ReceivedYards": {
+        "table": "RosterAssignments",
+        "field": "ReceivedYards",
+        "kind": "lookup",
+        "rule": "roster assignmentの「received yards」— リンクされた「player」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「player」の received yards"
+      },
+      "RosterAssignments.ReceivedTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "ReceivedTouchdowns",
+        "kind": "lookup",
+        "rule": "roster assignmentの「received touchdowns」— リンクされた「player」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「player」の received touchdowns"
+      },
+      "RosterAssignments.TotalTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "TotalTouchdowns",
+        "kind": "lookup",
+        "rule": "roster assignmentの「total touchdowns」— リンクされた「player」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「player」の total touchdowns"
+      },
+      "RosterAssignments.ProjectedScore": {
+        "table": "RosterAssignments",
+        "field": "ProjectedScore",
+        "kind": "lookup",
+        "rule": "roster assignmentの「projected score」— リンクされた「player」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「player」の projected score"
+      },
+      "Matchups.Name": {
+        "table": "Matchups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "matchupの「name」は matchup ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "MatchupId",
+            "label": "matchup ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Matchup ID"
+      },
+      "Matchups.Team1Score": {
+        "table": "Matchups",
+        "field": "Team1Score",
+        "kind": "lookup",
+        "rule": "matchupの「team1 score」は、リンクされた「team1」の「projected score」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「team1」の projected score"
+      },
+      "Matchups.Team2Score": {
+        "table": "Matchups",
+        "field": "Team2Score",
+        "kind": "lookup",
+        "rule": "matchupの「team2 score」は、リンクされた「team2」の「projected score」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「team2」の projected score"
+      },
+      "Matchups.Margin": {
+        "table": "Matchups",
+        "field": "Margin",
+        "kind": "formula",
+        "rule": "matchupの「margin」は team1 score ひく team2 score として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Team1Score",
+            "label": "team1 score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2Score",
+            "label": "team2 score"
+          }
+        ],
+        "structure": null,
+        "plain": "Team1 score ひく team2 score"
+      },
+      "Matchups.Winner": {
+        "table": "Matchups",
+        "field": "Winner",
+        "kind": "formula",
+        "rule": "Matchupの「winner」は、次の優先順位で決まります:\n1. margin が 0 より大きい場合は team1;\n2. それ以外の場合は team2。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Matchupの「winner」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "team1",
+              "when": {
+                "kind": "leaf",
+                "text": "margin が 0 より大きい"
+              }
+            },
+            {
+              "value": "team2",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Margin が 0 より大きいなら team1、そうでなければ team2"
+      },
+      "Matchups.Loser": {
+        "table": "Matchups",
+        "field": "Loser",
+        "kind": "formula",
+        "rule": "Matchupの「loser」は、次の優先順位で決まります:\n1. margin が 0 より大きい場合は team2;\n2. それ以外の場合は team1。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Matchupの「loser」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "team2",
+              "when": {
+                "kind": "leaf",
+                "text": "margin が 0 より大きい"
+              }
+            },
+            {
+              "value": "team1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Margin が 0 より大きいなら team2、そうでなければ team1"
+      },
+      "Matchups.IsTieGame": {
+        "table": "Matchups",
+        "field": "IsTieGame",
+        "kind": "formula",
+        "rule": "margin が 0 である場合、matchupは「Tie Game」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          }
+        ],
+        "structure": null,
+        "plain": "Margin が 0 と等しい"
+      },
+      "Standings.Name": {
+        "table": "Standings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "standingの「name」— リンクされた「standing ID」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「standing ID」の name"
+      },
+      "Standings.Owner": {
+        "table": "Standings",
+        "field": "Owner",
+        "kind": "lookup",
+        "rule": "standingの「owner」— リンクされた「standing ID」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Owner",
+            "label": "owner"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「standing ID」の owner"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "DevUsers": [
+        "dev userは emailおよびrole を持た**なければなりません**。"
+      ],
+      "Players": [
+        "playerは position、passing yards、passing touchdowns、interceptions、rushing yards、rushing touchdowns、receptions、received yards、およびreceived touchdowns を持た**なければなりません**。"
+      ],
+      "Rosters": [
+        "rosterは owner を持た**なければなりません**。"
+      ],
+      "RosterAssignments": [
+        "roster assignmentは「roster」をちょうど 1 件参照し**なければなりません**。",
+        "roster assignmentは「player」をちょうど 1 件参照し**なければなりません**。"
+      ],
+      "Matchups": [
+        "matchupは、team1として「roster」をちょうど 1 件参照し**なければなりません**。",
+        "matchupは、team2として「roster」をちょうど 1 件参照し**なければなりません**。",
+        "matchupは week を持た**なければなりません**。"
+      ],
+      "Standings": [
+        "standingは wins、losses、ties、win pct、points for、およびpoints against を持た、かつ 「Playoff Bound」であるかどうかを記録し**なければなりません**。"
+      ]
+    },
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "DevUsers": "dev user",
+      "Players": "player",
+      "Rosters": "roster",
+      "RosterAssignments": "roster assignment",
+      "Matchups": "matchup",
+      "Standings": "standing"
+    }
+  },
+  "ko": {
+    "fields": {
+      "DevUsers.Name": {
+        "table": "DevUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘dev user’ 레코드의 ‘name’ 값은 같은 레코드의 ‘email’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DevUsers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Players.Name": {
+        "table": "Players",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘player’ 레코드의 ‘name’ 값은 같은 레코드의 ‘player ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Player ID"
+      },
+      "Players.TotalTouchdowns": {
+        "table": "Players",
+        "field": "TotalTouchdowns",
+        "kind": "formula",
+        "rule": "‘player’ 레코드의 ‘total touchdowns’ 값은 다음과 같이 계산됩니다: ‘passing touchdowns’ 더하기 ‘rushing touchdowns’ 더하기 ‘received touchdowns’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          }
+        ],
+        "structure": null,
+        "plain": "(passing touchdowns 더하기 rushing touchdowns) 더하기 received touchdowns"
+      },
+      "Players.ProjectedScore": {
+        "table": "Players",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "‘player’ 레코드의 ‘projected score’ 값은 다음과 같이 계산됩니다: ‘passing yards’ 나누기 25 더하기 ‘total touchdowns’ 곱하기 6 빼기 ‘interceptions’ 곱하기 2의 소수점 이하 2자리 반올림 결과.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((passing yards 나누기 25) 더하기 (total touchdowns 곱하기 6)) 빼기 (interceptions 곱하기 2))의 소수점 이하 2자리 반올림 결과"
+      },
+      "Rosters.Name": {
+        "table": "Rosters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘roster’ 레코드의 ‘name’ 값은 같은 레코드의 ‘roster ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster ID"
+      },
+      "Rosters.TotalPassingYards": {
+        "table": "Rosters",
+        "field": "TotalPassingYards",
+        "kind": "rollup",
+        "rule": "‘roster’ 레코드의 ‘total passing yards’ 값은 해당 ‘roster’ 레코드에 연결된 모든 ‘roster assignments’ 레코드의 총 ‘passing yards’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(roster 값이 roster ID임)에 맞는 모든 roster assignments 레코드의 passing yards 합계"
+      },
+      "Rosters.TotalRushingYards": {
+        "table": "Rosters",
+        "field": "TotalRushingYards",
+        "kind": "rollup",
+        "rule": "‘roster’ 레코드의 ‘total rushing yards’ 값은 해당 ‘roster’ 레코드에 연결된 모든 ‘roster assignments’ 레코드의 총 ‘rushing yards’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(roster 값이 roster ID임)에 맞는 모든 roster assignments 레코드의 rushing yards 합계"
+      },
+      "Rosters.TotalReceivingYards": {
+        "table": "Rosters",
+        "field": "TotalReceivingYards",
+        "kind": "rollup",
+        "rule": "‘roster’ 레코드의 ‘total receiving yards’ 값은 해당 ‘roster’ 레코드에 연결된 모든 ‘roster assignments’ 레코드의 총 ‘received yards’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(roster 값이 roster ID임)에 맞는 모든 roster assignments 레코드의 received yards 합계"
+      },
+      "Rosters.TotalTouchdowns": {
+        "table": "Rosters",
+        "field": "TotalTouchdowns",
+        "kind": "rollup",
+        "rule": "‘roster’ 레코드의 ‘total touchdowns’ 값은 해당 ‘roster’ 레코드에 연결된 모든 ‘roster assignments’ 레코드의 ‘total touchdowns’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(roster 값이 roster ID임)에 맞는 모든 roster assignments 레코드의 total touchdowns 합계"
+      },
+      "Rosters.TotalInterceptions": {
+        "table": "Rosters",
+        "field": "TotalInterceptions",
+        "kind": "rollup",
+        "rule": "‘roster’ 레코드의 ‘total interceptions’ 값은 해당 ‘roster’ 레코드에 연결된 모든 ‘roster assignments’ 레코드의 총 ‘interceptions’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(roster 값이 roster ID임)에 맞는 모든 roster assignments 레코드의 interceptions 합계"
+      },
+      "Rosters.ProjectedScore": {
+        "table": "Rosters",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "‘roster’ 레코드의 ‘projected score’ 값은 다음과 같이 계산됩니다: ‘total passing yards’ 나누기 25 더하기 ‘total rushing yards’ 나누기 10 더하기 ‘total receiving yards’ 나누기 10 더하기 ‘total touchdowns’ 곱하기 6 빼기 ‘total interceptions’ 곱하기 2의 소수점 이하 2자리 반올림 결과.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "TotalPassingYards",
+            "label": "total passing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalRushingYards",
+            "label": "total rushing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalReceivingYards",
+            "label": "total receiving yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalInterceptions",
+            "label": "total interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((total passing yards 나누기 25) 더하기 (total rushing yards 나누기 10)) 더하기 (total receiving yards 나누기 10)) 더하기 (total touchdowns 곱하기 6)) 빼기 (total interceptions 곱하기 2))의 소수점 이하 2자리 반올림 결과"
+      },
+      "RosterAssignments.Name": {
+        "table": "RosterAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘roster assignment’ 레코드의 ‘name’ 값은 같은 레코드의 ‘assignment ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "RosterAssignments.PlayerName": {
+        "table": "RosterAssignments",
+        "field": "PlayerName",
+        "kind": "lookup",
+        "rule": "‘roster assignment’ 레코드의 ‘player name’ 값은 연결된 ‘player’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 player 레코드의 name"
+      },
+      "RosterAssignments.Position": {
+        "table": "RosterAssignments",
+        "field": "Position",
+        "kind": "lookup",
+        "rule": "‘roster assignment’ 레코드의 ‘position’ 값은 연결된 ‘player’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Position",
+            "label": "position"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 player 레코드의 position"
+      },
+      "RosterAssignments.PassingYards": {
+        "table": "RosterAssignments",
+        "field": "PassingYards",
+        "kind": "lookup",
+        "rule": "‘roster assignment’ 레코드의 ‘passing yards’ 값은 연결된 ‘player’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 player 레코드의 passing yards"
+      },
+      "RosterAssignments.PassingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "PassingTouchdowns",
+        "kind": "lookup",
+        "rule": "‘roster assignment’ 레코드의 ‘passing touchdowns’ 값은 연결된 ‘player’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 player 레코드의 passing touchdowns"
+      },
+      "RosterAssignments.Interceptions": {
+        "table": "RosterAssignments",
+        "field": "Interceptions",
+        "kind": "lookup",
+        "rule": "‘roster assignment’ 레코드의 ‘interceptions’ 값은 연결된 ‘player’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 player 레코드의 interceptions"
+      },
+      "RosterAssignments.RushingYards": {
+        "table": "RosterAssignments",
+        "field": "RushingYards",
+        "kind": "lookup",
+        "rule": "‘roster assignment’ 레코드의 ‘rushing yards’ 값은 연결된 ‘player’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 player 레코드의 rushing yards"
+      },
+      "RosterAssignments.RushingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "RushingTouchdowns",
+        "kind": "lookup",
+        "rule": "‘roster assignment’ 레코드의 ‘rushing touchdowns’ 값은 연결된 ‘player’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 player 레코드의 rushing touchdowns"
+      },
+      "RosterAssignments.Receptions": {
+        "table": "RosterAssignments",
+        "field": "Receptions",
+        "kind": "lookup",
+        "rule": "‘roster assignment’ 레코드의 ‘receptions’ 값은 연결된 ‘player’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Receptions",
+            "label": "receptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 player 레코드의 receptions"
+      },
+      "RosterAssignments.ReceivedYards": {
+        "table": "RosterAssignments",
+        "field": "ReceivedYards",
+        "kind": "lookup",
+        "rule": "‘roster assignment’ 레코드의 ‘received yards’ 값은 연결된 ‘player’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 player 레코드의 received yards"
+      },
+      "RosterAssignments.ReceivedTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "ReceivedTouchdowns",
+        "kind": "lookup",
+        "rule": "‘roster assignment’ 레코드의 ‘received touchdowns’ 값은 연결된 ‘player’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 player 레코드의 received touchdowns"
+      },
+      "RosterAssignments.TotalTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "TotalTouchdowns",
+        "kind": "lookup",
+        "rule": "‘roster assignment’ 레코드의 ‘total touchdowns’ 값은 연결된 ‘player’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 player 레코드의 total touchdowns"
+      },
+      "RosterAssignments.ProjectedScore": {
+        "table": "RosterAssignments",
+        "field": "ProjectedScore",
+        "kind": "lookup",
+        "rule": "‘roster assignment’ 레코드의 ‘projected score’ 값은 연결된 ‘player’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 player 레코드의 projected score"
+      },
+      "Matchups.Name": {
+        "table": "Matchups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘matchup’ 레코드의 ‘name’ 값은 같은 레코드의 ‘matchup ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "MatchupId",
+            "label": "matchup ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Matchup ID"
+      },
+      "Matchups.Team1Score": {
+        "table": "Matchups",
+        "field": "Team1Score",
+        "kind": "lookup",
+        "rule": "‘matchup’ 레코드의 ‘team1 score’ 값은 연결된 ‘team1’ 레코드의 ‘projected score’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 team1 레코드의 projected score"
+      },
+      "Matchups.Team2Score": {
+        "table": "Matchups",
+        "field": "Team2Score",
+        "kind": "lookup",
+        "rule": "‘matchup’ 레코드의 ‘team2 score’ 값은 연결된 ‘team2’ 레코드의 ‘projected score’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 team2 레코드의 projected score"
+      },
+      "Matchups.Margin": {
+        "table": "Matchups",
+        "field": "Margin",
+        "kind": "formula",
+        "rule": "‘matchup’ 레코드의 ‘margin’ 값은 다음과 같이 계산됩니다: ‘team1 score’ 빼기 ‘team2 score’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Team1Score",
+            "label": "team1 score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2Score",
+            "label": "team2 score"
+          }
+        ],
+        "structure": null,
+        "plain": "Team1 score 빼기 team2 score"
+      },
+      "Matchups.Winner": {
+        "table": "Matchups",
+        "field": "Winner",
+        "kind": "formula",
+        "rule": "‘matchup’ 레코드의 ‘winner’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘margin’ 값이 0보다 큰 경우: ‘team1’\n2. 그 밖의 경우: ‘team2’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘matchup’ 레코드의 ‘winner’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "‘team1’",
+              "when": {
+                "kind": "leaf",
+                "text": "‘margin’ 값이 0보다 큰 경우"
+              }
+            },
+            {
+              "value": "‘team2’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(margin 값이 0보다 큼)이 성립하면 team1, 그렇지 않으면 team2"
+      },
+      "Matchups.Loser": {
+        "table": "Matchups",
+        "field": "Loser",
+        "kind": "formula",
+        "rule": "‘matchup’ 레코드의 ‘loser’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘margin’ 값이 0보다 큰 경우: ‘team2’\n2. 그 밖의 경우: ‘team1’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘matchup’ 레코드의 ‘loser’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "‘team2’",
+              "when": {
+                "kind": "leaf",
+                "text": "‘margin’ 값이 0보다 큰 경우"
+              }
+            },
+            {
+              "value": "‘team1’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(margin 값이 0보다 큼)이 성립하면 team2, 그렇지 않으면 team1"
+      },
+      "Matchups.IsTieGame": {
+        "table": "Matchups",
+        "field": "IsTieGame",
+        "kind": "formula",
+        "rule": "‘margin’ 값이 0인 경우, ‘matchup’ 레코드는 ‘tie game’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          }
+        ],
+        "structure": null,
+        "plain": "Margin 값이 0 값과 같음"
+      },
+      "Standings.Name": {
+        "table": "Standings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘standing’ 레코드의 ‘name’ 값은 연결된 ‘standing ID’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 standing ID 레코드의 name"
+      },
+      "Standings.Owner": {
+        "table": "Standings",
+        "field": "Owner",
+        "kind": "lookup",
+        "rule": "‘standing’ 레코드의 ‘owner’ 값은 연결된 ‘standing ID’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Owner",
+            "label": "owner"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 standing ID 레코드의 owner"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "DevUsers": [
+        "‘dev user’ 레코드는 ‘email’ 및 ‘role’ 값을 포함**해야 합니다**."
+      ],
+      "Players": [
+        "‘player’ 레코드는 ‘position’, ‘passing yards’, ‘passing touchdowns’, ‘interceptions’, ‘rushing yards’, ‘rushing touchdowns’, ‘receptions’, ‘received yards’ 및 ‘received touchdowns’ 값을 포함**해야 합니다**."
+      ],
+      "Rosters": [
+        "‘roster’ 레코드는 ‘owner’ 값을 포함**해야 합니다**."
+      ],
+      "RosterAssignments": [
+        "‘roster assignment’ 레코드는 ‘roster’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘roster assignment’ 레코드는 ‘player’ 레코드를 정확히 하나 참조**해야 합니다**."
+      ],
+      "Matchups": [
+        "‘matchup’ 레코드는 ‘team1’ 필드를 통해 ‘roster’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘matchup’ 레코드는 ‘team2’ 필드를 통해 ‘roster’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘matchup’ 레코드는 ‘week’ 값을 포함**해야 합니다**."
+      ],
+      "Standings": [
+        "‘standing’ 레코드는 ‘wins’, ‘losses’, ‘ties’, ‘win pct’, ‘points for’ 및 ‘points against’ 값을 포함하고, 해당 레코드가 ‘playoff bound’에 해당하는지 여부를 기록**해야 합니다**."
+      ]
+    },
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "DevUsers": "dev user",
+      "Players": "player",
+      "Rosters": "roster",
+      "RosterAssignments": "roster assignment",
+      "Matchups": "matchup",
+      "Standings": "standing"
+    }
+  },
+  "nl": {
+    "fields": {
+      "DevUsers.Name": {
+        "table": "DevUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een dev user: name is gelijk aan email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DevUsers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Players.Name": {
+        "table": "Players",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een player: name is gelijk aan player ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Player ID"
+      },
+      "Players.TotalTouchdowns": {
+        "table": "Players",
+        "field": "TotalTouchdowns",
+        "kind": "formula",
+        "rule": "Een player: total touchdowns wordt berekend als de passing touchdowns plus de rushing touchdowns plus de received touchdowns.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          }
+        ],
+        "structure": null,
+        "plain": "(passing touchdowns plus rushing touchdowns) plus received touchdowns"
+      },
+      "Players.ProjectedScore": {
+        "table": "Players",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "Een player: projected score wordt berekend als de passing yards gedeeld door 25 plus de total touchdowns maal 6 min de interceptions maal 2 afgerond op 2 decimalen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((passing yards gedeeld door 25) plus (total touchdowns maal 6)) min (interceptions maal 2)) afgerond op 2 decimalen"
+      },
+      "Rosters.Name": {
+        "table": "Rosters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een roster: name is gelijk aan roster ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster ID"
+      },
+      "Rosters.TotalPassingYards": {
+        "table": "Rosters",
+        "field": "TotalPassingYards",
+        "kind": "rollup",
+        "rule": "Een roster: total passing yards is het totaal van passing yards over de roster assignments gekoppeld aan de roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van passing yards over alle roster assignments waarvan roster is roster ID"
+      },
+      "Rosters.TotalRushingYards": {
+        "table": "Rosters",
+        "field": "TotalRushingYards",
+        "kind": "rollup",
+        "rule": "Een roster: total rushing yards is het totaal van rushing yards over de roster assignments gekoppeld aan de roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van rushing yards over alle roster assignments waarvan roster is roster ID"
+      },
+      "Rosters.TotalReceivingYards": {
+        "table": "Rosters",
+        "field": "TotalReceivingYards",
+        "kind": "rollup",
+        "rule": "Een roster: total receiving yards is het totaal van received yards over de roster assignments gekoppeld aan de roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van received yards over alle roster assignments waarvan roster is roster ID"
+      },
+      "Rosters.TotalTouchdowns": {
+        "table": "Rosters",
+        "field": "TotalTouchdowns",
+        "kind": "rollup",
+        "rule": "Een roster: total touchdowns is van total touchdowns over de roster assignments gekoppeld aan de roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van total touchdowns over alle roster assignments waarvan roster is roster ID"
+      },
+      "Rosters.TotalInterceptions": {
+        "table": "Rosters",
+        "field": "TotalInterceptions",
+        "kind": "rollup",
+        "rule": "Een roster: total interceptions is het totaal van interceptions over de roster assignments gekoppeld aan de roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van interceptions over alle roster assignments waarvan roster is roster ID"
+      },
+      "Rosters.ProjectedScore": {
+        "table": "Rosters",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "Een roster: projected score wordt berekend als de total passing yards gedeeld door 25 plus de total rushing yards gedeeld door 10 plus de total receiving yards gedeeld door 10 plus de total touchdowns maal 6 min de total interceptions maal 2 afgerond op 2 decimalen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "TotalPassingYards",
+            "label": "total passing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalRushingYards",
+            "label": "total rushing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalReceivingYards",
+            "label": "total receiving yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalInterceptions",
+            "label": "total interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((total passing yards gedeeld door 25) plus (total rushing yards gedeeld door 10)) plus (total receiving yards gedeeld door 10)) plus (total touchdowns maal 6)) min (total interceptions maal 2)) afgerond op 2 decimalen"
+      },
+      "RosterAssignments.Name": {
+        "table": "RosterAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een roster assignment: name is gelijk aan assignment ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "RosterAssignments.PlayerName": {
+        "table": "RosterAssignments",
+        "field": "PlayerName",
+        "kind": "lookup",
+        "rule": "Een roster assignment: player name — overgenomen van de gekoppelde player.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde player"
+      },
+      "RosterAssignments.Position": {
+        "table": "RosterAssignments",
+        "field": "Position",
+        "kind": "lookup",
+        "rule": "Een roster assignment: position — overgenomen van de gekoppelde player.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Position",
+            "label": "position"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De position van de gekoppelde player"
+      },
+      "RosterAssignments.PassingYards": {
+        "table": "RosterAssignments",
+        "field": "PassingYards",
+        "kind": "lookup",
+        "rule": "Een roster assignment: passing yards — overgenomen van de gekoppelde player.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De passing yards van de gekoppelde player"
+      },
+      "RosterAssignments.PassingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "PassingTouchdowns",
+        "kind": "lookup",
+        "rule": "Een roster assignment: passing touchdowns — overgenomen van de gekoppelde player.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De passing touchdowns van de gekoppelde player"
+      },
+      "RosterAssignments.Interceptions": {
+        "table": "RosterAssignments",
+        "field": "Interceptions",
+        "kind": "lookup",
+        "rule": "Een roster assignment: interceptions — overgenomen van de gekoppelde player.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De interceptions van de gekoppelde player"
+      },
+      "RosterAssignments.RushingYards": {
+        "table": "RosterAssignments",
+        "field": "RushingYards",
+        "kind": "lookup",
+        "rule": "Een roster assignment: rushing yards — overgenomen van de gekoppelde player.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De rushing yards van de gekoppelde player"
+      },
+      "RosterAssignments.RushingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "RushingTouchdowns",
+        "kind": "lookup",
+        "rule": "Een roster assignment: rushing touchdowns — overgenomen van de gekoppelde player.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De rushing touchdowns van de gekoppelde player"
+      },
+      "RosterAssignments.Receptions": {
+        "table": "RosterAssignments",
+        "field": "Receptions",
+        "kind": "lookup",
+        "rule": "Een roster assignment: receptions — overgenomen van de gekoppelde player.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Receptions",
+            "label": "receptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De receptions van de gekoppelde player"
+      },
+      "RosterAssignments.ReceivedYards": {
+        "table": "RosterAssignments",
+        "field": "ReceivedYards",
+        "kind": "lookup",
+        "rule": "Een roster assignment: received yards — overgenomen van de gekoppelde player.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De received yards van de gekoppelde player"
+      },
+      "RosterAssignments.ReceivedTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "ReceivedTouchdowns",
+        "kind": "lookup",
+        "rule": "Een roster assignment: received touchdowns — overgenomen van de gekoppelde player.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De received touchdowns van de gekoppelde player"
+      },
+      "RosterAssignments.TotalTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "TotalTouchdowns",
+        "kind": "lookup",
+        "rule": "Een roster assignment: total touchdowns — overgenomen van de gekoppelde player.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De total touchdowns van de gekoppelde player"
+      },
+      "RosterAssignments.ProjectedScore": {
+        "table": "RosterAssignments",
+        "field": "ProjectedScore",
+        "kind": "lookup",
+        "rule": "Een roster assignment: projected score — overgenomen van de gekoppelde player.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De projected score van de gekoppelde player"
+      },
+      "Matchups.Name": {
+        "table": "Matchups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een matchup: name is gelijk aan matchup ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "MatchupId",
+            "label": "matchup ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Matchup ID"
+      },
+      "Matchups.Team1Score": {
+        "table": "Matchups",
+        "field": "Team1Score",
+        "kind": "lookup",
+        "rule": "Een matchup: team1 score is de projected score van de gekoppelde team1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De projected score van de gekoppelde team1"
+      },
+      "Matchups.Team2Score": {
+        "table": "Matchups",
+        "field": "Team2Score",
+        "kind": "lookup",
+        "rule": "Een matchup: team2 score is de projected score van de gekoppelde team2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De projected score van de gekoppelde team2"
+      },
+      "Matchups.Margin": {
+        "table": "Matchups",
+        "field": "Margin",
+        "kind": "formula",
+        "rule": "Een matchup: margin wordt berekend als de team1 score min de team2 score.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Team1Score",
+            "label": "team1 score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2Score",
+            "label": "team2 score"
+          }
+        ],
+        "structure": null,
+        "plain": "Team1 score min team2 score"
+      },
+      "Matchups.Winner": {
+        "table": "Matchups",
+        "field": "Winner",
+        "kind": "formula",
+        "rule": "Het veld ‘winner’ van de matchup wordt bepaald volgens de volgende prioriteit:\n1. de team1, als de margin groter is dan 0;\n2. in alle andere gevallen de team2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘winner’ van de matchup wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "de team1",
+              "when": {
+                "kind": "leaf",
+                "text": "de margin groter is dan 0"
+              }
+            },
+            {
+              "value": "de team2",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als margin is groter dan 0, dan team1, anders team2"
+      },
+      "Matchups.Loser": {
+        "table": "Matchups",
+        "field": "Loser",
+        "kind": "formula",
+        "rule": "Het veld ‘loser’ van de matchup wordt bepaald volgens de volgende prioriteit:\n1. de team2, als de margin groter is dan 0;\n2. in alle andere gevallen de team1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘loser’ van de matchup wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "de team2",
+              "when": {
+                "kind": "leaf",
+                "text": "de margin groter is dan 0"
+              }
+            },
+            {
+              "value": "de team1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als margin is groter dan 0, dan team2, anders team1"
+      },
+      "Matchups.IsTieGame": {
+        "table": "Matchups",
+        "field": "IsTieGame",
+        "kind": "formula",
+        "rule": "Een matchup geldt als een tie game als de margin 0 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          }
+        ],
+        "structure": null,
+        "plain": "Margin is gelijk aan 0"
+      },
+      "Standings.Name": {
+        "table": "Standings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een standing: name — overgenomen van de gekoppelde standing ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde standing ID"
+      },
+      "Standings.Owner": {
+        "table": "Standings",
+        "field": "Owner",
+        "kind": "lookup",
+        "rule": "Een standing: owner — overgenomen van de gekoppelde standing ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Owner",
+            "label": "owner"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De owner van de gekoppelde standing ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "DevUsers": [
+        "Een dev user **moet** een email en een role hebben."
+      ],
+      "Players": [
+        "Een player **moet** een position; een passing yards; een passing touchdowns; een interceptions; een rushing yards; een rushing touchdowns; een receptions; een received yards; en een received touchdowns hebben."
+      ],
+      "Rosters": [
+        "Een roster **moet** een owner hebben."
+      ],
+      "RosterAssignments": [
+        "Een roster assignment **moet** naar precies één roster verwijzen.",
+        "Een roster assignment **moet** naar precies één player verwijzen."
+      ],
+      "Matchups": [
+        "Een matchup **moet** naar precies één roster verwijzen als zijn team1.",
+        "Een matchup **moet** naar precies één roster verwijzen als zijn team2.",
+        "Een matchup **moet** een week hebben."
+      ],
+      "Standings": [
+        "Een standing **moet** een wins; een losses; een ties; een win pct; een points for; en een points against hebben, en vastleggen of het is playoff bound."
+      ]
+    },
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "DevUsers": "dev user",
+      "Players": "player",
+      "Rosters": "roster",
+      "RosterAssignments": "roster assignment",
+      "Matchups": "matchup",
+      "Standings": "standing"
+    }
+  },
+  "pt": {
+    "fields": {
+      "DevUsers.Name": {
+        "table": "DevUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um dev user: name é igual a email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DevUsers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Players.Name": {
+        "table": "Players",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um player: name é igual a player ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Player ID"
+      },
+      "Players.TotalTouchdowns": {
+        "table": "Players",
+        "field": "TotalTouchdowns",
+        "kind": "formula",
+        "rule": "Um player: total touchdowns é calculado como o passing touchdowns mais o rushing touchdowns mais o received touchdowns.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          }
+        ],
+        "structure": null,
+        "plain": "(passing touchdowns mais rushing touchdowns) mais received touchdowns"
+      },
+      "Players.ProjectedScore": {
+        "table": "Players",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "Um player: projected score é calculado como o passing yards dividido por 25 mais o total touchdowns vezes 6 menos o interceptions vezes 2 arredondado para 2 casa(s) decimal(is).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((passing yards dividido por 25) mais (total touchdowns vezes 6)) menos (interceptions vezes 2)) arredondado para 2 casas decimais"
+      },
+      "Rosters.Name": {
+        "table": "Rosters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um roster: name é igual a roster ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster ID"
+      },
+      "Rosters.TotalPassingYards": {
+        "table": "Rosters",
+        "field": "TotalPassingYards",
+        "kind": "rollup",
+        "rule": "Um roster: total passing yards é o total de passing yards entre os roster assignments relacionados a o roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de passing yards entre todos os roster assignments cujo roster é roster ID"
+      },
+      "Rosters.TotalRushingYards": {
+        "table": "Rosters",
+        "field": "TotalRushingYards",
+        "kind": "rollup",
+        "rule": "Um roster: total rushing yards é o total de rushing yards entre os roster assignments relacionados a o roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de rushing yards entre todos os roster assignments cujo roster é roster ID"
+      },
+      "Rosters.TotalReceivingYards": {
+        "table": "Rosters",
+        "field": "TotalReceivingYards",
+        "kind": "rollup",
+        "rule": "Um roster: total receiving yards é o total de received yards entre os roster assignments relacionados a o roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de received yards entre todos os roster assignments cujo roster é roster ID"
+      },
+      "Rosters.TotalTouchdowns": {
+        "table": "Rosters",
+        "field": "TotalTouchdowns",
+        "kind": "rollup",
+        "rule": "Um roster: total touchdowns é de total touchdowns entre os roster assignments relacionados a o roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de total touchdowns entre todos os roster assignments cujo roster é roster ID"
+      },
+      "Rosters.TotalInterceptions": {
+        "table": "Rosters",
+        "field": "TotalInterceptions",
+        "kind": "rollup",
+        "rule": "Um roster: total interceptions é o total de interceptions entre os roster assignments relacionados a o roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de interceptions entre todos os roster assignments cujo roster é roster ID"
+      },
+      "Rosters.ProjectedScore": {
+        "table": "Rosters",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "Um roster: projected score é calculado como o total passing yards dividido por 25 mais o total rushing yards dividido por 10 mais o total receiving yards dividido por 10 mais o total touchdowns vezes 6 menos o total interceptions vezes 2 arredondado para 2 casa(s) decimal(is).",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "TotalPassingYards",
+            "label": "total passing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalRushingYards",
+            "label": "total rushing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalReceivingYards",
+            "label": "total receiving yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalInterceptions",
+            "label": "total interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((total passing yards dividido por 25) mais (total rushing yards dividido por 10)) mais (total receiving yards dividido por 10)) mais (total touchdowns vezes 6)) menos (total interceptions vezes 2)) arredondado para 2 casas decimais"
+      },
+      "RosterAssignments.Name": {
+        "table": "RosterAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um roster assignment: name é igual a assignment ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "RosterAssignments.PlayerName": {
+        "table": "RosterAssignments",
+        "field": "PlayerName",
+        "kind": "lookup",
+        "rule": "Um roster assignment: player name — obtido do player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do player vinculado"
+      },
+      "RosterAssignments.Position": {
+        "table": "RosterAssignments",
+        "field": "Position",
+        "kind": "lookup",
+        "rule": "Um roster assignment: position — obtido do player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Position",
+            "label": "position"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O position do player vinculado"
+      },
+      "RosterAssignments.PassingYards": {
+        "table": "RosterAssignments",
+        "field": "PassingYards",
+        "kind": "lookup",
+        "rule": "Um roster assignment: passing yards — obtido do player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O passing yards do player vinculado"
+      },
+      "RosterAssignments.PassingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "PassingTouchdowns",
+        "kind": "lookup",
+        "rule": "Um roster assignment: passing touchdowns — obtido do player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O passing touchdowns do player vinculado"
+      },
+      "RosterAssignments.Interceptions": {
+        "table": "RosterAssignments",
+        "field": "Interceptions",
+        "kind": "lookup",
+        "rule": "Um roster assignment: interceptions — obtido do player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O interceptions do player vinculado"
+      },
+      "RosterAssignments.RushingYards": {
+        "table": "RosterAssignments",
+        "field": "RushingYards",
+        "kind": "lookup",
+        "rule": "Um roster assignment: rushing yards — obtido do player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O rushing yards do player vinculado"
+      },
+      "RosterAssignments.RushingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "RushingTouchdowns",
+        "kind": "lookup",
+        "rule": "Um roster assignment: rushing touchdowns — obtido do player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O rushing touchdowns do player vinculado"
+      },
+      "RosterAssignments.Receptions": {
+        "table": "RosterAssignments",
+        "field": "Receptions",
+        "kind": "lookup",
+        "rule": "Um roster assignment: receptions — obtido do player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Receptions",
+            "label": "receptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O receptions do player vinculado"
+      },
+      "RosterAssignments.ReceivedYards": {
+        "table": "RosterAssignments",
+        "field": "ReceivedYards",
+        "kind": "lookup",
+        "rule": "Um roster assignment: received yards — obtido do player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O received yards do player vinculado"
+      },
+      "RosterAssignments.ReceivedTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "ReceivedTouchdowns",
+        "kind": "lookup",
+        "rule": "Um roster assignment: received touchdowns — obtido do player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O received touchdowns do player vinculado"
+      },
+      "RosterAssignments.TotalTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "TotalTouchdowns",
+        "kind": "lookup",
+        "rule": "Um roster assignment: total touchdowns — obtido do player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O total touchdowns do player vinculado"
+      },
+      "RosterAssignments.ProjectedScore": {
+        "table": "RosterAssignments",
+        "field": "ProjectedScore",
+        "kind": "lookup",
+        "rule": "Um roster assignment: projected score — obtido do player vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O projected score do player vinculado"
+      },
+      "Matchups.Name": {
+        "table": "Matchups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um matchup: name é igual a matchup ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "MatchupId",
+            "label": "matchup ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Matchup ID"
+      },
+      "Matchups.Team1Score": {
+        "table": "Matchups",
+        "field": "Team1Score",
+        "kind": "lookup",
+        "rule": "Um matchup: team1 score é o projected score do team1 vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O projected score do team1 vinculado"
+      },
+      "Matchups.Team2Score": {
+        "table": "Matchups",
+        "field": "Team2Score",
+        "kind": "lookup",
+        "rule": "Um matchup: team2 score é o projected score do team2 vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O projected score do team2 vinculado"
+      },
+      "Matchups.Margin": {
+        "table": "Matchups",
+        "field": "Margin",
+        "kind": "formula",
+        "rule": "Um matchup: margin é calculado como o team1 score menos o team2 score.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Team1Score",
+            "label": "team1 score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2Score",
+            "label": "team2 score"
+          }
+        ],
+        "structure": null,
+        "plain": "Team1 score menos team2 score"
+      },
+      "Matchups.Winner": {
+        "table": "Matchups",
+        "field": "Winner",
+        "kind": "formula",
+        "rule": "O campo “winner” do matchup é determinado pela seguinte prioridade:\n1. o team1, se o margin é maior que 0;\n2. em todos os outros casos, o team2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “winner” do matchup é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "o team1",
+              "when": {
+                "kind": "leaf",
+                "text": "o margin é maior que 0"
+              }
+            },
+            {
+              "value": "o team2",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se margin é maior que 0, então team1, caso contrário team2"
+      },
+      "Matchups.Loser": {
+        "table": "Matchups",
+        "field": "Loser",
+        "kind": "formula",
+        "rule": "O campo “loser” do matchup é determinado pela seguinte prioridade:\n1. o team2, se o margin é maior que 0;\n2. em todos os outros casos, o team1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “loser” do matchup é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "o team2",
+              "when": {
+                "kind": "leaf",
+                "text": "o margin é maior que 0"
+              }
+            },
+            {
+              "value": "o team1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se margin é maior que 0, então team2, caso contrário team1"
+      },
+      "Matchups.IsTieGame": {
+        "table": "Matchups",
+        "field": "IsTieGame",
+        "kind": "formula",
+        "rule": "Um matchup é considerado um tie game se o margin é 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          }
+        ],
+        "structure": null,
+        "plain": "Margin é igual a 0"
+      },
+      "Standings.Name": {
+        "table": "Standings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um standing: name — obtido do standing ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do standing ID vinculado"
+      },
+      "Standings.Owner": {
+        "table": "Standings",
+        "field": "Owner",
+        "kind": "lookup",
+        "rule": "Um standing: owner — obtido do standing ID vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Owner",
+            "label": "owner"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O owner do standing ID vinculado"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "DevUsers": [
+        "Um dev user **deve** ter um email e um role."
+      ],
+      "Players": [
+        "Um player **deve** ter um position; um passing yards; um passing touchdowns; um interceptions; um rushing yards; um rushing touchdowns; um receptions; um received yards; e um received touchdowns."
+      ],
+      "Rosters": [
+        "Um roster **deve** ter um owner."
+      ],
+      "RosterAssignments": [
+        "Um roster assignment **deve** referenciar exatamente um roster.",
+        "Um roster assignment **deve** referenciar exatamente um player."
+      ],
+      "Matchups": [
+        "Um matchup **deve** referenciar exatamente um roster como seu team1.",
+        "Um matchup **deve** referenciar exatamente um roster como seu team2.",
+        "Um matchup **deve** ter um week."
+      ],
+      "Standings": [
+        "Um standing **deve** ter um wins; um losses; um ties; um win pct; um points for; e um points against, e registrar se é playoff bound."
+      ]
+    },
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "DevUsers": "dev user",
+      "Players": "player",
+      "Rosters": "roster",
+      "RosterAssignments": "roster assignment",
+      "Matchups": "matchup",
+      "Standings": "standing"
+    }
+  },
+  "ru": {
+    "fields": {
+      "DevUsers.Name": {
+        "table": "DevUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Dev user: «name» совпадает с email.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DevUsers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Players.Name": {
+        "table": "Players",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Player: «name» совпадает с player ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Player ID"
+      },
+      "Players.TotalTouchdowns": {
+        "table": "Players",
+        "field": "TotalTouchdowns",
+        "kind": "formula",
+        "rule": "Player: «total touchdowns» вычисляется как passing touchdowns плюс rushing touchdowns плюс received touchdowns.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          }
+        ],
+        "structure": null,
+        "plain": "(passing touchdowns плюс rushing touchdowns) плюс received touchdowns"
+      },
+      "Players.ProjectedScore": {
+        "table": "Players",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "Player: «projected score» вычисляется как passing yards разделить на 25 плюс total touchdowns умножить на 6 минус interceptions умножить на 2, округлённое до 2 знаков после запятой.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((passing yards разделить на 25) плюс (total touchdowns умножить на 6)) минус (interceptions умножить на 2)), округлённое до 2 знаков"
+      },
+      "Rosters.Name": {
+        "table": "Rosters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Roster: «name» совпадает с roster ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster ID"
+      },
+      "Rosters.TotalPassingYards": {
+        "table": "Rosters",
+        "field": "TotalPassingYards",
+        "kind": "rollup",
+        "rule": "Roster: «total passing yards» — это сумма «passing yards» по записям «roster assignments», связанным с roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма passing yards по всем «roster assignments», у которых roster равно roster ID"
+      },
+      "Rosters.TotalRushingYards": {
+        "table": "Rosters",
+        "field": "TotalRushingYards",
+        "kind": "rollup",
+        "rule": "Roster: «total rushing yards» — это сумма «rushing yards» по записям «roster assignments», связанным с roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма rushing yards по всем «roster assignments», у которых roster равно roster ID"
+      },
+      "Rosters.TotalReceivingYards": {
+        "table": "Rosters",
+        "field": "TotalReceivingYards",
+        "kind": "rollup",
+        "rule": "Roster: «total receiving yards» — это сумма «received yards» по записям «roster assignments», связанным с roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма received yards по всем «roster assignments», у которых roster равно roster ID"
+      },
+      "Rosters.TotalTouchdowns": {
+        "table": "Rosters",
+        "field": "TotalTouchdowns",
+        "kind": "rollup",
+        "rule": "Roster: «total touchdowns» — это «total touchdowns» по записям «roster assignments», связанным с roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма total touchdowns по всем «roster assignments», у которых roster равно roster ID"
+      },
+      "Rosters.TotalInterceptions": {
+        "table": "Rosters",
+        "field": "TotalInterceptions",
+        "kind": "rollup",
+        "rule": "Roster: «total interceptions» — это сумма «interceptions» по записям «roster assignments», связанным с roster.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма interceptions по всем «roster assignments», у которых roster равно roster ID"
+      },
+      "Rosters.ProjectedScore": {
+        "table": "Rosters",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "Roster: «projected score» вычисляется как total passing yards разделить на 25 плюс total rushing yards разделить на 10 плюс total receiving yards разделить на 10 плюс total touchdowns умножить на 6 минус total interceptions умножить на 2, округлённое до 2 знаков после запятой.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "TotalPassingYards",
+            "label": "total passing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalRushingYards",
+            "label": "total rushing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalReceivingYards",
+            "label": "total receiving yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalInterceptions",
+            "label": "total interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((total passing yards разделить на 25) плюс (total rushing yards разделить на 10)) плюс (total receiving yards разделить на 10)) плюс (total touchdowns умножить на 6)) минус (total interceptions умножить на 2)), округлённое до 2 знаков"
+      },
+      "RosterAssignments.Name": {
+        "table": "RosterAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Roster assignment: «name» совпадает с assignment ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "RosterAssignments.PlayerName": {
+        "table": "RosterAssignments",
+        "field": "PlayerName",
+        "kind": "lookup",
+        "rule": "Roster assignment: «player name» — берётся из связанного «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «player»"
+      },
+      "RosterAssignments.Position": {
+        "table": "RosterAssignments",
+        "field": "Position",
+        "kind": "lookup",
+        "rule": "Roster assignment: «position» — берётся из связанного «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Position",
+            "label": "position"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Position связанного «player»"
+      },
+      "RosterAssignments.PassingYards": {
+        "table": "RosterAssignments",
+        "field": "PassingYards",
+        "kind": "lookup",
+        "rule": "Roster assignment: «passing yards» — берётся из связанного «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Passing yards связанного «player»"
+      },
+      "RosterAssignments.PassingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "PassingTouchdowns",
+        "kind": "lookup",
+        "rule": "Roster assignment: «passing touchdowns» — берётся из связанного «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Passing touchdowns связанного «player»"
+      },
+      "RosterAssignments.Interceptions": {
+        "table": "RosterAssignments",
+        "field": "Interceptions",
+        "kind": "lookup",
+        "rule": "Roster assignment: «interceptions» — берётся из связанного «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Interceptions связанного «player»"
+      },
+      "RosterAssignments.RushingYards": {
+        "table": "RosterAssignments",
+        "field": "RushingYards",
+        "kind": "lookup",
+        "rule": "Roster assignment: «rushing yards» — берётся из связанного «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rushing yards связанного «player»"
+      },
+      "RosterAssignments.RushingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "RushingTouchdowns",
+        "kind": "lookup",
+        "rule": "Roster assignment: «rushing touchdowns» — берётся из связанного «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rushing touchdowns связанного «player»"
+      },
+      "RosterAssignments.Receptions": {
+        "table": "RosterAssignments",
+        "field": "Receptions",
+        "kind": "lookup",
+        "rule": "Roster assignment: «receptions» — берётся из связанного «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Receptions",
+            "label": "receptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Receptions связанного «player»"
+      },
+      "RosterAssignments.ReceivedYards": {
+        "table": "RosterAssignments",
+        "field": "ReceivedYards",
+        "kind": "lookup",
+        "rule": "Roster assignment: «received yards» — берётся из связанного «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Received yards связанного «player»"
+      },
+      "RosterAssignments.ReceivedTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "ReceivedTouchdowns",
+        "kind": "lookup",
+        "rule": "Roster assignment: «received touchdowns» — берётся из связанного «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Received touchdowns связанного «player»"
+      },
+      "RosterAssignments.TotalTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "TotalTouchdowns",
+        "kind": "lookup",
+        "rule": "Roster assignment: «total touchdowns» — берётся из связанного «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total touchdowns связанного «player»"
+      },
+      "RosterAssignments.ProjectedScore": {
+        "table": "RosterAssignments",
+        "field": "ProjectedScore",
+        "kind": "lookup",
+        "rule": "Roster assignment: «projected score» — берётся из связанного «player».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Projected score связанного «player»"
+      },
+      "Matchups.Name": {
+        "table": "Matchups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Matchup: «name» совпадает с matchup ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "MatchupId",
+            "label": "matchup ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Matchup ID"
+      },
+      "Matchups.Team1Score": {
+        "table": "Matchups",
+        "field": "Team1Score",
+        "kind": "lookup",
+        "rule": "Matchup: «team1 score» — это «projected score» связанного «team1».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Projected score связанного «team1»"
+      },
+      "Matchups.Team2Score": {
+        "table": "Matchups",
+        "field": "Team2Score",
+        "kind": "lookup",
+        "rule": "Matchup: «team2 score» — это «projected score» связанного «team2».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Projected score связанного «team2»"
+      },
+      "Matchups.Margin": {
+        "table": "Matchups",
+        "field": "Margin",
+        "kind": "formula",
+        "rule": "Matchup: «margin» вычисляется как team1 score минус team2 score.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Team1Score",
+            "label": "team1 score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2Score",
+            "label": "team2 score"
+          }
+        ],
+        "structure": null,
+        "plain": "Team1 score минус team2 score"
+      },
+      "Matchups.Winner": {
+        "table": "Matchups",
+        "field": "Winner",
+        "kind": "formula",
+        "rule": "Поле «winner» (Matchup) определяется по следующему приоритету:\n1. team1, если margin больше 0;\n2. во всех остальных случаях — team2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «winner» (Matchup) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "team1",
+              "when": {
+                "kind": "leaf",
+                "text": "margin больше 0"
+              }
+            },
+            {
+              "value": "team2",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если margin больше 0, то team1, иначе team2"
+      },
+      "Matchups.Loser": {
+        "table": "Matchups",
+        "field": "Loser",
+        "kind": "formula",
+        "rule": "Поле «loser» (Matchup) определяется по следующему приоритету:\n1. team2, если margin больше 0;\n2. во всех остальных случаях — team1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «loser» (Matchup) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "team2",
+              "when": {
+                "kind": "leaf",
+                "text": "margin больше 0"
+              }
+            },
+            {
+              "value": "team1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если margin больше 0, то team2, иначе team1"
+      },
+      "Matchups.IsTieGame": {
+        "table": "Matchups",
+        "field": "IsTieGame",
+        "kind": "formula",
+        "rule": "Matchup считается «tie game», если margin равно 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          }
+        ],
+        "structure": null,
+        "plain": "Margin равно 0"
+      },
+      "Standings.Name": {
+        "table": "Standings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Standing: «name» — берётся из связанного «standing ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «standing ID»"
+      },
+      "Standings.Owner": {
+        "table": "Standings",
+        "field": "Owner",
+        "kind": "lookup",
+        "rule": "Standing: «owner» — берётся из связанного «standing ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Owner",
+            "label": "owner"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Owner связанного «standing ID»"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "DevUsers": [
+        "Dev user **обязан** иметь email и role."
+      ],
+      "Players": [
+        "Player **обязан** иметь position; passing yards; passing touchdowns; interceptions; rushing yards; rushing touchdowns; receptions; received yards; и received touchdowns."
+      ],
+      "Rosters": [
+        "Roster **обязан** иметь owner."
+      ],
+      "RosterAssignments": [
+        "Roster assignment **обязан** ссылаться ровно на один «roster».",
+        "Roster assignment **обязан** ссылаться ровно на один «player»."
+      ],
+      "Matchups": [
+        "Matchup **обязан** ссылаться ровно на один «roster» в роли «team1».",
+        "Matchup **обязан** ссылаться ровно на один «roster» в роли «team2».",
+        "Matchup **обязан** иметь week."
+      ],
+      "Standings": [
+        "Standing **обязан** иметь wins; losses; ties; win pct; points for; и points against, а также фиксировать то, он является «playoff bound» ли."
+      ]
+    },
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "DevUsers": "dev user",
+      "Players": "player",
+      "Rosters": "roster",
+      "RosterAssignments": "roster assignment",
+      "Matchups": "matchup",
+      "Standings": "standing"
+    }
+  },
+  "tr": {
+    "fields": {
+      "DevUsers.Name": {
+        "table": "DevUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“dev user” kaydının “name” alanı, “email” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DevUsers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Players.Name": {
+        "table": "Players",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“player” kaydının “name” alanı, “player ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Player ID"
+      },
+      "Players.TotalTouchdowns": {
+        "table": "Players",
+        "field": "TotalTouchdowns",
+        "kind": "formula",
+        "rule": "“player” kaydının “total touchdowns” alanı, “passing touchdowns” alanı artı “rushing touchdowns” alanı artı “received touchdowns” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          }
+        ],
+        "structure": null,
+        "plain": "(passing touchdowns artı rushing touchdowns) artı received touchdowns"
+      },
+      "Players.ProjectedScore": {
+        "table": "Players",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "“player” kaydının “projected score” alanı, 2 ondalık basamağa yuvarlanmış “passing yards” alanı bölü 25 artı “total touchdowns” alanı çarpı 6 eksi “interceptions” alanı çarpı 2 olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "2 ondalık basamağa yuvarlanmış (((passing yards bölü 25) artı (total touchdowns çarpı 6)) eksi (interceptions çarpı 2))"
+      },
+      "Rosters.Name": {
+        "table": "Rosters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“roster” kaydının “name” alanı, “roster ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster ID"
+      },
+      "Rosters.TotalPassingYards": {
+        "table": "Rosters",
+        "field": "TotalPassingYards",
+        "kind": "rollup",
+        "rule": "“roster” kaydının “total passing yards” alanı, “roster” kaydıyla ilişkili “roster assignments” kayıtları üzerinden hesaplanan toplam “passing yards” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster değeri roster ID olan tüm roster assignments kayıtlarındaki passing yards değerlerinin toplamı"
+      },
+      "Rosters.TotalRushingYards": {
+        "table": "Rosters",
+        "field": "TotalRushingYards",
+        "kind": "rollup",
+        "rule": "“roster” kaydının “total rushing yards” alanı, “roster” kaydıyla ilişkili “roster assignments” kayıtları üzerinden hesaplanan toplam “rushing yards” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster değeri roster ID olan tüm roster assignments kayıtlarındaki rushing yards değerlerinin toplamı"
+      },
+      "Rosters.TotalReceivingYards": {
+        "table": "Rosters",
+        "field": "TotalReceivingYards",
+        "kind": "rollup",
+        "rule": "“roster” kaydının “total receiving yards” alanı, “roster” kaydıyla ilişkili “roster assignments” kayıtları üzerinden hesaplanan toplam “received yards” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster değeri roster ID olan tüm roster assignments kayıtlarındaki received yards değerlerinin toplamı"
+      },
+      "Rosters.TotalTouchdowns": {
+        "table": "Rosters",
+        "field": "TotalTouchdowns",
+        "kind": "rollup",
+        "rule": "“roster” kaydının “total touchdowns” alanı, “roster” kaydıyla ilişkili “roster assignments” kayıtları üzerinden hesaplanan “total touchdowns” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster değeri roster ID olan tüm roster assignments kayıtlarındaki total touchdowns değerlerinin toplamı"
+      },
+      "Rosters.TotalInterceptions": {
+        "table": "Rosters",
+        "field": "TotalInterceptions",
+        "kind": "rollup",
+        "rule": "“roster” kaydının “total interceptions” alanı, “roster” kaydıyla ilişkili “roster assignments” kayıtları üzerinden hesaplanan toplam “interceptions” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster değeri roster ID olan tüm roster assignments kayıtlarındaki interceptions değerlerinin toplamı"
+      },
+      "Rosters.ProjectedScore": {
+        "table": "Rosters",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "“roster” kaydının “projected score” alanı, 2 ondalık basamağa yuvarlanmış “total passing yards” alanı bölü 25 artı “total rushing yards” alanı bölü 10 artı “total receiving yards” alanı bölü 10 artı “total touchdowns” alanı çarpı 6 eksi “total interceptions” alanı çarpı 2 olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "TotalPassingYards",
+            "label": "total passing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalRushingYards",
+            "label": "total rushing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalReceivingYards",
+            "label": "total receiving yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalInterceptions",
+            "label": "total interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "2 ondalık basamağa yuvarlanmış (((((total passing yards bölü 25) artı (total rushing yards bölü 10)) artı (total receiving yards bölü 10)) artı (total touchdowns çarpı 6)) eksi (total interceptions çarpı 2))"
+      },
+      "RosterAssignments.Name": {
+        "table": "RosterAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“roster assignment” kaydının “name” alanı, “assignment ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "RosterAssignments.PlayerName": {
+        "table": "RosterAssignments",
+        "field": "PlayerName",
+        "kind": "lookup",
+        "rule": "“roster assignment” kaydının “player name” alanı, “player” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı player kaydının name değeri"
+      },
+      "RosterAssignments.Position": {
+        "table": "RosterAssignments",
+        "field": "Position",
+        "kind": "lookup",
+        "rule": "“roster assignment” kaydının “position” alanı, “player” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Position",
+            "label": "position"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı player kaydının position değeri"
+      },
+      "RosterAssignments.PassingYards": {
+        "table": "RosterAssignments",
+        "field": "PassingYards",
+        "kind": "lookup",
+        "rule": "“roster assignment” kaydının “passing yards” alanı, “player” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı player kaydının passing yards değeri"
+      },
+      "RosterAssignments.PassingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "PassingTouchdowns",
+        "kind": "lookup",
+        "rule": "“roster assignment” kaydının “passing touchdowns” alanı, “player” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı player kaydının passing touchdowns değeri"
+      },
+      "RosterAssignments.Interceptions": {
+        "table": "RosterAssignments",
+        "field": "Interceptions",
+        "kind": "lookup",
+        "rule": "“roster assignment” kaydının “interceptions” alanı, “player” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı player kaydının interceptions değeri"
+      },
+      "RosterAssignments.RushingYards": {
+        "table": "RosterAssignments",
+        "field": "RushingYards",
+        "kind": "lookup",
+        "rule": "“roster assignment” kaydının “rushing yards” alanı, “player” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı player kaydının rushing yards değeri"
+      },
+      "RosterAssignments.RushingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "RushingTouchdowns",
+        "kind": "lookup",
+        "rule": "“roster assignment” kaydının “rushing touchdowns” alanı, “player” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı player kaydının rushing touchdowns değeri"
+      },
+      "RosterAssignments.Receptions": {
+        "table": "RosterAssignments",
+        "field": "Receptions",
+        "kind": "lookup",
+        "rule": "“roster assignment” kaydının “receptions” alanı, “player” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Receptions",
+            "label": "receptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı player kaydının receptions değeri"
+      },
+      "RosterAssignments.ReceivedYards": {
+        "table": "RosterAssignments",
+        "field": "ReceivedYards",
+        "kind": "lookup",
+        "rule": "“roster assignment” kaydının “received yards” alanı, “player” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı player kaydının received yards değeri"
+      },
+      "RosterAssignments.ReceivedTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "ReceivedTouchdowns",
+        "kind": "lookup",
+        "rule": "“roster assignment” kaydının “received touchdowns” alanı, “player” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı player kaydının received touchdowns değeri"
+      },
+      "RosterAssignments.TotalTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "TotalTouchdowns",
+        "kind": "lookup",
+        "rule": "“roster assignment” kaydının “total touchdowns” alanı, “player” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı player kaydının total touchdowns değeri"
+      },
+      "RosterAssignments.ProjectedScore": {
+        "table": "RosterAssignments",
+        "field": "ProjectedScore",
+        "kind": "lookup",
+        "rule": "“roster assignment” kaydının “projected score” alanı, “player” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı player kaydının projected score değeri"
+      },
+      "Matchups.Name": {
+        "table": "Matchups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“matchup” kaydının “name” alanı, “matchup ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "MatchupId",
+            "label": "matchup ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Matchup ID"
+      },
+      "Matchups.Team1Score": {
+        "table": "Matchups",
+        "field": "Team1Score",
+        "kind": "lookup",
+        "rule": "“matchup” kaydının “team1 score” alanı, “team1” alanı üzerinden bağlı kaydın “projected score” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı team1 kaydının projected score değeri"
+      },
+      "Matchups.Team2Score": {
+        "table": "Matchups",
+        "field": "Team2Score",
+        "kind": "lookup",
+        "rule": "“matchup” kaydının “team2 score” alanı, “team2” alanı üzerinden bağlı kaydın “projected score” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı team2 kaydının projected score değeri"
+      },
+      "Matchups.Margin": {
+        "table": "Matchups",
+        "field": "Margin",
+        "kind": "formula",
+        "rule": "“matchup” kaydının “margin” alanı, “team1 score” alanı eksi “team2 score” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Team1Score",
+            "label": "team1 score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2Score",
+            "label": "team2 score"
+          }
+        ],
+        "structure": null,
+        "plain": "Team1 score eksi team2 score"
+      },
+      "Matchups.Winner": {
+        "table": "Matchups",
+        "field": "Winner",
+        "kind": "formula",
+        "rule": "“matchup” kaydının “winner” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “margin” alanı 0 değerinden büyük ise “team1” alanı;\n2. diğer tüm durumlarda “team2” alanı.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“matchup” kaydının “winner” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“team1” alanı",
+              "when": {
+                "kind": "leaf",
+                "text": "“margin” alanı 0 değerinden büyük"
+              }
+            },
+            {
+              "value": "“team2” alanı",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Margin, 0 değerinden büyük ise team1, aksi takdirde team2"
+      },
+      "Matchups.Loser": {
+        "table": "Matchups",
+        "field": "Loser",
+        "kind": "formula",
+        "rule": "“matchup” kaydının “loser” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “margin” alanı 0 değerinden büyük ise “team2” alanı;\n2. diğer tüm durumlarda “team1” alanı.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“matchup” kaydının “loser” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“team2” alanı",
+              "when": {
+                "kind": "leaf",
+                "text": "“margin” alanı 0 değerinden büyük"
+              }
+            },
+            {
+              "value": "“team1” alanı",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Margin, 0 değerinden büyük ise team2, aksi takdirde team1"
+      },
+      "Matchups.IsTieGame": {
+        "table": "Matchups",
+        "field": "IsTieGame",
+        "kind": "formula",
+        "rule": "“matchup” kaydı, “margin” alanı 0 değerine eşit ise “tie game” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          }
+        ],
+        "structure": null,
+        "plain": "Margin, 0 değerine eşit"
+      },
+      "Standings.Name": {
+        "table": "Standings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“standing” kaydının “name” alanı, “standing ID” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı standing ID kaydının name değeri"
+      },
+      "Standings.Owner": {
+        "table": "Standings",
+        "field": "Owner",
+        "kind": "lookup",
+        "rule": "“standing” kaydının “owner” alanı, “standing ID” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Owner",
+            "label": "owner"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı standing ID kaydının owner değeri"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "DevUsers": [
+        "“dev user” kaydı, “email” alanı ve “role” alanı dolu olmak **zorundadır**."
+      ],
+      "Players": [
+        "“player” kaydı, “position” alanı, “passing yards” alanı, “passing touchdowns” alanı, “interceptions” alanı, “rushing yards” alanı, “rushing touchdowns” alanı, “receptions” alanı, “received yards” alanı ve “received touchdowns” alanı dolu olmak **zorundadır**."
+      ],
+      "Rosters": [
+        "“roster” kaydı, “owner” alanı dolu olmak **zorundadır**."
+      ],
+      "RosterAssignments": [
+        "“roster assignment” kaydı, tam olarak bir “roster” kaydına referans vermek **zorundadır**.",
+        "“roster assignment” kaydı, tam olarak bir “player” kaydına referans vermek **zorundadır**."
+      ],
+      "Matchups": [
+        "“matchup” kaydı, “team1” alanı aracılığıyla tam olarak bir “roster” kaydına referans vermek **zorundadır**.",
+        "“matchup” kaydı, “team2” alanı aracılığıyla tam olarak bir “roster” kaydına referans vermek **zorundadır**.",
+        "“matchup” kaydı, “week” alanı dolu olmak **zorundadır**."
+      ],
+      "Standings": [
+        "“standing” kaydı, “wins” alanı, “losses” alanı, “ties” alanı, “win pct” alanı, “points for” alanı ve “points against” alanı dolu olmak, ayrıca “playoff bound” olarak işaretli olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ]
+    },
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "DevUsers": "dev user",
+      "Players": "player",
+      "Rosters": "roster",
+      "RosterAssignments": "roster assignment",
+      "Matchups": "matchup",
+      "Standings": "standing"
+    }
+  },
+  "vi": {
+    "fields": {
+      "DevUsers.Name": {
+        "table": "DevUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi dev user có cùng giá trị với trường “email” của chính dev user đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DevUsers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Players.Name": {
+        "table": "Players",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi player có cùng giá trị với trường “player ID” của chính player đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Player ID"
+      },
+      "Players.TotalTouchdowns": {
+        "table": "Players",
+        "field": "TotalTouchdowns",
+        "kind": "formula",
+        "rule": "Trường “total touchdowns” của mỗi player được tính bằng passing touchdowns cộng rushing touchdowns cộng received touchdowns.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          }
+        ],
+        "structure": null,
+        "plain": "(passing touchdowns cộng rushing touchdowns) cộng received touchdowns"
+      },
+      "Players.ProjectedScore": {
+        "table": "Players",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "Trường “projected score” của mỗi player được tính bằng passing yards chia cho 25 cộng total touchdowns nhân 6 trừ interceptions nhân 2 làm tròn đến 2 chữ số thập phân.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((passing yards chia cho 25) cộng (total touchdowns nhân 6)) trừ (interceptions nhân 2)) làm tròn đến 2 chữ số thập phân"
+      },
+      "Rosters.Name": {
+        "table": "Rosters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi roster có cùng giá trị với trường “roster ID” của chính roster đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster ID"
+      },
+      "Rosters.TotalPassingYards": {
+        "table": "Rosters",
+        "field": "TotalPassingYards",
+        "kind": "rollup",
+        "rule": "Trường “total passing yards” của mỗi roster là giá trị tổng cộng của trường “passing yards” trên các roster assignments liên quan đến roster đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng passing yards trên tất cả roster assignments có roster là roster ID"
+      },
+      "Rosters.TotalRushingYards": {
+        "table": "Rosters",
+        "field": "TotalRushingYards",
+        "kind": "rollup",
+        "rule": "Trường “total rushing yards” của mỗi roster là giá trị tổng cộng của trường “rushing yards” trên các roster assignments liên quan đến roster đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng rushing yards trên tất cả roster assignments có roster là roster ID"
+      },
+      "Rosters.TotalReceivingYards": {
+        "table": "Rosters",
+        "field": "TotalReceivingYards",
+        "kind": "rollup",
+        "rule": "Trường “total receiving yards” của mỗi roster là giá trị tổng cộng của trường “received yards” trên các roster assignments liên quan đến roster đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng received yards trên tất cả roster assignments có roster là roster ID"
+      },
+      "Rosters.TotalTouchdowns": {
+        "table": "Rosters",
+        "field": "TotalTouchdowns",
+        "kind": "rollup",
+        "rule": "Trường “total touchdowns” của mỗi roster là giá trị của trường “total touchdowns” trên các roster assignments liên quan đến roster đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng total touchdowns trên tất cả roster assignments có roster là roster ID"
+      },
+      "Rosters.TotalInterceptions": {
+        "table": "Rosters",
+        "field": "TotalInterceptions",
+        "kind": "rollup",
+        "rule": "Trường “total interceptions” của mỗi roster là giá trị tổng cộng của trường “interceptions” trên các roster assignments liên quan đến roster đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng interceptions trên tất cả roster assignments có roster là roster ID"
+      },
+      "Rosters.ProjectedScore": {
+        "table": "Rosters",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "Trường “projected score” của mỗi roster được tính bằng total passing yards chia cho 25 cộng total rushing yards chia cho 10 cộng total receiving yards chia cho 10 cộng total touchdowns nhân 6 trừ total interceptions nhân 2 làm tròn đến 2 chữ số thập phân.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "TotalPassingYards",
+            "label": "total passing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalRushingYards",
+            "label": "total rushing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalReceivingYards",
+            "label": "total receiving yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalInterceptions",
+            "label": "total interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((total passing yards chia cho 25) cộng (total rushing yards chia cho 10)) cộng (total receiving yards chia cho 10)) cộng (total touchdowns nhân 6)) trừ (total interceptions nhân 2)) làm tròn đến 2 chữ số thập phân"
+      },
+      "RosterAssignments.Name": {
+        "table": "RosterAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi roster assignment có cùng giá trị với trường “assignment ID” của chính roster assignment đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "RosterAssignments.PlayerName": {
+        "table": "RosterAssignments",
+        "field": "PlayerName",
+        "kind": "lookup",
+        "rule": "Trường “player name” của mỗi roster assignment được lấy từ bản ghi liên kết qua trường “player”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua player"
+      },
+      "RosterAssignments.Position": {
+        "table": "RosterAssignments",
+        "field": "Position",
+        "kind": "lookup",
+        "rule": "Trường “position” của mỗi roster assignment được lấy từ bản ghi liên kết qua trường “player”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Position",
+            "label": "position"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Position của bản ghi liên kết qua player"
+      },
+      "RosterAssignments.PassingYards": {
+        "table": "RosterAssignments",
+        "field": "PassingYards",
+        "kind": "lookup",
+        "rule": "Trường “passing yards” của mỗi roster assignment được lấy từ bản ghi liên kết qua trường “player”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Passing yards của bản ghi liên kết qua player"
+      },
+      "RosterAssignments.PassingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "PassingTouchdowns",
+        "kind": "lookup",
+        "rule": "Trường “passing touchdowns” của mỗi roster assignment được lấy từ bản ghi liên kết qua trường “player”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Passing touchdowns của bản ghi liên kết qua player"
+      },
+      "RosterAssignments.Interceptions": {
+        "table": "RosterAssignments",
+        "field": "Interceptions",
+        "kind": "lookup",
+        "rule": "Trường “interceptions” của mỗi roster assignment được lấy từ bản ghi liên kết qua trường “player”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Interceptions của bản ghi liên kết qua player"
+      },
+      "RosterAssignments.RushingYards": {
+        "table": "RosterAssignments",
+        "field": "RushingYards",
+        "kind": "lookup",
+        "rule": "Trường “rushing yards” của mỗi roster assignment được lấy từ bản ghi liên kết qua trường “player”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rushing yards của bản ghi liên kết qua player"
+      },
+      "RosterAssignments.RushingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "RushingTouchdowns",
+        "kind": "lookup",
+        "rule": "Trường “rushing touchdowns” của mỗi roster assignment được lấy từ bản ghi liên kết qua trường “player”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rushing touchdowns của bản ghi liên kết qua player"
+      },
+      "RosterAssignments.Receptions": {
+        "table": "RosterAssignments",
+        "field": "Receptions",
+        "kind": "lookup",
+        "rule": "Trường “receptions” của mỗi roster assignment được lấy từ bản ghi liên kết qua trường “player”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Receptions",
+            "label": "receptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Receptions của bản ghi liên kết qua player"
+      },
+      "RosterAssignments.ReceivedYards": {
+        "table": "RosterAssignments",
+        "field": "ReceivedYards",
+        "kind": "lookup",
+        "rule": "Trường “received yards” của mỗi roster assignment được lấy từ bản ghi liên kết qua trường “player”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Received yards của bản ghi liên kết qua player"
+      },
+      "RosterAssignments.ReceivedTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "ReceivedTouchdowns",
+        "kind": "lookup",
+        "rule": "Trường “received touchdowns” của mỗi roster assignment được lấy từ bản ghi liên kết qua trường “player”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Received touchdowns của bản ghi liên kết qua player"
+      },
+      "RosterAssignments.TotalTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "TotalTouchdowns",
+        "kind": "lookup",
+        "rule": "Trường “total touchdowns” của mỗi roster assignment được lấy từ bản ghi liên kết qua trường “player”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total touchdowns của bản ghi liên kết qua player"
+      },
+      "RosterAssignments.ProjectedScore": {
+        "table": "RosterAssignments",
+        "field": "ProjectedScore",
+        "kind": "lookup",
+        "rule": "Trường “projected score” của mỗi roster assignment được lấy từ bản ghi liên kết qua trường “player”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Projected score của bản ghi liên kết qua player"
+      },
+      "Matchups.Name": {
+        "table": "Matchups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi matchup có cùng giá trị với trường “matchup ID” của chính matchup đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "MatchupId",
+            "label": "matchup ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Matchup ID"
+      },
+      "Matchups.Team1Score": {
+        "table": "Matchups",
+        "field": "Team1Score",
+        "kind": "lookup",
+        "rule": "Trường “team1 score” của mỗi matchup là trường “projected score” của bản ghi liên kết qua trường “team1”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Projected score của bản ghi liên kết qua team1"
+      },
+      "Matchups.Team2Score": {
+        "table": "Matchups",
+        "field": "Team2Score",
+        "kind": "lookup",
+        "rule": "Trường “team2 score” của mỗi matchup là trường “projected score” của bản ghi liên kết qua trường “team2”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Projected score của bản ghi liên kết qua team2"
+      },
+      "Matchups.Margin": {
+        "table": "Matchups",
+        "field": "Margin",
+        "kind": "formula",
+        "rule": "Trường “margin” của mỗi matchup được tính bằng team1 score trừ team2 score.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Team1Score",
+            "label": "team1 score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2Score",
+            "label": "team2 score"
+          }
+        ],
+        "structure": null,
+        "plain": "Team1 score trừ team2 score"
+      },
+      "Matchups.Winner": {
+        "table": "Matchups",
+        "field": "Winner",
+        "kind": "formula",
+        "rule": "Trường “winner” của mỗi matchup được xác định theo thứ tự ưu tiên sau:\n1. team1, nếu margin lớn hơn 0;\n2. trong mọi trường hợp còn lại, team2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “winner” của mỗi matchup được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "team1",
+              "when": {
+                "kind": "leaf",
+                "text": "margin lớn hơn 0"
+              }
+            },
+            {
+              "value": "team2",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu margin lớn hơn 0 thì team1, nếu không thì team2"
+      },
+      "Matchups.Loser": {
+        "table": "Matchups",
+        "field": "Loser",
+        "kind": "formula",
+        "rule": "Trường “loser” của mỗi matchup được xác định theo thứ tự ưu tiên sau:\n1. team2, nếu margin lớn hơn 0;\n2. trong mọi trường hợp còn lại, team1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “loser” của mỗi matchup được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "team2",
+              "when": {
+                "kind": "leaf",
+                "text": "margin lớn hơn 0"
+              }
+            },
+            {
+              "value": "team1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu margin lớn hơn 0 thì team2, nếu không thì team1"
+      },
+      "Matchups.IsTieGame": {
+        "table": "Matchups",
+        "field": "IsTieGame",
+        "kind": "formula",
+        "rule": "Mỗi matchup được coi là “tie game” nếu margin là 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          }
+        ],
+        "structure": null,
+        "plain": "Margin bằng 0"
+      },
+      "Standings.Name": {
+        "table": "Standings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi standing được lấy từ bản ghi liên kết qua trường “standing ID”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua standing ID"
+      },
+      "Standings.Owner": {
+        "table": "Standings",
+        "field": "Owner",
+        "kind": "lookup",
+        "rule": "Trường “owner” của mỗi standing được lấy từ bản ghi liên kết qua trường “standing ID”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Owner",
+            "label": "owner"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Owner của bản ghi liên kết qua standing ID"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "DevUsers": [
+        "Mỗi dev user **phải** có email và role."
+      ],
+      "Players": [
+        "Mỗi player **phải** có position, passing yards, passing touchdowns, interceptions, rushing yards, rushing touchdowns, receptions, received yards và received touchdowns."
+      ],
+      "Rosters": [
+        "Mỗi roster **phải** có owner."
+      ],
+      "RosterAssignments": [
+        "Mỗi roster assignment **phải** tham chiếu đến đúng một roster.",
+        "Mỗi roster assignment **phải** tham chiếu đến đúng một player."
+      ],
+      "Matchups": [
+        "Mỗi matchup **phải** tham chiếu đến đúng một roster với vai trò team1.",
+        "Mỗi matchup **phải** tham chiếu đến đúng một roster với vai trò team2.",
+        "Mỗi matchup **phải** có week."
+      ],
+      "Standings": [
+        "Mỗi standing **phải** có wins, losses, ties, win pct, points for và points against, đồng thời được ghi nhận rõ là “playoff bound” hay không."
+      ]
+    },
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "DevUsers": "dev user",
+      "Players": "player",
+      "Rosters": "roster",
+      "RosterAssignments": "roster assignment",
+      "Matchups": "matchup",
+      "Standings": "standing"
+    }
+  },
+  "zh": {
+    "fields": {
+      "DevUsers.Name": {
+        "table": "DevUsers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "dev user的“name”与 email 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DevUsers",
+            "field": "Email",
+            "label": "email"
+          }
+        ],
+        "structure": null,
+        "plain": "Email"
+      },
+      "Players.Name": {
+        "table": "Players",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "player的“name”与 player ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Player ID"
+      },
+      "Players.TotalTouchdowns": {
+        "table": "Players",
+        "field": "TotalTouchdowns",
+        "kind": "formula",
+        "rule": "player的“total touchdowns”按 passing touchdowns加rushing touchdowns加received touchdowns 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          }
+        ],
+        "structure": null,
+        "plain": "(passing touchdowns加rushing touchdowns)加received touchdowns"
+      },
+      "Players.ProjectedScore": {
+        "table": "Players",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "player的“projected score”按 passing yards除以25加total touchdowns乘6减interceptions乘2四舍五入到2位小数 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((passing yards除以25)加(total touchdowns乘6))减(interceptions乘2))四舍五入到2位小数"
+      },
+      "Rosters.Name": {
+        "table": "Rosters",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "roster的“name”与 roster ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Roster ID"
+      },
+      "Rosters.TotalPassingYards": {
+        "table": "Rosters",
+        "field": "TotalPassingYards",
+        "kind": "rollup",
+        "rule": "roster的“total passing yards”为 与roster相关的所有“roster assignments”的“passing yards”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有roster为roster ID的“roster assignments”的passing yards的总和"
+      },
+      "Rosters.TotalRushingYards": {
+        "table": "Rosters",
+        "field": "TotalRushingYards",
+        "kind": "rollup",
+        "rule": "roster的“total rushing yards”为 与roster相关的所有“roster assignments”的“rushing yards”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有roster为roster ID的“roster assignments”的rushing yards的总和"
+      },
+      "Rosters.TotalReceivingYards": {
+        "table": "Rosters",
+        "field": "TotalReceivingYards",
+        "kind": "rollup",
+        "rule": "roster的“total receiving yards”为 与roster相关的所有“roster assignments”的“received yards”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有roster为roster ID的“roster assignments”的received yards的总和"
+      },
+      "Rosters.TotalTouchdowns": {
+        "table": "Rosters",
+        "field": "TotalTouchdowns",
+        "kind": "rollup",
+        "rule": "roster的“total touchdowns”为 与roster相关的所有“roster assignments”的“total touchdowns”的。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有roster为roster ID的“roster assignments”的total touchdowns的总和"
+      },
+      "Rosters.TotalInterceptions": {
+        "table": "Rosters",
+        "field": "TotalInterceptions",
+        "kind": "rollup",
+        "rule": "roster的“total interceptions”为 与roster相关的所有“roster assignments”的“interceptions”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Roster",
+            "label": "roster"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有roster为roster ID的“roster assignments”的interceptions的总和"
+      },
+      "Rosters.ProjectedScore": {
+        "table": "Rosters",
+        "field": "ProjectedScore",
+        "kind": "formula",
+        "rule": "roster的“projected score”按 total passing yards除以25加total rushing yards除以10加total receiving yards除以10加total touchdowns乘6减total interceptions乘2四舍五入到2位小数 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "TotalPassingYards",
+            "label": "total passing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalRushingYards",
+            "label": "total rushing yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalReceivingYards",
+            "label": "total receiving yards"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "Rosters",
+            "field": "TotalInterceptions",
+            "label": "total interceptions"
+          }
+        ],
+        "structure": null,
+        "plain": "(((((total passing yards除以25)加(total rushing yards除以10))加(total receiving yards除以10))加(total touchdowns乘6))减(total interceptions乘2))四舍五入到2位小数"
+      },
+      "RosterAssignments.Name": {
+        "table": "RosterAssignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "roster assignment的“name”与 assignment ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RosterAssignments",
+            "field": "AssignmentId",
+            "label": "assignment ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Assignment ID"
+      },
+      "RosterAssignments.PlayerName": {
+        "table": "RosterAssignments",
+        "field": "PlayerName",
+        "kind": "lookup",
+        "rule": "roster assignment的“player name”——取自所关联的“player”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“player”的name"
+      },
+      "RosterAssignments.Position": {
+        "table": "RosterAssignments",
+        "field": "Position",
+        "kind": "lookup",
+        "rule": "roster assignment的“position”——取自所关联的“player”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Position",
+            "label": "position"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“player”的position"
+      },
+      "RosterAssignments.PassingYards": {
+        "table": "RosterAssignments",
+        "field": "PassingYards",
+        "kind": "lookup",
+        "rule": "roster assignment的“passing yards”——取自所关联的“player”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingYards",
+            "label": "passing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“player”的passing yards"
+      },
+      "RosterAssignments.PassingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "PassingTouchdowns",
+        "kind": "lookup",
+        "rule": "roster assignment的“passing touchdowns”——取自所关联的“player”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "PassingTouchdowns",
+            "label": "passing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“player”的passing touchdowns"
+      },
+      "RosterAssignments.Interceptions": {
+        "table": "RosterAssignments",
+        "field": "Interceptions",
+        "kind": "lookup",
+        "rule": "roster assignment的“interceptions”——取自所关联的“player”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Interceptions",
+            "label": "interceptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“player”的interceptions"
+      },
+      "RosterAssignments.RushingYards": {
+        "table": "RosterAssignments",
+        "field": "RushingYards",
+        "kind": "lookup",
+        "rule": "roster assignment的“rushing yards”——取自所关联的“player”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingYards",
+            "label": "rushing yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“player”的rushing yards"
+      },
+      "RosterAssignments.RushingTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "RushingTouchdowns",
+        "kind": "lookup",
+        "rule": "roster assignment的“rushing touchdowns”——取自所关联的“player”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "RushingTouchdowns",
+            "label": "rushing touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“player”的rushing touchdowns"
+      },
+      "RosterAssignments.Receptions": {
+        "table": "RosterAssignments",
+        "field": "Receptions",
+        "kind": "lookup",
+        "rule": "roster assignment的“receptions”——取自所关联的“player”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "Receptions",
+            "label": "receptions"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“player”的receptions"
+      },
+      "RosterAssignments.ReceivedYards": {
+        "table": "RosterAssignments",
+        "field": "ReceivedYards",
+        "kind": "lookup",
+        "rule": "roster assignment的“received yards”——取自所关联的“player”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedYards",
+            "label": "received yards"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“player”的received yards"
+      },
+      "RosterAssignments.ReceivedTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "ReceivedTouchdowns",
+        "kind": "lookup",
+        "rule": "roster assignment的“received touchdowns”——取自所关联的“player”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ReceivedTouchdowns",
+            "label": "received touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“player”的received touchdowns"
+      },
+      "RosterAssignments.TotalTouchdowns": {
+        "table": "RosterAssignments",
+        "field": "TotalTouchdowns",
+        "kind": "lookup",
+        "rule": "roster assignment的“total touchdowns”——取自所关联的“player”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "TotalTouchdowns",
+            "label": "total touchdowns"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“player”的total touchdowns"
+      },
+      "RosterAssignments.ProjectedScore": {
+        "table": "RosterAssignments",
+        "field": "ProjectedScore",
+        "kind": "lookup",
+        "rule": "roster assignment的“projected score”——取自所关联的“player”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Players",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "RosterAssignments",
+            "field": "Player",
+            "label": "player"
+          },
+          {
+            "table": "Players",
+            "field": "PlayerId",
+            "label": "player ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“player”的projected score"
+      },
+      "Matchups.Name": {
+        "table": "Matchups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "matchup的“name”与 matchup ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "MatchupId",
+            "label": "matchup ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Matchup ID"
+      },
+      "Matchups.Team1Score": {
+        "table": "Matchups",
+        "field": "Team1Score",
+        "kind": "lookup",
+        "rule": "matchup的“team1 score”是所关联的“team1”的“projected score”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“team1”的projected score"
+      },
+      "Matchups.Team2Score": {
+        "table": "Matchups",
+        "field": "Team2Score",
+        "kind": "lookup",
+        "rule": "matchup的“team2 score”是所关联的“team2”的“projected score”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "ProjectedScore",
+            "label": "projected score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“team2”的projected score"
+      },
+      "Matchups.Margin": {
+        "table": "Matchups",
+        "field": "Margin",
+        "kind": "formula",
+        "rule": "matchup的“margin”按 team1 score减team2 score 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Team1Score",
+            "label": "team1 score"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2Score",
+            "label": "team2 score"
+          }
+        ],
+        "structure": null,
+        "plain": "Team1 score减team2 score"
+      },
+      "Matchups.Winner": {
+        "table": "Matchups",
+        "field": "Winner",
+        "kind": "formula",
+        "rule": "Matchup的“winner”按以下优先级确定:\n1. 当margin大于0时,取 team1;\n2. 其余情况取 team2。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Matchup的“winner”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "team1",
+              "when": {
+                "kind": "leaf",
+                "text": "margin大于0"
+              }
+            },
+            {
+              "value": "team2",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若margin大于0,则team1,否则team2"
+      },
+      "Matchups.Loser": {
+        "table": "Matchups",
+        "field": "Loser",
+        "kind": "formula",
+        "rule": "Matchup的“loser”按以下优先级确定:\n1. 当margin大于0时,取 team2;\n2. 其余情况取 team1。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team2",
+            "label": "team2"
+          },
+          {
+            "table": "Matchups",
+            "field": "Team1",
+            "label": "team1"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Matchup的“loser”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "team2",
+              "when": {
+                "kind": "leaf",
+                "text": "margin大于0"
+              }
+            },
+            {
+              "value": "team1",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若margin大于0,则team2,否则team1"
+      },
+      "Matchups.IsTieGame": {
+        "table": "Matchups",
+        "field": "IsTieGame",
+        "kind": "formula",
+        "rule": "当margin为0时,matchup被视为“Tie Game”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Matchups",
+            "field": "Margin",
+            "label": "margin"
+          }
+        ],
+        "structure": null,
+        "plain": "Margin等于0"
+      },
+      "Standings.Name": {
+        "table": "Standings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "standing的“name”——取自所关联的“standing ID”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“standing ID”的name"
+      },
+      "Standings.Owner": {
+        "table": "Standings",
+        "field": "Owner",
+        "kind": "lookup",
+        "rule": "standing的“owner”——取自所关联的“standing ID”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Rosters",
+            "field": "Owner",
+            "label": "owner"
+          },
+          {
+            "table": "Standings",
+            "field": "StandingId",
+            "label": "standing ID"
+          },
+          {
+            "table": "Rosters",
+            "field": "RosterId",
+            "label": "roster ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“standing ID”的owner"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "DevUsers": [
+        "dev user**必须**具有email且role。"
+      ],
+      "Players": [
+        "player**必须**具有position、passing yards、passing touchdowns、interceptions、rushing yards、rushing touchdowns、receptions、received yards,且received touchdowns。"
+      ],
+      "Rosters": [
+        "roster**必须**具有owner。"
+      ],
+      "RosterAssignments": [
+        "roster assignment**必须**恰好引用一个“roster”。",
+        "roster assignment**必须**恰好引用一个“player”。"
+      ],
+      "Matchups": [
+        "matchup**必须**恰好引用一个“roster”作为其team1。",
+        "matchup**必须**恰好引用一个“roster”作为其team2。",
+        "matchup**必须**具有week。"
+      ],
+      "Standings": [
+        "standing**必须**具有wins、losses、ties、win pct、points for,且points against,并记录其是“Playoff Bound”与否。"
+      ]
+    },
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "DevUsers": "dev user",

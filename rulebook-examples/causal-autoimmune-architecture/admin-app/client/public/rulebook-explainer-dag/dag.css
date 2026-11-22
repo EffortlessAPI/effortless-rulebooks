@@ -19,35 +19,80 @@
   --dag-lookup-bg: #fbf2dd;
 }
 
-/* ─── DagToggle (floating top-right) ─────────────────────────────────────── */
+/* ─── Corner control: provenance on/off + the workbook download ──────────────
+   Two icons until the pointer is over it (or it has keyboard focus, or it was
+   tapped); then each opens to its words. It stays where it is put: pinned to a
+   corner of the window only when the app named one (init({ corner })), otherwise
+   wherever the app's own element is. */
 
-.dag-toggle {
-  position: fixed;
-  top: 14px;
-  right: 18px;
-  z-index: 100;
+.dag-corner {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: calc(100vw - 24px);
+  font: 600 11px/1 system-ui, -apple-system, sans-serif;
+}
+.dag-corner-fixed  { position: fixed; z-index: 100; }
+.dag-corner-top    { top: 12px; }
+.dag-corner-bottom { bottom: 12px; }
+.dag-corner-left   { left: 12px; }
+.dag-corner-right  { right: 12px; }
+
+.dag-corner-item {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 4px;
+  border-radius: 999px;
+  border: 1px solid #d0d7de;
+  background: #fff;
+  color: #444;
+  font: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  transition: background 100ms ease, box-shadow 100ms ease, border-color 100ms ease;
+}
+.dag-corner-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.14); }
+.dag-corner-item:focus-visible { outline: 2px solid var(--dag-calc); outline-offset: 2px; }
+.dag-corner-icon {
+  display: inline-grid; place-items: center;
+  flex: none;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+}
+.dag-corner-icon svg { display: block; }
+.dag-corner-download:hover { background: #f4f6f8; border-color: #8c959f; }
+
+/* The words: no room taken while closed. */
+.dag-corner-label {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 5px 10px 5px 8px;
-  border-radius: 999px;
-  border: 1px solid var(--dag-calc);
-  background: #fff;
-  color: var(--dag-calc);
-  font: 600 11px/1 system-ui, -apple-system, sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  cursor: pointer;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-  transition: background 100ms ease, box-shadow 100ms ease, opacity 100ms ease;
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-width 160ms ease, opacity 120ms ease, margin 160ms ease;
 }
-.dag-toggle:hover {
-  box-shadow: 0 2px 8px rgba(0,0,0,0.14);
+.dag-corner:hover .dag-corner-label,
+.dag-corner:focus-within .dag-corner-label,
+.dag-corner.is-open .dag-corner-label {
+  max-width: 22em;
+  opacity: 1;
+  margin-inline: 6px 5px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dag-corner-label, .dag-corner-item { transition: none; }
+}
+
+.dag-toggle {
+  border-color: var(--dag-calc);
+  color: var(--dag-calc);
 }
 .dag-toggle-glyph {
-  display: inline-grid; place-items: center;
-  width: 18px; height: 18px;
-  border-radius: 50%;
   background: var(--dag-calc);
   color: #fff;
   font-style: italic;
@@ -55,9 +100,9 @@
   font-size: 13px;
   font-weight: 700;
 }
-.dag-toggle-label { padding-right: 4px; }
 .dag-toggle-knob {
   display: inline-block; width: 22px; height: 12px;
+  flex: none;
   background: var(--dag-calc);
   border-radius: 7px;
   position: relative;
@@ -187,7 +232,7 @@
   max-width: 90vw;
   background: #fff;
   border: 1px solid var(--border, #e0e0e0);
-  border-left: 4px solid var(--dag-calc);
+  border-inline-start: 4px solid var(--dag-calc);
   border-radius: 8px;
   box-shadow: 0 8px 28px rgba(0,0,0,0.18);
   padding: 14px 16px 12px;
@@ -196,11 +241,11 @@
   text-transform: none;
   letter-spacing: 0;
 }
-.dag-hovercard-raw    { border-left-color: var(--dag-raw); }
-.dag-hovercard-calc   { border-left-color: var(--dag-calc); }
-.dag-hovercard-agg    { border-left-color: var(--dag-agg); }
-.dag-hovercard-rel    { border-left-color: var(--dag-rel); }
-.dag-hovercard-lookup { border-left-color: var(--dag-lookup); }
+.dag-hovercard-raw    { border-inline-start-color: var(--dag-raw); }
+.dag-hovercard-calc   { border-inline-start-color: var(--dag-calc); }
+.dag-hovercard-agg    { border-inline-start-color: var(--dag-agg); }
+.dag-hovercard-rel    { border-inline-start-color: var(--dag-rel); }
+.dag-hovercard-lookup { border-inline-start-color: var(--dag-lookup); }
 
 .dag-hovercard > * { display: block; }
 .dag-hovercard-head {
@@ -219,6 +264,10 @@
 .dag-hovercard-table { font-weight: 600; color: #666; }
 .dag-hovercard-dot { color: #ccc; }
 .dag-hovercard-field { font-weight: 600; color: #222; font-size: 13px; }
+/* The table and the field in the head are links: to the table's page and to the
+   page of the field this popup is about. Quiet until pointed at. */
+a.dag-hovercard-table, a.dag-hovercard-field { text-decoration: none; }
+a.dag-hovercard-table:hover, a.dag-hovercard-field:hover { color: var(--dag-calc); text-decoration: underline; }
 
 .dag-hovercard-desc {
   font-size: 12.5px;
@@ -250,7 +299,7 @@
   background: #ececec;
   color: #555;
   border-radius: 99px;
-  margin-left: 4px;
+  margin-inline-start: 4px;
   letter-spacing: 0;
 }
 
@@ -272,6 +321,16 @@
   color: #999; font-weight: 400; font-style: italic;
 }
 .dag-hovercard-english-text.dag-hovercard-muted::first-letter { text-transform: none; }
+
+/* A priority ladder or a rule of several conditions is the same outline the
+   field's page shows (.dag-rt: numbered steps, nested AND/OR lists), at the
+   popup's size and in the popup's ink. */
+.dag-hovercard-outline { font-weight: 400; }
+.dag-hovercard-outline .dag-rt { font-size: 13px; line-height: 1.45; color: #2a1c4a; }
+.dag-hovercard-outline .dag-rt-headline { margin: 0 0 6px; font-weight: 600; }
+.dag-hovercard-outline .dag-rt-cases { gap: 5px; padding-inline-start: 1.5em; }
+.dag-hovercard-outline .dag-rt-leaf { color: inherit; }
+.dag-hovercard-outline .dag-rt-children { margin: 2px 0; }
 
 .dag-hovercard-formula {
   margin-bottom: 10px;
@@ -299,13 +358,29 @@
   font-size: 11.5px;
 }
 
+/* The foot: the link to this field's own page, then how else to get there. */
+.dag-hovercard-foot {
+  display: flex !important;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px 12px;
+  border-top: 1px dashed #eee;
+  padding-top: 6px;
+  margin-top: 4px;
+}
+.dag-hovercard-open {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--dag-calc);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.dag-hovercard-open:hover { text-decoration: underline; }
 .dag-hovercard-hint {
   font-size: 11px;
   font-style: italic;
   color: #999;
-  border-top: 1px dashed #eee;
-  padding-top: 6px;
-  margin-top: 4px;
 }
 
 /* ─── Type badges ────────────────────────────────────────────────────────── */
@@ -455,14 +530,14 @@
   margin-bottom: 1.8em;
   background: var(--card);
   border: 1px solid var(--border);
-  border-left: 6px solid var(--dag-rel);
+  border-inline-start: 6px solid var(--dag-rel);
   border-radius: 8px;
 }
-.dag-hero-raw    { border-left-color: var(--dag-raw); }
-.dag-hero-calc   { border-left-color: var(--dag-calc); }
-.dag-hero-agg    { border-left-color: var(--dag-agg); }
-.dag-hero-rel    { border-left-color: var(--dag-rel); }
-.dag-hero-lookup { border-left-color: var(--dag-lookup); }
+.dag-hero-raw    { border-inline-start-color: var(--dag-raw); }
+.dag-hero-calc   { border-inline-start-color: var(--dag-calc); }
+.dag-hero-agg    { border-inline-start-color: var(--dag-agg); }
+.dag-hero-rel    { border-inline-start-color: var(--dag-rel); }
+.dag-hero-lookup { border-inline-start-color: var(--dag-lookup); }
 
 .dag-hero-meta {
   display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
@@ -537,7 +612,7 @@
   grid-template-columns: auto 1fr;
   gap: 1.2em;
   align-items: center;
-  border-left: 6px solid var(--dag-raw);
+  border-inline-start: 6px solid var(--dag-raw);
   background: linear-gradient(180deg, var(--dag-raw-bg), #fff);
 }
 .dag-gt-glyph {
@@ -586,7 +661,7 @@
 /* ─── Formula card ───────────────────────────────────────────────────────── */
 
 .dag-formula {
-  border-left: 6px solid var(--dag-calc);
+  border-inline-start: 6px solid var(--dag-calc);
 }
 
 .dag-english {
@@ -679,7 +754,7 @@
   padding: 1em 1.1em;
   background: var(--card);
   border: 1px solid var(--border);
-  border-left: 4px solid var(--dag-rel);
+  border-inline-start: 4px solid var(--dag-rel);
   border-radius: 6px;
   text-decoration: none;
   color: var(--fg);
@@ -689,11 +764,11 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   transform: translateY(-1px);
 }
-.dag-input-raw    { border-left-color: var(--dag-raw); }
-.dag-input-calc   { border-left-color: var(--dag-calc); }
-.dag-input-agg    { border-left-color: var(--dag-agg); }
-.dag-input-rel    { border-left-color: var(--dag-rel); }
-.dag-input-lookup { border-left-color: var(--dag-lookup); }
+.dag-input-raw    { border-inline-start-color: var(--dag-raw); }
+.dag-input-calc   { border-inline-start-color: var(--dag-calc); }
+.dag-input-agg    { border-inline-start-color: var(--dag-agg); }
+.dag-input-rel    { border-inline-start-color: var(--dag-rel); }
+.dag-input-lookup { border-inline-start-color: var(--dag-lookup); }
 
 .dag-input-head {
   display: flex; align-items: center; gap: 8px;
@@ -767,29 +842,6 @@
   font-size: 12px;
   padding: 4px 9px 5px;
 }
-
-/* ── XLSX download icon (sibling of DagToggle) ────────────────────────── */
-.dag-xlsx-download {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px 4px 8px;
-  border: 1px solid #d0d7de;
-  border-radius: 999px;
-  background: #fff;
-  color: #1F7244;
-  font-size: 12px;
-  font-weight: 700;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background 120ms ease, border-color 120ms ease;
-}
-.dag-xlsx-download:hover {
-  background: #f0faf4;
-  border-color: #1F7244;
-}
-.dag-xlsx-download svg { display: block; }
-.dag-xlsx-label { letter-spacing: 0.02em; }
 
 /* ── Narration toggle (Formula ⇄ RuleSpeak®) ──────────────────────────────────
    Mirrors the provenance-graph toggle; the choice is remembered in localStorage.
@@ -952,7 +1004,7 @@
 
 /* ── RuleSpeak® card ──────────────────────────────────────────────────────────
    The declarative-rule counterpart of the formula card. */
-.dag-rulespeak { border-left: 4px solid var(--dag-rs); }
+.dag-rulespeak { border-inline-start: 4px solid var(--dag-rs); }
 .dag-rs-rule { background: var(--dag-rs-bg); }
 .dag-rs-rule .dag-english-label { color: var(--dag-rs); }
 .dag-rs-rule .dag-english-text { color: #16341f; }
@@ -962,7 +1014,7 @@
 .dag-input-rulespeak .dag-rs-kw { color: var(--dag-rs); font-weight: 700; }
 
 .dag-rs-obligations { margin-top: 0.4em; }
-.dag-rs-obl-list { margin: 6px 0 0; padding-left: 1.1em; }
+.dag-rs-obl-list { margin: 6px 0 0; padding-inline-start: 1.1em; }
 .dag-rs-obl {
   margin: 4px 0;
   line-height: 1.4;
@@ -986,7 +1038,7 @@
   gap: 4px;
   padding: 12px 14px;
   border: 1px solid #e6e6ea;
-  border-left: 4px solid var(--dag-calc);
+  border-inline-start: 4px solid var(--dag-calc);
   border-radius: 8px;
   background: #fff;
   text-decoration: none;
@@ -995,7 +1047,7 @@
 }
 .dag-table-card:hover {
   box-shadow: 0 3px 10px rgba(90,58,160,0.14);
-  border-left-color: var(--dag-calc);
+  border-inline-start-color: var(--dag-calc);
   transform: translateY(-1px);
 }
 .dag-table-card-name { font-weight: 700; font-size: 15px; }
@@ -1019,7 +1071,7 @@
   gap: 3px;
   padding: 9px 12px;
   border: 1px solid #ececf0;
-  border-left: 3px solid #ddd;
+  border-inline-start: 3px solid #ddd;
   border-radius: 7px;
   background: #fff;
   text-decoration: none;
@@ -1027,15 +1079,15 @@
   transition: box-shadow 120ms ease, border-color 120ms ease, background 120ms ease;
 }
 .dag-col:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); background: #fcfcff; }
-.dag-col-raw    { border-left-color: var(--dag-raw); }
-.dag-col-calc   { border-left-color: var(--dag-calc); }
-.dag-col-agg    { border-left-color: var(--dag-agg); }
-.dag-col-rel    { border-left-color: var(--dag-rel); }
-.dag-col-lookup { border-left-color: var(--dag-lookup); }
+.dag-col-raw    { border-inline-start-color: var(--dag-raw); }
+.dag-col-calc   { border-inline-start-color: var(--dag-calc); }
+.dag-col-agg    { border-inline-start-color: var(--dag-agg); }
+.dag-col-rel    { border-inline-start-color: var(--dag-rel); }
+.dag-col-lookup { border-inline-start-color: var(--dag-lookup); }
 .dag-col-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .dag-col-name { font-weight: 700; font-size: 14px; }
 .dag-col-human { font-size: 12px; color: var(--muted, #999); }
-.dag-col-null { margin-left: auto; }
+.dag-col-null { margin-inline-start: auto; }
 .dag-col-rule { font-size: 13px; color: #333; line-height: 1.4; }
 .dag-col-rule.dag-col-rulespeak .dag-rs-kw { color: var(--dag-rs); font-weight: 800; }
 .dag-col-desc { font-size: 12px; color: #777; line-height: 1.4; }
@@ -1053,7 +1105,7 @@
   display: flex; flex-direction: column; gap: 3px;
   padding: 9px 12px;
   text-decoration: none; color: inherit;
-  border-radius: 7px 0 0 7px;
+  border-start-start-radius: 7px; border-end-start-radius: 7px;
   transition: background 120ms ease;
 }
 .dag-col-rel-main:hover { background: #fcfcff; }
@@ -1066,7 +1118,7 @@
   color: var(--dag-rel);
   text-decoration: none;
   background: color-mix(in srgb, var(--dag-rel) 8%, #fff);
-  border-left: 1px solid color-mix(in srgb, var(--dag-rel) 25%, transparent);
+  border-inline-start: 1px solid color-mix(in srgb, var(--dag-rel) 25%, transparent);
   transition: background 120ms ease;
   white-space: nowrap;
 }
@@ -1078,35 +1130,35 @@
 .dag-rt { font-size: 15px; line-height: 1.5; color: #16341f; }
 .dag-rt-headline { margin: 0 0 8px; font-weight: 600; }
 .dag-rt-cases {
-  margin: 0; padding-left: 1.4em;
+  margin: 0; padding-inline-start: 1.4em;
   display: flex; flex-direction: column; gap: 6px;
 }
-.dag-rt-case { padding-left: 2px; }
+.dag-rt-case { padding-inline-start: 2px; }
 .dag-rt-case::marker { color: var(--dag-rs); font-weight: 700; }
 .dag-rt-else { color: #555; }
 .dag-rt-case-val .dag-rt-val { color: var(--dag-rs); font-weight: 700; }
 .dag-rt-if { color: #888; font-style: italic; }
 
 /* AND/OR group: a label then an indented bullet list of children. */
-.dag-rt-group { display: inline-block; }
+.dag-rt-group { display: inline-block; vertical-align: top; }   /* top: the "if" before it sits on the group's first line, not its last */
 .dag-rt-group-label {
   font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em;
   color: var(--dag-rs); font-weight: 700;
 }
 .dag-rt-any > .dag-rt-group-label { color: #9a6708; }   /* OR = amber, AND = green */
 .dag-rt-children {
-  margin: 3px 0 2px; padding-left: 1.3em;
+  margin: 3px 0 2px; padding-inline-start: 1.3em;
   list-style: none;
-  border-left: 2px solid #d7e7dd;
+  border-inline-start: 2px solid #d7e7dd;
 }
 .dag-rt-child {
   position: relative; padding: 2px 0 2px 2px;
 }
 .dag-rt-child::before {
   content: "•"; color: var(--dag-rs);
-  position: absolute; left: -0.9em;
+  position: absolute; inset-inline-start: -0.9em;
 }
-.dag-rt-any > .dag-rt-children { border-left-color: #ecdcc0; }
+.dag-rt-any > .dag-rt-children { border-inline-start-color: #ecdcc0; }
 .dag-rt-any .dag-rt-child::before { color: #9a6708; }
 .dag-rt-cond-block { margin-top: 4px; }
 .dag-rt-leaf { color: #16341f; }
@@ -1207,3 +1259,215 @@
   cursor: pointer;
 }
 .dag-col-rel-link:hover { border-bottom-color: var(--dag-rel); }
+
+
+/* ============================================================================
+ * The witness (witness.js): one row's value and the values it came from, down
+ * to the stored ones. A tree of lines, "name = value"; a derived line opens to
+ * show why (the rule, the row it was looked up from, the rows it counted) and
+ * the cells it was made from. Raw lines are the leaves: ground truth.
+ * ========================================================================== */
+.dag-witness .dag-w-tree { margin-top: 10px; }
+.dag-w-picker { display: inline-flex; align-items: center; gap: 8px; margin: 4px 0 2px; font-size: 13px; }
+.dag-w-picker-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; color: #777; }
+.dag-w-select { font: inherit; padding: 4px 8px; border: 1px solid #d5d5d5; border-radius: 6px; background: #fff; max-width: 100%; }
+
+.dag-w { display: block; font-size: 14px; line-height: 1.5; color: #222; }
+.dag-w-line { display: block; padding: 3px 0; }
+summary.dag-w-line { cursor: pointer; list-style: none; position: relative; padding-inline-start: 16px; }
+summary.dag-w-line::-webkit-details-marker { display: none; }
+summary.dag-w-line::before {
+  content: "▶"; position: absolute; inset-inline-start: 1px; top: 6px; color: #777; font-size: 9px; line-height: 1;
+  transition: transform 0.12s ease;
+}
+details.dag-w[open] > summary.dag-w-line::before { transform: rotate(90deg); }
+.dag-w-leaf > .dag-w-line, .dag-w-rowonly > .dag-w-line { padding-inline-start: 16px; }
+.dag-w-glyph {
+  display: inline-block; min-width: 1.2em; margin-inline-end: 4px; text-align: center;
+  font-weight: 700; font-size: 12px; color: var(--dag-calc);
+}
+.dag-w-glyph-raw { color: var(--dag-raw); }
+.dag-w-glyph-agg { color: var(--dag-agg); }
+.dag-w-glyph-rel { color: var(--dag-rel); }
+.dag-w-glyph-lookup { color: var(--dag-lookup); }
+.dag-w-of { color: #777; font-size: 12.5px; }
+.dag-w-of strong { color: #444; }
+.dag-w-name { font-weight: 600; }
+.dag-w-eq { color: #999; margin: 0 6px; }
+.dag-w-val { font-weight: 700; color: #111; overflow-wrap: anywhere; }
+.dag-w-str { font-weight: 600; }
+.dag-w-blank { font-weight: 500; font-style: italic; color: #999; }
+.dag-w-note { margin-inline-start: 8px; font-size: 11.5px; color: #777; }
+.dag-w-gt {
+  padding: 1px 7px; border-radius: 99px; background: var(--dag-raw-bg); color: var(--dag-raw);
+  font-weight: 700; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.dag-w-body { margin: 0 0 4px; margin-inline-start: 6px; padding: 2px 0; padding-inline-start: 14px; border-inline-start: 2px solid #e6e2ef; }
+.dag-w-why { margin: 2px 0 6px; font-size: 13px; color: #555; }
+.dag-w-why .dag-w-val { font-size: 13px; }
+.dag-w-rule { padding: 6px 10px; background: #f7f5fb; border-radius: 5px; }
+.dag-w-rule .dag-rt { font-size: 13px; }
+.dag-w-more { padding: 3px 0 3px 16px; font-size: 12.5px; font-style: italic; color: #888; }
+.dag-w-err, .dag-w-fail { color: #a12a2a; font-size: 13px; }
+.dag-w-fail { padding: 8px 10px; background: #fbeeee; border-radius: 6px; margin-top: 8px; }
+.dag-w-wait { color: #888; font-style: italic; font-size: 13px; margin-top: 8px; }
+
+/* The step of a priority rule that applied to the witnessed row. */
+.dag-rt-fired { background: #e9f6ee; border-radius: 5px; padding: 3px 6px; margin-inline-start: -6px; }
+.dag-rt-passed { opacity: 0.5; }
+.dag-rt-fired-mark {
+  display: inline-block; margin-inline-start: 8px; padding: 0 7px; border-radius: 99px;
+  background: var(--dag-rs); color: #fff; font-size: 10.5px; font-weight: 700;
+  font-style: normal; white-space: nowrap; vertical-align: 1px;
+}
+
+/* In the popup: the same tree, smaller. */
+.dag-hovercard-witness { margin-bottom: 8px; padding-top: 8px; border-top: 1px dashed #eee; }
+.dag-hovercard-witness .dag-w { font-size: 12.5px; }
+.dag-hovercard-witness .dag-w-why, .dag-hovercard-witness .dag-w-why .dag-w-val { font-size: 12px; }
+.dag-hovercard-witness .dag-w-rule .dag-rt { font-size: 12px; }
+.dag-hovercard-witness .dag-w-wait, .dag-hovercard-witness .dag-w-fail { margin-top: 0; font-size: 12px; }
+
+/* ── Right to left (Arabic) ─────────────────────────────────────────────────
+   The explainer puts dir="rtl" on what it draws in a right-to-left language.
+   The rules above name no left or right for anything that follows the text
+   (inline-start / inline-end), so the layout mirrors by itself. What is left:
+   formulas, code and datatype names are left-to-right text wherever they sit,
+   and the two glyphs that point somewhere point the other way. */
+.fx, .fx-raw, .dag-formula-code, .dag-page code, .dag-hovercard code, .dag-modal code {
+  direction: ltr; unicode-bidi: isolate;
+}
+[dir="rtl"] summary.dag-w-line::before { content: "◀"; }
+[dir="rtl"] details.dag-w[open] > summary.dag-w-line::before { transform: rotate(-90deg); }
+
+
+
+/* ─── Navigation: left nav, tabs, index views, graph ─────────────────────────
+   The explainer's own page lays itself out as a sticky nav beside the page, so a
+   table or field is one click away from anywhere. Logical properties throughout:
+   the same rules draw it right to left. */
+
+.dag-page.dag-has-nav {
+  max-width: 1320px;
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 0 32px;
+  align-items: start;
+}
+.dag-has-nav > .dag-main { min-width: 0; max-width: 900px; }
+.dag-nav {
+  grid-column: 1; grid-row: 1;
+  position: sticky; top: 12px;
+  display: flex; flex-direction: column;
+  max-height: calc(100vh - 24px);
+  margin-top: 0.2em;
+  border: 1px solid #e6e6ea;
+  border-radius: 10px;
+  background: #fafafc;
+  font-size: 13px;
+  overflow: hidden;
+}
+.dag-has-nav > .dag-main { grid-column: 2; grid-row: 1; }
+.dag-nav-head { display: flex; flex-direction: column; gap: 8px; padding: 10px 10px 8px; border-bottom: 1px solid #e6e6ea; background: #fff; }
+.dag-nav-index {
+  display: flex; align-items: center; justify-content: space-between;
+  font-weight: 700; text-decoration: none; color: var(--dag-calc);
+  text-transform: uppercase; letter-spacing: 0.06em; font-size: 11px;
+}
+.dag-nav-q, .dag-tab-q {
+  width: 100%; box-sizing: border-box;
+  padding: 6px 9px; border: 1px solid #d0d7de; border-radius: 6px;
+  font: inherit; background: #fff; color: inherit;
+}
+.dag-nav-q:focus, .dag-tab-q:focus { outline: 2px solid var(--dag-calc); outline-offset: 0; border-color: transparent; }
+.dag-nav-chk { display: flex; align-items: center; gap: 6px; color: #666; font-size: 12px; cursor: pointer; }
+.dag-nav-body { overflow: auto; padding: 6px 6px 12px; overscroll-behavior: contain; }
+.dag-nav-empty { padding: 10px; color: #777; }
+
+.dag-nav-group { margin: 2px 0; }
+.dag-nav-group-title, .dag-idx-group-title {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 5px 6px; cursor: pointer; list-style: none;
+  font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #555;
+  border-radius: 5px;
+}
+.dag-nav-group-title::-webkit-details-marker, .dag-idx-group-title::-webkit-details-marker { display: none; }
+.dag-nav-group-title::before, .dag-idx-group-title::before { content: "▸"; color: #999; margin-inline-end: 6px; display: inline-block; transition: transform 100ms ease; }
+.dag-nav-group[open] > .dag-nav-group-title::before, .dag-idx-group[open] > .dag-idx-group-title::before { transform: rotate(90deg); }
+.dag-nav-group-title:hover, .dag-idx-group-title:hover { background: #eef0f4; }
+.dag-nav-group-name, .dag-idx-group-title > span:first-of-type { flex: 1; }
+.dag-nav-group-n { font-weight: 600; color: #888; font-size: 11px; letter-spacing: 0; text-transform: none; }
+.dag-nav-group.has-current > .dag-nav-group-title { color: var(--dag-calc); }
+
+.dag-nav-row { margin: 1px 0; }
+.dag-nav-table {
+  display: flex; align-items: center; justify-content: space-between; gap: 6px;
+  padding: 4px 8px; border-radius: 6px; text-decoration: none; color: #222; font-weight: 600;
+}
+.dag-nav-table:hover { background: #eef0f4; }
+.dag-nav-table.is-current { background: var(--dag-calc-bg); color: var(--dag-calc); }
+.dag-nav-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dag-nav-badge { flex: none; font-size: 10px; font-weight: 700; color: var(--dag-calc); background: var(--dag-calc-bg); border-radius: 999px; padding: 1px 6px; }
+.dag-nav-fields { list-style: none; margin: 2px 0 6px; padding: 0; border-inline-start: 2px solid #e6e6ea; margin-inline-start: 10px; padding-inline-start: 6px; }
+.dag-nav-field {
+  display: flex; align-items: center; gap: 6px;
+  padding: 2px 6px; border-radius: 5px; text-decoration: none; color: #444; font-size: 12px;
+}
+.dag-nav-field:hover { background: #eef0f4; }
+.dag-nav-field.is-current { background: #1f2430; color: #fff; }
+.dag-nav-glyph { flex: none; width: 14px; text-align: center; font-family: Georgia, serif; font-style: italic; }
+.dag-nav-field-raw .dag-nav-glyph { color: var(--dag-raw); }
+.dag-nav-field-calc .dag-nav-glyph { color: var(--dag-calc); }
+.dag-nav-field-agg .dag-nav-glyph { color: var(--dag-agg); }
+.dag-nav-field-rel .dag-nav-glyph { color: var(--dag-rel); }
+.dag-nav-field-lookup .dag-nav-glyph { color: var(--dag-lookup); }
+.dag-nav-field.is-current .dag-nav-glyph { color: #fff; }
+.dag-nav-fname { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+@media (max-width: 900px) {
+  .dag-page.dag-has-nav { display: block; max-width: 880px; }
+  .dag-nav { display: none; }
+}
+
+/* Tabs (a table's fields; the index's views) */
+.dag-tabs { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; margin: 0 0 14px; border-bottom: 1px solid #e6e6ea; padding-bottom: 8px; }
+.dag-tab {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 11px; border: 1px solid transparent; border-radius: 999px; background: transparent;
+  font: 600 12px/1 system-ui, -apple-system, sans-serif; color: #555; cursor: pointer;
+}
+.dag-tab:hover { background: #eef0f4; }
+.dag-tab.is-active { background: var(--dag-calc-bg); color: var(--dag-calc); border-color: var(--dag-calc); }
+.dag-tab-n { font-size: 11px; font-weight: 700; opacity: 0.7; }
+.dag-tabs .dag-tab-q { margin-inline-start: auto; width: 15em; max-width: 100%; }
+.dag-col[hidden] { display: none; }
+
+/* Index views */
+.dag-index-body { display: flex; flex-direction: column; gap: 14px; }
+.dag-idx-group { border: 1px solid #e6e6ea; border-radius: 10px; background: #fff; padding: 2px 10px 12px; }
+.dag-idx-group > .dag-table-grid, .dag-idx-group > .dag-graph-wrap { margin-top: 8px; }
+.dag-idx-list { width: 100%; border-collapse: collapse; font-size: 13px; }
+.dag-idx-list td { padding: 6px 8px; border-bottom: 1px solid #eee; vertical-align: top; }
+.dag-idx-list a { font-weight: 700; text-decoration: none; color: var(--dag-calc); }
+.dag-idx-list a:hover { text-decoration: underline; }
+.dag-idx-n { color: #777; white-space: nowrap; text-align: end; }
+.dag-idx-desc { color: #666; }
+
+/* The graph */
+.dag-graph-hint { margin: 0 0 4px; }
+.dag-graph-wrap { overflow: auto; padding: 4px 0; }
+.dag-graph { display: block; max-width: none; font: 600 12px system-ui, -apple-system, sans-serif; }
+.dag-gedge { fill: none; stroke: #b4bac6; stroke-width: 1.4; }
+.dag-gedge:hover { stroke: var(--dag-calc); stroke-width: 2.2; }
+.dag-garrow { fill: #b4bac6; }
+.dag-gnode a { cursor: pointer; }
+.dag-gnode rect { fill: #fff; stroke: #c5cad6; stroke-width: 1.3; }
+.dag-gnode.has-derived rect { fill: var(--dag-calc-bg); stroke: var(--dag-calc); }
+.dag-gnode text { fill: #222; pointer-events: none; }
+.dag-gnode:hover rect { stroke-width: 2.4; }
+.dag-gnode.is-current rect { stroke: #1f2430; stroke-width: 2.6; }
+
+/* The gear's sections: how to show a rule, the language, which parts show. */
+.dag-gear-section { margin: 10px 0 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #777; }
+.dag-gear-pop-title + .dag-gear-section { margin-top: 4px; }
+.dag-gear-lang { width: 100%; padding: 6px 8px; border: 1px solid #d0d7de; border-radius: 6px; font: inherit; background: #fff; color: inherit; }

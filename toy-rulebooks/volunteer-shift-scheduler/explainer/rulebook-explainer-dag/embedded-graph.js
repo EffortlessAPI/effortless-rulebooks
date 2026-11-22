@@ -644,7 +644,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -1103,6 +1118,7221 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "Events": "event",
+      "Volunteers": "volunteer",
+      "Shifts": "shift",
+      "Assignments": "assignment"
+    }
+  },
+  "ar": {
+    "fields": {
+      "Events.ShiftCount": {
+        "table": "Events",
+        "field": "ShiftCount",
+        "kind": "rollup",
+        "rule": "حقل «shift count» في سجل «event» هو عدد سجلات «shifts» المرتبطة بسجل «event».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «shifts» التي يتحقق فيها أنّ حقل «event» يساوي event ID"
+      },
+      "Events.TotalSlotsNeeded": {
+        "table": "Events",
+        "field": "TotalSlotsNeeded",
+        "kind": "rollup",
+        "rule": "حقل «total slots needed» في سجل «event» هو مجموع قيم حقل «needed count» عبر سجلات «shifts» المرتبطة بسجل «event».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «needed count» في جميع سجلات «shifts» التي يتحقق فيها أنّ حقل «event» يساوي event ID"
+      },
+      "Events.TotalSlotsFilled": {
+        "table": "Events",
+        "field": "TotalSlotsFilled",
+        "kind": "rollup",
+        "rule": "حقل «total slots filled» في سجل «event» هو مجموع قيم حقل «filled count» عبر سجلات «shifts» المرتبطة بسجل «event».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «filled count» في جميع سجلات «shifts» التي يتحقق فيها أنّ حقل «event» يساوي event ID"
+      },
+      "Events.CoveragePercent": {
+        "table": "Events",
+        "field": "CoveragePercent",
+        "kind": "formula",
+        "rule": "حقل «coverage percent» في سجل «event» يتحدد وفق ترتيب الأولوية الآتي:\n1. حقل «total slots filled» مقسومًا على حقل «total slots needed»، إذا تحقق أنّ حقل «total slots needed» أكبر من 0؛\n2. 0، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSlotsNeeded",
+            "label": "total slots needed"
+          },
+          {
+            "table": "Events",
+            "field": "TotalSlotsFilled",
+            "label": "total slots filled"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «coverage percent» في سجل «event» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "حقل «total slots filled» مقسومًا على حقل «total slots needed»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «total slots needed» أكبر من 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ total slots needed أكبر من 0 فالناتج (total slots filled تقسيم total slots needed)، وإلا فالناتج 0"
+      },
+      "Events.StaffingGrade": {
+        "table": "Events",
+        "field": "StaffingGrade",
+        "kind": "formula",
+        "rule": "حقل «staffing grade» في سجل «event» يتحدد وفق ترتيب الأولوية الآتي:\n1. «A»، إذا تحقق أنّ حقل «coverage percent» لا يقل عن 0.95؛\n2. «B»، إذا تحقق أنّ حقل «coverage percent» لا يقل عن 0.85؛\n3. «C»، إذا تحقق أنّ حقل «coverage percent» لا يقل عن 0.70؛\n4. «D»، إذا تحقق أنّ حقل «coverage percent» لا يقل عن 0.50؛\n5. «F»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CoveragePercent",
+            "label": "coverage percent"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «staffing grade» في سجل «event» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«A»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «coverage percent» لا يقل عن 0.95"
+              }
+            },
+            {
+              "value": "«B»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «coverage percent» لا يقل عن 0.85"
+              }
+            },
+            {
+              "value": "«C»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «coverage percent» لا يقل عن 0.70"
+              }
+            },
+            {
+              "value": "«D»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «coverage percent» لا يقل عن 0.50"
+              }
+            },
+            {
+              "value": "«F»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ coverage percent لا يقل عن 0.95 فالناتج \"A\"، وإلا فالناتج إذا تحقق أنّ coverage percent لا يقل عن 0.85 فالناتج \"B\"، وإلا فالناتج إذا تحقق أنّ coverage percent لا يقل عن 0.70 فالناتج \"C\"، وإلا فالناتج إذا تحقق أنّ coverage percent لا يقل عن 0.50 فالناتج \"D\"، وإلا فالناتج \"F\""
+      },
+      "Volunteers.Name": {
+        "table": "Volunteers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «volunteer» يُحسب على النحو الآتي: حقل «first name»، ثم مسافة، ثم حقل «last name».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Volunteers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name يليه \" \") يليه last name"
+      },
+      "Volunteers.AssignmentCount": {
+        "table": "Volunteers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "حقل «assignment count» في سجل «volunteer» هو عدد سجلات «assignments» المرتبطة بسجل «volunteer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «assignments» التي يتحقق فيها أنّ حقل «volunteer» يساوي volunteer ID"
+      },
+      "Volunteers.AssignedHours": {
+        "table": "Volunteers",
+        "field": "AssignedHours",
+        "kind": "rollup",
+        "rule": "حقل «assigned hours» في سجل «volunteer» هو مجموع قيم حقل «shift duration hours» عبر سجلات «assignments» المرتبطة بسجل «volunteer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "ShiftDurationHours",
+            "label": "shift duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «shift duration hours» في جميع سجلات «assignments» التي يتحقق فيها أنّ حقل «volunteer» يساوي volunteer ID"
+      },
+      "Volunteers.LoadStatus": {
+        "table": "Volunteers",
+        "field": "LoadStatus",
+        "kind": "formula",
+        "rule": "حقل «load status» في سجل «volunteer» يتحدد وفق ترتيب الأولوية الآتي:\n1. «over» إذا تحقق أنّ حقل «assigned hours» أكبر من حقل «max hours»، وفي سائر الحالات «under» إذا تحقق أنّ حقل «assigned hours» أقل من حقل «max hours» مضروبًا في 0.5، وفي سائر الحالات «ok»، إذا تحقق أنّ حقل «max hours» أكبر من 0؛\n2. «under»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "MaxHours",
+            "label": "max hours"
+          },
+          {
+            "table": "Volunteers",
+            "field": "AssignedHours",
+            "label": "assigned hours"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «load status» في سجل «volunteer» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«over» إذا تحقق أنّ حقل «assigned hours» أكبر من حقل «max hours»، وفي سائر الحالات «under» إذا تحقق أنّ حقل «assigned hours» أقل من حقل «max hours» مضروبًا في 0.5، وفي سائر الحالات «ok»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «max hours» أكبر من 0"
+              }
+            },
+            {
+              "value": "«under»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ max hours أكبر من 0 فالناتج إذا تحقق أنّ assigned hours أكبر من max hours فالناتج \"over\"، وإلا فالناتج إذا تحقق أنّ assigned hours أقل من (max hours ضرب 0.5) فالناتج \"under\"، وإلا فالناتج \"ok\"، وإلا فالناتج \"under\""
+      },
+      "Shifts.EventName": {
+        "table": "Shifts",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "حقل «event name» في سجل «shift» مأخوذ من السجل المرتبط به عبر حقل «event».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «event»"
+      },
+      "Shifts.FilledCount": {
+        "table": "Shifts",
+        "field": "FilledCount",
+        "kind": "rollup",
+        "rule": "حقل «filled count» في سجل «shift» هو عدد سجلات «assignments» المرتبطة بسجل «shift».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «assignments» التي يتحقق فيها أنّ حقل «shift» يساوي shift ID"
+      },
+      "Shifts.CoverageStatus": {
+        "table": "Shifts",
+        "field": "CoverageStatus",
+        "kind": "formula",
+        "rule": "حقل «coverage status» في سجل «shift» يتحدد وفق ترتيب الأولوية الآتي:\n1. «understaffed»، إذا تحقق أنّ حقل «filled count» أقل من حقل «needed count»؛\n2. «overstaffed»، إذا تحقق أنّ حقل «filled count» أكبر من حقل «needed count»؛\n3. «covered»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «coverage status» في سجل «shift» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«understaffed»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «filled count» أقل من حقل «needed count»"
+              }
+            },
+            {
+              "value": "«overstaffed»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «filled count» أكبر من حقل «needed count»"
+              }
+            },
+            {
+              "value": "«covered»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ filled count أقل من needed count فالناتج \"understaffed\"، وإلا فالناتج إذا تحقق أنّ filled count أكبر من needed count فالناتج \"overstaffed\"، وإلا فالناتج \"covered\""
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «assignment» يُحسب على النحو الآتي: حقل «volunteer name»، ثم « @ »، ثم حقل «shift name».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "VolunteerName",
+            "label": "volunteer name"
+          },
+          {
+            "table": "Assignments",
+            "field": "ShiftName",
+            "label": "shift name"
+          }
+        ],
+        "structure": null,
+        "plain": "(volunteer name يليه \" @ \") يليه shift name"
+      },
+      "Assignments.VolunteerName": {
+        "table": "Assignments",
+        "field": "VolunteerName",
+        "kind": "lookup",
+        "rule": "حقل «volunteer name» في سجل «assignment» مأخوذ من السجل المرتبط به عبر حقل «volunteer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «volunteer»"
+      },
+      "Assignments.ShiftName": {
+        "table": "Assignments",
+        "field": "ShiftName",
+        "kind": "lookup",
+        "rule": "حقل «shift name» في سجل «assignment» مأخوذ من السجل المرتبط به عبر حقل «shift».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «name» من السجل المرتبط عبر «shift»"
+      },
+      "Assignments.ShiftDurationHours": {
+        "table": "Assignments",
+        "field": "ShiftDurationHours",
+        "kind": "lookup",
+        "rule": "حقل «shift duration hours» في سجل «assignment» مأخوذ من السجل المرتبط به عبر حقل «shift».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "DurationHours",
+            "label": "duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «duration hours» من السجل المرتبط عبر «shift»"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Events": "event",
+      "Volunteers": "volunteer",
+      "Shifts": "shift",
+      "Assignments": "assignment"
+    }
+  },
+  "de": {
+    "fields": {
+      "Events.ShiftCount": {
+        "table": "Events",
+        "field": "ShiftCount",
+        "kind": "rollup",
+        "rule": "Ein Event: Shift Count ist die Anzahl der mit dem Event verbundenen Shifts.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Shifts, deren Event ist Event ID"
+      },
+      "Events.TotalSlotsNeeded": {
+        "table": "Events",
+        "field": "TotalSlotsNeeded",
+        "kind": "rollup",
+        "rule": "Ein Event: Total Slots Needed ist die Gesamtsumme von Needed Count über die mit dem Event verbundenen Shifts.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Needed Count über alle Shifts, deren Event ist Event ID"
+      },
+      "Events.TotalSlotsFilled": {
+        "table": "Events",
+        "field": "TotalSlotsFilled",
+        "kind": "rollup",
+        "rule": "Ein Event: Total Slots Filled ist die Gesamtsumme von Filled Count über die mit dem Event verbundenen Shifts.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Filled Count über alle Shifts, deren Event ist Event ID"
+      },
+      "Events.CoveragePercent": {
+        "table": "Events",
+        "field": "CoveragePercent",
+        "kind": "formula",
+        "rule": "Das Feld „Coverage Percent“ des Event wird nach folgender Priorität bestimmt:\n1. der Total Slots Filled geteilt durch der Total Slots Needed, wenn der Total Slots Needed größer ist als 0;\n2. andernfalls 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSlotsNeeded",
+            "label": "total slots needed"
+          },
+          {
+            "table": "Events",
+            "field": "TotalSlotsFilled",
+            "label": "total slots filled"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Coverage Percent“ des Event wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "der Total Slots Filled geteilt durch der Total Slots Needed",
+              "when": {
+                "kind": "leaf",
+                "text": "der Total Slots Needed größer ist als 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Total Slots Needed größer als 0 ist, dann (Total Slots Filled geteilt durch Total Slots Needed), andernfalls 0"
+      },
+      "Events.StaffingGrade": {
+        "table": "Events",
+        "field": "StaffingGrade",
+        "kind": "formula",
+        "rule": "Das Feld „Staffing Grade“ des Event wird nach folgender Priorität bestimmt:\n1. „A“, wenn der Coverage Percent mindestens 0.95 ist;\n2. „B“, wenn der Coverage Percent mindestens 0.85 ist;\n3. „C“, wenn der Coverage Percent mindestens 0.70 ist;\n4. „D“, wenn der Coverage Percent mindestens 0.50 ist;\n5. andernfalls „F“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CoveragePercent",
+            "label": "coverage percent"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Staffing Grade“ des Event wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„A“",
+              "when": {
+                "kind": "leaf",
+                "text": "der Coverage Percent mindestens 0.95 ist"
+              }
+            },
+            {
+              "value": "„B“",
+              "when": {
+                "kind": "leaf",
+                "text": "der Coverage Percent mindestens 0.85 ist"
+              }
+            },
+            {
+              "value": "„C“",
+              "when": {
+                "kind": "leaf",
+                "text": "der Coverage Percent mindestens 0.70 ist"
+              }
+            },
+            {
+              "value": "„D“",
+              "when": {
+                "kind": "leaf",
+                "text": "der Coverage Percent mindestens 0.50 ist"
+              }
+            },
+            {
+              "value": "„F“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Coverage Percent mindestens 0.95 ist, dann \"A\", andernfalls wenn Coverage Percent mindestens 0.85 ist, dann \"B\", andernfalls wenn Coverage Percent mindestens 0.70 ist, dann \"C\", andernfalls wenn Coverage Percent mindestens 0.50 ist, dann \"D\", andernfalls \"F\""
+      },
+      "Volunteers.Name": {
+        "table": "Volunteers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Volunteer: Name wird berechnet als die First Name, gefolgt von ein Leerzeichen, gefolgt von die Last Name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Volunteers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(First Name verbunden mit \" \") verbunden mit Last Name"
+      },
+      "Volunteers.AssignmentCount": {
+        "table": "Volunteers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "Ein Volunteer: Assignment Count ist die Anzahl der mit dem Volunteer verbundenen Assignments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Assignments, deren Volunteer ist Volunteer ID"
+      },
+      "Volunteers.AssignedHours": {
+        "table": "Volunteers",
+        "field": "AssignedHours",
+        "kind": "rollup",
+        "rule": "Ein Volunteer: Assigned Hours ist die Gesamtsumme von Shift Duration Hours über die mit dem Volunteer verbundenen Assignments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "ShiftDurationHours",
+            "label": "shift duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Shift Duration Hours über alle Assignments, deren Volunteer ist Volunteer ID"
+      },
+      "Volunteers.LoadStatus": {
+        "table": "Volunteers",
+        "field": "LoadStatus",
+        "kind": "formula",
+        "rule": "Das Feld „Load Status“ des Volunteer wird nach folgender Priorität bestimmt:\n1. „over“, wenn der Assigned Hours größer ist als der Max Hours, andernfalls „under“, wenn der Assigned Hours kleiner ist als der Max Hours mal 0.5, andernfalls „ok“, wenn der Max Hours größer ist als 0;\n2. andernfalls „under“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "MaxHours",
+            "label": "max hours"
+          },
+          {
+            "table": "Volunteers",
+            "field": "AssignedHours",
+            "label": "assigned hours"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Load Status“ des Volunteer wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„over“, wenn der Assigned Hours größer ist als der Max Hours, andernfalls „under“, wenn der Assigned Hours kleiner ist als der Max Hours mal 0.5, andernfalls „ok“",
+              "when": {
+                "kind": "leaf",
+                "text": "der Max Hours größer ist als 0"
+              }
+            },
+            {
+              "value": "„under“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Max Hours größer als 0 ist, dann wenn Assigned Hours größer als Max Hours ist, dann \"over\", andernfalls wenn Assigned Hours kleiner als (Max Hours mal 0.5) ist, dann \"under\", andernfalls \"ok\", andernfalls \"under\""
+      },
+      "Shifts.EventName": {
+        "table": "Shifts",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Ein Shift: Event Name — aus dem zugehörigen Event übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Event"
+      },
+      "Shifts.FilledCount": {
+        "table": "Shifts",
+        "field": "FilledCount",
+        "kind": "rollup",
+        "rule": "Ein Shift: Filled Count ist die Anzahl der mit dem Shift verbundenen Assignments.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Assignments, deren Shift ist Shift ID"
+      },
+      "Shifts.CoverageStatus": {
+        "table": "Shifts",
+        "field": "CoverageStatus",
+        "kind": "formula",
+        "rule": "Das Feld „Coverage Status“ des Shift wird nach folgender Priorität bestimmt:\n1. „understaffed“, wenn der Filled Count kleiner ist als der Needed Count;\n2. „overstaffed“, wenn der Filled Count größer ist als der Needed Count;\n3. andernfalls „covered“.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Coverage Status“ des Shift wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„understaffed“",
+              "when": {
+                "kind": "leaf",
+                "text": "der Filled Count kleiner ist als der Needed Count"
+              }
+            },
+            {
+              "value": "„overstaffed“",
+              "when": {
+                "kind": "leaf",
+                "text": "der Filled Count größer ist als der Needed Count"
+              }
+            },
+            {
+              "value": "„covered“",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Filled Count kleiner als Needed Count ist, dann \"understaffed\", andernfalls wenn Filled Count größer als Needed Count ist, dann \"overstaffed\", andernfalls \"covered\""
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Assignment: Name wird berechnet als die Volunteer Name, gefolgt von „ @ “, gefolgt von die Shift Name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "VolunteerName",
+            "label": "volunteer name"
+          },
+          {
+            "table": "Assignments",
+            "field": "ShiftName",
+            "label": "shift name"
+          }
+        ],
+        "structure": null,
+        "plain": "(Volunteer Name verbunden mit \" @ \") verbunden mit Shift Name"
+      },
+      "Assignments.VolunteerName": {
+        "table": "Assignments",
+        "field": "VolunteerName",
+        "kind": "lookup",
+        "rule": "Ein Assignment: Volunteer Name — aus dem zugehörigen Volunteer übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Volunteer"
+      },
+      "Assignments.ShiftName": {
+        "table": "Assignments",
+        "field": "ShiftName",
+        "kind": "lookup",
+        "rule": "Ein Assignment: Shift Name — aus dem zugehörigen Shift übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Name des verknüpften Shift"
+      },
+      "Assignments.ShiftDurationHours": {
+        "table": "Assignments",
+        "field": "ShiftDurationHours",
+        "kind": "lookup",
+        "rule": "Ein Assignment: Shift Duration Hours — aus dem zugehörigen Shift übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "DurationHours",
+            "label": "duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Duration Hours des verknüpften Shift"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Events": "Event",
+      "Volunteers": "Volunteer",
+      "Shifts": "Shift",
+      "Assignments": "Assignment"
+    }
+  },
+  "es": {
+    "fields": {
+      "Events.ShiftCount": {
+        "table": "Events",
+        "field": "ShiftCount",
+        "kind": "rollup",
+        "rule": "Un event: shift count es el número de shifts relacionados con el event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de shifts cuyo event es event ID"
+      },
+      "Events.TotalSlotsNeeded": {
+        "table": "Events",
+        "field": "TotalSlotsNeeded",
+        "kind": "rollup",
+        "rule": "Un event: total slots needed es el total de needed count entre los shifts relacionados con el event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de needed count entre todos los shifts cuyo event es event ID"
+      },
+      "Events.TotalSlotsFilled": {
+        "table": "Events",
+        "field": "TotalSlotsFilled",
+        "kind": "rollup",
+        "rule": "Un event: total slots filled es el total de filled count entre los shifts relacionados con el event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de filled count entre todos los shifts cuyo event es event ID"
+      },
+      "Events.CoveragePercent": {
+        "table": "Events",
+        "field": "CoveragePercent",
+        "kind": "formula",
+        "rule": "El campo «coverage percent» del event se determina según la siguiente prioridad:\n1. el total slots filled dividido por el total slots needed, si el total slots needed es mayor que 0;\n2. en todos los demás casos, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSlotsNeeded",
+            "label": "total slots needed"
+          },
+          {
+            "table": "Events",
+            "field": "TotalSlotsFilled",
+            "label": "total slots filled"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «coverage percent» del event se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "el total slots filled dividido por el total slots needed",
+              "when": {
+                "kind": "leaf",
+                "text": "el total slots needed es mayor que 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si total slots needed es mayor que 0, entonces (total slots filled dividido por total slots needed), de lo contrario 0"
+      },
+      "Events.StaffingGrade": {
+        "table": "Events",
+        "field": "StaffingGrade",
+        "kind": "formula",
+        "rule": "El campo «staffing grade» del event se determina según la siguiente prioridad:\n1. «A», si el coverage percent es al menos 0.95;\n2. «B», si el coverage percent es al menos 0.85;\n3. «C», si el coverage percent es al menos 0.70;\n4. «D», si el coverage percent es al menos 0.50;\n5. en todos los demás casos, «F».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CoveragePercent",
+            "label": "coverage percent"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «staffing grade» del event se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«A»",
+              "when": {
+                "kind": "leaf",
+                "text": "el coverage percent es al menos 0.95"
+              }
+            },
+            {
+              "value": "«B»",
+              "when": {
+                "kind": "leaf",
+                "text": "el coverage percent es al menos 0.85"
+              }
+            },
+            {
+              "value": "«C»",
+              "when": {
+                "kind": "leaf",
+                "text": "el coverage percent es al menos 0.70"
+              }
+            },
+            {
+              "value": "«D»",
+              "when": {
+                "kind": "leaf",
+                "text": "el coverage percent es al menos 0.50"
+              }
+            },
+            {
+              "value": "«F»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si coverage percent es al menos 0.95, entonces \"A\", de lo contrario si coverage percent es al menos 0.85, entonces \"B\", de lo contrario si coverage percent es al menos 0.70, entonces \"C\", de lo contrario si coverage percent es al menos 0.50, entonces \"D\", de lo contrario \"F\""
+      },
+      "Volunteers.Name": {
+        "table": "Volunteers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un volunteer: name se calcula como el first name, seguido de un espacio, seguido de el last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Volunteers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name unido con \" \") unido con last name"
+      },
+      "Volunteers.AssignmentCount": {
+        "table": "Volunteers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "Un volunteer: assignment count es el número de assignments relacionados con el volunteer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de assignments cuyo volunteer es volunteer ID"
+      },
+      "Volunteers.AssignedHours": {
+        "table": "Volunteers",
+        "field": "AssignedHours",
+        "kind": "rollup",
+        "rule": "Un volunteer: assigned hours es el total de shift duration hours entre los assignments relacionados con el volunteer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "ShiftDurationHours",
+            "label": "shift duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de shift duration hours entre todos los assignments cuyo volunteer es volunteer ID"
+      },
+      "Volunteers.LoadStatus": {
+        "table": "Volunteers",
+        "field": "LoadStatus",
+        "kind": "formula",
+        "rule": "El campo «load status» del volunteer se determina según la siguiente prioridad:\n1. «over» si el assigned hours es mayor que el max hours, en todos los demás casos «under» si el assigned hours es menor que el max hours por 0.5, en todos los demás casos «ok», si el max hours es mayor que 0;\n2. en todos los demás casos, «under».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "MaxHours",
+            "label": "max hours"
+          },
+          {
+            "table": "Volunteers",
+            "field": "AssignedHours",
+            "label": "assigned hours"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «load status» del volunteer se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«over» si el assigned hours es mayor que el max hours, en todos los demás casos «under» si el assigned hours es menor que el max hours por 0.5, en todos los demás casos «ok»",
+              "when": {
+                "kind": "leaf",
+                "text": "el max hours es mayor que 0"
+              }
+            },
+            {
+              "value": "«under»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si max hours es mayor que 0, entonces si assigned hours es mayor que max hours, entonces \"over\", de lo contrario si assigned hours es menor que (max hours por 0.5), entonces \"under\", de lo contrario \"ok\", de lo contrario \"under\""
+      },
+      "Shifts.EventName": {
+        "table": "Shifts",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Un shift: event name — tomado del event vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del event vinculado"
+      },
+      "Shifts.FilledCount": {
+        "table": "Shifts",
+        "field": "FilledCount",
+        "kind": "rollup",
+        "rule": "Un shift: filled count es el número de assignments relacionados con el shift.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de assignments cuyo shift es shift ID"
+      },
+      "Shifts.CoverageStatus": {
+        "table": "Shifts",
+        "field": "CoverageStatus",
+        "kind": "formula",
+        "rule": "El campo «coverage status» del shift se determina según la siguiente prioridad:\n1. «understaffed», si el filled count es menor que el needed count;\n2. «overstaffed», si el filled count es mayor que el needed count;\n3. en todos los demás casos, «covered».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «coverage status» del shift se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«understaffed»",
+              "when": {
+                "kind": "leaf",
+                "text": "el filled count es menor que el needed count"
+              }
+            },
+            {
+              "value": "«overstaffed»",
+              "when": {
+                "kind": "leaf",
+                "text": "el filled count es mayor que el needed count"
+              }
+            },
+            {
+              "value": "«covered»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si filled count es menor que needed count, entonces \"understaffed\", de lo contrario si filled count es mayor que needed count, entonces \"overstaffed\", de lo contrario \"covered\""
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un assignment: name se calcula como el volunteer name, seguido de « @ », seguido de el shift name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "VolunteerName",
+            "label": "volunteer name"
+          },
+          {
+            "table": "Assignments",
+            "field": "ShiftName",
+            "label": "shift name"
+          }
+        ],
+        "structure": null,
+        "plain": "(volunteer name unido con \" @ \") unido con shift name"
+      },
+      "Assignments.VolunteerName": {
+        "table": "Assignments",
+        "field": "VolunteerName",
+        "kind": "lookup",
+        "rule": "Un assignment: volunteer name — tomado del volunteer vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del volunteer vinculado"
+      },
+      "Assignments.ShiftName": {
+        "table": "Assignments",
+        "field": "ShiftName",
+        "kind": "lookup",
+        "rule": "Un assignment: shift name — tomado del shift vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El name del shift vinculado"
+      },
+      "Assignments.ShiftDurationHours": {
+        "table": "Assignments",
+        "field": "ShiftDurationHours",
+        "kind": "lookup",
+        "rule": "Un assignment: shift duration hours — tomado del shift vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "DurationHours",
+            "label": "duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El duration hours del shift vinculado"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Events": "event",
+      "Volunteers": "volunteer",
+      "Shifts": "shift",
+      "Assignments": "assignment"
+    }
+  },
+  "fr": {
+    "fields": {
+      "Events.ShiftCount": {
+        "table": "Events",
+        "field": "ShiftCount",
+        "kind": "rollup",
+        "rule": "Un event : shift count est le nombre de shifts liés à l'event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des shifts dont event est event ID"
+      },
+      "Events.TotalSlotsNeeded": {
+        "table": "Events",
+        "field": "TotalSlotsNeeded",
+        "kind": "rollup",
+        "rule": "Un event : total slots needed est le total de needed count sur les shifts liés à l'event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de needed count sur tous les shifts dont event est event ID"
+      },
+      "Events.TotalSlotsFilled": {
+        "table": "Events",
+        "field": "TotalSlotsFilled",
+        "kind": "rollup",
+        "rule": "Un event : total slots filled est le total de filled count sur les shifts liés à l'event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de filled count sur tous les shifts dont event est event ID"
+      },
+      "Events.CoveragePercent": {
+        "table": "Events",
+        "field": "CoveragePercent",
+        "kind": "formula",
+        "rule": "Le champ « coverage percent » de l'event est déterminé selon la priorité suivante :\n1. le total slots filled divisé par le total slots needed, si le total slots needed est supérieur à 0 ;\n2. dans tous les autres cas, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSlotsNeeded",
+            "label": "total slots needed"
+          },
+          {
+            "table": "Events",
+            "field": "TotalSlotsFilled",
+            "label": "total slots filled"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « coverage percent » de l'event est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "le total slots filled divisé par le total slots needed",
+              "when": {
+                "kind": "leaf",
+                "text": "le total slots needed est supérieur à 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si total slots needed est supérieur à 0, alors (total slots filled divisé par total slots needed), sinon 0"
+      },
+      "Events.StaffingGrade": {
+        "table": "Events",
+        "field": "StaffingGrade",
+        "kind": "formula",
+        "rule": "Le champ « staffing grade » de l'event est déterminé selon la priorité suivante :\n1. « A », si le coverage percent est au moins 0.95 ;\n2. « B », si le coverage percent est au moins 0.85 ;\n3. « C », si le coverage percent est au moins 0.70 ;\n4. « D », si le coverage percent est au moins 0.50 ;\n5. dans tous les autres cas, « F ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CoveragePercent",
+            "label": "coverage percent"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « staffing grade » de l'event est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« A »",
+              "when": {
+                "kind": "leaf",
+                "text": "le coverage percent est au moins 0.95"
+              }
+            },
+            {
+              "value": "« B »",
+              "when": {
+                "kind": "leaf",
+                "text": "le coverage percent est au moins 0.85"
+              }
+            },
+            {
+              "value": "« C »",
+              "when": {
+                "kind": "leaf",
+                "text": "le coverage percent est au moins 0.70"
+              }
+            },
+            {
+              "value": "« D »",
+              "when": {
+                "kind": "leaf",
+                "text": "le coverage percent est au moins 0.50"
+              }
+            },
+            {
+              "value": "« F »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si coverage percent est au moins 0.95, alors \"A\", sinon si coverage percent est au moins 0.85, alors \"B\", sinon si coverage percent est au moins 0.70, alors \"C\", sinon si coverage percent est au moins 0.50, alors \"D\", sinon \"F\""
+      },
+      "Volunteers.Name": {
+        "table": "Volunteers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un volunteer : name est calculé comme le first name, suivi de une espace, suivi de le last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Volunteers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name joint à \" \") joint à last name"
+      },
+      "Volunteers.AssignmentCount": {
+        "table": "Volunteers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "Un volunteer : assignment count est le nombre de assignments liés à le volunteer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des assignments dont volunteer est volunteer ID"
+      },
+      "Volunteers.AssignedHours": {
+        "table": "Volunteers",
+        "field": "AssignedHours",
+        "kind": "rollup",
+        "rule": "Un volunteer : assigned hours est le total de shift duration hours sur les assignments liés à le volunteer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "ShiftDurationHours",
+            "label": "shift duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de shift duration hours sur tous les assignments dont volunteer est volunteer ID"
+      },
+      "Volunteers.LoadStatus": {
+        "table": "Volunteers",
+        "field": "LoadStatus",
+        "kind": "formula",
+        "rule": "Le champ « load status » du volunteer est déterminé selon la priorité suivante :\n1. « over » si l'assigned hours est supérieur à le max hours, dans tous les autres cas « under » si l'assigned hours est inférieur à le max hours multiplié par 0.5, dans tous les autres cas « ok », si le max hours est supérieur à 0 ;\n2. dans tous les autres cas, « under ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "MaxHours",
+            "label": "max hours"
+          },
+          {
+            "table": "Volunteers",
+            "field": "AssignedHours",
+            "label": "assigned hours"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « load status » du volunteer est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« over » si l'assigned hours est supérieur à le max hours, dans tous les autres cas « under » si l'assigned hours est inférieur à le max hours multiplié par 0.5, dans tous les autres cas « ok »",
+              "when": {
+                "kind": "leaf",
+                "text": "le max hours est supérieur à 0"
+              }
+            },
+            {
+              "value": "« under »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si max hours est supérieur à 0, alors si assigned hours est supérieur à max hours, alors \"over\", sinon si assigned hours est inférieur à (max hours fois 0.5), alors \"under\", sinon \"ok\", sinon \"under\""
+      },
+      "Shifts.EventName": {
+        "table": "Shifts",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Un shift : event name — repris du event lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du event lié"
+      },
+      "Shifts.FilledCount": {
+        "table": "Shifts",
+        "field": "FilledCount",
+        "kind": "rollup",
+        "rule": "Un shift : filled count est le nombre de assignments liés à le shift.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des assignments dont shift est shift ID"
+      },
+      "Shifts.CoverageStatus": {
+        "table": "Shifts",
+        "field": "CoverageStatus",
+        "kind": "formula",
+        "rule": "Le champ « coverage status » du shift est déterminé selon la priorité suivante :\n1. « understaffed », si le filled count est inférieur à le needed count ;\n2. « overstaffed », si le filled count est supérieur à le needed count ;\n3. dans tous les autres cas, « covered ».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « coverage status » du shift est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« understaffed »",
+              "when": {
+                "kind": "leaf",
+                "text": "le filled count est inférieur à le needed count"
+              }
+            },
+            {
+              "value": "« overstaffed »",
+              "when": {
+                "kind": "leaf",
+                "text": "le filled count est supérieur à le needed count"
+              }
+            },
+            {
+              "value": "« covered »",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si filled count est inférieur à needed count, alors \"understaffed\", sinon si filled count est supérieur à needed count, alors \"overstaffed\", sinon \"covered\""
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un assignment : name est calculé comme le volunteer name, suivi de « @ », suivi de le shift name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "VolunteerName",
+            "label": "volunteer name"
+          },
+          {
+            "table": "Assignments",
+            "field": "ShiftName",
+            "label": "shift name"
+          }
+        ],
+        "structure": null,
+        "plain": "(volunteer name joint à \" @ \") joint à shift name"
+      },
+      "Assignments.VolunteerName": {
+        "table": "Assignments",
+        "field": "VolunteerName",
+        "kind": "lookup",
+        "rule": "Un assignment : volunteer name — repris du volunteer lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du volunteer lié"
+      },
+      "Assignments.ShiftName": {
+        "table": "Assignments",
+        "field": "ShiftName",
+        "kind": "lookup",
+        "rule": "Un assignment : shift name — repris du shift lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le name du shift lié"
+      },
+      "Assignments.ShiftDurationHours": {
+        "table": "Assignments",
+        "field": "ShiftDurationHours",
+        "kind": "lookup",
+        "rule": "Un assignment : shift duration hours — repris du shift lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "DurationHours",
+            "label": "duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le duration hours du shift lié"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Events": "event",
+      "Volunteers": "volunteer",
+      "Shifts": "shift",
+      "Assignments": "assignment"
+    }
+  },
+  "hi": {
+    "fields": {
+      "Events.ShiftCount": {
+        "table": "Events",
+        "field": "ShiftCount",
+        "kind": "rollup",
+        "rule": "event का “shift count” event से संबंधित “shifts” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “shifts” की संख्या, जिनका event event ID है"
+      },
+      "Events.TotalSlotsNeeded": {
+        "table": "Events",
+        "field": "TotalSlotsNeeded",
+        "kind": "rollup",
+        "rule": "event का “total slots needed” event से संबंधित “shifts” पर कुल “needed count” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “shifts” पर योग needed count, जिनका event event ID है"
+      },
+      "Events.TotalSlotsFilled": {
+        "table": "Events",
+        "field": "TotalSlotsFilled",
+        "kind": "rollup",
+        "rule": "event का “total slots filled” event से संबंधित “shifts” पर कुल “filled count” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “shifts” पर योग filled count, जिनका event event ID है"
+      },
+      "Events.CoveragePercent": {
+        "table": "Events",
+        "field": "CoveragePercent",
+        "kind": "formula",
+        "rule": "Event का “coverage percent” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. total slots filled भाग total slots needed, यदि total slots needed 0 से अधिक है;\n2. अन्य सभी स्थितियों में, 0।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSlotsNeeded",
+            "label": "total slots needed"
+          },
+          {
+            "table": "Events",
+            "field": "TotalSlotsFilled",
+            "label": "total slots filled"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Event का “coverage percent” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "total slots filled भाग total slots needed",
+              "when": {
+                "kind": "leaf",
+                "text": "total slots needed 0 से अधिक है"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि total slots needed 0 से अधिक है, तो (total slots filled भाग total slots needed), अन्यथा 0"
+      },
+      "Events.StaffingGrade": {
+        "table": "Events",
+        "field": "StaffingGrade",
+        "kind": "formula",
+        "rule": "Event का “staffing grade” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “A”, यदि coverage percent कम से कम 0.95 है;\n2. “B”, यदि coverage percent कम से कम 0.85 है;\n3. “C”, यदि coverage percent कम से कम 0.70 है;\n4. “D”, यदि coverage percent कम से कम 0.50 है;\n5. अन्य सभी स्थितियों में, “F”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CoveragePercent",
+            "label": "coverage percent"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Event का “staffing grade” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“A”",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent कम से कम 0.95 है"
+              }
+            },
+            {
+              "value": "“B”",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent कम से कम 0.85 है"
+              }
+            },
+            {
+              "value": "“C”",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent कम से कम 0.70 है"
+              }
+            },
+            {
+              "value": "“D”",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent कम से कम 0.50 है"
+              }
+            },
+            {
+              "value": "“F”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि coverage percent कम से कम 0.95 है, तो \"A\", अन्यथा यदि coverage percent कम से कम 0.85 है, तो \"B\", अन्यथा यदि coverage percent कम से कम 0.70 है, तो \"C\", अन्यथा यदि coverage percent कम से कम 0.50 है, तो \"D\", अन्यथा \"F\""
+      },
+      "Volunteers.Name": {
+        "table": "Volunteers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "volunteer का “name” first name, उसके बाद एक रिक्त स्थान, उसके बाद last name के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Volunteers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name \" \" से जुड़ा हुआ) last name से जुड़ा हुआ"
+      },
+      "Volunteers.AssignmentCount": {
+        "table": "Volunteers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "volunteer का “assignment count” volunteer से संबंधित “assignments” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “assignments” की संख्या, जिनका volunteer volunteer ID है"
+      },
+      "Volunteers.AssignedHours": {
+        "table": "Volunteers",
+        "field": "AssignedHours",
+        "kind": "rollup",
+        "rule": "volunteer का “assigned hours” volunteer से संबंधित “assignments” पर कुल “shift duration hours” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "ShiftDurationHours",
+            "label": "shift duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “assignments” पर योग shift duration hours, जिनका volunteer volunteer ID है"
+      },
+      "Volunteers.LoadStatus": {
+        "table": "Volunteers",
+        "field": "LoadStatus",
+        "kind": "formula",
+        "rule": "Volunteer का “load status” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “over”, यदि assigned hours max hours से अधिक है; अन्य सभी स्थितियों में “under”, यदि assigned hours max hours गुणा 0.5 से कम है; अन्य सभी स्थितियों में “ok”, यदि max hours 0 से अधिक है;\n2. अन्य सभी स्थितियों में, “under”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "MaxHours",
+            "label": "max hours"
+          },
+          {
+            "table": "Volunteers",
+            "field": "AssignedHours",
+            "label": "assigned hours"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Volunteer का “load status” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“over”, यदि assigned hours max hours से अधिक है; अन्य सभी स्थितियों में “under”, यदि assigned hours max hours गुणा 0.5 से कम है; अन्य सभी स्थितियों में “ok”",
+              "when": {
+                "kind": "leaf",
+                "text": "max hours 0 से अधिक है"
+              }
+            },
+            {
+              "value": "“under”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि max hours 0 से अधिक है, तो यदि assigned hours max hours से अधिक है, तो \"over\", अन्यथा यदि assigned hours (max hours गुणा 0.5) से कम है, तो \"under\", अन्यथा \"ok\", अन्यथा \"under\""
+      },
+      "Shifts.EventName": {
+        "table": "Shifts",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "shift का “event name” — लिंक किए गए “event” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “event” का name"
+      },
+      "Shifts.FilledCount": {
+        "table": "Shifts",
+        "field": "FilledCount",
+        "kind": "rollup",
+        "rule": "shift का “filled count” shift से संबंधित “assignments” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “assignments” की संख्या, जिनका shift shift ID है"
+      },
+      "Shifts.CoverageStatus": {
+        "table": "Shifts",
+        "field": "CoverageStatus",
+        "kind": "formula",
+        "rule": "Shift का “coverage status” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “understaffed”, यदि filled count needed count से कम है;\n2. “overstaffed”, यदि filled count needed count से अधिक है;\n3. अन्य सभी स्थितियों में, “covered”।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Shift का “coverage status” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“understaffed”",
+              "when": {
+                "kind": "leaf",
+                "text": "filled count needed count से कम है"
+              }
+            },
+            {
+              "value": "“overstaffed”",
+              "when": {
+                "kind": "leaf",
+                "text": "filled count needed count से अधिक है"
+              }
+            },
+            {
+              "value": "“covered”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि filled count needed count से कम है, तो \"understaffed\", अन्यथा यदि filled count needed count से अधिक है, तो \"overstaffed\", अन्यथा \"covered\""
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "assignment का “name” volunteer name, उसके बाद “ @ ”, उसके बाद shift name के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "VolunteerName",
+            "label": "volunteer name"
+          },
+          {
+            "table": "Assignments",
+            "field": "ShiftName",
+            "label": "shift name"
+          }
+        ],
+        "structure": null,
+        "plain": "(volunteer name \" @ \" से जुड़ा हुआ) shift name से जुड़ा हुआ"
+      },
+      "Assignments.VolunteerName": {
+        "table": "Assignments",
+        "field": "VolunteerName",
+        "kind": "lookup",
+        "rule": "assignment का “volunteer name” — लिंक किए गए “volunteer” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “volunteer” का name"
+      },
+      "Assignments.ShiftName": {
+        "table": "Assignments",
+        "field": "ShiftName",
+        "kind": "lookup",
+        "rule": "assignment का “shift name” — लिंक किए गए “shift” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “shift” का name"
+      },
+      "Assignments.ShiftDurationHours": {
+        "table": "Assignments",
+        "field": "ShiftDurationHours",
+        "kind": "lookup",
+        "rule": "assignment का “shift duration hours” — लिंक किए गए “shift” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "DurationHours",
+            "label": "duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “shift” का duration hours"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "Events": "event",
+      "Volunteers": "volunteer",
+      "Shifts": "shift",
+      "Assignments": "assignment"
+    }
+  },
+  "id": {
+    "fields": {
+      "Events.ShiftCount": {
+        "table": "Events",
+        "field": "ShiftCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap event, shift count adalah jumlah shifts yang terkait dengan event tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah shifts dengan syarat event adalah event ID"
+      },
+      "Events.TotalSlotsNeeded": {
+        "table": "Events",
+        "field": "TotalSlotsNeeded",
+        "kind": "rollup",
+        "rule": "Untuk setiap event, total slots needed adalah nilai total needed count pada seluruh shifts yang terkait dengan event tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total needed count pada semua shifts dengan syarat event adalah event ID"
+      },
+      "Events.TotalSlotsFilled": {
+        "table": "Events",
+        "field": "TotalSlotsFilled",
+        "kind": "rollup",
+        "rule": "Untuk setiap event, total slots filled adalah nilai total filled count pada seluruh shifts yang terkait dengan event tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total filled count pada semua shifts dengan syarat event adalah event ID"
+      },
+      "Events.CoveragePercent": {
+        "table": "Events",
+        "field": "CoveragePercent",
+        "kind": "formula",
+        "rule": "Untuk setiap event, coverage percent ditentukan menurut urutan prioritas berikut:\n1. total slots filled dibagi total slots needed, jika total slots needed lebih dari 0;\n2. dalam semua kasus lainnya, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSlotsNeeded",
+            "label": "total slots needed"
+          },
+          {
+            "table": "Events",
+            "field": "TotalSlotsFilled",
+            "label": "total slots filled"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap event, coverage percent ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "total slots filled dibagi total slots needed",
+              "when": {
+                "kind": "leaf",
+                "text": "total slots needed lebih dari 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika total slots needed lebih dari 0 maka (total slots filled dibagi total slots needed), selain itu 0"
+      },
+      "Events.StaffingGrade": {
+        "table": "Events",
+        "field": "StaffingGrade",
+        "kind": "formula",
+        "rule": "Untuk setiap event, staffing grade ditentukan menurut urutan prioritas berikut:\n1. “A”, jika coverage percent tidak kurang dari 0.95;\n2. “B”, jika coverage percent tidak kurang dari 0.85;\n3. “C”, jika coverage percent tidak kurang dari 0.70;\n4. “D”, jika coverage percent tidak kurang dari 0.50;\n5. dalam semua kasus lainnya, “F”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CoveragePercent",
+            "label": "coverage percent"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap event, staffing grade ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“A”",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent tidak kurang dari 0.95"
+              }
+            },
+            {
+              "value": "“B”",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent tidak kurang dari 0.85"
+              }
+            },
+            {
+              "value": "“C”",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent tidak kurang dari 0.70"
+              }
+            },
+            {
+              "value": "“D”",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent tidak kurang dari 0.50"
+              }
+            },
+            {
+              "value": "“F”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika coverage percent tidak kurang dari 0.95 maka \"A\", selain itu jika coverage percent tidak kurang dari 0.85 maka \"B\", selain itu jika coverage percent tidak kurang dari 0.70 maka \"C\", selain itu jika coverage percent tidak kurang dari 0.50 maka \"D\", selain itu \"F\""
+      },
+      "Volunteers.Name": {
+        "table": "Volunteers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap volunteer, name dihitung sebagai first name, diikuti spasi, diikuti last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Volunteers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name digabung dengan \" \") digabung dengan last name"
+      },
+      "Volunteers.AssignmentCount": {
+        "table": "Volunteers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap volunteer, assignment count adalah jumlah assignments yang terkait dengan volunteer tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah assignments dengan syarat volunteer adalah volunteer ID"
+      },
+      "Volunteers.AssignedHours": {
+        "table": "Volunteers",
+        "field": "AssignedHours",
+        "kind": "rollup",
+        "rule": "Untuk setiap volunteer, assigned hours adalah nilai total shift duration hours pada seluruh assignments yang terkait dengan volunteer tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "ShiftDurationHours",
+            "label": "shift duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total shift duration hours pada semua assignments dengan syarat volunteer adalah volunteer ID"
+      },
+      "Volunteers.LoadStatus": {
+        "table": "Volunteers",
+        "field": "LoadStatus",
+        "kind": "formula",
+        "rule": "Untuk setiap volunteer, load status ditentukan menurut urutan prioritas berikut:\n1. “over” jika assigned hours lebih dari max hours, dan dalam semua kasus lainnya “under” jika assigned hours kurang dari max hours dikali 0.5, dan dalam semua kasus lainnya “ok”, jika max hours lebih dari 0;\n2. dalam semua kasus lainnya, “under”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "MaxHours",
+            "label": "max hours"
+          },
+          {
+            "table": "Volunteers",
+            "field": "AssignedHours",
+            "label": "assigned hours"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap volunteer, load status ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“over” jika assigned hours lebih dari max hours, dan dalam semua kasus lainnya “under” jika assigned hours kurang dari max hours dikali 0.5, dan dalam semua kasus lainnya “ok”",
+              "when": {
+                "kind": "leaf",
+                "text": "max hours lebih dari 0"
+              }
+            },
+            {
+              "value": "“under”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika max hours lebih dari 0 maka jika assigned hours lebih dari max hours maka \"over\", selain itu jika assigned hours kurang dari (max hours dikali 0.5) maka \"under\", selain itu \"ok\", selain itu \"under\""
+      },
+      "Shifts.EventName": {
+        "table": "Shifts",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Untuk setiap shift, event name diambil dari event yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari event yang tertaut"
+      },
+      "Shifts.FilledCount": {
+        "table": "Shifts",
+        "field": "FilledCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap shift, filled count adalah jumlah assignments yang terkait dengan shift tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah assignments dengan syarat shift adalah shift ID"
+      },
+      "Shifts.CoverageStatus": {
+        "table": "Shifts",
+        "field": "CoverageStatus",
+        "kind": "formula",
+        "rule": "Untuk setiap shift, coverage status ditentukan menurut urutan prioritas berikut:\n1. “understaffed”, jika filled count kurang dari needed count;\n2. “overstaffed”, jika filled count lebih dari needed count;\n3. dalam semua kasus lainnya, “covered”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap shift, coverage status ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“understaffed”",
+              "when": {
+                "kind": "leaf",
+                "text": "filled count kurang dari needed count"
+              }
+            },
+            {
+              "value": "“overstaffed”",
+              "when": {
+                "kind": "leaf",
+                "text": "filled count lebih dari needed count"
+              }
+            },
+            {
+              "value": "“covered”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika filled count kurang dari needed count maka \"understaffed\", selain itu jika filled count lebih dari needed count maka \"overstaffed\", selain itu \"covered\""
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap assignment, name dihitung sebagai volunteer name, diikuti “ @ ”, diikuti shift name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "VolunteerName",
+            "label": "volunteer name"
+          },
+          {
+            "table": "Assignments",
+            "field": "ShiftName",
+            "label": "shift name"
+          }
+        ],
+        "structure": null,
+        "plain": "(volunteer name digabung dengan \" @ \") digabung dengan shift name"
+      },
+      "Assignments.VolunteerName": {
+        "table": "Assignments",
+        "field": "VolunteerName",
+        "kind": "lookup",
+        "rule": "Untuk setiap assignment, volunteer name diambil dari volunteer yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari volunteer yang tertaut"
+      },
+      "Assignments.ShiftName": {
+        "table": "Assignments",
+        "field": "ShiftName",
+        "kind": "lookup",
+        "rule": "Untuk setiap assignment, shift name diambil dari shift yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name dari shift yang tertaut"
+      },
+      "Assignments.ShiftDurationHours": {
+        "table": "Assignments",
+        "field": "ShiftDurationHours",
+        "kind": "lookup",
+        "rule": "Untuk setiap assignment, shift duration hours diambil dari shift yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "DurationHours",
+            "label": "duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Duration hours dari shift yang tertaut"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Events": "event",
+      "Volunteers": "volunteer",
+      "Shifts": "shift",
+      "Assignments": "assignment"
+    }
+  },
+  "it": {
+    "fields": {
+      "Events.ShiftCount": {
+        "table": "Events",
+        "field": "ShiftCount",
+        "kind": "rollup",
+        "rule": "Un event: shift count è il numero di shifts collegati a l'event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei shifts il cui event è event ID"
+      },
+      "Events.TotalSlotsNeeded": {
+        "table": "Events",
+        "field": "TotalSlotsNeeded",
+        "kind": "rollup",
+        "rule": "Un event: total slots needed è il totale di needed count tra i shifts collegati a l'event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di needed count su tutti i shifts il cui event è event ID"
+      },
+      "Events.TotalSlotsFilled": {
+        "table": "Events",
+        "field": "TotalSlotsFilled",
+        "kind": "rollup",
+        "rule": "Un event: total slots filled è il totale di filled count tra i shifts collegati a l'event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di filled count su tutti i shifts il cui event è event ID"
+      },
+      "Events.CoveragePercent": {
+        "table": "Events",
+        "field": "CoveragePercent",
+        "kind": "formula",
+        "rule": "Il campo “coverage percent” dell'event è determinato secondo la seguente priorità:\n1. il total slots filled diviso il total slots needed, se il total slots needed è maggiore di 0;\n2. in tutti gli altri casi, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSlotsNeeded",
+            "label": "total slots needed"
+          },
+          {
+            "table": "Events",
+            "field": "TotalSlotsFilled",
+            "label": "total slots filled"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “coverage percent” dell'event è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "il total slots filled diviso il total slots needed",
+              "when": {
+                "kind": "leaf",
+                "text": "il total slots needed è maggiore di 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se total slots needed è maggiore di 0, allora (total slots filled diviso total slots needed), altrimenti 0"
+      },
+      "Events.StaffingGrade": {
+        "table": "Events",
+        "field": "StaffingGrade",
+        "kind": "formula",
+        "rule": "Il campo “staffing grade” dell'event è determinato secondo la seguente priorità:\n1. «A», se il coverage percent è almeno 0.95;\n2. «B», se il coverage percent è almeno 0.85;\n3. «C», se il coverage percent è almeno 0.70;\n4. «D», se il coverage percent è almeno 0.50;\n5. in tutti gli altri casi, «F».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CoveragePercent",
+            "label": "coverage percent"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “staffing grade” dell'event è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«A»",
+              "when": {
+                "kind": "leaf",
+                "text": "il coverage percent è almeno 0.95"
+              }
+            },
+            {
+              "value": "«B»",
+              "when": {
+                "kind": "leaf",
+                "text": "il coverage percent è almeno 0.85"
+              }
+            },
+            {
+              "value": "«C»",
+              "when": {
+                "kind": "leaf",
+                "text": "il coverage percent è almeno 0.70"
+              }
+            },
+            {
+              "value": "«D»",
+              "when": {
+                "kind": "leaf",
+                "text": "il coverage percent è almeno 0.50"
+              }
+            },
+            {
+              "value": "«F»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se coverage percent è almeno 0.95, allora \"A\", altrimenti se coverage percent è almeno 0.85, allora \"B\", altrimenti se coverage percent è almeno 0.70, allora \"C\", altrimenti se coverage percent è almeno 0.50, allora \"D\", altrimenti \"F\""
+      },
+      "Volunteers.Name": {
+        "table": "Volunteers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un volunteer: name è calcolato come il first name, seguito da uno spazio, seguito da il last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Volunteers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name unito a \" \") unito a last name"
+      },
+      "Volunteers.AssignmentCount": {
+        "table": "Volunteers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "Un volunteer: assignment count è il numero di assignments collegati a il volunteer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei assignments il cui volunteer è volunteer ID"
+      },
+      "Volunteers.AssignedHours": {
+        "table": "Volunteers",
+        "field": "AssignedHours",
+        "kind": "rollup",
+        "rule": "Un volunteer: assigned hours è il totale di shift duration hours tra i assignments collegati a il volunteer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "ShiftDurationHours",
+            "label": "shift duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di shift duration hours su tutti i assignments il cui volunteer è volunteer ID"
+      },
+      "Volunteers.LoadStatus": {
+        "table": "Volunteers",
+        "field": "LoadStatus",
+        "kind": "formula",
+        "rule": "Il campo “load status” del volunteer è determinato secondo la seguente priorità:\n1. «over» se l'assigned hours è maggiore di il max hours, in tutti gli altri casi «under» se l'assigned hours è minore di il max hours per 0.5, in tutti gli altri casi «ok», se il max hours è maggiore di 0;\n2. in tutti gli altri casi, «under».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "MaxHours",
+            "label": "max hours"
+          },
+          {
+            "table": "Volunteers",
+            "field": "AssignedHours",
+            "label": "assigned hours"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “load status” del volunteer è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«over» se l'assigned hours è maggiore di il max hours, in tutti gli altri casi «under» se l'assigned hours è minore di il max hours per 0.5, in tutti gli altri casi «ok»",
+              "when": {
+                "kind": "leaf",
+                "text": "il max hours è maggiore di 0"
+              }
+            },
+            {
+              "value": "«under»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se max hours è maggiore di 0, allora se assigned hours è maggiore di max hours, allora \"over\", altrimenti se assigned hours è minore di (max hours per 0.5), allora \"under\", altrimenti \"ok\", altrimenti \"under\""
+      },
+      "Shifts.EventName": {
+        "table": "Shifts",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Un shift: event name — ripreso dal event collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del event collegato"
+      },
+      "Shifts.FilledCount": {
+        "table": "Shifts",
+        "field": "FilledCount",
+        "kind": "rollup",
+        "rule": "Un shift: filled count è il numero di assignments collegati a il shift.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei assignments il cui shift è shift ID"
+      },
+      "Shifts.CoverageStatus": {
+        "table": "Shifts",
+        "field": "CoverageStatus",
+        "kind": "formula",
+        "rule": "Il campo “coverage status” del shift è determinato secondo la seguente priorità:\n1. «understaffed», se il filled count è minore di il needed count;\n2. «overstaffed», se il filled count è maggiore di il needed count;\n3. in tutti gli altri casi, «covered».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “coverage status” del shift è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«understaffed»",
+              "when": {
+                "kind": "leaf",
+                "text": "il filled count è minore di il needed count"
+              }
+            },
+            {
+              "value": "«overstaffed»",
+              "when": {
+                "kind": "leaf",
+                "text": "il filled count è maggiore di il needed count"
+              }
+            },
+            {
+              "value": "«covered»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se filled count è minore di needed count, allora \"understaffed\", altrimenti se filled count è maggiore di needed count, allora \"overstaffed\", altrimenti \"covered\""
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un assignment: name è calcolato come il volunteer name, seguito da « @ », seguito da il shift name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "VolunteerName",
+            "label": "volunteer name"
+          },
+          {
+            "table": "Assignments",
+            "field": "ShiftName",
+            "label": "shift name"
+          }
+        ],
+        "structure": null,
+        "plain": "(volunteer name unito a \" @ \") unito a shift name"
+      },
+      "Assignments.VolunteerName": {
+        "table": "Assignments",
+        "field": "VolunteerName",
+        "kind": "lookup",
+        "rule": "Un assignment: volunteer name — ripreso dal volunteer collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del volunteer collegato"
+      },
+      "Assignments.ShiftName": {
+        "table": "Assignments",
+        "field": "ShiftName",
+        "kind": "lookup",
+        "rule": "Un assignment: shift name — ripreso dal shift collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il name del shift collegato"
+      },
+      "Assignments.ShiftDurationHours": {
+        "table": "Assignments",
+        "field": "ShiftDurationHours",
+        "kind": "lookup",
+        "rule": "Un assignment: shift duration hours — ripreso dal shift collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "DurationHours",
+            "label": "duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il duration hours del shift collegato"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Events": "event",
+      "Volunteers": "volunteer",
+      "Shifts": "shift",
+      "Assignments": "assignment"
+    }
+  },
+  "ja": {
+    "fields": {
+      "Events.ShiftCount": {
+        "table": "Events",
+        "field": "ShiftCount",
+        "kind": "rollup",
+        "rule": "eventの「shift count」は eventに関連する「shifts」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event が event ID である「shifts」の件数"
+      },
+      "Events.TotalSlotsNeeded": {
+        "table": "Events",
+        "field": "TotalSlotsNeeded",
+        "kind": "rollup",
+        "rule": "eventの「total slots needed」は eventに関連する「shifts」全体での「needed count」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event が event ID であるすべての「shifts」にわたる needed count の合計"
+      },
+      "Events.TotalSlotsFilled": {
+        "table": "Events",
+        "field": "TotalSlotsFilled",
+        "kind": "rollup",
+        "rule": "eventの「total slots filled」は eventに関連する「shifts」全体での「filled count」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event が event ID であるすべての「shifts」にわたる filled count の合計"
+      },
+      "Events.CoveragePercent": {
+        "table": "Events",
+        "field": "CoveragePercent",
+        "kind": "formula",
+        "rule": "Eventの「coverage percent」は、次の優先順位で決まります:\n1. total slots needed が 0 より大きい場合は total slots filled わる total slots needed;\n2. それ以外の場合は 0。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSlotsNeeded",
+            "label": "total slots needed"
+          },
+          {
+            "table": "Events",
+            "field": "TotalSlotsFilled",
+            "label": "total slots filled"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Eventの「coverage percent」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "total slots filled わる total slots needed",
+              "when": {
+                "kind": "leaf",
+                "text": "total slots needed が 0 より大きい"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Total slots needed が 0 より大きいなら (total slots filled わる total slots needed)、そうでなければ 0"
+      },
+      "Events.StaffingGrade": {
+        "table": "Events",
+        "field": "StaffingGrade",
+        "kind": "formula",
+        "rule": "Eventの「staffing grade」は、次の優先順位で決まります:\n1. coverage percent が 0.95 以上である場合は 「A」;\n2. coverage percent が 0.85 以上である場合は 「B」;\n3. coverage percent が 0.70 以上である場合は 「C」;\n4. coverage percent が 0.50 以上である場合は 「D」;\n5. それ以外の場合は 「F」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CoveragePercent",
+            "label": "coverage percent"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Eventの「staffing grade」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「A」",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent が 0.95 以上である"
+              }
+            },
+            {
+              "value": "「B」",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent が 0.85 以上である"
+              }
+            },
+            {
+              "value": "「C」",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent が 0.70 以上である"
+              }
+            },
+            {
+              "value": "「D」",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent が 0.50 以上である"
+              }
+            },
+            {
+              "value": "「F」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Coverage percent が 0.95 以上なら \"A\"、そうでなければ coverage percent が 0.85 以上なら \"B\"、そうでなければ coverage percent が 0.70 以上なら \"C\"、そうでなければ coverage percent が 0.50 以上なら \"D\"、そうでなければ \"F\""
+      },
+      "Volunteers.Name": {
+        "table": "Volunteers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "volunteerの「name」は first name、続いて 空白 1 つ、続いて last name として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Volunteers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name と \" \" を連結) と last name を連結"
+      },
+      "Volunteers.AssignmentCount": {
+        "table": "Volunteers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "volunteerの「assignment count」は volunteerに関連する「assignments」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Volunteer が volunteer ID である「assignments」の件数"
+      },
+      "Volunteers.AssignedHours": {
+        "table": "Volunteers",
+        "field": "AssignedHours",
+        "kind": "rollup",
+        "rule": "volunteerの「assigned hours」は volunteerに関連する「assignments」全体での「shift duration hours」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "ShiftDurationHours",
+            "label": "shift duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Volunteer が volunteer ID であるすべての「assignments」にわたる shift duration hours の合計"
+      },
+      "Volunteers.LoadStatus": {
+        "table": "Volunteers",
+        "field": "LoadStatus",
+        "kind": "formula",
+        "rule": "Volunteerの「load status」は、次の優先順位で決まります:\n1. max hours が 0 より大きい場合は assigned hours が max hours より大きい場合は 「over」、それ以外の場合は assigned hours が max hours かける 0.5 より小さい場合は 「under」、それ以外の場合は 「ok」;\n2. それ以外の場合は 「under」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "MaxHours",
+            "label": "max hours"
+          },
+          {
+            "table": "Volunteers",
+            "field": "AssignedHours",
+            "label": "assigned hours"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Volunteerの「load status」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "assigned hours が max hours より大きい場合は 「over」、それ以外の場合は assigned hours が max hours かける 0.5 より小さい場合は 「under」、それ以外の場合は 「ok」",
+              "when": {
+                "kind": "leaf",
+                "text": "max hours が 0 より大きい"
+              }
+            },
+            {
+              "value": "「under」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Max hours が 0 より大きいなら assigned hours が max hours より大きいなら \"over\"、そうでなければ assigned hours が (max hours かける 0.5) より小さいなら \"under\"、そうでなければ \"ok\"、そうでなければ \"under\""
+      },
+      "Shifts.EventName": {
+        "table": "Shifts",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "shiftの「event name」— リンクされた「event」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「event」の name"
+      },
+      "Shifts.FilledCount": {
+        "table": "Shifts",
+        "field": "FilledCount",
+        "kind": "rollup",
+        "rule": "shiftの「filled count」は shiftに関連する「assignments」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Shift が shift ID である「assignments」の件数"
+      },
+      "Shifts.CoverageStatus": {
+        "table": "Shifts",
+        "field": "CoverageStatus",
+        "kind": "formula",
+        "rule": "Shiftの「coverage status」は、次の優先順位で決まります:\n1. filled count が needed count より小さい場合は 「understaffed」;\n2. filled count が needed count より大きい場合は 「overstaffed」;\n3. それ以外の場合は 「covered」。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Shiftの「coverage status」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「understaffed」",
+              "when": {
+                "kind": "leaf",
+                "text": "filled count が needed count より小さい"
+              }
+            },
+            {
+              "value": "「overstaffed」",
+              "when": {
+                "kind": "leaf",
+                "text": "filled count が needed count より大きい"
+              }
+            },
+            {
+              "value": "「covered」",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Filled count が needed count より小さいなら \"understaffed\"、そうでなければ filled count が needed count より大きいなら \"overstaffed\"、そうでなければ \"covered\""
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "assignmentの「name」は volunteer name、続いて 「 @ 」、続いて shift name として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "VolunteerName",
+            "label": "volunteer name"
+          },
+          {
+            "table": "Assignments",
+            "field": "ShiftName",
+            "label": "shift name"
+          }
+        ],
+        "structure": null,
+        "plain": "(volunteer name と \" @ \" を連結) と shift name を連結"
+      },
+      "Assignments.VolunteerName": {
+        "table": "Assignments",
+        "field": "VolunteerName",
+        "kind": "lookup",
+        "rule": "assignmentの「volunteer name」— リンクされた「volunteer」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「volunteer」の name"
+      },
+      "Assignments.ShiftName": {
+        "table": "Assignments",
+        "field": "ShiftName",
+        "kind": "lookup",
+        "rule": "assignmentの「shift name」— リンクされた「shift」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「shift」の name"
+      },
+      "Assignments.ShiftDurationHours": {
+        "table": "Assignments",
+        "field": "ShiftDurationHours",
+        "kind": "lookup",
+        "rule": "assignmentの「shift duration hours」— リンクされた「shift」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "DurationHours",
+            "label": "duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「shift」の duration hours"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "Events": "event",
+      "Volunteers": "volunteer",
+      "Shifts": "shift",
+      "Assignments": "assignment"
+    }
+  },
+  "ko": {
+    "fields": {
+      "Events.ShiftCount": {
+        "table": "Events",
+        "field": "ShiftCount",
+        "kind": "rollup",
+        "rule": "‘event’ 레코드의 ‘shift count’ 값은 해당 ‘event’ 레코드에 연결된 ‘shifts’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(event 값이 event ID임)에 맞는 shifts 레코드의 개수"
+      },
+      "Events.TotalSlotsNeeded": {
+        "table": "Events",
+        "field": "TotalSlotsNeeded",
+        "kind": "rollup",
+        "rule": "‘event’ 레코드의 ‘total slots needed’ 값은 해당 ‘event’ 레코드에 연결된 모든 ‘shifts’ 레코드의 총 ‘needed count’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(event 값이 event ID임)에 맞는 모든 shifts 레코드의 needed count 합계"
+      },
+      "Events.TotalSlotsFilled": {
+        "table": "Events",
+        "field": "TotalSlotsFilled",
+        "kind": "rollup",
+        "rule": "‘event’ 레코드의 ‘total slots filled’ 값은 해당 ‘event’ 레코드에 연결된 모든 ‘shifts’ 레코드의 총 ‘filled count’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(event 값이 event ID임)에 맞는 모든 shifts 레코드의 filled count 합계"
+      },
+      "Events.CoveragePercent": {
+        "table": "Events",
+        "field": "CoveragePercent",
+        "kind": "formula",
+        "rule": "‘event’ 레코드의 ‘coverage percent’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘total slots needed’ 값이 0보다 큰 경우: ‘total slots filled’ 나누기 ‘total slots needed’\n2. 그 밖의 경우: 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSlotsNeeded",
+            "label": "total slots needed"
+          },
+          {
+            "table": "Events",
+            "field": "TotalSlotsFilled",
+            "label": "total slots filled"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘event’ 레코드의 ‘coverage percent’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "‘total slots filled’ 나누기 ‘total slots needed’",
+              "when": {
+                "kind": "leaf",
+                "text": "‘total slots needed’ 값이 0보다 큰 경우"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(total slots needed 값이 0보다 큼)이 성립하면 (total slots filled 나누기 total slots needed), 그렇지 않으면 0"
+      },
+      "Events.StaffingGrade": {
+        "table": "Events",
+        "field": "StaffingGrade",
+        "kind": "formula",
+        "rule": "‘event’ 레코드의 ‘staffing grade’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘coverage percent’ 값이 0.95 이상인 경우: “A”\n2. ‘coverage percent’ 값이 0.85 이상인 경우: “B”\n3. ‘coverage percent’ 값이 0.70 이상인 경우: “C”\n4. ‘coverage percent’ 값이 0.50 이상인 경우: “D”\n5. 그 밖의 경우: “F”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CoveragePercent",
+            "label": "coverage percent"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘event’ 레코드의 ‘staffing grade’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“A”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘coverage percent’ 값이 0.95 이상인 경우"
+              }
+            },
+            {
+              "value": "“B”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘coverage percent’ 값이 0.85 이상인 경우"
+              }
+            },
+            {
+              "value": "“C”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘coverage percent’ 값이 0.70 이상인 경우"
+              }
+            },
+            {
+              "value": "“D”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘coverage percent’ 값이 0.50 이상인 경우"
+              }
+            },
+            {
+              "value": "“F”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(coverage percent 값이 0.95 이상임)이 성립하면 \"A\", 그렇지 않으면 조건(coverage percent 값이 0.85 이상임)이 성립하면 \"B\", 그렇지 않으면 조건(coverage percent 값이 0.70 이상임)이 성립하면 \"C\", 그렇지 않으면 조건(coverage percent 값이 0.50 이상임)이 성립하면 \"D\", 그렇지 않으면 \"F\""
+      },
+      "Volunteers.Name": {
+        "table": "Volunteers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘volunteer’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘first name’, 이어서 공백 한 칸, 이어서 ‘last name’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Volunteers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name 뒤에 \" \" 연결한 결과) 뒤에 last name 연결한 결과"
+      },
+      "Volunteers.AssignmentCount": {
+        "table": "Volunteers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "‘volunteer’ 레코드의 ‘assignment count’ 값은 해당 ‘volunteer’ 레코드에 연결된 ‘assignments’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(volunteer 값이 volunteer ID임)에 맞는 assignments 레코드의 개수"
+      },
+      "Volunteers.AssignedHours": {
+        "table": "Volunteers",
+        "field": "AssignedHours",
+        "kind": "rollup",
+        "rule": "‘volunteer’ 레코드의 ‘assigned hours’ 값은 해당 ‘volunteer’ 레코드에 연결된 모든 ‘assignments’ 레코드의 총 ‘shift duration hours’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "ShiftDurationHours",
+            "label": "shift duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(volunteer 값이 volunteer ID임)에 맞는 모든 assignments 레코드의 shift duration hours 합계"
+      },
+      "Volunteers.LoadStatus": {
+        "table": "Volunteers",
+        "field": "LoadStatus",
+        "kind": "formula",
+        "rule": "‘volunteer’ 레코드의 ‘load status’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘max hours’ 값이 0보다 큰 경우: ‘assigned hours’ 값이 ‘max hours’보다 큰 경우에는 “over”, 그 밖의 경우에는 ‘assigned hours’ 값이 ‘max hours’ 곱하기 0.5보다 작은 경우에는 “under”, 그 밖의 경우에는 “ok”\n2. 그 밖의 경우: “under”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "MaxHours",
+            "label": "max hours"
+          },
+          {
+            "table": "Volunteers",
+            "field": "AssignedHours",
+            "label": "assigned hours"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘volunteer’ 레코드의 ‘load status’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "‘assigned hours’ 값이 ‘max hours’보다 큰 경우에는 “over”, 그 밖의 경우에는 ‘assigned hours’ 값이 ‘max hours’ 곱하기 0.5보다 작은 경우에는 “under”, 그 밖의 경우에는 “ok”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘max hours’ 값이 0보다 큰 경우"
+              }
+            },
+            {
+              "value": "“under”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(max hours 값이 0보다 큼)이 성립하면 조건(assigned hours 값이 max hours보다 큼)이 성립하면 \"over\", 그렇지 않으면 조건(assigned hours 값이 (max hours 곱하기 0.5)보다 작음)이 성립하면 \"under\", 그렇지 않으면 \"ok\", 그렇지 않으면 \"under\""
+      },
+      "Shifts.EventName": {
+        "table": "Shifts",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "‘shift’ 레코드의 ‘event name’ 값은 연결된 ‘event’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 event 레코드의 name"
+      },
+      "Shifts.FilledCount": {
+        "table": "Shifts",
+        "field": "FilledCount",
+        "kind": "rollup",
+        "rule": "‘shift’ 레코드의 ‘filled count’ 값은 해당 ‘shift’ 레코드에 연결된 ‘assignments’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(shift 값이 shift ID임)에 맞는 assignments 레코드의 개수"
+      },
+      "Shifts.CoverageStatus": {
+        "table": "Shifts",
+        "field": "CoverageStatus",
+        "kind": "formula",
+        "rule": "‘shift’ 레코드의 ‘coverage status’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘filled count’ 값이 ‘needed count’보다 작은 경우: “understaffed”\n2. ‘filled count’ 값이 ‘needed count’보다 큰 경우: “overstaffed”\n3. 그 밖의 경우: “covered”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘shift’ 레코드의 ‘coverage status’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“understaffed”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘filled count’ 값이 ‘needed count’보다 작은 경우"
+              }
+            },
+            {
+              "value": "“overstaffed”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘filled count’ 값이 ‘needed count’보다 큰 경우"
+              }
+            },
+            {
+              "value": "“covered”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(filled count 값이 needed count보다 작음)이 성립하면 \"understaffed\", 그렇지 않으면 조건(filled count 값이 needed count보다 큼)이 성립하면 \"overstaffed\", 그렇지 않으면 \"covered\""
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘assignment’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘volunteer name’, 이어서 “ @ ”, 이어서 ‘shift name’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "VolunteerName",
+            "label": "volunteer name"
+          },
+          {
+            "table": "Assignments",
+            "field": "ShiftName",
+            "label": "shift name"
+          }
+        ],
+        "structure": null,
+        "plain": "(volunteer name 뒤에 \" @ \" 연결한 결과) 뒤에 shift name 연결한 결과"
+      },
+      "Assignments.VolunteerName": {
+        "table": "Assignments",
+        "field": "VolunteerName",
+        "kind": "lookup",
+        "rule": "‘assignment’ 레코드의 ‘volunteer name’ 값은 연결된 ‘volunteer’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 volunteer 레코드의 name"
+      },
+      "Assignments.ShiftName": {
+        "table": "Assignments",
+        "field": "ShiftName",
+        "kind": "lookup",
+        "rule": "‘assignment’ 레코드의 ‘shift name’ 값은 연결된 ‘shift’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 shift 레코드의 name"
+      },
+      "Assignments.ShiftDurationHours": {
+        "table": "Assignments",
+        "field": "ShiftDurationHours",
+        "kind": "lookup",
+        "rule": "‘assignment’ 레코드의 ‘shift duration hours’ 값은 연결된 ‘shift’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "DurationHours",
+            "label": "duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 shift 레코드의 duration hours"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Events": "event",
+      "Volunteers": "volunteer",
+      "Shifts": "shift",
+      "Assignments": "assignment"
+    }
+  },
+  "nl": {
+    "fields": {
+      "Events.ShiftCount": {
+        "table": "Events",
+        "field": "ShiftCount",
+        "kind": "rollup",
+        "rule": "Een event: shift count is het aantal shifts dat is gekoppeld aan de event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal shifts waarvan event is event ID"
+      },
+      "Events.TotalSlotsNeeded": {
+        "table": "Events",
+        "field": "TotalSlotsNeeded",
+        "kind": "rollup",
+        "rule": "Een event: total slots needed is het totaal van needed count over de shifts gekoppeld aan de event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van needed count over alle shifts waarvan event is event ID"
+      },
+      "Events.TotalSlotsFilled": {
+        "table": "Events",
+        "field": "TotalSlotsFilled",
+        "kind": "rollup",
+        "rule": "Een event: total slots filled is het totaal van filled count over de shifts gekoppeld aan de event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van filled count over alle shifts waarvan event is event ID"
+      },
+      "Events.CoveragePercent": {
+        "table": "Events",
+        "field": "CoveragePercent",
+        "kind": "formula",
+        "rule": "Het veld ‘coverage percent’ van de event wordt bepaald volgens de volgende prioriteit:\n1. de total slots filled gedeeld door de total slots needed, als de total slots needed groter is dan 0;\n2. in alle andere gevallen 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSlotsNeeded",
+            "label": "total slots needed"
+          },
+          {
+            "table": "Events",
+            "field": "TotalSlotsFilled",
+            "label": "total slots filled"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘coverage percent’ van de event wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "de total slots filled gedeeld door de total slots needed",
+              "when": {
+                "kind": "leaf",
+                "text": "de total slots needed groter is dan 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als total slots needed is groter dan 0, dan (total slots filled gedeeld door total slots needed), anders 0"
+      },
+      "Events.StaffingGrade": {
+        "table": "Events",
+        "field": "StaffingGrade",
+        "kind": "formula",
+        "rule": "Het veld ‘staffing grade’ van de event wordt bepaald volgens de volgende prioriteit:\n1. ‘A’, als de coverage percent ten minste 0.95 is;\n2. ‘B’, als de coverage percent ten minste 0.85 is;\n3. ‘C’, als de coverage percent ten minste 0.70 is;\n4. ‘D’, als de coverage percent ten minste 0.50 is;\n5. in alle andere gevallen ‘F’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CoveragePercent",
+            "label": "coverage percent"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘staffing grade’ van de event wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘A’",
+              "when": {
+                "kind": "leaf",
+                "text": "de coverage percent ten minste 0.95 is"
+              }
+            },
+            {
+              "value": "‘B’",
+              "when": {
+                "kind": "leaf",
+                "text": "de coverage percent ten minste 0.85 is"
+              }
+            },
+            {
+              "value": "‘C’",
+              "when": {
+                "kind": "leaf",
+                "text": "de coverage percent ten minste 0.70 is"
+              }
+            },
+            {
+              "value": "‘D’",
+              "when": {
+                "kind": "leaf",
+                "text": "de coverage percent ten minste 0.50 is"
+              }
+            },
+            {
+              "value": "‘F’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als coverage percent is ten minste 0.95, dan \"A\", anders als coverage percent is ten minste 0.85, dan \"B\", anders als coverage percent is ten minste 0.70, dan \"C\", anders als coverage percent is ten minste 0.50, dan \"D\", anders \"F\""
+      },
+      "Volunteers.Name": {
+        "table": "Volunteers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een volunteer: name wordt berekend als de first name, gevolgd door een spatie, gevolgd door de last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Volunteers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name samengevoegd met \" \") samengevoegd met last name"
+      },
+      "Volunteers.AssignmentCount": {
+        "table": "Volunteers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "Een volunteer: assignment count is het aantal assignments dat is gekoppeld aan de volunteer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal assignments waarvan volunteer is volunteer ID"
+      },
+      "Volunteers.AssignedHours": {
+        "table": "Volunteers",
+        "field": "AssignedHours",
+        "kind": "rollup",
+        "rule": "Een volunteer: assigned hours is het totaal van shift duration hours over de assignments gekoppeld aan de volunteer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "ShiftDurationHours",
+            "label": "shift duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van shift duration hours over alle assignments waarvan volunteer is volunteer ID"
+      },
+      "Volunteers.LoadStatus": {
+        "table": "Volunteers",
+        "field": "LoadStatus",
+        "kind": "formula",
+        "rule": "Het veld ‘load status’ van de volunteer wordt bepaald volgens de volgende prioriteit:\n1. ‘over’ als de assigned hours groter is dan de max hours, in alle andere gevallen ‘under’ als de assigned hours kleiner is dan de max hours maal 0.5, in alle andere gevallen ‘ok’, als de max hours groter is dan 0;\n2. in alle andere gevallen ‘under’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "MaxHours",
+            "label": "max hours"
+          },
+          {
+            "table": "Volunteers",
+            "field": "AssignedHours",
+            "label": "assigned hours"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘load status’ van de volunteer wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘over’ als de assigned hours groter is dan de max hours, in alle andere gevallen ‘under’ als de assigned hours kleiner is dan de max hours maal 0.5, in alle andere gevallen ‘ok’",
+              "when": {
+                "kind": "leaf",
+                "text": "de max hours groter is dan 0"
+              }
+            },
+            {
+              "value": "‘under’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als max hours is groter dan 0, dan als assigned hours is groter dan max hours, dan \"over\", anders als assigned hours is kleiner dan (max hours maal 0.5), dan \"under\", anders \"ok\", anders \"under\""
+      },
+      "Shifts.EventName": {
+        "table": "Shifts",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Een shift: event name — overgenomen van de gekoppelde event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde event"
+      },
+      "Shifts.FilledCount": {
+        "table": "Shifts",
+        "field": "FilledCount",
+        "kind": "rollup",
+        "rule": "Een shift: filled count is het aantal assignments dat is gekoppeld aan de shift.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal assignments waarvan shift is shift ID"
+      },
+      "Shifts.CoverageStatus": {
+        "table": "Shifts",
+        "field": "CoverageStatus",
+        "kind": "formula",
+        "rule": "Het veld ‘coverage status’ van de shift wordt bepaald volgens de volgende prioriteit:\n1. ‘understaffed’, als de filled count kleiner is dan de needed count;\n2. ‘overstaffed’, als de filled count groter is dan de needed count;\n3. in alle andere gevallen ‘covered’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘coverage status’ van de shift wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘understaffed’",
+              "when": {
+                "kind": "leaf",
+                "text": "de filled count kleiner is dan de needed count"
+              }
+            },
+            {
+              "value": "‘overstaffed’",
+              "when": {
+                "kind": "leaf",
+                "text": "de filled count groter is dan de needed count"
+              }
+            },
+            {
+              "value": "‘covered’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als filled count is kleiner dan needed count, dan \"understaffed\", anders als filled count is groter dan needed count, dan \"overstaffed\", anders \"covered\""
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een assignment: name wordt berekend als de volunteer name, gevolgd door ‘ @ ’, gevolgd door de shift name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "VolunteerName",
+            "label": "volunteer name"
+          },
+          {
+            "table": "Assignments",
+            "field": "ShiftName",
+            "label": "shift name"
+          }
+        ],
+        "structure": null,
+        "plain": "(volunteer name samengevoegd met \" @ \") samengevoegd met shift name"
+      },
+      "Assignments.VolunteerName": {
+        "table": "Assignments",
+        "field": "VolunteerName",
+        "kind": "lookup",
+        "rule": "Een assignment: volunteer name — overgenomen van de gekoppelde volunteer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde volunteer"
+      },
+      "Assignments.ShiftName": {
+        "table": "Assignments",
+        "field": "ShiftName",
+        "kind": "lookup",
+        "rule": "Een assignment: shift name — overgenomen van de gekoppelde shift.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De name van de gekoppelde shift"
+      },
+      "Assignments.ShiftDurationHours": {
+        "table": "Assignments",
+        "field": "ShiftDurationHours",
+        "kind": "lookup",
+        "rule": "Een assignment: shift duration hours — overgenomen van de gekoppelde shift.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "DurationHours",
+            "label": "duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De duration hours van de gekoppelde shift"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Events": "event",
+      "Volunteers": "volunteer",
+      "Shifts": "shift",
+      "Assignments": "assignment"
+    }
+  },
+  "pt": {
+    "fields": {
+      "Events.ShiftCount": {
+        "table": "Events",
+        "field": "ShiftCount",
+        "kind": "rollup",
+        "rule": "Um event: shift count é o número de shifts relacionados a o event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de shifts cujo event é event ID"
+      },
+      "Events.TotalSlotsNeeded": {
+        "table": "Events",
+        "field": "TotalSlotsNeeded",
+        "kind": "rollup",
+        "rule": "Um event: total slots needed é o total de needed count entre os shifts relacionados a o event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de needed count entre todos os shifts cujo event é event ID"
+      },
+      "Events.TotalSlotsFilled": {
+        "table": "Events",
+        "field": "TotalSlotsFilled",
+        "kind": "rollup",
+        "rule": "Um event: total slots filled é o total de filled count entre os shifts relacionados a o event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de filled count entre todos os shifts cujo event é event ID"
+      },
+      "Events.CoveragePercent": {
+        "table": "Events",
+        "field": "CoveragePercent",
+        "kind": "formula",
+        "rule": "O campo “coverage percent” do event é determinado pela seguinte prioridade:\n1. o total slots filled dividido por o total slots needed, se o total slots needed é maior que 0;\n2. em todos os outros casos, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSlotsNeeded",
+            "label": "total slots needed"
+          },
+          {
+            "table": "Events",
+            "field": "TotalSlotsFilled",
+            "label": "total slots filled"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “coverage percent” do event é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "o total slots filled dividido por o total slots needed",
+              "when": {
+                "kind": "leaf",
+                "text": "o total slots needed é maior que 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se total slots needed é maior que 0, então (total slots filled dividido por total slots needed), caso contrário 0"
+      },
+      "Events.StaffingGrade": {
+        "table": "Events",
+        "field": "StaffingGrade",
+        "kind": "formula",
+        "rule": "O campo “staffing grade” do event é determinado pela seguinte prioridade:\n1. “A”, se o coverage percent é pelo menos 0.95;\n2. “B”, se o coverage percent é pelo menos 0.85;\n3. “C”, se o coverage percent é pelo menos 0.70;\n4. “D”, se o coverage percent é pelo menos 0.50;\n5. em todos os outros casos, “F”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CoveragePercent",
+            "label": "coverage percent"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “staffing grade” do event é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“A”",
+              "when": {
+                "kind": "leaf",
+                "text": "o coverage percent é pelo menos 0.95"
+              }
+            },
+            {
+              "value": "“B”",
+              "when": {
+                "kind": "leaf",
+                "text": "o coverage percent é pelo menos 0.85"
+              }
+            },
+            {
+              "value": "“C”",
+              "when": {
+                "kind": "leaf",
+                "text": "o coverage percent é pelo menos 0.70"
+              }
+            },
+            {
+              "value": "“D”",
+              "when": {
+                "kind": "leaf",
+                "text": "o coverage percent é pelo menos 0.50"
+              }
+            },
+            {
+              "value": "“F”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se coverage percent é pelo menos 0.95, então \"A\", caso contrário se coverage percent é pelo menos 0.85, então \"B\", caso contrário se coverage percent é pelo menos 0.70, então \"C\", caso contrário se coverage percent é pelo menos 0.50, então \"D\", caso contrário \"F\""
+      },
+      "Volunteers.Name": {
+        "table": "Volunteers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um volunteer: name é calculado como o first name, seguido de um espaço, seguido de o last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Volunteers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name unido a \" \") unido a last name"
+      },
+      "Volunteers.AssignmentCount": {
+        "table": "Volunteers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "Um volunteer: assignment count é o número de assignments relacionados a o volunteer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de assignments cujo volunteer é volunteer ID"
+      },
+      "Volunteers.AssignedHours": {
+        "table": "Volunteers",
+        "field": "AssignedHours",
+        "kind": "rollup",
+        "rule": "Um volunteer: assigned hours é o total de shift duration hours entre os assignments relacionados a o volunteer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "ShiftDurationHours",
+            "label": "shift duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de shift duration hours entre todos os assignments cujo volunteer é volunteer ID"
+      },
+      "Volunteers.LoadStatus": {
+        "table": "Volunteers",
+        "field": "LoadStatus",
+        "kind": "formula",
+        "rule": "O campo “load status” do volunteer é determinado pela seguinte prioridade:\n1. “over” se o assigned hours é maior que o max hours, em todos os outros casos “under” se o assigned hours é menor que o max hours vezes 0.5, em todos os outros casos “ok”, se o max hours é maior que 0;\n2. em todos os outros casos, “under”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "MaxHours",
+            "label": "max hours"
+          },
+          {
+            "table": "Volunteers",
+            "field": "AssignedHours",
+            "label": "assigned hours"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “load status” do volunteer é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“over” se o assigned hours é maior que o max hours, em todos os outros casos “under” se o assigned hours é menor que o max hours vezes 0.5, em todos os outros casos “ok”",
+              "when": {
+                "kind": "leaf",
+                "text": "o max hours é maior que 0"
+              }
+            },
+            {
+              "value": "“under”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se max hours é maior que 0, então se assigned hours é maior que max hours, então \"over\", caso contrário se assigned hours é menor que (max hours vezes 0.5), então \"under\", caso contrário \"ok\", caso contrário \"under\""
+      },
+      "Shifts.EventName": {
+        "table": "Shifts",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Um shift: event name — obtido do event vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do event vinculado"
+      },
+      "Shifts.FilledCount": {
+        "table": "Shifts",
+        "field": "FilledCount",
+        "kind": "rollup",
+        "rule": "Um shift: filled count é o número de assignments relacionados a o shift.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de assignments cujo shift é shift ID"
+      },
+      "Shifts.CoverageStatus": {
+        "table": "Shifts",
+        "field": "CoverageStatus",
+        "kind": "formula",
+        "rule": "O campo “coverage status” do shift é determinado pela seguinte prioridade:\n1. “understaffed”, se o filled count é menor que o needed count;\n2. “overstaffed”, se o filled count é maior que o needed count;\n3. em todos os outros casos, “covered”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “coverage status” do shift é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“understaffed”",
+              "when": {
+                "kind": "leaf",
+                "text": "o filled count é menor que o needed count"
+              }
+            },
+            {
+              "value": "“overstaffed”",
+              "when": {
+                "kind": "leaf",
+                "text": "o filled count é maior que o needed count"
+              }
+            },
+            {
+              "value": "“covered”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se filled count é menor que needed count, então \"understaffed\", caso contrário se filled count é maior que needed count, então \"overstaffed\", caso contrário \"covered\""
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um assignment: name é calculado como o volunteer name, seguido de “ @ ”, seguido de o shift name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "VolunteerName",
+            "label": "volunteer name"
+          },
+          {
+            "table": "Assignments",
+            "field": "ShiftName",
+            "label": "shift name"
+          }
+        ],
+        "structure": null,
+        "plain": "(volunteer name unido a \" @ \") unido a shift name"
+      },
+      "Assignments.VolunteerName": {
+        "table": "Assignments",
+        "field": "VolunteerName",
+        "kind": "lookup",
+        "rule": "Um assignment: volunteer name — obtido do volunteer vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do volunteer vinculado"
+      },
+      "Assignments.ShiftName": {
+        "table": "Assignments",
+        "field": "ShiftName",
+        "kind": "lookup",
+        "rule": "Um assignment: shift name — obtido do shift vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O name do shift vinculado"
+      },
+      "Assignments.ShiftDurationHours": {
+        "table": "Assignments",
+        "field": "ShiftDurationHours",
+        "kind": "lookup",
+        "rule": "Um assignment: shift duration hours — obtido do shift vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "DurationHours",
+            "label": "duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O duration hours do shift vinculado"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Events": "event",
+      "Volunteers": "volunteer",
+      "Shifts": "shift",
+      "Assignments": "assignment"
+    }
+  },
+  "ru": {
+    "fields": {
+      "Events.ShiftCount": {
+        "table": "Events",
+        "field": "ShiftCount",
+        "kind": "rollup",
+        "rule": "Event: «shift count» — это число записей «shifts», связанных с event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «shifts», у которых event равно event ID"
+      },
+      "Events.TotalSlotsNeeded": {
+        "table": "Events",
+        "field": "TotalSlotsNeeded",
+        "kind": "rollup",
+        "rule": "Event: «total slots needed» — это сумма «needed count» по записям «shifts», связанным с event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма needed count по всем «shifts», у которых event равно event ID"
+      },
+      "Events.TotalSlotsFilled": {
+        "table": "Events",
+        "field": "TotalSlotsFilled",
+        "kind": "rollup",
+        "rule": "Event: «total slots filled» — это сумма «filled count» по записям «shifts», связанным с event.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма filled count по всем «shifts», у которых event равно event ID"
+      },
+      "Events.CoveragePercent": {
+        "table": "Events",
+        "field": "CoveragePercent",
+        "kind": "formula",
+        "rule": "Поле «coverage percent» (Event) определяется по следующему приоритету:\n1. total slots filled разделить на total slots needed, если total slots needed больше 0;\n2. во всех остальных случаях — 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSlotsNeeded",
+            "label": "total slots needed"
+          },
+          {
+            "table": "Events",
+            "field": "TotalSlotsFilled",
+            "label": "total slots filled"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «coverage percent» (Event) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "total slots filled разделить на total slots needed",
+              "when": {
+                "kind": "leaf",
+                "text": "total slots needed больше 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если total slots needed больше 0, то (total slots filled разделить на total slots needed), иначе 0"
+      },
+      "Events.StaffingGrade": {
+        "table": "Events",
+        "field": "StaffingGrade",
+        "kind": "formula",
+        "rule": "Поле «staffing grade» (Event) определяется по следующему приоритету:\n1. «A», если coverage percent не меньше 0.95;\n2. «B», если coverage percent не меньше 0.85;\n3. «C», если coverage percent не меньше 0.70;\n4. «D», если coverage percent не меньше 0.50;\n5. во всех остальных случаях — «F».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CoveragePercent",
+            "label": "coverage percent"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «staffing grade» (Event) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«A»",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent не меньше 0.95"
+              }
+            },
+            {
+              "value": "«B»",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent не меньше 0.85"
+              }
+            },
+            {
+              "value": "«C»",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent не меньше 0.70"
+              }
+            },
+            {
+              "value": "«D»",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent не меньше 0.50"
+              }
+            },
+            {
+              "value": "«F»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если coverage percent не меньше 0.95, то \"A\", иначе если coverage percent не меньше 0.85, то \"B\", иначе если coverage percent не меньше 0.70, то \"C\", иначе если coverage percent не меньше 0.50, то \"D\", иначе \"F\""
+      },
+      "Volunteers.Name": {
+        "table": "Volunteers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Volunteer: «name» вычисляется как first name, затем пробел, затем last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Volunteers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name соединено с \" \") соединено с last name"
+      },
+      "Volunteers.AssignmentCount": {
+        "table": "Volunteers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "Volunteer: «assignment count» — это число записей «assignments», связанных с volunteer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «assignments», у которых volunteer равно volunteer ID"
+      },
+      "Volunteers.AssignedHours": {
+        "table": "Volunteers",
+        "field": "AssignedHours",
+        "kind": "rollup",
+        "rule": "Volunteer: «assigned hours» — это сумма «shift duration hours» по записям «assignments», связанным с volunteer.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "ShiftDurationHours",
+            "label": "shift duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма shift duration hours по всем «assignments», у которых volunteer равно volunteer ID"
+      },
+      "Volunteers.LoadStatus": {
+        "table": "Volunteers",
+        "field": "LoadStatus",
+        "kind": "formula",
+        "rule": "Поле «load status» (Volunteer) определяется по следующему приоритету:\n1. «over», если assigned hours больше max hours, во всех остальных случаях — «under», если assigned hours меньше max hours умножить на 0.5, во всех остальных случаях — «ok», если max hours больше 0;\n2. во всех остальных случаях — «under».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "MaxHours",
+            "label": "max hours"
+          },
+          {
+            "table": "Volunteers",
+            "field": "AssignedHours",
+            "label": "assigned hours"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «load status» (Volunteer) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«over», если assigned hours больше max hours, во всех остальных случаях — «under», если assigned hours меньше max hours умножить на 0.5, во всех остальных случаях — «ok»",
+              "when": {
+                "kind": "leaf",
+                "text": "max hours больше 0"
+              }
+            },
+            {
+              "value": "«under»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если max hours больше 0, то если assigned hours больше max hours, то \"over\", иначе если assigned hours меньше (max hours умножить на 0.5), то \"under\", иначе \"ok\", иначе \"under\""
+      },
+      "Shifts.EventName": {
+        "table": "Shifts",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Shift: «event name» — берётся из связанного «event».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «event»"
+      },
+      "Shifts.FilledCount": {
+        "table": "Shifts",
+        "field": "FilledCount",
+        "kind": "rollup",
+        "rule": "Shift: «filled count» — это число записей «assignments», связанных с shift.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «assignments», у которых shift равно shift ID"
+      },
+      "Shifts.CoverageStatus": {
+        "table": "Shifts",
+        "field": "CoverageStatus",
+        "kind": "formula",
+        "rule": "Поле «coverage status» (Shift) определяется по следующему приоритету:\n1. «understaffed», если filled count меньше needed count;\n2. «overstaffed», если filled count больше needed count;\n3. во всех остальных случаях — «covered».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «coverage status» (Shift) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«understaffed»",
+              "when": {
+                "kind": "leaf",
+                "text": "filled count меньше needed count"
+              }
+            },
+            {
+              "value": "«overstaffed»",
+              "when": {
+                "kind": "leaf",
+                "text": "filled count больше needed count"
+              }
+            },
+            {
+              "value": "«covered»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если filled count меньше needed count, то \"understaffed\", иначе если filled count больше needed count, то \"overstaffed\", иначе \"covered\""
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Assignment: «name» вычисляется как volunteer name, затем « @ », затем shift name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "VolunteerName",
+            "label": "volunteer name"
+          },
+          {
+            "table": "Assignments",
+            "field": "ShiftName",
+            "label": "shift name"
+          }
+        ],
+        "structure": null,
+        "plain": "(volunteer name соединено с \" @ \") соединено с shift name"
+      },
+      "Assignments.VolunteerName": {
+        "table": "Assignments",
+        "field": "VolunteerName",
+        "kind": "lookup",
+        "rule": "Assignment: «volunteer name» — берётся из связанного «volunteer».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «volunteer»"
+      },
+      "Assignments.ShiftName": {
+        "table": "Assignments",
+        "field": "ShiftName",
+        "kind": "lookup",
+        "rule": "Assignment: «shift name» — берётся из связанного «shift».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name связанного «shift»"
+      },
+      "Assignments.ShiftDurationHours": {
+        "table": "Assignments",
+        "field": "ShiftDurationHours",
+        "kind": "lookup",
+        "rule": "Assignment: «shift duration hours» — берётся из связанного «shift».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "DurationHours",
+            "label": "duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Duration hours связанного «shift»"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Events": "event",
+      "Volunteers": "volunteer",
+      "Shifts": "shift",
+      "Assignments": "assignment"
+    }
+  },
+  "tr": {
+    "fields": {
+      "Events.ShiftCount": {
+        "table": "Events",
+        "field": "ShiftCount",
+        "kind": "rollup",
+        "rule": "“event” kaydının “shift count” alanı, “event” kaydıyla ilişkili “shifts” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event değeri event ID olan shifts kayıtlarının sayısı"
+      },
+      "Events.TotalSlotsNeeded": {
+        "table": "Events",
+        "field": "TotalSlotsNeeded",
+        "kind": "rollup",
+        "rule": "“event” kaydının “total slots needed” alanı, “event” kaydıyla ilişkili “shifts” kayıtları üzerinden hesaplanan toplam “needed count” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event değeri event ID olan tüm shifts kayıtlarındaki needed count değerlerinin toplamı"
+      },
+      "Events.TotalSlotsFilled": {
+        "table": "Events",
+        "field": "TotalSlotsFilled",
+        "kind": "rollup",
+        "rule": "“event” kaydının “total slots filled” alanı, “event” kaydıyla ilişkili “shifts” kayıtları üzerinden hesaplanan toplam “filled count” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event değeri event ID olan tüm shifts kayıtlarındaki filled count değerlerinin toplamı"
+      },
+      "Events.CoveragePercent": {
+        "table": "Events",
+        "field": "CoveragePercent",
+        "kind": "formula",
+        "rule": "“event” kaydının “coverage percent” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “total slots needed” alanı 0 değerinden büyük ise “total slots filled” alanı bölü “total slots needed” alanı;\n2. diğer tüm durumlarda 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSlotsNeeded",
+            "label": "total slots needed"
+          },
+          {
+            "table": "Events",
+            "field": "TotalSlotsFilled",
+            "label": "total slots filled"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“event” kaydının “coverage percent” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“total slots filled” alanı bölü “total slots needed” alanı",
+              "when": {
+                "kind": "leaf",
+                "text": "“total slots needed” alanı 0 değerinden büyük"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Total slots needed, 0 değerinden büyük ise (total slots filled bölü total slots needed), aksi takdirde 0"
+      },
+      "Events.StaffingGrade": {
+        "table": "Events",
+        "field": "StaffingGrade",
+        "kind": "formula",
+        "rule": "“event” kaydının “staffing grade” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “coverage percent” alanı en az 0.95 değerinde ise “A”;\n2. “coverage percent” alanı en az 0.85 değerinde ise “B”;\n3. “coverage percent” alanı en az 0.70 değerinde ise “C”;\n4. “coverage percent” alanı en az 0.50 değerinde ise “D”;\n5. diğer tüm durumlarda “F”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CoveragePercent",
+            "label": "coverage percent"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“event” kaydının “staffing grade” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“A”",
+              "when": {
+                "kind": "leaf",
+                "text": "“coverage percent” alanı en az 0.95 değerinde"
+              }
+            },
+            {
+              "value": "“B”",
+              "when": {
+                "kind": "leaf",
+                "text": "“coverage percent” alanı en az 0.85 değerinde"
+              }
+            },
+            {
+              "value": "“C”",
+              "when": {
+                "kind": "leaf",
+                "text": "“coverage percent” alanı en az 0.70 değerinde"
+              }
+            },
+            {
+              "value": "“D”",
+              "when": {
+                "kind": "leaf",
+                "text": "“coverage percent” alanı en az 0.50 değerinde"
+              }
+            },
+            {
+              "value": "“F”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Coverage percent, en az 0.95 değerinde ise \"A\", aksi takdirde coverage percent, en az 0.85 değerinde ise \"B\", aksi takdirde coverage percent, en az 0.70 değerinde ise \"C\", aksi takdirde coverage percent, en az 0.50 değerinde ise \"D\", aksi takdirde \"F\""
+      },
+      "Volunteers.Name": {
+        "table": "Volunteers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“volunteer” kaydının “name” alanı, “first name” alanı, ardından bir boşluk, ardından “last name” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Volunteers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name ile \" \" birleşimi) ile last name birleşimi"
+      },
+      "Volunteers.AssignmentCount": {
+        "table": "Volunteers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "“volunteer” kaydının “assignment count” alanı, “volunteer” kaydıyla ilişkili “assignments” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Volunteer değeri volunteer ID olan assignments kayıtlarının sayısı"
+      },
+      "Volunteers.AssignedHours": {
+        "table": "Volunteers",
+        "field": "AssignedHours",
+        "kind": "rollup",
+        "rule": "“volunteer” kaydının “assigned hours” alanı, “volunteer” kaydıyla ilişkili “assignments” kayıtları üzerinden hesaplanan toplam “shift duration hours” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "ShiftDurationHours",
+            "label": "shift duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Volunteer değeri volunteer ID olan tüm assignments kayıtlarındaki shift duration hours değerlerinin toplamı"
+      },
+      "Volunteers.LoadStatus": {
+        "table": "Volunteers",
+        "field": "LoadStatus",
+        "kind": "formula",
+        "rule": "“volunteer” kaydının “load status” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “max hours” alanı 0 değerinden büyük ise “assigned hours” alanı “max hours” alanı değerinden büyük ise “over”, diğer tüm durumlarda “assigned hours” alanı “max hours” alanı çarpı 0.5 değerinden küçük ise “under”, diğer tüm durumlarda “ok”;\n2. diğer tüm durumlarda “under”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "MaxHours",
+            "label": "max hours"
+          },
+          {
+            "table": "Volunteers",
+            "field": "AssignedHours",
+            "label": "assigned hours"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“volunteer” kaydının “load status” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“assigned hours” alanı “max hours” alanı değerinden büyük ise “over”, diğer tüm durumlarda “assigned hours” alanı “max hours” alanı çarpı 0.5 değerinden küçük ise “under”, diğer tüm durumlarda “ok”",
+              "when": {
+                "kind": "leaf",
+                "text": "“max hours” alanı 0 değerinden büyük"
+              }
+            },
+            {
+              "value": "“under”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Max hours, 0 değerinden büyük ise assigned hours, max hours değerinden büyük ise \"over\", aksi takdirde assigned hours, (max hours çarpı 0.5) değerinden küçük ise \"under\", aksi takdirde \"ok\", aksi takdirde \"under\""
+      },
+      "Shifts.EventName": {
+        "table": "Shifts",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "“shift” kaydının “event name” alanı, “event” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı event kaydının name değeri"
+      },
+      "Shifts.FilledCount": {
+        "table": "Shifts",
+        "field": "FilledCount",
+        "kind": "rollup",
+        "rule": "“shift” kaydının “filled count” alanı, “shift” kaydıyla ilişkili “assignments” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Shift değeri shift ID olan assignments kayıtlarının sayısı"
+      },
+      "Shifts.CoverageStatus": {
+        "table": "Shifts",
+        "field": "CoverageStatus",
+        "kind": "formula",
+        "rule": "“shift” kaydının “coverage status” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “filled count” alanı “needed count” alanı değerinden küçük ise “understaffed”;\n2. “filled count” alanı “needed count” alanı değerinden büyük ise “overstaffed”;\n3. diğer tüm durumlarda “covered”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“shift” kaydının “coverage status” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“understaffed”",
+              "when": {
+                "kind": "leaf",
+                "text": "“filled count” alanı “needed count” alanı değerinden küçük"
+              }
+            },
+            {
+              "value": "“overstaffed”",
+              "when": {
+                "kind": "leaf",
+                "text": "“filled count” alanı “needed count” alanı değerinden büyük"
+              }
+            },
+            {
+              "value": "“covered”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Filled count, needed count değerinden küçük ise \"understaffed\", aksi takdirde filled count, needed count değerinden büyük ise \"overstaffed\", aksi takdirde \"covered\""
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“assignment” kaydının “name” alanı, “volunteer name” alanı, ardından “ @ ”, ardından “shift name” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "VolunteerName",
+            "label": "volunteer name"
+          },
+          {
+            "table": "Assignments",
+            "field": "ShiftName",
+            "label": "shift name"
+          }
+        ],
+        "structure": null,
+        "plain": "(volunteer name ile \" @ \" birleşimi) ile shift name birleşimi"
+      },
+      "Assignments.VolunteerName": {
+        "table": "Assignments",
+        "field": "VolunteerName",
+        "kind": "lookup",
+        "rule": "“assignment” kaydının “volunteer name” alanı, “volunteer” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı volunteer kaydının name değeri"
+      },
+      "Assignments.ShiftName": {
+        "table": "Assignments",
+        "field": "ShiftName",
+        "kind": "lookup",
+        "rule": "“assignment” kaydının “shift name” alanı, “shift” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı shift kaydının name değeri"
+      },
+      "Assignments.ShiftDurationHours": {
+        "table": "Assignments",
+        "field": "ShiftDurationHours",
+        "kind": "lookup",
+        "rule": "“assignment” kaydının “shift duration hours” alanı, “shift” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "DurationHours",
+            "label": "duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı shift kaydının duration hours değeri"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Events": "event",
+      "Volunteers": "volunteer",
+      "Shifts": "shift",
+      "Assignments": "assignment"
+    }
+  },
+  "vi": {
+    "fields": {
+      "Events.ShiftCount": {
+        "table": "Events",
+        "field": "ShiftCount",
+        "kind": "rollup",
+        "rule": "Trường “shift count” của mỗi event là số lượng shifts liên quan đến event đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng shifts có event là event ID"
+      },
+      "Events.TotalSlotsNeeded": {
+        "table": "Events",
+        "field": "TotalSlotsNeeded",
+        "kind": "rollup",
+        "rule": "Trường “total slots needed” của mỗi event là giá trị tổng cộng của trường “needed count” trên các shifts liên quan đến event đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng needed count trên tất cả shifts có event là event ID"
+      },
+      "Events.TotalSlotsFilled": {
+        "table": "Events",
+        "field": "TotalSlotsFilled",
+        "kind": "rollup",
+        "rule": "Trường “total slots filled” của mỗi event là giá trị tổng cộng của trường “filled count” trên các shifts liên quan đến event đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng filled count trên tất cả shifts có event là event ID"
+      },
+      "Events.CoveragePercent": {
+        "table": "Events",
+        "field": "CoveragePercent",
+        "kind": "formula",
+        "rule": "Trường “coverage percent” của mỗi event được xác định theo thứ tự ưu tiên sau:\n1. total slots filled chia cho total slots needed, nếu total slots needed lớn hơn 0;\n2. trong mọi trường hợp còn lại, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSlotsNeeded",
+            "label": "total slots needed"
+          },
+          {
+            "table": "Events",
+            "field": "TotalSlotsFilled",
+            "label": "total slots filled"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “coverage percent” của mỗi event được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "total slots filled chia cho total slots needed",
+              "when": {
+                "kind": "leaf",
+                "text": "total slots needed lớn hơn 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu total slots needed lớn hơn 0 thì (total slots filled chia cho total slots needed), nếu không thì 0"
+      },
+      "Events.StaffingGrade": {
+        "table": "Events",
+        "field": "StaffingGrade",
+        "kind": "formula",
+        "rule": "Trường “staffing grade” của mỗi event được xác định theo thứ tự ưu tiên sau:\n1. “A”, nếu coverage percent không nhỏ hơn 0.95;\n2. “B”, nếu coverage percent không nhỏ hơn 0.85;\n3. “C”, nếu coverage percent không nhỏ hơn 0.70;\n4. “D”, nếu coverage percent không nhỏ hơn 0.50;\n5. trong mọi trường hợp còn lại, “F”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CoveragePercent",
+            "label": "coverage percent"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “staffing grade” của mỗi event được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“A”",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent không nhỏ hơn 0.95"
+              }
+            },
+            {
+              "value": "“B”",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent không nhỏ hơn 0.85"
+              }
+            },
+            {
+              "value": "“C”",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent không nhỏ hơn 0.70"
+              }
+            },
+            {
+              "value": "“D”",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent không nhỏ hơn 0.50"
+              }
+            },
+            {
+              "value": "“F”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu coverage percent không nhỏ hơn 0.95 thì \"A\", nếu không thì nếu coverage percent không nhỏ hơn 0.85 thì \"B\", nếu không thì nếu coverage percent không nhỏ hơn 0.70 thì \"C\", nếu không thì nếu coverage percent không nhỏ hơn 0.50 thì \"D\", nếu không thì \"F\""
+      },
+      "Volunteers.Name": {
+        "table": "Volunteers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi volunteer được tính bằng first name, tiếp theo là dấu cách, tiếp theo là last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Volunteers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name nối với \" \") nối với last name"
+      },
+      "Volunteers.AssignmentCount": {
+        "table": "Volunteers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "Trường “assignment count” của mỗi volunteer là số lượng assignments liên quan đến volunteer đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng assignments có volunteer là volunteer ID"
+      },
+      "Volunteers.AssignedHours": {
+        "table": "Volunteers",
+        "field": "AssignedHours",
+        "kind": "rollup",
+        "rule": "Trường “assigned hours” của mỗi volunteer là giá trị tổng cộng của trường “shift duration hours” trên các assignments liên quan đến volunteer đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "ShiftDurationHours",
+            "label": "shift duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng shift duration hours trên tất cả assignments có volunteer là volunteer ID"
+      },
+      "Volunteers.LoadStatus": {
+        "table": "Volunteers",
+        "field": "LoadStatus",
+        "kind": "formula",
+        "rule": "Trường “load status” của mỗi volunteer được xác định theo thứ tự ưu tiên sau:\n1. “over” nếu assigned hours lớn hơn max hours, trong mọi trường hợp còn lại là “under” nếu assigned hours nhỏ hơn max hours nhân 0.5, trong mọi trường hợp còn lại là “ok”, nếu max hours lớn hơn 0;\n2. trong mọi trường hợp còn lại, “under”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "MaxHours",
+            "label": "max hours"
+          },
+          {
+            "table": "Volunteers",
+            "field": "AssignedHours",
+            "label": "assigned hours"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “load status” của mỗi volunteer được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“over” nếu assigned hours lớn hơn max hours, trong mọi trường hợp còn lại là “under” nếu assigned hours nhỏ hơn max hours nhân 0.5, trong mọi trường hợp còn lại là “ok”",
+              "when": {
+                "kind": "leaf",
+                "text": "max hours lớn hơn 0"
+              }
+            },
+            {
+              "value": "“under”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu max hours lớn hơn 0 thì nếu assigned hours lớn hơn max hours thì \"over\", nếu không thì nếu assigned hours nhỏ hơn (max hours nhân 0.5) thì \"under\", nếu không thì \"ok\", nếu không thì \"under\""
+      },
+      "Shifts.EventName": {
+        "table": "Shifts",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "Trường “event name” của mỗi shift được lấy từ bản ghi liên kết qua trường “event”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua event"
+      },
+      "Shifts.FilledCount": {
+        "table": "Shifts",
+        "field": "FilledCount",
+        "kind": "rollup",
+        "rule": "Trường “filled count” của mỗi shift là số lượng assignments liên quan đến shift đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng assignments có shift là shift ID"
+      },
+      "Shifts.CoverageStatus": {
+        "table": "Shifts",
+        "field": "CoverageStatus",
+        "kind": "formula",
+        "rule": "Trường “coverage status” của mỗi shift được xác định theo thứ tự ưu tiên sau:\n1. “understaffed”, nếu filled count nhỏ hơn needed count;\n2. “overstaffed”, nếu filled count lớn hơn needed count;\n3. trong mọi trường hợp còn lại, “covered”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “coverage status” của mỗi shift được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“understaffed”",
+              "when": {
+                "kind": "leaf",
+                "text": "filled count nhỏ hơn needed count"
+              }
+            },
+            {
+              "value": "“overstaffed”",
+              "when": {
+                "kind": "leaf",
+                "text": "filled count lớn hơn needed count"
+              }
+            },
+            {
+              "value": "“covered”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu filled count nhỏ hơn needed count thì \"understaffed\", nếu không thì nếu filled count lớn hơn needed count thì \"overstaffed\", nếu không thì \"covered\""
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi assignment được tính bằng volunteer name, tiếp theo là “ @ ”, tiếp theo là shift name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "VolunteerName",
+            "label": "volunteer name"
+          },
+          {
+            "table": "Assignments",
+            "field": "ShiftName",
+            "label": "shift name"
+          }
+        ],
+        "structure": null,
+        "plain": "(volunteer name nối với \" @ \") nối với shift name"
+      },
+      "Assignments.VolunteerName": {
+        "table": "Assignments",
+        "field": "VolunteerName",
+        "kind": "lookup",
+        "rule": "Trường “volunteer name” của mỗi assignment được lấy từ bản ghi liên kết qua trường “volunteer”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua volunteer"
+      },
+      "Assignments.ShiftName": {
+        "table": "Assignments",
+        "field": "ShiftName",
+        "kind": "lookup",
+        "rule": "Trường “shift name” của mỗi assignment được lấy từ bản ghi liên kết qua trường “shift”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Name của bản ghi liên kết qua shift"
+      },
+      "Assignments.ShiftDurationHours": {
+        "table": "Assignments",
+        "field": "ShiftDurationHours",
+        "kind": "lookup",
+        "rule": "Trường “shift duration hours” của mỗi assignment được lấy từ bản ghi liên kết qua trường “shift”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "DurationHours",
+            "label": "duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Duration hours của bản ghi liên kết qua shift"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Events": "event",
+      "Volunteers": "volunteer",
+      "Shifts": "shift",
+      "Assignments": "assignment"
+    }
+  },
+  "zh": {
+    "fields": {
+      "Events.ShiftCount": {
+        "table": "Events",
+        "field": "ShiftCount",
+        "kind": "rollup",
+        "rule": "event的“shift count”为 与event相关的“shifts”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Event为event ID的“shifts”的数量"
+      },
+      "Events.TotalSlotsNeeded": {
+        "table": "Events",
+        "field": "TotalSlotsNeeded",
+        "kind": "rollup",
+        "rule": "event的“total slots needed”为 与event相关的所有“shifts”的“needed count”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有event为event ID的“shifts”的needed count的总和"
+      },
+      "Events.TotalSlotsFilled": {
+        "table": "Events",
+        "field": "TotalSlotsFilled",
+        "kind": "rollup",
+        "rule": "event的“total slots filled”为 与event相关的所有“shifts”的“filled count”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有event为event ID的“shifts”的filled count的总和"
+      },
+      "Events.CoveragePercent": {
+        "table": "Events",
+        "field": "CoveragePercent",
+        "kind": "formula",
+        "rule": "Event的“coverage percent”按以下优先级确定:\n1. 当total slots needed大于0时,取 total slots filled除以total slots needed;\n2. 其余情况取 0。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "TotalSlotsNeeded",
+            "label": "total slots needed"
+          },
+          {
+            "table": "Events",
+            "field": "TotalSlotsFilled",
+            "label": "total slots filled"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Event的“coverage percent”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "total slots filled除以total slots needed",
+              "when": {
+                "kind": "leaf",
+                "text": "total slots needed大于0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若total slots needed大于0,则(total slots filled除以total slots needed),否则0"
+      },
+      "Events.StaffingGrade": {
+        "table": "Events",
+        "field": "StaffingGrade",
+        "kind": "formula",
+        "rule": "Event的“staffing grade”按以下优先级确定:\n1. 当coverage percent不小于0.95时,取 “A”;\n2. 当coverage percent不小于0.85时,取 “B”;\n3. 当coverage percent不小于0.70时,取 “C”;\n4. 当coverage percent不小于0.50时,取 “D”;\n5. 其余情况取 “F”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "CoveragePercent",
+            "label": "coverage percent"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Event的“staffing grade”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“A”",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent不小于0.95"
+              }
+            },
+            {
+              "value": "“B”",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent不小于0.85"
+              }
+            },
+            {
+              "value": "“C”",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent不小于0.70"
+              }
+            },
+            {
+              "value": "“D”",
+              "when": {
+                "kind": "leaf",
+                "text": "coverage percent不小于0.50"
+              }
+            },
+            {
+              "value": "“F”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若coverage percent不小于0.95,则\"A\",否则若coverage percent不小于0.85,则\"B\",否则若coverage percent不小于0.70,则\"C\",否则若coverage percent不小于0.50,则\"D\",否则\"F\""
+      },
+      "Volunteers.Name": {
+        "table": "Volunteers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "volunteer的“name”按 first name,接着是一个空格,接着是last name 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Volunteers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "(first name与\" \"拼接)与last name拼接"
+      },
+      "Volunteers.AssignmentCount": {
+        "table": "Volunteers",
+        "field": "AssignmentCount",
+        "kind": "rollup",
+        "rule": "volunteer的“assignment count”为 与volunteer相关的“assignments”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Volunteer为volunteer ID的“assignments”的数量"
+      },
+      "Volunteers.AssignedHours": {
+        "table": "Volunteers",
+        "field": "AssignedHours",
+        "kind": "rollup",
+        "rule": "volunteer的“assigned hours”为 与volunteer相关的所有“assignments”的“shift duration hours”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "ShiftDurationHours",
+            "label": "shift duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有volunteer为volunteer ID的“assignments”的shift duration hours的总和"
+      },
+      "Volunteers.LoadStatus": {
+        "table": "Volunteers",
+        "field": "LoadStatus",
+        "kind": "formula",
+        "rule": "Volunteer的“load status”按以下优先级确定:\n1. 当max hours大于0时,取 当assigned hours大于max hours时为 “over”,其余情况为 当assigned hours小于max hours乘0.5时为 “under”,其余情况为 “ok”;\n2. 其余情况取 “under”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "MaxHours",
+            "label": "max hours"
+          },
+          {
+            "table": "Volunteers",
+            "field": "AssignedHours",
+            "label": "assigned hours"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Volunteer的“load status”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "当assigned hours大于max hours时为 “over”,其余情况为 当assigned hours小于max hours乘0.5时为 “under”,其余情况为 “ok”",
+              "when": {
+                "kind": "leaf",
+                "text": "max hours大于0"
+              }
+            },
+            {
+              "value": "“under”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若max hours大于0,则若assigned hours大于max hours,则\"over\",否则若assigned hours小于(max hours乘0.5),则\"under\",否则\"ok\",否则\"under\""
+      },
+      "Shifts.EventName": {
+        "table": "Shifts",
+        "field": "EventName",
+        "kind": "lookup",
+        "rule": "shift的“event name”——取自所关联的“event”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Events",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Shifts",
+            "field": "Event",
+            "label": "event"
+          },
+          {
+            "table": "Events",
+            "field": "EventId",
+            "label": "event ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“event”的name"
+      },
+      "Shifts.FilledCount": {
+        "table": "Shifts",
+        "field": "FilledCount",
+        "kind": "rollup",
+        "rule": "shift的“filled count”为 与shift相关的“assignments”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Shift为shift ID的“assignments”的数量"
+      },
+      "Shifts.CoverageStatus": {
+        "table": "Shifts",
+        "field": "CoverageStatus",
+        "kind": "formula",
+        "rule": "Shift的“coverage status”按以下优先级确定:\n1. 当filled count小于needed count时,取 “understaffed”;\n2. 当filled count大于needed count时,取 “overstaffed”;\n3. 其余情况取 “covered”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "FilledCount",
+            "label": "filled count"
+          },
+          {
+            "table": "Shifts",
+            "field": "NeededCount",
+            "label": "needed count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Shift的“coverage status”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“understaffed”",
+              "when": {
+                "kind": "leaf",
+                "text": "filled count小于needed count"
+              }
+            },
+            {
+              "value": "“overstaffed”",
+              "when": {
+                "kind": "leaf",
+                "text": "filled count大于needed count"
+              }
+            },
+            {
+              "value": "“covered”",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若filled count小于needed count,则\"understaffed\",否则若filled count大于needed count,则\"overstaffed\",否则\"covered\""
+      },
+      "Assignments.Name": {
+        "table": "Assignments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "assignment的“name”按 volunteer name,接着是“ @ ”,接着是shift name 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Assignments",
+            "field": "VolunteerName",
+            "label": "volunteer name"
+          },
+          {
+            "table": "Assignments",
+            "field": "ShiftName",
+            "label": "shift name"
+          }
+        ],
+        "structure": null,
+        "plain": "(volunteer name与\" @ \"拼接)与shift name拼接"
+      },
+      "Assignments.VolunteerName": {
+        "table": "Assignments",
+        "field": "VolunteerName",
+        "kind": "lookup",
+        "rule": "assignment的“volunteer name”——取自所关联的“volunteer”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Volunteers",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Volunteer",
+            "label": "volunteer"
+          },
+          {
+            "table": "Volunteers",
+            "field": "VolunteerId",
+            "label": "volunteer ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“volunteer”的name"
+      },
+      "Assignments.ShiftName": {
+        "table": "Assignments",
+        "field": "ShiftName",
+        "kind": "lookup",
+        "rule": "assignment的“shift name”——取自所关联的“shift”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "Name",
+            "label": "name"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“shift”的name"
+      },
+      "Assignments.ShiftDurationHours": {
+        "table": "Assignments",
+        "field": "ShiftDurationHours",
+        "kind": "lookup",
+        "rule": "assignment的“shift duration hours”——取自所关联的“shift”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Shifts",
+            "field": "DurationHours",
+            "label": "duration hours"
+          },
+          {
+            "table": "Assignments",
+            "field": "Shift",
+            "label": "shift"
+          },
+          {
+            "table": "Shifts",
+            "field": "ShiftId",
+            "label": "shift ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“shift”的duration hours"
+      }
+    },
+    "obligations": [],
+    "structural": {},
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "Events": "event",

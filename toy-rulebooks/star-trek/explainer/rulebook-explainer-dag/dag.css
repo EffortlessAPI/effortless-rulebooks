@@ -1466,3 +1466,8 @@ details.dag-w[open] > summary.dag-w-line::before { transform: rotate(90deg); }
 .dag-gnode text { fill: #222; pointer-events: none; }
 .dag-gnode:hover rect { stroke-width: 2.4; }
 .dag-gnode.is-current rect { stroke: #1f2430; stroke-width: 2.6; }
+
+/* The gear's sections: how to show a rule, the language, which parts show. */
+.dag-gear-section { margin: 10px 0 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #777; }
+.dag-gear-pop-title + .dag-gear-section { margin-top: 4px; }
+.dag-gear-lang { width: 100%; padding: 6px 8px; border: 1px solid #d0d7de; border-radius: 6px; font: inherit; background: #fff; color: inherit; }

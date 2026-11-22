@@ -13,7 +13,7 @@
   <script src="../routing.js"></script>
   <script src="../explainer-dag.js"></script>
   <script>
-    var lang = new URLSearchParams(location.search).get("lang") || "en";
+    var lang = EffortlessExplainer.preferredLanguage();   // ?lang=, else the one chosen in the gear, else English
     document.documentElement.lang = lang;
     document.documentElement.dir = EffortlessExplainer.rightToLeft(lang) ? "rtl" : "ltr";
     // Opened as the file it is (…/rulebook-explainer-dag/pages/index.html#/dag/Table/Field):

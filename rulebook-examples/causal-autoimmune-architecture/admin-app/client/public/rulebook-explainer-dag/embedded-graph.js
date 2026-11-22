@@ -18891,8081 +18891,8136 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       }
     ]
   }
-}, rulespeakFields: {
-  "AutoimmuneDiseases.Name": {
-    "table": "AutoimmuneDiseases",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "An autoimmune diseas's name is the same as its disease label.",
-    "mechanical": false,
-    "refs": [
-      {
+}, languages: [
+  "en"
+], rulespeakByLang: {
+  "en": {
+    "fields": {
+      "AutoimmuneDiseases.Name": {
         "table": "AutoimmuneDiseases",
-        "field": "DiseaseLabel",
-        "label": "disease label"
-      }
-    ],
-    "structure": null
-  },
-  "AutoimmuneDiseases.RelativePath": {
-    "table": "AutoimmuneDiseases",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "An autoimmune diseas's relative path is computed as “/diseases/”, followed by the autoimmune disease ID.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "An autoimmune disease's name is the same as its disease label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AutoimmuneDiseases",
+            "field": "DiseaseLabel",
+            "label": "disease label"
+          }
+        ],
+        "structure": null
+      },
+      "AutoimmuneDiseases.RelativePath": {
         "table": "AutoimmuneDiseases",
-        "field": "AutoimmuneDiseaseId",
-        "label": "autoimmune disease ID"
-      }
-    ],
-    "structure": null
-  },
-  "AutoimmuneDiseases.CountOfDiseaseStages": {
-    "table": "AutoimmuneDiseases",
-    "field": "CountOfDiseaseStages",
-    "kind": "rollup",
-    "rule": "An autoimmune diseas's count of disease stages is the number of disease stages related to the autoimmune diseas.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "An autoimmune disease's relative path is computed as “/diseases/”, followed by the autoimmune disease ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AutoimmuneDiseases",
+            "field": "AutoimmuneDiseaseId",
+            "label": "autoimmune disease ID"
+          }
+        ],
+        "structure": null
+      },
+      "AutoimmuneDiseases.CountOfDiseaseStages": {
+        "table": "AutoimmuneDiseases",
+        "field": "CountOfDiseaseStages",
+        "kind": "rollup",
+        "rule": "An autoimmune disease's count of disease stages is the number of disease stages related to the autoimmune disease.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DiseaseStages",
+            "field": "AutoimmuneDisease",
+            "label": "autoimmune disease"
+          },
+          {
+            "table": "AutoimmuneDiseases",
+            "field": "AutoimmuneDiseaseId",
+            "label": "autoimmune disease ID"
+          }
+        ],
+        "structure": null
+      },
+      "AutoimmuneDiseases.CountOfInterventionTargets": {
+        "table": "AutoimmuneDiseases",
+        "field": "CountOfInterventionTargets",
+        "kind": "rollup",
+        "rule": "An autoimmune disease's count of intervention targets is the number of intervention targets related to the autoimmune disease.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InterventionTargets",
+            "field": "AutoimmuneDisease",
+            "label": "autoimmune disease"
+          },
+          {
+            "table": "AutoimmuneDiseases",
+            "field": "AutoimmuneDiseaseId",
+            "label": "autoimmune disease ID"
+          }
+        ],
+        "structure": null
+      },
+      "DiseaseStages.Name": {
         "table": "DiseaseStages",
-        "field": "AutoimmuneDisease",
-        "label": "autoimmune disease"
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A disease stage's name is computed as the autoimmune disease disease label, followed by “ — ”, followed by the stage label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DiseaseStages",
+            "field": "AutoimmuneDiseaseDiseaseLabel",
+            "label": "autoimmune disease disease label"
+          },
+          {
+            "table": "DiseaseStages",
+            "field": "StageLabel",
+            "label": "stage label"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "AutoimmuneDiseases",
-        "field": "AutoimmuneDiseaseId",
-        "label": "autoimmune disease ID"
-      }
-    ],
-    "structure": null
-  },
-  "AutoimmuneDiseases.CountOfInterventionTargets": {
-    "table": "AutoimmuneDiseases",
-    "field": "CountOfInterventionTargets",
-    "kind": "rollup",
-    "rule": "An autoimmune diseas's count of intervention targets is the number of intervention targets related to the autoimmune diseas.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "InterventionTargets",
-        "field": "AutoimmuneDisease",
-        "label": "autoimmune disease"
+      "DiseaseStages.ParentPath": {
+        "table": "DiseaseStages",
+        "field": "ParentPath",
+        "kind": "lookup",
+        "rule": "A disease stage's parent path is the relative path of the disease stage's autoimmune disease.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AutoimmuneDiseases",
+            "field": "RelativePath",
+            "label": "relative path"
+          },
+          {
+            "table": "DiseaseStages",
+            "field": "AutoimmuneDisease",
+            "label": "autoimmune disease"
+          },
+          {
+            "table": "AutoimmuneDiseases",
+            "field": "AutoimmuneDiseaseId",
+            "label": "autoimmune disease ID"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "AutoimmuneDiseases",
-        "field": "AutoimmuneDiseaseId",
-        "label": "autoimmune disease ID"
-      }
-    ],
-    "structure": null
-  },
-  "DiseaseStages.Name": {
-    "table": "DiseaseStages",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A disease stage's name is computed as the autoimmune disease disease label, followed by “ — ”, followed by the stage label.",
-    "mechanical": false,
-    "refs": [
-      {
+      "DiseaseStages.RelativePath": {
+        "table": "DiseaseStages",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A disease stage's relative path is computed as the parent path, followed by “/stages/”, followed by the disease stage ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DiseaseStages",
+            "field": "ParentPath",
+            "label": "parent path"
+          },
+          {
+            "table": "DiseaseStages",
+            "field": "DiseaseStageId",
+            "label": "disease stage ID"
+          }
+        ],
+        "structure": null
+      },
+      "DiseaseStages.AutoimmuneDiseaseDiseaseLabel": {
         "table": "DiseaseStages",
         "field": "AutoimmuneDiseaseDiseaseLabel",
-        "label": "autoimmune disease disease label"
-      },
-      {
-        "table": "DiseaseStages",
-        "field": "StageLabel",
-        "label": "stage label"
-      }
-    ],
-    "structure": null
-  },
-  "DiseaseStages.ParentPath": {
-    "table": "DiseaseStages",
-    "field": "ParentPath",
-    "kind": "lookup",
-    "rule": "A disease stage's parent path is the relative path of the disease stage's autoimmune disease.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "AutoimmuneDiseases",
-        "field": "RelativePath",
-        "label": "relative path"
-      },
-      {
-        "table": "DiseaseStages",
-        "field": "AutoimmuneDisease",
-        "label": "autoimmune disease"
-      },
-      {
-        "table": "AutoimmuneDiseases",
-        "field": "AutoimmuneDiseaseId",
-        "label": "autoimmune disease ID"
-      }
-    ],
-    "structure": null
-  },
-  "DiseaseStages.RelativePath": {
-    "table": "DiseaseStages",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A disease stage's relative path is computed as the parent path, followed by “/stages/”, followed by the disease stage ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "DiseaseStages",
-        "field": "ParentPath",
-        "label": "parent path"
-      },
-      {
-        "table": "DiseaseStages",
-        "field": "DiseaseStageId",
-        "label": "disease stage ID"
-      }
-    ],
-    "structure": null
-  },
-  "DiseaseStages.AutoimmuneDiseaseDiseaseLabel": {
-    "table": "DiseaseStages",
-    "field": "AutoimmuneDiseaseDiseaseLabel",
-    "kind": "formula",
-    "rule": "A disease stage's autoimmune disease disease label — taken from the linked autoimmune disease.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "AutoimmuneDiseases",
-        "field": "DiseaseLabel",
-        "label": "disease label"
-      },
-      {
-        "table": "DiseaseStages",
-        "field": "AutoimmuneDisease",
-        "label": "autoimmune disease"
-      },
-      {
-        "table": "AutoimmuneDiseases",
-        "field": "AutoimmuneDiseaseId",
-        "label": "autoimmune disease ID"
-      }
-    ],
-    "structure": null
-  },
-  "DiseaseStages.IsPresymptomatic": {
-    "table": "DiseaseStages",
-    "field": "IsPresymptomatic",
-    "kind": "formula",
-    "rule": "A disease stage is considered presymptomatic if the stage label is “Presymptomatic”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "DiseaseStages",
-        "field": "StageLabel",
-        "label": "stage label"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The disease stage's is presymptomatic is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the stage label is “Presymptomatic”"
+        "kind": "formula",
+        "rule": "A disease stage's autoimmune disease disease label — taken from the linked autoimmune disease.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AutoimmuneDiseases",
+            "field": "DiseaseLabel",
+            "label": "disease label"
+          },
+          {
+            "table": "DiseaseStages",
+            "field": "AutoimmuneDisease",
+            "label": "autoimmune disease"
+          },
+          {
+            "table": "AutoimmuneDiseases",
+            "field": "AutoimmuneDiseaseId",
+            "label": "autoimmune disease ID"
           }
-        },
-        {
-          "value": "false",
-          "when": null
+        ],
+        "structure": null
+      },
+      "DiseaseStages.IsPresymptomatic": {
+        "table": "DiseaseStages",
+        "field": "IsPresymptomatic",
+        "kind": "formula",
+        "rule": "A disease stage is considered presymptomatic if the stage label is “Presymptomatic”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DiseaseStages",
+            "field": "StageLabel",
+            "label": "stage label"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The disease stage's is presymptomatic is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "leaf",
+                "text": "the stage label is “Presymptomatic”"
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "Tissues.Name": {
-    "table": "Tissues",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A tissue's name is the same as its tissue label.",
-    "mechanical": false,
-    "refs": [
-      {
+      },
+      "Tissues.Name": {
         "table": "Tissues",
-        "field": "TissueLabel",
-        "label": "tissue label"
-      }
-    ],
-    "structure": null
-  },
-  "Tissues.RelativePath": {
-    "table": "Tissues",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A tissue's relative path is computed as “/tissues/”, followed by the tissue ID.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A tissue's name is the same as its tissue label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tissues",
+            "field": "TissueLabel",
+            "label": "tissue label"
+          }
+        ],
+        "structure": null
+      },
+      "Tissues.RelativePath": {
         "table": "Tissues",
-        "field": "TissueId",
-        "label": "tissue ID"
-      }
-    ],
-    "structure": null
-  },
-  "Tissues.CountOfOmicsAssays": {
-    "table": "Tissues",
-    "field": "CountOfOmicsAssays",
-    "kind": "rollup",
-    "rule": "A tissue's count of omics assays is the number of omics assays related to the tissue.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "OmicsAssays",
-        "field": "Tissue",
-        "label": "tissue"
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A tissue's relative path is computed as “/tissues/”, followed by the tissue ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tissues",
+            "field": "TissueId",
+            "label": "tissue ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "Tissues.CountOfOmicsAssays": {
         "table": "Tissues",
-        "field": "TissueId",
-        "label": "tissue ID"
-      }
-    ],
-    "structure": null
-  },
-  "OmicsModalities.Name": {
-    "table": "OmicsModalities",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "An omics modality's name is the same as its modality label.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "CountOfOmicsAssays",
+        "kind": "rollup",
+        "rule": "A tissue's count of omics assays is the number of omics assays related to the tissue.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OmicsAssays",
+            "field": "Tissue",
+            "label": "tissue"
+          },
+          {
+            "table": "Tissues",
+            "field": "TissueId",
+            "label": "tissue ID"
+          }
+        ],
+        "structure": null
+      },
+      "OmicsModalities.Name": {
         "table": "OmicsModalities",
-        "field": "ModalityLabel",
-        "label": "modality label"
-      }
-    ],
-    "structure": null
-  },
-  "OmicsModalities.RelativePath": {
-    "table": "OmicsModalities",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "An omics modality's relative path is computed as “/omics-modalities/”, followed by the omics modality ID.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "An omics modality's name is the same as its modality label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OmicsModalities",
+            "field": "ModalityLabel",
+            "label": "modality label"
+          }
+        ],
+        "structure": null
+      },
+      "OmicsModalities.RelativePath": {
         "table": "OmicsModalities",
-        "field": "OmicsModalityId",
-        "label": "omics modality ID"
-      }
-    ],
-    "structure": null
-  },
-  "OmicsModalities.CountOfOmicsAssays": {
-    "table": "OmicsModalities",
-    "field": "CountOfOmicsAssays",
-    "kind": "rollup",
-    "rule": "An omics modality's count of omics assays is the number of omics assays related to the omics modality.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "OmicsAssays",
-        "field": "OmicsModality",
-        "label": "omics modality"
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "An omics modality's relative path is computed as “/omics-modalities/”, followed by the omics modality ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OmicsModalities",
+            "field": "OmicsModalityId",
+            "label": "omics modality ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "OmicsModalities.CountOfOmicsAssays": {
         "table": "OmicsModalities",
-        "field": "OmicsModalityId",
-        "label": "omics modality ID"
-      }
-    ],
-    "structure": null
-  },
-  "FederatedDatasets.Name": {
-    "table": "FederatedDatasets",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A federated dataset's name is the same as its node label.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "CountOfOmicsAssays",
+        "kind": "rollup",
+        "rule": "An omics modality's count of omics assays is the number of omics assays related to the omics modality.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OmicsAssays",
+            "field": "OmicsModality",
+            "label": "omics modality"
+          },
+          {
+            "table": "OmicsModalities",
+            "field": "OmicsModalityId",
+            "label": "omics modality ID"
+          }
+        ],
+        "structure": null
+      },
+      "FederatedDatasets.Name": {
         "table": "FederatedDatasets",
-        "field": "NodeLabel",
-        "label": "node label"
-      }
-    ],
-    "structure": null
-  },
-  "FederatedDatasets.RelativePath": {
-    "table": "FederatedDatasets",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A federated dataset's relative path is computed as “/datasets/”, followed by the federated dataset ID.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A federated dataset's name is the same as its node label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FederatedDatasets",
+            "field": "NodeLabel",
+            "label": "node label"
+          }
+        ],
+        "structure": null
+      },
+      "FederatedDatasets.RelativePath": {
         "table": "FederatedDatasets",
-        "field": "FederatedDatasetId",
-        "label": "federated dataset ID"
-      }
-    ],
-    "structure": null
-  },
-  "FederatedDatasets.CountOfIndividuals": {
-    "table": "FederatedDatasets",
-    "field": "CountOfIndividuals",
-    "kind": "rollup",
-    "rule": "A federated dataset's count of individuals is the number of individuals related to the federated dataset.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "FederatedDataset",
-        "label": "federated dataset"
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A federated dataset's relative path is computed as “/datasets/”, followed by the federated dataset ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "FederatedDatasets",
+            "field": "FederatedDatasetId",
+            "label": "federated dataset ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "FederatedDatasets.CountOfIndividuals": {
         "table": "FederatedDatasets",
-        "field": "FederatedDatasetId",
-        "label": "federated dataset ID"
-      }
-    ],
-    "structure": null
-  },
-  "VariantTypes.Name": {
-    "table": "VariantTypes",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A variant type's name is the same as its type label.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "VariantTypes",
-        "field": "TypeLabel",
-        "label": "type label"
-      }
-    ],
-    "structure": null
-  },
-  "VariantTypes.RelativePath": {
-    "table": "VariantTypes",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A variant type's relative path is computed as “/variant-types/”, followed by the variant type ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "VariantTypes",
-        "field": "VariantTypeId",
-        "label": "variant type ID"
-      }
-    ],
-    "structure": null
-  },
-  "VariantTypes.CountOfGenomicVariants": {
-    "table": "VariantTypes",
-    "field": "CountOfGenomicVariants",
-    "kind": "rollup",
-    "rule": "A variant type's count of genomic variants is the number of genomic variants related to the variant type.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "GenomicVariants",
-        "field": "VariantType",
-        "label": "variant type"
+        "field": "CountOfIndividuals",
+        "kind": "rollup",
+        "rule": "A federated dataset's count of individuals is the number of individuals related to the federated dataset.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "FederatedDataset",
+            "label": "federated dataset"
+          },
+          {
+            "table": "FederatedDatasets",
+            "field": "FederatedDatasetId",
+            "label": "federated dataset ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "VariantTypes.Name": {
         "table": "VariantTypes",
-        "field": "VariantTypeId",
-        "label": "variant type ID"
-      }
-    ],
-    "structure": null
-  },
-  "Individuals.Name": {
-    "table": "Individuals",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "An individual's name is computed as the given name, followed by a space, followed by the family name.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "GivenName",
-        "label": "given name"
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A variant type's name is the same as its type label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VariantTypes",
+            "field": "TypeLabel",
+            "label": "type label"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "Individuals",
-        "field": "FamilyName",
-        "label": "family name"
-      }
-    ],
-    "structure": null
-  },
-  "Individuals.Slug": {
-    "table": "Individuals",
-    "field": "Slug",
-    "kind": "formula",
-    "rule": "An individual's slug is computed as the lower-cased family name, followed by a hyphen, followed by the given name with every a space replaced by a hyphen.",
-    "mechanical": true,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "FamilyName",
-        "label": "family name"
+      "VariantTypes.RelativePath": {
+        "table": "VariantTypes",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A variant type's relative path is computed as “/variant-types/”, followed by the variant type ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VariantTypes",
+            "field": "VariantTypeId",
+            "label": "variant type ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "VariantTypes.CountOfGenomicVariants": {
+        "table": "VariantTypes",
+        "field": "CountOfGenomicVariants",
+        "kind": "rollup",
+        "rule": "A variant type's count of genomic variants is the number of genomic variants related to the variant type.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GenomicVariants",
+            "field": "VariantType",
+            "label": "variant type"
+          },
+          {
+            "table": "VariantTypes",
+            "field": "VariantTypeId",
+            "label": "variant type ID"
+          }
+        ],
+        "structure": null
+      },
+      "Individuals.Name": {
         "table": "Individuals",
-        "field": "GivenName",
-        "label": "given name"
-      }
-    ],
-    "structure": null
-  },
-  "Individuals.RelativePath": {
-    "table": "Individuals",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "An individual's relative path is computed as “/intake/new-patient/”, followed by the slug.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "An individual's name is computed as the given name, followed by a space, followed by the family name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "GivenName",
+            "label": "given name"
+          },
+          {
+            "table": "Individuals",
+            "field": "FamilyName",
+            "label": "family name"
+          }
+        ],
+        "structure": null
+      },
+      "Individuals.Slug": {
         "table": "Individuals",
         "field": "Slug",
-        "label": "slug"
-      }
-    ],
-    "structure": null
-  },
-  "Individuals.FederatedDatasetNodeLabel": {
-    "table": "Individuals",
-    "field": "FederatedDatasetNodeLabel",
-    "kind": "formula",
-    "rule": "The individual's federated dataset node label is determined by the following priority:\n1. an empty string, if the federated dataset is blank;\n2. in all other cases, the node label of the individual's federated dataset.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "FederatedDataset",
-        "label": "federated dataset"
-      },
-      {
-        "table": "FederatedDatasets",
-        "field": "NodeLabel",
-        "label": "node label"
-      },
-      {
-        "table": "FederatedDatasets",
-        "field": "FederatedDatasetId",
-        "label": "federated dataset ID"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual's federated dataset node label is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the federated dataset is blank"
+        "kind": "formula",
+        "rule": "An individual's slug is computed as the lower-cased family name, followed by a hyphen, followed by the given name with every a space replaced by a hyphen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "FamilyName",
+            "label": "family name"
+          },
+          {
+            "table": "Individuals",
+            "field": "GivenName",
+            "label": "given name"
           }
-        },
-        {
-          "value": "the node label of the individual's federated dataset",
-          "when": null
+        ],
+        "structure": null
+      },
+      "Individuals.RelativePath": {
+        "table": "Individuals",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "An individual's relative path is computed as “/intake/new-patient/”, followed by the slug.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "Slug",
+            "label": "slug"
+          }
+        ],
+        "structure": null
+      },
+      "Individuals.FederatedDatasetNodeLabel": {
+        "table": "Individuals",
+        "field": "FederatedDatasetNodeLabel",
+        "kind": "formula",
+        "rule": "The individual's federated dataset node label is determined by the following priority:\n1. an empty string, if the federated dataset is blank;\n2. in all other cases, the node label of the individual's federated dataset.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "FederatedDataset",
+            "label": "federated dataset"
+          },
+          {
+            "table": "FederatedDatasets",
+            "field": "NodeLabel",
+            "label": "node label"
+          },
+          {
+            "table": "FederatedDatasets",
+            "field": "FederatedDatasetId",
+            "label": "federated dataset ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual's federated dataset node label is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the federated dataset is blank"
+              }
+            },
+            {
+              "value": "the node label of the individual's federated dataset",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "Individuals.CountOfGenomicVariants": {
-    "table": "Individuals",
-    "field": "CountOfGenomicVariants",
-    "kind": "rollup",
-    "rule": "An individual's count of genomic variants is the number of genomic variants related to the individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "GenomicVariants",
-        "field": "Individual",
-        "label": "individual"
       },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "Individuals.CountOfCausalMechanisms": {
-    "table": "Individuals",
-    "field": "CountOfCausalMechanisms",
-    "kind": "rollup",
-    "rule": "An individual's count of causal mechanisms is the number of causal mechanisms related to the individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "Individuals.CountOfEpistaticInteractions": {
-    "table": "Individuals",
-    "field": "CountOfEpistaticInteractions",
-    "kind": "rollup",
-    "rule": "An individual's count of epistatic interactions is the number of epistatic interactions related to the individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "EpistaticInteractions",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "Individuals.RareVariantBurdenScore": {
-    "table": "Individuals",
-    "field": "RareVariantBurdenScore",
-    "kind": "formula",
-    "rule": "The individual's rare variant burden score is determined by the following priority:\n1. the count of genomic variants divided by the age years, if the age years is greater than 0;\n2. in all other cases, 0.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "AgeYears",
-        "label": "age years"
-      },
-      {
+      "Individuals.CountOfGenomicVariants": {
         "table": "Individuals",
         "field": "CountOfGenomicVariants",
-        "label": "count of genomic variants"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual's rare variant burden score is determined by the following priority:",
-      "cases": [
-        {
-          "value": "the count of genomic variants divided by the age years",
-          "when": {
-            "kind": "leaf",
-            "text": "the age years is greater than 0"
+        "kind": "rollup",
+        "rule": "An individual's count of genomic variants is the number of genomic variants related to the individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GenomicVariants",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
           }
-        },
-        {
-          "value": "0",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "Individuals.CausalArchitectureScore": {
-    "table": "Individuals",
-    "field": "CausalArchitectureScore",
-    "kind": "formula",
-    "rule": "An individual's causal architecture score is computed as the count of causal mechanisms times 10 plus the count of epistatic interactions times 5 plus the rare variant burden score.",
-    "mechanical": false,
-    "refs": [
-      {
+        ],
+        "structure": null
+      },
+      "Individuals.CountOfCausalMechanisms": {
         "table": "Individuals",
         "field": "CountOfCausalMechanisms",
-        "label": "count of causal mechanisms"
+        "kind": "rollup",
+        "rule": "An individual's count of causal mechanisms is the number of causal mechanisms related to the individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "Individuals.CountOfEpistaticInteractions": {
         "table": "Individuals",
         "field": "CountOfEpistaticInteractions",
-        "label": "count of epistatic interactions"
+        "kind": "rollup",
+        "rule": "An individual's count of epistatic interactions is the number of epistatic interactions related to the individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EpistaticInteractions",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "Individuals.RareVariantBurdenScore": {
         "table": "Individuals",
         "field": "RareVariantBurdenScore",
-        "label": "rare variant burden score"
-      }
-    ],
-    "structure": null
-  },
-  "Individuals.IsDevelopmentWindow": {
-    "table": "Individuals",
-    "field": "IsDevelopmentWindow",
-    "kind": "formula",
-    "rule": "An individual is considered a development window if the age years is at most 25.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "AgeYears",
-        "label": "age years"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual's is development window is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the age years is at most 25"
+        "kind": "formula",
+        "rule": "The individual's rare variant burden score is determined by the following priority:\n1. the count of genomic variants divided by the age years, if the age years is greater than 0;\n2. in all other cases, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "AgeYears",
+            "label": "age years"
+          },
+          {
+            "table": "Individuals",
+            "field": "CountOfGenomicVariants",
+            "label": "count of genomic variants"
           }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "Individuals.IsAgingWindow": {
-    "table": "Individuals",
-    "field": "IsAgingWindow",
-    "kind": "formula",
-    "rule": "An individual is considered an aging window if the age years is at least 60.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "AgeYears",
-        "label": "age years"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual's is aging window is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the age years is at least 60"
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "Individuals.CountConfirmedCausalNodes": {
-    "table": "Individuals",
-    "field": "CountConfirmedCausalNodes",
-    "kind": "rollup",
-    "rule": "An individual's count confirmed causal nodes is the number of the individual's causal mechanisms that are causal architecture nodes.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "IsCausalArchitectureNode",
-        "label": "is causal architecture node"
-      }
-    ],
-    "structure": null
-  },
-  "Individuals.SumConfirmedCausalConfidence": {
-    "table": "Individuals",
-    "field": "SumConfirmedCausalConfidence",
-    "kind": "rollup",
-    "rule": "An individual's sum confirmed causal confidence is the total causal confidence across the individual's causal mechanisms that are causal architecture nodes.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "CausalConfidence",
-        "label": "causal confidence"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "IsCausalArchitectureNode",
-        "label": "is causal architecture node"
-      }
-    ],
-    "structure": null
-  },
-  "Individuals.CountCrossAncestryConfirmedNodes": {
-    "table": "Individuals",
-    "field": "CountCrossAncestryConfirmedNodes",
-    "kind": "rollup",
-    "rule": "An individual's count cross ancestry confirmed nodes is the number of the individual's causal mechanisms that are ancestry-transportable.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "IsAncestryTransportable",
-        "label": "is ancestry transportable"
-      }
-    ],
-    "structure": null
-  },
-  "Individuals.MaxSeverityScore": {
-    "table": "Individuals",
-    "field": "MaxSeverityScore",
-    "kind": "rollup",
-    "rule": "An individual's max severity score is the largest severity score across the clinical phenotypes related to the individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ClinicalPhenotypes",
-        "field": "SeverityScore",
-        "label": "severity score"
-      },
-      {
-        "table": "ClinicalPhenotypes",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "Individuals.CountHighSeverityPhenotypes": {
-    "table": "Individuals",
-    "field": "CountHighSeverityPhenotypes",
-    "kind": "rollup",
-    "rule": "An individual's count high severity phenotypes is the number of the individual's clinical phenotypes that are high severities.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ClinicalPhenotypes",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      },
-      {
-        "table": "ClinicalPhenotypes",
-        "field": "IsHighSeverity",
-        "label": "is high severity"
-      }
-    ],
-    "structure": null
-  },
-  "Individuals.HasHighSeverityPhenotype": {
-    "table": "Individuals",
-    "field": "HasHighSeverityPhenotype",
-    "kind": "formula",
-    "rule": "An individual is considered to have a high severity phenotype if the count high severity phenotypes is at least 1.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "CountHighSeverityPhenotypes",
-        "label": "count high severity phenotypes"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual's has high severity phenotype is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the count high severity phenotypes is at least 1"
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "Individuals.CountPredictedTreatmentResponses": {
-    "table": "Individuals",
-    "field": "CountPredictedTreatmentResponses",
-    "kind": "rollup",
-    "rule": "An individual's count predicted treatment responses is the number of the individual's treatments that are treatment-response-predicted.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Treatments",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      },
-      {
-        "table": "Treatments",
-        "field": "IsTreatmentResponsePredicted",
-        "label": "is treatment response predicted"
-      }
-    ],
-    "structure": null
-  },
-  "Individuals.HasPredictedTreatmentResponse": {
-    "table": "Individuals",
-    "field": "HasPredictedTreatmentResponse",
-    "kind": "formula",
-    "rule": "An individual is considered to have a predicted treatment response if the count predicted treatment responses is at least 1.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "CountPredictedTreatmentResponses",
-        "label": "count predicted treatment responses"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual's has predicted treatment response is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the count predicted treatment responses is at least 1"
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "Individuals.CountSerologyPanels": {
-    "table": "Individuals",
-    "field": "CountSerologyPanels",
-    "kind": "rollup",
-    "rule": "An individual's count serology panels is the number of serology observations related to the individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SerologyObservations",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "Individuals.CountPreNephriticSignaturePanels": {
-    "table": "Individuals",
-    "field": "CountPreNephriticSignaturePanels",
-    "kind": "rollup",
-    "rule": "An individual's count pre nephritic signature panels is the number of the individual's serology observations that are pre nephritic signature panels.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SerologyObservations",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      },
-      {
-        "table": "SerologyObservations",
-        "field": "IsPreNephriticSignaturePanel",
-        "label": "is pre nephritic signature panel"
-      }
-    ],
-    "structure": null
-  },
-  "Individuals.IsInPreNephriticSignatureCluster": {
-    "table": "Individuals",
-    "field": "IsInPreNephriticSignatureCluster",
-    "kind": "formula",
-    "rule": "An individual is considered in-pre-nephritic-signature-cluster if the count pre nephritic signature panels is at least 1.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "CountPreNephriticSignaturePanels",
-        "label": "count pre nephritic signature panels"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual's is in pre nephritic signature cluster is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the count pre nephritic signature panels is at least 1"
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "Individuals.SignatureStrength": {
-    "table": "Individuals",
-    "field": "SignatureStrength",
-    "kind": "formula",
-    "rule": "The individual's signature strength is determined by the following priority:\n1. 2, if the count pre nephritic signature panels is at least 2;\n2. 1, if the count pre nephritic signature panels is at least 1;\n3. in all other cases, 0.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "CountPreNephriticSignaturePanels",
-        "label": "count pre nephritic signature panels"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual's signature strength is determined by the following priority:",
-      "cases": [
-        {
-          "value": "2",
-          "when": {
-            "kind": "leaf",
-            "text": "the count pre nephritic signature panels is at least 2"
-          }
-        },
-        {
-          "value": "1",
-          "when": {
-            "kind": "leaf",
-            "text": "the count pre nephritic signature panels is at least 1"
-          }
-        },
-        {
-          "value": "0",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "Individuals.MaxProgressionStateOrder": {
-    "table": "Individuals",
-    "field": "MaxProgressionStateOrder",
-    "kind": "rollup",
-    "rule": "An individual's max progression state order is the largest progression state order across the serology observations related to the individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SerologyObservations",
-        "field": "ProgressionStateOrder",
-        "label": "progression state order"
-      },
-      {
-        "table": "SerologyObservations",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "Individuals.LatestSledaiScore": {
-    "table": "Individuals",
-    "field": "LatestSledaiScore",
-    "kind": "rollup",
-    "rule": "An individual's latest sledai score is the largest sledai score across the serology observations related to the individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SerologyObservations",
-        "field": "SledaiScore",
-        "label": "sledai score"
-      },
-      {
-        "table": "SerologyObservations",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "Individuals.NephritisProgressionStateKey": {
-    "table": "Individuals",
-    "field": "NephritisProgressionStateKey",
-    "kind": "formula",
-    "rule": "The individual's nephritis progression state key is determined by the following priority:\n1. “BiopsyIndicated”, if the max progression state order is at least 5;\n2. “RenalFlareRisk”, if the max progression state order is at least 4;\n3. “EarlyNephritis”, if the max progression state order is at least 3;\n4. “SerologicActive”, if the max progression state order is at least 2;\n5. in all other cases, “PresymptomaticAutoimmunity”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "MaxProgressionStateOrder",
-        "label": "max progression state order"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual's nephritis progression state key is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“BiopsyIndicated”",
-          "when": {
-            "kind": "leaf",
-            "text": "the max progression state order is at least 5"
-          }
-        },
-        {
-          "value": "“RenalFlareRisk”",
-          "when": {
-            "kind": "leaf",
-            "text": "the max progression state order is at least 4"
-          }
-        },
-        {
-          "value": "“EarlyNephritis”",
-          "when": {
-            "kind": "leaf",
-            "text": "the max progression state order is at least 3"
-          }
-        },
-        {
-          "value": "“SerologicActive”",
-          "when": {
-            "kind": "leaf",
-            "text": "the max progression state order is at least 2"
-          }
-        },
-        {
-          "value": "“PresymptomaticAutoimmunity”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "Individuals.ActivityTier": {
-    "table": "Individuals",
-    "field": "ActivityTier",
-    "kind": "formula",
-    "rule": "The individual's activity tier is determined by the following priority:\n1. “High / flare”, if the latest sledai score is at least 12;\n2. “Moderate”, if the latest sledai score is at least 6;\n3. “Mild”, if the latest sledai score is at least 1;\n4. in all other cases, “Quiescent”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "LatestSledaiScore",
-        "label": "latest sledai score"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual's activity tier is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“High / flare”",
-          "when": {
-            "kind": "leaf",
-            "text": "the latest sledai score is at least 12"
-          }
-        },
-        {
-          "value": "“Moderate”",
-          "when": {
-            "kind": "leaf",
-            "text": "the latest sledai score is at least 6"
-          }
-        },
-        {
-          "value": "“Mild”",
-          "when": {
-            "kind": "leaf",
-            "text": "the latest sledai score is at least 1"
-          }
-        },
-        {
-          "value": "“Quiescent”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "Individuals.IsHighDiseaseActivity": {
-    "table": "Individuals",
-    "field": "IsHighDiseaseActivity",
-    "kind": "formula",
-    "rule": "An individual is considered a high disease activity if the latest sledai score is at least 12.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "LatestSledaiScore",
-        "label": "latest sledai score"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual's is high disease activity is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the latest sledai score is at least 12"
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "Individuals.IsDiseaseProgressing": {
-    "table": "Individuals",
-    "field": "IsDiseaseProgressing",
-    "kind": "formula",
-    "rule": "An individual is considered disease-progressing if at least one of the following holds: the nephritis progression state key is “EarlyNephritis”; the nephritis progression state key is “RenalFlareRisk”; or the nephritis progression state key is “BiopsyIndicated”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "NephritisProgressionStateKey",
-        "label": "nephritis progression state key"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual's is disease progressing is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual's rare variant burden score is determined by the following priority:",
+          "cases": [
+            {
+              "value": "the count of genomic variants divided by the age years",
+              "when": {
                 "kind": "leaf",
-                "text": "the nephritis progression state key is “EarlyNephritis”"
-              },
-              {
-                "kind": "leaf",
-                "text": "the nephritis progression state key is “RenalFlareRisk”"
-              },
-              {
-                "kind": "leaf",
-                "text": "the nephritis progression state key is “BiopsyIndicated”"
+                "text": "the age years is greater than 0"
               }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "Individuals.TargetPathwayCode": {
-    "table": "Individuals",
-    "field": "TargetPathwayCode",
-    "kind": "rollup",
-    "rule": "An individual's target pathway code is the largest target pathway code across the causal mechanisms related to the individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "TargetPathwayCode",
-        "label": "target pathway code"
       },
-      {
-        "table": "CausalMechanisms",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
+      "Individuals.CausalArchitectureScore": {
         "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "Individuals.TargetPathway": {
-    "table": "Individuals",
-    "field": "TargetPathway",
-    "kind": "formula",
-    "rule": "The individual's target pathway is determined by the following priority:\n1. “type-I-IFN”, if the target pathway code is 1;\n2. “B-cell/autoantibody”, if the target pathway code is 2;\n3. “T-cell-costim”, if the target pathway code is 3;\n4. “IL-17/23”, if the target pathway code is 4;\n5. in all other cases, an empty string.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "TargetPathwayCode",
-        "label": "target pathway code"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual's target pathway is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“type-I-IFN”",
-          "when": {
-            "kind": "leaf",
-            "text": "the target pathway code is 1"
+        "field": "CausalArchitectureScore",
+        "kind": "formula",
+        "rule": "An individual's causal architecture score is computed as the count of causal mechanisms times 10 plus the count of epistatic interactions times 5 plus the rare variant burden score.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "CountOfCausalMechanisms",
+            "label": "count of causal mechanisms"
+          },
+          {
+            "table": "Individuals",
+            "field": "CountOfEpistaticInteractions",
+            "label": "count of epistatic interactions"
+          },
+          {
+            "table": "Individuals",
+            "field": "RareVariantBurdenScore",
+            "label": "rare variant burden score"
           }
-        },
-        {
-          "value": "“B-cell/autoantibody”",
-          "when": {
-            "kind": "leaf",
-            "text": "the target pathway code is 2"
+        ],
+        "structure": null
+      },
+      "Individuals.IsDevelopmentWindow": {
+        "table": "Individuals",
+        "field": "IsDevelopmentWindow",
+        "kind": "formula",
+        "rule": "An individual is considered a development window if the age years is at most 25.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "AgeYears",
+            "label": "age years"
           }
-        },
-        {
-          "value": "“T-cell-costim”",
-          "when": {
-            "kind": "leaf",
-            "text": "the target pathway code is 3"
-          }
-        },
-        {
-          "value": "“IL-17/23”",
-          "when": {
-            "kind": "leaf",
-            "text": "the target pathway code is 4"
-          }
-        },
-        {
-          "value": "an empty string",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "Individuals.CurrentProgressionStateId": {
-    "table": "Individuals",
-    "field": "CurrentProgressionStateId",
-    "kind": "formula",
-    "rule": "An individual's current progression state ID is computed as “lupus-nephritis-progression--”, followed by the lower-cased nephritis progression state key.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "NephritisProgressionStateKey",
-        "label": "nephritis progression state key"
-      }
-    ],
-    "structure": null
-  },
-  "Individuals.ReachableStatesAhead": {
-    "table": "Individuals",
-    "field": "ReachableStatesAhead",
-    "kind": "lookup",
-    "rule": "An individual's reachable states ahead is the reachable state count of the individual's current progression state ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "MachineStates",
-        "field": "ReachableStateCount",
-        "label": "reachable state count"
-      },
-      {
-        "table": "Individuals",
-        "field": "CurrentProgressionStateId",
-        "label": "current progression state ID"
-      },
-      {
-        "table": "MachineStates",
-        "field": "MachineStateId",
-        "label": "machine state ID"
-      }
-    ],
-    "structure": null
-  },
-  "GenomicVariants.Name": {
-    "table": "GenomicVariants",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A genomic variant's name is the same as its variant label.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "GenomicVariants",
-        "field": "VariantLabel",
-        "label": "variant label"
-      }
-    ],
-    "structure": null
-  },
-  "GenomicVariants.ParentPath": {
-    "table": "GenomicVariants",
-    "field": "ParentPath",
-    "kind": "lookup",
-    "rule": "A genomic variant's parent path is the relative path of the genomic variant's individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "RelativePath",
-        "label": "relative path"
-      },
-      {
-        "table": "GenomicVariants",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "GenomicVariants.RelativePath": {
-    "table": "GenomicVariants",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A genomic variant's relative path is computed as the parent path, followed by “/variants/”, followed by the genomic variant ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "GenomicVariants",
-        "field": "ParentPath",
-        "label": "parent path"
-      },
-      {
-        "table": "GenomicVariants",
-        "field": "GenomicVariantId",
-        "label": "genomic variant ID"
-      }
-    ],
-    "structure": null
-  },
-  "GenomicVariants.VariantTypeLabel": {
-    "table": "GenomicVariants",
-    "field": "VariantTypeLabel",
-    "kind": "formula",
-    "rule": "A genomic variant's variant type label — taken from the linked variant type.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "VariantTypes",
-        "field": "TypeLabel",
-        "label": "type label"
-      },
-      {
-        "table": "GenomicVariants",
-        "field": "VariantType",
-        "label": "variant type"
-      },
-      {
-        "table": "VariantTypes",
-        "field": "VariantTypeId",
-        "label": "variant type ID"
-      }
-    ],
-    "structure": null
-  },
-  "GenomicVariants.VariantClassIsRare": {
-    "table": "GenomicVariants",
-    "field": "VariantClassIsRare",
-    "kind": "lookup",
-    "rule": "A genomic variant's variant class is rare when the linked variant type is a rare variant class.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "VariantTypes",
-        "field": "IsRareVariantClass",
-        "label": "is rare variant class"
-      },
-      {
-        "table": "GenomicVariants",
-        "field": "VariantType",
-        "label": "variant type"
-      },
-      {
-        "table": "VariantTypes",
-        "field": "VariantTypeId",
-        "label": "variant type ID"
-      }
-    ],
-    "structure": null
-  },
-  "GenomicVariants.IndividualAncestryLabel": {
-    "table": "GenomicVariants",
-    "field": "IndividualAncestryLabel",
-    "kind": "formula",
-    "rule": "A genomic variant's individual ancestry label — taken from the linked individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "AncestryLabel",
-        "label": "ancestry label"
-      },
-      {
-        "table": "GenomicVariants",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "GenomicVariants.IsRareVariant": {
-    "table": "GenomicVariants",
-    "field": "IsRareVariant",
-    "kind": "formula",
-    "rule": "A genomic variant is considered a rare variant if the allele frequency is less than 0.01.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "GenomicVariants",
-        "field": "AlleleFrequency",
-        "label": "allele frequency"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The genomic variant's is rare variant is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the allele frequency is less than 0.01"
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "GenomicVariants.IsCausalCandidate": {
-    "table": "GenomicVariants",
-    "field": "IsCausalCandidate",
-    "kind": "formula",
-    "rule": "A genomic variant is considered a causal candidate if all of the following hold: at least one of the following holds: the rare variant flag is set or the variant class is rare flag is set and the allele specific expression flag is set.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "GenomicVariants",
-        "field": "IsRareVariant",
-        "label": "is rare variant"
-      },
-      {
-        "table": "GenomicVariants",
-        "field": "VariantClassIsRare",
-        "label": "variant class is rare"
-      },
-      {
-        "table": "GenomicVariants",
-        "field": "HasAlleleSpecificExpression",
-        "label": "has allele specific expression"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The genomic variant's is causal candidate is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "any",
-                "children": [
-                  {
-                    "kind": "leaf",
-                    "text": "the rare variant flag is set"
-                  },
-                  {
-                    "kind": "leaf",
-                    "text": "the variant class is rare flag is set"
-                  }
-                ]
-              },
-              {
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual's is development window is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
                 "kind": "leaf",
-                "text": "the allele specific expression flag is set"
+                "text": "the age years is at most 25"
               }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "OmicsAssays.Name": {
-    "table": "OmicsAssays",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "An omics assay's name is the same as its assay label.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "OmicsAssays",
-        "field": "AssayLabel",
-        "label": "assay label"
-      }
-    ],
-    "structure": null
-  },
-  "OmicsAssays.ParentPath": {
-    "table": "OmicsAssays",
-    "field": "ParentPath",
-    "kind": "lookup",
-    "rule": "An omics assay's parent path is the relative path of the omics assay's individual.",
-    "mechanical": false,
-    "refs": [
-      {
+      },
+      "Individuals.IsAgingWindow": {
         "table": "Individuals",
-        "field": "RelativePath",
-        "label": "relative path"
-      },
-      {
-        "table": "OmicsAssays",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "OmicsAssays.RelativePath": {
-    "table": "OmicsAssays",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "An omics assay's relative path is computed as the parent path, followed by “/assays/”, followed by the omics assay ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "OmicsAssays",
-        "field": "ParentPath",
-        "label": "parent path"
-      },
-      {
-        "table": "OmicsAssays",
-        "field": "OmicsAssayId",
-        "label": "omics assay ID"
-      }
-    ],
-    "structure": null
-  },
-  "OmicsAssays.ModalityLabel": {
-    "table": "OmicsAssays",
-    "field": "ModalityLabel",
-    "kind": "formula",
-    "rule": "An omics assay's modality label — taken from the linked omics modality.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "OmicsModalities",
-        "field": "ModalityLabel",
-        "label": "modality label"
-      },
-      {
-        "table": "OmicsAssays",
-        "field": "OmicsModality",
-        "label": "omics modality"
-      },
-      {
-        "table": "OmicsModalities",
-        "field": "OmicsModalityId",
-        "label": "omics modality ID"
-      }
-    ],
-    "structure": null
-  },
-  "OmicsAssays.TissueLabel": {
-    "table": "OmicsAssays",
-    "field": "TissueLabel",
-    "kind": "formula",
-    "rule": "The omics assay's tissue label is determined by the following priority:\n1. “Missing Tissue”, if the tissue is blank;\n2. in all other cases, the tissue label of the omics assay's tissue.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "OmicsAssays",
-        "field": "Tissue",
-        "label": "tissue"
-      },
-      {
-        "table": "Tissues",
-        "field": "TissueLabel",
-        "label": "tissue label"
-      },
-      {
-        "table": "Tissues",
-        "field": "TissueId",
-        "label": "tissue ID"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The omics assay's tissue label is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“Missing Tissue”",
-          "when": {
-            "kind": "leaf",
-            "text": "the tissue is blank"
+        "field": "IsAgingWindow",
+        "kind": "formula",
+        "rule": "An individual is considered an aging window if the age years is at least 60.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "AgeYears",
+            "label": "age years"
           }
-        },
-        {
-          "value": "the tissue label of the omics assay's tissue",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "OmicsAssays.HasBatchEffectRisk": {
-    "table": "OmicsAssays",
-    "field": "HasBatchEffectRisk",
-    "kind": "formula",
-    "rule": "An omics assay is considered to have batch effect risk if the measurement error score is greater than 0.3.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "OmicsAssays",
-        "field": "MeasurementErrorScore",
-        "label": "measurement error score"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The omics assay's has batch effect risk is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the measurement error score is greater than 0.3"
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "OmicsAssays.IsHighQualityAssay": {
-    "table": "OmicsAssays",
-    "field": "IsHighQualityAssay",
-    "kind": "formula",
-    "rule": "An omics assay is considered a high quality assay if all of the following hold: the batch effect risk flag is not set and the measurement error score is less than 0.15.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "OmicsAssays",
-        "field": "HasBatchEffectRisk",
-        "label": "has batch effect risk"
-      },
-      {
-        "table": "OmicsAssays",
-        "field": "MeasurementErrorScore",
-        "label": "measurement error score"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The omics assay's is high quality assay is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual's is aging window is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
                 "kind": "leaf",
-                "text": "the batch effect risk flag is not set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the measurement error score is less than 0.15"
+                "text": "the age years is at least 60"
               }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "EvidenceItems.Name": {
-    "table": "EvidenceItems",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "An evidence item's name is the same as its evidence label.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "EvidenceItems",
-        "field": "EvidenceLabel",
-        "label": "evidence label"
-      }
-    ],
-    "structure": null
-  },
-  "EvidenceItems.ParentPath": {
-    "table": "EvidenceItems",
-    "field": "ParentPath",
-    "kind": "lookup",
-    "rule": "An evidence item's parent path is the relative path of the evidence item's causal mechanism.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "RelativePath",
-        "label": "relative path"
       },
-      {
-        "table": "EvidenceItems",
-        "field": "CausalMechanism",
-        "label": "causal mechanism"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CausalMechanismId",
-        "label": "causal mechanism ID"
-      }
-    ],
-    "structure": null
-  },
-  "EvidenceItems.RelativePath": {
-    "table": "EvidenceItems",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "An evidence item's relative path is computed as the parent path, followed by “/evidence/”, followed by the evidence item ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "EvidenceItems",
-        "field": "ParentPath",
-        "label": "parent path"
-      },
-      {
-        "table": "EvidenceItems",
-        "field": "EvidenceItemId",
-        "label": "evidence item ID"
-      }
-    ],
-    "structure": null
-  },
-  "EvidenceItems.AssayIsHighQuality": {
-    "table": "EvidenceItems",
-    "field": "AssayIsHighQuality",
-    "kind": "lookup",
-    "rule": "An evidence item's assay is high quality when the linked omics assay is a high quality assay.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "OmicsAssays",
-        "field": "IsHighQualityAssay",
-        "label": "is high quality assay"
-      },
-      {
-        "table": "EvidenceItems",
-        "field": "OmicsAssay",
-        "label": "omics assay"
-      },
-      {
-        "table": "OmicsAssays",
-        "field": "OmicsAssayId",
-        "label": "omics assay ID"
-      }
-    ],
-    "structure": null
-  },
-  "EvidenceItems.ZStat": {
-    "table": "EvidenceItems",
-    "field": "ZStat",
-    "kind": "formula",
-    "rule": "The evidence item's z stat is determined by the following priority:\n1. the effect size divided by the standard error, if the standard error is greater than 0;\n2. in all other cases, 0.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "EvidenceItems",
-        "field": "StandardError",
-        "label": "standard error"
-      },
-      {
-        "table": "EvidenceItems",
-        "field": "EffectSize",
-        "label": "effect size"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The evidence item's z stat is determined by the following priority:",
-      "cases": [
-        {
-          "value": "the effect size divided by the standard error",
-          "when": {
-            "kind": "leaf",
-            "text": "the standard error is greater than 0"
-          }
-        },
-        {
-          "value": "0",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "EvidenceItems.IsConfoundControlled": {
-    "table": "EvidenceItems",
-    "field": "IsConfoundControlled",
-    "kind": "formula",
-    "rule": "An evidence item is considered confound-controlled if all of the following hold: the adjusted for ancestry p cs flag is set and the adjusted for batch flag is set.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "EvidenceItems",
-        "field": "IsAdjustedForAncestryPCs",
-        "label": "is adjusted for ancestry p cs"
-      },
-      {
-        "table": "EvidenceItems",
-        "field": "IsAdjustedForBatch",
-        "label": "is adjusted for batch"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The evidence item's is confound controlled is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the adjusted for ancestry p cs flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the adjusted for batch flag is set"
-              }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "EvidenceItems.IsQualifiedEvidence": {
-    "table": "EvidenceItems",
-    "field": "IsQualifiedEvidence",
-    "kind": "formula",
-    "rule": "An evidence item is considered a qualified evidence if all of the following hold: the assay is high quality flag is set; the negative control arm flag is not set; the z stat is at least 2; and the confound controlled flag is set.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "EvidenceItems",
-        "field": "AssayIsHighQuality",
-        "label": "assay is high quality"
-      },
-      {
-        "table": "EvidenceItems",
-        "field": "IsNegativeControlArm",
-        "label": "is negative control arm"
-      },
-      {
-        "table": "EvidenceItems",
-        "field": "ZStat",
-        "label": "z stat"
-      },
-      {
-        "table": "EvidenceItems",
-        "field": "IsConfoundControlled",
-        "label": "is confound controlled"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The evidence item's is qualified evidence is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the assay is high quality flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the negative control arm flag is not set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the z stat is at least 2"
-              },
-              {
-                "kind": "leaf",
-                "text": "the confound controlled flag is set"
-              }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CohortReplications.Name": {
-    "table": "CohortReplications",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A cohort replication's name is the same as its replication label.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CohortReplications",
-        "field": "ReplicationLabel",
-        "label": "replication label"
-      }
-    ],
-    "structure": null
-  },
-  "CohortReplications.ParentPath": {
-    "table": "CohortReplications",
-    "field": "ParentPath",
-    "kind": "lookup",
-    "rule": "A cohort replication's parent path is the relative path of the cohort replication's causal mechanism.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "RelativePath",
-        "label": "relative path"
-      },
-      {
-        "table": "CohortReplications",
-        "field": "CausalMechanism",
-        "label": "causal mechanism"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CausalMechanismId",
-        "label": "causal mechanism ID"
-      }
-    ],
-    "structure": null
-  },
-  "CohortReplications.RelativePath": {
-    "table": "CohortReplications",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A cohort replication's relative path is computed as the parent path, followed by “/replications/”, followed by the cohort replication ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CohortReplications",
-        "field": "ParentPath",
-        "label": "parent path"
-      },
-      {
-        "table": "CohortReplications",
-        "field": "CohortReplicationId",
-        "label": "cohort replication ID"
-      }
-    ],
-    "structure": null
-  },
-  "CohortReplications.ReplicatedAtNominalSig": {
-    "table": "CohortReplications",
-    "field": "ReplicatedAtNominalSig",
-    "kind": "formula",
-    "rule": "A cohort replication is flagged replicated at nominal sig if all of the following hold: the replication p value is at most 0.05 and the replication effect sign is 1.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CohortReplications",
-        "field": "ReplicationPValue",
-        "label": "replication p value"
-      },
-      {
-        "table": "CohortReplications",
-        "field": "ReplicationEffectSign",
-        "label": "replication effect sign"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The cohort replication's replicated at nominal sig is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the replication p value is at most 0.05"
-              },
-              {
-                "kind": "leaf",
-                "text": "the replication effect sign is 1"
-              }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CohortReplications.MechanismPrimaryAncestry": {
-    "table": "CohortReplications",
-    "field": "MechanismPrimaryAncestry",
-    "kind": "lookup",
-    "rule": "A cohort replication's mechanism primary ancestry is the individual ancestry label of the cohort replication's causal mechanism.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "IndividualAncestryLabel",
-        "label": "individual ancestry label"
-      },
-      {
-        "table": "CohortReplications",
-        "field": "CausalMechanism",
-        "label": "causal mechanism"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CausalMechanismId",
-        "label": "causal mechanism ID"
-      }
-    ],
-    "structure": null
-  },
-  "CohortReplications.IsDifferentAncestryReplication": {
-    "table": "CohortReplications",
-    "field": "IsDifferentAncestryReplication",
-    "kind": "formula",
-    "rule": "A cohort replication is considered a different ancestry replication if it is not the case that the replication ancestry label is the mechanism primary ancestry.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CohortReplications",
-        "field": "ReplicationAncestryLabel",
-        "label": "replication ancestry label"
-      },
-      {
-        "table": "CohortReplications",
-        "field": "MechanismPrimaryAncestry",
-        "label": "mechanism primary ancestry"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The cohort replication's is different ancestry replication is determined by the following priority:",
-      "cases": [
-        {
-          "value": "false",
-          "when": {
-            "kind": "leaf",
-            "text": "the replication ancestry label is the mechanism primary ancestry"
-          }
-        },
-        {
-          "value": "true",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CohortReplications.IsCrossAncestryConcordant": {
-    "table": "CohortReplications",
-    "field": "IsCrossAncestryConcordant",
-    "kind": "formula",
-    "rule": "A cohort replication is considered a cross ancestry concordant if all of the following hold: the replicated at nominal sig flag is set and the different ancestry replication flag is set.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CohortReplications",
-        "field": "ReplicatedAtNominalSig",
-        "label": "replicated at nominal sig"
-      },
-      {
-        "table": "CohortReplications",
-        "field": "IsDifferentAncestryReplication",
-        "label": "is different ancestry replication"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The cohort replication's is cross ancestry concordant is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the replicated at nominal sig flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the different ancestry replication flag is set"
-              }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "NegativeControlTests.Name": {
-    "table": "NegativeControlTests",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A negative control test's name is the same as its control label.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "NegativeControlTests",
-        "field": "ControlLabel",
-        "label": "control label"
-      }
-    ],
-    "structure": null
-  },
-  "NegativeControlTests.ParentPath": {
-    "table": "NegativeControlTests",
-    "field": "ParentPath",
-    "kind": "lookup",
-    "rule": "A negative control test's parent path is the relative path of the negative control test's causal mechanism.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "RelativePath",
-        "label": "relative path"
-      },
-      {
-        "table": "NegativeControlTests",
-        "field": "CausalMechanism",
-        "label": "causal mechanism"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CausalMechanismId",
-        "label": "causal mechanism ID"
-      }
-    ],
-    "structure": null
-  },
-  "NegativeControlTests.RelativePath": {
-    "table": "NegativeControlTests",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A negative control test's relative path is computed as the parent path, followed by “/neg-controls/”, followed by the negative control test ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "NegativeControlTests",
-        "field": "ParentPath",
-        "label": "parent path"
-      },
-      {
-        "table": "NegativeControlTests",
-        "field": "NegativeControlTestId",
-        "label": "negative control test ID"
-      }
-    ],
-    "structure": null
-  },
-  "NegativeControlTests.IsSurvived": {
-    "table": "NegativeControlTests",
-    "field": "IsSurvived",
-    "kind": "formula",
-    "rule": "A negative control test is considered survived if the permutation effect size is at most the null threshold.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "NegativeControlTests",
-        "field": "PermutationEffectSize",
-        "label": "permutation effect size"
-      },
-      {
-        "table": "NegativeControlTests",
-        "field": "NullThreshold",
-        "label": "null threshold"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The negative control test's is survived is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the permutation effect size is at most the null threshold"
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "EnvironmentalExposures.Name": {
-    "table": "EnvironmentalExposures",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "An environmental exposure's name is the same as its exposure label.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "EnvironmentalExposures",
-        "field": "ExposureLabel",
-        "label": "exposure label"
-      }
-    ],
-    "structure": null
-  },
-  "EnvironmentalExposures.ParentPath": {
-    "table": "EnvironmentalExposures",
-    "field": "ParentPath",
-    "kind": "lookup",
-    "rule": "An environmental exposure's parent path is the relative path of the environmental exposure's individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "RelativePath",
-        "label": "relative path"
-      },
-      {
-        "table": "EnvironmentalExposures",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "EnvironmentalExposures.RelativePath": {
-    "table": "EnvironmentalExposures",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "An environmental exposure's relative path is computed as the parent path, followed by “/exposures/”, followed by the environmental exposure ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "EnvironmentalExposures",
-        "field": "ParentPath",
-        "label": "parent path"
-      },
-      {
-        "table": "EnvironmentalExposures",
-        "field": "EnvironmentalExposureId",
-        "label": "environmental exposure ID"
-      }
-    ],
-    "structure": null
-  },
-  "EnvironmentalExposures.IndividualAncestryLabel": {
-    "table": "EnvironmentalExposures",
-    "field": "IndividualAncestryLabel",
-    "kind": "formula",
-    "rule": "An environmental exposure's individual ancestry label — taken from the linked individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "AncestryLabel",
-        "label": "ancestry label"
-      },
-      {
-        "table": "EnvironmentalExposures",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "EnvironmentalExposures.IsHighExposure": {
-    "table": "EnvironmentalExposures",
-    "field": "IsHighExposure",
-    "kind": "formula",
-    "rule": "An environmental exposure is considered a high exposure if the exposure level is greater than 5.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "EnvironmentalExposures",
-        "field": "ExposureLevel",
-        "label": "exposure level"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The environmental exposure's is high exposure is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the exposure level is greater than 5"
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "Treatments.Name": {
-    "table": "Treatments",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A treatment's name is the same as its treatment label.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Treatments",
-        "field": "TreatmentLabel",
-        "label": "treatment label"
-      }
-    ],
-    "structure": null
-  },
-  "Treatments.ParentPath": {
-    "table": "Treatments",
-    "field": "ParentPath",
-    "kind": "lookup",
-    "rule": "A treatment's parent path is the relative path of the treatment's individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "RelativePath",
-        "label": "relative path"
-      },
-      {
-        "table": "Treatments",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "Treatments.RelativePath": {
-    "table": "Treatments",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A treatment's relative path is computed as the parent path, followed by “/treatments/”, followed by the treatment ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Treatments",
-        "field": "ParentPath",
-        "label": "parent path"
-      },
-      {
-        "table": "Treatments",
-        "field": "TreatmentId",
-        "label": "treatment ID"
-      }
-    ],
-    "structure": null
-  },
-  "Treatments.AutoimmuneDiseaseLabel": {
-    "table": "Treatments",
-    "field": "AutoimmuneDiseaseLabel",
-    "kind": "formula",
-    "rule": "A treatment's autoimmune disease label — taken from the linked autoimmune disease.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "AutoimmuneDiseases",
-        "field": "DiseaseLabel",
-        "label": "disease label"
-      },
-      {
-        "table": "Treatments",
-        "field": "AutoimmuneDisease",
-        "label": "autoimmune disease"
-      },
-      {
-        "table": "AutoimmuneDiseases",
-        "field": "AutoimmuneDiseaseId",
-        "label": "autoimmune disease ID"
-      }
-    ],
-    "structure": null
-  },
-  "Treatments.IsEffectiveTreatment": {
-    "table": "Treatments",
-    "field": "IsEffectiveTreatment",
-    "kind": "formula",
-    "rule": "A treatment is considered an effective treatment if all of the following hold: at least one of the following holds: the treatment response is “Complete” or the treatment response is “Partial” and the adverse effect flag is not set.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Treatments",
-        "field": "TreatmentResponse",
-        "label": "treatment response"
-      },
-      {
-        "table": "Treatments",
-        "field": "HasAdverseEffect",
-        "label": "has adverse effect"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment's is effective treatment is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "any",
-                "children": [
-                  {
-                    "kind": "leaf",
-                    "text": "the treatment response is “Complete”"
-                  },
-                  {
-                    "kind": "leaf",
-                    "text": "the treatment response is “Partial”"
-                  }
-                ]
-              },
-              {
-                "kind": "leaf",
-                "text": "the adverse effect flag is not set"
-              }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "Treatments.IsMechanismMatched": {
-    "table": "Treatments",
-    "field": "IsMechanismMatched",
-    "kind": "lookup",
-    "rule": "A treatment's is mechanism matched is false if the targets mechanism is blank, in all other cases the is causal architecture node of the treatment's targets mechanism.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Treatments",
-        "field": "TargetsMechanism",
-        "label": "targets mechanism"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "IsCausalArchitectureNode",
-        "label": "is causal architecture node"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CausalMechanismId",
-        "label": "causal mechanism ID"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment's is mechanism matched is determined by the following priority:",
-      "cases": [
-        {
-          "value": "false",
-          "when": {
-            "kind": "leaf",
-            "text": "the targets mechanism is blank"
-          }
-        },
-        {
-          "value": "the is causal architecture node of the treatment's targets mechanism",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "Treatments.IsTreatmentResponsePredicted": {
-    "table": "Treatments",
-    "field": "IsTreatmentResponsePredicted",
-    "kind": "formula",
-    "rule": "A treatment is considered treatment-response-predicted if all of the following hold: the effective treatment flag is set and the mechanism matched flag is set.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Treatments",
-        "field": "IsEffectiveTreatment",
-        "label": "is effective treatment"
-      },
-      {
-        "table": "Treatments",
-        "field": "IsMechanismMatched",
-        "label": "is mechanism matched"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment's is treatment response predicted is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the effective treatment flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the mechanism matched flag is set"
-              }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "Treatments.TreatmentResponseDecidingFactor": {
-    "table": "Treatments",
-    "field": "TreatmentResponseDecidingFactor",
-    "kind": "formula",
-    "rule": "The treatment's treatment response deciding factor is determined by the following priority:\n1. “EffectiveOnConfirmedMechanism”, if the treatment response predicted flag is set;\n2. “NoConfirmedMechanism”, if the mechanism matched flag is not set;\n3. “AdverseEffect”, if the adverse effect flag is set;\n4. “NoResponse”, if at least one of the following holds: the treatment response is “None” or the treatment response is “Adverse”;\n5. in all other cases, “Undetermined”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Treatments",
-        "field": "IsTreatmentResponsePredicted",
-        "label": "is treatment response predicted"
-      },
-      {
-        "table": "Treatments",
-        "field": "IsMechanismMatched",
-        "label": "is mechanism matched"
-      },
-      {
-        "table": "Treatments",
-        "field": "HasAdverseEffect",
-        "label": "has adverse effect"
-      },
-      {
-        "table": "Treatments",
-        "field": "TreatmentResponse",
-        "label": "treatment response"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The treatment's treatment response deciding factor is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“EffectiveOnConfirmedMechanism”",
-          "when": {
-            "kind": "leaf",
-            "text": "the treatment response predicted flag is set"
-          }
-        },
-        {
-          "value": "“NoConfirmedMechanism”",
-          "when": {
-            "kind": "leaf",
-            "text": "the mechanism matched flag is not set"
-          }
-        },
-        {
-          "value": "“AdverseEffect”",
-          "when": {
-            "kind": "leaf",
-            "text": "the adverse effect flag is set"
-          }
-        },
-        {
-          "value": "“NoResponse”",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the treatment response is “None”"
-              },
-              {
-                "kind": "leaf",
-                "text": "the treatment response is “Adverse”"
-              }
-            ]
-          }
-        },
-        {
-          "value": "“Undetermined”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "ClinicalPhenotypes.Name": {
-    "table": "ClinicalPhenotypes",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A clinical phenotype's name is the same as its phenotype label.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ClinicalPhenotypes",
-        "field": "PhenotypeLabel",
-        "label": "phenotype label"
-      }
-    ],
-    "structure": null
-  },
-  "ClinicalPhenotypes.ParentPath": {
-    "table": "ClinicalPhenotypes",
-    "field": "ParentPath",
-    "kind": "lookup",
-    "rule": "A clinical phenotype's parent path is the relative path of the clinical phenotype's individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "RelativePath",
-        "label": "relative path"
-      },
-      {
-        "table": "ClinicalPhenotypes",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "ClinicalPhenotypes.RelativePath": {
-    "table": "ClinicalPhenotypes",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A clinical phenotype's relative path is computed as the parent path, followed by “/phenotypes/”, followed by the clinical phenotype ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ClinicalPhenotypes",
-        "field": "ParentPath",
-        "label": "parent path"
-      },
-      {
-        "table": "ClinicalPhenotypes",
-        "field": "ClinicalPhenotypeId",
-        "label": "clinical phenotype ID"
-      }
-    ],
-    "structure": null
-  },
-  "ClinicalPhenotypes.DiseaseStageLabel": {
-    "table": "ClinicalPhenotypes",
-    "field": "DiseaseStageLabel",
-    "kind": "formula",
-    "rule": "The clinical phenotype's disease stage label is determined by the following priority:\n1. an empty string, if the disease stage is blank;\n2. in all other cases, the stage label of the clinical phenotype's disease stage.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ClinicalPhenotypes",
-        "field": "DiseaseStage",
-        "label": "disease stage"
-      },
-      {
-        "table": "DiseaseStages",
-        "field": "StageLabel",
-        "label": "stage label"
-      },
-      {
-        "table": "DiseaseStages",
-        "field": "DiseaseStageId",
-        "label": "disease stage ID"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The clinical phenotype's disease stage label is determined by the following priority:",
-      "cases": [
-        {
-          "value": "an empty string",
-          "when": {
-            "kind": "leaf",
-            "text": "the disease stage is blank"
-          }
-        },
-        {
-          "value": "the stage label of the clinical phenotype's disease stage",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "ClinicalPhenotypes.IsHighSeverity": {
-    "table": "ClinicalPhenotypes",
-    "field": "IsHighSeverity",
-    "kind": "formula",
-    "rule": "A clinical phenotype is considered a high severity if the severity score is greater than 7.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ClinicalPhenotypes",
-        "field": "SeverityScore",
-        "label": "severity score"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The clinical phenotype's is high severity is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the severity score is greater than 7"
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "ClinicalPhenotypes.IsPresymptomaticPhenotype": {
-    "table": "ClinicalPhenotypes",
-    "field": "IsPresymptomaticPhenotype",
-    "kind": "formula",
-    "rule": "A clinical phenotype is considered a presymptomatic phenotype if the disease stage label is “Presymptomatic”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ClinicalPhenotypes",
-        "field": "DiseaseStageLabel",
-        "label": "disease stage label"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The clinical phenotype's is presymptomatic phenotype is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the disease stage label is “Presymptomatic”"
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CausalMechanisms.TargetPathwayCode": {
-    "table": "CausalMechanisms",
-    "field": "TargetPathwayCode",
-    "kind": "formula",
-    "rule": "The causal mechanism's target pathway code is determined by the following priority:\n1. 1, if the target pathway is “type-I-IFN”;\n2. 2, if the target pathway is “B-cell/autoantibody”;\n3. 3, if the target pathway is “T-cell-costim”;\n4. 4, if the target pathway is “IL-17/23”;\n5. in all other cases, 0.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "TargetPathway",
-        "label": "target pathway"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The causal mechanism's target pathway code is determined by the following priority:",
-      "cases": [
-        {
-          "value": "1",
-          "when": {
-            "kind": "leaf",
-            "text": "the target pathway is “type-I-IFN”"
-          }
-        },
-        {
-          "value": "2",
-          "when": {
-            "kind": "leaf",
-            "text": "the target pathway is “B-cell/autoantibody”"
-          }
-        },
-        {
-          "value": "3",
-          "when": {
-            "kind": "leaf",
-            "text": "the target pathway is “T-cell-costim”"
-          }
-        },
-        {
-          "value": "4",
-          "when": {
-            "kind": "leaf",
-            "text": "the target pathway is “IL-17/23”"
-          }
-        },
-        {
-          "value": "0",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CausalMechanisms.Name": {
-    "table": "CausalMechanisms",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A causal mechanism's name is the same as its mechanism label.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "MechanismLabel",
-        "label": "mechanism label"
-      }
-    ],
-    "structure": null
-  },
-  "CausalMechanisms.ParentPath": {
-    "table": "CausalMechanisms",
-    "field": "ParentPath",
-    "kind": "lookup",
-    "rule": "A causal mechanism's parent path is the relative path of the causal mechanism's individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "RelativePath",
-        "label": "relative path"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "CausalMechanisms.RelativePath": {
-    "table": "CausalMechanisms",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A causal mechanism's relative path is computed as the parent path, followed by “/mechanisms/”, followed by the causal mechanism ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "ParentPath",
-        "label": "parent path"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CausalMechanismId",
-        "label": "causal mechanism ID"
-      }
-    ],
-    "structure": null
-  },
-  "CausalMechanisms.IndividualAncestryLabel": {
-    "table": "CausalMechanisms",
-    "field": "IndividualAncestryLabel",
-    "kind": "formula",
-    "rule": "A causal mechanism's individual ancestry label — taken from the linked individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "AncestryLabel",
-        "label": "ancestry label"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "CausalMechanisms.CountQualifiedEvidence": {
-    "table": "CausalMechanisms",
-    "field": "CountQualifiedEvidence",
-    "kind": "rollup",
-    "rule": "A causal mechanism's count qualified evidence is the number of the causal mechanism's evidence items that are qualified evidences.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "EvidenceItems",
-        "field": "CausalMechanism",
-        "label": "causal mechanism"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CausalMechanismId",
-        "label": "causal mechanism ID"
-      },
-      {
-        "table": "EvidenceItems",
-        "field": "IsQualifiedEvidence",
-        "label": "is qualified evidence"
-      }
-    ],
-    "structure": null
-  },
-  "CausalMechanisms.CountModalitiesSupporting": {
-    "table": "CausalMechanisms",
-    "field": "CountModalitiesSupporting",
-    "kind": "rollup",
-    "rule": "A causal mechanism's count modalities supporting is the number of the causal mechanism's evidence items that are cross modalities and are qualified evidences.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "EvidenceItems",
-        "field": "CausalMechanism",
-        "label": "causal mechanism"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CausalMechanismId",
-        "label": "causal mechanism ID"
-      },
-      {
-        "table": "EvidenceItems",
-        "field": "IsCrossModality",
-        "label": "is cross modality"
-      },
-      {
-        "table": "EvidenceItems",
-        "field": "IsQualifiedEvidence",
-        "label": "is qualified evidence"
-      }
-    ],
-    "structure": null
-  },
-  "CausalMechanisms.CountInterventionTargets": {
-    "table": "CausalMechanisms",
-    "field": "CountInterventionTargets",
-    "kind": "rollup",
-    "rule": "A causal mechanism's count intervention targets is the number of intervention targets related to the causal mechanism.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "InterventionTargets",
-        "field": "CausalMechanism",
-        "label": "causal mechanism"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CausalMechanismId",
-        "label": "causal mechanism ID"
-      }
-    ],
-    "structure": null
-  },
-  "CausalMechanisms.IsExperimentallyFalsifiable": {
-    "table": "CausalMechanisms",
-    "field": "IsExperimentallyFalsifiable",
-    "kind": "formula",
-    "rule": "A causal mechanism is considered experimentally-falsifiable if all of the following hold: the count intervention targets is at least 1 and the count qualified evidence is at least 1.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "CountInterventionTargets",
-        "label": "count intervention targets"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CountQualifiedEvidence",
-        "label": "count qualified evidence"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The causal mechanism's is experimentally falsifiable is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the count intervention targets is at least 1"
-              },
-              {
-                "kind": "leaf",
-                "text": "the count qualified evidence is at least 1"
-              }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CausalMechanisms.CountReplications": {
-    "table": "CausalMechanisms",
-    "field": "CountReplications",
-    "kind": "rollup",
-    "rule": "A causal mechanism's count replications is the number of cohort replications related to the causal mechanism.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CohortReplications",
-        "field": "CausalMechanism",
-        "label": "causal mechanism"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CausalMechanismId",
-        "label": "causal mechanism ID"
-      }
-    ],
-    "structure": null
-  },
-  "CausalMechanisms.CountConcordantReplications": {
-    "table": "CausalMechanisms",
-    "field": "CountConcordantReplications",
-    "kind": "rollup",
-    "rule": "A causal mechanism's count concordant replications is the number of the causal mechanism's cohort replications that are replicated at nominal sig.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CohortReplications",
-        "field": "CausalMechanism",
-        "label": "causal mechanism"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CausalMechanismId",
-        "label": "causal mechanism ID"
-      },
-      {
-        "table": "CohortReplications",
-        "field": "ReplicatedAtNominalSig",
-        "label": "replicated at nominal sig"
-      }
-    ],
-    "structure": null
-  },
-  "CausalMechanisms.CountCrossAncestryConcordant": {
-    "table": "CausalMechanisms",
-    "field": "CountCrossAncestryConcordant",
-    "kind": "rollup",
-    "rule": "A causal mechanism's count cross ancestry concordant is the number of the causal mechanism's cohort replications that are cross ancestry concordants.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CohortReplications",
-        "field": "CausalMechanism",
-        "label": "causal mechanism"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CausalMechanismId",
-        "label": "causal mechanism ID"
-      },
-      {
-        "table": "CohortReplications",
-        "field": "IsCrossAncestryConcordant",
-        "label": "is cross ancestry concordant"
-      }
-    ],
-    "structure": null
-  },
-  "CausalMechanisms.ReplicationFraction": {
-    "table": "CausalMechanisms",
-    "field": "ReplicationFraction",
-    "kind": "formula",
-    "rule": "The causal mechanism's replication fraction is determined by the following priority:\n1. the count concordant replications divided by the count replications, if the count replications is greater than 0;\n2. in all other cases, 0.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "CountReplications",
-        "label": "count replications"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CountConcordantReplications",
-        "label": "count concordant replications"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The causal mechanism's replication fraction is determined by the following priority:",
-      "cases": [
-        {
-          "value": "the count concordant replications divided by the count replications",
-          "when": {
-            "kind": "leaf",
-            "text": "the count replications is greater than 0"
-          }
-        },
-        {
-          "value": "0",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CausalMechanisms.ReplicatesAcrossCohorts": {
-    "table": "CausalMechanisms",
-    "field": "ReplicatesAcrossCohorts",
-    "kind": "formula",
-    "rule": "A causal mechanism is considered to replicate an across cohorts if all of the following hold: the count replications is at least 2 and the count concordant replications is at least 2.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "CountReplications",
-        "label": "count replications"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CountConcordantReplications",
-        "label": "count concordant replications"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The causal mechanism's replicates across cohorts is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the count replications is at least 2"
-              },
-              {
-                "kind": "leaf",
-                "text": "the count concordant replications is at least 2"
-              }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CausalMechanisms.CountNegControlTests": {
-    "table": "CausalMechanisms",
-    "field": "CountNegControlTests",
-    "kind": "rollup",
-    "rule": "A causal mechanism's count neg control tests is the number of negative control tests related to the causal mechanism.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "NegativeControlTests",
-        "field": "CausalMechanism",
-        "label": "causal mechanism"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CausalMechanismId",
-        "label": "causal mechanism ID"
-      }
-    ],
-    "structure": null
-  },
-  "CausalMechanisms.CountNegControlSurvived": {
-    "table": "CausalMechanisms",
-    "field": "CountNegControlSurvived",
-    "kind": "rollup",
-    "rule": "A causal mechanism's count neg control survived is the number of the causal mechanism's negative control tests that are survived.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "NegativeControlTests",
-        "field": "CausalMechanism",
-        "label": "causal mechanism"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CausalMechanismId",
-        "label": "causal mechanism ID"
-      },
-      {
-        "table": "NegativeControlTests",
-        "field": "IsSurvived",
-        "label": "is survived"
-      }
-    ],
-    "structure": null
-  },
-  "CausalMechanisms.SurvivesNegativeControls": {
-    "table": "CausalMechanisms",
-    "field": "SurvivesNegativeControls",
-    "kind": "formula",
-    "rule": "A causal mechanism is considered to survive a negative controls if all of the following hold: the count neg control tests is at least 1 and the count neg control survived is the count neg control tests.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "CountNegControlTests",
-        "label": "count neg control tests"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CountNegControlSurvived",
-        "label": "count neg control survived"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The causal mechanism's survives negative controls is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the count neg control tests is at least 1"
-              },
-              {
-                "kind": "leaf",
-                "text": "the count neg control survived is the count neg control tests"
-              }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CausalMechanisms.IsSpuriousDerived": {
-    "table": "CausalMechanisms",
-    "field": "IsSpuriousDerived",
-    "kind": "formula",
-    "rule": "A causal mechanism is considered spurious-derived if at least one of the following holds: the replicates across cohorts flag is not set; the survives negative controls flag is not set; the count modalities supporting is less than 2; or the pleiotropy flag is set.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "ReplicatesAcrossCohorts",
-        "label": "replicates across cohorts"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "SurvivesNegativeControls",
-        "label": "survives negative controls"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CountModalitiesSupporting",
-        "label": "count modalities supporting"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "HasPleiotropy",
-        "label": "has pleiotropy"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The causal mechanism's is spurious derived is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the replicates across cohorts flag is not set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the survives negative controls flag is not set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the count modalities supporting is less than 2"
-              },
-              {
-                "kind": "leaf",
-                "text": "the pleiotropy flag is set"
-              }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CausalMechanisms.CausalConfidence": {
-    "table": "CausalMechanisms",
-    "field": "CausalConfidence",
-    "kind": "formula",
-    "rule": "The causal mechanism's causal confidence is determined by the following priority:\n1. 1, if 0.30 times 1 if the count qualified evidence is at least 4, in all other cases the count qualified evidence divided by 4 plus 0.20 times 1 if the count modalities supporting is at least 3, in all other cases the count modalities supporting divided by 3 plus 0.30 times the replication fraction plus 0.20 times 1 if the survives negative controls flag is set, in all other cases 0 is greater than 1;\n2. in all other cases, 0.30 times 1 if the count qualified evidence is at least 4, in all other cases the count qualified evidence divided by 4 plus 0.20 times 1 if the count modalities supporting is at least 3, in all other cases the count modalities supporting divided by 3 plus 0.30 times the replication fraction plus 0.20 times 1 if the survives negative controls flag is set, in all other cases 0.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "CountQualifiedEvidence",
-        "label": "count qualified evidence"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CountModalitiesSupporting",
-        "label": "count modalities supporting"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "ReplicationFraction",
-        "label": "replication fraction"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "SurvivesNegativeControls",
-        "label": "survives negative controls"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The causal mechanism's causal confidence is determined by the following priority:",
-      "cases": [
-        {
-          "value": "1",
-          "when": {
-            "kind": "leaf",
-            "text": "0.30 times 1 if the count qualified evidence is at least 4, in all other cases the count qualified evidence divided by 4 plus 0.20 times 1 if the count modalities supporting is at least 3, in all other cases the count modalities supporting divided by 3 plus 0.30 times the replication fraction plus 0.20 times 1 if the survives negative controls flag is set, in all other cases 0 is greater than 1"
-          }
-        },
-        {
-          "value": "0.30 times 1 if the count qualified evidence is at least 4, in all other cases the count qualified evidence divided by 4 plus 0.20 times 1 if the count modalities supporting is at least 3, in all other cases the count modalities supporting divided by 3 plus 0.30 times the replication fraction plus 0.20 times 1 if the survives negative controls flag is set, in all other cases 0",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CausalMechanisms.VariantIsCausalCandidate": {
-    "table": "CausalMechanisms",
-    "field": "VariantIsCausalCandidate",
-    "kind": "lookup",
-    "rule": "A causal mechanism's variant is causal candidate is false if the genomic variant is blank, in all other cases the is causal candidate of the causal mechanism's genomic variant.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "GenomicVariant",
-        "label": "genomic variant"
-      },
-      {
-        "table": "GenomicVariants",
-        "field": "IsCausalCandidate",
-        "label": "is causal candidate"
-      },
-      {
-        "table": "GenomicVariants",
-        "field": "GenomicVariantId",
-        "label": "genomic variant ID"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The causal mechanism's variant is causal candidate is determined by the following priority:",
-      "cases": [
-        {
-          "value": "false",
-          "when": {
-            "kind": "leaf",
-            "text": "the genomic variant is blank"
-          }
-        },
-        {
-          "value": "the is causal candidate of the causal mechanism's genomic variant",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CausalMechanisms.IsCausalArchitectureNode": {
-    "table": "CausalMechanisms",
-    "field": "IsCausalArchitectureNode",
-    "kind": "formula",
-    "rule": "A causal mechanism is considered a causal architecture node if all of the following hold: the causal confidence is at least 0.7; the experimentally falsifiable flag is set; the spurious derived flag is not set; and at least one of the following holds: the variant is causal candidate flag is set or the environmental exposure has a value.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "CausalConfidence",
-        "label": "causal confidence"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "IsExperimentallyFalsifiable",
-        "label": "is experimentally falsifiable"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "IsSpuriousDerived",
-        "label": "is spurious derived"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "VariantIsCausalCandidate",
-        "label": "variant is causal candidate"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "EnvironmentalExposure",
-        "label": "environmental exposure"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The causal mechanism's is causal architecture node is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the causal confidence is at least 0.7"
-              },
-              {
-                "kind": "leaf",
-                "text": "the experimentally falsifiable flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the spurious derived flag is not set"
-              },
-              {
-                "kind": "any",
-                "children": [
-                  {
-                    "kind": "leaf",
-                    "text": "the variant is causal candidate flag is set"
-                  },
-                  {
-                    "kind": "leaf",
-                    "text": "the environmental exposure has a value"
-                  }
-                ]
-              }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CausalMechanisms.IsAncestryTransportable": {
-    "table": "CausalMechanisms",
-    "field": "IsAncestryTransportable",
-    "kind": "formula",
-    "rule": "A causal mechanism is considered ancestry-transportable if all of the following hold: the causal architecture node flag is set and the count cross ancestry concordant is at least 1.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "IsCausalArchitectureNode",
-        "label": "is causal architecture node"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CountCrossAncestryConcordant",
-        "label": "count cross ancestry concordant"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The causal mechanism's is ancestry transportable is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the causal architecture node flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the count cross ancestry concordant is at least 1"
-              }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "EpistaticInteractions.Name": {
-    "table": "EpistaticInteractions",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "An epistatic interaction's name is the same as its interaction label.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "EpistaticInteractions",
-        "field": "InteractionLabel",
-        "label": "interaction label"
-      }
-    ],
-    "structure": null
-  },
-  "EpistaticInteractions.ParentPath": {
-    "table": "EpistaticInteractions",
-    "field": "ParentPath",
-    "kind": "lookup",
-    "rule": "An epistatic interaction's parent path is the relative path of the epistatic interaction's individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "RelativePath",
-        "label": "relative path"
-      },
-      {
-        "table": "EpistaticInteractions",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "EpistaticInteractions.RelativePath": {
-    "table": "EpistaticInteractions",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "An epistatic interaction's relative path is computed as the parent path, followed by “/epistasis/”, followed by the epistatic interaction ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "EpistaticInteractions",
-        "field": "ParentPath",
-        "label": "parent path"
-      },
-      {
-        "table": "EpistaticInteractions",
-        "field": "EpistaticInteractionId",
-        "label": "epistatic interaction ID"
-      }
-    ],
-    "structure": null
-  },
-  "EpistaticInteractions.IsHighOrderEpistasis": {
-    "table": "EpistaticInteractions",
-    "field": "IsHighOrderEpistasis",
-    "kind": "formula",
-    "rule": "An epistatic interaction is considered a high order epistasis if the epistasis score is greater than 0.5.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "EpistaticInteractions",
-        "field": "EpistasisScore",
-        "label": "epistasis score"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The epistatic interaction's is high order epistasis is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the epistasis score is greater than 0.5"
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CounterfactualTrajectories.Name": {
-    "table": "CounterfactualTrajectories",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A counterfactual trajectory's name is the same as its trajectory label.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CounterfactualTrajectories",
-        "field": "TrajectoryLabel",
-        "label": "trajectory label"
-      }
-    ],
-    "structure": null
-  },
-  "CounterfactualTrajectories.ParentPath": {
-    "table": "CounterfactualTrajectories",
-    "field": "ParentPath",
-    "kind": "lookup",
-    "rule": "A counterfactual trajectory's parent path is the relative path of the counterfactual trajectory's individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "RelativePath",
-        "label": "relative path"
-      },
-      {
-        "table": "CounterfactualTrajectories",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "CounterfactualTrajectories.RelativePath": {
-    "table": "CounterfactualTrajectories",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A counterfactual trajectory's relative path is computed as the parent path, followed by “/trajectories/”, followed by the counterfactual trajectory ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CounterfactualTrajectories",
-        "field": "ParentPath",
-        "label": "parent path"
-      },
-      {
-        "table": "CounterfactualTrajectories",
-        "field": "CounterfactualTrajectoryId",
-        "label": "counterfactual trajectory ID"
-      }
-    ],
-    "structure": null
-  },
-  "CounterfactualTrajectories.AutoimmuneDiseaseLabel": {
-    "table": "CounterfactualTrajectories",
-    "field": "AutoimmuneDiseaseLabel",
-    "kind": "formula",
-    "rule": "A counterfactual trajectory's autoimmune disease label — taken from the linked autoimmune disease.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "AutoimmuneDiseases",
-        "field": "DiseaseLabel",
-        "label": "disease label"
-      },
-      {
-        "table": "CounterfactualTrajectories",
-        "field": "AutoimmuneDisease",
-        "label": "autoimmune disease"
-      },
-      {
-        "table": "AutoimmuneDiseases",
-        "field": "AutoimmuneDiseaseId",
-        "label": "autoimmune disease ID"
-      }
-    ],
-    "structure": null
-  },
-  "CounterfactualTrajectories.IsWorseningTrajectory": {
-    "table": "CounterfactualTrajectories",
-    "field": "IsWorseningTrajectory",
-    "kind": "formula",
-    "rule": "A counterfactual trajectory is considered a worsening trajectory if the projected severity is greater than 7.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CounterfactualTrajectories",
-        "field": "ProjectedSeverity",
-        "label": "projected severity"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The counterfactual trajectory's is worsening trajectory is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the projected severity is greater than 7"
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.Name": {
-    "table": "IndividualPredictions",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "An individual prediction's name is the same as its prediction label.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "PredictionLabel",
-        "label": "prediction label"
-      }
-    ],
-    "structure": null
-  },
-  "IndividualPredictions.ParentPath": {
-    "table": "IndividualPredictions",
-    "field": "ParentPath",
-    "kind": "lookup",
-    "rule": "An individual prediction's parent path is the relative path of the individual prediction's individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "RelativePath",
-        "label": "relative path"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "IndividualPredictions.RelativePath": {
-    "table": "IndividualPredictions",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "An individual prediction's relative path is computed as the parent path, followed by “/predictions/”, followed by the individual prediction ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "ParentPath",
-        "label": "parent path"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "IndividualPredictionId",
-        "label": "individual prediction ID"
-      }
-    ],
-    "structure": null
-  },
-  "IndividualPredictions.IndividualAncestryLabel": {
-    "table": "IndividualPredictions",
-    "field": "IndividualAncestryLabel",
-    "kind": "formula",
-    "rule": "An individual prediction's individual ancestry label — taken from the linked individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "AncestryLabel",
-        "label": "ancestry label"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "IndividualPredictions.IsAncestryHoldout": {
-    "table": "IndividualPredictions",
-    "field": "IsAncestryHoldout",
-    "kind": "formula",
-    "rule": "An individual prediction's is ancestry holdout is true when the individual prediction's individual is ancestry absent from training.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "IsAncestryAbsentFromTraining",
-        "label": "is ancestry absent from training"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "IndividualPredictions.IndividualCausalMass": {
-    "table": "IndividualPredictions",
-    "field": "IndividualCausalMass",
-    "kind": "lookup",
-    "rule": "An individual prediction's individual causal mass is 0 if the individual is blank, in all other cases the sum confirmed causal confidence of the individual prediction's individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "SumConfirmedCausalConfidence",
-        "label": "sum confirmed causal confidence"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's individual causal mass is determined by the following priority:",
-      "cases": [
-        {
-          "value": "0",
-          "when": {
-            "kind": "leaf",
-            "text": "the individual is blank"
-          }
-        },
-        {
-          "value": "the sum confirmed causal confidence of the individual prediction's individual",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.IndividualConfirmedNodeCount": {
-    "table": "IndividualPredictions",
-    "field": "IndividualConfirmedNodeCount",
-    "kind": "lookup",
-    "rule": "An individual prediction's individual confirmed node count is 0 if the individual is blank, in all other cases the count confirmed causal nodes of the individual prediction's individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
+      "Individuals.CountConfirmedCausalNodes": {
         "table": "Individuals",
         "field": "CountConfirmedCausalNodes",
-        "label": "count confirmed causal nodes"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's individual confirmed node count is determined by the following priority:",
-      "cases": [
-        {
-          "value": "0",
-          "when": {
-            "kind": "leaf",
-            "text": "the individual is blank"
+        "kind": "rollup",
+        "rule": "An individual's count confirmed causal nodes is the number of the individual's causal mechanisms that are causal architecture nodes.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "IsCausalArchitectureNode",
+            "label": "is causal architecture node"
           }
-        },
-        {
-          "value": "the count confirmed causal nodes of the individual prediction's individual",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.IndividualCrossAncestryNodeCount": {
-    "table": "IndividualPredictions",
-    "field": "IndividualCrossAncestryNodeCount",
-    "kind": "lookup",
-    "rule": "An individual prediction's individual cross ancestry node count is 0 if the individual is blank, in all other cases the count cross ancestry confirmed nodes of the individual prediction's individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "Individual",
-        "label": "individual"
+        ],
+        "structure": null
       },
-      {
+      "Individuals.SumConfirmedCausalConfidence": {
+        "table": "Individuals",
+        "field": "SumConfirmedCausalConfidence",
+        "kind": "rollup",
+        "rule": "An individual's sum confirmed causal confidence is the total causal confidence across the individual's causal mechanisms that are causal architecture nodes.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "CausalConfidence",
+            "label": "causal confidence"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "IsCausalArchitectureNode",
+            "label": "is causal architecture node"
+          }
+        ],
+        "structure": null
+      },
+      "Individuals.CountCrossAncestryConfirmedNodes": {
         "table": "Individuals",
         "field": "CountCrossAncestryConfirmedNodes",
-        "label": "count cross ancestry confirmed nodes"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's individual cross ancestry node count is determined by the following priority:",
-      "cases": [
-        {
-          "value": "0",
-          "when": {
-            "kind": "leaf",
-            "text": "the individual is blank"
+        "kind": "rollup",
+        "rule": "An individual's count cross ancestry confirmed nodes is the number of the individual's causal mechanisms that are ancestry-transportable.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "IsAncestryTransportable",
+            "label": "is ancestry transportable"
           }
-        },
-        {
-          "value": "the count cross ancestry confirmed nodes of the individual prediction's individual",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.IndividualHasCrypticRelatedness": {
-    "table": "IndividualPredictions",
-    "field": "IndividualHasCrypticRelatedness",
-    "kind": "lookup",
-    "rule": "An individual prediction's individual has cryptic relatedness is false if the individual is blank, in all other cases the has cryptic relatedness flag of the individual prediction's individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "Individual",
-        "label": "individual"
+        ],
+        "structure": null
       },
-      {
-        "table": "Individuals",
-        "field": "HasCrypticRelatednessFlag",
-        "label": "has cryptic relatedness flag"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's individual has cryptic relatedness is determined by the following priority:",
-      "cases": [
-        {
-          "value": "false",
-          "when": {
-            "kind": "leaf",
-            "text": "the individual is blank"
-          }
-        },
-        {
-          "value": "the has cryptic relatedness flag of the individual prediction's individual",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.IndividualMaxSeverityScore": {
-    "table": "IndividualPredictions",
-    "field": "IndividualMaxSeverityScore",
-    "kind": "lookup",
-    "rule": "An individual prediction's individual max severity score is 0 if the individual is blank, in all other cases the max severity score of the individual prediction's individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
+      "Individuals.MaxSeverityScore": {
         "table": "Individuals",
         "field": "MaxSeverityScore",
-        "label": "max severity score"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's individual max severity score is determined by the following priority:",
-      "cases": [
-        {
-          "value": "0",
-          "when": {
-            "kind": "leaf",
-            "text": "the individual is blank"
+        "kind": "rollup",
+        "rule": "An individual's max severity score is the largest severity score across the clinical phenotypes related to the individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ClinicalPhenotypes",
+            "field": "SeverityScore",
+            "label": "severity score"
+          },
+          {
+            "table": "ClinicalPhenotypes",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
           }
-        },
-        {
-          "value": "the max severity score of the individual prediction's individual",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.IndividualHasHighSeverityPhenotype": {
-    "table": "IndividualPredictions",
-    "field": "IndividualHasHighSeverityPhenotype",
-    "kind": "lookup",
-    "rule": "An individual prediction's individual has high severity phenotype is false if the individual is blank, in all other cases the has high severity phenotype of the individual prediction's individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "Individual",
-        "label": "individual"
+        ],
+        "structure": null
       },
-      {
+      "Individuals.CountHighSeverityPhenotypes": {
+        "table": "Individuals",
+        "field": "CountHighSeverityPhenotypes",
+        "kind": "rollup",
+        "rule": "An individual's count high severity phenotypes is the number of the individual's clinical phenotypes that are high-severity.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ClinicalPhenotypes",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          },
+          {
+            "table": "ClinicalPhenotypes",
+            "field": "IsHighSeverity",
+            "label": "is high severity"
+          }
+        ],
+        "structure": null
+      },
+      "Individuals.HasHighSeverityPhenotype": {
         "table": "Individuals",
         "field": "HasHighSeverityPhenotype",
-        "label": "has high severity phenotype"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's individual has high severity phenotype is determined by the following priority:",
-      "cases": [
-        {
-          "value": "false",
-          "when": {
-            "kind": "leaf",
-            "text": "the individual is blank"
+        "kind": "formula",
+        "rule": "An individual is considered to have a high severity phenotype if the count high severity phenotypes is at least 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "CountHighSeverityPhenotypes",
+            "label": "count high severity phenotypes"
           }
-        },
-        {
-          "value": "the has high severity phenotype of the individual prediction's individual",
-          "when": null
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual's has high severity phenotype is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "leaf",
+                "text": "the count high severity phenotypes is at least 1"
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.IndividualHasPredictedTreatmentResponse": {
-    "table": "IndividualPredictions",
-    "field": "IndividualHasPredictedTreatmentResponse",
-    "kind": "lookup",
-    "rule": "An individual prediction's individual has predicted treatment response is false if the individual is blank, in all other cases the has predicted treatment response of the individual prediction's individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "Individual",
-        "label": "individual"
       },
-      {
+      "Individuals.CountPredictedTreatmentResponses": {
+        "table": "Individuals",
+        "field": "CountPredictedTreatmentResponses",
+        "kind": "rollup",
+        "rule": "An individual's count predicted treatment responses is the number of the individual's treatments that are treatment-response-predicted.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Treatments",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          },
+          {
+            "table": "Treatments",
+            "field": "IsTreatmentResponsePredicted",
+            "label": "is treatment response predicted"
+          }
+        ],
+        "structure": null
+      },
+      "Individuals.HasPredictedTreatmentResponse": {
         "table": "Individuals",
         "field": "HasPredictedTreatmentResponse",
-        "label": "has predicted treatment response"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's individual has predicted treatment response is determined by the following priority:",
-      "cases": [
-        {
-          "value": "false",
-          "when": {
-            "kind": "leaf",
-            "text": "the individual is blank"
+        "kind": "formula",
+        "rule": "An individual is considered to have a predicted treatment response if the count predicted treatment responses is at least 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "CountPredictedTreatmentResponses",
+            "label": "count predicted treatment responses"
           }
-        },
-        {
-          "value": "the has predicted treatment response of the individual prediction's individual",
-          "when": null
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual's has predicted treatment response is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "leaf",
+                "text": "the count predicted treatment responses is at least 1"
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.PredictedValue": {
-    "table": "IndividualPredictions",
-    "field": "PredictedValue",
-    "kind": "formula",
-    "rule": "The individual prediction's predicted value is determined by the following priority:\n1. 10, if 2 times the individual causal mass plus 1.5 times the individual confirmed node count is greater than 10;\n2. in all other cases, 2 times the individual causal mass plus 1.5 times the individual confirmed node count.",
-    "mechanical": false,
-    "refs": [
-      {
+      },
+      "Individuals.CountSerologyPanels": {
+        "table": "Individuals",
+        "field": "CountSerologyPanels",
+        "kind": "rollup",
+        "rule": "An individual's count serology panels is the number of serology observations related to the individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SerologyObservations",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": null
+      },
+      "Individuals.CountPreNephriticSignaturePanels": {
+        "table": "Individuals",
+        "field": "CountPreNephriticSignaturePanels",
+        "kind": "rollup",
+        "rule": "An individual's count pre nephritic signature panels is the number of the individual's serology observations that are pre nephritic signature panels.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SerologyObservations",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "IsPreNephriticSignaturePanel",
+            "label": "is pre nephritic signature panel"
+          }
+        ],
+        "structure": null
+      },
+      "Individuals.IsInPreNephriticSignatureCluster": {
+        "table": "Individuals",
+        "field": "IsInPreNephriticSignatureCluster",
+        "kind": "formula",
+        "rule": "An individual is considered in-pre-nephritic-signature-cluster if the count pre nephritic signature panels is at least 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "CountPreNephriticSignaturePanels",
+            "label": "count pre nephritic signature panels"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual's is in pre nephritic signature cluster is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "leaf",
+                "text": "the count pre nephritic signature panels is at least 1"
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "Individuals.SignatureStrength": {
+        "table": "Individuals",
+        "field": "SignatureStrength",
+        "kind": "formula",
+        "rule": "The individual's signature strength is determined by the following priority:\n1. 2, if the count pre nephritic signature panels is at least 2;\n2. 1, if the count pre nephritic signature panels is at least 1;\n3. in all other cases, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "CountPreNephriticSignaturePanels",
+            "label": "count pre nephritic signature panels"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual's signature strength is determined by the following priority:",
+          "cases": [
+            {
+              "value": "2",
+              "when": {
+                "kind": "leaf",
+                "text": "the count pre nephritic signature panels is at least 2"
+              }
+            },
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "the count pre nephritic signature panels is at least 1"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "Individuals.MaxProgressionStateOrder": {
+        "table": "Individuals",
+        "field": "MaxProgressionStateOrder",
+        "kind": "rollup",
+        "rule": "An individual's max progression state order is the largest progression state order across the serology observations related to the individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SerologyObservations",
+            "field": "ProgressionStateOrder",
+            "label": "progression state order"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": null
+      },
+      "Individuals.LatestSledaiScore": {
+        "table": "Individuals",
+        "field": "LatestSledaiScore",
+        "kind": "rollup",
+        "rule": "An individual's latest sledai score is the largest sledai score across the serology observations related to the individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SerologyObservations",
+            "field": "SledaiScore",
+            "label": "sledai score"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": null
+      },
+      "Individuals.NephritisProgressionStateKey": {
+        "table": "Individuals",
+        "field": "NephritisProgressionStateKey",
+        "kind": "formula",
+        "rule": "The individual's nephritis progression state key is determined by the following priority:\n1. “BiopsyIndicated”, if the max progression state order is at least 5;\n2. “RenalFlareRisk”, if the max progression state order is at least 4;\n3. “EarlyNephritis”, if the max progression state order is at least 3;\n4. “SerologicActive”, if the max progression state order is at least 2;\n5. in all other cases, “PresymptomaticAutoimmunity”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "MaxProgressionStateOrder",
+            "label": "max progression state order"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual's nephritis progression state key is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“BiopsyIndicated”",
+              "when": {
+                "kind": "leaf",
+                "text": "the max progression state order is at least 5"
+              }
+            },
+            {
+              "value": "“RenalFlareRisk”",
+              "when": {
+                "kind": "leaf",
+                "text": "the max progression state order is at least 4"
+              }
+            },
+            {
+              "value": "“EarlyNephritis”",
+              "when": {
+                "kind": "leaf",
+                "text": "the max progression state order is at least 3"
+              }
+            },
+            {
+              "value": "“SerologicActive”",
+              "when": {
+                "kind": "leaf",
+                "text": "the max progression state order is at least 2"
+              }
+            },
+            {
+              "value": "“PresymptomaticAutoimmunity”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "Individuals.ActivityTier": {
+        "table": "Individuals",
+        "field": "ActivityTier",
+        "kind": "formula",
+        "rule": "The individual's activity tier is determined by the following priority:\n1. “High / flare”, if the latest sledai score is at least 12;\n2. “Moderate”, if the latest sledai score is at least 6;\n3. “Mild”, if the latest sledai score is at least 1;\n4. in all other cases, “Quiescent”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "LatestSledaiScore",
+            "label": "latest sledai score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual's activity tier is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“High / flare”",
+              "when": {
+                "kind": "leaf",
+                "text": "the latest sledai score is at least 12"
+              }
+            },
+            {
+              "value": "“Moderate”",
+              "when": {
+                "kind": "leaf",
+                "text": "the latest sledai score is at least 6"
+              }
+            },
+            {
+              "value": "“Mild”",
+              "when": {
+                "kind": "leaf",
+                "text": "the latest sledai score is at least 1"
+              }
+            },
+            {
+              "value": "“Quiescent”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "Individuals.IsHighDiseaseActivity": {
+        "table": "Individuals",
+        "field": "IsHighDiseaseActivity",
+        "kind": "formula",
+        "rule": "An individual is considered high-disease-activity if the latest sledai score is at least 12.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "LatestSledaiScore",
+            "label": "latest sledai score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual's is high disease activity is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "leaf",
+                "text": "the latest sledai score is at least 12"
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "Individuals.IsDiseaseProgressing": {
+        "table": "Individuals",
+        "field": "IsDiseaseProgressing",
+        "kind": "formula",
+        "rule": "An individual is considered disease-progressing if at least one of the following holds: the nephritis progression state key is “EarlyNephritis”; the nephritis progression state key is “RenalFlareRisk”; or the nephritis progression state key is “BiopsyIndicated”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "NephritisProgressionStateKey",
+            "label": "nephritis progression state key"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual's is disease progressing is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the nephritis progression state key is “EarlyNephritis”"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the nephritis progression state key is “RenalFlareRisk”"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the nephritis progression state key is “BiopsyIndicated”"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "Individuals.TargetPathwayCode": {
+        "table": "Individuals",
+        "field": "TargetPathwayCode",
+        "kind": "rollup",
+        "rule": "An individual's target pathway code is the largest target pathway code across the causal mechanisms related to the individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "TargetPathwayCode",
+            "label": "target pathway code"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": null
+      },
+      "Individuals.TargetPathway": {
+        "table": "Individuals",
+        "field": "TargetPathway",
+        "kind": "formula",
+        "rule": "The individual's target pathway is determined by the following priority:\n1. “type-I-IFN”, if the target pathway code is 1;\n2. “B-cell/autoantibody”, if the target pathway code is 2;\n3. “T-cell-costim”, if the target pathway code is 3;\n4. “IL-17/23”, if the target pathway code is 4;\n5. in all other cases, an empty string.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "TargetPathwayCode",
+            "label": "target pathway code"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual's target pathway is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“type-I-IFN”",
+              "when": {
+                "kind": "leaf",
+                "text": "the target pathway code is 1"
+              }
+            },
+            {
+              "value": "“B-cell/autoantibody”",
+              "when": {
+                "kind": "leaf",
+                "text": "the target pathway code is 2"
+              }
+            },
+            {
+              "value": "“T-cell-costim”",
+              "when": {
+                "kind": "leaf",
+                "text": "the target pathway code is 3"
+              }
+            },
+            {
+              "value": "“IL-17/23”",
+              "when": {
+                "kind": "leaf",
+                "text": "the target pathway code is 4"
+              }
+            },
+            {
+              "value": "an empty string",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "Individuals.CurrentProgressionStateId": {
+        "table": "Individuals",
+        "field": "CurrentProgressionStateId",
+        "kind": "formula",
+        "rule": "An individual's current progression state ID is computed as “lupus-nephritis-progression--”, followed by the lower-cased nephritis progression state key.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "NephritisProgressionStateKey",
+            "label": "nephritis progression state key"
+          }
+        ],
+        "structure": null
+      },
+      "Individuals.ReachableStatesAhead": {
+        "table": "Individuals",
+        "field": "ReachableStatesAhead",
+        "kind": "lookup",
+        "rule": "An individual's reachable states ahead is the reachable state count of the individual's current progression state ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MachineStates",
+            "field": "ReachableStateCount",
+            "label": "reachable state count"
+          },
+          {
+            "table": "Individuals",
+            "field": "CurrentProgressionStateId",
+            "label": "current progression state ID"
+          },
+          {
+            "table": "MachineStates",
+            "field": "MachineStateId",
+            "label": "machine state ID"
+          }
+        ],
+        "structure": null
+      },
+      "GenomicVariants.Name": {
+        "table": "GenomicVariants",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A genomic variant's name is the same as its variant label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GenomicVariants",
+            "field": "VariantLabel",
+            "label": "variant label"
+          }
+        ],
+        "structure": null
+      },
+      "GenomicVariants.ParentPath": {
+        "table": "GenomicVariants",
+        "field": "ParentPath",
+        "kind": "lookup",
+        "rule": "A genomic variant's parent path is the relative path of the genomic variant's individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "RelativePath",
+            "label": "relative path"
+          },
+          {
+            "table": "GenomicVariants",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": null
+      },
+      "GenomicVariants.RelativePath": {
+        "table": "GenomicVariants",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A genomic variant's relative path is computed as the parent path, followed by “/variants/”, followed by the genomic variant ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GenomicVariants",
+            "field": "ParentPath",
+            "label": "parent path"
+          },
+          {
+            "table": "GenomicVariants",
+            "field": "GenomicVariantId",
+            "label": "genomic variant ID"
+          }
+        ],
+        "structure": null
+      },
+      "GenomicVariants.VariantTypeLabel": {
+        "table": "GenomicVariants",
+        "field": "VariantTypeLabel",
+        "kind": "formula",
+        "rule": "A genomic variant's variant type label — taken from the linked variant type.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VariantTypes",
+            "field": "TypeLabel",
+            "label": "type label"
+          },
+          {
+            "table": "GenomicVariants",
+            "field": "VariantType",
+            "label": "variant type"
+          },
+          {
+            "table": "VariantTypes",
+            "field": "VariantTypeId",
+            "label": "variant type ID"
+          }
+        ],
+        "structure": null
+      },
+      "GenomicVariants.VariantClassIsRare": {
+        "table": "GenomicVariants",
+        "field": "VariantClassIsRare",
+        "kind": "lookup",
+        "rule": "A genomic variant's variant class is rare when the linked variant type is a rare variant class.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VariantTypes",
+            "field": "IsRareVariantClass",
+            "label": "is rare variant class"
+          },
+          {
+            "table": "GenomicVariants",
+            "field": "VariantType",
+            "label": "variant type"
+          },
+          {
+            "table": "VariantTypes",
+            "field": "VariantTypeId",
+            "label": "variant type ID"
+          }
+        ],
+        "structure": null
+      },
+      "GenomicVariants.IndividualAncestryLabel": {
+        "table": "GenomicVariants",
+        "field": "IndividualAncestryLabel",
+        "kind": "formula",
+        "rule": "A genomic variant's individual ancestry label — taken from the linked individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "AncestryLabel",
+            "label": "ancestry label"
+          },
+          {
+            "table": "GenomicVariants",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": null
+      },
+      "GenomicVariants.IsRareVariant": {
+        "table": "GenomicVariants",
+        "field": "IsRareVariant",
+        "kind": "formula",
+        "rule": "A genomic variant is considered rare-variant if the allele frequency is less than 0.01.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GenomicVariants",
+            "field": "AlleleFrequency",
+            "label": "allele frequency"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The genomic variant's is rare variant is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "leaf",
+                "text": "the allele frequency is less than 0.01"
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "GenomicVariants.IsCausalCandidate": {
+        "table": "GenomicVariants",
+        "field": "IsCausalCandidate",
+        "kind": "formula",
+        "rule": "A genomic variant is considered a causal candidate if all of the following hold: at least one of the following holds: the rare variant flag is set or the variant class is rare flag is set and the allele specific expression flag is set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GenomicVariants",
+            "field": "IsRareVariant",
+            "label": "is rare variant"
+          },
+          {
+            "table": "GenomicVariants",
+            "field": "VariantClassIsRare",
+            "label": "variant class is rare"
+          },
+          {
+            "table": "GenomicVariants",
+            "field": "HasAlleleSpecificExpression",
+            "label": "has allele specific expression"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The genomic variant's is causal candidate is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "any",
+                    "children": [
+                      {
+                        "kind": "leaf",
+                        "text": "the rare variant flag is set"
+                      },
+                      {
+                        "kind": "leaf",
+                        "text": "the variant class is rare flag is set"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the allele specific expression flag is set"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "OmicsAssays.Name": {
+        "table": "OmicsAssays",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "An omics assay's name is the same as its assay label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OmicsAssays",
+            "field": "AssayLabel",
+            "label": "assay label"
+          }
+        ],
+        "structure": null
+      },
+      "OmicsAssays.ParentPath": {
+        "table": "OmicsAssays",
+        "field": "ParentPath",
+        "kind": "lookup",
+        "rule": "An omics assay's parent path is the relative path of the omics assay's individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "RelativePath",
+            "label": "relative path"
+          },
+          {
+            "table": "OmicsAssays",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": null
+      },
+      "OmicsAssays.RelativePath": {
+        "table": "OmicsAssays",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "An omics assay's relative path is computed as the parent path, followed by “/assays/”, followed by the omics assay ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OmicsAssays",
+            "field": "ParentPath",
+            "label": "parent path"
+          },
+          {
+            "table": "OmicsAssays",
+            "field": "OmicsAssayId",
+            "label": "omics assay ID"
+          }
+        ],
+        "structure": null
+      },
+      "OmicsAssays.ModalityLabel": {
+        "table": "OmicsAssays",
+        "field": "ModalityLabel",
+        "kind": "formula",
+        "rule": "An omics assay's modality label — taken from the linked omics modality.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OmicsModalities",
+            "field": "ModalityLabel",
+            "label": "modality label"
+          },
+          {
+            "table": "OmicsAssays",
+            "field": "OmicsModality",
+            "label": "omics modality"
+          },
+          {
+            "table": "OmicsModalities",
+            "field": "OmicsModalityId",
+            "label": "omics modality ID"
+          }
+        ],
+        "structure": null
+      },
+      "OmicsAssays.TissueLabel": {
+        "table": "OmicsAssays",
+        "field": "TissueLabel",
+        "kind": "formula",
+        "rule": "The omics assay's tissue label is determined by the following priority:\n1. “Missing Tissue”, if the tissue is blank;\n2. in all other cases, the tissue label of the omics assay's tissue.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OmicsAssays",
+            "field": "Tissue",
+            "label": "tissue"
+          },
+          {
+            "table": "Tissues",
+            "field": "TissueLabel",
+            "label": "tissue label"
+          },
+          {
+            "table": "Tissues",
+            "field": "TissueId",
+            "label": "tissue ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The omics assay's tissue label is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“Missing Tissue”",
+              "when": {
+                "kind": "leaf",
+                "text": "the tissue is blank"
+              }
+            },
+            {
+              "value": "the tissue label of the omics assay's tissue",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "OmicsAssays.HasBatchEffectRisk": {
+        "table": "OmicsAssays",
+        "field": "HasBatchEffectRisk",
+        "kind": "formula",
+        "rule": "An omics assay is considered to have batch effect risk if the measurement error score is greater than 0.3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OmicsAssays",
+            "field": "MeasurementErrorScore",
+            "label": "measurement error score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The omics assay's has batch effect risk is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "leaf",
+                "text": "the measurement error score is greater than 0.3"
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "OmicsAssays.IsHighQualityAssay": {
+        "table": "OmicsAssays",
+        "field": "IsHighQualityAssay",
+        "kind": "formula",
+        "rule": "An omics assay is considered high-quality-assay if all of the following hold: the batch effect risk flag is not set and the measurement error score is less than 0.15.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OmicsAssays",
+            "field": "HasBatchEffectRisk",
+            "label": "has batch effect risk"
+          },
+          {
+            "table": "OmicsAssays",
+            "field": "MeasurementErrorScore",
+            "label": "measurement error score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The omics assay's is high quality assay is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the batch effect risk flag is not set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the measurement error score is less than 0.15"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "EvidenceItems.Name": {
+        "table": "EvidenceItems",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "An evidence item's name is the same as its evidence label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvidenceItems",
+            "field": "EvidenceLabel",
+            "label": "evidence label"
+          }
+        ],
+        "structure": null
+      },
+      "EvidenceItems.ParentPath": {
+        "table": "EvidenceItems",
+        "field": "ParentPath",
+        "kind": "lookup",
+        "rule": "An evidence item's parent path is the relative path of the evidence item's causal mechanism.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "RelativePath",
+            "label": "relative path"
+          },
+          {
+            "table": "EvidenceItems",
+            "field": "CausalMechanism",
+            "label": "causal mechanism"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CausalMechanismId",
+            "label": "causal mechanism ID"
+          }
+        ],
+        "structure": null
+      },
+      "EvidenceItems.RelativePath": {
+        "table": "EvidenceItems",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "An evidence item's relative path is computed as the parent path, followed by “/evidence/”, followed by the evidence item ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvidenceItems",
+            "field": "ParentPath",
+            "label": "parent path"
+          },
+          {
+            "table": "EvidenceItems",
+            "field": "EvidenceItemId",
+            "label": "evidence item ID"
+          }
+        ],
+        "structure": null
+      },
+      "EvidenceItems.AssayIsHighQuality": {
+        "table": "EvidenceItems",
+        "field": "AssayIsHighQuality",
+        "kind": "lookup",
+        "rule": "An evidence item's assay is high quality when the linked omics assay is high quality assay.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OmicsAssays",
+            "field": "IsHighQualityAssay",
+            "label": "is high quality assay"
+          },
+          {
+            "table": "EvidenceItems",
+            "field": "OmicsAssay",
+            "label": "omics assay"
+          },
+          {
+            "table": "OmicsAssays",
+            "field": "OmicsAssayId",
+            "label": "omics assay ID"
+          }
+        ],
+        "structure": null
+      },
+      "EvidenceItems.ZStat": {
+        "table": "EvidenceItems",
+        "field": "ZStat",
+        "kind": "formula",
+        "rule": "The evidence item's z stat is determined by the following priority:\n1. the effect size divided by the standard error, if the standard error is greater than 0;\n2. in all other cases, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvidenceItems",
+            "field": "StandardError",
+            "label": "standard error"
+          },
+          {
+            "table": "EvidenceItems",
+            "field": "EffectSize",
+            "label": "effect size"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The evidence item's z stat is determined by the following priority:",
+          "cases": [
+            {
+              "value": "the effect size divided by the standard error",
+              "when": {
+                "kind": "leaf",
+                "text": "the standard error is greater than 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "EvidenceItems.IsConfoundControlled": {
+        "table": "EvidenceItems",
+        "field": "IsConfoundControlled",
+        "kind": "formula",
+        "rule": "An evidence item is considered confound-controlled if all of the following hold: the adjusted for ancestry p cs flag is set and the adjusted for batch flag is set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvidenceItems",
+            "field": "IsAdjustedForAncestryPCs",
+            "label": "is adjusted for ancestry p cs"
+          },
+          {
+            "table": "EvidenceItems",
+            "field": "IsAdjustedForBatch",
+            "label": "is adjusted for batch"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The evidence item's is confound controlled is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the adjusted for ancestry p cs flag is set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the adjusted for batch flag is set"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "EvidenceItems.IsQualifiedEvidence": {
+        "table": "EvidenceItems",
+        "field": "IsQualifiedEvidence",
+        "kind": "formula",
+        "rule": "An evidence item is considered a qualified evidence if all of the following hold: the assay is high quality flag is set; the negative control arm flag is not set; the z stat is at least 2; and the confound controlled flag is set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvidenceItems",
+            "field": "AssayIsHighQuality",
+            "label": "assay is high quality"
+          },
+          {
+            "table": "EvidenceItems",
+            "field": "IsNegativeControlArm",
+            "label": "is negative control arm"
+          },
+          {
+            "table": "EvidenceItems",
+            "field": "ZStat",
+            "label": "z stat"
+          },
+          {
+            "table": "EvidenceItems",
+            "field": "IsConfoundControlled",
+            "label": "is confound controlled"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The evidence item's is qualified evidence is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the assay is high quality flag is set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the negative control arm flag is not set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the z stat is at least 2"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the confound controlled flag is set"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CohortReplications.Name": {
+        "table": "CohortReplications",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A cohort replication's name is the same as its replication label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CohortReplications",
+            "field": "ReplicationLabel",
+            "label": "replication label"
+          }
+        ],
+        "structure": null
+      },
+      "CohortReplications.ParentPath": {
+        "table": "CohortReplications",
+        "field": "ParentPath",
+        "kind": "lookup",
+        "rule": "A cohort replication's parent path is the relative path of the cohort replication's causal mechanism.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "RelativePath",
+            "label": "relative path"
+          },
+          {
+            "table": "CohortReplications",
+            "field": "CausalMechanism",
+            "label": "causal mechanism"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CausalMechanismId",
+            "label": "causal mechanism ID"
+          }
+        ],
+        "structure": null
+      },
+      "CohortReplications.RelativePath": {
+        "table": "CohortReplications",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A cohort replication's relative path is computed as the parent path, followed by “/replications/”, followed by the cohort replication ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CohortReplications",
+            "field": "ParentPath",
+            "label": "parent path"
+          },
+          {
+            "table": "CohortReplications",
+            "field": "CohortReplicationId",
+            "label": "cohort replication ID"
+          }
+        ],
+        "structure": null
+      },
+      "CohortReplications.ReplicatedAtNominalSig": {
+        "table": "CohortReplications",
+        "field": "ReplicatedAtNominalSig",
+        "kind": "formula",
+        "rule": "A cohort replication is flagged replicated at nominal sig if all of the following hold: the replication p value is at most 0.05 and the replication effect sign is 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CohortReplications",
+            "field": "ReplicationPValue",
+            "label": "replication p value"
+          },
+          {
+            "table": "CohortReplications",
+            "field": "ReplicationEffectSign",
+            "label": "replication effect sign"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The cohort replication's replicated at nominal sig is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the replication p value is at most 0.05"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the replication effect sign is 1"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CohortReplications.MechanismPrimaryAncestry": {
+        "table": "CohortReplications",
+        "field": "MechanismPrimaryAncestry",
+        "kind": "lookup",
+        "rule": "A cohort replication's mechanism primary ancestry is the individual ancestry label of the cohort replication's causal mechanism.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "IndividualAncestryLabel",
+            "label": "individual ancestry label"
+          },
+          {
+            "table": "CohortReplications",
+            "field": "CausalMechanism",
+            "label": "causal mechanism"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CausalMechanismId",
+            "label": "causal mechanism ID"
+          }
+        ],
+        "structure": null
+      },
+      "CohortReplications.IsDifferentAncestryReplication": {
+        "table": "CohortReplications",
+        "field": "IsDifferentAncestryReplication",
+        "kind": "formula",
+        "rule": "A cohort replication is considered a different ancestry replication if it is not the case that the replication ancestry label is the mechanism primary ancestry.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CohortReplications",
+            "field": "ReplicationAncestryLabel",
+            "label": "replication ancestry label"
+          },
+          {
+            "table": "CohortReplications",
+            "field": "MechanismPrimaryAncestry",
+            "label": "mechanism primary ancestry"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The cohort replication's is different ancestry replication is determined by the following priority:",
+          "cases": [
+            {
+              "value": "false",
+              "when": {
+                "kind": "leaf",
+                "text": "the replication ancestry label is the mechanism primary ancestry"
+              }
+            },
+            {
+              "value": "true",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CohortReplications.IsCrossAncestryConcordant": {
+        "table": "CohortReplications",
+        "field": "IsCrossAncestryConcordant",
+        "kind": "formula",
+        "rule": "A cohort replication is considered cross-ancestry-concordant if all of the following hold: the replicated at nominal sig flag is set and the different ancestry replication flag is set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CohortReplications",
+            "field": "ReplicatedAtNominalSig",
+            "label": "replicated at nominal sig"
+          },
+          {
+            "table": "CohortReplications",
+            "field": "IsDifferentAncestryReplication",
+            "label": "is different ancestry replication"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The cohort replication's is cross ancestry concordant is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the replicated at nominal sig flag is set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the different ancestry replication flag is set"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "NegativeControlTests.Name": {
+        "table": "NegativeControlTests",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A negative control test's name is the same as its control label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NegativeControlTests",
+            "field": "ControlLabel",
+            "label": "control label"
+          }
+        ],
+        "structure": null
+      },
+      "NegativeControlTests.ParentPath": {
+        "table": "NegativeControlTests",
+        "field": "ParentPath",
+        "kind": "lookup",
+        "rule": "A negative control test's parent path is the relative path of the negative control test's causal mechanism.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "RelativePath",
+            "label": "relative path"
+          },
+          {
+            "table": "NegativeControlTests",
+            "field": "CausalMechanism",
+            "label": "causal mechanism"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CausalMechanismId",
+            "label": "causal mechanism ID"
+          }
+        ],
+        "structure": null
+      },
+      "NegativeControlTests.RelativePath": {
+        "table": "NegativeControlTests",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A negative control test's relative path is computed as the parent path, followed by “/neg-controls/”, followed by the negative control test ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NegativeControlTests",
+            "field": "ParentPath",
+            "label": "parent path"
+          },
+          {
+            "table": "NegativeControlTests",
+            "field": "NegativeControlTestId",
+            "label": "negative control test ID"
+          }
+        ],
+        "structure": null
+      },
+      "NegativeControlTests.IsSurvived": {
+        "table": "NegativeControlTests",
+        "field": "IsSurvived",
+        "kind": "formula",
+        "rule": "A negative control test is considered survived if the permutation effect size is at most the null threshold.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NegativeControlTests",
+            "field": "PermutationEffectSize",
+            "label": "permutation effect size"
+          },
+          {
+            "table": "NegativeControlTests",
+            "field": "NullThreshold",
+            "label": "null threshold"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The negative control test's is survived is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "leaf",
+                "text": "the permutation effect size is at most the null threshold"
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "EnvironmentalExposures.Name": {
+        "table": "EnvironmentalExposures",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "An environmental exposure's name is the same as its exposure label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EnvironmentalExposures",
+            "field": "ExposureLabel",
+            "label": "exposure label"
+          }
+        ],
+        "structure": null
+      },
+      "EnvironmentalExposures.ParentPath": {
+        "table": "EnvironmentalExposures",
+        "field": "ParentPath",
+        "kind": "lookup",
+        "rule": "An environmental exposure's parent path is the relative path of the environmental exposure's individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "RelativePath",
+            "label": "relative path"
+          },
+          {
+            "table": "EnvironmentalExposures",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": null
+      },
+      "EnvironmentalExposures.RelativePath": {
+        "table": "EnvironmentalExposures",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "An environmental exposure's relative path is computed as the parent path, followed by “/exposures/”, followed by the environmental exposure ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EnvironmentalExposures",
+            "field": "ParentPath",
+            "label": "parent path"
+          },
+          {
+            "table": "EnvironmentalExposures",
+            "field": "EnvironmentalExposureId",
+            "label": "environmental exposure ID"
+          }
+        ],
+        "structure": null
+      },
+      "EnvironmentalExposures.IndividualAncestryLabel": {
+        "table": "EnvironmentalExposures",
+        "field": "IndividualAncestryLabel",
+        "kind": "formula",
+        "rule": "An environmental exposure's individual ancestry label — taken from the linked individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "AncestryLabel",
+            "label": "ancestry label"
+          },
+          {
+            "table": "EnvironmentalExposures",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": null
+      },
+      "EnvironmentalExposures.IsHighExposure": {
+        "table": "EnvironmentalExposures",
+        "field": "IsHighExposure",
+        "kind": "formula",
+        "rule": "An environmental exposure is considered a high exposure if the exposure level is greater than 5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EnvironmentalExposures",
+            "field": "ExposureLevel",
+            "label": "exposure level"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The environmental exposure's is high exposure is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "leaf",
+                "text": "the exposure level is greater than 5"
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "Treatments.Name": {
+        "table": "Treatments",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A treatment's name is the same as its treatment label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Treatments",
+            "field": "TreatmentLabel",
+            "label": "treatment label"
+          }
+        ],
+        "structure": null
+      },
+      "Treatments.ParentPath": {
+        "table": "Treatments",
+        "field": "ParentPath",
+        "kind": "lookup",
+        "rule": "A treatment's parent path is the relative path of the treatment's individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "RelativePath",
+            "label": "relative path"
+          },
+          {
+            "table": "Treatments",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": null
+      },
+      "Treatments.RelativePath": {
+        "table": "Treatments",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A treatment's relative path is computed as the parent path, followed by “/treatments/”, followed by the treatment ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Treatments",
+            "field": "ParentPath",
+            "label": "parent path"
+          },
+          {
+            "table": "Treatments",
+            "field": "TreatmentId",
+            "label": "treatment ID"
+          }
+        ],
+        "structure": null
+      },
+      "Treatments.AutoimmuneDiseaseLabel": {
+        "table": "Treatments",
+        "field": "AutoimmuneDiseaseLabel",
+        "kind": "formula",
+        "rule": "A treatment's autoimmune disease label — taken from the linked autoimmune disease.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AutoimmuneDiseases",
+            "field": "DiseaseLabel",
+            "label": "disease label"
+          },
+          {
+            "table": "Treatments",
+            "field": "AutoimmuneDisease",
+            "label": "autoimmune disease"
+          },
+          {
+            "table": "AutoimmuneDiseases",
+            "field": "AutoimmuneDiseaseId",
+            "label": "autoimmune disease ID"
+          }
+        ],
+        "structure": null
+      },
+      "Treatments.IsEffectiveTreatment": {
+        "table": "Treatments",
+        "field": "IsEffectiveTreatment",
+        "kind": "formula",
+        "rule": "A treatment is considered effective-treatment if all of the following hold: at least one of the following holds: the treatment response is “Complete” or the treatment response is “Partial” and the adverse effect flag is not set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Treatments",
+            "field": "TreatmentResponse",
+            "label": "treatment response"
+          },
+          {
+            "table": "Treatments",
+            "field": "HasAdverseEffect",
+            "label": "has adverse effect"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment's is effective treatment is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "any",
+                    "children": [
+                      {
+                        "kind": "leaf",
+                        "text": "the treatment response is “Complete”"
+                      },
+                      {
+                        "kind": "leaf",
+                        "text": "the treatment response is “Partial”"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the adverse effect flag is not set"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "Treatments.IsMechanismMatched": {
+        "table": "Treatments",
+        "field": "IsMechanismMatched",
+        "kind": "lookup",
+        "rule": "A treatment's is mechanism matched is false if the targets mechanism is blank, in all other cases the is causal architecture node of the treatment's targets mechanism.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Treatments",
+            "field": "TargetsMechanism",
+            "label": "targets mechanism"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "IsCausalArchitectureNode",
+            "label": "is causal architecture node"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CausalMechanismId",
+            "label": "causal mechanism ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment's is mechanism matched is determined by the following priority:",
+          "cases": [
+            {
+              "value": "false",
+              "when": {
+                "kind": "leaf",
+                "text": "the targets mechanism is blank"
+              }
+            },
+            {
+              "value": "the is causal architecture node of the treatment's targets mechanism",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "Treatments.IsTreatmentResponsePredicted": {
+        "table": "Treatments",
+        "field": "IsTreatmentResponsePredicted",
+        "kind": "formula",
+        "rule": "A treatment is considered treatment-response-predicted if all of the following hold: the effective treatment flag is set and the mechanism matched flag is set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Treatments",
+            "field": "IsEffectiveTreatment",
+            "label": "is effective treatment"
+          },
+          {
+            "table": "Treatments",
+            "field": "IsMechanismMatched",
+            "label": "is mechanism matched"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment's is treatment response predicted is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the effective treatment flag is set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the mechanism matched flag is set"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "Treatments.TreatmentResponseDecidingFactor": {
+        "table": "Treatments",
+        "field": "TreatmentResponseDecidingFactor",
+        "kind": "formula",
+        "rule": "The treatment's treatment response deciding factor is determined by the following priority:\n1. “EffectiveOnConfirmedMechanism”, if the treatment response predicted flag is set;\n2. “NoConfirmedMechanism”, if the mechanism matched flag is not set;\n3. “AdverseEffect”, if the adverse effect flag is set;\n4. “NoResponse”, if at least one of the following holds: the treatment response is “None” or the treatment response is “Adverse”;\n5. in all other cases, “Undetermined”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Treatments",
+            "field": "IsTreatmentResponsePredicted",
+            "label": "is treatment response predicted"
+          },
+          {
+            "table": "Treatments",
+            "field": "IsMechanismMatched",
+            "label": "is mechanism matched"
+          },
+          {
+            "table": "Treatments",
+            "field": "HasAdverseEffect",
+            "label": "has adverse effect"
+          },
+          {
+            "table": "Treatments",
+            "field": "TreatmentResponse",
+            "label": "treatment response"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The treatment's treatment response deciding factor is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“EffectiveOnConfirmedMechanism”",
+              "when": {
+                "kind": "leaf",
+                "text": "the treatment response predicted flag is set"
+              }
+            },
+            {
+              "value": "“NoConfirmedMechanism”",
+              "when": {
+                "kind": "leaf",
+                "text": "the mechanism matched flag is not set"
+              }
+            },
+            {
+              "value": "“AdverseEffect”",
+              "when": {
+                "kind": "leaf",
+                "text": "the adverse effect flag is set"
+              }
+            },
+            {
+              "value": "“NoResponse”",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the treatment response is “None”"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the treatment response is “Adverse”"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Undetermined”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "ClinicalPhenotypes.Name": {
+        "table": "ClinicalPhenotypes",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A clinical phenotype's name is the same as its phenotype label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ClinicalPhenotypes",
+            "field": "PhenotypeLabel",
+            "label": "phenotype label"
+          }
+        ],
+        "structure": null
+      },
+      "ClinicalPhenotypes.ParentPath": {
+        "table": "ClinicalPhenotypes",
+        "field": "ParentPath",
+        "kind": "lookup",
+        "rule": "A clinical phenotype's parent path is the relative path of the clinical phenotype's individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "RelativePath",
+            "label": "relative path"
+          },
+          {
+            "table": "ClinicalPhenotypes",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": null
+      },
+      "ClinicalPhenotypes.RelativePath": {
+        "table": "ClinicalPhenotypes",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A clinical phenotype's relative path is computed as the parent path, followed by “/phenotypes/”, followed by the clinical phenotype ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ClinicalPhenotypes",
+            "field": "ParentPath",
+            "label": "parent path"
+          },
+          {
+            "table": "ClinicalPhenotypes",
+            "field": "ClinicalPhenotypeId",
+            "label": "clinical phenotype ID"
+          }
+        ],
+        "structure": null
+      },
+      "ClinicalPhenotypes.DiseaseStageLabel": {
+        "table": "ClinicalPhenotypes",
+        "field": "DiseaseStageLabel",
+        "kind": "formula",
+        "rule": "The clinical phenotype's disease stage label is determined by the following priority:\n1. an empty string, if the disease stage is blank;\n2. in all other cases, the stage label of the clinical phenotype's disease stage.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ClinicalPhenotypes",
+            "field": "DiseaseStage",
+            "label": "disease stage"
+          },
+          {
+            "table": "DiseaseStages",
+            "field": "StageLabel",
+            "label": "stage label"
+          },
+          {
+            "table": "DiseaseStages",
+            "field": "DiseaseStageId",
+            "label": "disease stage ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The clinical phenotype's disease stage label is determined by the following priority:",
+          "cases": [
+            {
+              "value": "an empty string",
+              "when": {
+                "kind": "leaf",
+                "text": "the disease stage is blank"
+              }
+            },
+            {
+              "value": "the stage label of the clinical phenotype's disease stage",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "ClinicalPhenotypes.IsHighSeverity": {
+        "table": "ClinicalPhenotypes",
+        "field": "IsHighSeverity",
+        "kind": "formula",
+        "rule": "A clinical phenotype is considered high-severity if the severity score is greater than 7.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ClinicalPhenotypes",
+            "field": "SeverityScore",
+            "label": "severity score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The clinical phenotype's is high severity is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "leaf",
+                "text": "the severity score is greater than 7"
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "ClinicalPhenotypes.IsPresymptomaticPhenotype": {
+        "table": "ClinicalPhenotypes",
+        "field": "IsPresymptomaticPhenotype",
+        "kind": "formula",
+        "rule": "A clinical phenotype is considered a presymptomatic phenotype if the disease stage label is “Presymptomatic”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ClinicalPhenotypes",
+            "field": "DiseaseStageLabel",
+            "label": "disease stage label"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The clinical phenotype's is presymptomatic phenotype is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "leaf",
+                "text": "the disease stage label is “Presymptomatic”"
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CausalMechanisms.TargetPathwayCode": {
+        "table": "CausalMechanisms",
+        "field": "TargetPathwayCode",
+        "kind": "formula",
+        "rule": "The causal mechanism's target pathway code is determined by the following priority:\n1. 1, if the target pathway is “type-I-IFN”;\n2. 2, if the target pathway is “B-cell/autoantibody”;\n3. 3, if the target pathway is “T-cell-costim”;\n4. 4, if the target pathway is “IL-17/23”;\n5. in all other cases, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "TargetPathway",
+            "label": "target pathway"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The causal mechanism's target pathway code is determined by the following priority:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "the target pathway is “type-I-IFN”"
+              }
+            },
+            {
+              "value": "2",
+              "when": {
+                "kind": "leaf",
+                "text": "the target pathway is “B-cell/autoantibody”"
+              }
+            },
+            {
+              "value": "3",
+              "when": {
+                "kind": "leaf",
+                "text": "the target pathway is “T-cell-costim”"
+              }
+            },
+            {
+              "value": "4",
+              "when": {
+                "kind": "leaf",
+                "text": "the target pathway is “IL-17/23”"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CausalMechanisms.Name": {
+        "table": "CausalMechanisms",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A causal mechanism's name is the same as its mechanism label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "MechanismLabel",
+            "label": "mechanism label"
+          }
+        ],
+        "structure": null
+      },
+      "CausalMechanisms.ParentPath": {
+        "table": "CausalMechanisms",
+        "field": "ParentPath",
+        "kind": "lookup",
+        "rule": "A causal mechanism's parent path is the relative path of the causal mechanism's individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "RelativePath",
+            "label": "relative path"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": null
+      },
+      "CausalMechanisms.RelativePath": {
+        "table": "CausalMechanisms",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A causal mechanism's relative path is computed as the parent path, followed by “/mechanisms/”, followed by the causal mechanism ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "ParentPath",
+            "label": "parent path"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CausalMechanismId",
+            "label": "causal mechanism ID"
+          }
+        ],
+        "structure": null
+      },
+      "CausalMechanisms.IndividualAncestryLabel": {
+        "table": "CausalMechanisms",
+        "field": "IndividualAncestryLabel",
+        "kind": "formula",
+        "rule": "A causal mechanism's individual ancestry label — taken from the linked individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "AncestryLabel",
+            "label": "ancestry label"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": null
+      },
+      "CausalMechanisms.CountQualifiedEvidence": {
+        "table": "CausalMechanisms",
+        "field": "CountQualifiedEvidence",
+        "kind": "rollup",
+        "rule": "A causal mechanism's count qualified evidence is the number of the causal mechanism's evidence items that are qualified evidences.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvidenceItems",
+            "field": "CausalMechanism",
+            "label": "causal mechanism"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CausalMechanismId",
+            "label": "causal mechanism ID"
+          },
+          {
+            "table": "EvidenceItems",
+            "field": "IsQualifiedEvidence",
+            "label": "is qualified evidence"
+          }
+        ],
+        "structure": null
+      },
+      "CausalMechanisms.CountModalitiesSupporting": {
+        "table": "CausalMechanisms",
+        "field": "CountModalitiesSupporting",
+        "kind": "rollup",
+        "rule": "A causal mechanism's count modalities supporting is the number of the causal mechanism's evidence items that are cross-modality and are qualified evidences.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EvidenceItems",
+            "field": "CausalMechanism",
+            "label": "causal mechanism"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CausalMechanismId",
+            "label": "causal mechanism ID"
+          },
+          {
+            "table": "EvidenceItems",
+            "field": "IsCrossModality",
+            "label": "is cross modality"
+          },
+          {
+            "table": "EvidenceItems",
+            "field": "IsQualifiedEvidence",
+            "label": "is qualified evidence"
+          }
+        ],
+        "structure": null
+      },
+      "CausalMechanisms.CountInterventionTargets": {
+        "table": "CausalMechanisms",
+        "field": "CountInterventionTargets",
+        "kind": "rollup",
+        "rule": "A causal mechanism's count intervention targets is the number of intervention targets related to the causal mechanism.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InterventionTargets",
+            "field": "CausalMechanism",
+            "label": "causal mechanism"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CausalMechanismId",
+            "label": "causal mechanism ID"
+          }
+        ],
+        "structure": null
+      },
+      "CausalMechanisms.IsExperimentallyFalsifiable": {
+        "table": "CausalMechanisms",
+        "field": "IsExperimentallyFalsifiable",
+        "kind": "formula",
+        "rule": "A causal mechanism is considered experimentally-falsifiable if all of the following hold: the count intervention targets is at least 1 and the count qualified evidence is at least 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "CountInterventionTargets",
+            "label": "count intervention targets"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CountQualifiedEvidence",
+            "label": "count qualified evidence"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The causal mechanism's is experimentally falsifiable is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the count intervention targets is at least 1"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the count qualified evidence is at least 1"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CausalMechanisms.CountReplications": {
+        "table": "CausalMechanisms",
+        "field": "CountReplications",
+        "kind": "rollup",
+        "rule": "A causal mechanism's count replications is the number of cohort replications related to the causal mechanism.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CohortReplications",
+            "field": "CausalMechanism",
+            "label": "causal mechanism"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CausalMechanismId",
+            "label": "causal mechanism ID"
+          }
+        ],
+        "structure": null
+      },
+      "CausalMechanisms.CountConcordantReplications": {
+        "table": "CausalMechanisms",
+        "field": "CountConcordantReplications",
+        "kind": "rollup",
+        "rule": "A causal mechanism's count concordant replications is the number of the causal mechanism's cohort replications that are replicated at nominal sig.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CohortReplications",
+            "field": "CausalMechanism",
+            "label": "causal mechanism"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CausalMechanismId",
+            "label": "causal mechanism ID"
+          },
+          {
+            "table": "CohortReplications",
+            "field": "ReplicatedAtNominalSig",
+            "label": "replicated at nominal sig"
+          }
+        ],
+        "structure": null
+      },
+      "CausalMechanisms.CountCrossAncestryConcordant": {
+        "table": "CausalMechanisms",
+        "field": "CountCrossAncestryConcordant",
+        "kind": "rollup",
+        "rule": "A causal mechanism's count cross ancestry concordant is the number of the causal mechanism's cohort replications that are cross-ancestry-concordant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CohortReplications",
+            "field": "CausalMechanism",
+            "label": "causal mechanism"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CausalMechanismId",
+            "label": "causal mechanism ID"
+          },
+          {
+            "table": "CohortReplications",
+            "field": "IsCrossAncestryConcordant",
+            "label": "is cross ancestry concordant"
+          }
+        ],
+        "structure": null
+      },
+      "CausalMechanisms.ReplicationFraction": {
+        "table": "CausalMechanisms",
+        "field": "ReplicationFraction",
+        "kind": "formula",
+        "rule": "The causal mechanism's replication fraction is determined by the following priority:\n1. the count concordant replications divided by the count replications, if the count replications is greater than 0;\n2. in all other cases, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "CountReplications",
+            "label": "count replications"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CountConcordantReplications",
+            "label": "count concordant replications"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The causal mechanism's replication fraction is determined by the following priority:",
+          "cases": [
+            {
+              "value": "the count concordant replications divided by the count replications",
+              "when": {
+                "kind": "leaf",
+                "text": "the count replications is greater than 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CausalMechanisms.ReplicatesAcrossCohorts": {
+        "table": "CausalMechanisms",
+        "field": "ReplicatesAcrossCohorts",
+        "kind": "formula",
+        "rule": "A causal mechanism is considered to replicate an across cohorts if all of the following hold: the count replications is at least 2 and the count concordant replications is at least 2.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "CountReplications",
+            "label": "count replications"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CountConcordantReplications",
+            "label": "count concordant replications"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The causal mechanism's replicates across cohorts is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the count replications is at least 2"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the count concordant replications is at least 2"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CausalMechanisms.CountNegControlTests": {
+        "table": "CausalMechanisms",
+        "field": "CountNegControlTests",
+        "kind": "rollup",
+        "rule": "A causal mechanism's count neg control tests is the number of negative control tests related to the causal mechanism.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NegativeControlTests",
+            "field": "CausalMechanism",
+            "label": "causal mechanism"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CausalMechanismId",
+            "label": "causal mechanism ID"
+          }
+        ],
+        "structure": null
+      },
+      "CausalMechanisms.CountNegControlSurvived": {
+        "table": "CausalMechanisms",
+        "field": "CountNegControlSurvived",
+        "kind": "rollup",
+        "rule": "A causal mechanism's count neg control survived is the number of the causal mechanism's negative control tests that are survived.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NegativeControlTests",
+            "field": "CausalMechanism",
+            "label": "causal mechanism"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CausalMechanismId",
+            "label": "causal mechanism ID"
+          },
+          {
+            "table": "NegativeControlTests",
+            "field": "IsSurvived",
+            "label": "is survived"
+          }
+        ],
+        "structure": null
+      },
+      "CausalMechanisms.SurvivesNegativeControls": {
+        "table": "CausalMechanisms",
+        "field": "SurvivesNegativeControls",
+        "kind": "formula",
+        "rule": "A causal mechanism is considered to survive a negative controls if all of the following hold: the count neg control tests is at least 1 and the count neg control survived is the count neg control tests.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "CountNegControlTests",
+            "label": "count neg control tests"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CountNegControlSurvived",
+            "label": "count neg control survived"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The causal mechanism's survives negative controls is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the count neg control tests is at least 1"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the count neg control survived is the count neg control tests"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CausalMechanisms.IsSpuriousDerived": {
+        "table": "CausalMechanisms",
+        "field": "IsSpuriousDerived",
+        "kind": "formula",
+        "rule": "A causal mechanism is considered spurious-derived if at least one of the following holds: the replicates across cohorts flag is not set; the survives negative controls flag is not set; the count modalities supporting is less than 2; or the pleiotropy flag is set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "ReplicatesAcrossCohorts",
+            "label": "replicates across cohorts"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "SurvivesNegativeControls",
+            "label": "survives negative controls"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CountModalitiesSupporting",
+            "label": "count modalities supporting"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "HasPleiotropy",
+            "label": "has pleiotropy"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The causal mechanism's is spurious derived is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the replicates across cohorts flag is not set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the survives negative controls flag is not set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the count modalities supporting is less than 2"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the pleiotropy flag is set"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CausalMechanisms.CausalConfidence": {
+        "table": "CausalMechanisms",
+        "field": "CausalConfidence",
+        "kind": "formula",
+        "rule": "The causal mechanism's causal confidence is determined by the following priority:\n1. 1, if 0.30 times 1 if the count qualified evidence is at least 4, in all other cases the count qualified evidence divided by 4 plus 0.20 times 1 if the count modalities supporting is at least 3, in all other cases the count modalities supporting divided by 3 plus 0.30 times the replication fraction plus 0.20 times 1 if the survives negative controls flag is set, in all other cases 0 is greater than 1;\n2. in all other cases, 0.30 times 1 if the count qualified evidence is at least 4, in all other cases the count qualified evidence divided by 4 plus 0.20 times 1 if the count modalities supporting is at least 3, in all other cases the count modalities supporting divided by 3 plus 0.30 times the replication fraction plus 0.20 times 1 if the survives negative controls flag is set, in all other cases 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "CountQualifiedEvidence",
+            "label": "count qualified evidence"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CountModalitiesSupporting",
+            "label": "count modalities supporting"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "ReplicationFraction",
+            "label": "replication fraction"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "SurvivesNegativeControls",
+            "label": "survives negative controls"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The causal mechanism's causal confidence is determined by the following priority:",
+          "cases": [
+            {
+              "value": "1",
+              "when": {
+                "kind": "leaf",
+                "text": "0.30 times 1 if the count qualified evidence is at least 4, in all other cases the count qualified evidence divided by 4 plus 0.20 times 1 if the count modalities supporting is at least 3, in all other cases the count modalities supporting divided by 3 plus 0.30 times the replication fraction plus 0.20 times 1 if the survives negative controls flag is set, in all other cases 0 is greater than 1"
+              }
+            },
+            {
+              "value": "0.30 times 1 if the count qualified evidence is at least 4, in all other cases the count qualified evidence divided by 4 plus 0.20 times 1 if the count modalities supporting is at least 3, in all other cases the count modalities supporting divided by 3 plus 0.30 times the replication fraction plus 0.20 times 1 if the survives negative controls flag is set, in all other cases 0",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CausalMechanisms.VariantIsCausalCandidate": {
+        "table": "CausalMechanisms",
+        "field": "VariantIsCausalCandidate",
+        "kind": "lookup",
+        "rule": "A causal mechanism's variant is causal candidate is false if the genomic variant is blank, in all other cases the is causal candidate of the causal mechanism's genomic variant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "GenomicVariant",
+            "label": "genomic variant"
+          },
+          {
+            "table": "GenomicVariants",
+            "field": "IsCausalCandidate",
+            "label": "is causal candidate"
+          },
+          {
+            "table": "GenomicVariants",
+            "field": "GenomicVariantId",
+            "label": "genomic variant ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The causal mechanism's variant is causal candidate is determined by the following priority:",
+          "cases": [
+            {
+              "value": "false",
+              "when": {
+                "kind": "leaf",
+                "text": "the genomic variant is blank"
+              }
+            },
+            {
+              "value": "the is causal candidate of the causal mechanism's genomic variant",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CausalMechanisms.IsCausalArchitectureNode": {
+        "table": "CausalMechanisms",
+        "field": "IsCausalArchitectureNode",
+        "kind": "formula",
+        "rule": "A causal mechanism is considered a causal architecture node if all of the following hold: the causal confidence is at least 0.7; the experimentally falsifiable flag is set; the spurious derived flag is not set; and at least one of the following holds: the variant is causal candidate flag is set or the environmental exposure has a value.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "CausalConfidence",
+            "label": "causal confidence"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "IsExperimentallyFalsifiable",
+            "label": "is experimentally falsifiable"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "IsSpuriousDerived",
+            "label": "is spurious derived"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "VariantIsCausalCandidate",
+            "label": "variant is causal candidate"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "EnvironmentalExposure",
+            "label": "environmental exposure"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The causal mechanism's is causal architecture node is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the causal confidence is at least 0.7"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the experimentally falsifiable flag is set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the spurious derived flag is not set"
+                  },
+                  {
+                    "kind": "any",
+                    "children": [
+                      {
+                        "kind": "leaf",
+                        "text": "the variant is causal candidate flag is set"
+                      },
+                      {
+                        "kind": "leaf",
+                        "text": "the environmental exposure has a value"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CausalMechanisms.IsAncestryTransportable": {
+        "table": "CausalMechanisms",
+        "field": "IsAncestryTransportable",
+        "kind": "formula",
+        "rule": "A causal mechanism is considered ancestry-transportable if all of the following hold: the causal architecture node flag is set and the count cross ancestry concordant is at least 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "IsCausalArchitectureNode",
+            "label": "is causal architecture node"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CountCrossAncestryConcordant",
+            "label": "count cross ancestry concordant"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The causal mechanism's is ancestry transportable is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the causal architecture node flag is set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the count cross ancestry concordant is at least 1"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "EpistaticInteractions.Name": {
+        "table": "EpistaticInteractions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "An epistatic interaction's name is the same as its interaction label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EpistaticInteractions",
+            "field": "InteractionLabel",
+            "label": "interaction label"
+          }
+        ],
+        "structure": null
+      },
+      "EpistaticInteractions.ParentPath": {
+        "table": "EpistaticInteractions",
+        "field": "ParentPath",
+        "kind": "lookup",
+        "rule": "An epistatic interaction's parent path is the relative path of the epistatic interaction's individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "RelativePath",
+            "label": "relative path"
+          },
+          {
+            "table": "EpistaticInteractions",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": null
+      },
+      "EpistaticInteractions.RelativePath": {
+        "table": "EpistaticInteractions",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "An epistatic interaction's relative path is computed as the parent path, followed by “/epistasis/”, followed by the epistatic interaction ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EpistaticInteractions",
+            "field": "ParentPath",
+            "label": "parent path"
+          },
+          {
+            "table": "EpistaticInteractions",
+            "field": "EpistaticInteractionId",
+            "label": "epistatic interaction ID"
+          }
+        ],
+        "structure": null
+      },
+      "EpistaticInteractions.IsHighOrderEpistasis": {
+        "table": "EpistaticInteractions",
+        "field": "IsHighOrderEpistasis",
+        "kind": "formula",
+        "rule": "An epistatic interaction is considered a high order epistasis if the epistasis score is greater than 0.5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EpistaticInteractions",
+            "field": "EpistasisScore",
+            "label": "epistasis score"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The epistatic interaction's is high order epistasis is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "leaf",
+                "text": "the epistasis score is greater than 0.5"
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CounterfactualTrajectories.Name": {
+        "table": "CounterfactualTrajectories",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A counterfactual trajectory's name is the same as its trajectory label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CounterfactualTrajectories",
+            "field": "TrajectoryLabel",
+            "label": "trajectory label"
+          }
+        ],
+        "structure": null
+      },
+      "CounterfactualTrajectories.ParentPath": {
+        "table": "CounterfactualTrajectories",
+        "field": "ParentPath",
+        "kind": "lookup",
+        "rule": "A counterfactual trajectory's parent path is the relative path of the counterfactual trajectory's individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "RelativePath",
+            "label": "relative path"
+          },
+          {
+            "table": "CounterfactualTrajectories",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": null
+      },
+      "CounterfactualTrajectories.RelativePath": {
+        "table": "CounterfactualTrajectories",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A counterfactual trajectory's relative path is computed as the parent path, followed by “/trajectories/”, followed by the counterfactual trajectory ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CounterfactualTrajectories",
+            "field": "ParentPath",
+            "label": "parent path"
+          },
+          {
+            "table": "CounterfactualTrajectories",
+            "field": "CounterfactualTrajectoryId",
+            "label": "counterfactual trajectory ID"
+          }
+        ],
+        "structure": null
+      },
+      "CounterfactualTrajectories.AutoimmuneDiseaseLabel": {
+        "table": "CounterfactualTrajectories",
+        "field": "AutoimmuneDiseaseLabel",
+        "kind": "formula",
+        "rule": "A counterfactual trajectory's autoimmune disease label — taken from the linked autoimmune disease.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "AutoimmuneDiseases",
+            "field": "DiseaseLabel",
+            "label": "disease label"
+          },
+          {
+            "table": "CounterfactualTrajectories",
+            "field": "AutoimmuneDisease",
+            "label": "autoimmune disease"
+          },
+          {
+            "table": "AutoimmuneDiseases",
+            "field": "AutoimmuneDiseaseId",
+            "label": "autoimmune disease ID"
+          }
+        ],
+        "structure": null
+      },
+      "CounterfactualTrajectories.IsWorseningTrajectory": {
+        "table": "CounterfactualTrajectories",
+        "field": "IsWorseningTrajectory",
+        "kind": "formula",
+        "rule": "A counterfactual trajectory is considered worsening-trajectory if the projected severity is greater than 7.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CounterfactualTrajectories",
+            "field": "ProjectedSeverity",
+            "label": "projected severity"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The counterfactual trajectory's is worsening trajectory is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "leaf",
+                "text": "the projected severity is greater than 7"
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.Name": {
+        "table": "IndividualPredictions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "An individual prediction's name is the same as its prediction label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "PredictionLabel",
+            "label": "prediction label"
+          }
+        ],
+        "structure": null
+      },
+      "IndividualPredictions.ParentPath": {
+        "table": "IndividualPredictions",
+        "field": "ParentPath",
+        "kind": "lookup",
+        "rule": "An individual prediction's parent path is the relative path of the individual prediction's individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "RelativePath",
+            "label": "relative path"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": null
+      },
+      "IndividualPredictions.RelativePath": {
+        "table": "IndividualPredictions",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "An individual prediction's relative path is computed as the parent path, followed by “/predictions/”, followed by the individual prediction ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "ParentPath",
+            "label": "parent path"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualPredictionId",
+            "label": "individual prediction ID"
+          }
+        ],
+        "structure": null
+      },
+      "IndividualPredictions.IndividualAncestryLabel": {
+        "table": "IndividualPredictions",
+        "field": "IndividualAncestryLabel",
+        "kind": "formula",
+        "rule": "An individual prediction's individual ancestry label — taken from the linked individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "AncestryLabel",
+            "label": "ancestry label"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": null
+      },
+      "IndividualPredictions.IsAncestryHoldout": {
+        "table": "IndividualPredictions",
+        "field": "IsAncestryHoldout",
+        "kind": "formula",
+        "rule": "An individual prediction's is ancestry holdout is true when the individual prediction's individual is ancestry absent from training.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "IsAncestryAbsentFromTraining",
+            "label": "is ancestry absent from training"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": null
+      },
+      "IndividualPredictions.IndividualCausalMass": {
         "table": "IndividualPredictions",
         "field": "IndividualCausalMass",
-        "label": "individual causal mass"
+        "kind": "lookup",
+        "rule": "An individual prediction's individual causal mass is 0 if the individual is blank, in all other cases the sum confirmed causal confidence of the individual prediction's individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "SumConfirmedCausalConfidence",
+            "label": "sum confirmed causal confidence"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's individual causal mass is determined by the following priority:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "the individual is blank"
+              }
+            },
+            {
+              "value": "the sum confirmed causal confidence of the individual prediction's individual",
+              "when": null
+            }
+          ],
+          "children": null
+        }
       },
-      {
+      "IndividualPredictions.IndividualConfirmedNodeCount": {
         "table": "IndividualPredictions",
         "field": "IndividualConfirmedNodeCount",
-        "label": "individual confirmed node count"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's predicted value is determined by the following priority:",
-      "cases": [
-        {
-          "value": "10",
-          "when": {
-            "kind": "leaf",
-            "text": "2 times the individual causal mass plus 1.5 times the individual confirmed node count is greater than 10"
+        "kind": "lookup",
+        "rule": "An individual prediction's individual confirmed node count is 0 if the individual is blank, in all other cases the count confirmed causal nodes of the individual prediction's individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "CountConfirmedCausalNodes",
+            "label": "count confirmed causal nodes"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
           }
-        },
-        {
-          "value": "2 times the individual causal mass plus 1.5 times the individual confirmed node count",
-          "when": null
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's individual confirmed node count is determined by the following priority:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "the individual is blank"
+              }
+            },
+            {
+              "value": "the count confirmed causal nodes of the individual prediction's individual",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.CountBins": {
-    "table": "IndividualPredictions",
-    "field": "CountBins",
-    "kind": "rollup",
-    "rule": "An individual prediction's count bins is the number of calibration bins related to the individual prediction.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CalibrationBins",
-        "field": "IndividualPrediction",
-        "label": "individual prediction"
       },
-      {
+      "IndividualPredictions.IndividualCrossAncestryNodeCount": {
         "table": "IndividualPredictions",
-        "field": "IndividualPredictionId",
-        "label": "individual prediction ID"
-      }
-    ],
-    "structure": null
-  },
-  "IndividualPredictions.CountWellCalibratedBins": {
-    "table": "IndividualPredictions",
-    "field": "CountWellCalibratedBins",
-    "kind": "rollup",
-    "rule": "An individual prediction's count well calibrated bins is the number of the individual prediction's calibration bins that are well calibrated bins.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CalibrationBins",
-        "field": "IndividualPrediction",
-        "label": "individual prediction"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "IndividualPredictionId",
-        "label": "individual prediction ID"
-      },
-      {
-        "table": "CalibrationBins",
-        "field": "IsWellCalibratedBin",
-        "label": "is well calibrated bin"
-      }
-    ],
-    "structure": null
-  },
-  "IndividualPredictions.SumBinAbsError": {
-    "table": "IndividualPredictions",
-    "field": "SumBinAbsError",
-    "kind": "rollup",
-    "rule": "An individual prediction's sum bin abs error is the total bin abs error across the calibration bins related to the individual prediction.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CalibrationBins",
-        "field": "BinAbsError",
-        "label": "bin abs error"
-      },
-      {
-        "table": "CalibrationBins",
-        "field": "IndividualPrediction",
-        "label": "individual prediction"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "IndividualPredictionId",
-        "label": "individual prediction ID"
-      }
-    ],
-    "structure": null
-  },
-  "IndividualPredictions.MeanBinAbsError": {
-    "table": "IndividualPredictions",
-    "field": "MeanBinAbsError",
-    "kind": "formula",
-    "rule": "The individual prediction's mean bin abs error is determined by the following priority:\n1. the sum bin abs error divided by the count bins, if the count bins is greater than 0;\n2. in all other cases, 1.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "CountBins",
-        "label": "count bins"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "SumBinAbsError",
-        "label": "sum bin abs error"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's mean bin abs error is determined by the following priority:",
-      "cases": [
-        {
-          "value": "the sum bin abs error divided by the count bins",
-          "when": {
-            "kind": "leaf",
-            "text": "the count bins is greater than 0"
+        "field": "IndividualCrossAncestryNodeCount",
+        "kind": "lookup",
+        "rule": "An individual prediction's individual cross ancestry node count is 0 if the individual is blank, in all other cases the count cross ancestry confirmed nodes of the individual prediction's individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "CountCrossAncestryConfirmedNodes",
+            "label": "count cross ancestry confirmed nodes"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
           }
-        },
-        {
-          "value": "1",
-          "when": null
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's individual cross ancestry node count is determined by the following priority:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "the individual is blank"
+              }
+            },
+            {
+              "value": "the count cross ancestry confirmed nodes of the individual prediction's individual",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.WellCalibratedFraction": {
-    "table": "IndividualPredictions",
-    "field": "WellCalibratedFraction",
-    "kind": "formula",
-    "rule": "The individual prediction's well calibrated fraction is determined by the following priority:\n1. the count well calibrated bins divided by the count bins, if the count bins is greater than 0;\n2. in all other cases, 0.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "CountBins",
-        "label": "count bins"
       },
-      {
-        "table": "IndividualPredictions",
-        "field": "CountWellCalibratedBins",
-        "label": "count well calibrated bins"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's well calibrated fraction is determined by the following priority:",
-      "cases": [
-        {
-          "value": "the count well calibrated bins divided by the count bins",
-          "when": {
-            "kind": "leaf",
-            "text": "the count bins is greater than 0"
-          }
-        },
-        {
-          "value": "0",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.CalibratedUncertainty": {
-    "table": "IndividualPredictions",
-    "field": "CalibratedUncertainty",
-    "kind": "formula",
-    "rule": "An individual prediction's calibrated uncertainty is computed as 0 if 1 minus the mean bin abs error is less than 0, in all other cases 1 minus the mean bin abs error times the well calibrated fraction.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "MeanBinAbsError",
-        "label": "mean bin abs error"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "WellCalibratedFraction",
-        "label": "well calibrated fraction"
-      }
-    ],
-    "structure": null
-  },
-  "IndividualPredictions.RestsOnConfirmedMechanism": {
-    "table": "IndividualPredictions",
-    "field": "RestsOnConfirmedMechanism",
-    "kind": "formula",
-    "rule": "An individual prediction is considered to rest on confirmed mechanism if the individual confirmed node count is at least 1.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "IndividualConfirmedNodeCount",
-        "label": "individual confirmed node count"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's rests on confirmed mechanism is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the individual confirmed node count is at least 1"
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.HasSpuriousCorrelationFlag": {
-    "table": "IndividualPredictions",
-    "field": "HasSpuriousCorrelationFlag",
-    "kind": "formula",
-    "rule": "An individual prediction is considered to have a spurious correlation flag if at least one of the following holds: the rests on confirmed mechanism flag is not set or the individual has cryptic relatedness flag is set.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "RestsOnConfirmedMechanism",
-        "label": "rests on confirmed mechanism"
-      },
-      {
+      "IndividualPredictions.IndividualHasCrypticRelatedness": {
         "table": "IndividualPredictions",
         "field": "IndividualHasCrypticRelatedness",
-        "label": "individual has cryptic relatedness"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's has spurious correlation flag is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
+        "kind": "lookup",
+        "rule": "An individual prediction's individual has cryptic relatedness is false if the individual is blank, in all other cases the has cryptic relatedness flag of the individual prediction's individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "HasCrypticRelatednessFlag",
+            "label": "has cryptic relatedness flag"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's individual has cryptic relatedness is determined by the following priority:",
+          "cases": [
+            {
+              "value": "false",
+              "when": {
+                "kind": "leaf",
+                "text": "the individual is blank"
+              }
+            },
+            {
+              "value": "the has cryptic relatedness flag of the individual prediction's individual",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.IndividualMaxSeverityScore": {
+        "table": "IndividualPredictions",
+        "field": "IndividualMaxSeverityScore",
+        "kind": "lookup",
+        "rule": "An individual prediction's individual max severity score is 0 if the individual is blank, in all other cases the max severity score of the individual prediction's individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "MaxSeverityScore",
+            "label": "max severity score"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's individual max severity score is determined by the following priority:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "the individual is blank"
+              }
+            },
+            {
+              "value": "the max severity score of the individual prediction's individual",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.IndividualHasHighSeverityPhenotype": {
+        "table": "IndividualPredictions",
+        "field": "IndividualHasHighSeverityPhenotype",
+        "kind": "lookup",
+        "rule": "An individual prediction's individual has high severity phenotype is false if the individual is blank, in all other cases the has high severity phenotype of the individual prediction's individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "HasHighSeverityPhenotype",
+            "label": "has high severity phenotype"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's individual has high severity phenotype is determined by the following priority:",
+          "cases": [
+            {
+              "value": "false",
+              "when": {
+                "kind": "leaf",
+                "text": "the individual is blank"
+              }
+            },
+            {
+              "value": "the has high severity phenotype of the individual prediction's individual",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.IndividualHasPredictedTreatmentResponse": {
+        "table": "IndividualPredictions",
+        "field": "IndividualHasPredictedTreatmentResponse",
+        "kind": "lookup",
+        "rule": "An individual prediction's individual has predicted treatment response is false if the individual is blank, in all other cases the has predicted treatment response of the individual prediction's individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "HasPredictedTreatmentResponse",
+            "label": "has predicted treatment response"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's individual has predicted treatment response is determined by the following priority:",
+          "cases": [
+            {
+              "value": "false",
+              "when": {
+                "kind": "leaf",
+                "text": "the individual is blank"
+              }
+            },
+            {
+              "value": "the has predicted treatment response of the individual prediction's individual",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.PredictedValue": {
+        "table": "IndividualPredictions",
+        "field": "PredictedValue",
+        "kind": "formula",
+        "rule": "The individual prediction's predicted value is determined by the following priority:\n1. 10, if 2 times the individual causal mass plus 1.5 times the individual confirmed node count is greater than 10;\n2. in all other cases, 2 times the individual causal mass plus 1.5 times the individual confirmed node count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualCausalMass",
+            "label": "individual causal mass"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualConfirmedNodeCount",
+            "label": "individual confirmed node count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's predicted value is determined by the following priority:",
+          "cases": [
+            {
+              "value": "10",
+              "when": {
+                "kind": "leaf",
+                "text": "2 times the individual causal mass plus 1.5 times the individual confirmed node count is greater than 10"
+              }
+            },
+            {
+              "value": "2 times the individual causal mass plus 1.5 times the individual confirmed node count",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.CountBins": {
+        "table": "IndividualPredictions",
+        "field": "CountBins",
+        "kind": "rollup",
+        "rule": "An individual prediction's count bins is the number of calibration bins related to the individual prediction.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CalibrationBins",
+            "field": "IndividualPrediction",
+            "label": "individual prediction"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualPredictionId",
+            "label": "individual prediction ID"
+          }
+        ],
+        "structure": null
+      },
+      "IndividualPredictions.CountWellCalibratedBins": {
+        "table": "IndividualPredictions",
+        "field": "CountWellCalibratedBins",
+        "kind": "rollup",
+        "rule": "An individual prediction's count well calibrated bins is the number of the individual prediction's calibration bins that are well calibrated bins.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CalibrationBins",
+            "field": "IndividualPrediction",
+            "label": "individual prediction"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualPredictionId",
+            "label": "individual prediction ID"
+          },
+          {
+            "table": "CalibrationBins",
+            "field": "IsWellCalibratedBin",
+            "label": "is well calibrated bin"
+          }
+        ],
+        "structure": null
+      },
+      "IndividualPredictions.SumBinAbsError": {
+        "table": "IndividualPredictions",
+        "field": "SumBinAbsError",
+        "kind": "rollup",
+        "rule": "An individual prediction's sum bin abs error is the total bin abs error across the calibration bins related to the individual prediction.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CalibrationBins",
+            "field": "BinAbsError",
+            "label": "bin abs error"
+          },
+          {
+            "table": "CalibrationBins",
+            "field": "IndividualPrediction",
+            "label": "individual prediction"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualPredictionId",
+            "label": "individual prediction ID"
+          }
+        ],
+        "structure": null
+      },
+      "IndividualPredictions.MeanBinAbsError": {
+        "table": "IndividualPredictions",
+        "field": "MeanBinAbsError",
+        "kind": "formula",
+        "rule": "The individual prediction's mean bin abs error is determined by the following priority:\n1. the sum bin abs error divided by the count bins, if the count bins is greater than 0;\n2. in all other cases, 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "CountBins",
+            "label": "count bins"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "SumBinAbsError",
+            "label": "sum bin abs error"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's mean bin abs error is determined by the following priority:",
+          "cases": [
+            {
+              "value": "the sum bin abs error divided by the count bins",
+              "when": {
+                "kind": "leaf",
+                "text": "the count bins is greater than 0"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.WellCalibratedFraction": {
+        "table": "IndividualPredictions",
+        "field": "WellCalibratedFraction",
+        "kind": "formula",
+        "rule": "The individual prediction's well calibrated fraction is determined by the following priority:\n1. the count well calibrated bins divided by the count bins, if the count bins is greater than 0;\n2. in all other cases, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "CountBins",
+            "label": "count bins"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "CountWellCalibratedBins",
+            "label": "count well calibrated bins"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's well calibrated fraction is determined by the following priority:",
+          "cases": [
+            {
+              "value": "the count well calibrated bins divided by the count bins",
+              "when": {
+                "kind": "leaf",
+                "text": "the count bins is greater than 0"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.CalibratedUncertainty": {
+        "table": "IndividualPredictions",
+        "field": "CalibratedUncertainty",
+        "kind": "formula",
+        "rule": "An individual prediction's calibrated uncertainty is computed as 0 if 1 minus the mean bin abs error is less than 0, in all other cases 1 minus the mean bin abs error times the well calibrated fraction.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "MeanBinAbsError",
+            "label": "mean bin abs error"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "WellCalibratedFraction",
+            "label": "well calibrated fraction"
+          }
+        ],
+        "structure": null
+      },
+      "IndividualPredictions.RestsOnConfirmedMechanism": {
+        "table": "IndividualPredictions",
+        "field": "RestsOnConfirmedMechanism",
+        "kind": "formula",
+        "rule": "An individual prediction is considered to rest on confirmed mechanism if the individual confirmed node count is at least 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualConfirmedNodeCount",
+            "label": "individual confirmed node count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's rests on confirmed mechanism is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "leaf",
+                "text": "the individual confirmed node count is at least 1"
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.HasSpuriousCorrelationFlag": {
+        "table": "IndividualPredictions",
+        "field": "HasSpuriousCorrelationFlag",
+        "kind": "formula",
+        "rule": "An individual prediction is considered to have a spurious correlation flag if at least one of the following holds: the rests on confirmed mechanism flag is not set or the individual has cryptic relatedness flag is set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "RestsOnConfirmedMechanism",
+            "label": "rests on confirmed mechanism"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualHasCrypticRelatedness",
+            "label": "individual has cryptic relatedness"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's has spurious correlation flag is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the rests on confirmed mechanism flag is not set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the individual has cryptic relatedness flag is set"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.IsFalsifiabilityBacked": {
+        "table": "IndividualPredictions",
+        "field": "IsFalsifiabilityBacked",
+        "kind": "formula",
+        "rule": "An individual prediction is considered falsifiability-backed if the individual confirmed node count is at least 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualConfirmedNodeCount",
+            "label": "individual confirmed node count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's is falsifiability backed is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "leaf",
+                "text": "the individual confirmed node count is at least 1"
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.IsTransportableToAbsentAncestry": {
+        "table": "IndividualPredictions",
+        "field": "IsTransportableToAbsentAncestry",
+        "kind": "formula",
+        "rule": "An individual prediction is considered transportable-to-absent-ancestry if all of the following hold: the ancestry holdout flag is set; the individual cross ancestry node count is at least 1; and the spurious correlation flag is not set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "IsAncestryHoldout",
+            "label": "is ancestry holdout"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualCrossAncestryNodeCount",
+            "label": "individual cross ancestry node count"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "HasSpuriousCorrelationFlag",
+            "label": "has spurious correlation flag"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's is transportable to absent ancestry is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the ancestry holdout flag is set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the individual cross ancestry node count is at least 1"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the spurious correlation flag is not set"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.IsAncestryTransportSafe": {
+        "table": "IndividualPredictions",
+        "field": "IsAncestryTransportSafe",
+        "kind": "formula",
+        "rule": "An individual prediction is considered an ancestry transport safe if the transportable to absent ancestry flag is set, or else the ancestry holdout flag is not set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "IsAncestryHoldout",
+            "label": "is ancestry holdout"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IsTransportableToAbsentAncestry",
+            "label": "is transportable to absent ancestry"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's is ancestry transport safe is determined by the following priority:",
+          "cases": [
+            {
+              "value": "the is transportable to absent ancestry",
+              "when": {
+                "kind": "leaf",
+                "text": "the ancestry holdout flag is set"
+              }
+            },
+            {
+              "value": "true",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.TransportGateStatus": {
+        "table": "IndividualPredictions",
+        "field": "TransportGateStatus",
+        "kind": "formula",
+        "rule": "The individual prediction's transport gate status is determined by the following priority:\n1. “NotApplicable”, if the ancestry holdout flag is not set;\n2. “PASS-tested”, if the transportable to absent ancestry flag is set;\n3. in all other cases, “FAIL”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "IsAncestryHoldout",
+            "label": "is ancestry holdout"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IsTransportableToAbsentAncestry",
+            "label": "is transportable to absent ancestry"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's transport gate status is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“NotApplicable”",
+              "when": {
+                "kind": "leaf",
+                "text": "the ancestry holdout flag is not set"
+              }
+            },
+            {
+              "value": "“PASS-tested”",
+              "when": {
+                "kind": "leaf",
+                "text": "the transportable to absent ancestry flag is set"
+              }
+            },
+            {
+              "value": "“FAIL”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.IsHighConfidencePrediction": {
+        "table": "IndividualPredictions",
+        "field": "IsHighConfidencePrediction",
+        "kind": "formula",
+        "rule": "An individual prediction is considered a high confidence prediction if all of the following hold: the calibrated uncertainty is at least 0.7 and the spurious correlation flag is not set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "CalibratedUncertainty",
+            "label": "calibrated uncertainty"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "HasSpuriousCorrelationFlag",
+            "label": "has spurious correlation flag"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's is high confidence prediction is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the calibrated uncertainty is at least 0.7"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the spurious correlation flag is not set"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.PatientStratificationTier": {
+        "table": "IndividualPredictions",
+        "field": "PatientStratificationTier",
+        "kind": "formula",
+        "rule": "The individual prediction's patient stratification tier is determined by the following priority:\n1. “High-Risk Pathway”, if the predicted value is at least 7;\n2. “Moderate-Risk Pathway”, if the predicted value is at least 4;\n3. in all other cases, “Low-Risk Pathway”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "PredictedValue",
+            "label": "predicted value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's patient stratification tier is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“High-Risk Pathway”",
+              "when": {
+                "kind": "leaf",
+                "text": "the predicted value is at least 7"
+              }
+            },
+            {
+              "value": "“Moderate-Risk Pathway”",
+              "when": {
+                "kind": "leaf",
+                "text": "the predicted value is at least 4"
+              }
+            },
+            {
+              "value": "“Low-Risk Pathway”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.PredictedSeverityValue": {
+        "table": "IndividualPredictions",
+        "field": "PredictedSeverityValue",
+        "kind": "formula",
+        "rule": "An individual prediction's predicted severity value is the same as its individual max severity score.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualMaxSeverityScore",
+            "label": "individual max severity score"
+          }
+        ],
+        "structure": null
+      },
+      "IndividualPredictions.SeverityTier": {
+        "table": "IndividualPredictions",
+        "field": "SeverityTier",
+        "kind": "formula",
+        "rule": "The individual prediction's severity tier is determined by the following priority:\n1. “Severe”, if the predicted severity value is greater than 7;\n2. “Moderate”, if the predicted severity value is at least 4;\n3. in all other cases, “Mild”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "PredictedSeverityValue",
+            "label": "predicted severity value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's severity tier is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“Severe”",
+              "when": {
+                "kind": "leaf",
+                "text": "the predicted severity value is greater than 7"
+              }
+            },
+            {
+              "value": "“Moderate”",
+              "when": {
+                "kind": "leaf",
+                "text": "the predicted severity value is at least 4"
+              }
+            },
+            {
+              "value": "“Mild”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.IsSeverityActionable": {
+        "table": "IndividualPredictions",
+        "field": "IsSeverityActionable",
+        "kind": "formula",
+        "rule": "An individual prediction is considered severity-actionable if all of the following hold: the individual has high severity phenotype flag is set; the rests on confirmed mechanism flag is set; and the spurious correlation flag is not set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualHasHighSeverityPhenotype",
+            "label": "individual has high severity phenotype"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "RestsOnConfirmedMechanism",
+            "label": "rests on confirmed mechanism"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "HasSpuriousCorrelationFlag",
+            "label": "has spurious correlation flag"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's is severity actionable is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the individual has high severity phenotype flag is set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the rests on confirmed mechanism flag is set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the spurious correlation flag is not set"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.SeverityDecidingFactor": {
+        "table": "IndividualPredictions",
+        "field": "SeverityDecidingFactor",
+        "kind": "formula",
+        "rule": "The individual prediction's severity deciding factor is determined by the following priority:\n1. “HighSeverityOnConfirmedMechanism”, if the severity actionable flag is set;\n2. “NotHighSeverity”, if the individual has high severity phenotype flag is not set;\n3. “NoValidatedMechanism”, if the rests on confirmed mechanism flag is not set;\n4. “SpuriousFlag”, if the spurious correlation flag is set;\n5. in all other cases, “Undetermined”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "IsSeverityActionable",
+            "label": "is severity actionable"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualHasHighSeverityPhenotype",
+            "label": "individual has high severity phenotype"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "RestsOnConfirmedMechanism",
+            "label": "rests on confirmed mechanism"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "HasSpuriousCorrelationFlag",
+            "label": "has spurious correlation flag"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's severity deciding factor is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“HighSeverityOnConfirmedMechanism”",
+              "when": {
+                "kind": "leaf",
+                "text": "the severity actionable flag is set"
+              }
+            },
+            {
+              "value": "“NotHighSeverity”",
+              "when": {
+                "kind": "leaf",
+                "text": "the individual has high severity phenotype flag is not set"
+              }
+            },
+            {
+              "value": "“NoValidatedMechanism”",
+              "when": {
                 "kind": "leaf",
                 "text": "the rests on confirmed mechanism flag is not set"
-              },
-              {
+              }
+            },
+            {
+              "value": "“SpuriousFlag”",
+              "when": {
+                "kind": "leaf",
+                "text": "the spurious correlation flag is set"
+              }
+            },
+            {
+              "value": "“Undetermined”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.IsTreatmentResponseActionable": {
+        "table": "IndividualPredictions",
+        "field": "IsTreatmentResponseActionable",
+        "kind": "formula",
+        "rule": "An individual prediction is considered treatment-response-actionable if the individual has predicted treatment response flag is set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualHasPredictedTreatmentResponse",
+            "label": "individual has predicted treatment response"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's is treatment response actionable is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "leaf",
+                "text": "the individual has predicted treatment response flag is set"
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.TreatmentResponseDecidingFactor": {
+        "table": "IndividualPredictions",
+        "field": "TreatmentResponseDecidingFactor",
+        "kind": "formula",
+        "rule": "The individual prediction's treatment response deciding factor is determined by the following priority:\n1. “EffectiveOnConfirmedMechanism”, if the treatment response actionable flag is set;\n2. “NoEffectiveTreatmentOnMechanism”, if the rests on confirmed mechanism flag is set;\n3. in all other cases, “NoConfirmedMechanism”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "IsTreatmentResponseActionable",
+            "label": "is treatment response actionable"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "RestsOnConfirmedMechanism",
+            "label": "rests on confirmed mechanism"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's treatment response deciding factor is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“EffectiveOnConfirmedMechanism”",
+              "when": {
+                "kind": "leaf",
+                "text": "the treatment response actionable flag is set"
+              }
+            },
+            {
+              "value": "“NoEffectiveTreatmentOnMechanism”",
+              "when": {
+                "kind": "leaf",
+                "text": "the rests on confirmed mechanism flag is set"
+              }
+            },
+            {
+              "value": "“NoConfirmedMechanism”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.IsClinicallyActionable": {
+        "table": "IndividualPredictions",
+        "field": "IsClinicallyActionable",
+        "kind": "formula",
+        "rule": "An individual prediction is considered clinically-actionable if all of the following hold: the high confidence prediction flag is set; the falsifiability backed flag is set; the ancestry transport safe flag is set; and the predicted value is greater than 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "IsHighConfidencePrediction",
+            "label": "is high confidence prediction"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IsFalsifiabilityBacked",
+            "label": "is falsifiability backed"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IsAncestryTransportSafe",
+            "label": "is ancestry transport safe"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "PredictedValue",
+            "label": "predicted value"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's is clinically actionable is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the high confidence prediction flag is set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the falsifiability backed flag is set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the ancestry transport safe flag is set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the predicted value is greater than 0"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.LifecycleStateKey": {
+        "table": "IndividualPredictions",
+        "field": "LifecycleStateKey",
+        "kind": "formula",
+        "rule": "The individual prediction's lifecycle state key is determined by the following priority:\n1. “Actionable”, if all of the following hold: the high confidence prediction flag is set; the falsifiability backed flag is set; the ancestry transport safe flag is set; and the predicted value is greater than 0;\n2. “NotActionable”, if at least one of the following holds: the rests on confirmed mechanism flag is not set or the falsifiability backed flag is not set;\n3. “NotActionable”, if the individual has cryptic relatedness flag is set;\n4. “NotActionable”, if the calibrated uncertainty is less than 0.7;\n5. “NotActionable”, if the ancestry transport safe flag is not set;\n6. in all other cases, “Actionable”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "IsHighConfidencePrediction",
+            "label": "is high confidence prediction"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IsFalsifiabilityBacked",
+            "label": "is falsifiability backed"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IsAncestryTransportSafe",
+            "label": "is ancestry transport safe"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "PredictedValue",
+            "label": "predicted value"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "RestsOnConfirmedMechanism",
+            "label": "rests on confirmed mechanism"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualHasCrypticRelatedness",
+            "label": "individual has cryptic relatedness"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "CalibratedUncertainty",
+            "label": "calibrated uncertainty"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's lifecycle state key is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“Actionable”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the high confidence prediction flag is set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the falsifiability backed flag is set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the ancestry transport safe flag is set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the predicted value is greater than 0"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“NotActionable”",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the rests on confirmed mechanism flag is not set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the falsifiability backed flag is not set"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“NotActionable”",
+              "when": {
                 "kind": "leaf",
                 "text": "the individual has cryptic relatedness flag is set"
               }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.IsFalsifiabilityBacked": {
-    "table": "IndividualPredictions",
-    "field": "IsFalsifiabilityBacked",
-    "kind": "formula",
-    "rule": "An individual prediction is considered falsifiability-backed if the individual confirmed node count is at least 1.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "IndividualConfirmedNodeCount",
-        "label": "individual confirmed node count"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's is falsifiability backed is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the individual confirmed node count is at least 1"
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.IsTransportableToAbsentAncestry": {
-    "table": "IndividualPredictions",
-    "field": "IsTransportableToAbsentAncestry",
-    "kind": "formula",
-    "rule": "An individual prediction is considered a transportable to absent ancestry if all of the following hold: the ancestry holdout flag is set; the individual cross ancestry node count is at least 1; and the spurious correlation flag is not set.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "IsAncestryHoldout",
-        "label": "is ancestry holdout"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "IndividualCrossAncestryNodeCount",
-        "label": "individual cross ancestry node count"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "HasSpuriousCorrelationFlag",
-        "label": "has spurious correlation flag"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's is transportable to absent ancestry is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
+            },
+            {
+              "value": "“NotActionable”",
+              "when": {
                 "kind": "leaf",
-                "text": "the ancestry holdout flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the individual cross ancestry node count is at least 1"
-              },
-              {
-                "kind": "leaf",
-                "text": "the spurious correlation flag is not set"
+                "text": "the calibrated uncertainty is less than 0.7"
               }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.IsAncestryTransportSafe": {
-    "table": "IndividualPredictions",
-    "field": "IsAncestryTransportSafe",
-    "kind": "formula",
-    "rule": "An individual prediction is considered an ancestry transport safe if the transportable to absent ancestry flag is set, or else the ancestry holdout flag is not set.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "IsAncestryHoldout",
-        "label": "is ancestry holdout"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "IsTransportableToAbsentAncestry",
-        "label": "is transportable to absent ancestry"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's is ancestry transport safe is determined by the following priority:",
-      "cases": [
-        {
-          "value": "the is transportable to absent ancestry",
-          "when": {
-            "kind": "leaf",
-            "text": "the ancestry holdout flag is set"
-          }
-        },
-        {
-          "value": "true",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.TransportGateStatus": {
-    "table": "IndividualPredictions",
-    "field": "TransportGateStatus",
-    "kind": "formula",
-    "rule": "The individual prediction's transport gate status is determined by the following priority:\n1. “NotApplicable”, if the ancestry holdout flag is not set;\n2. “PASS-tested”, if the transportable to absent ancestry flag is set;\n3. in all other cases, “FAIL”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "IsAncestryHoldout",
-        "label": "is ancestry holdout"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "IsTransportableToAbsentAncestry",
-        "label": "is transportable to absent ancestry"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's transport gate status is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“NotApplicable”",
-          "when": {
-            "kind": "leaf",
-            "text": "the ancestry holdout flag is not set"
-          }
-        },
-        {
-          "value": "“PASS-tested”",
-          "when": {
-            "kind": "leaf",
-            "text": "the transportable to absent ancestry flag is set"
-          }
-        },
-        {
-          "value": "“FAIL”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.IsHighConfidencePrediction": {
-    "table": "IndividualPredictions",
-    "field": "IsHighConfidencePrediction",
-    "kind": "formula",
-    "rule": "An individual prediction is considered a high confidence prediction if all of the following hold: the calibrated uncertainty is at least 0.7 and the spurious correlation flag is not set.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "CalibratedUncertainty",
-        "label": "calibrated uncertainty"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "HasSpuriousCorrelationFlag",
-        "label": "has spurious correlation flag"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's is high confidence prediction is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
+            },
+            {
+              "value": "“NotActionable”",
+              "when": {
                 "kind": "leaf",
-                "text": "the calibrated uncertainty is at least 0.7"
-              },
-              {
-                "kind": "leaf",
-                "text": "the spurious correlation flag is not set"
+                "text": "the ancestry transport safe flag is not set"
               }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
+            },
+            {
+              "value": "“Actionable”",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.PatientStratificationTier": {
-    "table": "IndividualPredictions",
-    "field": "PatientStratificationTier",
-    "kind": "formula",
-    "rule": "The individual prediction's patient stratification tier is determined by the following priority:\n1. “High-Risk Pathway”, if the predicted value is at least 7;\n2. “Moderate-Risk Pathway”, if the predicted value is at least 4;\n3. in all other cases, “Low-Risk Pathway”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "PredictedValue",
-        "label": "predicted value"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's patient stratification tier is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“High-Risk Pathway”",
-          "when": {
-            "kind": "leaf",
-            "text": "the predicted value is at least 7"
-          }
-        },
-        {
-          "value": "“Moderate-Risk Pathway”",
-          "when": {
-            "kind": "leaf",
-            "text": "the predicted value is at least 4"
-          }
-        },
-        {
-          "value": "“Low-Risk Pathway”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.PredictedSeverityValue": {
-    "table": "IndividualPredictions",
-    "field": "PredictedSeverityValue",
-    "kind": "formula",
-    "rule": "An individual prediction's predicted severity value is the same as its individual max severity score.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "IndividualMaxSeverityScore",
-        "label": "individual max severity score"
-      }
-    ],
-    "structure": null
-  },
-  "IndividualPredictions.SeverityTier": {
-    "table": "IndividualPredictions",
-    "field": "SeverityTier",
-    "kind": "formula",
-    "rule": "The individual prediction's severity tier is determined by the following priority:\n1. “Severe”, if the predicted severity value is greater than 7;\n2. “Moderate”, if the predicted severity value is at least 4;\n3. in all other cases, “Mild”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "PredictedSeverityValue",
-        "label": "predicted severity value"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's severity tier is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“Severe”",
-          "when": {
-            "kind": "leaf",
-            "text": "the predicted severity value is greater than 7"
-          }
-        },
-        {
-          "value": "“Moderate”",
-          "when": {
-            "kind": "leaf",
-            "text": "the predicted severity value is at least 4"
-          }
-        },
-        {
-          "value": "“Mild”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.IsSeverityActionable": {
-    "table": "IndividualPredictions",
-    "field": "IsSeverityActionable",
-    "kind": "formula",
-    "rule": "An individual prediction is considered severity-actionable if all of the following hold: the individual has high severity phenotype flag is set; the rests on confirmed mechanism flag is set; and the spurious correlation flag is not set.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "IndividualHasHighSeverityPhenotype",
-        "label": "individual has high severity phenotype"
       },
-      {
+      "IndividualPredictions.DecidingGate": {
         "table": "IndividualPredictions",
-        "field": "RestsOnConfirmedMechanism",
-        "label": "rests on confirmed mechanism"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "HasSpuriousCorrelationFlag",
-        "label": "has spurious correlation flag"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's is severity actionable is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
+        "field": "DecidingGate",
+        "kind": "formula",
+        "rule": "The individual prediction's deciding gate is determined by the following priority:\n1. “AllGatesPass”, if the clinically actionable flag is set;\n2. “NoValidatedMechanism”, if the rests on confirmed mechanism flag is not set;\n3. “CrypticRelatedness”, if the individual has cryptic relatedness flag is set;\n4. “Calibration”, if the calibrated uncertainty is less than 0.7;\n5. “AncestryTransport”, if the ancestry transport safe flag is not set;\n6. in all other cases, “Undetermined”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "IsClinicallyActionable",
+            "label": "is clinically actionable"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "RestsOnConfirmedMechanism",
+            "label": "rests on confirmed mechanism"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualHasCrypticRelatedness",
+            "label": "individual has cryptic relatedness"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "CalibratedUncertainty",
+            "label": "calibrated uncertainty"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IsAncestryTransportSafe",
+            "label": "is ancestry transport safe"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's deciding gate is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“AllGatesPass”",
+              "when": {
                 "kind": "leaf",
-                "text": "the individual has high severity phenotype flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the rests on confirmed mechanism flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the spurious correlation flag is not set"
+                "text": "the clinically actionable flag is set"
               }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.SeverityDecidingFactor": {
-    "table": "IndividualPredictions",
-    "field": "SeverityDecidingFactor",
-    "kind": "formula",
-    "rule": "The individual prediction's severity deciding factor is determined by the following priority:\n1. “HighSeverityOnConfirmedMechanism”, if the severity actionable flag is set;\n2. “NotHighSeverity”, if the individual has high severity phenotype flag is not set;\n3. “NoValidatedMechanism”, if the rests on confirmed mechanism flag is not set;\n4. “SpuriousFlag”, if the spurious correlation flag is set;\n5. in all other cases, “Undetermined”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "IsSeverityActionable",
-        "label": "is severity actionable"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "IndividualHasHighSeverityPhenotype",
-        "label": "individual has high severity phenotype"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "RestsOnConfirmedMechanism",
-        "label": "rests on confirmed mechanism"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "HasSpuriousCorrelationFlag",
-        "label": "has spurious correlation flag"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's severity deciding factor is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“HighSeverityOnConfirmedMechanism”",
-          "when": {
-            "kind": "leaf",
-            "text": "the severity actionable flag is set"
-          }
-        },
-        {
-          "value": "“NotHighSeverity”",
-          "when": {
-            "kind": "leaf",
-            "text": "the individual has high severity phenotype flag is not set"
-          }
-        },
-        {
-          "value": "“NoValidatedMechanism”",
-          "when": {
-            "kind": "leaf",
-            "text": "the rests on confirmed mechanism flag is not set"
-          }
-        },
-        {
-          "value": "“SpuriousFlag”",
-          "when": {
-            "kind": "leaf",
-            "text": "the spurious correlation flag is set"
-          }
-        },
-        {
-          "value": "“Undetermined”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.IsTreatmentResponseActionable": {
-    "table": "IndividualPredictions",
-    "field": "IsTreatmentResponseActionable",
-    "kind": "formula",
-    "rule": "An individual prediction is considered treatment-response-actionable if the individual has predicted treatment response flag is set.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "IndividualHasPredictedTreatmentResponse",
-        "label": "individual has predicted treatment response"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's is treatment response actionable is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the individual has predicted treatment response flag is set"
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.TreatmentResponseDecidingFactor": {
-    "table": "IndividualPredictions",
-    "field": "TreatmentResponseDecidingFactor",
-    "kind": "formula",
-    "rule": "The individual prediction's treatment response deciding factor is determined by the following priority:\n1. “EffectiveOnConfirmedMechanism”, if the treatment response actionable flag is set;\n2. “NoEffectiveTreatmentOnMechanism”, if the rests on confirmed mechanism flag is set;\n3. in all other cases, “NoConfirmedMechanism”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "IsTreatmentResponseActionable",
-        "label": "is treatment response actionable"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "RestsOnConfirmedMechanism",
-        "label": "rests on confirmed mechanism"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's treatment response deciding factor is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“EffectiveOnConfirmedMechanism”",
-          "when": {
-            "kind": "leaf",
-            "text": "the treatment response actionable flag is set"
-          }
-        },
-        {
-          "value": "“NoEffectiveTreatmentOnMechanism”",
-          "when": {
-            "kind": "leaf",
-            "text": "the rests on confirmed mechanism flag is set"
-          }
-        },
-        {
-          "value": "“NoConfirmedMechanism”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.IsClinicallyActionable": {
-    "table": "IndividualPredictions",
-    "field": "IsClinicallyActionable",
-    "kind": "formula",
-    "rule": "An individual prediction is considered clinically-actionable if all of the following hold: the high confidence prediction flag is set; the falsifiability backed flag is set; the ancestry transport safe flag is set; and the predicted value is greater than 0.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "IsHighConfidencePrediction",
-        "label": "is high confidence prediction"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "IsFalsifiabilityBacked",
-        "label": "is falsifiability backed"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "IsAncestryTransportSafe",
-        "label": "is ancestry transport safe"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "PredictedValue",
-        "label": "predicted value"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's is clinically actionable is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the high confidence prediction flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the falsifiability backed flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the ancestry transport safe flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the predicted value is greater than 0"
-              }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.LifecycleStateKey": {
-    "table": "IndividualPredictions",
-    "field": "LifecycleStateKey",
-    "kind": "formula",
-    "rule": "The individual prediction's lifecycle state key is determined by the following priority:\n1. “Actionable”, if all of the following hold: the high confidence prediction flag is set; the falsifiability backed flag is set; the ancestry transport safe flag is set; and the predicted value is greater than 0;\n2. “NotActionable”, if at least one of the following holds: the rests on confirmed mechanism flag is not set or the falsifiability backed flag is not set;\n3. “NotActionable”, if the individual has cryptic relatedness flag is set;\n4. “NotActionable”, if the calibrated uncertainty is less than 0.7;\n5. “NotActionable”, if the ancestry transport safe flag is not set;\n6. in all other cases, “Actionable”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "IsHighConfidencePrediction",
-        "label": "is high confidence prediction"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "IsFalsifiabilityBacked",
-        "label": "is falsifiability backed"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "IsAncestryTransportSafe",
-        "label": "is ancestry transport safe"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "PredictedValue",
-        "label": "predicted value"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "RestsOnConfirmedMechanism",
-        "label": "rests on confirmed mechanism"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "IndividualHasCrypticRelatedness",
-        "label": "individual has cryptic relatedness"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "CalibratedUncertainty",
-        "label": "calibrated uncertainty"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's lifecycle state key is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“Actionable”",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the high confidence prediction flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the falsifiability backed flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the ancestry transport safe flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the predicted value is greater than 0"
-              }
-            ]
-          }
-        },
-        {
-          "value": "“NotActionable”",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
+            },
+            {
+              "value": "“NoValidatedMechanism”",
+              "when": {
                 "kind": "leaf",
                 "text": "the rests on confirmed mechanism flag is not set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the falsifiability backed flag is not set"
               }
-            ]
-          }
-        },
-        {
-          "value": "“NotActionable”",
-          "when": {
-            "kind": "leaf",
-            "text": "the individual has cryptic relatedness flag is set"
-          }
-        },
-        {
-          "value": "“NotActionable”",
-          "when": {
-            "kind": "leaf",
-            "text": "the calibrated uncertainty is less than 0.7"
-          }
-        },
-        {
-          "value": "“NotActionable”",
-          "when": {
-            "kind": "leaf",
-            "text": "the ancestry transport safe flag is not set"
-          }
-        },
-        {
-          "value": "“Actionable”",
-          "when": null
+            },
+            {
+              "value": "“CrypticRelatedness”",
+              "when": {
+                "kind": "leaf",
+                "text": "the individual has cryptic relatedness flag is set"
+              }
+            },
+            {
+              "value": "“Calibration”",
+              "when": {
+                "kind": "leaf",
+                "text": "the calibrated uncertainty is less than 0.7"
+              }
+            },
+            {
+              "value": "“AncestryTransport”",
+              "when": {
+                "kind": "leaf",
+                "text": "the ancestry transport safe flag is not set"
+              }
+            },
+            {
+              "value": "“Undetermined”",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.DecidingGate": {
-    "table": "IndividualPredictions",
-    "field": "DecidingGate",
-    "kind": "formula",
-    "rule": "The individual prediction's deciding gate is determined by the following priority:\n1. “AllGatesPass”, if the clinically actionable flag is set;\n2. “NoValidatedMechanism”, if the rests on confirmed mechanism flag is not set;\n3. “CrypticRelatedness”, if the individual has cryptic relatedness flag is set;\n4. “Calibration”, if the calibrated uncertainty is less than 0.7;\n5. “AncestryTransport”, if the ancestry transport safe flag is not set;\n6. in all other cases, “Undetermined”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "IsClinicallyActionable",
-        "label": "is clinically actionable"
       },
-      {
-        "table": "IndividualPredictions",
-        "field": "RestsOnConfirmedMechanism",
-        "label": "rests on confirmed mechanism"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "IndividualHasCrypticRelatedness",
-        "label": "individual has cryptic relatedness"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "CalibratedUncertainty",
-        "label": "calibrated uncertainty"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "IsAncestryTransportSafe",
-        "label": "is ancestry transport safe"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's deciding gate is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“AllGatesPass”",
-          "when": {
-            "kind": "leaf",
-            "text": "the clinically actionable flag is set"
-          }
-        },
-        {
-          "value": "“NoValidatedMechanism”",
-          "when": {
-            "kind": "leaf",
-            "text": "the rests on confirmed mechanism flag is not set"
-          }
-        },
-        {
-          "value": "“CrypticRelatedness”",
-          "when": {
-            "kind": "leaf",
-            "text": "the individual has cryptic relatedness flag is set"
-          }
-        },
-        {
-          "value": "“Calibration”",
-          "when": {
-            "kind": "leaf",
-            "text": "the calibrated uncertainty is less than 0.7"
-          }
-        },
-        {
-          "value": "“AncestryTransport”",
-          "when": {
-            "kind": "leaf",
-            "text": "the ancestry transport safe flag is not set"
-          }
-        },
-        {
-          "value": "“Undetermined”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.IndividualTargetPathway": {
-    "table": "IndividualPredictions",
-    "field": "IndividualTargetPathway",
-    "kind": "lookup",
-    "rule": "An individual prediction's individual target pathway — taken from the linked individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "TargetPathway",
-        "label": "target pathway"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "IndividualPredictions.IndividualProgressionStateKey": {
-    "table": "IndividualPredictions",
-    "field": "IndividualProgressionStateKey",
-    "kind": "lookup",
-    "rule": "An individual prediction's individual progression state key is the nephritis progression state key of the individual prediction's individual.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "NephritisProgressionStateKey",
-        "label": "nephritis progression state key"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "IndividualPredictions.IndividualIsDiseaseProgressing": {
-    "table": "IndividualPredictions",
-    "field": "IndividualIsDiseaseProgressing",
-    "kind": "lookup",
-    "rule": "An individual prediction's individual is disease progressing when the linked individual is disease progressing.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Individuals",
-        "field": "IsDiseaseProgressing",
-        "label": "is disease progressing"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "Individual",
-        "label": "individual"
-      },
-      {
-        "table": "Individuals",
-        "field": "IndividualId",
-        "label": "individual ID"
-      }
-    ],
-    "structure": null
-  },
-  "IndividualPredictions.RecommendedTreatmentLine": {
-    "table": "IndividualPredictions",
-    "field": "RecommendedTreatmentLine",
-    "kind": "formula",
-    "rule": "The individual prediction's recommended treatment line is determined by the following priority:\n1. “No targeted line — mechanism unconfirmed”, if the rests on confirmed mechanism flag is not set;\n2. “Mycophenolate (induction)”, if at least one of the following holds: the individual progression state key is “RenalFlareRisk” or the individual progression state key is “BiopsyIndicated”;\n3. “Anifrolumab”, if the individual target pathway is “type-I-IFN”;\n4. “Belimumab”, if the individual target pathway is “B-cell/autoantibody”;\n5. “Secukinumab”, if the individual target pathway is “IL-17/23”;\n6. in all other cases, “Standard-of-care (no mechanism-matched targeted line)”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "RestsOnConfirmedMechanism",
-        "label": "rests on confirmed mechanism"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "IndividualProgressionStateKey",
-        "label": "individual progression state key"
-      },
-      {
+      "IndividualPredictions.IndividualTargetPathway": {
         "table": "IndividualPredictions",
         "field": "IndividualTargetPathway",
-        "label": "individual target pathway"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's recommended treatment line is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“No targeted line — mechanism unconfirmed”",
-          "when": {
-            "kind": "leaf",
-            "text": "the rests on confirmed mechanism flag is not set"
+        "kind": "lookup",
+        "rule": "An individual prediction's individual target pathway — taken from the linked individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "TargetPathway",
+            "label": "target pathway"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
           }
-        },
-        {
-          "value": "“Mycophenolate (induction)”",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the individual progression state key is “RenalFlareRisk”"
-              },
-              {
-                "kind": "leaf",
-                "text": "the individual progression state key is “BiopsyIndicated”"
-              }
-            ]
-          }
-        },
-        {
-          "value": "“Anifrolumab”",
-          "when": {
-            "kind": "leaf",
-            "text": "the individual target pathway is “type-I-IFN”"
-          }
-        },
-        {
-          "value": "“Belimumab”",
-          "when": {
-            "kind": "leaf",
-            "text": "the individual target pathway is “B-cell/autoantibody”"
-          }
-        },
-        {
-          "value": "“Secukinumab”",
-          "when": {
-            "kind": "leaf",
-            "text": "the individual target pathway is “IL-17/23”"
-          }
-        },
-        {
-          "value": "“Standard-of-care (no mechanism-matched targeted line)”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.TreatmentLineDecidingFactor": {
-    "table": "IndividualPredictions",
-    "field": "TreatmentLineDecidingFactor",
-    "kind": "formula",
-    "rule": "The individual prediction's treatment line deciding factor is determined by the following priority:\n1. “MechanismUnconfirmed”, if the rests on confirmed mechanism flag is not set;\n2. “ActiveNephritis-Induction”, if at least one of the following holds: the individual progression state key is “RenalFlareRisk” or the individual progression state key is “BiopsyIndicated”;\n3. “IFNSignature-Anifrolumab”, if the individual target pathway is “type-I-IFN”;\n4. “AutoantibodyDriven-Belimumab”, if the individual target pathway is “B-cell/autoantibody”;\n5. “IL17Axis-Secukinumab”, if the individual target pathway is “IL-17/23”;\n6. in all other cases, “NoMechanismMatch”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "RestsOnConfirmedMechanism",
-        "label": "rests on confirmed mechanism"
+        ],
+        "structure": null
       },
-      {
+      "IndividualPredictions.IndividualProgressionStateKey": {
         "table": "IndividualPredictions",
         "field": "IndividualProgressionStateKey",
-        "label": "individual progression state key"
+        "kind": "lookup",
+        "rule": "An individual prediction's individual progression state key is the nephritis progression state key of the individual prediction's individual.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "NephritisProgressionStateKey",
+            "label": "nephritis progression state key"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "IndividualPredictions",
-        "field": "IndividualTargetPathway",
-        "label": "individual target pathway"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's treatment line deciding factor is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“MechanismUnconfirmed”",
-          "when": {
-            "kind": "leaf",
-            "text": "the rests on confirmed mechanism flag is not set"
-          }
-        },
-        {
-          "value": "“ActiveNephritis-Induction”",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the individual progression state key is “RenalFlareRisk”"
-              },
-              {
-                "kind": "leaf",
-                "text": "the individual progression state key is “BiopsyIndicated”"
-              }
-            ]
-          }
-        },
-        {
-          "value": "“IFNSignature-Anifrolumab”",
-          "when": {
-            "kind": "leaf",
-            "text": "the individual target pathway is “type-I-IFN”"
-          }
-        },
-        {
-          "value": "“AutoantibodyDriven-Belimumab”",
-          "when": {
-            "kind": "leaf",
-            "text": "the individual target pathway is “B-cell/autoantibody”"
-          }
-        },
-        {
-          "value": "“IL17Axis-Secukinumab”",
-          "when": {
-            "kind": "leaf",
-            "text": "the individual target pathway is “IL-17/23”"
-          }
-        },
-        {
-          "value": "“NoMechanismMatch”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "IndividualPredictions.ProgressionVsActionabilityDisagree": {
-    "table": "IndividualPredictions",
-    "field": "ProgressionVsActionabilityDisagree",
-    "kind": "formula",
-    "rule": "An individual prediction is flagged progression vs actionability disagree if all of the following hold: the individual is disease progressing flag is set and the clinically actionable flag is not set.",
-    "mechanical": false,
-    "refs": [
-      {
+      "IndividualPredictions.IndividualIsDiseaseProgressing": {
         "table": "IndividualPredictions",
         "field": "IndividualIsDiseaseProgressing",
-        "label": "individual is disease progressing"
-      },
-      {
-        "table": "IndividualPredictions",
-        "field": "IsClinicallyActionable",
-        "label": "is clinically actionable"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The individual prediction's progression vs actionability disagree is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the individual is disease progressing flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the clinically actionable flag is not set"
-              }
-            ]
+        "kind": "lookup",
+        "rule": "An individual prediction's individual is disease progressing when the linked individual is disease progressing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Individuals",
+            "field": "IsDiseaseProgressing",
+            "label": "is disease progressing"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "Individual",
+            "label": "individual"
+          },
+          {
+            "table": "Individuals",
+            "field": "IndividualId",
+            "label": "individual ID"
           }
-        },
-        {
-          "value": "false",
-          "when": null
+        ],
+        "structure": null
+      },
+      "IndividualPredictions.RecommendedTreatmentLine": {
+        "table": "IndividualPredictions",
+        "field": "RecommendedTreatmentLine",
+        "kind": "formula",
+        "rule": "The individual prediction's recommended treatment line is determined by the following priority:\n1. “No targeted line — mechanism unconfirmed”, if the rests on confirmed mechanism flag is not set;\n2. “Mycophenolate (induction)”, if at least one of the following holds: the individual progression state key is “RenalFlareRisk” or the individual progression state key is “BiopsyIndicated”;\n3. “Anifrolumab”, if the individual target pathway is “type-I-IFN”;\n4. “Belimumab”, if the individual target pathway is “B-cell/autoantibody”;\n5. “Secukinumab”, if the individual target pathway is “IL-17/23”;\n6. in all other cases, “Standard-of-care (no mechanism-matched targeted line)”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "RestsOnConfirmedMechanism",
+            "label": "rests on confirmed mechanism"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualProgressionStateKey",
+            "label": "individual progression state key"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualTargetPathway",
+            "label": "individual target pathway"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's recommended treatment line is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“No targeted line — mechanism unconfirmed”",
+              "when": {
+                "kind": "leaf",
+                "text": "the rests on confirmed mechanism flag is not set"
+              }
+            },
+            {
+              "value": "“Mycophenolate (induction)”",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the individual progression state key is “RenalFlareRisk”"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the individual progression state key is “BiopsyIndicated”"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“Anifrolumab”",
+              "when": {
+                "kind": "leaf",
+                "text": "the individual target pathway is “type-I-IFN”"
+              }
+            },
+            {
+              "value": "“Belimumab”",
+              "when": {
+                "kind": "leaf",
+                "text": "the individual target pathway is “B-cell/autoantibody”"
+              }
+            },
+            {
+              "value": "“Secukinumab”",
+              "when": {
+                "kind": "leaf",
+                "text": "the individual target pathway is “IL-17/23”"
+              }
+            },
+            {
+              "value": "“Standard-of-care (no mechanism-matched targeted line)”",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "CalibrationBins.Name": {
-    "table": "CalibrationBins",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A calibration bin's name is the same as its bin label.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CalibrationBins",
-        "field": "BinLabel",
-        "label": "bin label"
-      }
-    ],
-    "structure": null
-  },
-  "CalibrationBins.ParentPath": {
-    "table": "CalibrationBins",
-    "field": "ParentPath",
-    "kind": "lookup",
-    "rule": "A calibration bin's parent path is the relative path of the calibration bin's individual prediction.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "IndividualPredictions",
-        "field": "RelativePath",
-        "label": "relative path"
       },
-      {
-        "table": "CalibrationBins",
-        "field": "IndividualPrediction",
-        "label": "individual prediction"
-      },
-      {
+      "IndividualPredictions.TreatmentLineDecidingFactor": {
         "table": "IndividualPredictions",
-        "field": "IndividualPredictionId",
-        "label": "individual prediction ID"
-      }
-    ],
-    "structure": null
-  },
-  "CalibrationBins.RelativePath": {
-    "table": "CalibrationBins",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A calibration bin's relative path is computed as the parent path, followed by “/bins/”, followed by the calibration bin ID.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "TreatmentLineDecidingFactor",
+        "kind": "formula",
+        "rule": "The individual prediction's treatment line deciding factor is determined by the following priority:\n1. “MechanismUnconfirmed”, if the rests on confirmed mechanism flag is not set;\n2. “ActiveNephritis-Induction”, if at least one of the following holds: the individual progression state key is “RenalFlareRisk” or the individual progression state key is “BiopsyIndicated”;\n3. “IFNSignature-Anifrolumab”, if the individual target pathway is “type-I-IFN”;\n4. “AutoantibodyDriven-Belimumab”, if the individual target pathway is “B-cell/autoantibody”;\n5. “IL17Axis-Secukinumab”, if the individual target pathway is “IL-17/23”;\n6. in all other cases, “NoMechanismMatch”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "RestsOnConfirmedMechanism",
+            "label": "rests on confirmed mechanism"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualProgressionStateKey",
+            "label": "individual progression state key"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualTargetPathway",
+            "label": "individual target pathway"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's treatment line deciding factor is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“MechanismUnconfirmed”",
+              "when": {
+                "kind": "leaf",
+                "text": "the rests on confirmed mechanism flag is not set"
+              }
+            },
+            {
+              "value": "“ActiveNephritis-Induction”",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the individual progression state key is “RenalFlareRisk”"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the individual progression state key is “BiopsyIndicated”"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“IFNSignature-Anifrolumab”",
+              "when": {
+                "kind": "leaf",
+                "text": "the individual target pathway is “type-I-IFN”"
+              }
+            },
+            {
+              "value": "“AutoantibodyDriven-Belimumab”",
+              "when": {
+                "kind": "leaf",
+                "text": "the individual target pathway is “B-cell/autoantibody”"
+              }
+            },
+            {
+              "value": "“IL17Axis-Secukinumab”",
+              "when": {
+                "kind": "leaf",
+                "text": "the individual target pathway is “IL-17/23”"
+              }
+            },
+            {
+              "value": "“NoMechanismMatch”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "IndividualPredictions.ProgressionVsActionabilityDisagree": {
+        "table": "IndividualPredictions",
+        "field": "ProgressionVsActionabilityDisagree",
+        "kind": "formula",
+        "rule": "An individual prediction is flagged progression vs actionability disagree if all of the following hold: the individual is disease progressing flag is set and the clinically actionable flag is not set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualIsDiseaseProgressing",
+            "label": "individual is disease progressing"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IsClinicallyActionable",
+            "label": "is clinically actionable"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The individual prediction's progression vs actionability disagree is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the individual is disease progressing flag is set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the clinically actionable flag is not set"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "CalibrationBins.Name": {
+        "table": "CalibrationBins",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A calibration bin's name is the same as its bin label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CalibrationBins",
+            "field": "BinLabel",
+            "label": "bin label"
+          }
+        ],
+        "structure": null
+      },
+      "CalibrationBins.ParentPath": {
         "table": "CalibrationBins",
         "field": "ParentPath",
-        "label": "parent path"
-      },
-      {
-        "table": "CalibrationBins",
-        "field": "CalibrationBinId",
-        "label": "calibration bin ID"
-      }
-    ],
-    "structure": null
-  },
-  "CalibrationBins.BinAbsError": {
-    "table": "CalibrationBins",
-    "field": "BinAbsError",
-    "kind": "formula",
-    "rule": "The calibration bin's bin abs error is determined by the following priority:\n1. the predicted probability band minus the observed event rate, if the predicted probability band is at least the observed event rate;\n2. in all other cases, the observed event rate minus the predicted probability band.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CalibrationBins",
-        "field": "PredictedProbabilityBand",
-        "label": "predicted probability band"
-      },
-      {
-        "table": "CalibrationBins",
-        "field": "ObservedEventRate",
-        "label": "observed event rate"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The calibration bin's bin abs error is determined by the following priority:",
-      "cases": [
-        {
-          "value": "the predicted probability band minus the observed event rate",
-          "when": {
-            "kind": "leaf",
-            "text": "the predicted probability band is at least the observed event rate"
+        "kind": "lookup",
+        "rule": "A calibration bin's parent path is the relative path of the calibration bin's individual prediction.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "IndividualPredictions",
+            "field": "RelativePath",
+            "label": "relative path"
+          },
+          {
+            "table": "CalibrationBins",
+            "field": "IndividualPrediction",
+            "label": "individual prediction"
+          },
+          {
+            "table": "IndividualPredictions",
+            "field": "IndividualPredictionId",
+            "label": "individual prediction ID"
           }
-        },
-        {
-          "value": "the observed event rate minus the predicted probability band",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "CalibrationBins.IsWellCalibratedBin": {
-    "table": "CalibrationBins",
-    "field": "IsWellCalibratedBin",
-    "kind": "formula",
-    "rule": "A calibration bin is considered a well calibrated bin if all of the following hold: the coverage count is at least 20 and the bin abs error is at most 0.1.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CalibrationBins",
-        "field": "CoverageCount",
-        "label": "coverage count"
+        ],
+        "structure": null
       },
-      {
+      "CalibrationBins.RelativePath": {
+        "table": "CalibrationBins",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A calibration bin's relative path is computed as the parent path, followed by “/bins/”, followed by the calibration bin ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CalibrationBins",
+            "field": "ParentPath",
+            "label": "parent path"
+          },
+          {
+            "table": "CalibrationBins",
+            "field": "CalibrationBinId",
+            "label": "calibration bin ID"
+          }
+        ],
+        "structure": null
+      },
+      "CalibrationBins.BinAbsError": {
         "table": "CalibrationBins",
         "field": "BinAbsError",
-        "label": "bin abs error"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The calibration bin's is well calibrated bin is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the coverage count is at least 20"
-              },
-              {
-                "kind": "leaf",
-                "text": "the bin abs error is at most 0.1"
-              }
-            ]
+        "kind": "formula",
+        "rule": "The calibration bin's bin abs error is determined by the following priority:\n1. the predicted probability band minus the observed event rate, if the predicted probability band is at least the observed event rate;\n2. in all other cases, the observed event rate minus the predicted probability band.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CalibrationBins",
+            "field": "PredictedProbabilityBand",
+            "label": "predicted probability band"
+          },
+          {
+            "table": "CalibrationBins",
+            "field": "ObservedEventRate",
+            "label": "observed event rate"
           }
-        },
-        {
-          "value": "false",
-          "when": null
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The calibration bin's bin abs error is determined by the following priority:",
+          "cases": [
+            {
+              "value": "the predicted probability band minus the observed event rate",
+              "when": {
+                "kind": "leaf",
+                "text": "the predicted probability band is at least the observed event rate"
+              }
+            },
+            {
+              "value": "the observed event rate minus the predicted probability band",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "InterventionTargets.Name": {
-    "table": "InterventionTargets",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "An intervention target's name is the same as its target label.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "InterventionTargets",
-        "field": "TargetLabel",
-        "label": "target label"
-      }
-    ],
-    "structure": null
-  },
-  "InterventionTargets.ParentPath": {
-    "table": "InterventionTargets",
-    "field": "ParentPath",
-    "kind": "lookup",
-    "rule": "An intervention target's parent path is the relative path of the intervention target's causal mechanism.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "RelativePath",
-        "label": "relative path"
       },
-      {
-        "table": "InterventionTargets",
-        "field": "CausalMechanism",
-        "label": "causal mechanism"
+      "CalibrationBins.IsWellCalibratedBin": {
+        "table": "CalibrationBins",
+        "field": "IsWellCalibratedBin",
+        "kind": "formula",
+        "rule": "A calibration bin is considered a well calibrated bin if all of the following hold: the coverage count is at least 20 and the bin abs error is at most 0.1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CalibrationBins",
+            "field": "CoverageCount",
+            "label": "coverage count"
+          },
+          {
+            "table": "CalibrationBins",
+            "field": "BinAbsError",
+            "label": "bin abs error"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The calibration bin's is well calibrated bin is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the coverage count is at least 20"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the bin abs error is at most 0.1"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
       },
-      {
-        "table": "CausalMechanisms",
-        "field": "CausalMechanismId",
-        "label": "causal mechanism ID"
-      }
-    ],
-    "structure": null
-  },
-  "InterventionTargets.RelativePath": {
-    "table": "InterventionTargets",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "An intervention target's relative path is computed as the parent path, followed by “/targets/”, followed by the intervention target ID.",
-    "mechanical": false,
-    "refs": [
-      {
+      "InterventionTargets.Name": {
+        "table": "InterventionTargets",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "An intervention target's name is the same as its target label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InterventionTargets",
+            "field": "TargetLabel",
+            "label": "target label"
+          }
+        ],
+        "structure": null
+      },
+      "InterventionTargets.ParentPath": {
         "table": "InterventionTargets",
         "field": "ParentPath",
-        "label": "parent path"
-      },
-      {
-        "table": "InterventionTargets",
-        "field": "InterventionTargetId",
-        "label": "intervention target ID"
-      }
-    ],
-    "structure": null
-  },
-  "InterventionTargets.CausalMechanismLabel": {
-    "table": "InterventionTargets",
-    "field": "CausalMechanismLabel",
-    "kind": "formula",
-    "rule": "An intervention target's causal mechanism label — taken from the linked causal mechanism.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "CausalMechanisms",
-        "field": "MechanismLabel",
-        "label": "mechanism label"
-      },
-      {
-        "table": "InterventionTargets",
-        "field": "CausalMechanism",
-        "label": "causal mechanism"
-      },
-      {
-        "table": "CausalMechanisms",
-        "field": "CausalMechanismId",
-        "label": "causal mechanism ID"
-      }
-    ],
-    "structure": null
-  },
-  "InterventionTargets.IsGeneBasedTherapy": {
-    "table": "InterventionTargets",
-    "field": "IsGeneBasedTherapy",
-    "kind": "formula",
-    "rule": "An intervention target is considered a gene based therapy if the therapy class is “Gene-based”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "InterventionTargets",
-        "field": "TherapyClass",
-        "label": "therapy class"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The intervention target's is gene based therapy is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the therapy class is “Gene-based”"
+        "kind": "lookup",
+        "rule": "An intervention target's parent path is the relative path of the intervention target's causal mechanism.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "RelativePath",
+            "label": "relative path"
+          },
+          {
+            "table": "InterventionTargets",
+            "field": "CausalMechanism",
+            "label": "causal mechanism"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CausalMechanismId",
+            "label": "causal mechanism ID"
           }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "InterventionTargets.IsCellBasedTherapy": {
-    "table": "InterventionTargets",
-    "field": "IsCellBasedTherapy",
-    "kind": "formula",
-    "rule": "An intervention target is considered a cell based therapy if the therapy class is “Cell-based”.",
-    "mechanical": false,
-    "refs": [
-      {
+        ],
+        "structure": null
+      },
+      "InterventionTargets.RelativePath": {
         "table": "InterventionTargets",
-        "field": "TherapyClass",
-        "label": "therapy class"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The intervention target's is cell based therapy is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the therapy class is “Cell-based”"
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "An intervention target's relative path is computed as the parent path, followed by “/targets/”, followed by the intervention target ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InterventionTargets",
+            "field": "ParentPath",
+            "label": "parent path"
+          },
+          {
+            "table": "InterventionTargets",
+            "field": "InterventionTargetId",
+            "label": "intervention target ID"
           }
-        },
-        {
-          "value": "false",
-          "when": null
+        ],
+        "structure": null
+      },
+      "InterventionTargets.CausalMechanismLabel": {
+        "table": "InterventionTargets",
+        "field": "CausalMechanismLabel",
+        "kind": "formula",
+        "rule": "An intervention target's causal mechanism label — taken from the linked causal mechanism.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "CausalMechanisms",
+            "field": "MechanismLabel",
+            "label": "mechanism label"
+          },
+          {
+            "table": "InterventionTargets",
+            "field": "CausalMechanism",
+            "label": "causal mechanism"
+          },
+          {
+            "table": "CausalMechanisms",
+            "field": "CausalMechanismId",
+            "label": "causal mechanism ID"
+          }
+        ],
+        "structure": null
+      },
+      "InterventionTargets.IsGeneBasedTherapy": {
+        "table": "InterventionTargets",
+        "field": "IsGeneBasedTherapy",
+        "kind": "formula",
+        "rule": "An intervention target is considered gene-based-therapy if the therapy class is “Gene-based”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InterventionTargets",
+            "field": "TherapyClass",
+            "label": "therapy class"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The intervention target's is gene based therapy is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "leaf",
+                "text": "the therapy class is “Gene-based”"
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "Axioms.Name": {
-    "table": "Axioms",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "An axiom's name is the same as its statement.",
-    "mechanical": false,
-    "refs": [
-      {
+      },
+      "InterventionTargets.IsCellBasedTherapy": {
+        "table": "InterventionTargets",
+        "field": "IsCellBasedTherapy",
+        "kind": "formula",
+        "rule": "An intervention target is considered cell-based-therapy if the therapy class is “Cell-based”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InterventionTargets",
+            "field": "TherapyClass",
+            "label": "therapy class"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The intervention target's is cell based therapy is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "leaf",
+                "text": "the therapy class is “Cell-based”"
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "Axioms.Name": {
         "table": "Axioms",
-        "field": "Statement",
-        "label": "statement"
-      }
-    ],
-    "structure": null
-  },
-  "Axioms.RelativePath": {
-    "table": "Axioms",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "An axiom's relative path is computed as “/admin/axioms/”, followed by the axiom ID.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "An axiom's name is the same as its statement.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Axioms",
+            "field": "Statement",
+            "label": "statement"
+          }
+        ],
+        "structure": null
+      },
+      "Axioms.RelativePath": {
         "table": "Axioms",
-        "field": "AxiomId",
-        "label": "axiom ID"
-      }
-    ],
-    "structure": null
-  },
-  "TestsForSuccess.Name": {
-    "table": "TestsForSuccess",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A tests for success's name is the same as its claim.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "An axiom's relative path is computed as “/admin/axioms/”, followed by the axiom ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Axioms",
+            "field": "AxiomId",
+            "label": "axiom ID"
+          }
+        ],
+        "structure": null
+      },
+      "TestsForSuccess.Name": {
         "table": "TestsForSuccess",
-        "field": "Claim",
-        "label": "claim"
-      }
-    ],
-    "structure": null
-  },
-  "TestsForSuccess.RelativePath": {
-    "table": "TestsForSuccess",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A tests for success's relative path is computed as “/admin/tests-for-success/”, followed by the test for success ID.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A tests for success's name is the same as its claim.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TestsForSuccess",
+            "field": "Claim",
+            "label": "claim"
+          }
+        ],
+        "structure": null
+      },
+      "TestsForSuccess.RelativePath": {
         "table": "TestsForSuccess",
-        "field": "TestForSuccessId",
-        "label": "test for success ID"
-      }
-    ],
-    "structure": null
-  },
-  "Features.Name": {
-    "table": "Features",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A feature's name is the same as its title.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Features",
-        "field": "Title",
-        "label": "title"
-      }
-    ],
-    "structure": null
-  },
-  "Features.RelativePath": {
-    "table": "Features",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A feature's relative path is computed as “/admin/features/”, followed by the feature ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Features",
-        "field": "FeatureId",
-        "label": "feature ID"
-      }
-    ],
-    "structure": null
-  },
-  "Features.MetaLine": {
-    "table": "Features",
-    "field": "MetaLine",
-    "kind": "formula",
-    "rule": "A feature's meta line is computed as “**Category:** ”, followed by the category, followed by “ - **Priority:** ”, followed by the priority, followed by “ - **Challenge refs:** ”, followed by the ref count.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Features",
-        "field": "Category",
-        "label": "category"
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A tests for success's relative path is computed as “/admin/tests-for-success/”, followed by the test for success ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TestsForSuccess",
+            "field": "TestForSuccessId",
+            "label": "test for success ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "Features.Name": {
         "table": "Features",
-        "field": "Priority",
-        "label": "priority"
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A feature's name is the same as its title.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Features",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null
       },
-      {
+      "Features.RelativePath": {
         "table": "Features",
-        "field": "RefCount",
-        "label": "ref count"
-      }
-    ],
-    "structure": null
-  },
-  "InferenceKinds.Name": {
-    "table": "InferenceKinds",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "An inference kind's name is the same as its title.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A feature's relative path is computed as “/admin/features/”, followed by the feature ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Features",
+            "field": "FeatureId",
+            "label": "feature ID"
+          }
+        ],
+        "structure": null
+      },
+      "Features.MetaLine": {
+        "table": "Features",
+        "field": "MetaLine",
+        "kind": "formula",
+        "rule": "A feature's meta line is computed as “**Category:** ”, followed by the category, followed by “ - **Priority:** ”, followed by the priority, followed by “ - **Challenge refs:** ”, followed by the ref count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Features",
+            "field": "Category",
+            "label": "category"
+          },
+          {
+            "table": "Features",
+            "field": "Priority",
+            "label": "priority"
+          },
+          {
+            "table": "Features",
+            "field": "RefCount",
+            "label": "ref count"
+          }
+        ],
+        "structure": null
+      },
+      "InferenceKinds.Name": {
         "table": "InferenceKinds",
-        "field": "Title",
-        "label": "title"
-      }
-    ],
-    "structure": null
-  },
-  "InferenceKinds.RelativePath": {
-    "table": "InferenceKinds",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "An inference kind's relative path is computed as “/admin/inference-kinds/”, followed by the inference kind ID.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "An inference kind's name is the same as its title.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InferenceKinds",
+            "field": "Title",
+            "label": "title"
+          }
+        ],
+        "structure": null
+      },
+      "InferenceKinds.RelativePath": {
         "table": "InferenceKinds",
-        "field": "InferenceKindId",
-        "label": "inference kind ID"
-      }
-    ],
-    "structure": null
-  },
-  "OpenQuestions.Name": {
-    "table": "OpenQuestions",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "An open question's name is the same as its question.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "An inference kind's relative path is computed as “/admin/inference-kinds/”, followed by the inference kind ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "InferenceKinds",
+            "field": "InferenceKindId",
+            "label": "inference kind ID"
+          }
+        ],
+        "structure": null
+      },
+      "OpenQuestions.Name": {
         "table": "OpenQuestions",
-        "field": "Question",
-        "label": "question"
-      }
-    ],
-    "structure": null
-  },
-  "OpenQuestions.RelativePath": {
-    "table": "OpenQuestions",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "An open question's relative path is computed as “/admin/open-questions/”, followed by the open question ID.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "An open question's name is the same as its question.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OpenQuestions",
+            "field": "Question",
+            "label": "question"
+          }
+        ],
+        "structure": null
+      },
+      "OpenQuestions.RelativePath": {
         "table": "OpenQuestions",
-        "field": "OpenQuestionId",
-        "label": "open question ID"
-      }
-    ],
-    "structure": null
-  },
-  "NonGoals.Name": {
-    "table": "NonGoals",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A non goal's name is the same as its statement.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "An open question's relative path is computed as “/admin/open-questions/”, followed by the open question ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "OpenQuestions",
+            "field": "OpenQuestionId",
+            "label": "open question ID"
+          }
+        ],
+        "structure": null
+      },
+      "NonGoals.Name": {
         "table": "NonGoals",
-        "field": "Statement",
-        "label": "statement"
-      }
-    ],
-    "structure": null
-  },
-  "NonGoals.RelativePath": {
-    "table": "NonGoals",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A non goal's relative path is computed as “/admin/non-goals/”, followed by the non goal ID.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A non goal's name is the same as its statement.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NonGoals",
+            "field": "Statement",
+            "label": "statement"
+          }
+        ],
+        "structure": null
+      },
+      "NonGoals.RelativePath": {
         "table": "NonGoals",
-        "field": "NonGoalId",
-        "label": "non goal ID"
-      }
-    ],
-    "structure": null
-  },
-  "GlossaryTerms.Name": {
-    "table": "GlossaryTerms",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A glossary term's name is the same as its term.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A non goal's relative path is computed as “/admin/non-goals/”, followed by the non goal ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NonGoals",
+            "field": "NonGoalId",
+            "label": "non goal ID"
+          }
+        ],
+        "structure": null
+      },
+      "GlossaryTerms.Name": {
         "table": "GlossaryTerms",
-        "field": "Term",
-        "label": "term"
-      }
-    ],
-    "structure": null
-  },
-  "GlossaryTerms.RelativePath": {
-    "table": "GlossaryTerms",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A glossary term's relative path is computed as “/admin/glossary/”, followed by the glossary term ID.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A glossary term's name is the same as its term.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GlossaryTerms",
+            "field": "Term",
+            "label": "term"
+          }
+        ],
+        "structure": null
+      },
+      "GlossaryTerms.RelativePath": {
         "table": "GlossaryTerms",
-        "field": "GlossaryTermId",
-        "label": "glossary term ID"
-      }
-    ],
-    "structure": null
-  },
-  "EffortlessLoops.Name": {
-    "table": "EffortlessLoops",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "An effortless loop's name is computed as “Loop ”, followed by the loop number, followed by “ — ”, followed by the title.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "EffortlessLoops",
-        "field": "LoopNumber",
-        "label": "loop number"
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A glossary term's relative path is computed as “/admin/glossary/”, followed by the glossary term ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "GlossaryTerms",
+            "field": "GlossaryTermId",
+            "label": "glossary term ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "EffortlessLoops.Name": {
         "table": "EffortlessLoops",
-        "field": "Title",
-        "label": "title"
-      }
-    ],
-    "structure": null
-  },
-  "EffortlessLoops.RelativePath": {
-    "table": "EffortlessLoops",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "An effortless loop's relative path is computed as “/admin/effortless-loops/”, followed by the effortless loop ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "EffortlessLoops",
-        "field": "EffortlessLoopId",
-        "label": "effortless loop ID"
-      }
-    ],
-    "structure": null
-  },
-  "EffortlessLoops.Completedness": {
-    "table": "EffortlessLoops",
-    "field": "Completedness",
-    "kind": "formula",
-    "rule": "An effortless loop's completedness is the same as its status.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "EffortlessLoops",
-        "field": "Status",
-        "label": "status"
-      }
-    ],
-    "structure": null
-  },
-  "EffortlessLoops.IsInCurrentPlan": {
-    "table": "EffortlessLoops",
-    "field": "IsInCurrentPlan",
-    "kind": "formula",
-    "rule": "An effortless loop is considered in-current-plan if it is not the case that the status is “done”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "EffortlessLoops",
-        "field": "Status",
-        "label": "status"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The effortless loop's is in current plan is determined by the following priority:",
-      "cases": [
-        {
-          "value": "false",
-          "when": {
-            "kind": "leaf",
-            "text": "the status is “done”"
+        "field": "Name",
+        "kind": "formula",
+        "rule": "An effortless loop's name is computed as “Loop ”, followed by the loop number, followed by “ — ”, followed by the title.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EffortlessLoops",
+            "field": "LoopNumber",
+            "label": "loop number"
+          },
+          {
+            "table": "EffortlessLoops",
+            "field": "Title",
+            "label": "title"
           }
-        },
-        {
-          "value": "true",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "RoutingAndNavigation.Name": {
-    "table": "RoutingAndNavigation",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A routing and navigation's name is computed as the lower-cased display name with every a space replaced by a hyphen.",
-    "mechanical": true,
-    "refs": [
-      {
-        "table": "RoutingAndNavigation",
-        "field": "DisplayName",
-        "label": "display name"
-      }
-    ],
-    "structure": null
-  },
-  "RoutingAndNavigation.AdminCanCreate": {
-    "table": "RoutingAndNavigation",
-    "field": "AdminCanCreate",
-    "kind": "formula",
-    "rule": "A routing and navigation is flagged admin can create if the admin CRUD mentions “C”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "RoutingAndNavigation",
-        "field": "AdminCRUD",
-        "label": "admin CRUD"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The routing and navigation's admin can create is determined by the following priority:",
-      "cases": [
-        {
-          "value": "no value",
-          "when": {
-            "kind": "leaf",
-            "text": "the admin CRUD is blank"
-          }
-        },
-        {
-          "value": "the admin CRUD mentions “C”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "RoutingAndNavigation.AdminCanRead": {
-    "table": "RoutingAndNavigation",
-    "field": "AdminCanRead",
-    "kind": "formula",
-    "rule": "A routing and navigation is flagged admin can read if the admin CRUD mentions “R”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "RoutingAndNavigation",
-        "field": "AdminCRUD",
-        "label": "admin CRUD"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The routing and navigation's admin can read is determined by the following priority:",
-      "cases": [
-        {
-          "value": "no value",
-          "when": {
-            "kind": "leaf",
-            "text": "the admin CRUD is blank"
-          }
-        },
-        {
-          "value": "the admin CRUD mentions “R”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "RoutingAndNavigation.AdminCanUpdate": {
-    "table": "RoutingAndNavigation",
-    "field": "AdminCanUpdate",
-    "kind": "formula",
-    "rule": "A routing and navigation is flagged admin can update if the admin CRUD mentions “U”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "RoutingAndNavigation",
-        "field": "AdminCRUD",
-        "label": "admin CRUD"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The routing and navigation's admin can update is determined by the following priority:",
-      "cases": [
-        {
-          "value": "no value",
-          "when": {
-            "kind": "leaf",
-            "text": "the admin CRUD is blank"
-          }
-        },
-        {
-          "value": "the admin CRUD mentions “U”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "RoutingAndNavigation.AdminCanDelete": {
-    "table": "RoutingAndNavigation",
-    "field": "AdminCanDelete",
-    "kind": "formula",
-    "rule": "A routing and navigation is flagged admin can delete if the admin CRUD mentions “D”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "RoutingAndNavigation",
-        "field": "AdminCRUD",
-        "label": "admin CRUD"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The routing and navigation's admin can delete is determined by the following priority:",
-      "cases": [
-        {
-          "value": "no value",
-          "when": {
-            "kind": "leaf",
-            "text": "the admin CRUD is blank"
-          }
-        },
-        {
-          "value": "the admin CRUD mentions “D”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "RoutingAndNavigation.IntakeClinicianCanCreate": {
-    "table": "RoutingAndNavigation",
-    "field": "IntakeClinicianCanCreate",
-    "kind": "formula",
-    "rule": "A routing and navigation is flagged intake clinician can create if the intake clinician CRUD mentions “C”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "RoutingAndNavigation",
-        "field": "IntakeClinicianCRUD",
-        "label": "intake clinician CRUD"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The routing and navigation's intake clinician can create is determined by the following priority:",
-      "cases": [
-        {
-          "value": "no value",
-          "when": {
-            "kind": "leaf",
-            "text": "the intake clinician CRUD is blank"
-          }
-        },
-        {
-          "value": "the intake clinician CRUD mentions “C”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "RoutingAndNavigation.IntakeClinicianCanRead": {
-    "table": "RoutingAndNavigation",
-    "field": "IntakeClinicianCanRead",
-    "kind": "formula",
-    "rule": "A routing and navigation is flagged intake clinician can read if the intake clinician CRUD mentions “R”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "RoutingAndNavigation",
-        "field": "IntakeClinicianCRUD",
-        "label": "intake clinician CRUD"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The routing and navigation's intake clinician can read is determined by the following priority:",
-      "cases": [
-        {
-          "value": "no value",
-          "when": {
-            "kind": "leaf",
-            "text": "the intake clinician CRUD is blank"
-          }
-        },
-        {
-          "value": "the intake clinician CRUD mentions “R”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "RoutingAndNavigation.IntakeClinicianCanUpdate": {
-    "table": "RoutingAndNavigation",
-    "field": "IntakeClinicianCanUpdate",
-    "kind": "formula",
-    "rule": "A routing and navigation is flagged intake clinician can update if the intake clinician CRUD mentions “U”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "RoutingAndNavigation",
-        "field": "IntakeClinicianCRUD",
-        "label": "intake clinician CRUD"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The routing and navigation's intake clinician can update is determined by the following priority:",
-      "cases": [
-        {
-          "value": "no value",
-          "when": {
-            "kind": "leaf",
-            "text": "the intake clinician CRUD is blank"
-          }
-        },
-        {
-          "value": "the intake clinician CRUD mentions “U”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "RoutingAndNavigation.IntakeClinicianCanDelete": {
-    "table": "RoutingAndNavigation",
-    "field": "IntakeClinicianCanDelete",
-    "kind": "formula",
-    "rule": "A routing and navigation is flagged intake clinician can delete if the intake clinician CRUD mentions “D”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "RoutingAndNavigation",
-        "field": "IntakeClinicianCRUD",
-        "label": "intake clinician CRUD"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The routing and navigation's intake clinician can delete is determined by the following priority:",
-      "cases": [
-        {
-          "value": "no value",
-          "when": {
-            "kind": "leaf",
-            "text": "the intake clinician CRUD is blank"
-          }
-        },
-        {
-          "value": "the intake clinician CRUD mentions “D”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "RoutingAndNavigation.DiagnosingDoctorCanCreate": {
-    "table": "RoutingAndNavigation",
-    "field": "DiagnosingDoctorCanCreate",
-    "kind": "formula",
-    "rule": "A routing and navigation is flagged diagnosing doctor can create if the diagnosing doctor CRUD mentions “C”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "RoutingAndNavigation",
-        "field": "DiagnosingDoctorCRUD",
-        "label": "diagnosing doctor CRUD"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The routing and navigation's diagnosing doctor can create is determined by the following priority:",
-      "cases": [
-        {
-          "value": "no value",
-          "when": {
-            "kind": "leaf",
-            "text": "the diagnosing doctor CRUD is blank"
-          }
-        },
-        {
-          "value": "the diagnosing doctor CRUD mentions “C”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "RoutingAndNavigation.DiagnosingDoctorCanRead": {
-    "table": "RoutingAndNavigation",
-    "field": "DiagnosingDoctorCanRead",
-    "kind": "formula",
-    "rule": "A routing and navigation is flagged diagnosing doctor can read if the diagnosing doctor CRUD mentions “R”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "RoutingAndNavigation",
-        "field": "DiagnosingDoctorCRUD",
-        "label": "diagnosing doctor CRUD"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The routing and navigation's diagnosing doctor can read is determined by the following priority:",
-      "cases": [
-        {
-          "value": "no value",
-          "when": {
-            "kind": "leaf",
-            "text": "the diagnosing doctor CRUD is blank"
-          }
-        },
-        {
-          "value": "the diagnosing doctor CRUD mentions “R”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "RoutingAndNavigation.DiagnosingDoctorCanUpdate": {
-    "table": "RoutingAndNavigation",
-    "field": "DiagnosingDoctorCanUpdate",
-    "kind": "formula",
-    "rule": "A routing and navigation is flagged diagnosing doctor can update if the diagnosing doctor CRUD mentions “U”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "RoutingAndNavigation",
-        "field": "DiagnosingDoctorCRUD",
-        "label": "diagnosing doctor CRUD"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The routing and navigation's diagnosing doctor can update is determined by the following priority:",
-      "cases": [
-        {
-          "value": "no value",
-          "when": {
-            "kind": "leaf",
-            "text": "the diagnosing doctor CRUD is blank"
-          }
-        },
-        {
-          "value": "the diagnosing doctor CRUD mentions “U”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "RoutingAndNavigation.DiagnosingDoctorCanDelete": {
-    "table": "RoutingAndNavigation",
-    "field": "DiagnosingDoctorCanDelete",
-    "kind": "formula",
-    "rule": "A routing and navigation is flagged diagnosing doctor can delete if the diagnosing doctor CRUD mentions “D”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "RoutingAndNavigation",
-        "field": "DiagnosingDoctorCRUD",
-        "label": "diagnosing doctor CRUD"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The routing and navigation's diagnosing doctor can delete is determined by the following priority:",
-      "cases": [
-        {
-          "value": "no value",
-          "when": {
-            "kind": "leaf",
-            "text": "the diagnosing doctor CRUD is blank"
-          }
-        },
-        {
-          "value": "the diagnosing doctor CRUD mentions “D”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "RoutingAndNavigation.ExternalLlmCanCreate": {
-    "table": "RoutingAndNavigation",
-    "field": "ExternalLlmCanCreate",
-    "kind": "formula",
-    "rule": "A routing and navigation is flagged external llm can create if the external llm CRUD mentions “C”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "RoutingAndNavigation",
-        "field": "ExternalLlmCRUD",
-        "label": "external llm CRUD"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The routing and navigation's external llm can create is determined by the following priority:",
-      "cases": [
-        {
-          "value": "no value",
-          "when": {
-            "kind": "leaf",
-            "text": "the external llm CRUD is blank"
-          }
-        },
-        {
-          "value": "the external llm CRUD mentions “C”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "RoutingAndNavigation.ExternalLlmCanRead": {
-    "table": "RoutingAndNavigation",
-    "field": "ExternalLlmCanRead",
-    "kind": "formula",
-    "rule": "A routing and navigation is flagged external llm can read if the external llm CRUD mentions “R”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "RoutingAndNavigation",
-        "field": "ExternalLlmCRUD",
-        "label": "external llm CRUD"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The routing and navigation's external llm can read is determined by the following priority:",
-      "cases": [
-        {
-          "value": "no value",
-          "when": {
-            "kind": "leaf",
-            "text": "the external llm CRUD is blank"
-          }
-        },
-        {
-          "value": "the external llm CRUD mentions “R”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "RoutingAndNavigation.ExternalLlmCanUpdate": {
-    "table": "RoutingAndNavigation",
-    "field": "ExternalLlmCanUpdate",
-    "kind": "formula",
-    "rule": "A routing and navigation is flagged external llm can update if the external llm CRUD mentions “U”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "RoutingAndNavigation",
-        "field": "ExternalLlmCRUD",
-        "label": "external llm CRUD"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The routing and navigation's external llm can update is determined by the following priority:",
-      "cases": [
-        {
-          "value": "no value",
-          "when": {
-            "kind": "leaf",
-            "text": "the external llm CRUD is blank"
-          }
-        },
-        {
-          "value": "the external llm CRUD mentions “U”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "RoutingAndNavigation.ExternalLlmCanDelete": {
-    "table": "RoutingAndNavigation",
-    "field": "ExternalLlmCanDelete",
-    "kind": "formula",
-    "rule": "A routing and navigation is flagged external llm can delete if the external llm CRUD mentions “D”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "RoutingAndNavigation",
-        "field": "ExternalLlmCRUD",
-        "label": "external llm CRUD"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The routing and navigation's external llm can delete is determined by the following priority:",
-      "cases": [
-        {
-          "value": "no value",
-          "when": {
-            "kind": "leaf",
-            "text": "the external llm CRUD is blank"
-          }
-        },
-        {
-          "value": "the external llm CRUD mentions “D”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "RoutingAndNavigation.Depth": {
-    "table": "RoutingAndNavigation",
-    "field": "Depth",
-    "kind": "formula",
-    "rule": "The routing and navigation's depth is determined by the following priority:\n1. 0, if the parent route key is blank;\n2. in all other cases, the length of the route key minus the length of the route key with every a period replaced by an empty string.",
-    "mechanical": true,
-    "refs": [
-      {
-        "table": "RoutingAndNavigation",
-        "field": "ParentRouteKey",
-        "label": "parent route key"
+        ],
+        "structure": null
       },
-      {
-        "table": "RoutingAndNavigation",
-        "field": "RouteKey",
-        "label": "route key"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The routing and navigation's depth is determined by the following priority:",
-      "cases": [
-        {
-          "value": "0",
-          "when": {
-            "kind": "leaf",
-            "text": "the parent route key is blank"
+      "EffortlessLoops.RelativePath": {
+        "table": "EffortlessLoops",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "An effortless loop's relative path is computed as “/admin/effortless-loops/”, followed by the effortless loop ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EffortlessLoops",
+            "field": "EffortlessLoopId",
+            "label": "effortless loop ID"
           }
-        },
-        {
-          "value": "the length of the route key minus the length of the route key with every a period replaced by an empty string",
-          "when": null
+        ],
+        "structure": null
+      },
+      "EffortlessLoops.Completedness": {
+        "table": "EffortlessLoops",
+        "field": "Completedness",
+        "kind": "formula",
+        "rule": "An effortless loop's completedness is the same as its status.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EffortlessLoops",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": null
+      },
+      "EffortlessLoops.IsInCurrentPlan": {
+        "table": "EffortlessLoops",
+        "field": "IsInCurrentPlan",
+        "kind": "formula",
+        "rule": "An effortless loop is considered in-current-plan if it is not the case that the status is “done”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "EffortlessLoops",
+            "field": "Status",
+            "label": "status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The effortless loop's is in current plan is determined by the following priority:",
+          "cases": [
+            {
+              "value": "false",
+              "when": {
+                "kind": "leaf",
+                "text": "the status is “done”"
+              }
+            },
+            {
+              "value": "true",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "RoutingAndNavigation.FullPath": {
-    "table": "RoutingAndNavigation",
-    "field": "FullPath",
-    "kind": "formula",
-    "rule": "A routing and navigation's full path is the same as its route.",
-    "mechanical": false,
-    "refs": [
-      {
+      },
+      "RoutingAndNavigation.Name": {
         "table": "RoutingAndNavigation",
-        "field": "Route",
-        "label": "route"
-      }
-    ],
-    "structure": null
-  },
-  "RoutingAndNavigation.HandlerBaseName": {
-    "table": "RoutingAndNavigation",
-    "field": "HandlerBaseName",
-    "kind": "formula",
-    "rule": "A routing and navigation's handler base name is computed as the route key with every a period replaced by a space with every a hyphen replaced by a space.",
-    "mechanical": true,
-    "refs": [
-      {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A routing and navigation's name is computed as the lower-cased display name with every a space replaced by a hyphen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "RoutingAndNavigation",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null
+      },
+      "RoutingAndNavigation.AdminCanCreate": {
         "table": "RoutingAndNavigation",
-        "field": "RouteKey",
-        "label": "route key"
-      }
-    ],
-    "structure": null
-  },
-  "RoutingAndNavigation.RelativePath": {
-    "table": "RoutingAndNavigation",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A routing and navigation's relative path is computed as “/admin/routing/”, followed by the routing and navigation ID.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "AdminCanCreate",
+        "kind": "formula",
+        "rule": "A routing and navigation is flagged admin can create if the admin CRUD mentions “C”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RoutingAndNavigation",
+            "field": "AdminCRUD",
+            "label": "admin CRUD"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The routing and navigation's admin can create is determined by the following priority:",
+          "cases": [
+            {
+              "value": "no value",
+              "when": {
+                "kind": "leaf",
+                "text": "the admin CRUD is blank"
+              }
+            },
+            {
+              "value": "the admin CRUD mentions “C”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "RoutingAndNavigation.AdminCanRead": {
         "table": "RoutingAndNavigation",
-        "field": "RoutingAndNavigationId",
-        "label": "routing and navigation ID"
-      }
-    ],
-    "structure": null
-  },
-  "StateMachines.Name": {
-    "table": "StateMachines",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A state machine's name is the same as its state machine ID.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "AdminCanRead",
+        "kind": "formula",
+        "rule": "A routing and navigation is flagged admin can read if the admin CRUD mentions “R”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RoutingAndNavigation",
+            "field": "AdminCRUD",
+            "label": "admin CRUD"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The routing and navigation's admin can read is determined by the following priority:",
+          "cases": [
+            {
+              "value": "no value",
+              "when": {
+                "kind": "leaf",
+                "text": "the admin CRUD is blank"
+              }
+            },
+            {
+              "value": "the admin CRUD mentions “R”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "RoutingAndNavigation.AdminCanUpdate": {
+        "table": "RoutingAndNavigation",
+        "field": "AdminCanUpdate",
+        "kind": "formula",
+        "rule": "A routing and navigation is flagged admin can update if the admin CRUD mentions “U”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RoutingAndNavigation",
+            "field": "AdminCRUD",
+            "label": "admin CRUD"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The routing and navigation's admin can update is determined by the following priority:",
+          "cases": [
+            {
+              "value": "no value",
+              "when": {
+                "kind": "leaf",
+                "text": "the admin CRUD is blank"
+              }
+            },
+            {
+              "value": "the admin CRUD mentions “U”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "RoutingAndNavigation.AdminCanDelete": {
+        "table": "RoutingAndNavigation",
+        "field": "AdminCanDelete",
+        "kind": "formula",
+        "rule": "A routing and navigation is flagged admin can delete if the admin CRUD mentions “D”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RoutingAndNavigation",
+            "field": "AdminCRUD",
+            "label": "admin CRUD"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The routing and navigation's admin can delete is determined by the following priority:",
+          "cases": [
+            {
+              "value": "no value",
+              "when": {
+                "kind": "leaf",
+                "text": "the admin CRUD is blank"
+              }
+            },
+            {
+              "value": "the admin CRUD mentions “D”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "RoutingAndNavigation.IntakeClinicianCanCreate": {
+        "table": "RoutingAndNavigation",
+        "field": "IntakeClinicianCanCreate",
+        "kind": "formula",
+        "rule": "A routing and navigation is flagged intake clinician can create if the intake clinician CRUD mentions “C”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RoutingAndNavigation",
+            "field": "IntakeClinicianCRUD",
+            "label": "intake clinician CRUD"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The routing and navigation's intake clinician can create is determined by the following priority:",
+          "cases": [
+            {
+              "value": "no value",
+              "when": {
+                "kind": "leaf",
+                "text": "the intake clinician CRUD is blank"
+              }
+            },
+            {
+              "value": "the intake clinician CRUD mentions “C”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "RoutingAndNavigation.IntakeClinicianCanRead": {
+        "table": "RoutingAndNavigation",
+        "field": "IntakeClinicianCanRead",
+        "kind": "formula",
+        "rule": "A routing and navigation is flagged intake clinician can read if the intake clinician CRUD mentions “R”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RoutingAndNavigation",
+            "field": "IntakeClinicianCRUD",
+            "label": "intake clinician CRUD"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The routing and navigation's intake clinician can read is determined by the following priority:",
+          "cases": [
+            {
+              "value": "no value",
+              "when": {
+                "kind": "leaf",
+                "text": "the intake clinician CRUD is blank"
+              }
+            },
+            {
+              "value": "the intake clinician CRUD mentions “R”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "RoutingAndNavigation.IntakeClinicianCanUpdate": {
+        "table": "RoutingAndNavigation",
+        "field": "IntakeClinicianCanUpdate",
+        "kind": "formula",
+        "rule": "A routing and navigation is flagged intake clinician can update if the intake clinician CRUD mentions “U”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RoutingAndNavigation",
+            "field": "IntakeClinicianCRUD",
+            "label": "intake clinician CRUD"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The routing and navigation's intake clinician can update is determined by the following priority:",
+          "cases": [
+            {
+              "value": "no value",
+              "when": {
+                "kind": "leaf",
+                "text": "the intake clinician CRUD is blank"
+              }
+            },
+            {
+              "value": "the intake clinician CRUD mentions “U”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "RoutingAndNavigation.IntakeClinicianCanDelete": {
+        "table": "RoutingAndNavigation",
+        "field": "IntakeClinicianCanDelete",
+        "kind": "formula",
+        "rule": "A routing and navigation is flagged intake clinician can delete if the intake clinician CRUD mentions “D”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RoutingAndNavigation",
+            "field": "IntakeClinicianCRUD",
+            "label": "intake clinician CRUD"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The routing and navigation's intake clinician can delete is determined by the following priority:",
+          "cases": [
+            {
+              "value": "no value",
+              "when": {
+                "kind": "leaf",
+                "text": "the intake clinician CRUD is blank"
+              }
+            },
+            {
+              "value": "the intake clinician CRUD mentions “D”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "RoutingAndNavigation.DiagnosingDoctorCanCreate": {
+        "table": "RoutingAndNavigation",
+        "field": "DiagnosingDoctorCanCreate",
+        "kind": "formula",
+        "rule": "A routing and navigation is flagged diagnosing doctor can create if the diagnosing doctor CRUD mentions “C”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RoutingAndNavigation",
+            "field": "DiagnosingDoctorCRUD",
+            "label": "diagnosing doctor CRUD"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The routing and navigation's diagnosing doctor can create is determined by the following priority:",
+          "cases": [
+            {
+              "value": "no value",
+              "when": {
+                "kind": "leaf",
+                "text": "the diagnosing doctor CRUD is blank"
+              }
+            },
+            {
+              "value": "the diagnosing doctor CRUD mentions “C”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "RoutingAndNavigation.DiagnosingDoctorCanRead": {
+        "table": "RoutingAndNavigation",
+        "field": "DiagnosingDoctorCanRead",
+        "kind": "formula",
+        "rule": "A routing and navigation is flagged diagnosing doctor can read if the diagnosing doctor CRUD mentions “R”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RoutingAndNavigation",
+            "field": "DiagnosingDoctorCRUD",
+            "label": "diagnosing doctor CRUD"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The routing and navigation's diagnosing doctor can read is determined by the following priority:",
+          "cases": [
+            {
+              "value": "no value",
+              "when": {
+                "kind": "leaf",
+                "text": "the diagnosing doctor CRUD is blank"
+              }
+            },
+            {
+              "value": "the diagnosing doctor CRUD mentions “R”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "RoutingAndNavigation.DiagnosingDoctorCanUpdate": {
+        "table": "RoutingAndNavigation",
+        "field": "DiagnosingDoctorCanUpdate",
+        "kind": "formula",
+        "rule": "A routing and navigation is flagged diagnosing doctor can update if the diagnosing doctor CRUD mentions “U”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RoutingAndNavigation",
+            "field": "DiagnosingDoctorCRUD",
+            "label": "diagnosing doctor CRUD"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The routing and navigation's diagnosing doctor can update is determined by the following priority:",
+          "cases": [
+            {
+              "value": "no value",
+              "when": {
+                "kind": "leaf",
+                "text": "the diagnosing doctor CRUD is blank"
+              }
+            },
+            {
+              "value": "the diagnosing doctor CRUD mentions “U”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "RoutingAndNavigation.DiagnosingDoctorCanDelete": {
+        "table": "RoutingAndNavigation",
+        "field": "DiagnosingDoctorCanDelete",
+        "kind": "formula",
+        "rule": "A routing and navigation is flagged diagnosing doctor can delete if the diagnosing doctor CRUD mentions “D”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RoutingAndNavigation",
+            "field": "DiagnosingDoctorCRUD",
+            "label": "diagnosing doctor CRUD"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The routing and navigation's diagnosing doctor can delete is determined by the following priority:",
+          "cases": [
+            {
+              "value": "no value",
+              "when": {
+                "kind": "leaf",
+                "text": "the diagnosing doctor CRUD is blank"
+              }
+            },
+            {
+              "value": "the diagnosing doctor CRUD mentions “D”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "RoutingAndNavigation.ExternalLlmCanCreate": {
+        "table": "RoutingAndNavigation",
+        "field": "ExternalLlmCanCreate",
+        "kind": "formula",
+        "rule": "A routing and navigation is flagged external llm can create if the external llm CRUD mentions “C”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RoutingAndNavigation",
+            "field": "ExternalLlmCRUD",
+            "label": "external llm CRUD"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The routing and navigation's external llm can create is determined by the following priority:",
+          "cases": [
+            {
+              "value": "no value",
+              "when": {
+                "kind": "leaf",
+                "text": "the external llm CRUD is blank"
+              }
+            },
+            {
+              "value": "the external llm CRUD mentions “C”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "RoutingAndNavigation.ExternalLlmCanRead": {
+        "table": "RoutingAndNavigation",
+        "field": "ExternalLlmCanRead",
+        "kind": "formula",
+        "rule": "A routing and navigation is flagged external llm can read if the external llm CRUD mentions “R”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RoutingAndNavigation",
+            "field": "ExternalLlmCRUD",
+            "label": "external llm CRUD"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The routing and navigation's external llm can read is determined by the following priority:",
+          "cases": [
+            {
+              "value": "no value",
+              "when": {
+                "kind": "leaf",
+                "text": "the external llm CRUD is blank"
+              }
+            },
+            {
+              "value": "the external llm CRUD mentions “R”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "RoutingAndNavigation.ExternalLlmCanUpdate": {
+        "table": "RoutingAndNavigation",
+        "field": "ExternalLlmCanUpdate",
+        "kind": "formula",
+        "rule": "A routing and navigation is flagged external llm can update if the external llm CRUD mentions “U”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RoutingAndNavigation",
+            "field": "ExternalLlmCRUD",
+            "label": "external llm CRUD"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The routing and navigation's external llm can update is determined by the following priority:",
+          "cases": [
+            {
+              "value": "no value",
+              "when": {
+                "kind": "leaf",
+                "text": "the external llm CRUD is blank"
+              }
+            },
+            {
+              "value": "the external llm CRUD mentions “U”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "RoutingAndNavigation.ExternalLlmCanDelete": {
+        "table": "RoutingAndNavigation",
+        "field": "ExternalLlmCanDelete",
+        "kind": "formula",
+        "rule": "A routing and navigation is flagged external llm can delete if the external llm CRUD mentions “D”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RoutingAndNavigation",
+            "field": "ExternalLlmCRUD",
+            "label": "external llm CRUD"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The routing and navigation's external llm can delete is determined by the following priority:",
+          "cases": [
+            {
+              "value": "no value",
+              "when": {
+                "kind": "leaf",
+                "text": "the external llm CRUD is blank"
+              }
+            },
+            {
+              "value": "the external llm CRUD mentions “D”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "RoutingAndNavigation.Depth": {
+        "table": "RoutingAndNavigation",
+        "field": "Depth",
+        "kind": "formula",
+        "rule": "The routing and navigation's depth is determined by the following priority:\n1. 0, if the parent route key is blank;\n2. in all other cases, the length of the route key minus the length of the route key with every a period replaced by an empty string.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "RoutingAndNavigation",
+            "field": "ParentRouteKey",
+            "label": "parent route key"
+          },
+          {
+            "table": "RoutingAndNavigation",
+            "field": "RouteKey",
+            "label": "route key"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The routing and navigation's depth is determined by the following priority:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "the parent route key is blank"
+              }
+            },
+            {
+              "value": "the length of the route key minus the length of the route key with every a period replaced by an empty string",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "RoutingAndNavigation.FullPath": {
+        "table": "RoutingAndNavigation",
+        "field": "FullPath",
+        "kind": "formula",
+        "rule": "A routing and navigation's full path is the same as its route.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RoutingAndNavigation",
+            "field": "Route",
+            "label": "route"
+          }
+        ],
+        "structure": null
+      },
+      "RoutingAndNavigation.HandlerBaseName": {
+        "table": "RoutingAndNavigation",
+        "field": "HandlerBaseName",
+        "kind": "formula",
+        "rule": "A routing and navigation's handler base name is computed as the route key with every a period replaced by a space with every a hyphen replaced by a space.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "RoutingAndNavigation",
+            "field": "RouteKey",
+            "label": "route key"
+          }
+        ],
+        "structure": null
+      },
+      "RoutingAndNavigation.RelativePath": {
+        "table": "RoutingAndNavigation",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A routing and navigation's relative path is computed as “/admin/routing/”, followed by the routing and navigation ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "RoutingAndNavigation",
+            "field": "RoutingAndNavigationId",
+            "label": "routing and navigation ID"
+          }
+        ],
+        "structure": null
+      },
+      "StateMachines.Name": {
         "table": "StateMachines",
-        "field": "StateMachineId",
-        "label": "state machine ID"
-      }
-    ],
-    "structure": null
-  },
-  "StateMachines.RelativePath": {
-    "table": "StateMachines",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A state machine's relative path is computed as “/admin/state-machine/”, followed by the state machine ID.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A state machine's name is the same as its state machine ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StateMachines",
+            "field": "StateMachineId",
+            "label": "state machine ID"
+          }
+        ],
+        "structure": null
+      },
+      "StateMachines.RelativePath": {
         "table": "StateMachines",
-        "field": "StateMachineId",
-        "label": "state machine ID"
-      }
-    ],
-    "structure": null
-  },
-  "StateMachines.StateCount": {
-    "table": "StateMachines",
-    "field": "StateCount",
-    "kind": "rollup",
-    "rule": "A state machine's state count is the number of machine states related to the state machine.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "MachineStates",
-        "field": "StateMachine",
-        "label": "state machine"
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A state machine's relative path is computed as “/admin/state-machine/”, followed by the state machine ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StateMachines",
+            "field": "StateMachineId",
+            "label": "state machine ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "StateMachines.StateCount": {
         "table": "StateMachines",
-        "field": "StateMachineId",
-        "label": "state machine ID"
-      }
-    ],
-    "structure": null
-  },
-  "StateMachines.TransitionRuleCount": {
-    "table": "StateMachines",
-    "field": "TransitionRuleCount",
-    "kind": "rollup",
-    "rule": "A state machine's transition rule count is the number of state transition rules related to the state machine.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StateTransitionRules",
-        "field": "StateMachine",
-        "label": "state machine"
+        "field": "StateCount",
+        "kind": "rollup",
+        "rule": "A state machine's state count is the number of machine states related to the state machine.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MachineStates",
+            "field": "StateMachine",
+            "label": "state machine"
+          },
+          {
+            "table": "StateMachines",
+            "field": "StateMachineId",
+            "label": "state machine ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "StateMachines.TransitionRuleCount": {
         "table": "StateMachines",
-        "field": "StateMachineId",
-        "label": "state machine ID"
-      }
-    ],
-    "structure": null
-  },
-  "MachineStates.Name": {
-    "table": "MachineStates",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A machine state's name is the same as its machine state ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "MachineStates",
-        "field": "MachineStateId",
-        "label": "machine state ID"
-      }
-    ],
-    "structure": null
-  },
-  "MachineStates.RelativePath": {
-    "table": "MachineStates",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A machine state's relative path is computed as “/admin/state-machine/states/”, followed by the machine state ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "MachineStates",
-        "field": "MachineStateId",
-        "label": "machine state ID"
-      }
-    ],
-    "structure": null
-  },
-  "MachineStates.ReachableStateCount": {
-    "table": "MachineStates",
-    "field": "ReachableStateCount",
-    "kind": "rollup",
-    "rule": "A machine state's reachable state count is the number of vw state transition rules closure related to the machine state.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "vw_state_transition_rules_closure",
-        "field": "FromId",
-        "label": "from ID"
+        "field": "TransitionRuleCount",
+        "kind": "rollup",
+        "rule": "A state machine's transition rule count is the number of state transition rules related to the state machine.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StateTransitionRules",
+            "field": "StateMachine",
+            "label": "state machine"
+          },
+          {
+            "table": "StateMachines",
+            "field": "StateMachineId",
+            "label": "state machine ID"
+          }
+        ],
+        "structure": null
       },
-      {
+      "MachineStates.Name": {
         "table": "MachineStates",
-        "field": "MachineStateId",
-        "label": "machine state ID"
-      }
-    ],
-    "structure": null
-  },
-  "StateTransitionRules.Name": {
-    "table": "StateTransitionRules",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A state transition rule's name is the same as its state transition rule ID.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A machine state's name is the same as its machine state ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MachineStates",
+            "field": "MachineStateId",
+            "label": "machine state ID"
+          }
+        ],
+        "structure": null
+      },
+      "MachineStates.RelativePath": {
+        "table": "MachineStates",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A machine state's relative path is computed as “/admin/state-machine/states/”, followed by the machine state ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MachineStates",
+            "field": "MachineStateId",
+            "label": "machine state ID"
+          }
+        ],
+        "structure": null
+      },
+      "MachineStates.ReachableStateCount": {
+        "table": "MachineStates",
+        "field": "ReachableStateCount",
+        "kind": "rollup",
+        "rule": "A machine state's reachable state count is the number of vw state transition rules closure related to the machine state.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "vw_state_transition_rules_closure",
+            "field": "FromId",
+            "label": "from ID"
+          },
+          {
+            "table": "MachineStates",
+            "field": "MachineStateId",
+            "label": "machine state ID"
+          }
+        ],
+        "structure": null
+      },
+      "StateTransitionRules.Name": {
         "table": "StateTransitionRules",
-        "field": "StateTransitionRuleId",
-        "label": "state transition rule ID"
-      }
-    ],
-    "structure": null
-  },
-  "StateTransitionRules.RelativePath": {
-    "table": "StateTransitionRules",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A state transition rule's relative path is computed as “/admin/state-machine/rules/”, followed by the state transition rule ID.",
-    "mechanical": false,
-    "refs": [
-      {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A state transition rule's name is the same as its state transition rule ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StateTransitionRules",
+            "field": "StateTransitionRuleId",
+            "label": "state transition rule ID"
+          }
+        ],
+        "structure": null
+      },
+      "StateTransitionRules.RelativePath": {
         "table": "StateTransitionRules",
-        "field": "StateTransitionRuleId",
-        "label": "state transition rule ID"
-      }
-    ],
-    "structure": null
-  },
-  "StateTransitionRules.FromStateKey": {
-    "table": "StateTransitionRules",
-    "field": "FromStateKey",
-    "kind": "lookup",
-    "rule": "A state transition rule's from state key — taken from the linked from state.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "MachineStates",
-        "field": "StateKey",
-        "label": "state key"
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A state transition rule's relative path is computed as “/admin/state-machine/rules/”, followed by the state transition rule ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StateTransitionRules",
+            "field": "StateTransitionRuleId",
+            "label": "state transition rule ID"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "StateTransitionRules",
-        "field": "FromState",
-        "label": "from state"
-      },
-      {
-        "table": "MachineStates",
-        "field": "MachineStateId",
-        "label": "machine state ID"
-      }
-    ],
-    "structure": null
-  },
-  "StateTransitionRules.ToStateKey": {
-    "table": "StateTransitionRules",
-    "field": "ToStateKey",
-    "kind": "lookup",
-    "rule": "A state transition rule's to state key — taken from the linked to state.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "MachineStates",
-        "field": "StateKey",
-        "label": "state key"
-      },
-      {
-        "table": "StateTransitionRules",
-        "field": "ToState",
-        "label": "to state"
-      },
-      {
-        "table": "MachineStates",
-        "field": "MachineStateId",
-        "label": "machine state ID"
-      }
-    ],
-    "structure": null
-  },
-  "StateTransitionRules.IsForwardEdge": {
-    "table": "StateTransitionRules",
-    "field": "IsForwardEdge",
-    "kind": "formula",
-    "rule": "A state transition rule is considered a forward edge if it is not the case that the to state key is the from state key.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StateTransitionRules",
-        "field": "ToStateKey",
-        "label": "to state key"
-      },
-      {
+      "StateTransitionRules.FromStateKey": {
         "table": "StateTransitionRules",
         "field": "FromStateKey",
-        "label": "from state key"
-      }
-    ],
-    "structure": null
-  },
-  "StateTransitions.Name": {
-    "table": "StateTransitions",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A state transition's name is the same as its state transition ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StateTransitions",
-        "field": "StateTransitionId",
-        "label": "state transition ID"
-      }
-    ],
-    "structure": null
-  },
-  "StateTransitions.RelativePath": {
-    "table": "StateTransitions",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A state transition's relative path is computed as “/admin/state-machine/transitions/”, followed by the state transition ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StateTransitions",
-        "field": "StateTransitionId",
-        "label": "state transition ID"
-      }
-    ],
-    "structure": null
-  },
-  "StateTransitions.IsForward": {
-    "table": "StateTransitions",
-    "field": "IsForward",
-    "kind": "formula",
-    "rule": "A state transition is considered a forward if it is not the case that the to state key is “Intake”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "StateTransitions",
+        "kind": "lookup",
+        "rule": "A state transition rule's from state key — taken from the linked from state.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MachineStates",
+            "field": "StateKey",
+            "label": "state key"
+          },
+          {
+            "table": "StateTransitionRules",
+            "field": "FromState",
+            "label": "from state"
+          },
+          {
+            "table": "MachineStates",
+            "field": "MachineStateId",
+            "label": "machine state ID"
+          }
+        ],
+        "structure": null
+      },
+      "StateTransitionRules.ToStateKey": {
+        "table": "StateTransitionRules",
         "field": "ToStateKey",
-        "label": "to state key"
-      }
-    ],
-    "structure": null
-  },
-  "SubjectStateInstances.Name": {
-    "table": "SubjectStateInstances",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A subject state instance's name is the same as its subject state instance ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SubjectStateInstances",
-        "field": "SubjectStateInstanceId",
-        "label": "subject state instance ID"
-      }
-    ],
-    "structure": null
-  },
-  "SubjectStateInstances.RelativePath": {
-    "table": "SubjectStateInstances",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A subject state instance's relative path is computed as “/admin/state-machine/instances/”, followed by the subject state instance ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SubjectStateInstances",
-        "field": "SubjectStateInstanceId",
-        "label": "subject state instance ID"
-      }
-    ],
-    "structure": null
-  },
-  "SubjectStateInstances.IsCurrent": {
-    "table": "SubjectStateInstances",
-    "field": "IsCurrent",
-    "kind": "formula",
-    "rule": "A subject state instance is considered a current if the exited at is blank.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SubjectStateInstances",
-        "field": "ExitedAt",
-        "label": "exited at"
-      }
-    ],
-    "structure": null
-  },
-  "SubjectStateInstances.HasCompleteLineage": {
-    "table": "SubjectStateInstances",
-    "field": "HasCompleteLineage",
-    "kind": "formula",
-    "rule": "A subject state instance is considered to have a complete lineage if the sequence index is at least 1.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SubjectStateInstances",
-        "field": "SequenceIndex",
-        "label": "sequence index"
-      }
-    ],
-    "structure": null
-  },
-  "SubjectStateInstances.IsLongDwell": {
-    "table": "SubjectStateInstances",
-    "field": "IsLongDwell",
-    "kind": "formula",
-    "rule": "A subject state instance is considered a long dwell if the dwell days is at least 90.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SubjectStateInstances",
-        "field": "DwellDays",
-        "label": "dwell days"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The subject state instance's is long dwell is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the dwell days is at least 90"
+        "kind": "lookup",
+        "rule": "A state transition rule's to state key — taken from the linked to state.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "MachineStates",
+            "field": "StateKey",
+            "label": "state key"
+          },
+          {
+            "table": "StateTransitionRules",
+            "field": "ToState",
+            "label": "to state"
+          },
+          {
+            "table": "MachineStates",
+            "field": "MachineStateId",
+            "label": "machine state ID"
           }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "DiseaseDomainConcepts.Name": {
-    "table": "DiseaseDomainConcepts",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A disease domain concept's name is the same as its concept label.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "DiseaseDomainConcepts",
-        "field": "ConceptLabel",
-        "label": "concept label"
-      }
-    ],
-    "structure": null
-  },
-  "DiseaseDomainConcepts.RelativePath": {
-    "table": "DiseaseDomainConcepts",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A disease domain concept's relative path is computed as “/admin/disease-concepts/”, followed by the disease domain concept ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "DiseaseDomainConcepts",
-        "field": "DiseaseDomainConceptId",
-        "label": "disease domain concept ID"
-      }
-    ],
-    "structure": null
-  },
-  "DiseaseDomainConcepts.IsDeeplyModeled": {
-    "table": "DiseaseDomainConcepts",
-    "field": "IsDeeplyModeled",
-    "kind": "formula",
-    "rule": "A disease domain concept is considered deeply-modeled if the modeling status is “deep-dag”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "DiseaseDomainConcepts",
-        "field": "ModelingStatus",
-        "label": "modeling status"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The disease domain concept's is deeply modeled is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the modeling status is “deep-dag”"
+        ],
+        "structure": null
+      },
+      "StateTransitionRules.IsForwardEdge": {
+        "table": "StateTransitionRules",
+        "field": "IsForwardEdge",
+        "kind": "formula",
+        "rule": "A state transition rule is considered a forward edge if it is not the case that the to state key is the from state key.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StateTransitionRules",
+            "field": "ToStateKey",
+            "label": "to state key"
+          },
+          {
+            "table": "StateTransitionRules",
+            "field": "FromStateKey",
+            "label": "from state key"
           }
-        },
-        {
-          "value": "false",
-          "when": null
+        ],
+        "structure": null
+      },
+      "StateTransitions.Name": {
+        "table": "StateTransitions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A state transition's name is the same as its state transition ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StateTransitions",
+            "field": "StateTransitionId",
+            "label": "state transition ID"
+          }
+        ],
+        "structure": null
+      },
+      "StateTransitions.RelativePath": {
+        "table": "StateTransitions",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A state transition's relative path is computed as “/admin/state-machine/transitions/”, followed by the state transition ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StateTransitions",
+            "field": "StateTransitionId",
+            "label": "state transition ID"
+          }
+        ],
+        "structure": null
+      },
+      "StateTransitions.IsForward": {
+        "table": "StateTransitions",
+        "field": "IsForward",
+        "kind": "formula",
+        "rule": "A state transition is considered a forward if it is not the case that the to state key is “Intake”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "StateTransitions",
+            "field": "ToStateKey",
+            "label": "to state key"
+          }
+        ],
+        "structure": null
+      },
+      "SubjectStateInstances.Name": {
+        "table": "SubjectStateInstances",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A subject state instance's name is the same as its subject state instance ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SubjectStateInstances",
+            "field": "SubjectStateInstanceId",
+            "label": "subject state instance ID"
+          }
+        ],
+        "structure": null
+      },
+      "SubjectStateInstances.RelativePath": {
+        "table": "SubjectStateInstances",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A subject state instance's relative path is computed as “/admin/state-machine/instances/”, followed by the subject state instance ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SubjectStateInstances",
+            "field": "SubjectStateInstanceId",
+            "label": "subject state instance ID"
+          }
+        ],
+        "structure": null
+      },
+      "SubjectStateInstances.IsCurrent": {
+        "table": "SubjectStateInstances",
+        "field": "IsCurrent",
+        "kind": "formula",
+        "rule": "A subject state instance is considered current if the exited at is blank.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SubjectStateInstances",
+            "field": "ExitedAt",
+            "label": "exited at"
+          }
+        ],
+        "structure": null
+      },
+      "SubjectStateInstances.HasCompleteLineage": {
+        "table": "SubjectStateInstances",
+        "field": "HasCompleteLineage",
+        "kind": "formula",
+        "rule": "A subject state instance is considered to have a complete lineage if the sequence index is at least 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SubjectStateInstances",
+            "field": "SequenceIndex",
+            "label": "sequence index"
+          }
+        ],
+        "structure": null
+      },
+      "SubjectStateInstances.IsLongDwell": {
+        "table": "SubjectStateInstances",
+        "field": "IsLongDwell",
+        "kind": "formula",
+        "rule": "A subject state instance is considered a long dwell if the dwell days is at least 90.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SubjectStateInstances",
+            "field": "DwellDays",
+            "label": "dwell days"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The subject state instance's is long dwell is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "leaf",
+                "text": "the dwell days is at least 90"
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "DiseaseDomainConcepts.IsSchemaModeled": {
-    "table": "DiseaseDomainConcepts",
-    "field": "IsSchemaModeled",
-    "kind": "formula",
-    "rule": "A disease domain concept is considered schema-modeled if at least one of the following holds: the modeling status is “deep-dag” or the modeling status is “schema”.",
-    "mechanical": false,
-    "refs": [
-      {
+      },
+      "DiseaseDomainConcepts.Name": {
         "table": "DiseaseDomainConcepts",
-        "field": "ModelingStatus",
-        "label": "modeling status"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The disease domain concept's is schema modeled is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A disease domain concept's name is the same as its concept label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DiseaseDomainConcepts",
+            "field": "ConceptLabel",
+            "label": "concept label"
+          }
+        ],
+        "structure": null
+      },
+      "DiseaseDomainConcepts.RelativePath": {
+        "table": "DiseaseDomainConcepts",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A disease domain concept's relative path is computed as “/admin/disease-concepts/”, followed by the disease domain concept ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DiseaseDomainConcepts",
+            "field": "DiseaseDomainConceptId",
+            "label": "disease domain concept ID"
+          }
+        ],
+        "structure": null
+      },
+      "DiseaseDomainConcepts.IsDeeplyModeled": {
+        "table": "DiseaseDomainConcepts",
+        "field": "IsDeeplyModeled",
+        "kind": "formula",
+        "rule": "A disease domain concept is considered deeply-modeled if the modeling status is “deep-dag”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DiseaseDomainConcepts",
+            "field": "ModelingStatus",
+            "label": "modeling status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The disease domain concept's is deeply modeled is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
                 "kind": "leaf",
                 "text": "the modeling status is “deep-dag”"
-              },
-              {
-                "kind": "leaf",
-                "text": "the modeling status is “schema”"
               }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "SerologyObservations.PriorAntiDsDnaIU": {
-    "table": "SerologyObservations",
-    "field": "PriorAntiDsDnaIU",
-    "kind": "lookup",
-    "rule": "A serology observation's prior anti ds dna IU — taken from the linked prior observation.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SerologyObservations",
-        "field": "AntiDsDnaIU",
-        "label": "anti ds dna IU"
       },
-      {
-        "table": "SerologyObservations",
-        "field": "PriorObservation",
-        "label": "prior observation"
+      "DiseaseDomainConcepts.IsSchemaModeled": {
+        "table": "DiseaseDomainConcepts",
+        "field": "IsSchemaModeled",
+        "kind": "formula",
+        "rule": "A disease domain concept is considered schema-modeled if at least one of the following holds: the modeling status is “deep-dag” or the modeling status is “schema”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DiseaseDomainConcepts",
+            "field": "ModelingStatus",
+            "label": "modeling status"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The disease domain concept's is schema modeled is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the modeling status is “deep-dag”"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the modeling status is “schema”"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
       },
-      {
-        "table": "SerologyObservations",
-        "field": "SerologyObservationId",
-        "label": "serology observation ID"
-      }
-    ],
-    "structure": null
-  },
-  "SerologyObservations.PriorC3": {
-    "table": "SerologyObservations",
-    "field": "PriorC3",
-    "kind": "lookup",
-    "rule": "A serology observation's prior c3 is the complement c3 of the serology observation's prior observation.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SerologyObservations",
-        "field": "ComplementC3",
-        "label": "complement c3"
-      },
-      {
-        "table": "SerologyObservations",
-        "field": "PriorObservation",
-        "label": "prior observation"
-      },
-      {
-        "table": "SerologyObservations",
-        "field": "SerologyObservationId",
-        "label": "serology observation ID"
-      }
-    ],
-    "structure": null
-  },
-  "SerologyObservations.PriorC4": {
-    "table": "SerologyObservations",
-    "field": "PriorC4",
-    "kind": "lookup",
-    "rule": "A serology observation's prior c4 is the complement c4 of the serology observation's prior observation.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SerologyObservations",
-        "field": "ComplementC4",
-        "label": "complement c4"
-      },
-      {
-        "table": "SerologyObservations",
-        "field": "PriorObservation",
-        "label": "prior observation"
-      },
-      {
-        "table": "SerologyObservations",
-        "field": "SerologyObservationId",
-        "label": "serology observation ID"
-      }
-    ],
-    "structure": null
-  },
-  "SerologyObservations.AntiDsDnaTrend": {
-    "table": "SerologyObservations",
-    "field": "AntiDsDnaTrend",
-    "kind": "formula",
-    "rule": "The serology observation's anti ds dna trend is determined by the following priority:\n1. “Stable”, if the prior anti ds dna IU is blank;\n2. “Rising”, if the anti ds dna IU is greater than the prior anti ds dna IU times 1.25;\n3. “Falling”, if the anti ds dna IU is less than the prior anti ds dna IU times 0.8;\n4. in all other cases, “Stable”.",
-    "mechanical": false,
-    "refs": [
-      {
+      "SerologyObservations.PriorAntiDsDnaIU": {
         "table": "SerologyObservations",
         "field": "PriorAntiDsDnaIU",
-        "label": "prior anti ds dna IU"
+        "kind": "lookup",
+        "rule": "A serology observation's prior anti ds dna IU — taken from the linked prior observation.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SerologyObservations",
+            "field": "AntiDsDnaIU",
+            "label": "anti ds dna IU"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "PriorObservation",
+            "label": "prior observation"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "SerologyObservationId",
+            "label": "serology observation ID"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "SerologyObservations",
-        "field": "AntiDsDnaIU",
-        "label": "anti ds dna IU"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The serology observation's anti ds dna trend is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“Stable”",
-          "when": {
-            "kind": "leaf",
-            "text": "the prior anti ds dna IU is blank"
-          }
-        },
-        {
-          "value": "“Rising”",
-          "when": {
-            "kind": "leaf",
-            "text": "the anti ds dna IU is greater than the prior anti ds dna IU times 1.25"
-          }
-        },
-        {
-          "value": "“Falling”",
-          "when": {
-            "kind": "leaf",
-            "text": "the anti ds dna IU is less than the prior anti ds dna IU times 0.8"
-          }
-        },
-        {
-          "value": "“Stable”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "SerologyObservations.ComplementTrend": {
-    "table": "SerologyObservations",
-    "field": "ComplementTrend",
-    "kind": "formula",
-    "rule": "The serology observation's complement trend is determined by the following priority:\n1. “Stable”, if the prior c3 is blank;\n2. “Falling”, if the complement c3 plus the complement c4 is less than the prior c3 plus the prior c4 times 0.85;\n3. “Rising”, if the complement c3 plus the complement c4 is greater than the prior c3 plus the prior c4 times 1.15;\n4. in all other cases, “Stable”.",
-    "mechanical": false,
-    "refs": [
-      {
+      "SerologyObservations.PriorC3": {
         "table": "SerologyObservations",
         "field": "PriorC3",
-        "label": "prior c3"
+        "kind": "lookup",
+        "rule": "A serology observation's prior c3 is the complement c3 of the serology observation's prior observation.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SerologyObservations",
+            "field": "ComplementC3",
+            "label": "complement c3"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "PriorObservation",
+            "label": "prior observation"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "SerologyObservationId",
+            "label": "serology observation ID"
+          }
+        ],
+        "structure": null
       },
-      {
-        "table": "SerologyObservations",
-        "field": "ComplementC3",
-        "label": "complement c3"
-      },
-      {
-        "table": "SerologyObservations",
-        "field": "ComplementC4",
-        "label": "complement c4"
-      },
-      {
+      "SerologyObservations.PriorC4": {
         "table": "SerologyObservations",
         "field": "PriorC4",
-        "label": "prior c4"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The serology observation's complement trend is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“Stable”",
-          "when": {
-            "kind": "leaf",
-            "text": "the prior c3 is blank"
+        "kind": "lookup",
+        "rule": "A serology observation's prior c4 is the complement c4 of the serology observation's prior observation.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SerologyObservations",
+            "field": "ComplementC4",
+            "label": "complement c4"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "PriorObservation",
+            "label": "prior observation"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "SerologyObservationId",
+            "label": "serology observation ID"
           }
-        },
-        {
-          "value": "“Falling”",
-          "when": {
-            "kind": "leaf",
-            "text": "the complement c3 plus the complement c4 is less than the prior c3 plus the prior c4 times 0.85"
-          }
-        },
-        {
-          "value": "“Rising”",
-          "when": {
-            "kind": "leaf",
-            "text": "the complement c3 plus the complement c4 is greater than the prior c3 plus the prior c4 times 1.15"
-          }
-        },
-        {
-          "value": "“Stable”",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "SerologyObservations.IsPreNephriticSignaturePanel": {
-    "table": "SerologyObservations",
-    "field": "IsPreNephriticSignaturePanel",
-    "kind": "formula",
-    "rule": "A serology observation is considered a pre nephritic signature panel if all of the following hold: the anti ds dna trend is “Rising” and the complement trend is “Falling”.",
-    "mechanical": false,
-    "refs": [
-      {
+        ],
+        "structure": null
+      },
+      "SerologyObservations.AntiDsDnaTrend": {
         "table": "SerologyObservations",
         "field": "AntiDsDnaTrend",
-        "label": "anti ds dna trend"
+        "kind": "formula",
+        "rule": "The serology observation's anti ds dna trend is determined by the following priority:\n1. “Stable”, if the prior anti ds dna IU is blank;\n2. “Rising”, if the anti ds dna IU is greater than the prior anti ds dna IU times 1.25;\n3. “Falling”, if the anti ds dna IU is less than the prior anti ds dna IU times 0.8;\n4. in all other cases, “Stable”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SerologyObservations",
+            "field": "PriorAntiDsDnaIU",
+            "label": "prior anti ds dna IU"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "AntiDsDnaIU",
+            "label": "anti ds dna IU"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The serology observation's anti ds dna trend is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“Stable”",
+              "when": {
+                "kind": "leaf",
+                "text": "the prior anti ds dna IU is blank"
+              }
+            },
+            {
+              "value": "“Rising”",
+              "when": {
+                "kind": "leaf",
+                "text": "the anti ds dna IU is greater than the prior anti ds dna IU times 1.25"
+              }
+            },
+            {
+              "value": "“Falling”",
+              "when": {
+                "kind": "leaf",
+                "text": "the anti ds dna IU is less than the prior anti ds dna IU times 0.8"
+              }
+            },
+            {
+              "value": "“Stable”",
+              "when": null
+            }
+          ],
+          "children": null
+        }
       },
-      {
+      "SerologyObservations.ComplementTrend": {
         "table": "SerologyObservations",
         "field": "ComplementTrend",
-        "label": "complement trend"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The serology observation's is pre nephritic signature panel is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
+        "kind": "formula",
+        "rule": "The serology observation's complement trend is determined by the following priority:\n1. “Stable”, if the prior c3 is blank;\n2. “Falling”, if the complement c3 plus the complement c4 is less than the prior c3 plus the prior c4 times 0.85;\n3. “Rising”, if the complement c3 plus the complement c4 is greater than the prior c3 plus the prior c4 times 1.15;\n4. in all other cases, “Stable”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SerologyObservations",
+            "field": "PriorC3",
+            "label": "prior c3"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "ComplementC3",
+            "label": "complement c3"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "ComplementC4",
+            "label": "complement c4"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "PriorC4",
+            "label": "prior c4"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The serology observation's complement trend is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“Stable”",
+              "when": {
                 "kind": "leaf",
-                "text": "the anti ds dna trend is “Rising”"
-              },
-              {
-                "kind": "leaf",
-                "text": "the complement trend is “Falling”"
+                "text": "the prior c3 is blank"
               }
-            ]
-          }
-        },
-        {
-          "value": "false",
-          "when": null
+            },
+            {
+              "value": "“Falling”",
+              "when": {
+                "kind": "leaf",
+                "text": "the complement c3 plus the complement c4 is less than the prior c3 plus the prior c4 times 0.85"
+              }
+            },
+            {
+              "value": "“Rising”",
+              "when": {
+                "kind": "leaf",
+                "text": "the complement c3 plus the complement c4 is greater than the prior c3 plus the prior c4 times 1.15"
+              }
+            },
+            {
+              "value": "“Stable”",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "SerologyObservations.IsSignificantProteinuria": {
-    "table": "SerologyObservations",
-    "field": "IsSignificantProteinuria",
-    "kind": "formula",
-    "rule": "A serology observation is considered a significant proteinuria if the proteinuria g per day is at least 0.5.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SerologyObservations",
-        "field": "ProteinuriaGPerDay",
-        "label": "proteinuria g per day"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The serology observation's is significant proteinuria is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the proteinuria g per day is at least 0.5"
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "SerologyObservations.IsNephroticRangeProteinuria": {
-    "table": "SerologyObservations",
-    "field": "IsNephroticRangeProteinuria",
-    "kind": "formula",
-    "rule": "A serology observation is considered a nephrotic range proteinuria if the proteinuria g per day is at least 3.0.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SerologyObservations",
-        "field": "ProteinuriaGPerDay",
-        "label": "proteinuria g per day"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The serology observation's is nephrotic range proteinuria is determined by the following priority:",
-      "cases": [
-        {
-          "value": "true",
-          "when": {
-            "kind": "leaf",
-            "text": "the proteinuria g per day is at least 3.0"
-          }
-        },
-        {
-          "value": "false",
-          "when": null
-        }
-      ],
-      "children": null
-    }
-  },
-  "SerologyObservations.SledaiRenalPoints": {
-    "table": "SerologyObservations",
-    "field": "SledaiRenalPoints",
-    "kind": "formula",
-    "rule": "The serology observation's sledai renal points is determined by the following priority:\n1. 8, if at least one of the following holds: the nephrotic range proteinuria flag is set or the active urinary sediment flag is set;\n2. 4, if the significant proteinuria flag is set;\n3. in all other cases, 0.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SerologyObservations",
-        "field": "IsNephroticRangeProteinuria",
-        "label": "is nephrotic range proteinuria"
       },
-      {
+      "SerologyObservations.IsPreNephriticSignaturePanel": {
         "table": "SerologyObservations",
-        "field": "HasActiveUrinarySediment",
-        "label": "has active urinary sediment"
+        "field": "IsPreNephriticSignaturePanel",
+        "kind": "formula",
+        "rule": "A serology observation is considered a pre nephritic signature panel if all of the following hold: the anti ds dna trend is “Rising” and the complement trend is “Falling”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SerologyObservations",
+            "field": "AntiDsDnaTrend",
+            "label": "anti ds dna trend"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "ComplementTrend",
+            "label": "complement trend"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The serology observation's is pre nephritic signature panel is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the anti ds dna trend is “Rising”"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the complement trend is “Falling”"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
+        }
       },
-      {
+      "SerologyObservations.IsSignificantProteinuria": {
         "table": "SerologyObservations",
         "field": "IsSignificantProteinuria",
-        "label": "is significant proteinuria"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The serology observation's sledai renal points is determined by the following priority:",
-      "cases": [
-        {
-          "value": "8",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
+        "kind": "formula",
+        "rule": "A serology observation is considered a significant proteinuria if the proteinuria g per day is at least 0.5.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SerologyObservations",
+            "field": "ProteinuriaGPerDay",
+            "label": "proteinuria g per day"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The serology observation's is significant proteinuria is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
                 "kind": "leaf",
-                "text": "the nephrotic range proteinuria flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the active urinary sediment flag is set"
+                "text": "the proteinuria g per day is at least 0.5"
               }
-            ]
-          }
-        },
-        {
-          "value": "4",
-          "when": {
-            "kind": "leaf",
-            "text": "the significant proteinuria flag is set"
-          }
-        },
-        {
-          "value": "0",
-          "when": null
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "SerologyObservations.SledaiSerologyPoints": {
-    "table": "SerologyObservations",
-    "field": "SledaiSerologyPoints",
-    "kind": "formula",
-    "rule": "The serology observation's sledai serology points is determined by the following priority:\n1. 4, if all of the following hold: the complement trend is “Falling” and the anti ds dna trend is “Rising”;\n2. 2, if at least one of the following holds: the complement trend is “Falling” or the anti ds dna trend is “Rising”;\n3. in all other cases, 0.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SerologyObservations",
-        "field": "ComplementTrend",
-        "label": "complement trend"
       },
-      {
+      "SerologyObservations.IsNephroticRangeProteinuria": {
         "table": "SerologyObservations",
-        "field": "AntiDsDnaTrend",
-        "label": "anti ds dna trend"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The serology observation's sledai serology points is determined by the following priority:",
-      "cases": [
-        {
-          "value": "4",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the complement trend is “Falling”"
-              },
-              {
-                "kind": "leaf",
-                "text": "the anti ds dna trend is “Rising”"
-              }
-            ]
+        "field": "IsNephroticRangeProteinuria",
+        "kind": "formula",
+        "rule": "A serology observation is considered a nephrotic range proteinuria if the proteinuria g per day is at least 3.0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SerologyObservations",
+            "field": "ProteinuriaGPerDay",
+            "label": "proteinuria g per day"
           }
-        },
-        {
-          "value": "2",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The serology observation's is nephrotic range proteinuria is determined by the following priority:",
+          "cases": [
+            {
+              "value": "true",
+              "when": {
                 "kind": "leaf",
-                "text": "the complement trend is “Falling”"
-              },
-              {
-                "kind": "leaf",
-                "text": "the anti ds dna trend is “Rising”"
+                "text": "the proteinuria g per day is at least 3.0"
               }
-            ]
-          }
-        },
-        {
-          "value": "0",
-          "when": null
+            },
+            {
+              "value": "false",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "SerologyObservations.SledaiScore": {
-    "table": "SerologyObservations",
-    "field": "SledaiScore",
-    "kind": "formula",
-    "rule": "A serology observation's sledai score is computed as the sledai renal points plus the sledai serology points.",
-    "mechanical": false,
-    "refs": [
-      {
+      },
+      "SerologyObservations.SledaiRenalPoints": {
         "table": "SerologyObservations",
         "field": "SledaiRenalPoints",
-        "label": "sledai renal points"
+        "kind": "formula",
+        "rule": "The serology observation's sledai renal points is determined by the following priority:\n1. 8, if at least one of the following holds: the nephrotic range proteinuria flag is set or the active urinary sediment flag is set;\n2. 4, if the significant proteinuria flag is set;\n3. in all other cases, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SerologyObservations",
+            "field": "IsNephroticRangeProteinuria",
+            "label": "is nephrotic range proteinuria"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "HasActiveUrinarySediment",
+            "label": "has active urinary sediment"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "IsSignificantProteinuria",
+            "label": "is significant proteinuria"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The serology observation's sledai renal points is determined by the following priority:",
+          "cases": [
+            {
+              "value": "8",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the nephrotic range proteinuria flag is set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the active urinary sediment flag is set"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "4",
+              "when": {
+                "kind": "leaf",
+                "text": "the significant proteinuria flag is set"
+              }
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
+        }
       },
-      {
+      "SerologyObservations.SledaiSerologyPoints": {
         "table": "SerologyObservations",
         "field": "SledaiSerologyPoints",
-        "label": "sledai serology points"
-      }
-    ],
-    "structure": null
-  },
-  "SerologyObservations.ProgressionStateKey": {
-    "table": "SerologyObservations",
-    "field": "ProgressionStateKey",
-    "kind": "formula",
-    "rule": "The serology observation's progression state key is determined by the following priority:\n1. “BiopsyIndicated”, if at least one of the following holds: the nephrotic range proteinuria flag is set or the active urinary sediment flag is set;\n2. “RenalFlareRisk”, if the proteinuria g per day is at least 1.0;\n3. “EarlyNephritis”, if the significant proteinuria flag is set;\n4. “SerologicActive”, if all of the following hold: the anti ds dna trend is “Rising” and the complement trend is “Falling”;\n5. in all other cases, “PresymptomaticAutoimmunity”.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SerologyObservations",
-        "field": "IsNephroticRangeProteinuria",
-        "label": "is nephrotic range proteinuria"
-      },
-      {
-        "table": "SerologyObservations",
-        "field": "HasActiveUrinarySediment",
-        "label": "has active urinary sediment"
-      },
-      {
-        "table": "SerologyObservations",
-        "field": "ProteinuriaGPerDay",
-        "label": "proteinuria g per day"
-      },
-      {
-        "table": "SerologyObservations",
-        "field": "IsSignificantProteinuria",
-        "label": "is significant proteinuria"
-      },
-      {
-        "table": "SerologyObservations",
-        "field": "AntiDsDnaTrend",
-        "label": "anti ds dna trend"
-      },
-      {
-        "table": "SerologyObservations",
-        "field": "ComplementTrend",
-        "label": "complement trend"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The serology observation's progression state key is determined by the following priority:",
-      "cases": [
-        {
-          "value": "“BiopsyIndicated”",
-          "when": {
-            "kind": "any",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the nephrotic range proteinuria flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the active urinary sediment flag is set"
+        "kind": "formula",
+        "rule": "The serology observation's sledai serology points is determined by the following priority:\n1. 4, if all of the following hold: the complement trend is “Falling” and the anti ds dna trend is “Rising”;\n2. 2, if at least one of the following holds: the complement trend is “Falling” or the anti ds dna trend is “Rising”;\n3. in all other cases, 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SerologyObservations",
+            "field": "ComplementTrend",
+            "label": "complement trend"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "AntiDsDnaTrend",
+            "label": "anti ds dna trend"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The serology observation's sledai serology points is determined by the following priority:",
+          "cases": [
+            {
+              "value": "4",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the complement trend is “Falling”"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the anti ds dna trend is “Rising”"
+                  }
+                ]
               }
-            ]
-          }
-        },
-        {
-          "value": "“RenalFlareRisk”",
-          "when": {
-            "kind": "leaf",
-            "text": "the proteinuria g per day is at least 1.0"
-          }
-        },
-        {
-          "value": "“EarlyNephritis”",
-          "when": {
-            "kind": "leaf",
-            "text": "the significant proteinuria flag is set"
-          }
-        },
-        {
-          "value": "“SerologicActive”",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the anti ds dna trend is “Rising”"
-              },
-              {
-                "kind": "leaf",
-                "text": "the complement trend is “Falling”"
+            },
+            {
+              "value": "2",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the complement trend is “Falling”"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the anti ds dna trend is “Rising”"
+                  }
+                ]
               }
-            ]
-          }
-        },
-        {
-          "value": "“PresymptomaticAutoimmunity”",
-          "when": null
+            },
+            {
+              "value": "0",
+              "when": null
+            }
+          ],
+          "children": null
         }
-      ],
-      "children": null
-    }
-  },
-  "SerologyObservations.ProgressionStateOrder": {
-    "table": "SerologyObservations",
-    "field": "ProgressionStateOrder",
-    "kind": "formula",
-    "rule": "The serology observation's progression state order is determined by the following priority:\n1. 5, if the progression state key is “BiopsyIndicated”;\n2. 4, if the progression state key is “RenalFlareRisk”;\n3. 3, if the progression state key is “EarlyNephritis”;\n4. 2, if the progression state key is “SerologicActive”;\n5. in all other cases, 1.",
-    "mechanical": false,
-    "refs": [
-      {
+      },
+      "SerologyObservations.SledaiScore": {
+        "table": "SerologyObservations",
+        "field": "SledaiScore",
+        "kind": "formula",
+        "rule": "A serology observation's sledai score is computed as the sledai renal points plus the sledai serology points.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SerologyObservations",
+            "field": "SledaiRenalPoints",
+            "label": "sledai renal points"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "SledaiSerologyPoints",
+            "label": "sledai serology points"
+          }
+        ],
+        "structure": null
+      },
+      "SerologyObservations.ProgressionStateKey": {
         "table": "SerologyObservations",
         "field": "ProgressionStateKey",
-        "label": "progression state key"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The serology observation's progression state order is determined by the following priority:",
-      "cases": [
-        {
-          "value": "5",
-          "when": {
-            "kind": "leaf",
-            "text": "the progression state key is “BiopsyIndicated”"
+        "kind": "formula",
+        "rule": "The serology observation's progression state key is determined by the following priority:\n1. “BiopsyIndicated”, if at least one of the following holds: the nephrotic range proteinuria flag is set or the active urinary sediment flag is set;\n2. “RenalFlareRisk”, if the proteinuria g per day is at least 1.0;\n3. “EarlyNephritis”, if the significant proteinuria flag is set;\n4. “SerologicActive”, if all of the following hold: the anti ds dna trend is “Rising” and the complement trend is “Falling”;\n5. in all other cases, “PresymptomaticAutoimmunity”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SerologyObservations",
+            "field": "IsNephroticRangeProteinuria",
+            "label": "is nephrotic range proteinuria"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "HasActiveUrinarySediment",
+            "label": "has active urinary sediment"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "ProteinuriaGPerDay",
+            "label": "proteinuria g per day"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "IsSignificantProteinuria",
+            "label": "is significant proteinuria"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "AntiDsDnaTrend",
+            "label": "anti ds dna trend"
+          },
+          {
+            "table": "SerologyObservations",
+            "field": "ComplementTrend",
+            "label": "complement trend"
           }
-        },
-        {
-          "value": "4",
-          "when": {
-            "kind": "leaf",
-            "text": "the progression state key is “RenalFlareRisk”"
-          }
-        },
-        {
-          "value": "3",
-          "when": {
-            "kind": "leaf",
-            "text": "the progression state key is “EarlyNephritis”"
-          }
-        },
-        {
-          "value": "2",
-          "when": {
-            "kind": "leaf",
-            "text": "the progression state key is “SerologicActive”"
-          }
-        },
-        {
-          "value": "1",
-          "when": null
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The serology observation's progression state key is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“BiopsyIndicated”",
+              "when": {
+                "kind": "any",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the nephrotic range proteinuria flag is set"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the active urinary sediment flag is set"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“RenalFlareRisk”",
+              "when": {
+                "kind": "leaf",
+                "text": "the proteinuria g per day is at least 1.0"
+              }
+            },
+            {
+              "value": "“EarlyNephritis”",
+              "when": {
+                "kind": "leaf",
+                "text": "the significant proteinuria flag is set"
+              }
+            },
+            {
+              "value": "“SerologicActive”",
+              "when": {
+                "kind": "all",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "text": "the anti ds dna trend is “Rising”"
+                  },
+                  {
+                    "kind": "leaf",
+                    "text": "the complement trend is “Falling”"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "“PresymptomaticAutoimmunity”",
+              "when": null
+            }
+          ],
+          "children": null
         }
+      },
+      "SerologyObservations.ProgressionStateOrder": {
+        "table": "SerologyObservations",
+        "field": "ProgressionStateOrder",
+        "kind": "formula",
+        "rule": "The serology observation's progression state order is determined by the following priority:\n1. 5, if the progression state key is “BiopsyIndicated”;\n2. 4, if the progression state key is “RenalFlareRisk”;\n3. 3, if the progression state key is “EarlyNephritis”;\n4. 2, if the progression state key is “SerologicActive”;\n5. in all other cases, 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SerologyObservations",
+            "field": "ProgressionStateKey",
+            "label": "progression state key"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The serology observation's progression state order is determined by the following priority:",
+          "cases": [
+            {
+              "value": "5",
+              "when": {
+                "kind": "leaf",
+                "text": "the progression state key is “BiopsyIndicated”"
+              }
+            },
+            {
+              "value": "4",
+              "when": {
+                "kind": "leaf",
+                "text": "the progression state key is “RenalFlareRisk”"
+              }
+            },
+            {
+              "value": "3",
+              "when": {
+                "kind": "leaf",
+                "text": "the progression state key is “EarlyNephritis”"
+              }
+            },
+            {
+              "value": "2",
+              "when": {
+                "kind": "leaf",
+                "text": "the progression state key is “SerologicActive”"
+              }
+            },
+            {
+              "value": "1",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "SerologyObservations.Name": {
+        "table": "SerologyObservations",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A serology observation's name is the same as its serology observation ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SerologyObservations",
+            "field": "SerologyObservationId",
+            "label": "serology observation ID"
+          }
+        ],
+        "structure": null
+      },
+      "SerologyObservations.RelativePath": {
+        "table": "SerologyObservations",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A serology observation's relative path is computed as “/admin/serology/”, followed by the serology observation ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SerologyObservations",
+            "field": "SerologyObservationId",
+            "label": "serology observation ID"
+          }
+        ],
+        "structure": null
+      },
+      "TherapyOptions.Name": {
+        "table": "TherapyOptions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A therapy option's name is the same as its therapy label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TherapyOptions",
+            "field": "TherapyLabel",
+            "label": "therapy label"
+          }
+        ],
+        "structure": null
+      },
+      "TherapyOptions.RelativePath": {
+        "table": "TherapyOptions",
+        "field": "RelativePath",
+        "kind": "formula",
+        "rule": "A therapy option's relative path is computed as “/admin/therapy-options/”, followed by the therapy option ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TherapyOptions",
+            "field": "TherapyOptionId",
+            "label": "therapy option ID"
+          }
+        ],
+        "structure": null
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "AutoimmuneDiseases": [
+        "An autoimmune disease **must** have a disease label, and record whether it is a complex disease."
       ],
-      "children": null
+      "DiseaseStages": [
+        "A disease stage **must** have a stage label; a sort order; and an autoimmune disease."
+      ],
+      "Tissues": [
+        "A tissue **must** have a tissue label."
+      ],
+      "OmicsModalities": [
+        "An omics modality **must** have a modality label, and record whether it is a single cell."
+      ],
+      "FederatedDatasets": [
+        "A federated dataset **must** have a node label and a region, and record whether it is privacy preserving."
+      ],
+      "VariantTypes": [
+        "A variant type **must** have a type label, and record whether it is a rare variant class."
+      ],
+      "Individuals": [
+        "An individual **must** have a given name; a family name; an ancestry label; and an age years, and record whether it is ancestry absent from training and whether it has a cryptic relatedness flag."
+      ],
+      "GenomicVariants": [
+        "A genomic variant **must** have a variant label; an individual; a variant type; and an allele frequency, and record whether it has an allele specific expression."
+      ],
+      "OmicsAssays": [
+        "An omics assay **must** have an assay label; an individual; an omics modality; a batch ID; and a measurement error score, and record whether it has a cell state specific effect."
+      ],
+      "EvidenceItems": [
+        "An evidence item **must** have an evidence label; a causal mechanism; an omics assay; an effect size; and a standard error, and record whether it is cross modality; whether it is a negative control arm; whether it is an adjusted for ancestry p cs; whether it is an adjusted for batch; and whether it is a synthetic leaf."
+      ],
+      "CohortReplications": [
+        "A cohort replication **must** have a replication label; a causal mechanism; a federated dataset; a replication effect sign; a replication p value; and a replication ancestry label."
+      ],
+      "NegativeControlTests": [
+        "A negative control test **must** have a control label; a causal mechanism; a test kind; a permutation effect size; and a null threshold."
+      ],
+      "EnvironmentalExposures": [
+        "An environmental exposure **must** have an exposure label; an individual; and an exposure level, and record whether it is a maternal effect."
+      ],
+      "Treatments": [
+        "A treatment **must** have a treatment label; an individual; an autoimmune disease; and a treatment response, and record whether it has a treatment induced change and whether it has an adverse effect."
+      ],
+      "ClinicalPhenotypes": [
+        "A clinical phenotype **must** have a phenotype label; an individual; an autoimmune disease; and a severity score, and record whether it has an immune dysfunction."
+      ],
+      "CausalMechanisms": [
+        "A causal mechanism **must** have a mechanism label; an individual; and a mechanism type, and record whether it has pleiotropy."
+      ],
+      "EpistaticInteractions": [
+        "An epistatic interaction **must** have an interaction label; an individual; a primary variant; a secondary variant; and an epistasis score, and record whether it has pleiotropy."
+      ],
+      "CounterfactualTrajectories": [
+        "A counterfactual trajectory **must** have a trajectory label; an individual; an autoimmune disease; a projected severity; and a horizon months."
+      ],
+      "IndividualPredictions": [
+        "An individual prediction **must** have a prediction label; an individual; an autoimmune disease; and a prediction type."
+      ],
+      "CalibrationBins": [
+        "A calibration bin **must** have a bin label; an individual prediction; a predicted probability band; an observed event rate; and a coverage count."
+      ],
+      "InterventionTargets": [
+        "An intervention target **must** have a target label; a causal mechanism; an autoimmune disease; and a therapy class, and record whether it is validated."
+      ],
+      "Axioms": [
+        "An axiom **must** have a statement; a rationale; and a category."
+      ],
+      "TestsForSuccess": [
+        "A tests for success **must** have a claim; a how witnessed; and a status."
+      ],
+      "Features": [
+        "A feature **must** have a title; a category; a priority; a description; and a ref count."
+      ],
+      "InferenceKinds": [
+        "An inference kind **must** have a title; a description; an example field; an evidence count; a maturity; and a sort order."
+      ],
+      "OpenQuestions": [
+        "An open question **must** have a question and a context, and record whether it is resolved."
+      ],
+      "NonGoals": [
+        "A non goal **must** have a statement and a why excluded."
+      ],
+      "GlossaryTerms": [
+        "A glossary term **must** have a term and a definition."
+      ],
+      "EffortlessLoops": [
+        "An effortless loop **must** have a loop number; a title; a goal; a status; and a sort order."
+      ],
+      "StateMachines": [
+        "A state machine **must** have a subject table name and a subject state column."
+      ],
+      "MachineStates": [
+        "A machine state **must** reference exactly one state machine.",
+        "A machine state **must** have a state key."
+      ],
+      "StateTransitionRules": [
+        "A state transition rule **must** reference exactly one state machine.",
+        "A state transition rule **must** reference exactly one machine state as its from state.",
+        "A state transition rule **must** reference exactly one machine state as its to state."
+      ],
+      "StateTransitions": [
+        "A state transition **must** reference exactly one state machine.",
+        "A state transition **must** have a subject table name; a subject ID; and a to state key."
+      ],
+      "SubjectStateInstances": [
+        "A subject state instance **must** reference exactly one state machine.",
+        "A subject state instance **must** have a subject table name; a subject ID; a state key; and a sequence index."
+      ],
+      "DiseaseDomainConcepts": [
+        "A disease domain concept **must** have a concept label and a modeling status."
+      ],
+      "SerologyObservations": [
+        "A serology observation **must** reference exactly one individual.",
+        "A serology observation **must** have an observed at and a sequence index."
+      ],
+      "TherapyOptions": [
+        "A therapy option **must** have a therapy label."
+      ]
+    },
+    "connectors": {
+      "allOf": "all of these hold",
+      "anyOf": "any of these hold",
+      "if": "if",
+      "otherwise": "in all other cases",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "AutoimmuneDiseases": "autoimmune disease",
+      "DiseaseStages": "disease stage",
+      "Tissues": "tissue",
+      "OmicsModalities": "omics modality",
+      "FederatedDatasets": "federated dataset",
+      "VariantTypes": "variant type",
+      "Individuals": "individual",
+      "GenomicVariants": "genomic variant",
+      "OmicsAssays": "omics assay",
+      "EvidenceItems": "evidence item",
+      "CohortReplications": "cohort replication",
+      "NegativeControlTests": "negative control test",
+      "EnvironmentalExposures": "environmental exposure",
+      "Treatments": "treatment",
+      "ClinicalPhenotypes": "clinical phenotype",
+      "CausalMechanisms": "causal mechanism",
+      "EpistaticInteractions": "epistatic interaction",
+      "CounterfactualTrajectories": "counterfactual trajectory",
+      "IndividualPredictions": "individual prediction",
+      "CalibrationBins": "calibration bin",
+      "InterventionTargets": "intervention target",
+      "Axioms": "axiom",
+      "TestsForSuccess": "tests for success",
+      "Features": "feature",
+      "InferenceKinds": "inference kind",
+      "OpenQuestions": "open question",
+      "NonGoals": "non goal",
+      "GlossaryTerms": "glossary term",
+      "EffortlessLoops": "effortless loop",
+      "RoutingAndNavigation": "routing and navigation",
+      "StateMachines": "state machine",
+      "MachineStates": "machine state",
+      "StateTransitionRules": "state transition rule",
+      "StateTransitions": "state transition",
+      "SubjectStateInstances": "subject state instance",
+      "DiseaseDomainConcepts": "disease domain concept",
+      "SerologyObservations": "serology observation",
+      "TherapyOptions": "therapy option"
     }
-  },
-  "SerologyObservations.Name": {
-    "table": "SerologyObservations",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A serology observation's name is the same as its serology observation ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SerologyObservations",
-        "field": "SerologyObservationId",
-        "label": "serology observation ID"
-      }
-    ],
-    "structure": null
-  },
-  "SerologyObservations.RelativePath": {
-    "table": "SerologyObservations",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A serology observation's relative path is computed as “/admin/serology/”, followed by the serology observation ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "SerologyObservations",
-        "field": "SerologyObservationId",
-        "label": "serology observation ID"
-      }
-    ],
-    "structure": null
-  },
-  "TherapyOptions.Name": {
-    "table": "TherapyOptions",
-    "field": "Name",
-    "kind": "formula",
-    "rule": "A therapy option's name is the same as its therapy label.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TherapyOptions",
-        "field": "TherapyLabel",
-        "label": "therapy label"
-      }
-    ],
-    "structure": null
-  },
-  "TherapyOptions.RelativePath": {
-    "table": "TherapyOptions",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A therapy option's relative path is computed as “/admin/therapy-options/”, followed by the therapy option ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "TherapyOptions",
-        "field": "TherapyOptionId",
-        "label": "therapy option ID"
-      }
-    ],
-    "structure": null
   }
-}, rulespeakObligations: [], rulespeakStructural: {
-  "AutoimmuneDiseases": [
-    "An autoimmune diseas **must** have a disease label, and record whether it is a complex disease."
-  ],
-  "DiseaseStages": [
-    "A disease stage **must** have a stage label, a sort order, and an autoimmune disease."
-  ],
-  "Tissues": [
-    "A tissue **must** have a tissue label."
-  ],
-  "OmicsModalities": [
-    "An omics modality **must** have a modality label, and record whether it is a single cell."
-  ],
-  "FederatedDatasets": [
-    "A federated dataset **must** have a node label and a region, and record whether it is privacy preserving."
-  ],
-  "VariantTypes": [
-    "A variant type **must** have a type label, and record whether it is a rare variant class."
-  ],
-  "Individuals": [
-    "An individual **must** have a given name, a family name, an ancestry label, and an age years, and record whether it is ancestry absent from training and whether it has a cryptic relatedness flag."
-  ],
-  "GenomicVariants": [
-    "A genomic variant **must** have a variant label, an individual, a variant type, and an allele frequency, and record whether it has an allele specific expression."
-  ],
-  "OmicsAssays": [
-    "An omics assay **must** have an assay label, an individual, an omics modality, a batch ID, and a measurement error score, and record whether it has a cell state specific effect."
-  ],
-  "EvidenceItems": [
-    "An evidence item **must** have an evidence label, a causal mechanism, an omics assay, an effect size, and a standard error, and record whether it is a cross modality, whether it is a negative control arm, whether it is an adjusted for ancestry p cs, whether it is an adjusted for batch, and whether it is a synthetic leaf."
-  ],
-  "CohortReplications": [
-    "A cohort replication **must** have a replication label, a causal mechanism, a federated dataset, a replication effect sign, a replication p value, and a replication ancestry label."
-  ],
-  "NegativeControlTests": [
-    "A negative control test **must** have a control label, a causal mechanism, a test kind, a permutation effect size, and a null threshold."
-  ],
-  "EnvironmentalExposures": [
-    "An environmental exposure **must** have an exposure label, an individual, and an exposure level, and record whether it is a maternal effect."
-  ],
-  "Treatments": [
-    "A treatment **must** have a treatment label, an individual, an autoimmune disease, and a treatment response, and record whether it has a treatment induced change and whether it has an adverse effect."
-  ],
-  "ClinicalPhenotypes": [
-    "A clinical phenotype **must** have a phenotype label, an individual, an autoimmune disease, and a severity score, and record whether it has an immune dysfunction."
-  ],
-  "CausalMechanisms": [
-    "A causal mechanism **must** have a mechanism label, an individual, and a mechanism type, and record whether it has a pleiotropy."
-  ],
-  "EpistaticInteractions": [
-    "An epistatic interaction **must** have an interaction label, an individual, a primary variant, a secondary variant, and an epistasis score, and record whether it has a pleiotropy."
-  ],
-  "CounterfactualTrajectories": [
-    "A counterfactual trajectory **must** have a trajectory label, an individual, an autoimmune disease, a projected severity, and a horizon months."
-  ],
-  "IndividualPredictions": [
-    "An individual prediction **must** have a prediction label, an individual, an autoimmune disease, and a prediction type."
-  ],
-  "CalibrationBins": [
-    "A calibration bin **must** have a bin label, an individual prediction, a predicted probability band, an observed event rate, and a coverage count."
-  ],
-  "InterventionTargets": [
-    "An intervention target **must** have a target label, a causal mechanism, an autoimmune disease, and a therapy class, and record whether it is validated."
-  ],
-  "Axioms": [
-    "An axiom **must** have a statement, a rationale, and a category."
-  ],
-  "TestsForSuccess": [
-    "A tests for success **must** have a claim, a how witnessed, and a status."
-  ],
-  "Features": [
-    "A feature **must** have a title, a category, a priority, a description, and a ref count."
-  ],
-  "InferenceKinds": [
-    "An inference kind **must** have a title, a description, an example field, an evidence count, a maturity, and a sort order."
-  ],
-  "OpenQuestions": [
-    "An open question **must** have a question and a context, and record whether it is resolved."
-  ],
-  "NonGoals": [
-    "A non goal **must** have a statement and a why excluded."
-  ],
-  "GlossaryTerms": [
-    "A glossary term **must** have a term and a definition."
-  ],
-  "EffortlessLoops": [
-    "An effortless loop **must** have a loop number, a title, a goal, a status, and a sort order."
-  ],
-  "StateMachines": [
-    "A state machine **must** have a subject table name and a subject state column."
-  ],
-  "MachineStates": [
-    "A machine state **must** reference exactly one state machine.",
-    "A machine state **must** have a state key."
-  ],
-  "StateTransitionRules": [
-    "A state transition rule **must** reference exactly one state machine.",
-    "A state transition rule **must** reference exactly one machine state as its from state.",
-    "A state transition rule **must** reference exactly one machine state as its to state."
-  ],
-  "StateTransitions": [
-    "A state transition **must** reference exactly one state machine.",
-    "A state transition **must** have a subject table name, a subject ID, and a to state key."
-  ],
-  "SubjectStateInstances": [
-    "A subject state instance **must** reference exactly one state machine.",
-    "A subject state instance **must** have a subject table name, a subject ID, a state key, and a sequence index."
-  ],
-  "DiseaseDomainConcepts": [
-    "A disease domain concept **must** have a concept label and a modeling status."
-  ],
-  "SerologyObservations": [
-    "A serology observation **must** reference exactly one individual.",
-    "A serology observation **must** have an observed at and a sequence index."
-  ],
-  "TherapyOptions": [
-    "A therapy option **must** have a therapy label."
-  ]
 } };

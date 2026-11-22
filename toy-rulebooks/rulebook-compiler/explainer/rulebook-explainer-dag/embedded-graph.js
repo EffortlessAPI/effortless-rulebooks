@@ -27,7 +27,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -87,6 +102,996 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who",
+      "Speakers": "speaker"
+    }
+  },
+  "ar": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "حقل «introduction» في سجل «hello who» يُحسب على النحو الآتي: «Hi... »، ثم حقل «name»، ثم نقطة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hi... \" يليه name) يليه \".\""
+      },
+      "Speakers.Introduction": {
+        "table": "Speakers",
+        "field": "Introduction",
+        "kind": "lookup",
+        "rule": "حقل «introduction» في سجل «speaker» هو ناتج دالة «IFNA» مطبّقةً على حقل «introduction» من السجل المرتبط عبر حقل «phrase» ونص فارغ.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Introduction",
+            "label": "introduction"
+          },
+          {
+            "table": "Speakers",
+            "field": "Phrase",
+            "label": "phrase"
+          },
+          {
+            "table": "HelloWhos",
+            "field": "HelloWhoId",
+            "label": "hello who ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Ifna(حقل «introduction» من السجل المرتبط عبر «phrase», \"\")"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "في كل سجل «hello who»، **يجب أن** تُحدّد قيمة حقل «name»."
+      ],
+      "Speakers": [
+        "في كل سجل «speaker»، **يجب أن** تُحدّد قيمة حقل «name» وحقل «phrase»."
+      ]
+    },
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who",
+      "Speakers": "speaker"
+    }
+  },
+  "de": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "Ein Hello Who: Introduction wird berechnet als „Hi... “, gefolgt von die Name, gefolgt von ein Punkt.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hi... \" verbunden mit Name) verbunden mit \".\""
+      },
+      "Speakers.Introduction": {
+        "table": "Speakers",
+        "field": "Introduction",
+        "kind": "lookup",
+        "rule": "Ein Speaker: Introduction ist der IFNA von der Introduction des zugehörigen Phrase des Speaker und eine leere Zeichenkette.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Introduction",
+            "label": "introduction"
+          },
+          {
+            "table": "Speakers",
+            "field": "Phrase",
+            "label": "phrase"
+          },
+          {
+            "table": "HelloWhos",
+            "field": "HelloWhoId",
+            "label": "hello who ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Ifna(der Introduction des verknüpften Phrase, \"\")"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "Ein Hello Who **muss** eine Name haben."
+      ],
+      "Speakers": [
+        "Ein Speaker **muss** eine Name und eine Phrase haben."
+      ]
+    },
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "Hello Who",
+      "Speakers": "Speaker"
+    }
+  },
+  "es": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "Un hello who: introduction se calcula como «Hi... », seguido de el name, seguido de un punto.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hi... \" unido con name) unido con \".\""
+      },
+      "Speakers.Introduction": {
+        "table": "Speakers",
+        "field": "Introduction",
+        "kind": "lookup",
+        "rule": "Un speaker: introduction es el IFNA de el introduction del phrase vinculado del speaker y una cadena vacía.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Introduction",
+            "label": "introduction"
+          },
+          {
+            "table": "Speakers",
+            "field": "Phrase",
+            "label": "phrase"
+          },
+          {
+            "table": "HelloWhos",
+            "field": "HelloWhoId",
+            "label": "hello who ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Ifna(el introduction del phrase vinculado, \"\")"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "Un hello who **debe** tener un name."
+      ],
+      "Speakers": [
+        "Un speaker **debe** tener un name y un phrase."
+      ]
+    },
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who",
+      "Speakers": "speaker"
+    }
+  },
+  "fr": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "Un hello who : introduction est calculé comme « Hi... », suivi de le name, suivi de un point.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hi... \" joint à name) joint à \".\""
+      },
+      "Speakers.Introduction": {
+        "table": "Speakers",
+        "field": "Introduction",
+        "kind": "lookup",
+        "rule": "Un speaker : introduction est le IFNA de le introduction du phrase lié du speaker et une chaîne vide.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Introduction",
+            "label": "introduction"
+          },
+          {
+            "table": "Speakers",
+            "field": "Phrase",
+            "label": "phrase"
+          },
+          {
+            "table": "HelloWhos",
+            "field": "HelloWhoId",
+            "label": "hello who ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Ifna(le introduction du phrase lié, \"\")"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "Un hello who **doit** avoir un name."
+      ],
+      "Speakers": [
+        "Un speaker **doit** avoir un name et un phrase."
+      ]
+    },
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who",
+      "Speakers": "speaker"
+    }
+  },
+  "hi": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "hello who का “introduction” “Hi... ”, उसके बाद name, उसके बाद एक बिंदु के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hi... \" name से जुड़ा हुआ) \".\" से जुड़ा हुआ"
+      },
+      "Speakers.Introduction": {
+        "table": "Speakers",
+        "field": "Introduction",
+        "kind": "lookup",
+        "rule": "speaker का “introduction” speaker के “phrase” का “introduction” और एक खाली स्ट्रिंग का IFNA है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Introduction",
+            "label": "introduction"
+          },
+          {
+            "table": "Speakers",
+            "field": "Phrase",
+            "label": "phrase"
+          },
+          {
+            "table": "HelloWhos",
+            "field": "HelloWhoId",
+            "label": "hello who ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Ifna(लिंक किए गए “phrase” का introduction, \"\")"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "hello who को name रखना **अनिवार्य** है।"
+      ],
+      "Speakers": [
+        "speaker को name और phrase रखना **अनिवार्य** है।"
+      ]
+    },
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "HelloWhos": "hello who",
+      "Speakers": "speaker"
+    }
+  },
+  "id": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "Untuk setiap hello who, introduction dihitung sebagai “Hi... ”, diikuti name, diikuti tanda titik.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hi... \" digabung dengan name) digabung dengan \".\""
+      },
+      "Speakers.Introduction": {
+        "table": "Speakers",
+        "field": "Introduction",
+        "kind": "lookup",
+        "rule": "Untuk setiap speaker, introduction adalah hasil fungsi IFNA atas introduction dari phrase yang tertaut pada speaker tersebut dan teks kosong.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Introduction",
+            "label": "introduction"
+          },
+          {
+            "table": "Speakers",
+            "field": "Phrase",
+            "label": "phrase"
+          },
+          {
+            "table": "HelloWhos",
+            "field": "HelloWhoId",
+            "label": "hello who ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Ifna(introduction dari phrase yang tertaut, \"\")"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "Setiap hello who **harus** memiliki name."
+      ],
+      "Speakers": [
+        "Setiap speaker **harus** memiliki name dan phrase."
+      ]
+    },
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who",
+      "Speakers": "speaker"
+    }
+  },
+  "it": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "Un hello who: introduction è calcolato come «Hi... », seguito da il name, seguito da un punto.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hi... \" unito a name) unito a \".\""
+      },
+      "Speakers.Introduction": {
+        "table": "Speakers",
+        "field": "Introduction",
+        "kind": "lookup",
+        "rule": "Un speaker: introduction è il IFNA di il introduction del phrase collegato del speaker e una stringa vuota.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Introduction",
+            "label": "introduction"
+          },
+          {
+            "table": "Speakers",
+            "field": "Phrase",
+            "label": "phrase"
+          },
+          {
+            "table": "HelloWhos",
+            "field": "HelloWhoId",
+            "label": "hello who ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Ifna(il introduction del phrase collegato, \"\")"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "Un hello who **deve** avere un name."
+      ],
+      "Speakers": [
+        "Un speaker **deve** avere un name e un phrase."
+      ]
+    },
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who",
+      "Speakers": "speaker"
+    }
+  },
+  "ja": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "hello whoの「introduction」は 「Hi... 」、続いて name、続いて ピリオド として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hi... \" と name を連結) と \".\" を連結"
+      },
+      "Speakers.Introduction": {
+        "table": "Speakers",
+        "field": "Introduction",
+        "kind": "lookup",
+        "rule": "speakerの「introduction」は リンクされた「phrase」の「introduction」および空文字列 の IFNA です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Introduction",
+            "label": "introduction"
+          },
+          {
+            "table": "Speakers",
+            "field": "Phrase",
+            "label": "phrase"
+          },
+          {
+            "table": "HelloWhos",
+            "field": "HelloWhoId",
+            "label": "hello who ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Ifna(リンクされた「phrase」の introduction, \"\")"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "hello whoは name を持た**なければなりません**。"
+      ],
+      "Speakers": [
+        "speakerは nameおよびphrase を持た**なければなりません**。"
+      ]
+    },
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "HelloWhos": "hello who",
+      "Speakers": "speaker"
+    }
+  },
+  "ko": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "‘hello who’ 레코드의 ‘introduction’ 값은 다음과 같이 계산됩니다: “Hi... ”, 이어서 ‘name’, 이어서 마침표.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hi... \" 뒤에 name 연결한 결과) 뒤에 \".\" 연결한 결과"
+      },
+      "Speakers.Introduction": {
+        "table": "Speakers",
+        "field": "Introduction",
+        "kind": "lookup",
+        "rule": "‘speaker’ 레코드의 ‘introduction’ 값은 연결된 ‘phrase’ 레코드의 ‘introduction’ 및 빈 문자열에 대한 IFNA 함수의 결과입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Introduction",
+            "label": "introduction"
+          },
+          {
+            "table": "Speakers",
+            "field": "Phrase",
+            "label": "phrase"
+          },
+          {
+            "table": "HelloWhos",
+            "field": "HelloWhoId",
+            "label": "hello who ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Ifna(연결된 phrase 레코드의 introduction, \"\")"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "‘hello who’ 레코드는 ‘name’ 값을 포함**해야 합니다**."
+      ],
+      "Speakers": [
+        "‘speaker’ 레코드는 ‘name’ 및 ‘phrase’ 값을 포함**해야 합니다**."
+      ]
+    },
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who",
+      "Speakers": "speaker"
+    }
+  },
+  "nl": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "Een hello who: introduction wordt berekend als ‘Hi... ’, gevolgd door de name, gevolgd door een punt.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hi... \" samengevoegd met name) samengevoegd met \".\""
+      },
+      "Speakers.Introduction": {
+        "table": "Speakers",
+        "field": "Introduction",
+        "kind": "lookup",
+        "rule": "Een speaker: introduction is de IFNA van de introduction van de gekoppelde phrase van de speaker en een lege tekenreeks.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Introduction",
+            "label": "introduction"
+          },
+          {
+            "table": "Speakers",
+            "field": "Phrase",
+            "label": "phrase"
+          },
+          {
+            "table": "HelloWhos",
+            "field": "HelloWhoId",
+            "label": "hello who ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Ifna(de introduction van de gekoppelde phrase, \"\")"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "Een hello who **moet** een name hebben."
+      ],
+      "Speakers": [
+        "Een speaker **moet** een name en een phrase hebben."
+      ]
+    },
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who",
+      "Speakers": "speaker"
+    }
+  },
+  "pt": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "Um hello who: introduction é calculado como “Hi... ”, seguido de o name, seguido de um ponto.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hi... \" unido a name) unido a \".\""
+      },
+      "Speakers.Introduction": {
+        "table": "Speakers",
+        "field": "Introduction",
+        "kind": "lookup",
+        "rule": "Um speaker: introduction é o IFNA de o introduction do phrase vinculado do speaker e uma cadeia vazia.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Introduction",
+            "label": "introduction"
+          },
+          {
+            "table": "Speakers",
+            "field": "Phrase",
+            "label": "phrase"
+          },
+          {
+            "table": "HelloWhos",
+            "field": "HelloWhoId",
+            "label": "hello who ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Ifna(o introduction do phrase vinculado, \"\")"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "Um hello who **deve** ter um name."
+      ],
+      "Speakers": [
+        "Um speaker **deve** ter um name e um phrase."
+      ]
+    },
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who",
+      "Speakers": "speaker"
+    }
+  },
+  "ru": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "Hello who: «introduction» вычисляется как «Hi... », затем name, затем точка.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hi... \" соединено с name) соединено с \".\""
+      },
+      "Speakers.Introduction": {
+        "table": "Speakers",
+        "field": "Introduction",
+        "kind": "lookup",
+        "rule": "Speaker: «introduction» — это IFNA от «introduction» связанного «phrase» и пустая строка.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Introduction",
+            "label": "introduction"
+          },
+          {
+            "table": "Speakers",
+            "field": "Phrase",
+            "label": "phrase"
+          },
+          {
+            "table": "HelloWhos",
+            "field": "HelloWhoId",
+            "label": "hello who ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Ifna(introduction связанного «phrase», \"\")"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "Hello who **обязан** иметь name."
+      ],
+      "Speakers": [
+        "Speaker **обязан** иметь name и phrase."
+      ]
+    },
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who",
+      "Speakers": "speaker"
+    }
+  },
+  "tr": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "“hello who” kaydının “introduction” alanı, “Hi... ”, ardından “name” alanı, ardından bir nokta olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hi... \" ile name birleşimi) ile \".\" birleşimi"
+      },
+      "Speakers.Introduction": {
+        "table": "Speakers",
+        "field": "Introduction",
+        "kind": "lookup",
+        "rule": "“speaker” kaydının “introduction” alanı, “IFNA” işlevinin “phrase” alanı üzerinden bağlı kaydın “introduction” alanı ve boş metin için verdiği sonuç olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Introduction",
+            "label": "introduction"
+          },
+          {
+            "table": "Speakers",
+            "field": "Phrase",
+            "label": "phrase"
+          },
+          {
+            "table": "HelloWhos",
+            "field": "HelloWhoId",
+            "label": "hello who ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Ifna(bağlı phrase kaydının introduction değeri, \"\")"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "“hello who” kaydı, “name” alanı dolu olmak **zorundadır**."
+      ],
+      "Speakers": [
+        "“speaker” kaydı, “name” alanı ve “phrase” alanı dolu olmak **zorundadır**."
+      ]
+    },
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who",
+      "Speakers": "speaker"
+    }
+  },
+  "vi": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "Trường “introduction” của mỗi hello who được tính bằng “Hi... ”, tiếp theo là name, tiếp theo là dấu chấm.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hi... \" nối với name) nối với \".\""
+      },
+      "Speakers.Introduction": {
+        "table": "Speakers",
+        "field": "Introduction",
+        "kind": "lookup",
+        "rule": "Trường “introduction” của mỗi speaker là kết quả của hàm IFNA trên trường “introduction” của bản ghi liên kết qua trường “phrase” và chuỗi rỗng.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Introduction",
+            "label": "introduction"
+          },
+          {
+            "table": "Speakers",
+            "field": "Phrase",
+            "label": "phrase"
+          },
+          {
+            "table": "HelloWhos",
+            "field": "HelloWhoId",
+            "label": "hello who ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Ifna(introduction của bản ghi liên kết qua phrase, \"\")"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "Mỗi hello who **phải** có name."
+      ],
+      "Speakers": [
+        "Mỗi speaker **phải** có name và phrase."
+      ]
+    },
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "HelloWhos": "hello who",
+      "Speakers": "speaker"
+    }
+  },
+  "zh": {
+    "fields": {
+      "HelloWhos.Introduction": {
+        "table": "HelloWhos",
+        "field": "Introduction",
+        "kind": "formula",
+        "rule": "hello who的“introduction”按 “Hi... ”,接着是name,接着是一个句点 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Name",
+            "label": "name"
+          }
+        ],
+        "structure": null,
+        "plain": "(\"Hi... \"与name拼接)与\".\"拼接"
+      },
+      "Speakers.Introduction": {
+        "table": "Speakers",
+        "field": "Introduction",
+        "kind": "lookup",
+        "rule": "speaker的“introduction”为 所关联的“phrase”的“introduction”且空字符串的IFNA。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "HelloWhos",
+            "field": "Introduction",
+            "label": "introduction"
+          },
+          {
+            "table": "Speakers",
+            "field": "Phrase",
+            "label": "phrase"
+          },
+          {
+            "table": "HelloWhos",
+            "field": "HelloWhoId",
+            "label": "hello who ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Ifna(所关联的“phrase”的introduction, \"\")"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "HelloWhos": [
+        "hello who**必须**具有name。"
+      ],
+      "Speakers": [
+        "speaker**必须**具有name且phrase。"
+      ]
+    },
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "HelloWhos": "hello who",

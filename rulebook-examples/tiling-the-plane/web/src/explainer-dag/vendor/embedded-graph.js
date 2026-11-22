@@ -1635,7 +1635,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -2734,6 +2749,17376 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "SymmetryGroups": "symmetry group",
+      "Prototiles": "prototile",
+      "Tilings": "tiling",
+      "TilingPrototiles": "tiling prototile",
+      "VertexFigures": "vertex figure",
+      "Regions": "region",
+      "Placements": "placement",
+      "WallpaperDesigns": "wallpaper design"
+    }
+  },
+  "ar": {
+    "fields": {
+      "SymmetryGroups.Name": {
+        "table": "SymmetryGroups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «symmetry group» يطابق حقل «symmetry group ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symmetry group ID"
+      },
+      "SymmetryGroups.TilingCount": {
+        "table": "SymmetryGroups",
+        "field": "TilingCount",
+        "kind": "rollup",
+        "rule": "حقل «tiling count» في سجل «symmetry group» هو عدد سجلات «tilings» المرتبطة بسجل «symmetry group».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «tilings» التي يتحقق فيها أنّ حقل «symmetry group» يساوي symmetry group ID"
+      },
+      "SymmetryGroups.WallpaperDesignCount": {
+        "table": "SymmetryGroups",
+        "field": "WallpaperDesignCount",
+        "kind": "rollup",
+        "rule": "حقل «wallpaper design count» في سجل «symmetry group» هو عدد سجلات «wallpaper designs» المرتبطة بسجل «symmetry group».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «wallpaper designs» التي يتحقق فيها أنّ حقل «symmetry group» يساوي symmetry group ID"
+      },
+      "Prototiles.Name": {
+        "table": "Prototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «prototile» يُحسب على النحو الآتي: حقل «display name» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name بأحرف صغيرة بعد وضع «-» مكان « »"
+      },
+      "Prototiles.Area": {
+        "table": "Prototiles",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "حقل «area» في سجل «prototile» يُحسب على النحو الآتي: 0.25 مضروبًا في حقل «sides» مضروبًا في حقل «edge length» مرفوعًا إلى الأس 2 مقسومًا على ظل العدد π مقسومًا على حقل «sides».",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Prototiles",
+            "field": "EdgeLength",
+            "label": "edge length"
+          }
+        ],
+        "structure": null,
+        "plain": "((0.25 ضرب sides) ضرب power(edge length, 2)) تقسيم tan((pi() تقسيم sides))"
+      },
+      "Prototiles.InteriorAngleDeg": {
+        "table": "Prototiles",
+        "field": "InteriorAngleDeg",
+        "kind": "formula",
+        "rule": "حقل «interior angle deg» في سجل «prototile» يُحسب على النحو الآتي: حقل «sides» ناقص 2 مضروبًا في 180 مقسومًا على حقل «sides».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "((sides ناقص 2) ضرب 180) تقسيم sides"
+      },
+      "Prototiles.VertexAngleTurns": {
+        "table": "Prototiles",
+        "field": "VertexAngleTurns",
+        "kind": "formula",
+        "rule": "حقل «vertex angle turns» في سجل «prototile» يُحسب على النحو الآتي: حقل «interior angle deg» مقسومًا على 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Interior angle deg تقسيم 360"
+      },
+      "Prototiles.IsRegular": {
+        "table": "Prototiles",
+        "field": "IsRegular",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «prototile» على أنه «regular» إذا تحقق أنّ حقل «sides» لا يقل عن 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides لا يقل عن 3"
+      },
+      "Prototiles.IsTriangle": {
+        "table": "Prototiles",
+        "field": "IsTriangle",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «prototile» على أنه «triangle» إذا تحقق أنّ حقل «sides» يساوي 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides يساوي 3"
+      },
+      "Prototiles.IsSquare": {
+        "table": "Prototiles",
+        "field": "IsSquare",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «prototile» على أنه «square» إذا تحقق أنّ حقل «sides» يساوي 4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides يساوي 4"
+      },
+      "Prototiles.UsedInTilingsCount": {
+        "table": "Prototiles",
+        "field": "UsedInTilingsCount",
+        "kind": "rollup",
+        "rule": "حقل «used in tilings count» في سجل «prototile» هو عدد سجلات «tiling prototiles» المرتبطة بسجل «prototile».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «tiling prototiles» التي يتحقق فيها أنّ حقل «prototile» يساوي prototile ID"
+      },
+      "Tilings.Name": {
+        "table": "Tilings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «tiling» يُحسب على النحو الآتي: حقل «display name» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name بأحرف صغيرة بعد وضع «-» مكان « »"
+      },
+      "Tilings.SymmetryNotation": {
+        "table": "Tilings",
+        "field": "SymmetryNotation",
+        "kind": "lookup",
+        "rule": "حقل «symmetry notation» في سجل «tiling» مأخوذ من السجل المرتبط به عبر حقل «symmetry group».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «notation» من السجل المرتبط عبر «symmetry group»"
+      },
+      "Tilings.DistinctPrototileCount": {
+        "table": "Tilings",
+        "field": "DistinctPrototileCount",
+        "kind": "rollup",
+        "rule": "حقل «distinct prototile count» في سجل «tiling» هو عدد سجلات «tiling prototiles» المرتبطة بسجل «tiling».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «tiling prototiles» التي يتحقق فيها أنّ حقل «tiling» يساوي tiling ID"
+      },
+      "Tilings.VertexFigureCount": {
+        "table": "Tilings",
+        "field": "VertexFigureCount",
+        "kind": "rollup",
+        "rule": "حقل «vertex figure count» في سجل «tiling» هو عدد سجلات «vertex figures» المرتبطة بسجل «tiling».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «vertex figures» التي يتحقق فيها أنّ حقل «tiling» يساوي tiling ID"
+      },
+      "Tilings.ValidVertexFigureCount": {
+        "table": "Tilings",
+        "field": "ValidVertexFigureCount",
+        "kind": "rollup",
+        "rule": "حقل «valid vertex figure count» في سجل «tiling» هو عدد سجلات «vertex figures» المرتبطة بسجل «tiling» التي تُصنّف على أنها «valid».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "IsValid",
+            "label": "is valid"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «vertex figures» التي يتحقق فيها أنّ حقل «tiling» يساوي tiling ID وحقل «is valid» يساوي نعم"
+      },
+      "Tilings.IsRegularTiling": {
+        "table": "Tilings",
+        "field": "IsRegularTiling",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «tiling» على أنه «regular tiling» إذا تحقق أنّ حقل «distinct prototile count» يساوي 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DistinctPrototileCount",
+            "label": "distinct prototile count"
+          }
+        ],
+        "structure": null,
+        "plain": "Distinct prototile count يساوي 1"
+      },
+      "Tilings.AllVerticesValid": {
+        "table": "Tilings",
+        "field": "AllVerticesValid",
+        "kind": "formula",
+        "rule": "يوسم سجل «tiling» بعلامة «all vertices valid» إذا تحقق أنّ حقل «valid vertex figure count» يساوي حقل «vertex figure count».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "ValidVertexFigureCount",
+            "label": "valid vertex figure count"
+          },
+          {
+            "table": "Tilings",
+            "field": "VertexFigureCount",
+            "label": "vertex figure count"
+          }
+        ],
+        "structure": null,
+        "plain": "Valid vertex figure count يساوي vertex figure count"
+      },
+      "Tilings.LatticeDeterminant": {
+        "table": "Tilings",
+        "field": "LatticeDeterminant",
+        "kind": "formula",
+        "rule": "حقل «lattice determinant» في سجل «tiling» يُحسب على النحو الآتي: حقل «t1x» مضروبًا في حقل «t2y» ناقص حقل «t1y» مضروبًا في حقل «t2x».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "T1x",
+            "label": "t1x"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2y",
+            "label": "t2y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T1y",
+            "label": "t1y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2x",
+            "label": "t2x"
+          }
+        ],
+        "structure": null,
+        "plain": "(t1x ضرب t2y) ناقص (t1y ضرب t2x)"
+      },
+      "Tilings.FundamentalDomainArea": {
+        "table": "Tilings",
+        "field": "FundamentalDomainArea",
+        "kind": "formula",
+        "rule": "حقل «fundamental domain area» في سجل «tiling» يُحسب على النحو الآتي: حقل «lattice determinant» بالقيمة المطلقة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Lattice determinant بالقيمة المطلقة"
+      },
+      "Tilings.HasLattice": {
+        "table": "Tilings",
+        "field": "HasLattice",
+        "kind": "formula",
+        "rule": "يُعدّ سجل «tiling» حائزًا على «lattice» إذا تحقق أنّ حقل «lattice determinant» بالقيمة المطلقة أكبر من 0.0001.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Lattice determinant بالقيمة المطلقة أكبر من 0.0001"
+      },
+      "Tilings.DoesTilePlane": {
+        "table": "Tilings",
+        "field": "DoesTilePlane",
+        "kind": "formula",
+        "rule": "يُعدّ سجل «tiling» محققًا لشرط «does tile plane» إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «all vertices valid» مفعّلة وعلامة «lattice» مفعّلة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "AllVerticesValid",
+            "label": "all vertices valid"
+          },
+          {
+            "table": "Tilings",
+            "field": "HasLattice",
+            "label": "has lattice"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُعدّ سجل «tiling» محققًا لشرط «does tile plane» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "علامة «all vertices valid» مفعّلة"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "علامة «lattice» مفعّلة"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "All vertices valid وhas lattice"
+      },
+      "TilingPrototiles.Name": {
+        "table": "TilingPrototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «tiling prototile» يُحسب على النحو الآتي: حقل «tiling»، ثم شرطة مائلة، ثم حقل «prototile».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling، ثم \"/\"، ثم prototile"
+      },
+      "TilingPrototiles.PrototileSides": {
+        "table": "TilingPrototiles",
+        "field": "PrototileSides",
+        "kind": "lookup",
+        "rule": "حقل «prototile sides» في سجل «tiling prototile» مأخوذ من السجل المرتبط به عبر حقل «prototile».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «sides» من السجل المرتبط عبر «prototile»"
+      },
+      "TilingPrototiles.PrototileInteriorAngle": {
+        "table": "TilingPrototiles",
+        "field": "PrototileInteriorAngle",
+        "kind": "lookup",
+        "rule": "حقل «prototile interior angle» في سجل «tiling prototile» يأخذ قيمة حقل «interior angle deg» من السجل المرتبط به عبر حقل «prototile».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «interior angle deg» من السجل المرتبط عبر «prototile»"
+      },
+      "VertexFigures.Name": {
+        "table": "VertexFigures",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «vertex figure» يُحسب على النحو الآتي: حقل «tiling»، ثم «@»، ثم حقل «config».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "Config",
+            "label": "config"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling، ثم \"@\"، ثم config"
+      },
+      "VertexFigures.TurnsAtVertex": {
+        "table": "VertexFigures",
+        "field": "TurnsAtVertex",
+        "kind": "formula",
+        "rule": "حقل «turns at vertex» في سجل «vertex figure» يُحسب على النحو الآتي: حقل «angle sum deg» مقسومًا على 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle sum deg تقسيم 360"
+      },
+      "VertexFigures.AngleGapDeg": {
+        "table": "VertexFigures",
+        "field": "AngleGapDeg",
+        "kind": "formula",
+        "rule": "حقل «angle gap deg» في سجل «vertex figure» يُحسب على النحو الآتي: حقل «angle sum deg» ناقص 360 بالقيمة المطلقة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "(angle sum deg ناقص 360) بالقيمة المطلقة"
+      },
+      "VertexFigures.IsValid": {
+        "table": "VertexFigures",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «vertex figure» على أنه «valid» إذا تحقق أنّ حقل «angle gap deg» لا يزيد على 0.0001.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleGapDeg",
+            "label": "angle gap deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle gap deg لا يزيد على 0.0001"
+      },
+      "Regions.Name": {
+        "table": "Regions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «region» يُحسب على النحو الآتي: حقل «display name» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name بأحرف صغيرة بعد وضع «-» مكان « »"
+      },
+      "Regions.Area": {
+        "table": "Regions",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "حقل «area» في سجل «region» يُحسب على النحو الآتي: حقل «width» مضروبًا في حقل «height».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          }
+        ],
+        "structure": null,
+        "plain": "Width ضرب height"
+      },
+      "Regions.PlacementCount": {
+        "table": "Regions",
+        "field": "PlacementCount",
+        "kind": "rollup",
+        "rule": "حقل «placement count» في سجل «region» هو عدد سجلات «placements» المرتبطة بسجل «region».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «placements» التي يتحقق فيها أنّ حقل «region» يساوي region ID"
+      },
+      "Regions.CoveredArea": {
+        "table": "Regions",
+        "field": "CoveredArea",
+        "kind": "rollup",
+        "rule": "حقل «covered area» في سجل «region» هو مجموع قيم حقل «tile area» عبر سجلات «placements» المرتبطة بسجل «region».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "TileArea",
+            "label": "tile area"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «tile area» في جميع سجلات «placements» التي يتحقق فيها أنّ حقل «region» يساوي region ID"
+      },
+      "Regions.OverlapCount": {
+        "table": "Regions",
+        "field": "OverlapCount",
+        "kind": "rollup",
+        "rule": "حقل «overlap count» في سجل «region» هو عدد سجلات «placements» المرتبطة بسجل «region» التي تُصنّف على أنها «overlapping».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          },
+          {
+            "table": "Placements",
+            "field": "IsOverlapping",
+            "label": "is overlapping"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «placements» التي يتحقق فيها أنّ حقل «region» يساوي region ID وحقل «is overlapping» يساوي نعم"
+      },
+      "Regions.CoveragePct": {
+        "table": "Regions",
+        "field": "CoveragePct",
+        "kind": "formula",
+        "rule": "حقل «coverage pct» في سجل «region» يُحسب على النحو الآتي: 100 مضروبًا في حقل «covered area» مقسومًا على حقل «area».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveredArea",
+            "label": "covered area"
+          },
+          {
+            "table": "Regions",
+            "field": "Area",
+            "label": "area"
+          }
+        ],
+        "structure": null,
+        "plain": "(100 ضرب covered area) تقسيم area"
+      },
+      "Regions.IsFullyCovered": {
+        "table": "Regions",
+        "field": "IsFullyCovered",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «region» على أنه «fully covered» إذا تحقق أنّ حقل «coverage pct» لا يقل عن 100.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveragePct",
+            "label": "coverage pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Coverage pct لا يقل عن 100"
+      },
+      "Regions.IsCleanTiling": {
+        "table": "Regions",
+        "field": "IsCleanTiling",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «region» على أنه «clean tiling» إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «fully covered» مفعّلة وحقل «overlap count» يساوي 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "IsFullyCovered",
+            "label": "is fully covered"
+          },
+          {
+            "table": "Regions",
+            "field": "OverlapCount",
+            "label": "overlap count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُصنّف سجل «region» على أنه «clean tiling» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "علامة «fully covered» مفعّلة"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "حقل «overlap count» يساوي 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is fully covered وoverlap count يساوي 0"
+      },
+      "Placements.Name": {
+        "table": "Placements",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «placement» يُحسب على النحو الآتي: حقل «region»، ثم «#»، ثم «placement ID».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Placements",
+            "field": "PlacementId",
+            "label": "placement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Region، ثم \"#\"، ثم placement ID"
+      },
+      "Placements.TileArea": {
+        "table": "Placements",
+        "field": "TileArea",
+        "kind": "lookup",
+        "rule": "حقل «tile area» في سجل «placement» مأخوذ من السجل المرتبط به عبر حقل «prototile».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Area",
+            "label": "area"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «area» من السجل المرتبط عبر «prototile»"
+      },
+      "Placements.TileSides": {
+        "table": "Placements",
+        "field": "TileSides",
+        "kind": "lookup",
+        "rule": "حقل «tile sides» في سجل «placement» مأخوذ من السجل المرتبط به عبر حقل «prototile».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «sides» من السجل المرتبط عبر «prototile»"
+      },
+      "Placements.RegionWidth": {
+        "table": "Placements",
+        "field": "RegionWidth",
+        "kind": "lookup",
+        "rule": "حقل «region width» في سجل «placement» مأخوذ من السجل المرتبط به عبر حقل «region».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «width» من السجل المرتبط عبر «region»"
+      },
+      "Placements.RegionHeight": {
+        "table": "Placements",
+        "field": "RegionHeight",
+        "kind": "lookup",
+        "rule": "حقل «region height» في سجل «placement» مأخوذ من السجل المرتبط به عبر حقل «region».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «height» من السجل المرتبط عبر «region»"
+      },
+      "Placements.IsInsideRegion": {
+        "table": "Placements",
+        "field": "IsInsideRegion",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «placement» على أنه «inside region» إذا تحقق أنّ جميع الشروط الآتية متحققة: حقل «x» لا يقل عن 0، وحقل «y» لا يقل عن 0، وحقل «x» أقل من حقل «region width»، وحقل «y» أقل من حقل «region height».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "X",
+            "label": "x"
+          },
+          {
+            "table": "Placements",
+            "field": "Y",
+            "label": "y"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionWidth",
+            "label": "region width"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionHeight",
+            "label": "region height"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُصنّف سجل «placement» على أنه «inside region» إذا تحقق جميع ما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "حقل «x» لا يقل عن 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "حقل «y» لا يقل عن 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "حقل «x» أقل من حقل «region width»"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "حقل «y» أقل من حقل «region height»"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "X لا يقل عن 0، وy لا يقل عن 0، وx أقل من region width، وy أقل من region height"
+      },
+      "WallpaperDesigns.Name": {
+        "table": "WallpaperDesigns",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «wallpaper design» يُحسب على النحو الآتي: حقل «display name» بأحرف صغيرة بعد وضع شرطة مكان كل مسافة.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name بأحرف صغيرة بعد وضع «-» مكان « »"
+      },
+      "WallpaperDesigns.GroupNotation": {
+        "table": "WallpaperDesigns",
+        "field": "GroupNotation",
+        "kind": "lookup",
+        "rule": "حقل «group notation» في سجل «wallpaper design» مأخوذ من السجل المرتبط به عبر حقل «symmetry group».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «notation» من السجل المرتبط عبر «symmetry group»"
+      },
+      "WallpaperDesigns.GroupOrbifold": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOrbifold",
+        "kind": "lookup",
+        "rule": "حقل «group orbifold» في سجل «wallpaper design» مأخوذ من السجل المرتبط به عبر حقل «symmetry group».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Orbifold",
+            "label": "orbifold"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «orbifold» من السجل المرتبط عبر «symmetry group»"
+      },
+      "WallpaperDesigns.GroupLatticeType": {
+        "table": "WallpaperDesigns",
+        "field": "GroupLatticeType",
+        "kind": "lookup",
+        "rule": "حقل «group lattice type» في سجل «wallpaper design» مأخوذ من السجل المرتبط به عبر حقل «symmetry group».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "LatticeType",
+            "label": "lattice type"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «lattice type» من السجل المرتبط عبر «symmetry group»"
+      },
+      "WallpaperDesigns.GroupRotationOrder": {
+        "table": "WallpaperDesigns",
+        "field": "GroupRotationOrder",
+        "kind": "lookup",
+        "rule": "حقل «group rotation order» في سجل «wallpaper design» مأخوذ من السجل المرتبط به عبر حقل «symmetry group».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "RotationOrder",
+            "label": "rotation order"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «rotation order» من السجل المرتبط عبر «symmetry group»"
+      },
+      "WallpaperDesigns.GroupOperationCount": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOperationCount",
+        "kind": "lookup",
+        "rule": "حقل «group operation count» في سجل «wallpaper design» مأخوذ من السجل المرتبط به عبر حقل «symmetry group».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "OperationCount",
+            "label": "operation count"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «operation count» من السجل المرتبط عبر «symmetry group»"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "SymmetryGroups": [
+        "في كل سجل «symmetry group»، **يجب أن** تُحدّد قيمة حقل «notation»."
+      ],
+      "Prototiles": [
+        "في كل سجل «prototile»، **يجب أن** تُحدّد قيمة حقل «display name»، وحقل «sides»، وحقل «edge length»."
+      ],
+      "Tilings": [
+        "في كل سجل «tiling»، **يجب أن** تُحدّد قيمة حقل «display name»، وحقل «vertex config»، وحقل «kind»، وأن يُسجّل ما إذا كان مصنّفًا على أنه «edge to edge»."
+      ],
+      "TilingPrototiles": [
+        "**يجب أن** يشير كل سجل «tiling prototile» إلى سجل «tiling» واحد فقط.",
+        "**يجب أن** يشير كل سجل «tiling prototile» إلى سجل «prototile» واحد فقط.",
+        "في كل سجل «tiling prototile»، **يجب أن** تُحدّد قيمة حقل «count at vertex»."
+      ],
+      "VertexFigures": [
+        "**يجب أن** يشير كل سجل «vertex figure» إلى سجل «tiling» واحد فقط.",
+        "في كل سجل «vertex figure»، **يجب أن** تُحدّد قيمة حقل «config» وحقل «angle sum deg»."
+      ],
+      "Regions": [
+        "في كل سجل «region»، **يجب أن** تُحدّد قيمة حقل «display name»، وحقل «width»، وحقل «height»."
+      ],
+      "Placements": [
+        "**يجب أن** يشير كل سجل «placement» إلى سجل «region» واحد فقط.",
+        "**يجب أن** يشير كل سجل «placement» إلى سجل «prototile» واحد فقط.",
+        "في كل سجل «placement»، **يجب أن** تُحدّد قيمة حقل «x»، وحقل «y»، وحقل «rotation deg»، وأن يُسجّل ما إذا كان مصنّفًا على أنه «overlapping»."
+      ],
+      "WallpaperDesigns": [
+        "**يجب أن** يشير كل سجل «wallpaper design» إلى سجل «symmetry group» واحد فقط.",
+        "في كل سجل «wallpaper design»، **يجب أن** تُحدّد قيمة حقل «display name» وحقل «strokes»."
+      ]
+    },
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "SymmetryGroups": "symmetry group",
+      "Prototiles": "prototile",
+      "Tilings": "tiling",
+      "TilingPrototiles": "tiling prototile",
+      "VertexFigures": "vertex figure",
+      "Regions": "region",
+      "Placements": "placement",
+      "WallpaperDesigns": "wallpaper design"
+    }
+  },
+  "de": {
+    "fields": {
+      "SymmetryGroups.Name": {
+        "table": "SymmetryGroups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Symmetry Group: Name entspricht Symmetry Group ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symmetry Group ID"
+      },
+      "SymmetryGroups.TilingCount": {
+        "table": "SymmetryGroups",
+        "field": "TilingCount",
+        "kind": "rollup",
+        "rule": "Ein Symmetry Group: Tiling Count ist die Anzahl der mit dem Symmetry Group verbundenen Tilings.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Tilings, deren Symmetry Group ist Symmetry Group ID"
+      },
+      "SymmetryGroups.WallpaperDesignCount": {
+        "table": "SymmetryGroups",
+        "field": "WallpaperDesignCount",
+        "kind": "rollup",
+        "rule": "Ein Symmetry Group: Wallpaper Design Count ist die Anzahl der mit dem Symmetry Group verbundenen Wallpaper Designs.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Wallpaper Designs, deren Symmetry Group ist Symmetry Group ID"
+      },
+      "Prototiles.Name": {
+        "table": "Prototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Prototile: Name wird berechnet als das kleingeschriebene Display Name, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display Name kleingeschrieben, wobei „ “ durch „-“ ersetzt wird"
+      },
+      "Prototiles.Area": {
+        "table": "Prototiles",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "Eine Prototile: Area wird berechnet als 0.25 mal der Sides mal der Edge Length hoch 2 geteilt durch der Tangens von Pi geteilt durch der Sides.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Prototiles",
+            "field": "EdgeLength",
+            "label": "edge length"
+          }
+        ],
+        "structure": null,
+        "plain": "((0.25 mal Sides) mal power(Edge Length, 2)) geteilt durch tan((pi() geteilt durch Sides))"
+      },
+      "Prototiles.InteriorAngleDeg": {
+        "table": "Prototiles",
+        "field": "InteriorAngleDeg",
+        "kind": "formula",
+        "rule": "Eine Prototile: Interior Angle Deg wird berechnet als der Sides minus 2 mal 180 geteilt durch der Sides.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "((Sides minus 2) mal 180) geteilt durch Sides"
+      },
+      "Prototiles.VertexAngleTurns": {
+        "table": "Prototiles",
+        "field": "VertexAngleTurns",
+        "kind": "formula",
+        "rule": "Eine Prototile: Vertex Angle Turns wird berechnet als der Interior Angle Deg geteilt durch 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Interior Angle Deg geteilt durch 360"
+      },
+      "Prototiles.IsRegular": {
+        "table": "Prototiles",
+        "field": "IsRegular",
+        "kind": "formula",
+        "rule": "Eine Prototile gilt als ein Regular, wenn der Sides mindestens 3 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides mindestens 3 ist"
+      },
+      "Prototiles.IsTriangle": {
+        "table": "Prototiles",
+        "field": "IsTriangle",
+        "kind": "formula",
+        "rule": "Eine Prototile gilt als eine Triangle, wenn der Sides 3 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides gleich 3 ist"
+      },
+      "Prototiles.IsSquare": {
+        "table": "Prototiles",
+        "field": "IsSquare",
+        "kind": "formula",
+        "rule": "Eine Prototile gilt als eine Square, wenn der Sides 4 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides gleich 4 ist"
+      },
+      "Prototiles.UsedInTilingsCount": {
+        "table": "Prototiles",
+        "field": "UsedInTilingsCount",
+        "kind": "rollup",
+        "rule": "Eine Prototile: Used in Tilings Count ist die Anzahl der mit der Prototile verbundenen Tiling Prototiles.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Tiling Prototiles, deren Prototile ist Prototile ID"
+      },
+      "Tilings.Name": {
+        "table": "Tilings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Tiling: Name wird berechnet als das kleingeschriebene Display Name, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display Name kleingeschrieben, wobei „ “ durch „-“ ersetzt wird"
+      },
+      "Tilings.SymmetryNotation": {
+        "table": "Tilings",
+        "field": "SymmetryNotation",
+        "kind": "lookup",
+        "rule": "Ein Tiling: Symmetry Notation — aus dem zugehörigen Symmetry Group übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Notation des verknüpften Symmetry Group"
+      },
+      "Tilings.DistinctPrototileCount": {
+        "table": "Tilings",
+        "field": "DistinctPrototileCount",
+        "kind": "rollup",
+        "rule": "Ein Tiling: Distinct Prototile Count ist die Anzahl der mit dem Tiling verbundenen Tiling Prototiles.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Tiling Prototiles, deren Tiling ist Tiling ID"
+      },
+      "Tilings.VertexFigureCount": {
+        "table": "Tilings",
+        "field": "VertexFigureCount",
+        "kind": "rollup",
+        "rule": "Ein Tiling: Vertex Figure Count ist die Anzahl der mit dem Tiling verbundenen Vertex Figures.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Vertex Figures, deren Tiling ist Tiling ID"
+      },
+      "Tilings.ValidVertexFigureCount": {
+        "table": "Tilings",
+        "field": "ValidVertexFigureCount",
+        "kind": "rollup",
+        "rule": "Ein Tiling: Valid Vertex Figure Count ist die Anzahl der Vertex Figures des Tiling, die valid sind.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "IsValid",
+            "label": "is valid"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Vertex Figures, deren Tiling ist Tiling ID und Is Valid ist ja"
+      },
+      "Tilings.IsRegularTiling": {
+        "table": "Tilings",
+        "field": "IsRegularTiling",
+        "kind": "formula",
+        "rule": "Ein Tiling gilt als regular tiling, wenn der Distinct Prototile Count 1 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DistinctPrototileCount",
+            "label": "distinct prototile count"
+          }
+        ],
+        "structure": null,
+        "plain": "Distinct Prototile Count gleich 1 ist"
+      },
+      "Tilings.AllVerticesValid": {
+        "table": "Tilings",
+        "field": "AllVerticesValid",
+        "kind": "formula",
+        "rule": "Ein Tiling ist markiert als All Vertices Valid, wenn der Valid Vertex Figure Count der Vertex Figure Count ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "ValidVertexFigureCount",
+            "label": "valid vertex figure count"
+          },
+          {
+            "table": "Tilings",
+            "field": "VertexFigureCount",
+            "label": "vertex figure count"
+          }
+        ],
+        "structure": null,
+        "plain": "Valid Vertex Figure Count gleich Vertex Figure Count ist"
+      },
+      "Tilings.LatticeDeterminant": {
+        "table": "Tilings",
+        "field": "LatticeDeterminant",
+        "kind": "formula",
+        "rule": "Ein Tiling: Lattice Determinant wird berechnet als der T1x mal der T2y minus der T1y mal der T2x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "T1x",
+            "label": "t1x"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2y",
+            "label": "t2y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T1y",
+            "label": "t1y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2x",
+            "label": "t2x"
+          }
+        ],
+        "structure": null,
+        "plain": "(T1x mal T2y) minus (T1y mal T2x)"
+      },
+      "Tilings.FundamentalDomainArea": {
+        "table": "Tilings",
+        "field": "FundamentalDomainArea",
+        "kind": "formula",
+        "rule": "Ein Tiling: Fundamental Domain Area wird berechnet als der Absolutwert von der Lattice Determinant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Absolutwert von Lattice Determinant"
+      },
+      "Tilings.HasLattice": {
+        "table": "Tilings",
+        "field": "HasLattice",
+        "kind": "formula",
+        "rule": "Ein Tiling gilt als über eine Lattice verfügend, wenn der Absolutwert von der Lattice Determinant größer ist als 0.0001.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Absolutwert von Lattice Determinant größer als 0.0001 ist"
+      },
+      "Tilings.DoesTilePlane": {
+        "table": "Tilings",
+        "field": "DoesTilePlane",
+        "kind": "formula",
+        "rule": "Ein Tiling gilt als Tile Plane erfüllend, wenn alles Folgende gilt: das Kennzeichen „All Vertices Valid“ gesetzt ist und das Kennzeichen „Has Lattice“ gesetzt ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "AllVerticesValid",
+            "label": "all vertices valid"
+          },
+          {
+            "table": "Tilings",
+            "field": "HasLattice",
+            "label": "has lattice"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Ein Tiling gilt als Tile Plane erfüllend, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „All Vertices Valid“ gesetzt ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Has Lattice“ gesetzt ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "All Vertices Valid und Has Lattice"
+      },
+      "TilingPrototiles.Name": {
+        "table": "TilingPrototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Tiling Prototile: Name wird berechnet als der Tiling, gefolgt von ein Schrägstrich, gefolgt von die Prototile.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling, \"/\", verbunden mit Prototile"
+      },
+      "TilingPrototiles.PrototileSides": {
+        "table": "TilingPrototiles",
+        "field": "PrototileSides",
+        "kind": "lookup",
+        "rule": "Eine Tiling Prototile: Prototile Sides — aus dem zugehörigen Prototile übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Sides des verknüpften Prototile"
+      },
+      "TilingPrototiles.PrototileInteriorAngle": {
+        "table": "TilingPrototiles",
+        "field": "PrototileInteriorAngle",
+        "kind": "lookup",
+        "rule": "Eine Tiling Prototile: Prototile Interior Angle ist der Interior Angle Deg des zugehörigen Prototile der Tiling Prototile.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Interior Angle Deg des verknüpften Prototile"
+      },
+      "VertexFigures.Name": {
+        "table": "VertexFigures",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Vertex Figure: Name wird berechnet als der Tiling, gefolgt von „@“, gefolgt von der Config.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "Config",
+            "label": "config"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling, \"@\", verbunden mit Config"
+      },
+      "VertexFigures.TurnsAtVertex": {
+        "table": "VertexFigures",
+        "field": "TurnsAtVertex",
+        "kind": "formula",
+        "rule": "Eine Vertex Figure: Turns At Vertex wird berechnet als der Angle Sum Deg geteilt durch 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle Sum Deg geteilt durch 360"
+      },
+      "VertexFigures.AngleGapDeg": {
+        "table": "VertexFigures",
+        "field": "AngleGapDeg",
+        "kind": "formula",
+        "rule": "Eine Vertex Figure: Angle Gap Deg wird berechnet als der Absolutwert von der Angle Sum Deg minus 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Absolutwert von (Angle Sum Deg minus 360)"
+      },
+      "VertexFigures.IsValid": {
+        "table": "VertexFigures",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "Eine Vertex Figure gilt als valid, wenn der Angle Gap Deg höchstens 0.0001 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleGapDeg",
+            "label": "angle gap deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle Gap Deg höchstens 0.0001 ist"
+      },
+      "Regions.Name": {
+        "table": "Regions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Region: Name wird berechnet als das kleingeschriebene Display Name, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display Name kleingeschrieben, wobei „ “ durch „-“ ersetzt wird"
+      },
+      "Regions.Area": {
+        "table": "Regions",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "Eine Region: Area wird berechnet als der Width mal der Height.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          }
+        ],
+        "structure": null,
+        "plain": "Width mal Height"
+      },
+      "Regions.PlacementCount": {
+        "table": "Regions",
+        "field": "PlacementCount",
+        "kind": "rollup",
+        "rule": "Eine Region: Placement Count ist die Anzahl der mit der Region verbundenen Placements.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Placements, deren Region ist Region ID"
+      },
+      "Regions.CoveredArea": {
+        "table": "Regions",
+        "field": "CoveredArea",
+        "kind": "rollup",
+        "rule": "Eine Region: Covered Area ist die Gesamtsumme von Tile Area über die mit der Region verbundenen Placements.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "TileArea",
+            "label": "tile area"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Tile Area über alle Placements, deren Region ist Region ID"
+      },
+      "Regions.OverlapCount": {
+        "table": "Regions",
+        "field": "OverlapCount",
+        "kind": "rollup",
+        "rule": "Eine Region: Overlap Count ist die Anzahl der Placements der Region, die overlapping sind.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          },
+          {
+            "table": "Placements",
+            "field": "IsOverlapping",
+            "label": "is overlapping"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Placements, deren Region ist Region ID und Is Overlapping ist ja"
+      },
+      "Regions.CoveragePct": {
+        "table": "Regions",
+        "field": "CoveragePct",
+        "kind": "formula",
+        "rule": "Eine Region: Coverage Pct wird berechnet als 100 mal der Covered Area geteilt durch der Area.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveredArea",
+            "label": "covered area"
+          },
+          {
+            "table": "Regions",
+            "field": "Area",
+            "label": "area"
+          }
+        ],
+        "structure": null,
+        "plain": "(100 mal Covered Area) geteilt durch Area"
+      },
+      "Regions.IsFullyCovered": {
+        "table": "Regions",
+        "field": "IsFullyCovered",
+        "kind": "formula",
+        "rule": "Eine Region gilt als fully covered, wenn der Coverage Pct mindestens 100 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveragePct",
+            "label": "coverage pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Coverage Pct mindestens 100 ist"
+      },
+      "Regions.IsCleanTiling": {
+        "table": "Regions",
+        "field": "IsCleanTiling",
+        "kind": "formula",
+        "rule": "Eine Region gilt als clean tiling, wenn alles Folgende gilt: das Kennzeichen „Is Fully Covered“ gesetzt ist und der Overlap Count 0 ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "IsFullyCovered",
+            "label": "is fully covered"
+          },
+          {
+            "table": "Regions",
+            "field": "OverlapCount",
+            "label": "overlap count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Eine Region gilt als clean tiling, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Is Fully Covered“ gesetzt ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "der Overlap Count 0 ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is Fully Covered und Overlap Count gleich 0 ist"
+      },
+      "Placements.Name": {
+        "table": "Placements",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Placement: Name wird berechnet als die Region, gefolgt von „#“, gefolgt von der Placement ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Placements",
+            "field": "PlacementId",
+            "label": "placement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Region, \"#\", verbunden mit Placement ID"
+      },
+      "Placements.TileArea": {
+        "table": "Placements",
+        "field": "TileArea",
+        "kind": "lookup",
+        "rule": "Ein Placement: Tile Area — aus dem zugehörigen Prototile übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Area",
+            "label": "area"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Area des verknüpften Prototile"
+      },
+      "Placements.TileSides": {
+        "table": "Placements",
+        "field": "TileSides",
+        "kind": "lookup",
+        "rule": "Ein Placement: Tile Sides — aus dem zugehörigen Prototile übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Sides des verknüpften Prototile"
+      },
+      "Placements.RegionWidth": {
+        "table": "Placements",
+        "field": "RegionWidth",
+        "kind": "lookup",
+        "rule": "Ein Placement: Region Width — aus dem zugehörigen Region übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Width des verknüpften Region"
+      },
+      "Placements.RegionHeight": {
+        "table": "Placements",
+        "field": "RegionHeight",
+        "kind": "lookup",
+        "rule": "Ein Placement: Region Height — aus dem zugehörigen Region übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Height des verknüpften Region"
+      },
+      "Placements.IsInsideRegion": {
+        "table": "Placements",
+        "field": "IsInsideRegion",
+        "kind": "formula",
+        "rule": "Ein Placement gilt als eine Inside Region, wenn alles Folgende gilt: der X mindestens 0 ist; der Y mindestens 0 ist; der X kleiner ist als der Region Width; und der Y kleiner ist als der Region Height.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "X",
+            "label": "x"
+          },
+          {
+            "table": "Placements",
+            "field": "Y",
+            "label": "y"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionWidth",
+            "label": "region width"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionHeight",
+            "label": "region height"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Ein Placement gilt als eine Inside Region, wenn alles Folgende gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "der X mindestens 0 ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "der Y mindestens 0 ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "der X kleiner ist als der Region Width"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "der Y kleiner ist als der Region Height"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "X mindestens 0 ist, Y mindestens 0 ist, X kleiner als Region Width ist, und Y kleiner als Region Height ist"
+      },
+      "WallpaperDesigns.Name": {
+        "table": "WallpaperDesigns",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Wallpaper Design: Name wird berechnet als das kleingeschriebene Display Name, wobei jedes ein Leerzeichen durch ein Bindestrich ersetzt wird.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display Name kleingeschrieben, wobei „ “ durch „-“ ersetzt wird"
+      },
+      "WallpaperDesigns.GroupNotation": {
+        "table": "WallpaperDesigns",
+        "field": "GroupNotation",
+        "kind": "lookup",
+        "rule": "Ein Wallpaper Design: Group Notation — aus dem zugehörigen Symmetry Group übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Notation des verknüpften Symmetry Group"
+      },
+      "WallpaperDesigns.GroupOrbifold": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOrbifold",
+        "kind": "lookup",
+        "rule": "Ein Wallpaper Design: Group Orbifold — aus dem zugehörigen Symmetry Group übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Orbifold",
+            "label": "orbifold"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Orbifold des verknüpften Symmetry Group"
+      },
+      "WallpaperDesigns.GroupLatticeType": {
+        "table": "WallpaperDesigns",
+        "field": "GroupLatticeType",
+        "kind": "lookup",
+        "rule": "Ein Wallpaper Design: Group Lattice Type — aus dem zugehörigen Symmetry Group übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "LatticeType",
+            "label": "lattice type"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Lattice Type des verknüpften Symmetry Group"
+      },
+      "WallpaperDesigns.GroupRotationOrder": {
+        "table": "WallpaperDesigns",
+        "field": "GroupRotationOrder",
+        "kind": "lookup",
+        "rule": "Ein Wallpaper Design: Group Rotation Order — aus dem zugehörigen Symmetry Group übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "RotationOrder",
+            "label": "rotation order"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Rotation Order des verknüpften Symmetry Group"
+      },
+      "WallpaperDesigns.GroupOperationCount": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOperationCount",
+        "kind": "lookup",
+        "rule": "Ein Wallpaper Design: Group Operation Count — aus dem zugehörigen Symmetry Group übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "OperationCount",
+            "label": "operation count"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Operation Count des verknüpften Symmetry Group"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "SymmetryGroups": [
+        "Ein Symmetry Group **muss** eine Notation haben."
+      ],
+      "Prototiles": [
+        "Eine Prototile **muss** eine Display Name; ein Sides; und ein Edge Length haben."
+      ],
+      "Tilings": [
+        "Ein Tiling **muss** eine Display Name; ein Vertex Config; und ein Kind haben und erfassen, ob es ist eine Edge to Edge."
+      ],
+      "TilingPrototiles": [
+        "Eine Tiling Prototile **muss** auf genau einen Tiling verweisen.",
+        "Eine Tiling Prototile **muss** auf genau einen Prototile verweisen.",
+        "Eine Tiling Prototile **muss** ein Count At Vertex haben."
+      ],
+      "VertexFigures": [
+        "Eine Vertex Figure **muss** auf genau einen Tiling verweisen.",
+        "Eine Vertex Figure **muss** ein Config und ein Angle Sum Deg haben."
+      ],
+      "Regions": [
+        "Eine Region **muss** eine Display Name; ein Width; und ein Height haben."
+      ],
+      "Placements": [
+        "Ein Placement **muss** auf genau einen Region verweisen.",
+        "Ein Placement **muss** auf genau einen Prototile verweisen.",
+        "Ein Placement **muss** ein X; ein Y; und ein Rotation Deg haben und erfassen, ob es ist overlapping."
+      ],
+      "WallpaperDesigns": [
+        "Ein Wallpaper Design **muss** auf genau einen Symmetry Group verweisen.",
+        "Ein Wallpaper Design **muss** eine Display Name und ein Strokes haben."
+      ]
+    },
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "SymmetryGroups": "Symmetry Group",
+      "Prototiles": "Prototile",
+      "Tilings": "Tiling",
+      "TilingPrototiles": "Tiling Prototile",
+      "VertexFigures": "Vertex Figure",
+      "Regions": "Region",
+      "Placements": "Placement",
+      "WallpaperDesigns": "Wallpaper Design"
+    }
+  },
+  "es": {
+    "fields": {
+      "SymmetryGroups.Name": {
+        "table": "SymmetryGroups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un symmetry group: name es igual a symmetry group ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symmetry group ID"
+      },
+      "SymmetryGroups.TilingCount": {
+        "table": "SymmetryGroups",
+        "field": "TilingCount",
+        "kind": "rollup",
+        "rule": "Un symmetry group: tiling count es el número de tilings relacionados con el symmetry group.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de tilings cuyo symmetry group es symmetry group ID"
+      },
+      "SymmetryGroups.WallpaperDesignCount": {
+        "table": "SymmetryGroups",
+        "field": "WallpaperDesignCount",
+        "kind": "rollup",
+        "rule": "Un symmetry group: wallpaper design count es el número de wallpaper designs relacionados con el symmetry group.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de wallpaper designs cuyo symmetry group es symmetry group ID"
+      },
+      "Prototiles.Name": {
+        "table": "Prototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un prototile: name se calcula como el display name en minúsculas con cada un espacio reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name en minúsculas con « » reemplazado por «-»"
+      },
+      "Prototiles.Area": {
+        "table": "Prototiles",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "Un prototile: area se calcula como 0.25 por el sides por el edge length elevado a 2 dividido por la tangente de pi dividido por el sides.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Prototiles",
+            "field": "EdgeLength",
+            "label": "edge length"
+          }
+        ],
+        "structure": null,
+        "plain": "((0.25 por sides) por power(edge length, 2)) dividido por tan((pi() dividido por sides))"
+      },
+      "Prototiles.InteriorAngleDeg": {
+        "table": "Prototiles",
+        "field": "InteriorAngleDeg",
+        "kind": "formula",
+        "rule": "Un prototile: interior angle deg se calcula como el sides menos 2 por 180 dividido por el sides.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "((sides menos 2) por 180) dividido por sides"
+      },
+      "Prototiles.VertexAngleTurns": {
+        "table": "Prototiles",
+        "field": "VertexAngleTurns",
+        "kind": "formula",
+        "rule": "Un prototile: vertex angle turns se calcula como el interior angle deg dividido por 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Interior angle deg dividido por 360"
+      },
+      "Prototiles.IsRegular": {
+        "table": "Prototiles",
+        "field": "IsRegular",
+        "kind": "formula",
+        "rule": "Un prototile se considera un regular si el sides es al menos 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides es al menos 3"
+      },
+      "Prototiles.IsTriangle": {
+        "table": "Prototiles",
+        "field": "IsTriangle",
+        "kind": "formula",
+        "rule": "Un prototile se considera un triangle si el sides es 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides es igual a 3"
+      },
+      "Prototiles.IsSquare": {
+        "table": "Prototiles",
+        "field": "IsSquare",
+        "kind": "formula",
+        "rule": "Un prototile se considera un square si el sides es 4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides es igual a 4"
+      },
+      "Prototiles.UsedInTilingsCount": {
+        "table": "Prototiles",
+        "field": "UsedInTilingsCount",
+        "kind": "rollup",
+        "rule": "Un prototile: used in tilings count es el número de tiling prototiles relacionados con el prototile.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de tiling prototiles cuyo prototile es prototile ID"
+      },
+      "Tilings.Name": {
+        "table": "Tilings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un tiling: name se calcula como el display name en minúsculas con cada un espacio reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name en minúsculas con « » reemplazado por «-»"
+      },
+      "Tilings.SymmetryNotation": {
+        "table": "Tilings",
+        "field": "SymmetryNotation",
+        "kind": "lookup",
+        "rule": "Un tiling: symmetry notation — tomado del symmetry group vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El notation del symmetry group vinculado"
+      },
+      "Tilings.DistinctPrototileCount": {
+        "table": "Tilings",
+        "field": "DistinctPrototileCount",
+        "kind": "rollup",
+        "rule": "Un tiling: distinct prototile count es el número de tiling prototiles relacionados con el tiling.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de tiling prototiles cuyo tiling es tiling ID"
+      },
+      "Tilings.VertexFigureCount": {
+        "table": "Tilings",
+        "field": "VertexFigureCount",
+        "kind": "rollup",
+        "rule": "Un tiling: vertex figure count es el número de vertex figures relacionados con el tiling.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de vertex figures cuyo tiling es tiling ID"
+      },
+      "Tilings.ValidVertexFigureCount": {
+        "table": "Tilings",
+        "field": "ValidVertexFigureCount",
+        "kind": "rollup",
+        "rule": "Un tiling: valid vertex figure count es el número de vertex figures del tiling que son valid.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "IsValid",
+            "label": "is valid"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de vertex figures cuyo tiling es tiling ID y is valid es sí"
+      },
+      "Tilings.IsRegularTiling": {
+        "table": "Tilings",
+        "field": "IsRegularTiling",
+        "kind": "formula",
+        "rule": "Un tiling se considera regular tiling si el distinct prototile count es 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DistinctPrototileCount",
+            "label": "distinct prototile count"
+          }
+        ],
+        "structure": null,
+        "plain": "Distinct prototile count es igual a 1"
+      },
+      "Tilings.AllVerticesValid": {
+        "table": "Tilings",
+        "field": "AllVerticesValid",
+        "kind": "formula",
+        "rule": "Un tiling está marcado como all vertices valid si el valid vertex figure count es el vertex figure count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "ValidVertexFigureCount",
+            "label": "valid vertex figure count"
+          },
+          {
+            "table": "Tilings",
+            "field": "VertexFigureCount",
+            "label": "vertex figure count"
+          }
+        ],
+        "structure": null,
+        "plain": "Valid vertex figure count es igual a vertex figure count"
+      },
+      "Tilings.LatticeDeterminant": {
+        "table": "Tilings",
+        "field": "LatticeDeterminant",
+        "kind": "formula",
+        "rule": "Un tiling: lattice determinant se calcula como el t1x por el t2y menos el t1y por el t2x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "T1x",
+            "label": "t1x"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2y",
+            "label": "t2y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T1y",
+            "label": "t1y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2x",
+            "label": "t2x"
+          }
+        ],
+        "structure": null,
+        "plain": "(t1x por t2y) menos (t1y por t2x)"
+      },
+      "Tilings.FundamentalDomainArea": {
+        "table": "Tilings",
+        "field": "FundamentalDomainArea",
+        "kind": "formula",
+        "rule": "Un tiling: fundamental domain area se calcula como el valor absoluto de el lattice determinant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "El valor absoluto de lattice determinant"
+      },
+      "Tilings.HasLattice": {
+        "table": "Tilings",
+        "field": "HasLattice",
+        "kind": "formula",
+        "rule": "Un tiling se considera que tiene un lattice si el valor absoluto de el lattice determinant es mayor que 0.0001.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "El valor absoluto de lattice determinant es mayor que 0.0001"
+      },
+      "Tilings.DoesTilePlane": {
+        "table": "Tilings",
+        "field": "DoesTilePlane",
+        "kind": "formula",
+        "rule": "Un tiling se considera que cumple: tile plane si se cumple todo lo siguiente: el indicador «all vertices valid» está activado y el indicador «lattice» está activado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "AllVerticesValid",
+            "label": "all vertices valid"
+          },
+          {
+            "table": "Tilings",
+            "field": "HasLattice",
+            "label": "has lattice"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un tiling se considera que cumple: tile plane si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «all vertices valid» está activado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «lattice» está activado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "All vertices valid y has lattice"
+      },
+      "TilingPrototiles.Name": {
+        "table": "TilingPrototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un tiling prototile: name se calcula como el tiling, seguido de una barra, seguido de el prototile.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling, \"/\", unido con prototile"
+      },
+      "TilingPrototiles.PrototileSides": {
+        "table": "TilingPrototiles",
+        "field": "PrototileSides",
+        "kind": "lookup",
+        "rule": "Un tiling prototile: prototile sides — tomado del prototile vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El sides del prototile vinculado"
+      },
+      "TilingPrototiles.PrototileInteriorAngle": {
+        "table": "TilingPrototiles",
+        "field": "PrototileInteriorAngle",
+        "kind": "lookup",
+        "rule": "Un tiling prototile: prototile interior angle es el interior angle deg del prototile vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El interior angle deg del prototile vinculado"
+      },
+      "VertexFigures.Name": {
+        "table": "VertexFigures",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un vertex figure: name se calcula como el tiling, seguido de «@», seguido de el config.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "Config",
+            "label": "config"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling, \"@\", unido con config"
+      },
+      "VertexFigures.TurnsAtVertex": {
+        "table": "VertexFigures",
+        "field": "TurnsAtVertex",
+        "kind": "formula",
+        "rule": "Un vertex figure: turns at vertex se calcula como el angle sum deg dividido por 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle sum deg dividido por 360"
+      },
+      "VertexFigures.AngleGapDeg": {
+        "table": "VertexFigures",
+        "field": "AngleGapDeg",
+        "kind": "formula",
+        "rule": "Un vertex figure: angle gap deg se calcula como el valor absoluto de el angle sum deg menos 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "El valor absoluto de (angle sum deg menos 360)"
+      },
+      "VertexFigures.IsValid": {
+        "table": "VertexFigures",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "Un vertex figure se considera valid si el angle gap deg es como máximo 0.0001.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleGapDeg",
+            "label": "angle gap deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle gap deg es como máximo 0.0001"
+      },
+      "Regions.Name": {
+        "table": "Regions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un region: name se calcula como el display name en minúsculas con cada un espacio reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name en minúsculas con « » reemplazado por «-»"
+      },
+      "Regions.Area": {
+        "table": "Regions",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "Un region: area se calcula como el width por el height.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          }
+        ],
+        "structure": null,
+        "plain": "Width por height"
+      },
+      "Regions.PlacementCount": {
+        "table": "Regions",
+        "field": "PlacementCount",
+        "kind": "rollup",
+        "rule": "Un region: placement count es el número de placements relacionados con el region.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de placements cuyo region es region ID"
+      },
+      "Regions.CoveredArea": {
+        "table": "Regions",
+        "field": "CoveredArea",
+        "kind": "rollup",
+        "rule": "Un region: covered area es el total de tile area entre los placements relacionados con el region.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "TileArea",
+            "label": "tile area"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de tile area entre todos los placements cuyo region es region ID"
+      },
+      "Regions.OverlapCount": {
+        "table": "Regions",
+        "field": "OverlapCount",
+        "kind": "rollup",
+        "rule": "Un region: overlap count es el número de placements del region que son overlapping.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          },
+          {
+            "table": "Placements",
+            "field": "IsOverlapping",
+            "label": "is overlapping"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de placements cuyo region es region ID y is overlapping es sí"
+      },
+      "Regions.CoveragePct": {
+        "table": "Regions",
+        "field": "CoveragePct",
+        "kind": "formula",
+        "rule": "Un region: coverage pct se calcula como 100 por la covered area dividido por la area.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveredArea",
+            "label": "covered area"
+          },
+          {
+            "table": "Regions",
+            "field": "Area",
+            "label": "area"
+          }
+        ],
+        "structure": null,
+        "plain": "(100 por covered area) dividido por area"
+      },
+      "Regions.IsFullyCovered": {
+        "table": "Regions",
+        "field": "IsFullyCovered",
+        "kind": "formula",
+        "rule": "Un region se considera fully covered si el coverage pct es al menos 100.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveragePct",
+            "label": "coverage pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Coverage pct es al menos 100"
+      },
+      "Regions.IsCleanTiling": {
+        "table": "Regions",
+        "field": "IsCleanTiling",
+        "kind": "formula",
+        "rule": "Un region se considera clean tiling si se cumple todo lo siguiente: el indicador «fully covered» está activado y el overlap count es 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "IsFullyCovered",
+            "label": "is fully covered"
+          },
+          {
+            "table": "Regions",
+            "field": "OverlapCount",
+            "label": "overlap count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un region se considera clean tiling si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «fully covered» está activado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el overlap count es 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is fully covered y overlap count es igual a 0"
+      },
+      "Placements.Name": {
+        "table": "Placements",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un placement: name se calcula como el region, seguido de «#», seguido de el placement ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Placements",
+            "field": "PlacementId",
+            "label": "placement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Region, \"#\", unido con placement ID"
+      },
+      "Placements.TileArea": {
+        "table": "Placements",
+        "field": "TileArea",
+        "kind": "lookup",
+        "rule": "Un placement: tile area — tomado del prototile vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Area",
+            "label": "area"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El area del prototile vinculado"
+      },
+      "Placements.TileSides": {
+        "table": "Placements",
+        "field": "TileSides",
+        "kind": "lookup",
+        "rule": "Un placement: tile sides — tomado del prototile vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El sides del prototile vinculado"
+      },
+      "Placements.RegionWidth": {
+        "table": "Placements",
+        "field": "RegionWidth",
+        "kind": "lookup",
+        "rule": "Un placement: region width — tomado del region vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El width del region vinculado"
+      },
+      "Placements.RegionHeight": {
+        "table": "Placements",
+        "field": "RegionHeight",
+        "kind": "lookup",
+        "rule": "Un placement: region height — tomado del region vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El height del region vinculado"
+      },
+      "Placements.IsInsideRegion": {
+        "table": "Placements",
+        "field": "IsInsideRegion",
+        "kind": "formula",
+        "rule": "Un placement se considera un inside region si se cumple todo lo siguiente: el x es al menos 0; el y es al menos 0; el x es menor que el region width; y el y es menor que el region height.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "X",
+            "label": "x"
+          },
+          {
+            "table": "Placements",
+            "field": "Y",
+            "label": "y"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionWidth",
+            "label": "region width"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionHeight",
+            "label": "region height"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un placement se considera un inside region si se cumple todo lo siguiente:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el x es al menos 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el y es al menos 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el x es menor que el region width"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el y es menor que el region height"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "X es al menos 0, y es al menos 0, x es menor que region width, y y es menor que region height"
+      },
+      "WallpaperDesigns.Name": {
+        "table": "WallpaperDesigns",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un wallpaper design: name se calcula como el display name en minúsculas con cada un espacio reemplazado por un guion.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name en minúsculas con « » reemplazado por «-»"
+      },
+      "WallpaperDesigns.GroupNotation": {
+        "table": "WallpaperDesigns",
+        "field": "GroupNotation",
+        "kind": "lookup",
+        "rule": "Un wallpaper design: group notation — tomado del symmetry group vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El notation del symmetry group vinculado"
+      },
+      "WallpaperDesigns.GroupOrbifold": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOrbifold",
+        "kind": "lookup",
+        "rule": "Un wallpaper design: group orbifold — tomado del symmetry group vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Orbifold",
+            "label": "orbifold"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El orbifold del symmetry group vinculado"
+      },
+      "WallpaperDesigns.GroupLatticeType": {
+        "table": "WallpaperDesigns",
+        "field": "GroupLatticeType",
+        "kind": "lookup",
+        "rule": "Un wallpaper design: group lattice type — tomado del symmetry group vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "LatticeType",
+            "label": "lattice type"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El lattice type del symmetry group vinculado"
+      },
+      "WallpaperDesigns.GroupRotationOrder": {
+        "table": "WallpaperDesigns",
+        "field": "GroupRotationOrder",
+        "kind": "lookup",
+        "rule": "Un wallpaper design: group rotation order — tomado del symmetry group vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "RotationOrder",
+            "label": "rotation order"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El rotation order del symmetry group vinculado"
+      },
+      "WallpaperDesigns.GroupOperationCount": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOperationCount",
+        "kind": "lookup",
+        "rule": "Un wallpaper design: group operation count — tomado del symmetry group vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "OperationCount",
+            "label": "operation count"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El operation count del symmetry group vinculado"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "SymmetryGroups": [
+        "Un symmetry group **debe** tener un notation."
+      ],
+      "Prototiles": [
+        "Un prototile **debe** tener un display name; un sides; y un edge length."
+      ],
+      "Tilings": [
+        "Un tiling **debe** tener un display name; un vertex config; y un kind, y registrar si es un edge to edge."
+      ],
+      "TilingPrototiles": [
+        "Un tiling prototile **debe** referenciar exactamente un tiling.",
+        "Un tiling prototile **debe** referenciar exactamente un prototile.",
+        "Un tiling prototile **debe** tener un count at vertex."
+      ],
+      "VertexFigures": [
+        "Un vertex figure **debe** referenciar exactamente un tiling.",
+        "Un vertex figure **debe** tener un config y un angle sum deg."
+      ],
+      "Regions": [
+        "Un region **debe** tener un display name; un width; y un height."
+      ],
+      "Placements": [
+        "Un placement **debe** referenciar exactamente un region.",
+        "Un placement **debe** referenciar exactamente un prototile.",
+        "Un placement **debe** tener un x; un y; y un rotation deg, y registrar si es overlapping."
+      ],
+      "WallpaperDesigns": [
+        "Un wallpaper design **debe** referenciar exactamente un symmetry group.",
+        "Un wallpaper design **debe** tener un display name y un strokes."
+      ]
+    },
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "SymmetryGroups": "symmetry group",
+      "Prototiles": "prototile",
+      "Tilings": "tiling",
+      "TilingPrototiles": "tiling prototile",
+      "VertexFigures": "vertex figure",
+      "Regions": "region",
+      "Placements": "placement",
+      "WallpaperDesigns": "wallpaper design"
+    }
+  },
+  "fr": {
+    "fields": {
+      "SymmetryGroups.Name": {
+        "table": "SymmetryGroups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un symmetry group : name est identique à symmetry group ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symmetry group ID"
+      },
+      "SymmetryGroups.TilingCount": {
+        "table": "SymmetryGroups",
+        "field": "TilingCount",
+        "kind": "rollup",
+        "rule": "Un symmetry group : tiling count est le nombre de tilings liés à le symmetry group.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des tilings dont symmetry group est symmetry group ID"
+      },
+      "SymmetryGroups.WallpaperDesignCount": {
+        "table": "SymmetryGroups",
+        "field": "WallpaperDesignCount",
+        "kind": "rollup",
+        "rule": "Un symmetry group : wallpaper design count est le nombre de wallpaper designs liés à le symmetry group.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des wallpaper designs dont symmetry group est symmetry group ID"
+      },
+      "Prototiles.Name": {
+        "table": "Prototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un prototile : name est calculé comme le display name en minuscules avec chaque une espace remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name en minuscules avec « » remplacé par « - »"
+      },
+      "Prototiles.Area": {
+        "table": "Prototiles",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "Un prototile : area est calculé comme 0.25 multiplié par le sides multiplié par l'edge length à la puissance 2 divisé par la tangente de pi divisé par le sides.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Prototiles",
+            "field": "EdgeLength",
+            "label": "edge length"
+          }
+        ],
+        "structure": null,
+        "plain": "((0.25 fois sides) fois power(edge length, 2)) divisé par tan((pi() divisé par sides))"
+      },
+      "Prototiles.InteriorAngleDeg": {
+        "table": "Prototiles",
+        "field": "InteriorAngleDeg",
+        "kind": "formula",
+        "rule": "Un prototile : interior angle deg est calculé comme le sides moins 2 multiplié par 180 divisé par le sides.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "((sides moins 2) fois 180) divisé par sides"
+      },
+      "Prototiles.VertexAngleTurns": {
+        "table": "Prototiles",
+        "field": "VertexAngleTurns",
+        "kind": "formula",
+        "rule": "Un prototile : vertex angle turns est calculé comme l'interior angle deg divisé par 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Interior angle deg divisé par 360"
+      },
+      "Prototiles.IsRegular": {
+        "table": "Prototiles",
+        "field": "IsRegular",
+        "kind": "formula",
+        "rule": "Un prototile est considéré comme un regular si le sides est au moins 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides est au moins 3"
+      },
+      "Prototiles.IsTriangle": {
+        "table": "Prototiles",
+        "field": "IsTriangle",
+        "kind": "formula",
+        "rule": "Un prototile est considéré comme un triangle si le sides est 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides est égal à 3"
+      },
+      "Prototiles.IsSquare": {
+        "table": "Prototiles",
+        "field": "IsSquare",
+        "kind": "formula",
+        "rule": "Un prototile est considéré comme un square si le sides est 4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides est égal à 4"
+      },
+      "Prototiles.UsedInTilingsCount": {
+        "table": "Prototiles",
+        "field": "UsedInTilingsCount",
+        "kind": "rollup",
+        "rule": "Un prototile : used in tilings count est le nombre de tiling prototiles liés à le prototile.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des tiling prototiles dont prototile est prototile ID"
+      },
+      "Tilings.Name": {
+        "table": "Tilings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un tiling : name est calculé comme le display name en minuscules avec chaque une espace remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name en minuscules avec « » remplacé par « - »"
+      },
+      "Tilings.SymmetryNotation": {
+        "table": "Tilings",
+        "field": "SymmetryNotation",
+        "kind": "lookup",
+        "rule": "Un tiling : symmetry notation — repris du symmetry group lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le notation du symmetry group lié"
+      },
+      "Tilings.DistinctPrototileCount": {
+        "table": "Tilings",
+        "field": "DistinctPrototileCount",
+        "kind": "rollup",
+        "rule": "Un tiling : distinct prototile count est le nombre de tiling prototiles liés à le tiling.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des tiling prototiles dont tiling est tiling ID"
+      },
+      "Tilings.VertexFigureCount": {
+        "table": "Tilings",
+        "field": "VertexFigureCount",
+        "kind": "rollup",
+        "rule": "Un tiling : vertex figure count est le nombre de vertex figures liés à le tiling.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des vertex figures dont tiling est tiling ID"
+      },
+      "Tilings.ValidVertexFigureCount": {
+        "table": "Tilings",
+        "field": "ValidVertexFigureCount",
+        "kind": "rollup",
+        "rule": "Un tiling : valid vertex figure count est le nombre de vertex figures du tiling qui sont valid.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "IsValid",
+            "label": "is valid"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des vertex figures dont tiling est tiling ID et is valid est oui"
+      },
+      "Tilings.IsRegularTiling": {
+        "table": "Tilings",
+        "field": "IsRegularTiling",
+        "kind": "formula",
+        "rule": "Un tiling est considéré comme regular tiling si le distinct prototile count est 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DistinctPrototileCount",
+            "label": "distinct prototile count"
+          }
+        ],
+        "structure": null,
+        "plain": "Distinct prototile count est égal à 1"
+      },
+      "Tilings.AllVerticesValid": {
+        "table": "Tilings",
+        "field": "AllVerticesValid",
+        "kind": "formula",
+        "rule": "Un tiling est marqué comme all vertices valid si le valid vertex figure count est le vertex figure count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "ValidVertexFigureCount",
+            "label": "valid vertex figure count"
+          },
+          {
+            "table": "Tilings",
+            "field": "VertexFigureCount",
+            "label": "vertex figure count"
+          }
+        ],
+        "structure": null,
+        "plain": "Valid vertex figure count est égal à vertex figure count"
+      },
+      "Tilings.LatticeDeterminant": {
+        "table": "Tilings",
+        "field": "LatticeDeterminant",
+        "kind": "formula",
+        "rule": "Un tiling : lattice determinant est calculé comme le t1x multiplié par le t2y moins le t1y multiplié par le t2x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "T1x",
+            "label": "t1x"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2y",
+            "label": "t2y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T1y",
+            "label": "t1y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2x",
+            "label": "t2x"
+          }
+        ],
+        "structure": null,
+        "plain": "(t1x fois t2y) moins (t1y fois t2x)"
+      },
+      "Tilings.FundamentalDomainArea": {
+        "table": "Tilings",
+        "field": "FundamentalDomainArea",
+        "kind": "formula",
+        "rule": "Un tiling : fundamental domain area est calculé comme la valeur absolue de le lattice determinant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "La valeur absolue de lattice determinant"
+      },
+      "Tilings.HasLattice": {
+        "table": "Tilings",
+        "field": "HasLattice",
+        "kind": "formula",
+        "rule": "Un tiling est considéré comme disposant de un lattice si la valeur absolue de le lattice determinant est supérieur à 0.0001.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "La valeur absolue de lattice determinant est supérieur à 0.0001"
+      },
+      "Tilings.DoesTilePlane": {
+        "table": "Tilings",
+        "field": "DoesTilePlane",
+        "kind": "formula",
+        "rule": "Un tiling est considéré comme satisfaisant : tile plane si tout ce qui suit est vrai : l'indicateur « all vertices valid » est activé et l'indicateur « lattice » est activé.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "AllVerticesValid",
+            "label": "all vertices valid"
+          },
+          {
+            "table": "Tilings",
+            "field": "HasLattice",
+            "label": "has lattice"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un tiling est considéré comme satisfaisant : tile plane si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « all vertices valid » est activé"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « lattice » est activé"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "All vertices valid et has lattice"
+      },
+      "TilingPrototiles.Name": {
+        "table": "TilingPrototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un tiling prototile : name est calculé comme le tiling, suivi de une barre oblique, suivi de le prototile.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling, \"/\", joint à prototile"
+      },
+      "TilingPrototiles.PrototileSides": {
+        "table": "TilingPrototiles",
+        "field": "PrototileSides",
+        "kind": "lookup",
+        "rule": "Un tiling prototile : prototile sides — repris du prototile lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le sides du prototile lié"
+      },
+      "TilingPrototiles.PrototileInteriorAngle": {
+        "table": "TilingPrototiles",
+        "field": "PrototileInteriorAngle",
+        "kind": "lookup",
+        "rule": "Un tiling prototile : prototile interior angle est le interior angle deg du prototile lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le interior angle deg du prototile lié"
+      },
+      "VertexFigures.Name": {
+        "table": "VertexFigures",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Une vertex figure : name est calculé comme le tiling, suivi de « @ », suivi de le config.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "Config",
+            "label": "config"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling, \"@\", joint à config"
+      },
+      "VertexFigures.TurnsAtVertex": {
+        "table": "VertexFigures",
+        "field": "TurnsAtVertex",
+        "kind": "formula",
+        "rule": "Une vertex figure : turns at vertex est calculé comme l'angle sum deg divisé par 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle sum deg divisé par 360"
+      },
+      "VertexFigures.AngleGapDeg": {
+        "table": "VertexFigures",
+        "field": "AngleGapDeg",
+        "kind": "formula",
+        "rule": "Une vertex figure : angle gap deg est calculé comme la valeur absolue de l'angle sum deg moins 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "La valeur absolue de (angle sum deg moins 360)"
+      },
+      "VertexFigures.IsValid": {
+        "table": "VertexFigures",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "Une vertex figure est considéré comme valid si l'angle gap deg est au plus 0.0001.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleGapDeg",
+            "label": "angle gap deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle gap deg est au plus 0.0001"
+      },
+      "Regions.Name": {
+        "table": "Regions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un region : name est calculé comme le display name en minuscules avec chaque une espace remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name en minuscules avec « » remplacé par « - »"
+      },
+      "Regions.Area": {
+        "table": "Regions",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "Un region : area est calculé comme le width multiplié par l'height.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          }
+        ],
+        "structure": null,
+        "plain": "Width fois height"
+      },
+      "Regions.PlacementCount": {
+        "table": "Regions",
+        "field": "PlacementCount",
+        "kind": "rollup",
+        "rule": "Un region : placement count est le nombre de placements liés à le region.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des placements dont region est region ID"
+      },
+      "Regions.CoveredArea": {
+        "table": "Regions",
+        "field": "CoveredArea",
+        "kind": "rollup",
+        "rule": "Un region : covered area est le total de tile area sur les placements liés à le region.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "TileArea",
+            "label": "tile area"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de tile area sur tous les placements dont region est region ID"
+      },
+      "Regions.OverlapCount": {
+        "table": "Regions",
+        "field": "OverlapCount",
+        "kind": "rollup",
+        "rule": "Un region : overlap count est le nombre de placements du region qui sont overlapping.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          },
+          {
+            "table": "Placements",
+            "field": "IsOverlapping",
+            "label": "is overlapping"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des placements dont region est region ID et is overlapping est oui"
+      },
+      "Regions.CoveragePct": {
+        "table": "Regions",
+        "field": "CoveragePct",
+        "kind": "formula",
+        "rule": "Un region : coverage pct est calculé comme 100 multiplié par le covered area divisé par l'area.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveredArea",
+            "label": "covered area"
+          },
+          {
+            "table": "Regions",
+            "field": "Area",
+            "label": "area"
+          }
+        ],
+        "structure": null,
+        "plain": "(100 fois covered area) divisé par area"
+      },
+      "Regions.IsFullyCovered": {
+        "table": "Regions",
+        "field": "IsFullyCovered",
+        "kind": "formula",
+        "rule": "Un region est considéré comme fully covered si le coverage pct est au moins 100.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveragePct",
+            "label": "coverage pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Coverage pct est au moins 100"
+      },
+      "Regions.IsCleanTiling": {
+        "table": "Regions",
+        "field": "IsCleanTiling",
+        "kind": "formula",
+        "rule": "Un region est considéré comme clean tiling si tout ce qui suit est vrai : l'indicateur « fully covered » est activé et l'overlap count est 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "IsFullyCovered",
+            "label": "is fully covered"
+          },
+          {
+            "table": "Regions",
+            "field": "OverlapCount",
+            "label": "overlap count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un region est considéré comme clean tiling si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « fully covered » est activé"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'overlap count est 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is fully covered et overlap count est égal à 0"
+      },
+      "Placements.Name": {
+        "table": "Placements",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un placement : name est calculé comme le region, suivi de « # », suivi de le placement ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Placements",
+            "field": "PlacementId",
+            "label": "placement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Region, \"#\", joint à placement ID"
+      },
+      "Placements.TileArea": {
+        "table": "Placements",
+        "field": "TileArea",
+        "kind": "lookup",
+        "rule": "Un placement : tile area — repris du prototile lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Area",
+            "label": "area"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le area du prototile lié"
+      },
+      "Placements.TileSides": {
+        "table": "Placements",
+        "field": "TileSides",
+        "kind": "lookup",
+        "rule": "Un placement : tile sides — repris du prototile lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le sides du prototile lié"
+      },
+      "Placements.RegionWidth": {
+        "table": "Placements",
+        "field": "RegionWidth",
+        "kind": "lookup",
+        "rule": "Un placement : region width — repris du region lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le width du region lié"
+      },
+      "Placements.RegionHeight": {
+        "table": "Placements",
+        "field": "RegionHeight",
+        "kind": "lookup",
+        "rule": "Un placement : region height — repris du region lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le height du region lié"
+      },
+      "Placements.IsInsideRegion": {
+        "table": "Placements",
+        "field": "IsInsideRegion",
+        "kind": "formula",
+        "rule": "Un placement est considéré comme un inside region si tout ce qui suit est vrai : le x est au moins 0; l'y est au moins 0; le x est inférieur à le region width; et l'y est inférieur à le region height.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "X",
+            "label": "x"
+          },
+          {
+            "table": "Placements",
+            "field": "Y",
+            "label": "y"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionWidth",
+            "label": "region width"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionHeight",
+            "label": "region height"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un placement est considéré comme un inside region si tout ce qui suit est vrai :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "le x est au moins 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'y est au moins 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "le x est inférieur à le region width"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'y est inférieur à le region height"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "X est au moins 0, y est au moins 0, x est inférieur à region width, et y est inférieur à region height"
+      },
+      "WallpaperDesigns.Name": {
+        "table": "WallpaperDesigns",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un wallpaper design : name est calculé comme le display name en minuscules avec chaque une espace remplacé par un trait d'union.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name en minuscules avec « » remplacé par « - »"
+      },
+      "WallpaperDesigns.GroupNotation": {
+        "table": "WallpaperDesigns",
+        "field": "GroupNotation",
+        "kind": "lookup",
+        "rule": "Un wallpaper design : group notation — repris du symmetry group lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le notation du symmetry group lié"
+      },
+      "WallpaperDesigns.GroupOrbifold": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOrbifold",
+        "kind": "lookup",
+        "rule": "Un wallpaper design : group orbifold — repris du symmetry group lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Orbifold",
+            "label": "orbifold"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le orbifold du symmetry group lié"
+      },
+      "WallpaperDesigns.GroupLatticeType": {
+        "table": "WallpaperDesigns",
+        "field": "GroupLatticeType",
+        "kind": "lookup",
+        "rule": "Un wallpaper design : group lattice type — repris du symmetry group lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "LatticeType",
+            "label": "lattice type"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le lattice type du symmetry group lié"
+      },
+      "WallpaperDesigns.GroupRotationOrder": {
+        "table": "WallpaperDesigns",
+        "field": "GroupRotationOrder",
+        "kind": "lookup",
+        "rule": "Un wallpaper design : group rotation order — repris du symmetry group lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "RotationOrder",
+            "label": "rotation order"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le rotation order du symmetry group lié"
+      },
+      "WallpaperDesigns.GroupOperationCount": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOperationCount",
+        "kind": "lookup",
+        "rule": "Un wallpaper design : group operation count — repris du symmetry group lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "OperationCount",
+            "label": "operation count"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le operation count du symmetry group lié"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "SymmetryGroups": [
+        "Un symmetry group **doit** avoir une notation."
+      ],
+      "Prototiles": [
+        "Un prototile **doit** avoir un display name; un sides; et un edge length."
+      ],
+      "Tilings": [
+        "Un tiling **doit** avoir un display name; un vertex config; et un kind, et consigner si il est un edge to edge."
+      ],
+      "TilingPrototiles": [
+        "Un tiling prototile **doit** référencer exactement un tiling.",
+        "Un tiling prototile **doit** référencer exactement un prototile.",
+        "Un tiling prototile **doit** avoir un count at vertex."
+      ],
+      "VertexFigures": [
+        "Une vertex figure **doit** référencer exactement un tiling.",
+        "Une vertex figure **doit** avoir un config et un angle sum deg."
+      ],
+      "Regions": [
+        "Un region **doit** avoir un display name; un width; et un height."
+      ],
+      "Placements": [
+        "Un placement **doit** référencer exactement un region.",
+        "Un placement **doit** référencer exactement un prototile.",
+        "Un placement **doit** avoir un x; un y; et un rotation deg, et consigner si il est overlapping."
+      ],
+      "WallpaperDesigns": [
+        "Un wallpaper design **doit** référencer exactement un symmetry group.",
+        "Un wallpaper design **doit** avoir un display name et un strokes."
+      ]
+    },
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "SymmetryGroups": "symmetry group",
+      "Prototiles": "prototile",
+      "Tilings": "tiling",
+      "TilingPrototiles": "tiling prototile",
+      "VertexFigures": "vertex figure",
+      "Regions": "region",
+      "Placements": "placement",
+      "WallpaperDesigns": "wallpaper design"
+    }
+  },
+  "hi": {
+    "fields": {
+      "SymmetryGroups.Name": {
+        "table": "SymmetryGroups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "symmetry group का “name” उसके “symmetry group ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symmetry group ID"
+      },
+      "SymmetryGroups.TilingCount": {
+        "table": "SymmetryGroups",
+        "field": "TilingCount",
+        "kind": "rollup",
+        "rule": "symmetry group का “tiling count” symmetry group से संबंधित “tilings” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “tilings” की संख्या, जिनका symmetry group symmetry group ID है"
+      },
+      "SymmetryGroups.WallpaperDesignCount": {
+        "table": "SymmetryGroups",
+        "field": "WallpaperDesignCount",
+        "kind": "rollup",
+        "rule": "symmetry group का “wallpaper design count” symmetry group से संबंधित “wallpaper designs” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “wallpaper designs” की संख्या, जिनका symmetry group symmetry group ID है"
+      },
+      "Prototiles.Name": {
+        "table": "Prototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "prototile का “name” display name छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो"
+      },
+      "Prototiles.Area": {
+        "table": "Prototiles",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "prototile का “area” 0.25 गुणा sides गुणा edge length की 2 घात भाग पाई भाग sides की स्पर्शज्या के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Prototiles",
+            "field": "EdgeLength",
+            "label": "edge length"
+          }
+        ],
+        "structure": null,
+        "plain": "((0.25 गुणा sides) गुणा power(edge length, 2)) भाग tan((pi() भाग sides))"
+      },
+      "Prototiles.InteriorAngleDeg": {
+        "table": "Prototiles",
+        "field": "InteriorAngleDeg",
+        "kind": "formula",
+        "rule": "prototile का “interior angle deg” sides घटा 2 गुणा 180 भाग sides के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "((sides घटा 2) गुणा 180) भाग sides"
+      },
+      "Prototiles.VertexAngleTurns": {
+        "table": "Prototiles",
+        "field": "VertexAngleTurns",
+        "kind": "formula",
+        "rule": "prototile का “vertex angle turns” interior angle deg भाग 360 के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Interior angle deg भाग 360"
+      },
+      "Prototiles.IsRegular": {
+        "table": "Prototiles",
+        "field": "IsRegular",
+        "kind": "formula",
+        "rule": "यदि sides कम से कम 3 है, तो prototile “regular” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides कम से कम 3 है"
+      },
+      "Prototiles.IsTriangle": {
+        "table": "Prototiles",
+        "field": "IsTriangle",
+        "kind": "formula",
+        "rule": "यदि sides 3 है, तो prototile “triangle” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides 3 के बराबर है"
+      },
+      "Prototiles.IsSquare": {
+        "table": "Prototiles",
+        "field": "IsSquare",
+        "kind": "formula",
+        "rule": "यदि sides 4 है, तो prototile “square” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides 4 के बराबर है"
+      },
+      "Prototiles.UsedInTilingsCount": {
+        "table": "Prototiles",
+        "field": "UsedInTilingsCount",
+        "kind": "rollup",
+        "rule": "prototile का “used in tilings count” prototile से संबंधित “tiling prototiles” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “tiling prototiles” की संख्या, जिनका prototile prototile ID है"
+      },
+      "Tilings.Name": {
+        "table": "Tilings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "tiling का “name” display name छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो"
+      },
+      "Tilings.SymmetryNotation": {
+        "table": "Tilings",
+        "field": "SymmetryNotation",
+        "kind": "lookup",
+        "rule": "tiling का “symmetry notation” — लिंक किए गए “symmetry group” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “symmetry group” का notation"
+      },
+      "Tilings.DistinctPrototileCount": {
+        "table": "Tilings",
+        "field": "DistinctPrototileCount",
+        "kind": "rollup",
+        "rule": "tiling का “distinct prototile count” tiling से संबंधित “tiling prototiles” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “tiling prototiles” की संख्या, जिनका tiling tiling ID है"
+      },
+      "Tilings.VertexFigureCount": {
+        "table": "Tilings",
+        "field": "VertexFigureCount",
+        "kind": "rollup",
+        "rule": "tiling का “vertex figure count” tiling से संबंधित “vertex figures” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “vertex figures” की संख्या, जिनका tiling tiling ID है"
+      },
+      "Tilings.ValidVertexFigureCount": {
+        "table": "Tilings",
+        "field": "ValidVertexFigureCount",
+        "kind": "rollup",
+        "rule": "tiling का “valid vertex figure count” tiling के उन “vertex figures” की संख्या, जो “valid” हैं है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "IsValid",
+            "label": "is valid"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “vertex figures” की संख्या, जिनका tiling tiling ID है और is valid हाँ है"
+      },
+      "Tilings.IsRegularTiling": {
+        "table": "Tilings",
+        "field": "IsRegularTiling",
+        "kind": "formula",
+        "rule": "यदि distinct prototile count 1 है, तो tiling “regular tiling” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DistinctPrototileCount",
+            "label": "distinct prototile count"
+          }
+        ],
+        "structure": null,
+        "plain": "Distinct prototile count 1 के बराबर है"
+      },
+      "Tilings.AllVerticesValid": {
+        "table": "Tilings",
+        "field": "AllVerticesValid",
+        "kind": "formula",
+        "rule": "यदि valid vertex figure count vertex figure count है, तो tiling “all vertices valid” के रूप में दर्ज किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "ValidVertexFigureCount",
+            "label": "valid vertex figure count"
+          },
+          {
+            "table": "Tilings",
+            "field": "VertexFigureCount",
+            "label": "vertex figure count"
+          }
+        ],
+        "structure": null,
+        "plain": "Valid vertex figure count vertex figure count के बराबर है"
+      },
+      "Tilings.LatticeDeterminant": {
+        "table": "Tilings",
+        "field": "LatticeDeterminant",
+        "kind": "formula",
+        "rule": "tiling का “lattice determinant” t1x गुणा t2y घटा t1y गुणा t2x के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "T1x",
+            "label": "t1x"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2y",
+            "label": "t2y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T1y",
+            "label": "t1y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2x",
+            "label": "t2x"
+          }
+        ],
+        "structure": null,
+        "plain": "(t1x गुणा t2y) घटा (t1y गुणा t2x)"
+      },
+      "Tilings.FundamentalDomainArea": {
+        "table": "Tilings",
+        "field": "FundamentalDomainArea",
+        "kind": "formula",
+        "rule": "tiling का “fundamental domain area” lattice determinant का निरपेक्ष मान के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Lattice determinant का निरपेक्ष मान"
+      },
+      "Tilings.HasLattice": {
+        "table": "Tilings",
+        "field": "HasLattice",
+        "kind": "formula",
+        "rule": "यदि lattice determinant का निरपेक्ष मान 0.0001 से अधिक है, तो tiling “lattice” रखने वाला माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Lattice determinant का निरपेक्ष मान 0.0001 से अधिक है"
+      },
+      "Tilings.DoesTilePlane": {
+        "table": "Tilings",
+        "field": "DoesTilePlane",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: “all vertices valid” ध्वज लगा हुआ है और “lattice” ध्वज लगा हुआ है, तो tiling “tile plane” की शर्त पूरी करने वाला माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "AllVerticesValid",
+            "label": "all vertices valid"
+          },
+          {
+            "table": "Tilings",
+            "field": "HasLattice",
+            "label": "has lattice"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "tiling “tile plane” की शर्त पूरी करने वाला माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“all vertices valid” ध्वज लगा हुआ है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“lattice” ध्वज लगा हुआ है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "All vertices valid और has lattice"
+      },
+      "TilingPrototiles.Name": {
+        "table": "TilingPrototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "tiling prototile का “name” tiling, उसके बाद एक तिरछी रेखा, उसके बाद prototile के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling, \"/\" से जुड़ा हुआ prototile"
+      },
+      "TilingPrototiles.PrototileSides": {
+        "table": "TilingPrototiles",
+        "field": "PrototileSides",
+        "kind": "lookup",
+        "rule": "tiling prototile का “prototile sides” — लिंक किए गए “prototile” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “prototile” का sides"
+      },
+      "TilingPrototiles.PrototileInteriorAngle": {
+        "table": "TilingPrototiles",
+        "field": "PrototileInteriorAngle",
+        "kind": "lookup",
+        "rule": "tiling prototile का “prototile interior angle” लिंक किए गए “prototile” का “interior angle deg” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “prototile” का interior angle deg"
+      },
+      "VertexFigures.Name": {
+        "table": "VertexFigures",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "vertex figure का “name” tiling, उसके बाद “@”, उसके बाद config के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "Config",
+            "label": "config"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling, \"@\" से जुड़ा हुआ config"
+      },
+      "VertexFigures.TurnsAtVertex": {
+        "table": "VertexFigures",
+        "field": "TurnsAtVertex",
+        "kind": "formula",
+        "rule": "vertex figure का “turns at vertex” angle sum deg भाग 360 के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle sum deg भाग 360"
+      },
+      "VertexFigures.AngleGapDeg": {
+        "table": "VertexFigures",
+        "field": "AngleGapDeg",
+        "kind": "formula",
+        "rule": "vertex figure का “angle gap deg” angle sum deg घटा 360 का निरपेक्ष मान के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "(angle sum deg घटा 360) का निरपेक्ष मान"
+      },
+      "VertexFigures.IsValid": {
+        "table": "VertexFigures",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "यदि angle gap deg अधिक से अधिक 0.0001 है, तो vertex figure “valid” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleGapDeg",
+            "label": "angle gap deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle gap deg अधिक से अधिक 0.0001 है"
+      },
+      "Regions.Name": {
+        "table": "Regions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "region का “name” display name छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो"
+      },
+      "Regions.Area": {
+        "table": "Regions",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "region का “area” width गुणा height के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          }
+        ],
+        "structure": null,
+        "plain": "Width गुणा height"
+      },
+      "Regions.PlacementCount": {
+        "table": "Regions",
+        "field": "PlacementCount",
+        "kind": "rollup",
+        "rule": "region का “placement count” region से संबंधित “placements” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “placements” की संख्या, जिनका region region ID है"
+      },
+      "Regions.CoveredArea": {
+        "table": "Regions",
+        "field": "CoveredArea",
+        "kind": "rollup",
+        "rule": "region का “covered area” region से संबंधित “placements” पर कुल “tile area” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "TileArea",
+            "label": "tile area"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “placements” पर योग tile area, जिनका region region ID है"
+      },
+      "Regions.OverlapCount": {
+        "table": "Regions",
+        "field": "OverlapCount",
+        "kind": "rollup",
+        "rule": "region का “overlap count” region के उन “placements” की संख्या, जो “overlapping” हैं है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          },
+          {
+            "table": "Placements",
+            "field": "IsOverlapping",
+            "label": "is overlapping"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “placements” की संख्या, जिनका region region ID है और is overlapping हाँ है"
+      },
+      "Regions.CoveragePct": {
+        "table": "Regions",
+        "field": "CoveragePct",
+        "kind": "formula",
+        "rule": "region का “coverage pct” 100 गुणा covered area भाग area के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveredArea",
+            "label": "covered area"
+          },
+          {
+            "table": "Regions",
+            "field": "Area",
+            "label": "area"
+          }
+        ],
+        "structure": null,
+        "plain": "(100 गुणा covered area) भाग area"
+      },
+      "Regions.IsFullyCovered": {
+        "table": "Regions",
+        "field": "IsFullyCovered",
+        "kind": "formula",
+        "rule": "यदि coverage pct कम से कम 100 है, तो region “fully covered” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveragePct",
+            "label": "coverage pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Coverage pct कम से कम 100 है"
+      },
+      "Regions.IsCleanTiling": {
+        "table": "Regions",
+        "field": "IsCleanTiling",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: “fully covered” ध्वज लगा हुआ है और overlap count 0 है, तो region “clean tiling” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "IsFullyCovered",
+            "label": "is fully covered"
+          },
+          {
+            "table": "Regions",
+            "field": "OverlapCount",
+            "label": "overlap count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "region “clean tiling” माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“fully covered” ध्वज लगा हुआ है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "overlap count 0 है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is fully covered और overlap count 0 के बराबर है"
+      },
+      "Placements.Name": {
+        "table": "Placements",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "placement का “name” region, उसके बाद “#”, उसके बाद placement ID के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Placements",
+            "field": "PlacementId",
+            "label": "placement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Region, \"#\" से जुड़ा हुआ placement ID"
+      },
+      "Placements.TileArea": {
+        "table": "Placements",
+        "field": "TileArea",
+        "kind": "lookup",
+        "rule": "placement का “tile area” — लिंक किए गए “prototile” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Area",
+            "label": "area"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “prototile” का area"
+      },
+      "Placements.TileSides": {
+        "table": "Placements",
+        "field": "TileSides",
+        "kind": "lookup",
+        "rule": "placement का “tile sides” — लिंक किए गए “prototile” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “prototile” का sides"
+      },
+      "Placements.RegionWidth": {
+        "table": "Placements",
+        "field": "RegionWidth",
+        "kind": "lookup",
+        "rule": "placement का “region width” — लिंक किए गए “region” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “region” का width"
+      },
+      "Placements.RegionHeight": {
+        "table": "Placements",
+        "field": "RegionHeight",
+        "kind": "lookup",
+        "rule": "placement का “region height” — लिंक किए गए “region” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “region” का height"
+      },
+      "Placements.IsInsideRegion": {
+        "table": "Placements",
+        "field": "IsInsideRegion",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित सभी सही हैं: x कम से कम 0 है, y कम से कम 0 है, x region width से कम है और y region height से कम है, तो placement “inside region” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "X",
+            "label": "x"
+          },
+          {
+            "table": "Placements",
+            "field": "Y",
+            "label": "y"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionWidth",
+            "label": "region width"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionHeight",
+            "label": "region height"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "placement “inside region” माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "x कम से कम 0 है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "y कम से कम 0 है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "x region width से कम है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "y region height से कम है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "X कम से कम 0 है, y कम से कम 0 है, x region width से कम है और y region height से कम है"
+      },
+      "WallpaperDesigns.Name": {
+        "table": "WallpaperDesigns",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "wallpaper design का “name” display name छोटे अक्षरों में, जिसमें हर एक रिक्त स्थान को एक योजक चिह्न से बदला गया हो के रूप में गणना किया जाता है।",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name छोटे अक्षरों में, जिसमें “ ” को “-” से बदला गया हो"
+      },
+      "WallpaperDesigns.GroupNotation": {
+        "table": "WallpaperDesigns",
+        "field": "GroupNotation",
+        "kind": "lookup",
+        "rule": "wallpaper design का “group notation” — लिंक किए गए “symmetry group” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “symmetry group” का notation"
+      },
+      "WallpaperDesigns.GroupOrbifold": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOrbifold",
+        "kind": "lookup",
+        "rule": "wallpaper design का “group orbifold” — लिंक किए गए “symmetry group” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Orbifold",
+            "label": "orbifold"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “symmetry group” का orbifold"
+      },
+      "WallpaperDesigns.GroupLatticeType": {
+        "table": "WallpaperDesigns",
+        "field": "GroupLatticeType",
+        "kind": "lookup",
+        "rule": "wallpaper design का “group lattice type” — लिंक किए गए “symmetry group” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "LatticeType",
+            "label": "lattice type"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “symmetry group” का lattice type"
+      },
+      "WallpaperDesigns.GroupRotationOrder": {
+        "table": "WallpaperDesigns",
+        "field": "GroupRotationOrder",
+        "kind": "lookup",
+        "rule": "wallpaper design का “group rotation order” — लिंक किए गए “symmetry group” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "RotationOrder",
+            "label": "rotation order"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “symmetry group” का rotation order"
+      },
+      "WallpaperDesigns.GroupOperationCount": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOperationCount",
+        "kind": "lookup",
+        "rule": "wallpaper design का “group operation count” — लिंक किए गए “symmetry group” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "OperationCount",
+            "label": "operation count"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “symmetry group” का operation count"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "SymmetryGroups": [
+        "symmetry group को notation रखना **अनिवार्य** है।"
+      ],
+      "Prototiles": [
+        "prototile को display name, sides और edge length रखना **अनिवार्य** है।"
+      ],
+      "Tilings": [
+        "tiling को display name, vertex config और kind रखना, तथा यह कि वह “edge to edge” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ],
+      "TilingPrototiles": [
+        "tiling prototile को ठीक एक “tiling” का संदर्भ देना **अनिवार्य** है।",
+        "tiling prototile को ठीक एक “prototile” का संदर्भ देना **अनिवार्य** है।",
+        "tiling prototile को count at vertex रखना **अनिवार्य** है।"
+      ],
+      "VertexFigures": [
+        "vertex figure को ठीक एक “tiling” का संदर्भ देना **अनिवार्य** है।",
+        "vertex figure को config और angle sum deg रखना **अनिवार्य** है।"
+      ],
+      "Regions": [
+        "region को display name, width और height रखना **अनिवार्य** है।"
+      ],
+      "Placements": [
+        "placement को ठीक एक “region” का संदर्भ देना **अनिवार्य** है।",
+        "placement को ठीक एक “prototile” का संदर्भ देना **अनिवार्य** है।",
+        "placement को x, y और rotation deg रखना, तथा यह कि वह “overlapping” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ],
+      "WallpaperDesigns": [
+        "wallpaper design को ठीक एक “symmetry group” का संदर्भ देना **अनिवार्य** है।",
+        "wallpaper design को display name और strokes रखना **अनिवार्य** है।"
+      ]
+    },
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "SymmetryGroups": "symmetry group",
+      "Prototiles": "prototile",
+      "Tilings": "tiling",
+      "TilingPrototiles": "tiling prototile",
+      "VertexFigures": "vertex figure",
+      "Regions": "region",
+      "Placements": "placement",
+      "WallpaperDesigns": "wallpaper design"
+    }
+  },
+  "id": {
+    "fields": {
+      "SymmetryGroups.Name": {
+        "table": "SymmetryGroups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap symmetry group, name sama dengan symmetry group ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symmetry group ID"
+      },
+      "SymmetryGroups.TilingCount": {
+        "table": "SymmetryGroups",
+        "field": "TilingCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap symmetry group, tiling count adalah jumlah tilings yang terkait dengan symmetry group tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah tilings dengan syarat symmetry group adalah symmetry group ID"
+      },
+      "SymmetryGroups.WallpaperDesignCount": {
+        "table": "SymmetryGroups",
+        "field": "WallpaperDesignCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap symmetry group, wallpaper design count adalah jumlah wallpaper designs yang terkait dengan symmetry group tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah wallpaper designs dengan syarat symmetry group adalah symmetry group ID"
+      },
+      "Prototiles.Name": {
+        "table": "Prototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap prototile, name dihitung sebagai display name dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name dalam huruf kecil dengan “ ” diganti dengan “-”"
+      },
+      "Prototiles.Area": {
+        "table": "Prototiles",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "Untuk setiap prototile, area dihitung sebagai 0.25 dikali sides dikali edge length pangkat 2 dibagi tangen dari pi dibagi sides.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Prototiles",
+            "field": "EdgeLength",
+            "label": "edge length"
+          }
+        ],
+        "structure": null,
+        "plain": "((0.25 dikali sides) dikali power(edge length, 2)) dibagi tan((pi() dibagi sides))"
+      },
+      "Prototiles.InteriorAngleDeg": {
+        "table": "Prototiles",
+        "field": "InteriorAngleDeg",
+        "kind": "formula",
+        "rule": "Untuk setiap prototile, interior angle deg dihitung sebagai sides dikurangi 2 dikali 180 dibagi sides.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "((sides dikurangi 2) dikali 180) dibagi sides"
+      },
+      "Prototiles.VertexAngleTurns": {
+        "table": "Prototiles",
+        "field": "VertexAngleTurns",
+        "kind": "formula",
+        "rule": "Untuk setiap prototile, vertex angle turns dihitung sebagai interior angle deg dibagi 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Interior angle deg dibagi 360"
+      },
+      "Prototiles.IsRegular": {
+        "table": "Prototiles",
+        "field": "IsRegular",
+        "kind": "formula",
+        "rule": "Setiap prototile dianggap “regular” jika sides tidak kurang dari 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides tidak kurang dari 3"
+      },
+      "Prototiles.IsTriangle": {
+        "table": "Prototiles",
+        "field": "IsTriangle",
+        "kind": "formula",
+        "rule": "Setiap prototile dianggap “triangle” jika sides adalah 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides sama dengan 3"
+      },
+      "Prototiles.IsSquare": {
+        "table": "Prototiles",
+        "field": "IsSquare",
+        "kind": "formula",
+        "rule": "Setiap prototile dianggap “square” jika sides adalah 4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides sama dengan 4"
+      },
+      "Prototiles.UsedInTilingsCount": {
+        "table": "Prototiles",
+        "field": "UsedInTilingsCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap prototile, used in tilings count adalah jumlah tiling prototiles yang terkait dengan prototile tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah tiling prototiles dengan syarat prototile adalah prototile ID"
+      },
+      "Tilings.Name": {
+        "table": "Tilings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap tiling, name dihitung sebagai display name dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name dalam huruf kecil dengan “ ” diganti dengan “-”"
+      },
+      "Tilings.SymmetryNotation": {
+        "table": "Tilings",
+        "field": "SymmetryNotation",
+        "kind": "lookup",
+        "rule": "Untuk setiap tiling, symmetry notation diambil dari symmetry group yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Notation dari symmetry group yang tertaut"
+      },
+      "Tilings.DistinctPrototileCount": {
+        "table": "Tilings",
+        "field": "DistinctPrototileCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap tiling, distinct prototile count adalah jumlah tiling prototiles yang terkait dengan tiling tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah tiling prototiles dengan syarat tiling adalah tiling ID"
+      },
+      "Tilings.VertexFigureCount": {
+        "table": "Tilings",
+        "field": "VertexFigureCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap tiling, vertex figure count adalah jumlah vertex figures yang terkait dengan tiling tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah vertex figures dengan syarat tiling adalah tiling ID"
+      },
+      "Tilings.ValidVertexFigureCount": {
+        "table": "Tilings",
+        "field": "ValidVertexFigureCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap tiling, valid vertex figure count adalah jumlah vertex figures dari tiling tersebut yang tergolong “valid”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "IsValid",
+            "label": "is valid"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah vertex figures dengan syarat tiling adalah tiling ID dan is valid adalah ya"
+      },
+      "Tilings.IsRegularTiling": {
+        "table": "Tilings",
+        "field": "IsRegularTiling",
+        "kind": "formula",
+        "rule": "Setiap tiling dianggap “regular tiling” jika distinct prototile count adalah 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DistinctPrototileCount",
+            "label": "distinct prototile count"
+          }
+        ],
+        "structure": null,
+        "plain": "Distinct prototile count sama dengan 1"
+      },
+      "Tilings.AllVerticesValid": {
+        "table": "Tilings",
+        "field": "AllVerticesValid",
+        "kind": "formula",
+        "rule": "Setiap tiling ditandai sebagai “all vertices valid” jika valid vertex figure count adalah vertex figure count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "ValidVertexFigureCount",
+            "label": "valid vertex figure count"
+          },
+          {
+            "table": "Tilings",
+            "field": "VertexFigureCount",
+            "label": "vertex figure count"
+          }
+        ],
+        "structure": null,
+        "plain": "Valid vertex figure count sama dengan vertex figure count"
+      },
+      "Tilings.LatticeDeterminant": {
+        "table": "Tilings",
+        "field": "LatticeDeterminant",
+        "kind": "formula",
+        "rule": "Untuk setiap tiling, lattice determinant dihitung sebagai t1x dikali t2y dikurangi t1y dikali t2x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "T1x",
+            "label": "t1x"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2y",
+            "label": "t2y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T1y",
+            "label": "t1y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2x",
+            "label": "t2x"
+          }
+        ],
+        "structure": null,
+        "plain": "(t1x dikali t2y) dikurangi (t1y dikali t2x)"
+      },
+      "Tilings.FundamentalDomainArea": {
+        "table": "Tilings",
+        "field": "FundamentalDomainArea",
+        "kind": "formula",
+        "rule": "Untuk setiap tiling, fundamental domain area dihitung sebagai nilai mutlak dari lattice determinant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Nilai mutlak dari lattice determinant"
+      },
+      "Tilings.HasLattice": {
+        "table": "Tilings",
+        "field": "HasLattice",
+        "kind": "formula",
+        "rule": "Setiap tiling dianggap memiliki “lattice” jika nilai mutlak dari lattice determinant lebih dari 0.0001.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Nilai mutlak dari lattice determinant lebih dari 0.0001"
+      },
+      "Tilings.DoesTilePlane": {
+        "table": "Tilings",
+        "field": "DoesTilePlane",
+        "kind": "formula",
+        "rule": "Setiap tiling dianggap memenuhi kondisi “does tile plane” jika semua kondisi berikut terpenuhi: penanda “all vertices valid” aktif dan penanda “lattice” aktif.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "AllVerticesValid",
+            "label": "all vertices valid"
+          },
+          {
+            "table": "Tilings",
+            "field": "HasLattice",
+            "label": "has lattice"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap tiling dianggap memenuhi kondisi “does tile plane” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "penanda “all vertices valid” aktif"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "penanda “lattice” aktif"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "All vertices valid dan has lattice"
+      },
+      "TilingPrototiles.Name": {
+        "table": "TilingPrototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap tiling prototile, name dihitung sebagai tiling, diikuti garis miring, diikuti prototile.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling, \"/\", digabung dengan prototile"
+      },
+      "TilingPrototiles.PrototileSides": {
+        "table": "TilingPrototiles",
+        "field": "PrototileSides",
+        "kind": "lookup",
+        "rule": "Untuk setiap tiling prototile, prototile sides diambil dari prototile yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides dari prototile yang tertaut"
+      },
+      "TilingPrototiles.PrototileInteriorAngle": {
+        "table": "TilingPrototiles",
+        "field": "PrototileInteriorAngle",
+        "kind": "lookup",
+        "rule": "Untuk setiap tiling prototile, prototile interior angle adalah interior angle deg dari prototile yang tertaut pada tiling prototile tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Interior angle deg dari prototile yang tertaut"
+      },
+      "VertexFigures.Name": {
+        "table": "VertexFigures",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap vertex figure, name dihitung sebagai tiling, diikuti “@”, diikuti config.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "Config",
+            "label": "config"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling, \"@\", digabung dengan config"
+      },
+      "VertexFigures.TurnsAtVertex": {
+        "table": "VertexFigures",
+        "field": "TurnsAtVertex",
+        "kind": "formula",
+        "rule": "Untuk setiap vertex figure, turns at vertex dihitung sebagai angle sum deg dibagi 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle sum deg dibagi 360"
+      },
+      "VertexFigures.AngleGapDeg": {
+        "table": "VertexFigures",
+        "field": "AngleGapDeg",
+        "kind": "formula",
+        "rule": "Untuk setiap vertex figure, angle gap deg dihitung sebagai nilai mutlak dari angle sum deg dikurangi 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Nilai mutlak dari (angle sum deg dikurangi 360)"
+      },
+      "VertexFigures.IsValid": {
+        "table": "VertexFigures",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "Setiap vertex figure dianggap “valid” jika angle gap deg tidak lebih dari 0.0001.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleGapDeg",
+            "label": "angle gap deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle gap deg tidak lebih dari 0.0001"
+      },
+      "Regions.Name": {
+        "table": "Regions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap region, name dihitung sebagai display name dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name dalam huruf kecil dengan “ ” diganti dengan “-”"
+      },
+      "Regions.Area": {
+        "table": "Regions",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "Untuk setiap region, area dihitung sebagai width dikali height.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          }
+        ],
+        "structure": null,
+        "plain": "Width dikali height"
+      },
+      "Regions.PlacementCount": {
+        "table": "Regions",
+        "field": "PlacementCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap region, placement count adalah jumlah placements yang terkait dengan region tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah placements dengan syarat region adalah region ID"
+      },
+      "Regions.CoveredArea": {
+        "table": "Regions",
+        "field": "CoveredArea",
+        "kind": "rollup",
+        "rule": "Untuk setiap region, covered area adalah nilai total tile area pada seluruh placements yang terkait dengan region tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "TileArea",
+            "label": "tile area"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total tile area pada semua placements dengan syarat region adalah region ID"
+      },
+      "Regions.OverlapCount": {
+        "table": "Regions",
+        "field": "OverlapCount",
+        "kind": "rollup",
+        "rule": "Untuk setiap region, overlap count adalah jumlah placements dari region tersebut yang tergolong “overlapping”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          },
+          {
+            "table": "Placements",
+            "field": "IsOverlapping",
+            "label": "is overlapping"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah placements dengan syarat region adalah region ID dan is overlapping adalah ya"
+      },
+      "Regions.CoveragePct": {
+        "table": "Regions",
+        "field": "CoveragePct",
+        "kind": "formula",
+        "rule": "Untuk setiap region, coverage pct dihitung sebagai 100 dikali covered area dibagi area.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveredArea",
+            "label": "covered area"
+          },
+          {
+            "table": "Regions",
+            "field": "Area",
+            "label": "area"
+          }
+        ],
+        "structure": null,
+        "plain": "(100 dikali covered area) dibagi area"
+      },
+      "Regions.IsFullyCovered": {
+        "table": "Regions",
+        "field": "IsFullyCovered",
+        "kind": "formula",
+        "rule": "Setiap region dianggap “fully covered” jika coverage pct tidak kurang dari 100.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveragePct",
+            "label": "coverage pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Coverage pct tidak kurang dari 100"
+      },
+      "Regions.IsCleanTiling": {
+        "table": "Regions",
+        "field": "IsCleanTiling",
+        "kind": "formula",
+        "rule": "Setiap region dianggap “clean tiling” jika semua kondisi berikut terpenuhi: penanda “fully covered” aktif dan overlap count adalah 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "IsFullyCovered",
+            "label": "is fully covered"
+          },
+          {
+            "table": "Regions",
+            "field": "OverlapCount",
+            "label": "overlap count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap region dianggap “clean tiling” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "penanda “fully covered” aktif"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "overlap count adalah 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is fully covered dan overlap count sama dengan 0"
+      },
+      "Placements.Name": {
+        "table": "Placements",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap placement, name dihitung sebagai region, diikuti “#”, diikuti placement ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Placements",
+            "field": "PlacementId",
+            "label": "placement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Region, \"#\", digabung dengan placement ID"
+      },
+      "Placements.TileArea": {
+        "table": "Placements",
+        "field": "TileArea",
+        "kind": "lookup",
+        "rule": "Untuk setiap placement, tile area diambil dari prototile yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Area",
+            "label": "area"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Area dari prototile yang tertaut"
+      },
+      "Placements.TileSides": {
+        "table": "Placements",
+        "field": "TileSides",
+        "kind": "lookup",
+        "rule": "Untuk setiap placement, tile sides diambil dari prototile yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides dari prototile yang tertaut"
+      },
+      "Placements.RegionWidth": {
+        "table": "Placements",
+        "field": "RegionWidth",
+        "kind": "lookup",
+        "rule": "Untuk setiap placement, region width diambil dari region yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Width dari region yang tertaut"
+      },
+      "Placements.RegionHeight": {
+        "table": "Placements",
+        "field": "RegionHeight",
+        "kind": "lookup",
+        "rule": "Untuk setiap placement, region height diambil dari region yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Height dari region yang tertaut"
+      },
+      "Placements.IsInsideRegion": {
+        "table": "Placements",
+        "field": "IsInsideRegion",
+        "kind": "formula",
+        "rule": "Setiap placement dianggap “inside region” jika semua kondisi berikut terpenuhi: x tidak kurang dari 0, y tidak kurang dari 0, x kurang dari region width, dan y kurang dari region height.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "X",
+            "label": "x"
+          },
+          {
+            "table": "Placements",
+            "field": "Y",
+            "label": "y"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionWidth",
+            "label": "region width"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionHeight",
+            "label": "region height"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap placement dianggap “inside region” jika semua kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "x tidak kurang dari 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "y tidak kurang dari 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "x kurang dari region width"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "y kurang dari region height"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "X tidak kurang dari 0, y tidak kurang dari 0, x kurang dari region width, dan y kurang dari region height"
+      },
+      "WallpaperDesigns.Name": {
+        "table": "WallpaperDesigns",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap wallpaper design, name dihitung sebagai display name dalam huruf kecil dengan setiap spasi diganti dengan tanda hubung.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name dalam huruf kecil dengan “ ” diganti dengan “-”"
+      },
+      "WallpaperDesigns.GroupNotation": {
+        "table": "WallpaperDesigns",
+        "field": "GroupNotation",
+        "kind": "lookup",
+        "rule": "Untuk setiap wallpaper design, group notation diambil dari symmetry group yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Notation dari symmetry group yang tertaut"
+      },
+      "WallpaperDesigns.GroupOrbifold": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOrbifold",
+        "kind": "lookup",
+        "rule": "Untuk setiap wallpaper design, group orbifold diambil dari symmetry group yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Orbifold",
+            "label": "orbifold"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Orbifold dari symmetry group yang tertaut"
+      },
+      "WallpaperDesigns.GroupLatticeType": {
+        "table": "WallpaperDesigns",
+        "field": "GroupLatticeType",
+        "kind": "lookup",
+        "rule": "Untuk setiap wallpaper design, group lattice type diambil dari symmetry group yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "LatticeType",
+            "label": "lattice type"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Lattice type dari symmetry group yang tertaut"
+      },
+      "WallpaperDesigns.GroupRotationOrder": {
+        "table": "WallpaperDesigns",
+        "field": "GroupRotationOrder",
+        "kind": "lookup",
+        "rule": "Untuk setiap wallpaper design, group rotation order diambil dari symmetry group yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "RotationOrder",
+            "label": "rotation order"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rotation order dari symmetry group yang tertaut"
+      },
+      "WallpaperDesigns.GroupOperationCount": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOperationCount",
+        "kind": "lookup",
+        "rule": "Untuk setiap wallpaper design, group operation count diambil dari symmetry group yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "OperationCount",
+            "label": "operation count"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Operation count dari symmetry group yang tertaut"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "SymmetryGroups": [
+        "Setiap symmetry group **harus** memiliki notation."
+      ],
+      "Prototiles": [
+        "Setiap prototile **harus** memiliki display name, sides, dan edge length."
+      ],
+      "Tilings": [
+        "Setiap tiling **harus** memiliki display name, vertex config, dan kind, serta menyatakan apakah tergolong “edge to edge”."
+      ],
+      "TilingPrototiles": [
+        "Setiap tiling prototile **harus** merujuk pada tepat satu tiling.",
+        "Setiap tiling prototile **harus** merujuk pada tepat satu prototile.",
+        "Setiap tiling prototile **harus** memiliki count at vertex."
+      ],
+      "VertexFigures": [
+        "Setiap vertex figure **harus** merujuk pada tepat satu tiling.",
+        "Setiap vertex figure **harus** memiliki config dan angle sum deg."
+      ],
+      "Regions": [
+        "Setiap region **harus** memiliki display name, width, dan height."
+      ],
+      "Placements": [
+        "Setiap placement **harus** merujuk pada tepat satu region.",
+        "Setiap placement **harus** merujuk pada tepat satu prototile.",
+        "Setiap placement **harus** memiliki x, y, dan rotation deg, serta menyatakan apakah tergolong “overlapping”."
+      ],
+      "WallpaperDesigns": [
+        "Setiap wallpaper design **harus** merujuk pada tepat satu symmetry group.",
+        "Setiap wallpaper design **harus** memiliki display name dan strokes."
+      ]
+    },
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "SymmetryGroups": "symmetry group",
+      "Prototiles": "prototile",
+      "Tilings": "tiling",
+      "TilingPrototiles": "tiling prototile",
+      "VertexFigures": "vertex figure",
+      "Regions": "region",
+      "Placements": "placement",
+      "WallpaperDesigns": "wallpaper design"
+    }
+  },
+  "it": {
+    "fields": {
+      "SymmetryGroups.Name": {
+        "table": "SymmetryGroups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un symmetry group: name è uguale a symmetry group ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symmetry group ID"
+      },
+      "SymmetryGroups.TilingCount": {
+        "table": "SymmetryGroups",
+        "field": "TilingCount",
+        "kind": "rollup",
+        "rule": "Un symmetry group: tiling count è il numero di tilings collegati a il symmetry group.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei tilings il cui symmetry group è symmetry group ID"
+      },
+      "SymmetryGroups.WallpaperDesignCount": {
+        "table": "SymmetryGroups",
+        "field": "WallpaperDesignCount",
+        "kind": "rollup",
+        "rule": "Un symmetry group: wallpaper design count è il numero di wallpaper designs collegati a il symmetry group.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei wallpaper designs il cui symmetry group è symmetry group ID"
+      },
+      "Prototiles.Name": {
+        "table": "Prototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un prototile: name è calcolato come il display name in minuscolo con ogni uno spazio sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name in minuscolo con « » sostituito da «-»"
+      },
+      "Prototiles.Area": {
+        "table": "Prototiles",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "Un prototile: area è calcolato come 0.25 per il sides per l'edge length elevato a 2 diviso la tangente di pi greco diviso il sides.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Prototiles",
+            "field": "EdgeLength",
+            "label": "edge length"
+          }
+        ],
+        "structure": null,
+        "plain": "((0.25 per sides) per power(edge length, 2)) diviso tan((pi() diviso sides))"
+      },
+      "Prototiles.InteriorAngleDeg": {
+        "table": "Prototiles",
+        "field": "InteriorAngleDeg",
+        "kind": "formula",
+        "rule": "Un prototile: interior angle deg è calcolato come il sides meno 2 per 180 diviso il sides.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "((sides meno 2) per 180) diviso sides"
+      },
+      "Prototiles.VertexAngleTurns": {
+        "table": "Prototiles",
+        "field": "VertexAngleTurns",
+        "kind": "formula",
+        "rule": "Un prototile: vertex angle turns è calcolato come l'interior angle deg diviso 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Interior angle deg diviso 360"
+      },
+      "Prototiles.IsRegular": {
+        "table": "Prototiles",
+        "field": "IsRegular",
+        "kind": "formula",
+        "rule": "Un prototile è considerato un regular se il sides è almeno 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides è almeno 3"
+      },
+      "Prototiles.IsTriangle": {
+        "table": "Prototiles",
+        "field": "IsTriangle",
+        "kind": "formula",
+        "rule": "Un prototile è considerato un triangle se il sides è 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides è uguale a 3"
+      },
+      "Prototiles.IsSquare": {
+        "table": "Prototiles",
+        "field": "IsSquare",
+        "kind": "formula",
+        "rule": "Un prototile è considerato un square se il sides è 4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides è uguale a 4"
+      },
+      "Prototiles.UsedInTilingsCount": {
+        "table": "Prototiles",
+        "field": "UsedInTilingsCount",
+        "kind": "rollup",
+        "rule": "Un prototile: used in tilings count è il numero di tiling prototiles collegati a il prototile.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei tiling prototiles il cui prototile è prototile ID"
+      },
+      "Tilings.Name": {
+        "table": "Tilings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un tiling: name è calcolato come il display name in minuscolo con ogni uno spazio sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name in minuscolo con « » sostituito da «-»"
+      },
+      "Tilings.SymmetryNotation": {
+        "table": "Tilings",
+        "field": "SymmetryNotation",
+        "kind": "lookup",
+        "rule": "Un tiling: symmetry notation — ripreso dal symmetry group collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il notation del symmetry group collegato"
+      },
+      "Tilings.DistinctPrototileCount": {
+        "table": "Tilings",
+        "field": "DistinctPrototileCount",
+        "kind": "rollup",
+        "rule": "Un tiling: distinct prototile count è il numero di tiling prototiles collegati a il tiling.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei tiling prototiles il cui tiling è tiling ID"
+      },
+      "Tilings.VertexFigureCount": {
+        "table": "Tilings",
+        "field": "VertexFigureCount",
+        "kind": "rollup",
+        "rule": "Un tiling: vertex figure count è il numero di vertex figures collegati a il tiling.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei vertex figures il cui tiling è tiling ID"
+      },
+      "Tilings.ValidVertexFigureCount": {
+        "table": "Tilings",
+        "field": "ValidVertexFigureCount",
+        "kind": "rollup",
+        "rule": "Un tiling: valid vertex figure count è il numero di vertex figures del tiling che sono valid.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "IsValid",
+            "label": "is valid"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei vertex figures il cui tiling è tiling ID e is valid è sì"
+      },
+      "Tilings.IsRegularTiling": {
+        "table": "Tilings",
+        "field": "IsRegularTiling",
+        "kind": "formula",
+        "rule": "Un tiling è considerato regular tiling se il distinct prototile count è 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DistinctPrototileCount",
+            "label": "distinct prototile count"
+          }
+        ],
+        "structure": null,
+        "plain": "Distinct prototile count è uguale a 1"
+      },
+      "Tilings.AllVerticesValid": {
+        "table": "Tilings",
+        "field": "AllVerticesValid",
+        "kind": "formula",
+        "rule": "Un tiling è contrassegnato come all vertices valid se il valid vertex figure count è il vertex figure count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "ValidVertexFigureCount",
+            "label": "valid vertex figure count"
+          },
+          {
+            "table": "Tilings",
+            "field": "VertexFigureCount",
+            "label": "vertex figure count"
+          }
+        ],
+        "structure": null,
+        "plain": "Valid vertex figure count è uguale a vertex figure count"
+      },
+      "Tilings.LatticeDeterminant": {
+        "table": "Tilings",
+        "field": "LatticeDeterminant",
+        "kind": "formula",
+        "rule": "Un tiling: lattice determinant è calcolato come il t1x per il t2y meno il t1y per il t2x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "T1x",
+            "label": "t1x"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2y",
+            "label": "t2y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T1y",
+            "label": "t1y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2x",
+            "label": "t2x"
+          }
+        ],
+        "structure": null,
+        "plain": "(t1x per t2y) meno (t1y per t2x)"
+      },
+      "Tilings.FundamentalDomainArea": {
+        "table": "Tilings",
+        "field": "FundamentalDomainArea",
+        "kind": "formula",
+        "rule": "Un tiling: fundamental domain area è calcolato come il valore assoluto di il lattice determinant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Il valore assoluto di lattice determinant"
+      },
+      "Tilings.HasLattice": {
+        "table": "Tilings",
+        "field": "HasLattice",
+        "kind": "formula",
+        "rule": "Un tiling è considerato come dotato di un lattice se il valore assoluto di il lattice determinant è maggiore di 0.0001.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Il valore assoluto di lattice determinant è maggiore di 0.0001"
+      },
+      "Tilings.DoesTilePlane": {
+        "table": "Tilings",
+        "field": "DoesTilePlane",
+        "kind": "formula",
+        "rule": "Un tiling è considerato come soddisfacente: tile plane se vale tutto quanto segue: l'indicatore “all vertices valid” è attivo e l'indicatore “lattice” è attivo.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "AllVerticesValid",
+            "label": "all vertices valid"
+          },
+          {
+            "table": "Tilings",
+            "field": "HasLattice",
+            "label": "has lattice"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un tiling è considerato come soddisfacente: tile plane se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “all vertices valid” è attivo"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “lattice” è attivo"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "All vertices valid e has lattice"
+      },
+      "TilingPrototiles.Name": {
+        "table": "TilingPrototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un tiling prototile: name è calcolato come il tiling, seguito da una barra, seguito da il prototile.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling, \"/\", unito a prototile"
+      },
+      "TilingPrototiles.PrototileSides": {
+        "table": "TilingPrototiles",
+        "field": "PrototileSides",
+        "kind": "lookup",
+        "rule": "Un tiling prototile: prototile sides — ripreso dal prototile collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il sides del prototile collegato"
+      },
+      "TilingPrototiles.PrototileInteriorAngle": {
+        "table": "TilingPrototiles",
+        "field": "PrototileInteriorAngle",
+        "kind": "lookup",
+        "rule": "Un tiling prototile: prototile interior angle è il interior angle deg del prototile collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il interior angle deg del prototile collegato"
+      },
+      "VertexFigures.Name": {
+        "table": "VertexFigures",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un vertex figure: name è calcolato come il tiling, seguito da «@», seguito da il config.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "Config",
+            "label": "config"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling, \"@\", unito a config"
+      },
+      "VertexFigures.TurnsAtVertex": {
+        "table": "VertexFigures",
+        "field": "TurnsAtVertex",
+        "kind": "formula",
+        "rule": "Un vertex figure: turns at vertex è calcolato come l'angle sum deg diviso 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle sum deg diviso 360"
+      },
+      "VertexFigures.AngleGapDeg": {
+        "table": "VertexFigures",
+        "field": "AngleGapDeg",
+        "kind": "formula",
+        "rule": "Un vertex figure: angle gap deg è calcolato come il valore assoluto di l'angle sum deg meno 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Il valore assoluto di (angle sum deg meno 360)"
+      },
+      "VertexFigures.IsValid": {
+        "table": "VertexFigures",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "Un vertex figure è considerato valid se l'angle gap deg è al massimo 0.0001.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleGapDeg",
+            "label": "angle gap deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle gap deg è al massimo 0.0001"
+      },
+      "Regions.Name": {
+        "table": "Regions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un region: name è calcolato come il display name in minuscolo con ogni uno spazio sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name in minuscolo con « » sostituito da «-»"
+      },
+      "Regions.Area": {
+        "table": "Regions",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "Un region: area è calcolato come il width per il height.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          }
+        ],
+        "structure": null,
+        "plain": "Width per height"
+      },
+      "Regions.PlacementCount": {
+        "table": "Regions",
+        "field": "PlacementCount",
+        "kind": "rollup",
+        "rule": "Un region: placement count è il numero di placements collegati a il region.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei placements il cui region è region ID"
+      },
+      "Regions.CoveredArea": {
+        "table": "Regions",
+        "field": "CoveredArea",
+        "kind": "rollup",
+        "rule": "Un region: covered area è il totale di tile area tra i placements collegati a il region.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "TileArea",
+            "label": "tile area"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di tile area su tutti i placements il cui region è region ID"
+      },
+      "Regions.OverlapCount": {
+        "table": "Regions",
+        "field": "OverlapCount",
+        "kind": "rollup",
+        "rule": "Un region: overlap count è il numero di placements del region che sono overlapping.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          },
+          {
+            "table": "Placements",
+            "field": "IsOverlapping",
+            "label": "is overlapping"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei placements il cui region è region ID e is overlapping è sì"
+      },
+      "Regions.CoveragePct": {
+        "table": "Regions",
+        "field": "CoveragePct",
+        "kind": "formula",
+        "rule": "Un region: coverage pct è calcolato come 100 per la covered area diviso l'area.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveredArea",
+            "label": "covered area"
+          },
+          {
+            "table": "Regions",
+            "field": "Area",
+            "label": "area"
+          }
+        ],
+        "structure": null,
+        "plain": "(100 per covered area) diviso area"
+      },
+      "Regions.IsFullyCovered": {
+        "table": "Regions",
+        "field": "IsFullyCovered",
+        "kind": "formula",
+        "rule": "Un region è considerato fully covered se il coverage pct è almeno 100.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveragePct",
+            "label": "coverage pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Coverage pct è almeno 100"
+      },
+      "Regions.IsCleanTiling": {
+        "table": "Regions",
+        "field": "IsCleanTiling",
+        "kind": "formula",
+        "rule": "Un region è considerato clean tiling se vale tutto quanto segue: l'indicatore “fully covered” è attivo e l'overlap count è 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "IsFullyCovered",
+            "label": "is fully covered"
+          },
+          {
+            "table": "Regions",
+            "field": "OverlapCount",
+            "label": "overlap count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un region è considerato clean tiling se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “fully covered” è attivo"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'overlap count è 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is fully covered e overlap count è uguale a 0"
+      },
+      "Placements.Name": {
+        "table": "Placements",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un placement: name è calcolato come il region, seguito da «#», seguito da il placement ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Placements",
+            "field": "PlacementId",
+            "label": "placement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Region, \"#\", unito a placement ID"
+      },
+      "Placements.TileArea": {
+        "table": "Placements",
+        "field": "TileArea",
+        "kind": "lookup",
+        "rule": "Un placement: tile area — ripreso dal prototile collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Area",
+            "label": "area"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il area del prototile collegato"
+      },
+      "Placements.TileSides": {
+        "table": "Placements",
+        "field": "TileSides",
+        "kind": "lookup",
+        "rule": "Un placement: tile sides — ripreso dal prototile collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il sides del prototile collegato"
+      },
+      "Placements.RegionWidth": {
+        "table": "Placements",
+        "field": "RegionWidth",
+        "kind": "lookup",
+        "rule": "Un placement: region width — ripreso dal region collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il width del region collegato"
+      },
+      "Placements.RegionHeight": {
+        "table": "Placements",
+        "field": "RegionHeight",
+        "kind": "lookup",
+        "rule": "Un placement: region height — ripreso dal region collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il height del region collegato"
+      },
+      "Placements.IsInsideRegion": {
+        "table": "Placements",
+        "field": "IsInsideRegion",
+        "kind": "formula",
+        "rule": "Un placement è considerato un inside region se vale tutto quanto segue: il x è almeno 0; il y è almeno 0; il x è minore di il region width; e il y è minore di il region height.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "X",
+            "label": "x"
+          },
+          {
+            "table": "Placements",
+            "field": "Y",
+            "label": "y"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionWidth",
+            "label": "region width"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionHeight",
+            "label": "region height"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un placement è considerato un inside region se vale tutto quanto segue:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "il x è almeno 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "il y è almeno 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "il x è minore di il region width"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "il y è minore di il region height"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "X è almeno 0, y è almeno 0, x è minore di region width, e y è minore di region height"
+      },
+      "WallpaperDesigns.Name": {
+        "table": "WallpaperDesigns",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un wallpaper design: name è calcolato come il display name in minuscolo con ogni uno spazio sostituito da un trattino.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name in minuscolo con « » sostituito da «-»"
+      },
+      "WallpaperDesigns.GroupNotation": {
+        "table": "WallpaperDesigns",
+        "field": "GroupNotation",
+        "kind": "lookup",
+        "rule": "Un wallpaper design: group notation — ripreso dal symmetry group collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il notation del symmetry group collegato"
+      },
+      "WallpaperDesigns.GroupOrbifold": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOrbifold",
+        "kind": "lookup",
+        "rule": "Un wallpaper design: group orbifold — ripreso dal symmetry group collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Orbifold",
+            "label": "orbifold"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il orbifold del symmetry group collegato"
+      },
+      "WallpaperDesigns.GroupLatticeType": {
+        "table": "WallpaperDesigns",
+        "field": "GroupLatticeType",
+        "kind": "lookup",
+        "rule": "Un wallpaper design: group lattice type — ripreso dal symmetry group collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "LatticeType",
+            "label": "lattice type"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il lattice type del symmetry group collegato"
+      },
+      "WallpaperDesigns.GroupRotationOrder": {
+        "table": "WallpaperDesigns",
+        "field": "GroupRotationOrder",
+        "kind": "lookup",
+        "rule": "Un wallpaper design: group rotation order — ripreso dal symmetry group collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "RotationOrder",
+            "label": "rotation order"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il rotation order del symmetry group collegato"
+      },
+      "WallpaperDesigns.GroupOperationCount": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOperationCount",
+        "kind": "lookup",
+        "rule": "Un wallpaper design: group operation count — ripreso dal symmetry group collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "OperationCount",
+            "label": "operation count"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il operation count del symmetry group collegato"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "SymmetryGroups": [
+        "Un symmetry group **deve** avere un notation."
+      ],
+      "Prototiles": [
+        "Un prototile **deve** avere un display name; un sides; e un edge length."
+      ],
+      "Tilings": [
+        "Un tiling **deve** avere un display name; un vertex config; e un kind, e registrare se è un edge to edge."
+      ],
+      "TilingPrototiles": [
+        "Un tiling prototile **deve** referenziare esattamente un tiling.",
+        "Un tiling prototile **deve** referenziare esattamente un prototile.",
+        "Un tiling prototile **deve** avere un count at vertex."
+      ],
+      "VertexFigures": [
+        "Un vertex figure **deve** referenziare esattamente un tiling.",
+        "Un vertex figure **deve** avere un config e un angle sum deg."
+      ],
+      "Regions": [
+        "Un region **deve** avere un display name; un width; e un height."
+      ],
+      "Placements": [
+        "Un placement **deve** referenziare esattamente un region.",
+        "Un placement **deve** referenziare esattamente un prototile.",
+        "Un placement **deve** avere un x; un y; e un rotation deg, e registrare se è overlapping."
+      ],
+      "WallpaperDesigns": [
+        "Un wallpaper design **deve** referenziare esattamente un symmetry group.",
+        "Un wallpaper design **deve** avere un display name e un strokes."
+      ]
+    },
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "SymmetryGroups": "symmetry group",
+      "Prototiles": "prototile",
+      "Tilings": "tiling",
+      "TilingPrototiles": "tiling prototile",
+      "VertexFigures": "vertex figure",
+      "Regions": "region",
+      "Placements": "placement",
+      "WallpaperDesigns": "wallpaper design"
+    }
+  },
+  "ja": {
+    "fields": {
+      "SymmetryGroups.Name": {
+        "table": "SymmetryGroups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "symmetry groupの「name」は symmetry group ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symmetry group ID"
+      },
+      "SymmetryGroups.TilingCount": {
+        "table": "SymmetryGroups",
+        "field": "TilingCount",
+        "kind": "rollup",
+        "rule": "symmetry groupの「tiling count」は symmetry groupに関連する「tilings」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symmetry group が symmetry group ID である「tilings」の件数"
+      },
+      "SymmetryGroups.WallpaperDesignCount": {
+        "table": "SymmetryGroups",
+        "field": "WallpaperDesignCount",
+        "kind": "rollup",
+        "rule": "symmetry groupの「wallpaper design count」は symmetry groupに関連する「wallpaper designs」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symmetry group が symmetry group ID である「wallpaper designs」の件数"
+      },
+      "Prototiles.Name": {
+        "table": "Prototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "prototileの「name」は display name を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name を小文字にしたもの の「 」を「-」に置き換えたもの"
+      },
+      "Prototiles.Area": {
+        "table": "Prototiles",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "prototileの「area」は 0.25 かける sides かける edge length の 2 乗 わる 円周率 わる sides の正接 として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Prototiles",
+            "field": "EdgeLength",
+            "label": "edge length"
+          }
+        ],
+        "structure": null,
+        "plain": "((0.25 かける sides) かける power(edge length, 2)) わる tan((pi() わる sides))"
+      },
+      "Prototiles.InteriorAngleDeg": {
+        "table": "Prototiles",
+        "field": "InteriorAngleDeg",
+        "kind": "formula",
+        "rule": "prototileの「interior angle deg」は sides ひく 2 かける 180 わる sides として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "((sides ひく 2) かける 180) わる sides"
+      },
+      "Prototiles.VertexAngleTurns": {
+        "table": "Prototiles",
+        "field": "VertexAngleTurns",
+        "kind": "formula",
+        "rule": "prototileの「vertex angle turns」は interior angle deg わる 360 として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Interior angle deg わる 360"
+      },
+      "Prototiles.IsRegular": {
+        "table": "Prototiles",
+        "field": "IsRegular",
+        "kind": "formula",
+        "rule": "sides が 3 以上である場合、prototileは「Regular」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides が 3 以上"
+      },
+      "Prototiles.IsTriangle": {
+        "table": "Prototiles",
+        "field": "IsTriangle",
+        "kind": "formula",
+        "rule": "sides が 3 である場合、prototileは「Triangle」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides が 3 と等しい"
+      },
+      "Prototiles.IsSquare": {
+        "table": "Prototiles",
+        "field": "IsSquare",
+        "kind": "formula",
+        "rule": "sides が 4 である場合、prototileは「Square」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides が 4 と等しい"
+      },
+      "Prototiles.UsedInTilingsCount": {
+        "table": "Prototiles",
+        "field": "UsedInTilingsCount",
+        "kind": "rollup",
+        "rule": "prototileの「used in tilings count」は prototileに関連する「tiling prototiles」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Prototile が prototile ID である「tiling prototiles」の件数"
+      },
+      "Tilings.Name": {
+        "table": "Tilings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "tilingの「name」は display name を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name を小文字にしたもの の「 」を「-」に置き換えたもの"
+      },
+      "Tilings.SymmetryNotation": {
+        "table": "Tilings",
+        "field": "SymmetryNotation",
+        "kind": "lookup",
+        "rule": "tilingの「symmetry notation」— リンクされた「symmetry group」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「symmetry group」の notation"
+      },
+      "Tilings.DistinctPrototileCount": {
+        "table": "Tilings",
+        "field": "DistinctPrototileCount",
+        "kind": "rollup",
+        "rule": "tilingの「distinct prototile count」は tilingに関連する「tiling prototiles」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling が tiling ID である「tiling prototiles」の件数"
+      },
+      "Tilings.VertexFigureCount": {
+        "table": "Tilings",
+        "field": "VertexFigureCount",
+        "kind": "rollup",
+        "rule": "tilingの「vertex figure count」は tilingに関連する「vertex figures」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling が tiling ID である「vertex figures」の件数"
+      },
+      "Tilings.ValidVertexFigureCount": {
+        "table": "Tilings",
+        "field": "ValidVertexFigureCount",
+        "kind": "rollup",
+        "rule": "tilingの「valid vertex figure count」は tilingの「vertex figures」のうち、「Valid」であるものの件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "IsValid",
+            "label": "is valid"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling が tiling IDおよびis valid が はい である「vertex figures」の件数"
+      },
+      "Tilings.IsRegularTiling": {
+        "table": "Tilings",
+        "field": "IsRegularTiling",
+        "kind": "formula",
+        "rule": "distinct prototile count が 1 である場合、tilingは「Regular Tiling」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DistinctPrototileCount",
+            "label": "distinct prototile count"
+          }
+        ],
+        "structure": null,
+        "plain": "Distinct prototile count が 1 と等しい"
+      },
+      "Tilings.AllVerticesValid": {
+        "table": "Tilings",
+        "field": "AllVerticesValid",
+        "kind": "formula",
+        "rule": "valid vertex figure count が vertex figure count である場合、tilingは「All Vertices Valid」と記録されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "ValidVertexFigureCount",
+            "label": "valid vertex figure count"
+          },
+          {
+            "table": "Tilings",
+            "field": "VertexFigureCount",
+            "label": "vertex figure count"
+          }
+        ],
+        "structure": null,
+        "plain": "Valid vertex figure count が vertex figure count と等しい"
+      },
+      "Tilings.LatticeDeterminant": {
+        "table": "Tilings",
+        "field": "LatticeDeterminant",
+        "kind": "formula",
+        "rule": "tilingの「lattice determinant」は t1x かける t2y ひく t1y かける t2x として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "T1x",
+            "label": "t1x"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2y",
+            "label": "t2y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T1y",
+            "label": "t1y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2x",
+            "label": "t2x"
+          }
+        ],
+        "structure": null,
+        "plain": "(t1x かける t2y) ひく (t1y かける t2x)"
+      },
+      "Tilings.FundamentalDomainArea": {
+        "table": "Tilings",
+        "field": "FundamentalDomainArea",
+        "kind": "formula",
+        "rule": "tilingの「fundamental domain area」は lattice determinant の絶対値 として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Lattice determinant の絶対値"
+      },
+      "Tilings.HasLattice": {
+        "table": "Tilings",
+        "field": "HasLattice",
+        "kind": "formula",
+        "rule": "lattice determinant の絶対値 が 0.0001 より大きい場合、tilingは「Lattice」を持つと見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Lattice determinant の絶対値 が 0.0001 より大きい"
+      },
+      "Tilings.DoesTilePlane": {
+        "table": "Tilings",
+        "field": "DoesTilePlane",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: フラグ「all vertices valid」が設定されているおよびフラグ「lattice」が設定されている場合、tilingは「Tile Plane」を満たすと見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "AllVerticesValid",
+            "label": "all vertices valid"
+          },
+          {
+            "table": "Tilings",
+            "field": "HasLattice",
+            "label": "has lattice"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、tilingは「Tile Plane」を満たすと見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「all vertices valid」が設定されている"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「lattice」が設定されている"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "All vertices validおよびhas lattice"
+      },
+      "TilingPrototiles.Name": {
+        "table": "TilingPrototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "tiling prototileの「name」は tiling、続いて スラッシュ、続いて prototile として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling、\"/\"、と連結してprototile"
+      },
+      "TilingPrototiles.PrototileSides": {
+        "table": "TilingPrototiles",
+        "field": "PrototileSides",
+        "kind": "lookup",
+        "rule": "tiling prototileの「prototile sides」— リンクされた「prototile」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「prototile」の sides"
+      },
+      "TilingPrototiles.PrototileInteriorAngle": {
+        "table": "TilingPrototiles",
+        "field": "PrototileInteriorAngle",
+        "kind": "lookup",
+        "rule": "tiling prototileの「prototile interior angle」は、リンクされた「prototile」の「interior angle deg」です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「prototile」の interior angle deg"
+      },
+      "VertexFigures.Name": {
+        "table": "VertexFigures",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "vertex figureの「name」は tiling、続いて 「@」、続いて config として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "Config",
+            "label": "config"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling、\"@\"、と連結してconfig"
+      },
+      "VertexFigures.TurnsAtVertex": {
+        "table": "VertexFigures",
+        "field": "TurnsAtVertex",
+        "kind": "formula",
+        "rule": "vertex figureの「turns at vertex」は angle sum deg わる 360 として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle sum deg わる 360"
+      },
+      "VertexFigures.AngleGapDeg": {
+        "table": "VertexFigures",
+        "field": "AngleGapDeg",
+        "kind": "formula",
+        "rule": "vertex figureの「angle gap deg」は angle sum deg ひく 360 の絶対値 として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "(angle sum deg ひく 360) の絶対値"
+      },
+      "VertexFigures.IsValid": {
+        "table": "VertexFigures",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "angle gap deg が 0.0001 以下である場合、vertex figureは「Valid」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleGapDeg",
+            "label": "angle gap deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle gap deg が 0.0001 以下"
+      },
+      "Regions.Name": {
+        "table": "Regions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "regionの「name」は display name を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name を小文字にしたもの の「 」を「-」に置き換えたもの"
+      },
+      "Regions.Area": {
+        "table": "Regions",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "regionの「area」は width かける height として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          }
+        ],
+        "structure": null,
+        "plain": "Width かける height"
+      },
+      "Regions.PlacementCount": {
+        "table": "Regions",
+        "field": "PlacementCount",
+        "kind": "rollup",
+        "rule": "regionの「placement count」は regionに関連する「placements」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Region が region ID である「placements」の件数"
+      },
+      "Regions.CoveredArea": {
+        "table": "Regions",
+        "field": "CoveredArea",
+        "kind": "rollup",
+        "rule": "regionの「covered area」は regionに関連する「placements」全体での「tile area」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "TileArea",
+            "label": "tile area"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Region が region ID であるすべての「placements」にわたる tile area の合計"
+      },
+      "Regions.OverlapCount": {
+        "table": "Regions",
+        "field": "OverlapCount",
+        "kind": "rollup",
+        "rule": "regionの「overlap count」は regionの「placements」のうち、「Overlapping」であるものの件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          },
+          {
+            "table": "Placements",
+            "field": "IsOverlapping",
+            "label": "is overlapping"
+          }
+        ],
+        "structure": null,
+        "plain": "Region が region IDおよびis overlapping が はい である「placements」の件数"
+      },
+      "Regions.CoveragePct": {
+        "table": "Regions",
+        "field": "CoveragePct",
+        "kind": "formula",
+        "rule": "regionの「coverage pct」は 100 かける covered area わる area として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveredArea",
+            "label": "covered area"
+          },
+          {
+            "table": "Regions",
+            "field": "Area",
+            "label": "area"
+          }
+        ],
+        "structure": null,
+        "plain": "(100 かける covered area) わる area"
+      },
+      "Regions.IsFullyCovered": {
+        "table": "Regions",
+        "field": "IsFullyCovered",
+        "kind": "formula",
+        "rule": "coverage pct が 100 以上である場合、regionは「Fully Covered」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveragePct",
+            "label": "coverage pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Coverage pct が 100 以上"
+      },
+      "Regions.IsCleanTiling": {
+        "table": "Regions",
+        "field": "IsCleanTiling",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: フラグ「fully covered」が設定されているおよびoverlap count が 0 である場合、regionは「Clean Tiling」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "IsFullyCovered",
+            "label": "is fully covered"
+          },
+          {
+            "table": "Regions",
+            "field": "OverlapCount",
+            "label": "overlap count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、regionは「Clean Tiling」と見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「fully covered」が設定されている"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "overlap count が 0 である"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is fully coveredおよびoverlap count が 0 と等しい"
+      },
+      "Placements.Name": {
+        "table": "Placements",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "placementの「name」は region、続いて 「#」、続いて placement ID として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Placements",
+            "field": "PlacementId",
+            "label": "placement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Region、\"#\"、と連結してplacement ID"
+      },
+      "Placements.TileArea": {
+        "table": "Placements",
+        "field": "TileArea",
+        "kind": "lookup",
+        "rule": "placementの「tile area」— リンクされた「prototile」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Area",
+            "label": "area"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「prototile」の area"
+      },
+      "Placements.TileSides": {
+        "table": "Placements",
+        "field": "TileSides",
+        "kind": "lookup",
+        "rule": "placementの「tile sides」— リンクされた「prototile」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「prototile」の sides"
+      },
+      "Placements.RegionWidth": {
+        "table": "Placements",
+        "field": "RegionWidth",
+        "kind": "lookup",
+        "rule": "placementの「region width」— リンクされた「region」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「region」の width"
+      },
+      "Placements.RegionHeight": {
+        "table": "Placements",
+        "field": "RegionHeight",
+        "kind": "lookup",
+        "rule": "placementの「region height」— リンクされた「region」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「region」の height"
+      },
+      "Placements.IsInsideRegion": {
+        "table": "Placements",
+        "field": "IsInsideRegion",
+        "kind": "formula",
+        "rule": "次のすべてが成り立つ: x が 0 以上である、y が 0 以上である、x が region width より小さい、およびy が region height より小さい場合、placementは「Inside Region」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "X",
+            "label": "x"
+          },
+          {
+            "table": "Placements",
+            "field": "Y",
+            "label": "y"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionWidth",
+            "label": "region width"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionHeight",
+            "label": "region height"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のすべてが成り立つ場合、placementは「Inside Region」と見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "x が 0 以上である"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "y が 0 以上である"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "x が region width より小さい"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "y が region height より小さい"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "X が 0 以上、y が 0 以上、x が region width より小さい、およびy が region height より小さい"
+      },
+      "WallpaperDesigns.Name": {
+        "table": "WallpaperDesigns",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "wallpaper designの「name」は display name を小文字にしたもの の 空白 1 つ をすべて ハイフン に置き換えたもの として計算されます。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name を小文字にしたもの の「 」を「-」に置き換えたもの"
+      },
+      "WallpaperDesigns.GroupNotation": {
+        "table": "WallpaperDesigns",
+        "field": "GroupNotation",
+        "kind": "lookup",
+        "rule": "wallpaper designの「group notation」— リンクされた「symmetry group」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「symmetry group」の notation"
+      },
+      "WallpaperDesigns.GroupOrbifold": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOrbifold",
+        "kind": "lookup",
+        "rule": "wallpaper designの「group orbifold」— リンクされた「symmetry group」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Orbifold",
+            "label": "orbifold"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「symmetry group」の orbifold"
+      },
+      "WallpaperDesigns.GroupLatticeType": {
+        "table": "WallpaperDesigns",
+        "field": "GroupLatticeType",
+        "kind": "lookup",
+        "rule": "wallpaper designの「group lattice type」— リンクされた「symmetry group」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "LatticeType",
+            "label": "lattice type"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「symmetry group」の lattice type"
+      },
+      "WallpaperDesigns.GroupRotationOrder": {
+        "table": "WallpaperDesigns",
+        "field": "GroupRotationOrder",
+        "kind": "lookup",
+        "rule": "wallpaper designの「group rotation order」— リンクされた「symmetry group」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "RotationOrder",
+            "label": "rotation order"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「symmetry group」の rotation order"
+      },
+      "WallpaperDesigns.GroupOperationCount": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOperationCount",
+        "kind": "lookup",
+        "rule": "wallpaper designの「group operation count」— リンクされた「symmetry group」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "OperationCount",
+            "label": "operation count"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「symmetry group」の operation count"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "SymmetryGroups": [
+        "symmetry groupは notation を持た**なければなりません**。"
+      ],
+      "Prototiles": [
+        "prototileは display name、sides、およびedge length を持た**なければなりません**。"
+      ],
+      "Tilings": [
+        "tilingは display name、vertex config、およびkind を持た、かつ 「Edge to Edge」であるかどうかを記録し**なければなりません**。"
+      ],
+      "TilingPrototiles": [
+        "tiling prototileは「tiling」をちょうど 1 件参照し**なければなりません**。",
+        "tiling prototileは「prototile」をちょうど 1 件参照し**なければなりません**。",
+        "tiling prototileは count at vertex を持た**なければなりません**。"
+      ],
+      "VertexFigures": [
+        "vertex figureは「tiling」をちょうど 1 件参照し**なければなりません**。",
+        "vertex figureは configおよびangle sum deg を持た**なければなりません**。"
+      ],
+      "Regions": [
+        "regionは display name、width、およびheight を持た**なければなりません**。"
+      ],
+      "Placements": [
+        "placementは「region」をちょうど 1 件参照し**なければなりません**。",
+        "placementは「prototile」をちょうど 1 件参照し**なければなりません**。",
+        "placementは x、y、およびrotation deg を持た、かつ 「Overlapping」であるかどうかを記録し**なければなりません**。"
+      ],
+      "WallpaperDesigns": [
+        "wallpaper designは「symmetry group」をちょうど 1 件参照し**なければなりません**。",
+        "wallpaper designは display nameおよびstrokes を持た**なければなりません**。"
+      ]
+    },
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "SymmetryGroups": "symmetry group",
+      "Prototiles": "prototile",
+      "Tilings": "tiling",
+      "TilingPrototiles": "tiling prototile",
+      "VertexFigures": "vertex figure",
+      "Regions": "region",
+      "Placements": "placement",
+      "WallpaperDesigns": "wallpaper design"
+    }
+  },
+  "ko": {
+    "fields": {
+      "SymmetryGroups.Name": {
+        "table": "SymmetryGroups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘symmetry group’ 레코드의 ‘name’ 값은 같은 레코드의 ‘symmetry group ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symmetry group ID"
+      },
+      "SymmetryGroups.TilingCount": {
+        "table": "SymmetryGroups",
+        "field": "TilingCount",
+        "kind": "rollup",
+        "rule": "‘symmetry group’ 레코드의 ‘tiling count’ 값은 해당 ‘symmetry group’ 레코드에 연결된 ‘tilings’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(symmetry group 값이 symmetry group ID임)에 맞는 tilings 레코드의 개수"
+      },
+      "SymmetryGroups.WallpaperDesignCount": {
+        "table": "SymmetryGroups",
+        "field": "WallpaperDesignCount",
+        "kind": "rollup",
+        "rule": "‘symmetry group’ 레코드의 ‘wallpaper design count’ 값은 해당 ‘symmetry group’ 레코드에 연결된 ‘wallpaper designs’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(symmetry group 값이 symmetry group ID임)에 맞는 wallpaper designs 레코드의 개수"
+      },
+      "Prototiles.Name": {
+        "table": "Prototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘prototile’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘display name’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과"
+      },
+      "Prototiles.Area": {
+        "table": "Prototiles",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "‘prototile’ 레코드의 ‘area’ 값은 다음과 같이 계산됩니다: 0.25 곱하기 ‘sides’ 곱하기 ‘edge length’의 2제곱 나누기 원주율 나누기 ‘sides’의 탄젠트.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Prototiles",
+            "field": "EdgeLength",
+            "label": "edge length"
+          }
+        ],
+        "structure": null,
+        "plain": "((0.25 곱하기 sides) 곱하기 power(edge length, 2)) 나누기 tan((pi() 나누기 sides))"
+      },
+      "Prototiles.InteriorAngleDeg": {
+        "table": "Prototiles",
+        "field": "InteriorAngleDeg",
+        "kind": "formula",
+        "rule": "‘prototile’ 레코드의 ‘interior angle deg’ 값은 다음과 같이 계산됩니다: ‘sides’ 빼기 2 곱하기 180 나누기 ‘sides’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "((sides 빼기 2) 곱하기 180) 나누기 sides"
+      },
+      "Prototiles.VertexAngleTurns": {
+        "table": "Prototiles",
+        "field": "VertexAngleTurns",
+        "kind": "formula",
+        "rule": "‘prototile’ 레코드의 ‘vertex angle turns’ 값은 다음과 같이 계산됩니다: ‘interior angle deg’ 나누기 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Interior angle deg 나누기 360"
+      },
+      "Prototiles.IsRegular": {
+        "table": "Prototiles",
+        "field": "IsRegular",
+        "kind": "formula",
+        "rule": "‘sides’ 값이 3 이상인 경우, ‘prototile’ 레코드는 ‘regular’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides 값이 3 이상임"
+      },
+      "Prototiles.IsTriangle": {
+        "table": "Prototiles",
+        "field": "IsTriangle",
+        "kind": "formula",
+        "rule": "‘sides’ 값이 3인 경우, ‘prototile’ 레코드는 ‘triangle’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides 값이 3 값과 같음"
+      },
+      "Prototiles.IsSquare": {
+        "table": "Prototiles",
+        "field": "IsSquare",
+        "kind": "formula",
+        "rule": "‘sides’ 값이 4인 경우, ‘prototile’ 레코드는 ‘square’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides 값이 4 값과 같음"
+      },
+      "Prototiles.UsedInTilingsCount": {
+        "table": "Prototiles",
+        "field": "UsedInTilingsCount",
+        "kind": "rollup",
+        "rule": "‘prototile’ 레코드의 ‘used in tilings count’ 값은 해당 ‘prototile’ 레코드에 연결된 ‘tiling prototiles’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(prototile 값이 prototile ID임)에 맞는 tiling prototiles 레코드의 개수"
+      },
+      "Tilings.Name": {
+        "table": "Tilings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘tiling’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘display name’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과"
+      },
+      "Tilings.SymmetryNotation": {
+        "table": "Tilings",
+        "field": "SymmetryNotation",
+        "kind": "lookup",
+        "rule": "‘tiling’ 레코드의 ‘symmetry notation’ 값은 연결된 ‘symmetry group’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 symmetry group 레코드의 notation"
+      },
+      "Tilings.DistinctPrototileCount": {
+        "table": "Tilings",
+        "field": "DistinctPrototileCount",
+        "kind": "rollup",
+        "rule": "‘tiling’ 레코드의 ‘distinct prototile count’ 값은 해당 ‘tiling’ 레코드에 연결된 ‘tiling prototiles’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(tiling 값이 tiling ID임)에 맞는 tiling prototiles 레코드의 개수"
+      },
+      "Tilings.VertexFigureCount": {
+        "table": "Tilings",
+        "field": "VertexFigureCount",
+        "kind": "rollup",
+        "rule": "‘tiling’ 레코드의 ‘vertex figure count’ 값은 해당 ‘tiling’ 레코드에 연결된 ‘vertex figures’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(tiling 값이 tiling ID임)에 맞는 vertex figures 레코드의 개수"
+      },
+      "Tilings.ValidVertexFigureCount": {
+        "table": "Tilings",
+        "field": "ValidVertexFigureCount",
+        "kind": "rollup",
+        "rule": "‘tiling’ 레코드의 ‘valid vertex figure count’ 값은 해당 ‘tiling’ 레코드에 연결된 ‘vertex figures’ 레코드 중 ‘valid’에 해당하는 것의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "IsValid",
+            "label": "is valid"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(tiling 값이 tiling ID임 및 is valid 값이 예임)에 맞는 vertex figures 레코드의 개수"
+      },
+      "Tilings.IsRegularTiling": {
+        "table": "Tilings",
+        "field": "IsRegularTiling",
+        "kind": "formula",
+        "rule": "‘distinct prototile count’ 값이 1인 경우, ‘tiling’ 레코드는 ‘regular tiling’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DistinctPrototileCount",
+            "label": "distinct prototile count"
+          }
+        ],
+        "structure": null,
+        "plain": "Distinct prototile count 값이 1 값과 같음"
+      },
+      "Tilings.AllVerticesValid": {
+        "table": "Tilings",
+        "field": "AllVerticesValid",
+        "kind": "formula",
+        "rule": "‘valid vertex figure count’ 값이 ‘vertex figure count’인 경우, ‘tiling’ 레코드는 ‘all vertices valid’에 해당하는 것으로 표시됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "ValidVertexFigureCount",
+            "label": "valid vertex figure count"
+          },
+          {
+            "table": "Tilings",
+            "field": "VertexFigureCount",
+            "label": "vertex figure count"
+          }
+        ],
+        "structure": null,
+        "plain": "Valid vertex figure count 값이 vertex figure count 값과 같음"
+      },
+      "Tilings.LatticeDeterminant": {
+        "table": "Tilings",
+        "field": "LatticeDeterminant",
+        "kind": "formula",
+        "rule": "‘tiling’ 레코드의 ‘lattice determinant’ 값은 다음과 같이 계산됩니다: ‘t1x’ 곱하기 ‘t2y’ 빼기 ‘t1y’ 곱하기 ‘t2x’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "T1x",
+            "label": "t1x"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2y",
+            "label": "t2y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T1y",
+            "label": "t1y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2x",
+            "label": "t2x"
+          }
+        ],
+        "structure": null,
+        "plain": "(t1x 곱하기 t2y) 빼기 (t1y 곱하기 t2x)"
+      },
+      "Tilings.FundamentalDomainArea": {
+        "table": "Tilings",
+        "field": "FundamentalDomainArea",
+        "kind": "formula",
+        "rule": "‘tiling’ 레코드의 ‘fundamental domain area’ 값은 다음과 같이 계산됩니다: ‘lattice determinant’의 절대치.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Lattice determinant의 절대치"
+      },
+      "Tilings.HasLattice": {
+        "table": "Tilings",
+        "field": "HasLattice",
+        "kind": "formula",
+        "rule": "‘lattice determinant’의 절대치 값이 0.0001보다 큰 경우, ‘tiling’ 레코드는 ‘lattice’ 항목이 있는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Lattice determinant의 절대치 값이 0.0001보다 큼"
+      },
+      "Tilings.DoesTilePlane": {
+        "table": "Tilings",
+        "field": "DoesTilePlane",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘all vertices valid’ 플래그가 설정된 경우 및 ‘lattice’ 플래그가 설정된 경우), ‘tiling’ 레코드는 ‘does tile plane’ 조건에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "AllVerticesValid",
+            "label": "all vertices valid"
+          },
+          {
+            "table": "Tilings",
+            "field": "HasLattice",
+            "label": "has lattice"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘tiling’ 레코드는 ‘does tile plane’ 조건에 해당하는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘all vertices valid’ 플래그가 설정된 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘lattice’ 플래그가 설정된 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "All vertices valid 및 has lattice"
+      },
+      "TilingPrototiles.Name": {
+        "table": "TilingPrototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘tiling prototile’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘tiling’, 이어서 슬래시, 이어서 ‘prototile’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling 이어서 \"/\" 이어서 prototile"
+      },
+      "TilingPrototiles.PrototileSides": {
+        "table": "TilingPrototiles",
+        "field": "PrototileSides",
+        "kind": "lookup",
+        "rule": "‘tiling prototile’ 레코드의 ‘prototile sides’ 값은 연결된 ‘prototile’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 prototile 레코드의 sides"
+      },
+      "TilingPrototiles.PrototileInteriorAngle": {
+        "table": "TilingPrototiles",
+        "field": "PrototileInteriorAngle",
+        "kind": "lookup",
+        "rule": "‘tiling prototile’ 레코드의 ‘prototile interior angle’ 값은 연결된 ‘prototile’ 레코드의 ‘interior angle deg’ 값입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 prototile 레코드의 interior angle deg"
+      },
+      "VertexFigures.Name": {
+        "table": "VertexFigures",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘vertex figure’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘tiling’, 이어서 “@”, 이어서 ‘config’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "Config",
+            "label": "config"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling 이어서 \"@\" 이어서 config"
+      },
+      "VertexFigures.TurnsAtVertex": {
+        "table": "VertexFigures",
+        "field": "TurnsAtVertex",
+        "kind": "formula",
+        "rule": "‘vertex figure’ 레코드의 ‘turns at vertex’ 값은 다음과 같이 계산됩니다: ‘angle sum deg’ 나누기 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle sum deg 나누기 360"
+      },
+      "VertexFigures.AngleGapDeg": {
+        "table": "VertexFigures",
+        "field": "AngleGapDeg",
+        "kind": "formula",
+        "rule": "‘vertex figure’ 레코드의 ‘angle gap deg’ 값은 다음과 같이 계산됩니다: ‘angle sum deg’ 빼기 360의 절대치.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "(angle sum deg 빼기 360)의 절대치"
+      },
+      "VertexFigures.IsValid": {
+        "table": "VertexFigures",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "‘angle gap deg’ 값이 0.0001 이하인 경우, ‘vertex figure’ 레코드는 ‘valid’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleGapDeg",
+            "label": "angle gap deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle gap deg 값이 0.0001 이하임"
+      },
+      "Regions.Name": {
+        "table": "Regions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘region’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘display name’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과"
+      },
+      "Regions.Area": {
+        "table": "Regions",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "‘region’ 레코드의 ‘area’ 값은 다음과 같이 계산됩니다: ‘width’ 곱하기 ‘height’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          }
+        ],
+        "structure": null,
+        "plain": "Width 곱하기 height"
+      },
+      "Regions.PlacementCount": {
+        "table": "Regions",
+        "field": "PlacementCount",
+        "kind": "rollup",
+        "rule": "‘region’ 레코드의 ‘placement count’ 값은 해당 ‘region’ 레코드에 연결된 ‘placements’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(region 값이 region ID임)에 맞는 placements 레코드의 개수"
+      },
+      "Regions.CoveredArea": {
+        "table": "Regions",
+        "field": "CoveredArea",
+        "kind": "rollup",
+        "rule": "‘region’ 레코드의 ‘covered area’ 값은 해당 ‘region’ 레코드에 연결된 모든 ‘placements’ 레코드의 총 ‘tile area’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "TileArea",
+            "label": "tile area"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(region 값이 region ID임)에 맞는 모든 placements 레코드의 tile area 합계"
+      },
+      "Regions.OverlapCount": {
+        "table": "Regions",
+        "field": "OverlapCount",
+        "kind": "rollup",
+        "rule": "‘region’ 레코드의 ‘overlap count’ 값은 해당 ‘region’ 레코드에 연결된 ‘placements’ 레코드 중 ‘overlapping’에 해당하는 것의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          },
+          {
+            "table": "Placements",
+            "field": "IsOverlapping",
+            "label": "is overlapping"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(region 값이 region ID임 및 is overlapping 값이 예임)에 맞는 placements 레코드의 개수"
+      },
+      "Regions.CoveragePct": {
+        "table": "Regions",
+        "field": "CoveragePct",
+        "kind": "formula",
+        "rule": "‘region’ 레코드의 ‘coverage pct’ 값은 다음과 같이 계산됩니다: 100 곱하기 ‘covered area’ 나누기 ‘area’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveredArea",
+            "label": "covered area"
+          },
+          {
+            "table": "Regions",
+            "field": "Area",
+            "label": "area"
+          }
+        ],
+        "structure": null,
+        "plain": "(100 곱하기 covered area) 나누기 area"
+      },
+      "Regions.IsFullyCovered": {
+        "table": "Regions",
+        "field": "IsFullyCovered",
+        "kind": "formula",
+        "rule": "‘coverage pct’ 값이 100 이상인 경우, ‘region’ 레코드는 ‘fully covered’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveragePct",
+            "label": "coverage pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Coverage pct 값이 100 이상임"
+      },
+      "Regions.IsCleanTiling": {
+        "table": "Regions",
+        "field": "IsCleanTiling",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘fully covered’ 플래그가 설정된 경우 및 ‘overlap count’ 값이 0인 경우), ‘region’ 레코드는 ‘clean tiling’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "IsFullyCovered",
+            "label": "is fully covered"
+          },
+          {
+            "table": "Regions",
+            "field": "OverlapCount",
+            "label": "overlap count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘region’ 레코드는 ‘clean tiling’에 해당하는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘fully covered’ 플래그가 설정된 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘overlap count’ 값이 0인 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is fully covered 및 overlap count 값이 0 값과 같음"
+      },
+      "Placements.Name": {
+        "table": "Placements",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘placement’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘region’, 이어서 “#”, 이어서 ‘placement ID’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Placements",
+            "field": "PlacementId",
+            "label": "placement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Region 이어서 \"#\" 이어서 placement ID"
+      },
+      "Placements.TileArea": {
+        "table": "Placements",
+        "field": "TileArea",
+        "kind": "lookup",
+        "rule": "‘placement’ 레코드의 ‘tile area’ 값은 연결된 ‘prototile’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Area",
+            "label": "area"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 prototile 레코드의 area"
+      },
+      "Placements.TileSides": {
+        "table": "Placements",
+        "field": "TileSides",
+        "kind": "lookup",
+        "rule": "‘placement’ 레코드의 ‘tile sides’ 값은 연결된 ‘prototile’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 prototile 레코드의 sides"
+      },
+      "Placements.RegionWidth": {
+        "table": "Placements",
+        "field": "RegionWidth",
+        "kind": "lookup",
+        "rule": "‘placement’ 레코드의 ‘region width’ 값은 연결된 ‘region’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 region 레코드의 width"
+      },
+      "Placements.RegionHeight": {
+        "table": "Placements",
+        "field": "RegionHeight",
+        "kind": "lookup",
+        "rule": "‘placement’ 레코드의 ‘region height’ 값은 연결된 ‘region’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 region 레코드의 height"
+      },
+      "Placements.IsInsideRegion": {
+        "table": "Placements",
+        "field": "IsInsideRegion",
+        "kind": "formula",
+        "rule": "다음 모두에 해당하는 경우(‘x’ 값이 0 이상인 경우, ‘y’ 값이 0 이상인 경우, ‘x’ 값이 ‘region width’보다 작은 경우 및 ‘y’ 값이 ‘region height’보다 작은 경우), ‘placement’ 레코드는 ‘inside region’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "X",
+            "label": "x"
+          },
+          {
+            "table": "Placements",
+            "field": "Y",
+            "label": "y"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionWidth",
+            "label": "region width"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionHeight",
+            "label": "region height"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 모두에 해당하는 경우, ‘placement’ 레코드는 ‘inside region’에 해당하는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘x’ 값이 0 이상인 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘y’ 값이 0 이상인 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘x’ 값이 ‘region width’보다 작은 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘y’ 값이 ‘region height’보다 작은 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "X 값이 0 이상임, y 값이 0 이상임, x 값이 region width보다 작음 및 y 값이 region height보다 작음"
+      },
+      "WallpaperDesigns.Name": {
+        "table": "WallpaperDesigns",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘wallpaper design’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘display name’의 소문자 변환 결과의 공백 한 칸 부분을 모두 하이픈 값으로 치환한 결과.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name의 소문자 변환 결과의 “ ” 부분을 “-” 값으로 치환한 결과"
+      },
+      "WallpaperDesigns.GroupNotation": {
+        "table": "WallpaperDesigns",
+        "field": "GroupNotation",
+        "kind": "lookup",
+        "rule": "‘wallpaper design’ 레코드의 ‘group notation’ 값은 연결된 ‘symmetry group’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 symmetry group 레코드의 notation"
+      },
+      "WallpaperDesigns.GroupOrbifold": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOrbifold",
+        "kind": "lookup",
+        "rule": "‘wallpaper design’ 레코드의 ‘group orbifold’ 값은 연결된 ‘symmetry group’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Orbifold",
+            "label": "orbifold"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 symmetry group 레코드의 orbifold"
+      },
+      "WallpaperDesigns.GroupLatticeType": {
+        "table": "WallpaperDesigns",
+        "field": "GroupLatticeType",
+        "kind": "lookup",
+        "rule": "‘wallpaper design’ 레코드의 ‘group lattice type’ 값은 연결된 ‘symmetry group’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "LatticeType",
+            "label": "lattice type"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 symmetry group 레코드의 lattice type"
+      },
+      "WallpaperDesigns.GroupRotationOrder": {
+        "table": "WallpaperDesigns",
+        "field": "GroupRotationOrder",
+        "kind": "lookup",
+        "rule": "‘wallpaper design’ 레코드의 ‘group rotation order’ 값은 연결된 ‘symmetry group’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "RotationOrder",
+            "label": "rotation order"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 symmetry group 레코드의 rotation order"
+      },
+      "WallpaperDesigns.GroupOperationCount": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOperationCount",
+        "kind": "lookup",
+        "rule": "‘wallpaper design’ 레코드의 ‘group operation count’ 값은 연결된 ‘symmetry group’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "OperationCount",
+            "label": "operation count"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 symmetry group 레코드의 operation count"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "SymmetryGroups": [
+        "‘symmetry group’ 레코드는 ‘notation’ 값을 포함**해야 합니다**."
+      ],
+      "Prototiles": [
+        "‘prototile’ 레코드는 ‘display name’, ‘sides’ 및 ‘edge length’ 값을 포함**해야 합니다**."
+      ],
+      "Tilings": [
+        "‘tiling’ 레코드는 ‘display name’, ‘vertex config’ 및 ‘kind’ 값을 포함하고, 해당 레코드가 ‘edge to edge’에 해당하는지 여부를 기록**해야 합니다**."
+      ],
+      "TilingPrototiles": [
+        "‘tiling prototile’ 레코드는 ‘tiling’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘tiling prototile’ 레코드는 ‘prototile’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘tiling prototile’ 레코드는 ‘count at vertex’ 값을 포함**해야 합니다**."
+      ],
+      "VertexFigures": [
+        "‘vertex figure’ 레코드는 ‘tiling’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘vertex figure’ 레코드는 ‘config’ 및 ‘angle sum deg’ 값을 포함**해야 합니다**."
+      ],
+      "Regions": [
+        "‘region’ 레코드는 ‘display name’, ‘width’ 및 ‘height’ 값을 포함**해야 합니다**."
+      ],
+      "Placements": [
+        "‘placement’ 레코드는 ‘region’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘placement’ 레코드는 ‘prototile’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘placement’ 레코드는 ‘x’, ‘y’ 및 ‘rotation deg’ 값을 포함하고, 해당 레코드가 ‘overlapping’에 해당하는지 여부를 기록**해야 합니다**."
+      ],
+      "WallpaperDesigns": [
+        "‘wallpaper design’ 레코드는 ‘symmetry group’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘wallpaper design’ 레코드는 ‘display name’ 및 ‘strokes’ 값을 포함**해야 합니다**."
+      ]
+    },
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "SymmetryGroups": "symmetry group",
+      "Prototiles": "prototile",
+      "Tilings": "tiling",
+      "TilingPrototiles": "tiling prototile",
+      "VertexFigures": "vertex figure",
+      "Regions": "region",
+      "Placements": "placement",
+      "WallpaperDesigns": "wallpaper design"
+    }
+  },
+  "nl": {
+    "fields": {
+      "SymmetryGroups.Name": {
+        "table": "SymmetryGroups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een symmetry group: name is gelijk aan symmetry group ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symmetry group ID"
+      },
+      "SymmetryGroups.TilingCount": {
+        "table": "SymmetryGroups",
+        "field": "TilingCount",
+        "kind": "rollup",
+        "rule": "Een symmetry group: tiling count is het aantal tilings dat is gekoppeld aan de symmetry group.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal tilings waarvan symmetry group is symmetry group ID"
+      },
+      "SymmetryGroups.WallpaperDesignCount": {
+        "table": "SymmetryGroups",
+        "field": "WallpaperDesignCount",
+        "kind": "rollup",
+        "rule": "Een symmetry group: wallpaper design count is het aantal wallpaper designs dat is gekoppeld aan de symmetry group.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal wallpaper designs waarvan symmetry group is symmetry group ID"
+      },
+      "Prototiles.Name": {
+        "table": "Prototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een prototile: name wordt berekend als de display name in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’"
+      },
+      "Prototiles.Area": {
+        "table": "Prototiles",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "Een prototile: area wordt berekend als 0.25 maal de sides maal de edge length tot de macht 2 gedeeld door de tangens van pi gedeeld door de sides.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Prototiles",
+            "field": "EdgeLength",
+            "label": "edge length"
+          }
+        ],
+        "structure": null,
+        "plain": "((0.25 maal sides) maal power(edge length, 2)) gedeeld door tan((pi() gedeeld door sides))"
+      },
+      "Prototiles.InteriorAngleDeg": {
+        "table": "Prototiles",
+        "field": "InteriorAngleDeg",
+        "kind": "formula",
+        "rule": "Een prototile: interior angle deg wordt berekend als de sides min 2 maal 180 gedeeld door de sides.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "((sides min 2) maal 180) gedeeld door sides"
+      },
+      "Prototiles.VertexAngleTurns": {
+        "table": "Prototiles",
+        "field": "VertexAngleTurns",
+        "kind": "formula",
+        "rule": "Een prototile: vertex angle turns wordt berekend als de interior angle deg gedeeld door 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Interior angle deg gedeeld door 360"
+      },
+      "Prototiles.IsRegular": {
+        "table": "Prototiles",
+        "field": "IsRegular",
+        "kind": "formula",
+        "rule": "Een prototile geldt als een regular als de sides ten minste 3 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides is ten minste 3"
+      },
+      "Prototiles.IsTriangle": {
+        "table": "Prototiles",
+        "field": "IsTriangle",
+        "kind": "formula",
+        "rule": "Een prototile geldt als een triangle als de sides 3 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides is gelijk aan 3"
+      },
+      "Prototiles.IsSquare": {
+        "table": "Prototiles",
+        "field": "IsSquare",
+        "kind": "formula",
+        "rule": "Een prototile geldt als een square als de sides 4 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides is gelijk aan 4"
+      },
+      "Prototiles.UsedInTilingsCount": {
+        "table": "Prototiles",
+        "field": "UsedInTilingsCount",
+        "kind": "rollup",
+        "rule": "Een prototile: used in tilings count is het aantal tiling prototiles dat is gekoppeld aan de prototile.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal tiling prototiles waarvan prototile is prototile ID"
+      },
+      "Tilings.Name": {
+        "table": "Tilings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een tiling: name wordt berekend als de display name in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’"
+      },
+      "Tilings.SymmetryNotation": {
+        "table": "Tilings",
+        "field": "SymmetryNotation",
+        "kind": "lookup",
+        "rule": "Een tiling: symmetry notation — overgenomen van de gekoppelde symmetry group.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De notation van de gekoppelde symmetry group"
+      },
+      "Tilings.DistinctPrototileCount": {
+        "table": "Tilings",
+        "field": "DistinctPrototileCount",
+        "kind": "rollup",
+        "rule": "Een tiling: distinct prototile count is het aantal tiling prototiles dat is gekoppeld aan de tiling.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal tiling prototiles waarvan tiling is tiling ID"
+      },
+      "Tilings.VertexFigureCount": {
+        "table": "Tilings",
+        "field": "VertexFigureCount",
+        "kind": "rollup",
+        "rule": "Een tiling: vertex figure count is het aantal vertex figures dat is gekoppeld aan de tiling.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal vertex figures waarvan tiling is tiling ID"
+      },
+      "Tilings.ValidVertexFigureCount": {
+        "table": "Tilings",
+        "field": "ValidVertexFigureCount",
+        "kind": "rollup",
+        "rule": "Een tiling: valid vertex figure count is het aantal vertex figures van de tiling dat valid zijn.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "IsValid",
+            "label": "is valid"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal vertex figures waarvan tiling is tiling ID en is valid is ja"
+      },
+      "Tilings.IsRegularTiling": {
+        "table": "Tilings",
+        "field": "IsRegularTiling",
+        "kind": "formula",
+        "rule": "Een tiling geldt als regular tiling als de distinct prototile count 1 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DistinctPrototileCount",
+            "label": "distinct prototile count"
+          }
+        ],
+        "structure": null,
+        "plain": "Distinct prototile count is gelijk aan 1"
+      },
+      "Tilings.AllVerticesValid": {
+        "table": "Tilings",
+        "field": "AllVerticesValid",
+        "kind": "formula",
+        "rule": "Een tiling is gemarkeerd als all vertices valid als de valid vertex figure count de vertex figure count is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "ValidVertexFigureCount",
+            "label": "valid vertex figure count"
+          },
+          {
+            "table": "Tilings",
+            "field": "VertexFigureCount",
+            "label": "vertex figure count"
+          }
+        ],
+        "structure": null,
+        "plain": "Valid vertex figure count is gelijk aan vertex figure count"
+      },
+      "Tilings.LatticeDeterminant": {
+        "table": "Tilings",
+        "field": "LatticeDeterminant",
+        "kind": "formula",
+        "rule": "Een tiling: lattice determinant wordt berekend als de t1x maal de t2y min de t1y maal de t2x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "T1x",
+            "label": "t1x"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2y",
+            "label": "t2y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T1y",
+            "label": "t1y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2x",
+            "label": "t2x"
+          }
+        ],
+        "structure": null,
+        "plain": "(t1x maal t2y) min (t1y maal t2x)"
+      },
+      "Tilings.FundamentalDomainArea": {
+        "table": "Tilings",
+        "field": "FundamentalDomainArea",
+        "kind": "formula",
+        "rule": "Een tiling: fundamental domain area wordt berekend als de absolute waarde van de lattice determinant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "De absolute waarde van lattice determinant"
+      },
+      "Tilings.HasLattice": {
+        "table": "Tilings",
+        "field": "HasLattice",
+        "kind": "formula",
+        "rule": "Een tiling geldt als beschikkend over een lattice als de absolute waarde van de lattice determinant groter is dan 0.0001.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "De absolute waarde van lattice determinant is groter dan 0.0001"
+      },
+      "Tilings.DoesTilePlane": {
+        "table": "Tilings",
+        "field": "DoesTilePlane",
+        "kind": "formula",
+        "rule": "Een tiling geldt als voldoend aan: tile plane als al het volgende geldt: de vlag ‘all vertices valid’ is gezet en de vlag ‘lattice’ is gezet.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "AllVerticesValid",
+            "label": "all vertices valid"
+          },
+          {
+            "table": "Tilings",
+            "field": "HasLattice",
+            "label": "has lattice"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een tiling geldt als voldoend aan: tile plane als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘all vertices valid’ is gezet"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘lattice’ is gezet"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "All vertices valid en has lattice"
+      },
+      "TilingPrototiles.Name": {
+        "table": "TilingPrototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een tiling prototile: name wordt berekend als de tiling, gevolgd door een schuine streep, gevolgd door de prototile.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling, \"/\", samengevoegd met prototile"
+      },
+      "TilingPrototiles.PrototileSides": {
+        "table": "TilingPrototiles",
+        "field": "PrototileSides",
+        "kind": "lookup",
+        "rule": "Een tiling prototile: prototile sides — overgenomen van de gekoppelde prototile.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De sides van de gekoppelde prototile"
+      },
+      "TilingPrototiles.PrototileInteriorAngle": {
+        "table": "TilingPrototiles",
+        "field": "PrototileInteriorAngle",
+        "kind": "lookup",
+        "rule": "Een tiling prototile: prototile interior angle is de interior angle deg van de gekoppelde prototile.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De interior angle deg van de gekoppelde prototile"
+      },
+      "VertexFigures.Name": {
+        "table": "VertexFigures",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een vertex figure: name wordt berekend als de tiling, gevolgd door ‘@’, gevolgd door de config.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "Config",
+            "label": "config"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling, \"@\", samengevoegd met config"
+      },
+      "VertexFigures.TurnsAtVertex": {
+        "table": "VertexFigures",
+        "field": "TurnsAtVertex",
+        "kind": "formula",
+        "rule": "Een vertex figure: turns at vertex wordt berekend als de angle sum deg gedeeld door 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle sum deg gedeeld door 360"
+      },
+      "VertexFigures.AngleGapDeg": {
+        "table": "VertexFigures",
+        "field": "AngleGapDeg",
+        "kind": "formula",
+        "rule": "Een vertex figure: angle gap deg wordt berekend als de absolute waarde van de angle sum deg min 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "De absolute waarde van (angle sum deg min 360)"
+      },
+      "VertexFigures.IsValid": {
+        "table": "VertexFigures",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "Een vertex figure geldt als valid als de angle gap deg ten hoogste 0.0001 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleGapDeg",
+            "label": "angle gap deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle gap deg is ten hoogste 0.0001"
+      },
+      "Regions.Name": {
+        "table": "Regions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een region: name wordt berekend als de display name in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’"
+      },
+      "Regions.Area": {
+        "table": "Regions",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "Een region: area wordt berekend als de width maal de height.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          }
+        ],
+        "structure": null,
+        "plain": "Width maal height"
+      },
+      "Regions.PlacementCount": {
+        "table": "Regions",
+        "field": "PlacementCount",
+        "kind": "rollup",
+        "rule": "Een region: placement count is het aantal placements dat is gekoppeld aan de region.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal placements waarvan region is region ID"
+      },
+      "Regions.CoveredArea": {
+        "table": "Regions",
+        "field": "CoveredArea",
+        "kind": "rollup",
+        "rule": "Een region: covered area is het totaal van tile area over de placements gekoppeld aan de region.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "TileArea",
+            "label": "tile area"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van tile area over alle placements waarvan region is region ID"
+      },
+      "Regions.OverlapCount": {
+        "table": "Regions",
+        "field": "OverlapCount",
+        "kind": "rollup",
+        "rule": "Een region: overlap count is het aantal placements van de region dat overlapping zijn.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          },
+          {
+            "table": "Placements",
+            "field": "IsOverlapping",
+            "label": "is overlapping"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal placements waarvan region is region ID en is overlapping is ja"
+      },
+      "Regions.CoveragePct": {
+        "table": "Regions",
+        "field": "CoveragePct",
+        "kind": "formula",
+        "rule": "Een region: coverage pct wordt berekend als 100 maal de covered area gedeeld door de area.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveredArea",
+            "label": "covered area"
+          },
+          {
+            "table": "Regions",
+            "field": "Area",
+            "label": "area"
+          }
+        ],
+        "structure": null,
+        "plain": "(100 maal covered area) gedeeld door area"
+      },
+      "Regions.IsFullyCovered": {
+        "table": "Regions",
+        "field": "IsFullyCovered",
+        "kind": "formula",
+        "rule": "Een region geldt als fully covered als de coverage pct ten minste 100 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveragePct",
+            "label": "coverage pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Coverage pct is ten minste 100"
+      },
+      "Regions.IsCleanTiling": {
+        "table": "Regions",
+        "field": "IsCleanTiling",
+        "kind": "formula",
+        "rule": "Een region geldt als clean tiling als al het volgende geldt: de vlag ‘fully covered’ is gezet en de overlap count 0 is.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "IsFullyCovered",
+            "label": "is fully covered"
+          },
+          {
+            "table": "Regions",
+            "field": "OverlapCount",
+            "label": "overlap count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een region geldt als clean tiling als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘fully covered’ is gezet"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de overlap count 0 is"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is fully covered en overlap count is gelijk aan 0"
+      },
+      "Placements.Name": {
+        "table": "Placements",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een placement: name wordt berekend als de region, gevolgd door ‘#’, gevolgd door de placement ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Placements",
+            "field": "PlacementId",
+            "label": "placement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Region, \"#\", samengevoegd met placement ID"
+      },
+      "Placements.TileArea": {
+        "table": "Placements",
+        "field": "TileArea",
+        "kind": "lookup",
+        "rule": "Een placement: tile area — overgenomen van de gekoppelde prototile.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Area",
+            "label": "area"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De area van de gekoppelde prototile"
+      },
+      "Placements.TileSides": {
+        "table": "Placements",
+        "field": "TileSides",
+        "kind": "lookup",
+        "rule": "Een placement: tile sides — overgenomen van de gekoppelde prototile.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De sides van de gekoppelde prototile"
+      },
+      "Placements.RegionWidth": {
+        "table": "Placements",
+        "field": "RegionWidth",
+        "kind": "lookup",
+        "rule": "Een placement: region width — overgenomen van de gekoppelde region.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De width van de gekoppelde region"
+      },
+      "Placements.RegionHeight": {
+        "table": "Placements",
+        "field": "RegionHeight",
+        "kind": "lookup",
+        "rule": "Een placement: region height — overgenomen van de gekoppelde region.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De height van de gekoppelde region"
+      },
+      "Placements.IsInsideRegion": {
+        "table": "Placements",
+        "field": "IsInsideRegion",
+        "kind": "formula",
+        "rule": "Een placement geldt als een inside region als al het volgende geldt: de x ten minste 0 is; de y ten minste 0 is; de x kleiner is dan de region width; en de y kleiner is dan de region height.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "X",
+            "label": "x"
+          },
+          {
+            "table": "Placements",
+            "field": "Y",
+            "label": "y"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionWidth",
+            "label": "region width"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionHeight",
+            "label": "region height"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een placement geldt als een inside region als al het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de x ten minste 0 is"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de y ten minste 0 is"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de x kleiner is dan de region width"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de y kleiner is dan de region height"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "X is ten minste 0, y is ten minste 0, x is kleiner dan region width, en y is kleiner dan region height"
+      },
+      "WallpaperDesigns.Name": {
+        "table": "WallpaperDesigns",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een wallpaper design: name wordt berekend als de display name in kleine letters waarbij elke een spatie wordt vervangen door een koppelteken.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name in kleine letters waarbij ‘ ’ wordt vervangen door ‘-’"
+      },
+      "WallpaperDesigns.GroupNotation": {
+        "table": "WallpaperDesigns",
+        "field": "GroupNotation",
+        "kind": "lookup",
+        "rule": "Een wallpaper design: group notation — overgenomen van de gekoppelde symmetry group.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De notation van de gekoppelde symmetry group"
+      },
+      "WallpaperDesigns.GroupOrbifold": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOrbifold",
+        "kind": "lookup",
+        "rule": "Een wallpaper design: group orbifold — overgenomen van de gekoppelde symmetry group.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Orbifold",
+            "label": "orbifold"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De orbifold van de gekoppelde symmetry group"
+      },
+      "WallpaperDesigns.GroupLatticeType": {
+        "table": "WallpaperDesigns",
+        "field": "GroupLatticeType",
+        "kind": "lookup",
+        "rule": "Een wallpaper design: group lattice type — overgenomen van de gekoppelde symmetry group.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "LatticeType",
+            "label": "lattice type"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De lattice type van de gekoppelde symmetry group"
+      },
+      "WallpaperDesigns.GroupRotationOrder": {
+        "table": "WallpaperDesigns",
+        "field": "GroupRotationOrder",
+        "kind": "lookup",
+        "rule": "Een wallpaper design: group rotation order — overgenomen van de gekoppelde symmetry group.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "RotationOrder",
+            "label": "rotation order"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De rotation order van de gekoppelde symmetry group"
+      },
+      "WallpaperDesigns.GroupOperationCount": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOperationCount",
+        "kind": "lookup",
+        "rule": "Een wallpaper design: group operation count — overgenomen van de gekoppelde symmetry group.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "OperationCount",
+            "label": "operation count"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De operation count van de gekoppelde symmetry group"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "SymmetryGroups": [
+        "Een symmetry group **moet** een notation hebben."
+      ],
+      "Prototiles": [
+        "Een prototile **moet** een display name; een sides; en een edge length hebben."
+      ],
+      "Tilings": [
+        "Een tiling **moet** een display name; een vertex config; en een kind hebben, en vastleggen of het is een edge to edge."
+      ],
+      "TilingPrototiles": [
+        "Een tiling prototile **moet** naar precies één tiling verwijzen.",
+        "Een tiling prototile **moet** naar precies één prototile verwijzen.",
+        "Een tiling prototile **moet** een count at vertex hebben."
+      ],
+      "VertexFigures": [
+        "Een vertex figure **moet** naar precies één tiling verwijzen.",
+        "Een vertex figure **moet** een config en een angle sum deg hebben."
+      ],
+      "Regions": [
+        "Een region **moet** een display name; een width; en een height hebben."
+      ],
+      "Placements": [
+        "Een placement **moet** naar precies één region verwijzen.",
+        "Een placement **moet** naar precies één prototile verwijzen.",
+        "Een placement **moet** een x; een y; en een rotation deg hebben, en vastleggen of het is overlapping."
+      ],
+      "WallpaperDesigns": [
+        "Een wallpaper design **moet** naar precies één symmetry group verwijzen.",
+        "Een wallpaper design **moet** een display name en een strokes hebben."
+      ]
+    },
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "SymmetryGroups": "symmetry group",
+      "Prototiles": "prototile",
+      "Tilings": "tiling",
+      "TilingPrototiles": "tiling prototile",
+      "VertexFigures": "vertex figure",
+      "Regions": "region",
+      "Placements": "placement",
+      "WallpaperDesigns": "wallpaper design"
+    }
+  },
+  "pt": {
+    "fields": {
+      "SymmetryGroups.Name": {
+        "table": "SymmetryGroups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um symmetry group: name é igual a symmetry group ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symmetry group ID"
+      },
+      "SymmetryGroups.TilingCount": {
+        "table": "SymmetryGroups",
+        "field": "TilingCount",
+        "kind": "rollup",
+        "rule": "Um symmetry group: tiling count é o número de tilings relacionados a o symmetry group.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de tilings cujo symmetry group é symmetry group ID"
+      },
+      "SymmetryGroups.WallpaperDesignCount": {
+        "table": "SymmetryGroups",
+        "field": "WallpaperDesignCount",
+        "kind": "rollup",
+        "rule": "Um symmetry group: wallpaper design count é o número de wallpaper designs relacionados a o symmetry group.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de wallpaper designs cujo symmetry group é symmetry group ID"
+      },
+      "Prototiles.Name": {
+        "table": "Prototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um prototile: name é calculado como o display name em minúsculas com cada um espaço substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name em minúsculas com “ ” substituído por “-”"
+      },
+      "Prototiles.Area": {
+        "table": "Prototiles",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "Um prototile: area é calculado como 0.25 vezes o sides vezes o edge length elevado a 2 dividido por a tangente de pi dividido por o sides.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Prototiles",
+            "field": "EdgeLength",
+            "label": "edge length"
+          }
+        ],
+        "structure": null,
+        "plain": "((0.25 vezes sides) vezes power(edge length, 2)) dividido por tan((pi() dividido por sides))"
+      },
+      "Prototiles.InteriorAngleDeg": {
+        "table": "Prototiles",
+        "field": "InteriorAngleDeg",
+        "kind": "formula",
+        "rule": "Um prototile: interior angle deg é calculado como o sides menos 2 vezes 180 dividido por o sides.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "((sides menos 2) vezes 180) dividido por sides"
+      },
+      "Prototiles.VertexAngleTurns": {
+        "table": "Prototiles",
+        "field": "VertexAngleTurns",
+        "kind": "formula",
+        "rule": "Um prototile: vertex angle turns é calculado como o interior angle deg dividido por 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Interior angle deg dividido por 360"
+      },
+      "Prototiles.IsRegular": {
+        "table": "Prototiles",
+        "field": "IsRegular",
+        "kind": "formula",
+        "rule": "Um prototile é considerado um regular se o sides é pelo menos 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides é pelo menos 3"
+      },
+      "Prototiles.IsTriangle": {
+        "table": "Prototiles",
+        "field": "IsTriangle",
+        "kind": "formula",
+        "rule": "Um prototile é considerado um triangle se o sides é 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides é igual a 3"
+      },
+      "Prototiles.IsSquare": {
+        "table": "Prototiles",
+        "field": "IsSquare",
+        "kind": "formula",
+        "rule": "Um prototile é considerado um square se o sides é 4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides é igual a 4"
+      },
+      "Prototiles.UsedInTilingsCount": {
+        "table": "Prototiles",
+        "field": "UsedInTilingsCount",
+        "kind": "rollup",
+        "rule": "Um prototile: used in tilings count é o número de tiling prototiles relacionados a o prototile.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de tiling prototiles cujo prototile é prototile ID"
+      },
+      "Tilings.Name": {
+        "table": "Tilings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um tiling: name é calculado como o display name em minúsculas com cada um espaço substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name em minúsculas com “ ” substituído por “-”"
+      },
+      "Tilings.SymmetryNotation": {
+        "table": "Tilings",
+        "field": "SymmetryNotation",
+        "kind": "lookup",
+        "rule": "Um tiling: symmetry notation — obtido do symmetry group vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O notation do symmetry group vinculado"
+      },
+      "Tilings.DistinctPrototileCount": {
+        "table": "Tilings",
+        "field": "DistinctPrototileCount",
+        "kind": "rollup",
+        "rule": "Um tiling: distinct prototile count é o número de tiling prototiles relacionados a o tiling.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de tiling prototiles cujo tiling é tiling ID"
+      },
+      "Tilings.VertexFigureCount": {
+        "table": "Tilings",
+        "field": "VertexFigureCount",
+        "kind": "rollup",
+        "rule": "Um tiling: vertex figure count é o número de vertex figures relacionados a o tiling.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de vertex figures cujo tiling é tiling ID"
+      },
+      "Tilings.ValidVertexFigureCount": {
+        "table": "Tilings",
+        "field": "ValidVertexFigureCount",
+        "kind": "rollup",
+        "rule": "Um tiling: valid vertex figure count é o número de vertex figures do tiling que são valid.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "IsValid",
+            "label": "is valid"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de vertex figures cujo tiling é tiling ID e is valid é sim"
+      },
+      "Tilings.IsRegularTiling": {
+        "table": "Tilings",
+        "field": "IsRegularTiling",
+        "kind": "formula",
+        "rule": "Um tiling é considerado regular tiling se o distinct prototile count é 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DistinctPrototileCount",
+            "label": "distinct prototile count"
+          }
+        ],
+        "structure": null,
+        "plain": "Distinct prototile count é igual a 1"
+      },
+      "Tilings.AllVerticesValid": {
+        "table": "Tilings",
+        "field": "AllVerticesValid",
+        "kind": "formula",
+        "rule": "Um tiling está marcado como all vertices valid se o valid vertex figure count é o vertex figure count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "ValidVertexFigureCount",
+            "label": "valid vertex figure count"
+          },
+          {
+            "table": "Tilings",
+            "field": "VertexFigureCount",
+            "label": "vertex figure count"
+          }
+        ],
+        "structure": null,
+        "plain": "Valid vertex figure count é igual a vertex figure count"
+      },
+      "Tilings.LatticeDeterminant": {
+        "table": "Tilings",
+        "field": "LatticeDeterminant",
+        "kind": "formula",
+        "rule": "Um tiling: lattice determinant é calculado como o t1x vezes o t2y menos o t1y vezes o t2x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "T1x",
+            "label": "t1x"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2y",
+            "label": "t2y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T1y",
+            "label": "t1y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2x",
+            "label": "t2x"
+          }
+        ],
+        "structure": null,
+        "plain": "(t1x vezes t2y) menos (t1y vezes t2x)"
+      },
+      "Tilings.FundamentalDomainArea": {
+        "table": "Tilings",
+        "field": "FundamentalDomainArea",
+        "kind": "formula",
+        "rule": "Um tiling: fundamental domain area é calculado como o valor absoluto de o lattice determinant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "O valor absoluto de lattice determinant"
+      },
+      "Tilings.HasLattice": {
+        "table": "Tilings",
+        "field": "HasLattice",
+        "kind": "formula",
+        "rule": "Um tiling é considerado como tendo uma lattice se o valor absoluto de o lattice determinant é maior que 0.0001.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "O valor absoluto de lattice determinant é maior que 0.0001"
+      },
+      "Tilings.DoesTilePlane": {
+        "table": "Tilings",
+        "field": "DoesTilePlane",
+        "kind": "formula",
+        "rule": "Um tiling é considerado como satisfazendo: tile plane se tudo o que segue é verdadeiro: o indicador “all vertices valid” está ativado e o indicador “lattice” está ativado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "AllVerticesValid",
+            "label": "all vertices valid"
+          },
+          {
+            "table": "Tilings",
+            "field": "HasLattice",
+            "label": "has lattice"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um tiling é considerado como satisfazendo: tile plane se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “all vertices valid” está ativado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “lattice” está ativado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "All vertices valid e has lattice"
+      },
+      "TilingPrototiles.Name": {
+        "table": "TilingPrototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um tiling prototile: name é calculado como o tiling, seguido de uma barra, seguido de o prototile.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling, \"/\", unido a prototile"
+      },
+      "TilingPrototiles.PrototileSides": {
+        "table": "TilingPrototiles",
+        "field": "PrototileSides",
+        "kind": "lookup",
+        "rule": "Um tiling prototile: prototile sides — obtido do prototile vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O sides do prototile vinculado"
+      },
+      "TilingPrototiles.PrototileInteriorAngle": {
+        "table": "TilingPrototiles",
+        "field": "PrototileInteriorAngle",
+        "kind": "lookup",
+        "rule": "Um tiling prototile: prototile interior angle é o interior angle deg do prototile vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O interior angle deg do prototile vinculado"
+      },
+      "VertexFigures.Name": {
+        "table": "VertexFigures",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um vertex figure: name é calculado como o tiling, seguido de “@”, seguido de o config.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "Config",
+            "label": "config"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling, \"@\", unido a config"
+      },
+      "VertexFigures.TurnsAtVertex": {
+        "table": "VertexFigures",
+        "field": "TurnsAtVertex",
+        "kind": "formula",
+        "rule": "Um vertex figure: turns at vertex é calculado como o angle sum deg dividido por 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle sum deg dividido por 360"
+      },
+      "VertexFigures.AngleGapDeg": {
+        "table": "VertexFigures",
+        "field": "AngleGapDeg",
+        "kind": "formula",
+        "rule": "Um vertex figure: angle gap deg é calculado como o valor absoluto de o angle sum deg menos 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "O valor absoluto de (angle sum deg menos 360)"
+      },
+      "VertexFigures.IsValid": {
+        "table": "VertexFigures",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "Um vertex figure é considerado valid se o angle gap deg é no máximo 0.0001.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleGapDeg",
+            "label": "angle gap deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle gap deg é no máximo 0.0001"
+      },
+      "Regions.Name": {
+        "table": "Regions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um region: name é calculado como o display name em minúsculas com cada um espaço substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name em minúsculas com “ ” substituído por “-”"
+      },
+      "Regions.Area": {
+        "table": "Regions",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "Um region: area é calculado como o width vezes o height.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          }
+        ],
+        "structure": null,
+        "plain": "Width vezes height"
+      },
+      "Regions.PlacementCount": {
+        "table": "Regions",
+        "field": "PlacementCount",
+        "kind": "rollup",
+        "rule": "Um region: placement count é o número de placements relacionados a o region.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de placements cujo region é region ID"
+      },
+      "Regions.CoveredArea": {
+        "table": "Regions",
+        "field": "CoveredArea",
+        "kind": "rollup",
+        "rule": "Um region: covered area é o total de tile area entre os placements relacionados a o region.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "TileArea",
+            "label": "tile area"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de tile area entre todos os placements cujo region é region ID"
+      },
+      "Regions.OverlapCount": {
+        "table": "Regions",
+        "field": "OverlapCount",
+        "kind": "rollup",
+        "rule": "Um region: overlap count é o número de placements do region que são overlapping.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          },
+          {
+            "table": "Placements",
+            "field": "IsOverlapping",
+            "label": "is overlapping"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de placements cujo region é region ID e is overlapping é sim"
+      },
+      "Regions.CoveragePct": {
+        "table": "Regions",
+        "field": "CoveragePct",
+        "kind": "formula",
+        "rule": "Um region: coverage pct é calculado como 100 vezes a covered area dividido por a area.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveredArea",
+            "label": "covered area"
+          },
+          {
+            "table": "Regions",
+            "field": "Area",
+            "label": "area"
+          }
+        ],
+        "structure": null,
+        "plain": "(100 vezes covered area) dividido por area"
+      },
+      "Regions.IsFullyCovered": {
+        "table": "Regions",
+        "field": "IsFullyCovered",
+        "kind": "formula",
+        "rule": "Um region é considerado fully covered se o coverage pct é pelo menos 100.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveragePct",
+            "label": "coverage pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Coverage pct é pelo menos 100"
+      },
+      "Regions.IsCleanTiling": {
+        "table": "Regions",
+        "field": "IsCleanTiling",
+        "kind": "formula",
+        "rule": "Um region é considerado clean tiling se tudo o que segue é verdadeiro: o indicador “fully covered” está ativado e o overlap count é 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "IsFullyCovered",
+            "label": "is fully covered"
+          },
+          {
+            "table": "Regions",
+            "field": "OverlapCount",
+            "label": "overlap count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um region é considerado clean tiling se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “fully covered” está ativado"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o overlap count é 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is fully covered e overlap count é igual a 0"
+      },
+      "Placements.Name": {
+        "table": "Placements",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um placement: name é calculado como o region, seguido de “#”, seguido de o placement ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Placements",
+            "field": "PlacementId",
+            "label": "placement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Region, \"#\", unido a placement ID"
+      },
+      "Placements.TileArea": {
+        "table": "Placements",
+        "field": "TileArea",
+        "kind": "lookup",
+        "rule": "Um placement: tile area — obtido do prototile vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Area",
+            "label": "area"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O area do prototile vinculado"
+      },
+      "Placements.TileSides": {
+        "table": "Placements",
+        "field": "TileSides",
+        "kind": "lookup",
+        "rule": "Um placement: tile sides — obtido do prototile vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O sides do prototile vinculado"
+      },
+      "Placements.RegionWidth": {
+        "table": "Placements",
+        "field": "RegionWidth",
+        "kind": "lookup",
+        "rule": "Um placement: region width — obtido do region vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O width do region vinculado"
+      },
+      "Placements.RegionHeight": {
+        "table": "Placements",
+        "field": "RegionHeight",
+        "kind": "lookup",
+        "rule": "Um placement: region height — obtido do region vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O height do region vinculado"
+      },
+      "Placements.IsInsideRegion": {
+        "table": "Placements",
+        "field": "IsInsideRegion",
+        "kind": "formula",
+        "rule": "Um placement é considerado um inside region se tudo o que segue é verdadeiro: o x é pelo menos 0; o y é pelo menos 0; o x é menor que o region width; e o y é menor que o region height.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "X",
+            "label": "x"
+          },
+          {
+            "table": "Placements",
+            "field": "Y",
+            "label": "y"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionWidth",
+            "label": "region width"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionHeight",
+            "label": "region height"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um placement é considerado um inside region se tudo o que segue for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o x é pelo menos 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o y é pelo menos 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o x é menor que o region width"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o y é menor que o region height"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "X é pelo menos 0, y é pelo menos 0, x é menor que region width, e y é menor que region height"
+      },
+      "WallpaperDesigns.Name": {
+        "table": "WallpaperDesigns",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um wallpaper design: name é calculado como o display name em minúsculas com cada um espaço substituído por um hífen.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name em minúsculas com “ ” substituído por “-”"
+      },
+      "WallpaperDesigns.GroupNotation": {
+        "table": "WallpaperDesigns",
+        "field": "GroupNotation",
+        "kind": "lookup",
+        "rule": "Um wallpaper design: group notation — obtido do symmetry group vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O notation do symmetry group vinculado"
+      },
+      "WallpaperDesigns.GroupOrbifold": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOrbifold",
+        "kind": "lookup",
+        "rule": "Um wallpaper design: group orbifold — obtido do symmetry group vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Orbifold",
+            "label": "orbifold"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O orbifold do symmetry group vinculado"
+      },
+      "WallpaperDesigns.GroupLatticeType": {
+        "table": "WallpaperDesigns",
+        "field": "GroupLatticeType",
+        "kind": "lookup",
+        "rule": "Um wallpaper design: group lattice type — obtido do symmetry group vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "LatticeType",
+            "label": "lattice type"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O lattice type do symmetry group vinculado"
+      },
+      "WallpaperDesigns.GroupRotationOrder": {
+        "table": "WallpaperDesigns",
+        "field": "GroupRotationOrder",
+        "kind": "lookup",
+        "rule": "Um wallpaper design: group rotation order — obtido do symmetry group vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "RotationOrder",
+            "label": "rotation order"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O rotation order do symmetry group vinculado"
+      },
+      "WallpaperDesigns.GroupOperationCount": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOperationCount",
+        "kind": "lookup",
+        "rule": "Um wallpaper design: group operation count — obtido do symmetry group vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "OperationCount",
+            "label": "operation count"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O operation count do symmetry group vinculado"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "SymmetryGroups": [
+        "Um symmetry group **deve** ter um notation."
+      ],
+      "Prototiles": [
+        "Um prototile **deve** ter um display name; um sides; e um edge length."
+      ],
+      "Tilings": [
+        "Um tiling **deve** ter um display name; um vertex config; e um kind, e registrar se é um edge to edge."
+      ],
+      "TilingPrototiles": [
+        "Um tiling prototile **deve** referenciar exatamente um tiling.",
+        "Um tiling prototile **deve** referenciar exatamente um prototile.",
+        "Um tiling prototile **deve** ter um count at vertex."
+      ],
+      "VertexFigures": [
+        "Um vertex figure **deve** referenciar exatamente um tiling.",
+        "Um vertex figure **deve** ter um config e um angle sum deg."
+      ],
+      "Regions": [
+        "Um region **deve** ter um display name; um width; e um height."
+      ],
+      "Placements": [
+        "Um placement **deve** referenciar exatamente um region.",
+        "Um placement **deve** referenciar exatamente um prototile.",
+        "Um placement **deve** ter um x; um y; e um rotation deg, e registrar se é overlapping."
+      ],
+      "WallpaperDesigns": [
+        "Um wallpaper design **deve** referenciar exatamente um symmetry group.",
+        "Um wallpaper design **deve** ter um display name e um strokes."
+      ]
+    },
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "SymmetryGroups": "symmetry group",
+      "Prototiles": "prototile",
+      "Tilings": "tiling",
+      "TilingPrototiles": "tiling prototile",
+      "VertexFigures": "vertex figure",
+      "Regions": "region",
+      "Placements": "placement",
+      "WallpaperDesigns": "wallpaper design"
+    }
+  },
+  "ru": {
+    "fields": {
+      "SymmetryGroups.Name": {
+        "table": "SymmetryGroups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Symmetry group: «name» совпадает с symmetry group ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symmetry group ID"
+      },
+      "SymmetryGroups.TilingCount": {
+        "table": "SymmetryGroups",
+        "field": "TilingCount",
+        "kind": "rollup",
+        "rule": "Symmetry group: «tiling count» — это число записей «tilings», связанных с symmetry group.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «tilings», у которых symmetry group равно symmetry group ID"
+      },
+      "SymmetryGroups.WallpaperDesignCount": {
+        "table": "SymmetryGroups",
+        "field": "WallpaperDesignCount",
+        "kind": "rollup",
+        "rule": "Symmetry group: «wallpaper design count» — это число записей «wallpaper designs», связанных с symmetry group.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «wallpaper designs», у которых symmetry group равно symmetry group ID"
+      },
+      "Prototiles.Name": {
+        "table": "Prototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Prototile: «name» вычисляется как display name в нижнем регистре, где каждое пробел заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name в нижнем регистре, где « » заменено на «-»"
+      },
+      "Prototiles.Area": {
+        "table": "Prototiles",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "Prototile: «area» вычисляется как 0.25 умножить на sides умножить на edge length в степени 2 разделить на тангенс пи разделить на sides.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Prototiles",
+            "field": "EdgeLength",
+            "label": "edge length"
+          }
+        ],
+        "structure": null,
+        "plain": "((0.25 умножить на sides) умножить на power(edge length, 2)) разделить на tan((pi() разделить на sides))"
+      },
+      "Prototiles.InteriorAngleDeg": {
+        "table": "Prototiles",
+        "field": "InteriorAngleDeg",
+        "kind": "formula",
+        "rule": "Prototile: «interior angle deg» вычисляется как sides минус 2 умножить на 180 разделить на sides.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "((sides минус 2) умножить на 180) разделить на sides"
+      },
+      "Prototiles.VertexAngleTurns": {
+        "table": "Prototiles",
+        "field": "VertexAngleTurns",
+        "kind": "formula",
+        "rule": "Prototile: «vertex angle turns» вычисляется как interior angle deg разделить на 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Interior angle deg разделить на 360"
+      },
+      "Prototiles.IsRegular": {
+        "table": "Prototiles",
+        "field": "IsRegular",
+        "kind": "formula",
+        "rule": "Prototile считается «regular», если sides не меньше 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides не меньше 3"
+      },
+      "Prototiles.IsTriangle": {
+        "table": "Prototiles",
+        "field": "IsTriangle",
+        "kind": "formula",
+        "rule": "Prototile считается «triangle», если sides равно 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides равно 3"
+      },
+      "Prototiles.IsSquare": {
+        "table": "Prototiles",
+        "field": "IsSquare",
+        "kind": "formula",
+        "rule": "Prototile считается «square», если sides равно 4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides равно 4"
+      },
+      "Prototiles.UsedInTilingsCount": {
+        "table": "Prototiles",
+        "field": "UsedInTilingsCount",
+        "kind": "rollup",
+        "rule": "Prototile: «used in tilings count» — это число записей «tiling prototiles», связанных с prototile.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «tiling prototiles», у которых prototile равно prototile ID"
+      },
+      "Tilings.Name": {
+        "table": "Tilings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Tiling: «name» вычисляется как display name в нижнем регистре, где каждое пробел заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name в нижнем регистре, где « » заменено на «-»"
+      },
+      "Tilings.SymmetryNotation": {
+        "table": "Tilings",
+        "field": "SymmetryNotation",
+        "kind": "lookup",
+        "rule": "Tiling: «symmetry notation» — берётся из связанного «symmetry group».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Notation связанного «symmetry group»"
+      },
+      "Tilings.DistinctPrototileCount": {
+        "table": "Tilings",
+        "field": "DistinctPrototileCount",
+        "kind": "rollup",
+        "rule": "Tiling: «distinct prototile count» — это число записей «tiling prototiles», связанных с tiling.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «tiling prototiles», у которых tiling равно tiling ID"
+      },
+      "Tilings.VertexFigureCount": {
+        "table": "Tilings",
+        "field": "VertexFigureCount",
+        "kind": "rollup",
+        "rule": "Tiling: «vertex figure count» — это число записей «vertex figures», связанных с tiling.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «vertex figures», у которых tiling равно tiling ID"
+      },
+      "Tilings.ValidVertexFigureCount": {
+        "table": "Tilings",
+        "field": "ValidVertexFigureCount",
+        "kind": "rollup",
+        "rule": "Tiling: «valid vertex figure count» — это число записей «vertex figures» (tiling), которые являются «valid».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "IsValid",
+            "label": "is valid"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «vertex figures», у которых tiling равно tiling ID и is valid равно да"
+      },
+      "Tilings.IsRegularTiling": {
+        "table": "Tilings",
+        "field": "IsRegularTiling",
+        "kind": "formula",
+        "rule": "Tiling считается «regular tiling», если distinct prototile count равно 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DistinctPrototileCount",
+            "label": "distinct prototile count"
+          }
+        ],
+        "structure": null,
+        "plain": "Distinct prototile count равно 1"
+      },
+      "Tilings.AllVerticesValid": {
+        "table": "Tilings",
+        "field": "AllVerticesValid",
+        "kind": "formula",
+        "rule": "Tiling помечается как «all vertices valid», если valid vertex figure count равно vertex figure count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "ValidVertexFigureCount",
+            "label": "valid vertex figure count"
+          },
+          {
+            "table": "Tilings",
+            "field": "VertexFigureCount",
+            "label": "vertex figure count"
+          }
+        ],
+        "structure": null,
+        "plain": "Valid vertex figure count равно vertex figure count"
+      },
+      "Tilings.LatticeDeterminant": {
+        "table": "Tilings",
+        "field": "LatticeDeterminant",
+        "kind": "formula",
+        "rule": "Tiling: «lattice determinant» вычисляется как t1x умножить на t2y минус t1y умножить на t2x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "T1x",
+            "label": "t1x"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2y",
+            "label": "t2y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T1y",
+            "label": "t1y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2x",
+            "label": "t2x"
+          }
+        ],
+        "structure": null,
+        "plain": "(t1x умножить на t2y) минус (t1y умножить на t2x)"
+      },
+      "Tilings.FundamentalDomainArea": {
+        "table": "Tilings",
+        "field": "FundamentalDomainArea",
+        "kind": "formula",
+        "rule": "Tiling: «fundamental domain area» вычисляется как модуль lattice determinant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Модуль lattice determinant"
+      },
+      "Tilings.HasLattice": {
+        "table": "Tilings",
+        "field": "HasLattice",
+        "kind": "formula",
+        "rule": "Tiling считается имеющим «lattice», если модуль lattice determinant больше 0.0001.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Модуль lattice determinant больше 0.0001"
+      },
+      "Tilings.DoesTilePlane": {
+        "table": "Tilings",
+        "field": "DoesTilePlane",
+        "kind": "formula",
+        "rule": "Tiling считается удовлетворяющим условию «tile plane», если выполняется всё следующее: признак «all vertices valid» установлен и признак «lattice» установлен.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "AllVerticesValid",
+            "label": "all vertices valid"
+          },
+          {
+            "table": "Tilings",
+            "field": "HasLattice",
+            "label": "has lattice"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Tiling считается удовлетворяющим условию «tile plane», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "признак «all vertices valid» установлен"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "признак «lattice» установлен"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "All vertices valid и has lattice"
+      },
+      "TilingPrototiles.Name": {
+        "table": "TilingPrototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Tiling prototile: «name» вычисляется как tiling, затем косая черта, затем prototile.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling, \"/\", соединено с prototile"
+      },
+      "TilingPrototiles.PrototileSides": {
+        "table": "TilingPrototiles",
+        "field": "PrototileSides",
+        "kind": "lookup",
+        "rule": "Tiling prototile: «prototile sides» — берётся из связанного «prototile».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides связанного «prototile»"
+      },
+      "TilingPrototiles.PrototileInteriorAngle": {
+        "table": "TilingPrototiles",
+        "field": "PrototileInteriorAngle",
+        "kind": "lookup",
+        "rule": "Tiling prototile: «prototile interior angle» — это «interior angle deg» связанного «prototile».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Interior angle deg связанного «prototile»"
+      },
+      "VertexFigures.Name": {
+        "table": "VertexFigures",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Vertex figure: «name» вычисляется как tiling, затем «@», затем config.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "Config",
+            "label": "config"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling, \"@\", соединено с config"
+      },
+      "VertexFigures.TurnsAtVertex": {
+        "table": "VertexFigures",
+        "field": "TurnsAtVertex",
+        "kind": "formula",
+        "rule": "Vertex figure: «turns at vertex» вычисляется как angle sum deg разделить на 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle sum deg разделить на 360"
+      },
+      "VertexFigures.AngleGapDeg": {
+        "table": "VertexFigures",
+        "field": "AngleGapDeg",
+        "kind": "formula",
+        "rule": "Vertex figure: «angle gap deg» вычисляется как модуль angle sum deg минус 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Модуль (angle sum deg минус 360)"
+      },
+      "VertexFigures.IsValid": {
+        "table": "VertexFigures",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "Vertex figure считается «valid», если angle gap deg не больше 0.0001.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleGapDeg",
+            "label": "angle gap deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle gap deg не больше 0.0001"
+      },
+      "Regions.Name": {
+        "table": "Regions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Region: «name» вычисляется как display name в нижнем регистре, где каждое пробел заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name в нижнем регистре, где « » заменено на «-»"
+      },
+      "Regions.Area": {
+        "table": "Regions",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "Region: «area» вычисляется как width умножить на height.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          }
+        ],
+        "structure": null,
+        "plain": "Width умножить на height"
+      },
+      "Regions.PlacementCount": {
+        "table": "Regions",
+        "field": "PlacementCount",
+        "kind": "rollup",
+        "rule": "Region: «placement count» — это число записей «placements», связанных с region.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «placements», у которых region равно region ID"
+      },
+      "Regions.CoveredArea": {
+        "table": "Regions",
+        "field": "CoveredArea",
+        "kind": "rollup",
+        "rule": "Region: «covered area» — это сумма «tile area» по записям «placements», связанным с region.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "TileArea",
+            "label": "tile area"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма tile area по всем «placements», у которых region равно region ID"
+      },
+      "Regions.OverlapCount": {
+        "table": "Regions",
+        "field": "OverlapCount",
+        "kind": "rollup",
+        "rule": "Region: «overlap count» — это число записей «placements» (region), которые являются «overlapping».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          },
+          {
+            "table": "Placements",
+            "field": "IsOverlapping",
+            "label": "is overlapping"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «placements», у которых region равно region ID и is overlapping равно да"
+      },
+      "Regions.CoveragePct": {
+        "table": "Regions",
+        "field": "CoveragePct",
+        "kind": "formula",
+        "rule": "Region: «coverage pct» вычисляется как 100 умножить на covered area разделить на area.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveredArea",
+            "label": "covered area"
+          },
+          {
+            "table": "Regions",
+            "field": "Area",
+            "label": "area"
+          }
+        ],
+        "structure": null,
+        "plain": "(100 умножить на covered area) разделить на area"
+      },
+      "Regions.IsFullyCovered": {
+        "table": "Regions",
+        "field": "IsFullyCovered",
+        "kind": "formula",
+        "rule": "Region считается «fully covered», если coverage pct не меньше 100.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveragePct",
+            "label": "coverage pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Coverage pct не меньше 100"
+      },
+      "Regions.IsCleanTiling": {
+        "table": "Regions",
+        "field": "IsCleanTiling",
+        "kind": "formula",
+        "rule": "Region считается «clean tiling», если выполняется всё следующее: признак «fully covered» установлен и overlap count равно 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "IsFullyCovered",
+            "label": "is fully covered"
+          },
+          {
+            "table": "Regions",
+            "field": "OverlapCount",
+            "label": "overlap count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Region считается «clean tiling», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "признак «fully covered» установлен"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "overlap count равно 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is fully covered и overlap count равно 0"
+      },
+      "Placements.Name": {
+        "table": "Placements",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Placement: «name» вычисляется как region, затем «#», затем placement ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Placements",
+            "field": "PlacementId",
+            "label": "placement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Region, \"#\", соединено с placement ID"
+      },
+      "Placements.TileArea": {
+        "table": "Placements",
+        "field": "TileArea",
+        "kind": "lookup",
+        "rule": "Placement: «tile area» — берётся из связанного «prototile».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Area",
+            "label": "area"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Area связанного «prototile»"
+      },
+      "Placements.TileSides": {
+        "table": "Placements",
+        "field": "TileSides",
+        "kind": "lookup",
+        "rule": "Placement: «tile sides» — берётся из связанного «prototile».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides связанного «prototile»"
+      },
+      "Placements.RegionWidth": {
+        "table": "Placements",
+        "field": "RegionWidth",
+        "kind": "lookup",
+        "rule": "Placement: «region width» — берётся из связанного «region».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Width связанного «region»"
+      },
+      "Placements.RegionHeight": {
+        "table": "Placements",
+        "field": "RegionHeight",
+        "kind": "lookup",
+        "rule": "Placement: «region height» — берётся из связанного «region».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Height связанного «region»"
+      },
+      "Placements.IsInsideRegion": {
+        "table": "Placements",
+        "field": "IsInsideRegion",
+        "kind": "formula",
+        "rule": "Placement считается «inside region», если выполняется всё следующее: x не меньше 0; y не меньше 0; x меньше region width; и y меньше region height.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "X",
+            "label": "x"
+          },
+          {
+            "table": "Placements",
+            "field": "Y",
+            "label": "y"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionWidth",
+            "label": "region width"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionHeight",
+            "label": "region height"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Placement считается «inside region», если выполняется всё следующее:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "x не меньше 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "y не меньше 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "x меньше region width"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "y меньше region height"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "X не меньше 0, y не меньше 0, x меньше region width, и y меньше region height"
+      },
+      "WallpaperDesigns.Name": {
+        "table": "WallpaperDesigns",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Wallpaper design: «name» вычисляется как display name в нижнем регистре, где каждое пробел заменено на дефис.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name в нижнем регистре, где « » заменено на «-»"
+      },
+      "WallpaperDesigns.GroupNotation": {
+        "table": "WallpaperDesigns",
+        "field": "GroupNotation",
+        "kind": "lookup",
+        "rule": "Wallpaper design: «group notation» — берётся из связанного «symmetry group».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Notation связанного «symmetry group»"
+      },
+      "WallpaperDesigns.GroupOrbifold": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOrbifold",
+        "kind": "lookup",
+        "rule": "Wallpaper design: «group orbifold» — берётся из связанного «symmetry group».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Orbifold",
+            "label": "orbifold"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Orbifold связанного «symmetry group»"
+      },
+      "WallpaperDesigns.GroupLatticeType": {
+        "table": "WallpaperDesigns",
+        "field": "GroupLatticeType",
+        "kind": "lookup",
+        "rule": "Wallpaper design: «group lattice type» — берётся из связанного «symmetry group».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "LatticeType",
+            "label": "lattice type"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Lattice type связанного «symmetry group»"
+      },
+      "WallpaperDesigns.GroupRotationOrder": {
+        "table": "WallpaperDesigns",
+        "field": "GroupRotationOrder",
+        "kind": "lookup",
+        "rule": "Wallpaper design: «group rotation order» — берётся из связанного «symmetry group».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "RotationOrder",
+            "label": "rotation order"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rotation order связанного «symmetry group»"
+      },
+      "WallpaperDesigns.GroupOperationCount": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOperationCount",
+        "kind": "lookup",
+        "rule": "Wallpaper design: «group operation count» — берётся из связанного «symmetry group».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "OperationCount",
+            "label": "operation count"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Operation count связанного «symmetry group»"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "SymmetryGroups": [
+        "Symmetry group **обязан** иметь notation."
+      ],
+      "Prototiles": [
+        "Prototile **обязан** иметь display name; sides; и edge length."
+      ],
+      "Tilings": [
+        "Tiling **обязан** иметь display name; vertex config; и kind, а также фиксировать то, он является «edge to edge» ли."
+      ],
+      "TilingPrototiles": [
+        "Tiling prototile **обязан** ссылаться ровно на один «tiling».",
+        "Tiling prototile **обязан** ссылаться ровно на один «prototile».",
+        "Tiling prototile **обязан** иметь count at vertex."
+      ],
+      "VertexFigures": [
+        "Vertex figure **обязан** ссылаться ровно на один «tiling».",
+        "Vertex figure **обязан** иметь config и angle sum deg."
+      ],
+      "Regions": [
+        "Region **обязан** иметь display name; width; и height."
+      ],
+      "Placements": [
+        "Placement **обязан** ссылаться ровно на один «region».",
+        "Placement **обязан** ссылаться ровно на один «prototile».",
+        "Placement **обязан** иметь x; y; и rotation deg, а также фиксировать то, он является «overlapping» ли."
+      ],
+      "WallpaperDesigns": [
+        "Wallpaper design **обязан** ссылаться ровно на один «symmetry group».",
+        "Wallpaper design **обязан** иметь display name и strokes."
+      ]
+    },
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "SymmetryGroups": "symmetry group",
+      "Prototiles": "prototile",
+      "Tilings": "tiling",
+      "TilingPrototiles": "tiling prototile",
+      "VertexFigures": "vertex figure",
+      "Regions": "region",
+      "Placements": "placement",
+      "WallpaperDesigns": "wallpaper design"
+    }
+  },
+  "tr": {
+    "fields": {
+      "SymmetryGroups.Name": {
+        "table": "SymmetryGroups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“symmetry group” kaydının “name” alanı, “symmetry group ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symmetry group ID"
+      },
+      "SymmetryGroups.TilingCount": {
+        "table": "SymmetryGroups",
+        "field": "TilingCount",
+        "kind": "rollup",
+        "rule": "“symmetry group” kaydının “tiling count” alanı, “symmetry group” kaydıyla ilişkili “tilings” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symmetry group değeri symmetry group ID olan tilings kayıtlarının sayısı"
+      },
+      "SymmetryGroups.WallpaperDesignCount": {
+        "table": "SymmetryGroups",
+        "field": "WallpaperDesignCount",
+        "kind": "rollup",
+        "rule": "“symmetry group” kaydının “wallpaper design count” alanı, “symmetry group” kaydıyla ilişkili “wallpaper designs” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symmetry group değeri symmetry group ID olan wallpaper designs kayıtlarının sayısı"
+      },
+      "Prototiles.Name": {
+        "table": "Prototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“prototile” kaydının “name” alanı, küçük harfe çevrilmiş “display name” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş display name değerindeki her “ ” yerine “-” konularak elde edilen metin"
+      },
+      "Prototiles.Area": {
+        "table": "Prototiles",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "“prototile” kaydının “area” alanı, 0.25 çarpı “sides” alanı çarpı “edge length” alanı üzeri 2 bölü pi sayısı bölü “sides” alanı değerinin tanjantı olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Prototiles",
+            "field": "EdgeLength",
+            "label": "edge length"
+          }
+        ],
+        "structure": null,
+        "plain": "((0.25 çarpı sides) çarpı power(edge length, 2)) bölü tan((pi() bölü sides))"
+      },
+      "Prototiles.InteriorAngleDeg": {
+        "table": "Prototiles",
+        "field": "InteriorAngleDeg",
+        "kind": "formula",
+        "rule": "“prototile” kaydının “interior angle deg” alanı, “sides” alanı eksi 2 çarpı 180 bölü “sides” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "((sides eksi 2) çarpı 180) bölü sides"
+      },
+      "Prototiles.VertexAngleTurns": {
+        "table": "Prototiles",
+        "field": "VertexAngleTurns",
+        "kind": "formula",
+        "rule": "“prototile” kaydının “vertex angle turns” alanı, “interior angle deg” alanı bölü 360 olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Interior angle deg bölü 360"
+      },
+      "Prototiles.IsRegular": {
+        "table": "Prototiles",
+        "field": "IsRegular",
+        "kind": "formula",
+        "rule": "“prototile” kaydı, “sides” alanı en az 3 değerinde ise “regular” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides, en az 3 değerinde"
+      },
+      "Prototiles.IsTriangle": {
+        "table": "Prototiles",
+        "field": "IsTriangle",
+        "kind": "formula",
+        "rule": "“prototile” kaydı, “sides” alanı 3 değerine eşit ise “triangle” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides, 3 değerine eşit"
+      },
+      "Prototiles.IsSquare": {
+        "table": "Prototiles",
+        "field": "IsSquare",
+        "kind": "formula",
+        "rule": "“prototile” kaydı, “sides” alanı 4 değerine eşit ise “square” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides, 4 değerine eşit"
+      },
+      "Prototiles.UsedInTilingsCount": {
+        "table": "Prototiles",
+        "field": "UsedInTilingsCount",
+        "kind": "rollup",
+        "rule": "“prototile” kaydının “used in tilings count” alanı, “prototile” kaydıyla ilişkili “tiling prototiles” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Prototile değeri prototile ID olan tiling prototiles kayıtlarının sayısı"
+      },
+      "Tilings.Name": {
+        "table": "Tilings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“tiling” kaydının “name” alanı, küçük harfe çevrilmiş “display name” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş display name değerindeki her “ ” yerine “-” konularak elde edilen metin"
+      },
+      "Tilings.SymmetryNotation": {
+        "table": "Tilings",
+        "field": "SymmetryNotation",
+        "kind": "lookup",
+        "rule": "“tiling” kaydının “symmetry notation” alanı, “symmetry group” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı symmetry group kaydının notation değeri"
+      },
+      "Tilings.DistinctPrototileCount": {
+        "table": "Tilings",
+        "field": "DistinctPrototileCount",
+        "kind": "rollup",
+        "rule": "“tiling” kaydının “distinct prototile count” alanı, “tiling” kaydıyla ilişkili “tiling prototiles” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling değeri tiling ID olan tiling prototiles kayıtlarının sayısı"
+      },
+      "Tilings.VertexFigureCount": {
+        "table": "Tilings",
+        "field": "VertexFigureCount",
+        "kind": "rollup",
+        "rule": "“tiling” kaydının “vertex figure count” alanı, “tiling” kaydıyla ilişkili “vertex figures” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling değeri tiling ID olan vertex figures kayıtlarının sayısı"
+      },
+      "Tilings.ValidVertexFigureCount": {
+        "table": "Tilings",
+        "field": "ValidVertexFigureCount",
+        "kind": "rollup",
+        "rule": "“tiling” kaydının “valid vertex figure count” alanı, “tiling” kaydıyla ilişkili, “valid” olan “vertex figures” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "IsValid",
+            "label": "is valid"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling değeri tiling ID ve is valid değeri evet olan vertex figures kayıtlarının sayısı"
+      },
+      "Tilings.IsRegularTiling": {
+        "table": "Tilings",
+        "field": "IsRegularTiling",
+        "kind": "formula",
+        "rule": "“tiling” kaydı, “distinct prototile count” alanı 1 değerine eşit ise “regular tiling” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DistinctPrototileCount",
+            "label": "distinct prototile count"
+          }
+        ],
+        "structure": null,
+        "plain": "Distinct prototile count, 1 değerine eşit"
+      },
+      "Tilings.AllVerticesValid": {
+        "table": "Tilings",
+        "field": "AllVerticesValid",
+        "kind": "formula",
+        "rule": "“tiling” kaydı, “valid vertex figure count” alanı “vertex figure count” alanı değerine eşit ise “all vertices valid” olarak işaretlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "ValidVertexFigureCount",
+            "label": "valid vertex figure count"
+          },
+          {
+            "table": "Tilings",
+            "field": "VertexFigureCount",
+            "label": "vertex figure count"
+          }
+        ],
+        "structure": null,
+        "plain": "Valid vertex figure count, vertex figure count değerine eşit"
+      },
+      "Tilings.LatticeDeterminant": {
+        "table": "Tilings",
+        "field": "LatticeDeterminant",
+        "kind": "formula",
+        "rule": "“tiling” kaydının “lattice determinant” alanı, “t1x” alanı çarpı “t2y” alanı eksi “t1y” alanı çarpı “t2x” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "T1x",
+            "label": "t1x"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2y",
+            "label": "t2y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T1y",
+            "label": "t1y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2x",
+            "label": "t2x"
+          }
+        ],
+        "structure": null,
+        "plain": "(t1x çarpı t2y) eksi (t1y çarpı t2x)"
+      },
+      "Tilings.FundamentalDomainArea": {
+        "table": "Tilings",
+        "field": "FundamentalDomainArea",
+        "kind": "formula",
+        "rule": "“tiling” kaydının “fundamental domain area” alanı, “lattice determinant” alanı değerinin mutlak değeri olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Lattice determinant değerinin mutlak değeri"
+      },
+      "Tilings.HasLattice": {
+        "table": "Tilings",
+        "field": "HasLattice",
+        "kind": "formula",
+        "rule": "“tiling” kaydı, “lattice determinant” alanı değerinin mutlak değeri 0.0001 değerinden büyük ise “lattice” sahibi sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Lattice determinant değerinin mutlak değeri, 0.0001 değerinden büyük"
+      },
+      "Tilings.DoesTilePlane": {
+        "table": "Tilings",
+        "field": "DoesTilePlane",
+        "kind": "formula",
+        "rule": "“tiling” kaydı, “all vertices valid” bayrağı etkin ve “lattice” bayrağı etkin ise “does tile plane” koşulunu sağlamış sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "AllVerticesValid",
+            "label": "all vertices valid"
+          },
+          {
+            "table": "Tilings",
+            "field": "HasLattice",
+            "label": "has lattice"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“tiling” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “does tile plane” koşulunu sağlamış sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“all vertices valid” bayrağı etkin"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“lattice” bayrağı etkin"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "All vertices valid ve has lattice"
+      },
+      "TilingPrototiles.Name": {
+        "table": "TilingPrototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“tiling prototile” kaydının “name” alanı, “tiling” alanı, ardından bir eğik çizgi, ardından “prototile” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling, \"/\" ve ardından prototile"
+      },
+      "TilingPrototiles.PrototileSides": {
+        "table": "TilingPrototiles",
+        "field": "PrototileSides",
+        "kind": "lookup",
+        "rule": "“tiling prototile” kaydının “prototile sides” alanı, “prototile” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı prototile kaydının sides değeri"
+      },
+      "TilingPrototiles.PrototileInteriorAngle": {
+        "table": "TilingPrototiles",
+        "field": "PrototileInteriorAngle",
+        "kind": "lookup",
+        "rule": "“tiling prototile” kaydının “prototile interior angle” alanı, “prototile” alanı üzerinden bağlı kaydın “interior angle deg” alanından alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı prototile kaydının interior angle deg değeri"
+      },
+      "VertexFigures.Name": {
+        "table": "VertexFigures",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“vertex figure” kaydının “name” alanı, “tiling” alanı, ardından “@”, ardından “config” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "Config",
+            "label": "config"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling, \"@\" ve ardından config"
+      },
+      "VertexFigures.TurnsAtVertex": {
+        "table": "VertexFigures",
+        "field": "TurnsAtVertex",
+        "kind": "formula",
+        "rule": "“vertex figure” kaydının “turns at vertex” alanı, “angle sum deg” alanı bölü 360 olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle sum deg bölü 360"
+      },
+      "VertexFigures.AngleGapDeg": {
+        "table": "VertexFigures",
+        "field": "AngleGapDeg",
+        "kind": "formula",
+        "rule": "“vertex figure” kaydının “angle gap deg” alanı, “angle sum deg” alanı eksi 360 değerinin mutlak değeri olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "(angle sum deg eksi 360) değerinin mutlak değeri"
+      },
+      "VertexFigures.IsValid": {
+        "table": "VertexFigures",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "“vertex figure” kaydı, “angle gap deg” alanı en çok 0.0001 değerinde ise “valid” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleGapDeg",
+            "label": "angle gap deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle gap deg, en çok 0.0001 değerinde"
+      },
+      "Regions.Name": {
+        "table": "Regions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“region” kaydının “name” alanı, küçük harfe çevrilmiş “display name” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş display name değerindeki her “ ” yerine “-” konularak elde edilen metin"
+      },
+      "Regions.Area": {
+        "table": "Regions",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "“region” kaydının “area” alanı, “width” alanı çarpı “height” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          }
+        ],
+        "structure": null,
+        "plain": "Width çarpı height"
+      },
+      "Regions.PlacementCount": {
+        "table": "Regions",
+        "field": "PlacementCount",
+        "kind": "rollup",
+        "rule": "“region” kaydının “placement count” alanı, “region” kaydıyla ilişkili “placements” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Region değeri region ID olan placements kayıtlarının sayısı"
+      },
+      "Regions.CoveredArea": {
+        "table": "Regions",
+        "field": "CoveredArea",
+        "kind": "rollup",
+        "rule": "“region” kaydının “covered area” alanı, “region” kaydıyla ilişkili “placements” kayıtları üzerinden hesaplanan toplam “tile area” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "TileArea",
+            "label": "tile area"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Region değeri region ID olan tüm placements kayıtlarındaki tile area değerlerinin toplamı"
+      },
+      "Regions.OverlapCount": {
+        "table": "Regions",
+        "field": "OverlapCount",
+        "kind": "rollup",
+        "rule": "“region” kaydının “overlap count” alanı, “region” kaydıyla ilişkili, “overlapping” olan “placements” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          },
+          {
+            "table": "Placements",
+            "field": "IsOverlapping",
+            "label": "is overlapping"
+          }
+        ],
+        "structure": null,
+        "plain": "Region değeri region ID ve is overlapping değeri evet olan placements kayıtlarının sayısı"
+      },
+      "Regions.CoveragePct": {
+        "table": "Regions",
+        "field": "CoveragePct",
+        "kind": "formula",
+        "rule": "“region” kaydının “coverage pct” alanı, 100 çarpı “covered area” alanı bölü “area” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveredArea",
+            "label": "covered area"
+          },
+          {
+            "table": "Regions",
+            "field": "Area",
+            "label": "area"
+          }
+        ],
+        "structure": null,
+        "plain": "(100 çarpı covered area) bölü area"
+      },
+      "Regions.IsFullyCovered": {
+        "table": "Regions",
+        "field": "IsFullyCovered",
+        "kind": "formula",
+        "rule": "“region” kaydı, “coverage pct” alanı en az 100 değerinde ise “fully covered” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveragePct",
+            "label": "coverage pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Coverage pct, en az 100 değerinde"
+      },
+      "Regions.IsCleanTiling": {
+        "table": "Regions",
+        "field": "IsCleanTiling",
+        "kind": "formula",
+        "rule": "“region” kaydı, “fully covered” bayrağı etkin ve “overlap count” alanı 0 değerine eşit ise “clean tiling” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "IsFullyCovered",
+            "label": "is fully covered"
+          },
+          {
+            "table": "Regions",
+            "field": "OverlapCount",
+            "label": "overlap count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“region” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “clean tiling” sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“fully covered” bayrağı etkin"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“overlap count” alanı 0 değerine eşit"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is fully covered ve overlap count, 0 değerine eşit"
+      },
+      "Placements.Name": {
+        "table": "Placements",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“placement” kaydının “name” alanı, “region” alanı, ardından “#”, ardından “placement ID” olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Placements",
+            "field": "PlacementId",
+            "label": "placement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Region, \"#\" ve ardından placement ID"
+      },
+      "Placements.TileArea": {
+        "table": "Placements",
+        "field": "TileArea",
+        "kind": "lookup",
+        "rule": "“placement” kaydının “tile area” alanı, “prototile” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Area",
+            "label": "area"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı prototile kaydının area değeri"
+      },
+      "Placements.TileSides": {
+        "table": "Placements",
+        "field": "TileSides",
+        "kind": "lookup",
+        "rule": "“placement” kaydının “tile sides” alanı, “prototile” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı prototile kaydının sides değeri"
+      },
+      "Placements.RegionWidth": {
+        "table": "Placements",
+        "field": "RegionWidth",
+        "kind": "lookup",
+        "rule": "“placement” kaydının “region width” alanı, “region” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı region kaydının width değeri"
+      },
+      "Placements.RegionHeight": {
+        "table": "Placements",
+        "field": "RegionHeight",
+        "kind": "lookup",
+        "rule": "“placement” kaydının “region height” alanı, “region” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı region kaydının height değeri"
+      },
+      "Placements.IsInsideRegion": {
+        "table": "Placements",
+        "field": "IsInsideRegion",
+        "kind": "formula",
+        "rule": "“placement” kaydı, “x” alanı en az 0 değerinde, “y” alanı en az 0 değerinde, “x” alanı “region width” alanı değerinden küçük ve “y” alanı “region height” alanı değerinden küçük ise “inside region” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "X",
+            "label": "x"
+          },
+          {
+            "table": "Placements",
+            "field": "Y",
+            "label": "y"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionWidth",
+            "label": "region width"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionHeight",
+            "label": "region height"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“placement” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “inside region” sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“x” alanı en az 0 değerinde"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“y” alanı en az 0 değerinde"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“x” alanı “region width” alanı değerinden küçük"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“y” alanı “region height” alanı değerinden küçük"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "X, en az 0 değerinde; y, en az 0 değerinde; x, region width değerinden küçük ve y, region height değerinden küçük"
+      },
+      "WallpaperDesigns.Name": {
+        "table": "WallpaperDesigns",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“wallpaper design” kaydının “name” alanı, küçük harfe çevrilmiş “display name” alanı değerindeki her bir boşluk yerine bir kısa çizgi konularak elde edilen metin olarak hesaplanır.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Küçük harfe çevrilmiş display name değerindeki her “ ” yerine “-” konularak elde edilen metin"
+      },
+      "WallpaperDesigns.GroupNotation": {
+        "table": "WallpaperDesigns",
+        "field": "GroupNotation",
+        "kind": "lookup",
+        "rule": "“wallpaper design” kaydının “group notation” alanı, “symmetry group” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı symmetry group kaydının notation değeri"
+      },
+      "WallpaperDesigns.GroupOrbifold": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOrbifold",
+        "kind": "lookup",
+        "rule": "“wallpaper design” kaydının “group orbifold” alanı, “symmetry group” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Orbifold",
+            "label": "orbifold"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı symmetry group kaydının orbifold değeri"
+      },
+      "WallpaperDesigns.GroupLatticeType": {
+        "table": "WallpaperDesigns",
+        "field": "GroupLatticeType",
+        "kind": "lookup",
+        "rule": "“wallpaper design” kaydının “group lattice type” alanı, “symmetry group” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "LatticeType",
+            "label": "lattice type"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı symmetry group kaydının lattice type değeri"
+      },
+      "WallpaperDesigns.GroupRotationOrder": {
+        "table": "WallpaperDesigns",
+        "field": "GroupRotationOrder",
+        "kind": "lookup",
+        "rule": "“wallpaper design” kaydının “group rotation order” alanı, “symmetry group” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "RotationOrder",
+            "label": "rotation order"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı symmetry group kaydının rotation order değeri"
+      },
+      "WallpaperDesigns.GroupOperationCount": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOperationCount",
+        "kind": "lookup",
+        "rule": "“wallpaper design” kaydının “group operation count” alanı, “symmetry group” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "OperationCount",
+            "label": "operation count"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı symmetry group kaydının operation count değeri"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "SymmetryGroups": [
+        "“symmetry group” kaydı, “notation” alanı dolu olmak **zorundadır**."
+      ],
+      "Prototiles": [
+        "“prototile” kaydı, “display name” alanı, “sides” alanı ve “edge length” alanı dolu olmak **zorundadır**."
+      ],
+      "Tilings": [
+        "“tiling” kaydı, “display name” alanı, “vertex config” alanı ve “kind” alanı dolu olmak, ayrıca “edge to edge” olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ],
+      "TilingPrototiles": [
+        "“tiling prototile” kaydı, tam olarak bir “tiling” kaydına referans vermek **zorundadır**.",
+        "“tiling prototile” kaydı, tam olarak bir “prototile” kaydına referans vermek **zorundadır**.",
+        "“tiling prototile” kaydı, “count at vertex” alanı dolu olmak **zorundadır**."
+      ],
+      "VertexFigures": [
+        "“vertex figure” kaydı, tam olarak bir “tiling” kaydına referans vermek **zorundadır**.",
+        "“vertex figure” kaydı, “config” alanı ve “angle sum deg” alanı dolu olmak **zorundadır**."
+      ],
+      "Regions": [
+        "“region” kaydı, “display name” alanı, “width” alanı ve “height” alanı dolu olmak **zorundadır**."
+      ],
+      "Placements": [
+        "“placement” kaydı, tam olarak bir “region” kaydına referans vermek **zorundadır**.",
+        "“placement” kaydı, tam olarak bir “prototile” kaydına referans vermek **zorundadır**.",
+        "“placement” kaydı, “x” alanı, “y” alanı ve “rotation deg” alanı dolu olmak, ayrıca “overlapping” olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ],
+      "WallpaperDesigns": [
+        "“wallpaper design” kaydı, tam olarak bir “symmetry group” kaydına referans vermek **zorundadır**.",
+        "“wallpaper design” kaydı, “display name” alanı ve “strokes” alanı dolu olmak **zorundadır**."
+      ]
+    },
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "SymmetryGroups": "symmetry group",
+      "Prototiles": "prototile",
+      "Tilings": "tiling",
+      "TilingPrototiles": "tiling prototile",
+      "VertexFigures": "vertex figure",
+      "Regions": "region",
+      "Placements": "placement",
+      "WallpaperDesigns": "wallpaper design"
+    }
+  },
+  "vi": {
+    "fields": {
+      "SymmetryGroups.Name": {
+        "table": "SymmetryGroups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi symmetry group có cùng giá trị với trường “symmetry group ID” của chính symmetry group đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symmetry group ID"
+      },
+      "SymmetryGroups.TilingCount": {
+        "table": "SymmetryGroups",
+        "field": "TilingCount",
+        "kind": "rollup",
+        "rule": "Trường “tiling count” của mỗi symmetry group là số lượng tilings liên quan đến symmetry group đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng tilings có symmetry group là symmetry group ID"
+      },
+      "SymmetryGroups.WallpaperDesignCount": {
+        "table": "SymmetryGroups",
+        "field": "WallpaperDesignCount",
+        "kind": "rollup",
+        "rule": "Trường “wallpaper design count” của mỗi symmetry group là số lượng wallpaper designs liên quan đến symmetry group đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng wallpaper designs có symmetry group là symmetry group ID"
+      },
+      "Prototiles.Name": {
+        "table": "Prototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi prototile được tính bằng display name viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name viết bằng chữ thường sau khi thay “ ” bằng “-”"
+      },
+      "Prototiles.Area": {
+        "table": "Prototiles",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "Trường “area” của mỗi prototile được tính bằng 0.25 nhân sides nhân edge length lũy thừa 2 chia cho tang của số pi chia cho sides.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Prototiles",
+            "field": "EdgeLength",
+            "label": "edge length"
+          }
+        ],
+        "structure": null,
+        "plain": "((0.25 nhân sides) nhân power(edge length, 2)) chia cho tan((pi() chia cho sides))"
+      },
+      "Prototiles.InteriorAngleDeg": {
+        "table": "Prototiles",
+        "field": "InteriorAngleDeg",
+        "kind": "formula",
+        "rule": "Trường “interior angle deg” của mỗi prototile được tính bằng sides trừ 2 nhân 180 chia cho sides.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "((sides trừ 2) nhân 180) chia cho sides"
+      },
+      "Prototiles.VertexAngleTurns": {
+        "table": "Prototiles",
+        "field": "VertexAngleTurns",
+        "kind": "formula",
+        "rule": "Trường “vertex angle turns” của mỗi prototile được tính bằng interior angle deg chia cho 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Interior angle deg chia cho 360"
+      },
+      "Prototiles.IsRegular": {
+        "table": "Prototiles",
+        "field": "IsRegular",
+        "kind": "formula",
+        "rule": "Mỗi prototile được coi là “regular” nếu sides không nhỏ hơn 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides không nhỏ hơn 3"
+      },
+      "Prototiles.IsTriangle": {
+        "table": "Prototiles",
+        "field": "IsTriangle",
+        "kind": "formula",
+        "rule": "Mỗi prototile được coi là “triangle” nếu sides là 3.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides bằng 3"
+      },
+      "Prototiles.IsSquare": {
+        "table": "Prototiles",
+        "field": "IsSquare",
+        "kind": "formula",
+        "rule": "Mỗi prototile được coi là “square” nếu sides là 4.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides bằng 4"
+      },
+      "Prototiles.UsedInTilingsCount": {
+        "table": "Prototiles",
+        "field": "UsedInTilingsCount",
+        "kind": "rollup",
+        "rule": "Trường “used in tilings count” của mỗi prototile là số lượng tiling prototiles liên quan đến prototile đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng tiling prototiles có prototile là prototile ID"
+      },
+      "Tilings.Name": {
+        "table": "Tilings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi tiling được tính bằng display name viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name viết bằng chữ thường sau khi thay “ ” bằng “-”"
+      },
+      "Tilings.SymmetryNotation": {
+        "table": "Tilings",
+        "field": "SymmetryNotation",
+        "kind": "lookup",
+        "rule": "Trường “symmetry notation” của mỗi tiling được lấy từ bản ghi liên kết qua trường “symmetry group”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Notation của bản ghi liên kết qua symmetry group"
+      },
+      "Tilings.DistinctPrototileCount": {
+        "table": "Tilings",
+        "field": "DistinctPrototileCount",
+        "kind": "rollup",
+        "rule": "Trường “distinct prototile count” của mỗi tiling là số lượng tiling prototiles liên quan đến tiling đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng tiling prototiles có tiling là tiling ID"
+      },
+      "Tilings.VertexFigureCount": {
+        "table": "Tilings",
+        "field": "VertexFigureCount",
+        "kind": "rollup",
+        "rule": "Trường “vertex figure count” của mỗi tiling là số lượng vertex figures liên quan đến tiling đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng vertex figures có tiling là tiling ID"
+      },
+      "Tilings.ValidVertexFigureCount": {
+        "table": "Tilings",
+        "field": "ValidVertexFigureCount",
+        "kind": "rollup",
+        "rule": "Trường “valid vertex figure count” của mỗi tiling là số lượng vertex figures liên quan đến tiling đó, chỉ tính các bản ghi là “valid”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "IsValid",
+            "label": "is valid"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng vertex figures có tiling là tiling ID và is valid là có"
+      },
+      "Tilings.IsRegularTiling": {
+        "table": "Tilings",
+        "field": "IsRegularTiling",
+        "kind": "formula",
+        "rule": "Mỗi tiling được coi là “regular tiling” nếu distinct prototile count là 1.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DistinctPrototileCount",
+            "label": "distinct prototile count"
+          }
+        ],
+        "structure": null,
+        "plain": "Distinct prototile count bằng 1"
+      },
+      "Tilings.AllVerticesValid": {
+        "table": "Tilings",
+        "field": "AllVerticesValid",
+        "kind": "formula",
+        "rule": "Mỗi tiling được đánh dấu là “all vertices valid” nếu valid vertex figure count là vertex figure count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "ValidVertexFigureCount",
+            "label": "valid vertex figure count"
+          },
+          {
+            "table": "Tilings",
+            "field": "VertexFigureCount",
+            "label": "vertex figure count"
+          }
+        ],
+        "structure": null,
+        "plain": "Valid vertex figure count bằng vertex figure count"
+      },
+      "Tilings.LatticeDeterminant": {
+        "table": "Tilings",
+        "field": "LatticeDeterminant",
+        "kind": "formula",
+        "rule": "Trường “lattice determinant” của mỗi tiling được tính bằng t1x nhân t2y trừ t1y nhân t2x.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "T1x",
+            "label": "t1x"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2y",
+            "label": "t2y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T1y",
+            "label": "t1y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2x",
+            "label": "t2x"
+          }
+        ],
+        "structure": null,
+        "plain": "(t1x nhân t2y) trừ (t1y nhân t2x)"
+      },
+      "Tilings.FundamentalDomainArea": {
+        "table": "Tilings",
+        "field": "FundamentalDomainArea",
+        "kind": "formula",
+        "rule": "Trường “fundamental domain area” của mỗi tiling được tính bằng giá trị tuyệt đối của lattice determinant.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Giá trị tuyệt đối của lattice determinant"
+      },
+      "Tilings.HasLattice": {
+        "table": "Tilings",
+        "field": "HasLattice",
+        "kind": "formula",
+        "rule": "Mỗi tiling được coi là có “lattice” nếu giá trị tuyệt đối của lattice determinant lớn hơn 0.0001.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Giá trị tuyệt đối của lattice determinant lớn hơn 0.0001"
+      },
+      "Tilings.DoesTilePlane": {
+        "table": "Tilings",
+        "field": "DoesTilePlane",
+        "kind": "formula",
+        "rule": "Mỗi tiling được coi là thỏa điều kiện “does tile plane” nếu tất cả các điều kiện sau đều đúng: cờ “all vertices valid” được bật và cờ “lattice” được bật.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "AllVerticesValid",
+            "label": "all vertices valid"
+          },
+          {
+            "table": "Tilings",
+            "field": "HasLattice",
+            "label": "has lattice"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi tiling được coi là thỏa điều kiện “does tile plane” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "cờ “all vertices valid” được bật"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "cờ “lattice” được bật"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "All vertices valid và has lattice"
+      },
+      "TilingPrototiles.Name": {
+        "table": "TilingPrototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi tiling prototile được tính bằng tiling, tiếp theo là dấu gạch chéo, tiếp theo là prototile.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling nối với \"/\" nối với prototile"
+      },
+      "TilingPrototiles.PrototileSides": {
+        "table": "TilingPrototiles",
+        "field": "PrototileSides",
+        "kind": "lookup",
+        "rule": "Trường “prototile sides” của mỗi tiling prototile được lấy từ bản ghi liên kết qua trường “prototile”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides của bản ghi liên kết qua prototile"
+      },
+      "TilingPrototiles.PrototileInteriorAngle": {
+        "table": "TilingPrototiles",
+        "field": "PrototileInteriorAngle",
+        "kind": "lookup",
+        "rule": "Trường “prototile interior angle” của mỗi tiling prototile là trường “interior angle deg” của bản ghi liên kết qua trường “prototile”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Interior angle deg của bản ghi liên kết qua prototile"
+      },
+      "VertexFigures.Name": {
+        "table": "VertexFigures",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi vertex figure được tính bằng tiling, tiếp theo là “@”, tiếp theo là config.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "Config",
+            "label": "config"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling nối với \"@\" nối với config"
+      },
+      "VertexFigures.TurnsAtVertex": {
+        "table": "VertexFigures",
+        "field": "TurnsAtVertex",
+        "kind": "formula",
+        "rule": "Trường “turns at vertex” của mỗi vertex figure được tính bằng angle sum deg chia cho 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle sum deg chia cho 360"
+      },
+      "VertexFigures.AngleGapDeg": {
+        "table": "VertexFigures",
+        "field": "AngleGapDeg",
+        "kind": "formula",
+        "rule": "Trường “angle gap deg” của mỗi vertex figure được tính bằng giá trị tuyệt đối của angle sum deg trừ 360.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Giá trị tuyệt đối của (angle sum deg trừ 360)"
+      },
+      "VertexFigures.IsValid": {
+        "table": "VertexFigures",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "Mỗi vertex figure được coi là “valid” nếu angle gap deg không lớn hơn 0.0001.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleGapDeg",
+            "label": "angle gap deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle gap deg không lớn hơn 0.0001"
+      },
+      "Regions.Name": {
+        "table": "Regions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi region được tính bằng display name viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name viết bằng chữ thường sau khi thay “ ” bằng “-”"
+      },
+      "Regions.Area": {
+        "table": "Regions",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "Trường “area” của mỗi region được tính bằng width nhân height.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          }
+        ],
+        "structure": null,
+        "plain": "Width nhân height"
+      },
+      "Regions.PlacementCount": {
+        "table": "Regions",
+        "field": "PlacementCount",
+        "kind": "rollup",
+        "rule": "Trường “placement count” của mỗi region là số lượng placements liên quan đến region đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng placements có region là region ID"
+      },
+      "Regions.CoveredArea": {
+        "table": "Regions",
+        "field": "CoveredArea",
+        "kind": "rollup",
+        "rule": "Trường “covered area” của mỗi region là giá trị tổng cộng của trường “tile area” trên các placements liên quan đến region đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "TileArea",
+            "label": "tile area"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng tile area trên tất cả placements có region là region ID"
+      },
+      "Regions.OverlapCount": {
+        "table": "Regions",
+        "field": "OverlapCount",
+        "kind": "rollup",
+        "rule": "Trường “overlap count” của mỗi region là số lượng placements liên quan đến region đó, chỉ tính các bản ghi là “overlapping”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          },
+          {
+            "table": "Placements",
+            "field": "IsOverlapping",
+            "label": "is overlapping"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng placements có region là region ID và is overlapping là có"
+      },
+      "Regions.CoveragePct": {
+        "table": "Regions",
+        "field": "CoveragePct",
+        "kind": "formula",
+        "rule": "Trường “coverage pct” của mỗi region được tính bằng 100 nhân covered area chia cho area.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveredArea",
+            "label": "covered area"
+          },
+          {
+            "table": "Regions",
+            "field": "Area",
+            "label": "area"
+          }
+        ],
+        "structure": null,
+        "plain": "(100 nhân covered area) chia cho area"
+      },
+      "Regions.IsFullyCovered": {
+        "table": "Regions",
+        "field": "IsFullyCovered",
+        "kind": "formula",
+        "rule": "Mỗi region được coi là “fully covered” nếu coverage pct không nhỏ hơn 100.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveragePct",
+            "label": "coverage pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Coverage pct không nhỏ hơn 100"
+      },
+      "Regions.IsCleanTiling": {
+        "table": "Regions",
+        "field": "IsCleanTiling",
+        "kind": "formula",
+        "rule": "Mỗi region được coi là “clean tiling” nếu tất cả các điều kiện sau đều đúng: cờ “fully covered” được bật và overlap count là 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "IsFullyCovered",
+            "label": "is fully covered"
+          },
+          {
+            "table": "Regions",
+            "field": "OverlapCount",
+            "label": "overlap count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi region được coi là “clean tiling” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "cờ “fully covered” được bật"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "overlap count là 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is fully covered và overlap count bằng 0"
+      },
+      "Placements.Name": {
+        "table": "Placements",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi placement được tính bằng region, tiếp theo là “#”, tiếp theo là placement ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Placements",
+            "field": "PlacementId",
+            "label": "placement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Region nối với \"#\" nối với placement ID"
+      },
+      "Placements.TileArea": {
+        "table": "Placements",
+        "field": "TileArea",
+        "kind": "lookup",
+        "rule": "Trường “tile area” của mỗi placement được lấy từ bản ghi liên kết qua trường “prototile”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Area",
+            "label": "area"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Area của bản ghi liên kết qua prototile"
+      },
+      "Placements.TileSides": {
+        "table": "Placements",
+        "field": "TileSides",
+        "kind": "lookup",
+        "rule": "Trường “tile sides” của mỗi placement được lấy từ bản ghi liên kết qua trường “prototile”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides của bản ghi liên kết qua prototile"
+      },
+      "Placements.RegionWidth": {
+        "table": "Placements",
+        "field": "RegionWidth",
+        "kind": "lookup",
+        "rule": "Trường “region width” của mỗi placement được lấy từ bản ghi liên kết qua trường “region”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Width của bản ghi liên kết qua region"
+      },
+      "Placements.RegionHeight": {
+        "table": "Placements",
+        "field": "RegionHeight",
+        "kind": "lookup",
+        "rule": "Trường “region height” của mỗi placement được lấy từ bản ghi liên kết qua trường “region”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Height của bản ghi liên kết qua region"
+      },
+      "Placements.IsInsideRegion": {
+        "table": "Placements",
+        "field": "IsInsideRegion",
+        "kind": "formula",
+        "rule": "Mỗi placement được coi là “inside region” nếu tất cả các điều kiện sau đều đúng: x không nhỏ hơn 0, y không nhỏ hơn 0, x nhỏ hơn region width và y nhỏ hơn region height.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "X",
+            "label": "x"
+          },
+          {
+            "table": "Placements",
+            "field": "Y",
+            "label": "y"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionWidth",
+            "label": "region width"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionHeight",
+            "label": "region height"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi placement được coi là “inside region” nếu tất cả các điều kiện sau đều đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "x không nhỏ hơn 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "y không nhỏ hơn 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "x nhỏ hơn region width"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "y nhỏ hơn region height"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "X không nhỏ hơn 0, y không nhỏ hơn 0, x nhỏ hơn region width và y nhỏ hơn region height"
+      },
+      "WallpaperDesigns.Name": {
+        "table": "WallpaperDesigns",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi wallpaper design được tính bằng display name viết bằng chữ thường sau khi thay mọi dấu cách bằng dấu gạch nối.",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "Display name viết bằng chữ thường sau khi thay “ ” bằng “-”"
+      },
+      "WallpaperDesigns.GroupNotation": {
+        "table": "WallpaperDesigns",
+        "field": "GroupNotation",
+        "kind": "lookup",
+        "rule": "Trường “group notation” của mỗi wallpaper design được lấy từ bản ghi liên kết qua trường “symmetry group”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Notation của bản ghi liên kết qua symmetry group"
+      },
+      "WallpaperDesigns.GroupOrbifold": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOrbifold",
+        "kind": "lookup",
+        "rule": "Trường “group orbifold” của mỗi wallpaper design được lấy từ bản ghi liên kết qua trường “symmetry group”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Orbifold",
+            "label": "orbifold"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Orbifold của bản ghi liên kết qua symmetry group"
+      },
+      "WallpaperDesigns.GroupLatticeType": {
+        "table": "WallpaperDesigns",
+        "field": "GroupLatticeType",
+        "kind": "lookup",
+        "rule": "Trường “group lattice type” của mỗi wallpaper design được lấy từ bản ghi liên kết qua trường “symmetry group”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "LatticeType",
+            "label": "lattice type"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Lattice type của bản ghi liên kết qua symmetry group"
+      },
+      "WallpaperDesigns.GroupRotationOrder": {
+        "table": "WallpaperDesigns",
+        "field": "GroupRotationOrder",
+        "kind": "lookup",
+        "rule": "Trường “group rotation order” của mỗi wallpaper design được lấy từ bản ghi liên kết qua trường “symmetry group”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "RotationOrder",
+            "label": "rotation order"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Rotation order của bản ghi liên kết qua symmetry group"
+      },
+      "WallpaperDesigns.GroupOperationCount": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOperationCount",
+        "kind": "lookup",
+        "rule": "Trường “group operation count” của mỗi wallpaper design được lấy từ bản ghi liên kết qua trường “symmetry group”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "OperationCount",
+            "label": "operation count"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Operation count của bản ghi liên kết qua symmetry group"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "SymmetryGroups": [
+        "Mỗi symmetry group **phải** có notation."
+      ],
+      "Prototiles": [
+        "Mỗi prototile **phải** có display name, sides và edge length."
+      ],
+      "Tilings": [
+        "Mỗi tiling **phải** có display name, vertex config và kind, đồng thời được ghi nhận rõ là “edge to edge” hay không."
+      ],
+      "TilingPrototiles": [
+        "Mỗi tiling prototile **phải** tham chiếu đến đúng một tiling.",
+        "Mỗi tiling prototile **phải** tham chiếu đến đúng một prototile.",
+        "Mỗi tiling prototile **phải** có count at vertex."
+      ],
+      "VertexFigures": [
+        "Mỗi vertex figure **phải** tham chiếu đến đúng một tiling.",
+        "Mỗi vertex figure **phải** có config và angle sum deg."
+      ],
+      "Regions": [
+        "Mỗi region **phải** có display name, width và height."
+      ],
+      "Placements": [
+        "Mỗi placement **phải** tham chiếu đến đúng một region.",
+        "Mỗi placement **phải** tham chiếu đến đúng một prototile.",
+        "Mỗi placement **phải** có x, y và rotation deg, đồng thời được ghi nhận rõ là “overlapping” hay không."
+      ],
+      "WallpaperDesigns": [
+        "Mỗi wallpaper design **phải** tham chiếu đến đúng một symmetry group.",
+        "Mỗi wallpaper design **phải** có display name và strokes."
+      ]
+    },
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "SymmetryGroups": "symmetry group",
+      "Prototiles": "prototile",
+      "Tilings": "tiling",
+      "TilingPrototiles": "tiling prototile",
+      "VertexFigures": "vertex figure",
+      "Regions": "region",
+      "Placements": "placement",
+      "WallpaperDesigns": "wallpaper design"
+    }
+  },
+  "zh": {
+    "fields": {
+      "SymmetryGroups.Name": {
+        "table": "SymmetryGroups",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "symmetry group的“name”与 symmetry group ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symmetry group ID"
+      },
+      "SymmetryGroups.TilingCount": {
+        "table": "SymmetryGroups",
+        "field": "TilingCount",
+        "kind": "rollup",
+        "rule": "symmetry group的“tiling count”为 与symmetry group相关的“tilings”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symmetry group为symmetry group ID的“tilings”的数量"
+      },
+      "SymmetryGroups.WallpaperDesignCount": {
+        "table": "SymmetryGroups",
+        "field": "WallpaperDesignCount",
+        "kind": "rollup",
+        "rule": "symmetry group的“wallpaper design count”为 与symmetry group相关的“wallpaper designs”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Symmetry group为symmetry group ID的“wallpaper designs”的数量"
+      },
+      "Prototiles.Name": {
+        "table": "Prototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "prototile的“name”按 转为小写的display name中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的display name中“ ”替换为“-”后的结果"
+      },
+      "Prototiles.Area": {
+        "table": "Prototiles",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "prototile的“area”按 0.25乘sides乘edge length的2次方除以圆周率除以sides的正切 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Prototiles",
+            "field": "EdgeLength",
+            "label": "edge length"
+          }
+        ],
+        "structure": null,
+        "plain": "((0.25乘sides)乘power(edge length, 2))除以tan((pi()除以sides))"
+      },
+      "Prototiles.InteriorAngleDeg": {
+        "table": "Prototiles",
+        "field": "InteriorAngleDeg",
+        "kind": "formula",
+        "rule": "prototile的“interior angle deg”按 sides减2乘180除以sides 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "((sides减2)乘180)除以sides"
+      },
+      "Prototiles.VertexAngleTurns": {
+        "table": "Prototiles",
+        "field": "VertexAngleTurns",
+        "kind": "formula",
+        "rule": "prototile的“vertex angle turns”按 interior angle deg除以360 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Interior angle deg除以360"
+      },
+      "Prototiles.IsRegular": {
+        "table": "Prototiles",
+        "field": "IsRegular",
+        "kind": "formula",
+        "rule": "当sides不小于3时,prototile被视为“Regular”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides不小于3"
+      },
+      "Prototiles.IsTriangle": {
+        "table": "Prototiles",
+        "field": "IsTriangle",
+        "kind": "formula",
+        "rule": "当sides为3时,prototile被视为“Triangle”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides等于3"
+      },
+      "Prototiles.IsSquare": {
+        "table": "Prototiles",
+        "field": "IsSquare",
+        "kind": "formula",
+        "rule": "当sides为4时,prototile被视为“Square”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          }
+        ],
+        "structure": null,
+        "plain": "Sides等于4"
+      },
+      "Prototiles.UsedInTilingsCount": {
+        "table": "Prototiles",
+        "field": "UsedInTilingsCount",
+        "kind": "rollup",
+        "rule": "prototile的“used in tilings count”为 与prototile相关的“tiling prototiles”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Prototile为prototile ID的“tiling prototiles”的数量"
+      },
+      "Tilings.Name": {
+        "table": "Tilings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "tiling的“name”按 转为小写的display name中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的display name中“ ”替换为“-”后的结果"
+      },
+      "Tilings.SymmetryNotation": {
+        "table": "Tilings",
+        "field": "SymmetryNotation",
+        "kind": "lookup",
+        "rule": "tiling的“symmetry notation”——取自所关联的“symmetry group”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "Tilings",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“symmetry group”的notation"
+      },
+      "Tilings.DistinctPrototileCount": {
+        "table": "Tilings",
+        "field": "DistinctPrototileCount",
+        "kind": "rollup",
+        "rule": "tiling的“distinct prototile count”为 与tiling相关的“tiling prototiles”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling为tiling ID的“tiling prototiles”的数量"
+      },
+      "Tilings.VertexFigureCount": {
+        "table": "Tilings",
+        "field": "VertexFigureCount",
+        "kind": "rollup",
+        "rule": "tiling的“vertex figure count”为 与tiling相关的“vertex figures”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling为tiling ID的“vertex figures”的数量"
+      },
+      "Tilings.ValidVertexFigureCount": {
+        "table": "Tilings",
+        "field": "ValidVertexFigureCount",
+        "kind": "rollup",
+        "rule": "tiling的“valid vertex figure count”为 tiling的“vertex figures”中是“Valid”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "Tilings",
+            "field": "TilingId",
+            "label": "tiling ID"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "IsValid",
+            "label": "is valid"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling为tiling ID且is valid为是的“vertex figures”的数量"
+      },
+      "Tilings.IsRegularTiling": {
+        "table": "Tilings",
+        "field": "IsRegularTiling",
+        "kind": "formula",
+        "rule": "当distinct prototile count为1时,tiling被视为“Regular Tiling”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "DistinctPrototileCount",
+            "label": "distinct prototile count"
+          }
+        ],
+        "structure": null,
+        "plain": "Distinct prototile count等于1"
+      },
+      "Tilings.AllVerticesValid": {
+        "table": "Tilings",
+        "field": "AllVerticesValid",
+        "kind": "formula",
+        "rule": "当valid vertex figure count为vertex figure count时,tiling被标记为“All Vertices Valid”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "ValidVertexFigureCount",
+            "label": "valid vertex figure count"
+          },
+          {
+            "table": "Tilings",
+            "field": "VertexFigureCount",
+            "label": "vertex figure count"
+          }
+        ],
+        "structure": null,
+        "plain": "Valid vertex figure count等于vertex figure count"
+      },
+      "Tilings.LatticeDeterminant": {
+        "table": "Tilings",
+        "field": "LatticeDeterminant",
+        "kind": "formula",
+        "rule": "tiling的“lattice determinant”按 t1x乘t2y减t1y乘t2x 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "T1x",
+            "label": "t1x"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2y",
+            "label": "t2y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T1y",
+            "label": "t1y"
+          },
+          {
+            "table": "Tilings",
+            "field": "T2x",
+            "label": "t2x"
+          }
+        ],
+        "structure": null,
+        "plain": "(t1x乘t2y)减(t1y乘t2x)"
+      },
+      "Tilings.FundamentalDomainArea": {
+        "table": "Tilings",
+        "field": "FundamentalDomainArea",
+        "kind": "formula",
+        "rule": "tiling的“fundamental domain area”按 lattice determinant的绝对值 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Lattice determinant的绝对值"
+      },
+      "Tilings.HasLattice": {
+        "table": "Tilings",
+        "field": "HasLattice",
+        "kind": "formula",
+        "rule": "当lattice determinant的绝对值大于0.0001时,tiling被视为具有“Lattice”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "LatticeDeterminant",
+            "label": "lattice determinant"
+          }
+        ],
+        "structure": null,
+        "plain": "Lattice determinant的绝对值大于0.0001"
+      },
+      "Tilings.DoesTilePlane": {
+        "table": "Tilings",
+        "field": "DoesTilePlane",
+        "kind": "formula",
+        "rule": "当以下全部成立:标志“all vertices valid”已设置且标志“lattice”已设置时,tiling被视为满足“Tile Plane”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Tilings",
+            "field": "AllVerticesValid",
+            "label": "all vertices valid"
+          },
+          {
+            "table": "Tilings",
+            "field": "HasLattice",
+            "label": "has lattice"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,tiling被视为满足“Tile Plane”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "标志“all vertices valid”已设置"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "标志“lattice”已设置"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "All vertices valid且has lattice"
+      },
+      "TilingPrototiles.Name": {
+        "table": "TilingPrototiles",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "tiling prototile的“name”按 tiling,接着是一个斜杠,接着是prototile 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "TilingPrototiles",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling、\"/\",拼接prototile"
+      },
+      "TilingPrototiles.PrototileSides": {
+        "table": "TilingPrototiles",
+        "field": "PrototileSides",
+        "kind": "lookup",
+        "rule": "tiling prototile的“prototile sides”——取自所关联的“prototile”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“prototile”的sides"
+      },
+      "TilingPrototiles.PrototileInteriorAngle": {
+        "table": "TilingPrototiles",
+        "field": "PrototileInteriorAngle",
+        "kind": "lookup",
+        "rule": "tiling prototile的“prototile interior angle”是所关联的“prototile”的“interior angle deg”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "InteriorAngleDeg",
+            "label": "interior angle deg"
+          },
+          {
+            "table": "TilingPrototiles",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“prototile”的interior angle deg"
+      },
+      "VertexFigures.Name": {
+        "table": "VertexFigures",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "vertex figure的“name”按 tiling,接着是“@”,接着是config 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "Tiling",
+            "label": "tiling"
+          },
+          {
+            "table": "VertexFigures",
+            "field": "Config",
+            "label": "config"
+          }
+        ],
+        "structure": null,
+        "plain": "Tiling、\"@\",拼接config"
+      },
+      "VertexFigures.TurnsAtVertex": {
+        "table": "VertexFigures",
+        "field": "TurnsAtVertex",
+        "kind": "formula",
+        "rule": "vertex figure的“turns at vertex”按 angle sum deg除以360 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle sum deg除以360"
+      },
+      "VertexFigures.AngleGapDeg": {
+        "table": "VertexFigures",
+        "field": "AngleGapDeg",
+        "kind": "formula",
+        "rule": "vertex figure的“angle gap deg”按 angle sum deg减360的绝对值 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleSumDeg",
+            "label": "angle sum deg"
+          }
+        ],
+        "structure": null,
+        "plain": "(angle sum deg减360)的绝对值"
+      },
+      "VertexFigures.IsValid": {
+        "table": "VertexFigures",
+        "field": "IsValid",
+        "kind": "formula",
+        "rule": "当angle gap deg不大于0.0001时,vertex figure被视为“Valid”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "VertexFigures",
+            "field": "AngleGapDeg",
+            "label": "angle gap deg"
+          }
+        ],
+        "structure": null,
+        "plain": "Angle gap deg不大于0.0001"
+      },
+      "Regions.Name": {
+        "table": "Regions",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "region的“name”按 转为小写的display name中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的display name中“ ”替换为“-”后的结果"
+      },
+      "Regions.Area": {
+        "table": "Regions",
+        "field": "Area",
+        "kind": "formula",
+        "rule": "region的“area”按 width乘height 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          }
+        ],
+        "structure": null,
+        "plain": "Width乘height"
+      },
+      "Regions.PlacementCount": {
+        "table": "Regions",
+        "field": "PlacementCount",
+        "kind": "rollup",
+        "rule": "region的“placement count”为 与region相关的“placements”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Region为region ID的“placements”的数量"
+      },
+      "Regions.CoveredArea": {
+        "table": "Regions",
+        "field": "CoveredArea",
+        "kind": "rollup",
+        "rule": "region的“covered area”为 与region相关的所有“placements”的“tile area”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "TileArea",
+            "label": "tile area"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有region为region ID的“placements”的tile area的总和"
+      },
+      "Regions.OverlapCount": {
+        "table": "Regions",
+        "field": "OverlapCount",
+        "kind": "rollup",
+        "rule": "region的“overlap count”为 region的“placements”中是“Overlapping”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          },
+          {
+            "table": "Placements",
+            "field": "IsOverlapping",
+            "label": "is overlapping"
+          }
+        ],
+        "structure": null,
+        "plain": "Region为region ID且is overlapping为是的“placements”的数量"
+      },
+      "Regions.CoveragePct": {
+        "table": "Regions",
+        "field": "CoveragePct",
+        "kind": "formula",
+        "rule": "region的“coverage pct”按 100乘covered area除以area 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveredArea",
+            "label": "covered area"
+          },
+          {
+            "table": "Regions",
+            "field": "Area",
+            "label": "area"
+          }
+        ],
+        "structure": null,
+        "plain": "(100乘covered area)除以area"
+      },
+      "Regions.IsFullyCovered": {
+        "table": "Regions",
+        "field": "IsFullyCovered",
+        "kind": "formula",
+        "rule": "当coverage pct不小于100时,region被视为“Fully Covered”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "CoveragePct",
+            "label": "coverage pct"
+          }
+        ],
+        "structure": null,
+        "plain": "Coverage pct不小于100"
+      },
+      "Regions.IsCleanTiling": {
+        "table": "Regions",
+        "field": "IsCleanTiling",
+        "kind": "formula",
+        "rule": "当以下全部成立:标志“fully covered”已设置且overlap count为0时,region被视为“Clean Tiling”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "IsFullyCovered",
+            "label": "is fully covered"
+          },
+          {
+            "table": "Regions",
+            "field": "OverlapCount",
+            "label": "overlap count"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,region被视为“Clean Tiling”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "标志“fully covered”已设置"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "overlap count为0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Is fully covered且overlap count等于0"
+      },
+      "Placements.Name": {
+        "table": "Placements",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "placement的“name”按 region,接着是“#”,接着是placement ID 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Placements",
+            "field": "PlacementId",
+            "label": "placement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Region、\"#\",拼接placement ID"
+      },
+      "Placements.TileArea": {
+        "table": "Placements",
+        "field": "TileArea",
+        "kind": "lookup",
+        "rule": "placement的“tile area”——取自所关联的“prototile”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Area",
+            "label": "area"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“prototile”的area"
+      },
+      "Placements.TileSides": {
+        "table": "Placements",
+        "field": "TileSides",
+        "kind": "lookup",
+        "rule": "placement的“tile sides”——取自所关联的“prototile”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Prototiles",
+            "field": "Sides",
+            "label": "sides"
+          },
+          {
+            "table": "Placements",
+            "field": "Prototile",
+            "label": "prototile"
+          },
+          {
+            "table": "Prototiles",
+            "field": "PrototileId",
+            "label": "prototile ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“prototile”的sides"
+      },
+      "Placements.RegionWidth": {
+        "table": "Placements",
+        "field": "RegionWidth",
+        "kind": "lookup",
+        "rule": "placement的“region width”——取自所关联的“region”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Width",
+            "label": "width"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“region”的width"
+      },
+      "Placements.RegionHeight": {
+        "table": "Placements",
+        "field": "RegionHeight",
+        "kind": "lookup",
+        "rule": "placement的“region height”——取自所关联的“region”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Regions",
+            "field": "Height",
+            "label": "height"
+          },
+          {
+            "table": "Placements",
+            "field": "Region",
+            "label": "region"
+          },
+          {
+            "table": "Regions",
+            "field": "RegionId",
+            "label": "region ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“region”的height"
+      },
+      "Placements.IsInsideRegion": {
+        "table": "Placements",
+        "field": "IsInsideRegion",
+        "kind": "formula",
+        "rule": "当以下全部成立:x不小于0、y不小于0、x小于region width,且y小于region height时,placement被视为“Inside Region”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Placements",
+            "field": "X",
+            "label": "x"
+          },
+          {
+            "table": "Placements",
+            "field": "Y",
+            "label": "y"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionWidth",
+            "label": "region width"
+          },
+          {
+            "table": "Placements",
+            "field": "RegionHeight",
+            "label": "region height"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下全部成立时,placement被视为“Inside Region”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "all",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "x不小于0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "y不小于0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "x小于region width"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "y小于region height"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "X不小于0、y不小于0、x小于region width,且y小于region height"
+      },
+      "WallpaperDesigns.Name": {
+        "table": "WallpaperDesigns",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "wallpaper design的“name”按 转为小写的display name中的每个一个空格替换为一个连字符后的结果 计算。",
+        "mechanical": true,
+        "refs": [
+          {
+            "table": "WallpaperDesigns",
+            "field": "DisplayName",
+            "label": "display name"
+          }
+        ],
+        "structure": null,
+        "plain": "转为小写的display name中“ ”替换为“-”后的结果"
+      },
+      "WallpaperDesigns.GroupNotation": {
+        "table": "WallpaperDesigns",
+        "field": "GroupNotation",
+        "kind": "lookup",
+        "rule": "wallpaper design的“group notation”——取自所关联的“symmetry group”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Notation",
+            "label": "notation"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“symmetry group”的notation"
+      },
+      "WallpaperDesigns.GroupOrbifold": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOrbifold",
+        "kind": "lookup",
+        "rule": "wallpaper design的“group orbifold”——取自所关联的“symmetry group”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "Orbifold",
+            "label": "orbifold"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“symmetry group”的orbifold"
+      },
+      "WallpaperDesigns.GroupLatticeType": {
+        "table": "WallpaperDesigns",
+        "field": "GroupLatticeType",
+        "kind": "lookup",
+        "rule": "wallpaper design的“group lattice type”——取自所关联的“symmetry group”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "LatticeType",
+            "label": "lattice type"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“symmetry group”的lattice type"
+      },
+      "WallpaperDesigns.GroupRotationOrder": {
+        "table": "WallpaperDesigns",
+        "field": "GroupRotationOrder",
+        "kind": "lookup",
+        "rule": "wallpaper design的“group rotation order”——取自所关联的“symmetry group”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "RotationOrder",
+            "label": "rotation order"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“symmetry group”的rotation order"
+      },
+      "WallpaperDesigns.GroupOperationCount": {
+        "table": "WallpaperDesigns",
+        "field": "GroupOperationCount",
+        "kind": "lookup",
+        "rule": "wallpaper design的“group operation count”——取自所关联的“symmetry group”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "SymmetryGroups",
+            "field": "OperationCount",
+            "label": "operation count"
+          },
+          {
+            "table": "WallpaperDesigns",
+            "field": "SymmetryGroup",
+            "label": "symmetry group"
+          },
+          {
+            "table": "SymmetryGroups",
+            "field": "SymmetryGroupId",
+            "label": "symmetry group ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“symmetry group”的operation count"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "SymmetryGroups": [
+        "symmetry group**必须**具有notation。"
+      ],
+      "Prototiles": [
+        "prototile**必须**具有display name、sides,且edge length。"
+      ],
+      "Tilings": [
+        "tiling**必须**具有display name、vertex config,且kind,并记录其是“Edge to Edge”与否。"
+      ],
+      "TilingPrototiles": [
+        "tiling prototile**必须**恰好引用一个“tiling”。",
+        "tiling prototile**必须**恰好引用一个“prototile”。",
+        "tiling prototile**必须**具有count at vertex。"
+      ],
+      "VertexFigures": [
+        "vertex figure**必须**恰好引用一个“tiling”。",
+        "vertex figure**必须**具有config且angle sum deg。"
+      ],
+      "Regions": [
+        "region**必须**具有display name、width,且height。"
+      ],
+      "Placements": [
+        "placement**必须**恰好引用一个“region”。",
+        "placement**必须**恰好引用一个“prototile”。",
+        "placement**必须**具有x、y,且rotation deg,并记录其是“Overlapping”与否。"
+      ],
+      "WallpaperDesigns": [
+        "wallpaper design**必须**恰好引用一个“symmetry group”。",
+        "wallpaper design**必须**具有display name且strokes。"
+      ]
+    },
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "SymmetryGroups": "symmetry group",

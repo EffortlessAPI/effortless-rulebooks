@@ -99,7 +99,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "data": []
   }
 }, languages: [
-  "en"
+  "en",
+  "ar",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "nl",
+  "pt",
+  "ru",
+  "tr",
+  "vi",
+  "zh"
 ], rulespeakByLang: {
   "en": {
     "fields": {
@@ -156,6 +171,936 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "if": "if",
       "otherwise": "in all other cases",
       "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "ar": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «customer» يُحسب على النحو الآتي: حقل «last name»، ثم فاصلة تليها مسافة، ثم حقل «first name».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "(last name يليه \", \") يليه first name"
+      },
+      "Customers.Initials": {
+        "table": "Customers",
+        "field": "Initials",
+        "kind": "formula",
+        "rule": "حقل «initials» في سجل «customer» يُحسب على النحو الآتي: أول 1 من أحرف حقل «first name»، ثم أول 1 من أحرف حقل «last name».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "أول 1 من أحرف first name يليه أول 1 من أحرف last name"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Customers": [
+        "في كل سجل «customer»، **يجب أن** تُحدّد قيمة حقل «first name» وحقل «last name»."
+      ]
+    },
+    "connectors": {
+      "allOf": "جميع ما يلي متحقق",
+      "anyOf": "واحد على الأقل مما يلي متحقق",
+      "if": "إذا تحقق أنّ",
+      "otherwise": "في سائر الحالات",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "de": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Customer: Name wird berechnet als die Last Name, gefolgt von ein Komma gefolgt von einem Leerzeichen, gefolgt von die First Name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "(Last Name verbunden mit \", \") verbunden mit First Name"
+      },
+      "Customers.Initials": {
+        "table": "Customers",
+        "field": "Initials",
+        "kind": "formula",
+        "rule": "Ein Customer: Initials wird berechnet als die ersten 1 Zeichen von die First Name, gefolgt von die ersten 1 Zeichen von die Last Name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "Die ersten 1 Zeichen von First Name verbunden mit die ersten 1 Zeichen von Last Name"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Customers": [
+        "Ein Customer **muss** eine First Name und eine Last Name haben."
+      ]
+    },
+    "connectors": {
+      "allOf": "alles Folgende gilt",
+      "anyOf": "eines des Folgenden gilt",
+      "if": "wenn",
+      "otherwise": "andernfalls",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "Customer"
+    }
+  },
+  "es": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un customer: name se calcula como el last name, seguido de una coma seguida de un espacio, seguido de el first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "(last name unido con \", \") unido con first name"
+      },
+      "Customers.Initials": {
+        "table": "Customers",
+        "field": "Initials",
+        "kind": "formula",
+        "rule": "Un customer: initials se calcula como los primeros 1 caracteres de el first name, seguido de los primeros 1 caracteres de el last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "Los primeros 1 caracteres de first name unido con los primeros 1 caracteres de last name"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Customers": [
+        "Un customer **debe** tener un first name y un last name."
+      ]
+    },
+    "connectors": {
+      "allOf": "se cumple todo lo siguiente",
+      "anyOf": "se cumple alguna de las siguientes",
+      "if": "si",
+      "otherwise": "en todos los demás casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "fr": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un customer : name est calculé comme le last name, suivi de une virgule suivie d'une espace, suivi de le first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "(last name joint à \", \") joint à first name"
+      },
+      "Customers.Initials": {
+        "table": "Customers",
+        "field": "Initials",
+        "kind": "formula",
+        "rule": "Un customer : initials est calculé comme les 1 premiers caractères de le first name, suivi de les 1 premiers caractères de le last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "Les 1 premiers caractères de first name joint à les 1 premiers caractères de last name"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Customers": [
+        "Un customer **doit** avoir un first name et un last name."
+      ]
+    },
+    "connectors": {
+      "allOf": "tout ce qui suit est vrai",
+      "anyOf": "au moins un des suivants est vrai",
+      "if": "si",
+      "otherwise": "dans tous les autres cas",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "hi": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "customer का “name” last name, उसके बाद एक अल्पविराम और उसके बाद रिक्त स्थान, उसके बाद first name के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "(last name \", \" से जुड़ा हुआ) first name से जुड़ा हुआ"
+      },
+      "Customers.Initials": {
+        "table": "Customers",
+        "field": "Initials",
+        "kind": "formula",
+        "rule": "customer का “initials” first name के पहले 1 वर्ण, उसके बाद last name के पहले 1 वर्ण के रूप में गणना किया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "First name के पहले 1 वर्ण last name के पहले 1 वर्ण से जुड़ा हुआ"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Customers": [
+        "customer को first name और last name रखना **अनिवार्य** है।"
+      ]
+    },
+    "connectors": {
+      "allOf": "निम्नलिखित सभी सही हैं",
+      "anyOf": "निम्नलिखित में से कोई भी सही है",
+      "if": "यदि",
+      "otherwise": "अन्य सभी स्थितियों में",
+      "sentenceEnd": "।"
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "id": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap customer, name dihitung sebagai last name, diikuti tanda koma yang diikuti spasi, diikuti first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "(last name digabung dengan \", \") digabung dengan first name"
+      },
+      "Customers.Initials": {
+        "table": "Customers",
+        "field": "Initials",
+        "kind": "formula",
+        "rule": "Untuk setiap customer, initials dihitung sebagai 1 karakter pertama dari first name, diikuti 1 karakter pertama dari last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "1 karakter pertama dari first name digabung dengan 1 karakter pertama dari last name"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Customers": [
+        "Setiap customer **harus** memiliki first name dan last name."
+      ]
+    },
+    "connectors": {
+      "allOf": "semua kondisi berikut terpenuhi",
+      "anyOf": "paling sedikit satu dari kondisi berikut terpenuhi",
+      "if": "jika",
+      "otherwise": "dalam semua kasus lainnya",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "it": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un customer: name è calcolato come il last name, seguito da una virgola seguita da uno spazio, seguito da il first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "(last name unito a \", \") unito a first name"
+      },
+      "Customers.Initials": {
+        "table": "Customers",
+        "field": "Initials",
+        "kind": "formula",
+        "rule": "Un customer: initials è calcolato come i primi 1 caratteri di il first name, seguito da i primi 1 caratteri di il last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "I primi 1 caratteri di first name unito a i primi 1 caratteri di last name"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Customers": [
+        "Un customer **deve** avere un first name e un last name."
+      ]
+    },
+    "connectors": {
+      "allOf": "vale tutto quanto segue",
+      "anyOf": "vale almeno uno dei seguenti",
+      "if": "se",
+      "otherwise": "in tutti gli altri casi",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "ja": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "customerの「name」は last name、続いて コンマと空白、続いて first name として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "(last name と \", \" を連結) と first name を連結"
+      },
+      "Customers.Initials": {
+        "table": "Customers",
+        "field": "Initials",
+        "kind": "formula",
+        "rule": "customerの「initials」は first name の先頭 1 文字、続いて last name の先頭 1 文字 として計算されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "First name の先頭 1 文字 と last name の先頭 1 文字 を連結"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Customers": [
+        "customerは first nameおよびlast name を持た**なければなりません**。"
+      ]
+    },
+    "connectors": {
+      "allOf": "次のすべてが成り立つ",
+      "anyOf": "次のいずれかが成り立つ",
+      "if": "条件:",
+      "otherwise": "それ以外の場合",
+      "sentenceEnd": "。"
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "ko": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘customer’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘last name’, 이어서 쉼표와 공백, 이어서 ‘first name’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "(last name 뒤에 \", \" 연결한 결과) 뒤에 first name 연결한 결과"
+      },
+      "Customers.Initials": {
+        "table": "Customers",
+        "field": "Initials",
+        "kind": "formula",
+        "rule": "‘customer’ 레코드의 ‘initials’ 값은 다음과 같이 계산됩니다: ‘first name’의 처음 1글자, 이어서 ‘last name’의 처음 1글자.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "First name의 처음 1글자 뒤에 last name의 처음 1글자 연결한 결과"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Customers": [
+        "‘customer’ 레코드는 ‘first name’ 및 ‘last name’ 값을 포함**해야 합니다**."
+      ]
+    },
+    "connectors": {
+      "allOf": "다음 모두에 해당하는 경우",
+      "anyOf": "다음 중 하나 이상에 해당하는 경우",
+      "if": "조건:",
+      "otherwise": "그 밖의 경우",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "nl": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een customer: name wordt berekend als de last name, gevolgd door een komma gevolgd door een spatie, gevolgd door de first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "(last name samengevoegd met \", \") samengevoegd met first name"
+      },
+      "Customers.Initials": {
+        "table": "Customers",
+        "field": "Initials",
+        "kind": "formula",
+        "rule": "Een customer: initials wordt berekend als de eerste 1 tekens van de first name, gevolgd door de eerste 1 tekens van de last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "De eerste 1 tekens van first name samengevoegd met de eerste 1 tekens van last name"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Customers": [
+        "Een customer **moet** een first name en een last name hebben."
+      ]
+    },
+    "connectors": {
+      "allOf": "al het volgende geldt",
+      "anyOf": "één van het volgende geldt",
+      "if": "als",
+      "otherwise": "in alle andere gevallen",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "pt": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um customer: name é calculado como o last name, seguido de uma vírgula seguida de um espaço, seguido de o first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "(last name unido a \", \") unido a first name"
+      },
+      "Customers.Initials": {
+        "table": "Customers",
+        "field": "Initials",
+        "kind": "formula",
+        "rule": "Um customer: initials é calculado como os primeiros 1 caracteres de o first name, seguido de os primeiros 1 caracteres de o last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "Os primeiros 1 caracteres de first name unido a os primeiros 1 caracteres de last name"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Customers": [
+        "Um customer **deve** ter um first name e um last name."
+      ]
+    },
+    "connectors": {
+      "allOf": "tudo o que segue é verdadeiro",
+      "anyOf": "algum dos seguintes é verdadeiro",
+      "if": "se",
+      "otherwise": "em todos os outros casos",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "ru": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Customer: «name» вычисляется как last name, затем запятая с пробелом, затем first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "(last name соединено с \", \") соединено с first name"
+      },
+      "Customers.Initials": {
+        "table": "Customers",
+        "field": "Initials",
+        "kind": "formula",
+        "rule": "Customer: «initials» вычисляется как первые 1 символов first name, затем первые 1 символов last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "Первые 1 символов first name соединено с первые 1 символов last name"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Customers": [
+        "Customer **обязан** иметь first name и last name."
+      ]
+    },
+    "connectors": {
+      "allOf": "выполняется всё следующее",
+      "anyOf": "выполняется что-то из следующего",
+      "if": "если",
+      "otherwise": "во всех остальных случаях",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "tr": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“customer” kaydının “name” alanı, “last name” alanı, ardından bir virgül ile bir boşluk, ardından “first name” alanı olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "(last name ile \", \" birleşimi) ile first name birleşimi"
+      },
+      "Customers.Initials": {
+        "table": "Customers",
+        "field": "Initials",
+        "kind": "formula",
+        "rule": "“customer” kaydının “initials” alanı, “first name” alanı değerinin baştaki 1 karakteri, ardından “last name” alanı değerinin baştaki 1 karakteri olarak hesaplanır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "First name değerinin baştaki 1 karakteri ile last name değerinin baştaki 1 karakteri birleşimi"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Customers": [
+        "“customer” kaydı, “first name” alanı ve “last name” alanı dolu olmak **zorundadır**."
+      ]
+    },
+    "connectors": {
+      "allOf": "aşağıdakilerin tümü geçerli",
+      "anyOf": "aşağıdakilerden en az biri geçerli",
+      "if": "şu durumda:",
+      "otherwise": "diğer tüm durumlarda",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "vi": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi customer được tính bằng last name, tiếp theo là dấu phẩy kèm dấu cách, tiếp theo là first name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "(last name nối với \", \") nối với first name"
+      },
+      "Customers.Initials": {
+        "table": "Customers",
+        "field": "Initials",
+        "kind": "formula",
+        "rule": "Trường “initials” của mỗi customer được tính bằng 1 ký tự đầu tiên của first name, tiếp theo là 1 ký tự đầu tiên của last name.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "1 ký tự đầu tiên của first name nối với 1 ký tự đầu tiên của last name"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Customers": [
+        "Mỗi customer **phải** có first name và last name."
+      ]
+    },
+    "connectors": {
+      "allOf": "tất cả các điều kiện sau đều đúng",
+      "anyOf": "ít nhất một trong các điều kiện sau đúng",
+      "if": "nếu",
+      "otherwise": "trong mọi trường hợp còn lại",
+      "sentenceEnd": "."
+    },
+    "nouns": {
+      "Customers": "customer"
+    }
+  },
+  "zh": {
+    "fields": {
+      "Customers.Name": {
+        "table": "Customers",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "customer的“name”按 last name,接着是一个逗号加一个空格,接着是first name 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          },
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          }
+        ],
+        "structure": null,
+        "plain": "(last name与\", \"拼接)与first name拼接"
+      },
+      "Customers.Initials": {
+        "table": "Customers",
+        "field": "Initials",
+        "kind": "formula",
+        "rule": "customer的“initials”按 first name的前1个字符,接着是last name的前1个字符 计算。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Customers",
+            "field": "FirstName",
+            "label": "first name"
+          },
+          {
+            "table": "Customers",
+            "field": "LastName",
+            "label": "last name"
+          }
+        ],
+        "structure": null,
+        "plain": "First name的前1个字符与last name的前1个字符拼接"
+      }
+    },
+    "obligations": [],
+    "structural": {
+      "Customers": [
+        "customer**必须**具有first name且last name。"
+      ]
+    },
+    "connectors": {
+      "allOf": "以下全部成立",
+      "anyOf": "以下任一成立",
+      "if": "当",
+      "otherwise": "其余情况",
+      "sentenceEnd": "。"
     },
     "nouns": {
       "Customers": "customer"
